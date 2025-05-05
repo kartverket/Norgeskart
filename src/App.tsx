@@ -1,7 +1,9 @@
+import { MapComponent } from './map/MapComponent.tsx';
+
 function App() {
   return (
     <>
-      <div>Hei på deg</div>
+      <MapComponent />
     </>
   );
 }
