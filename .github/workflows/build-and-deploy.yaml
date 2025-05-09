@@ -1,12 +1,14 @@
 name: Build and deploy
 
-on push:
-  branches:
-    - main
+on: 
+  push:
+    branches:
+      - main
   workflow_dispatch:
   pull_request:
     branches:
       - main
+
 
 env:
   image_registry: ghcr.io
