@@ -4,4 +4,3 @@ COPY Caddyfile /etc/caddy/Caddyfile
 COPY dist /var/www
 
 EXPOSE 3000
-EXPOSE 2019
