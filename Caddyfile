@@ -1,0 +1,26 @@
+{
+        servers {
+                metrics
+        }
+        admin :2019
+}
+
+:3000
+
+route {
+        header Strict-Transport-Security max-age=31536000
+        header X-Frame-Options "SAMEORIGIN"
+        header X-Content-Type-Options nosniff
+        header Referrer-Policy strict-origin
+        header Content-Security-Policy "
+                default-src 'self';
+                script-src 'self';
+                img-src 'self' *.geonorge.no *.norgeskart.no cache.kartverket.no *.googletagmanager.com *.kartverket-intern.cloud;
+                connect-src 'self' *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no;
+                style-src 'self' 'unsafe-inline';
+        "
+        header Permissions-Policy "geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), accelerometer=(), camera=()"
+}
+
+root * /var/www
+file_server

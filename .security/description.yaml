@@ -1,0 +1,4 @@
+organization: Land
+product: Norgeskart
+repo_types: [PublicClient, Experiment]
+platforms: [SKIP]
