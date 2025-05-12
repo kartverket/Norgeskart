@@ -17,6 +17,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.meta.outputs.tags }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -42,7 +44,6 @@ jobs:
         run: npm run build
 
       - name: Login to GitHub Container Registry
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.image_registry }}
@@ -55,9 +56,9 @@ jobs:
         with:
           images: ${{ env.image_registry }}/${{ github.repository }}
           tags: |
-            type=sha,enable=${{ github.ref == 'refs/heads/main' }},prefix=commit-
-            type=raw,enable=${{ github.ref == 'refs/heads/main' }},value=latest
-            type=raw,enable=${{ github.ref != 'refs/heads/main' }},prefix=branch-,value=${{ needs.init.outputs.env_name }}
+            type=sha, prefix=commit-
+      - name: lol
+        run : echo "${{ steps.meta.outputs.tags }}"
 
       - name: Build and push Docker image
         id: docker
@@ -67,6 +68,16 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    # if: github.event_name != 'pull_request'
+    steps:
+      - name: "echo"
+        run: echo "${{ needs.build.outputs.docker_tag }}"
 
-      
-          
+
+
+
+
