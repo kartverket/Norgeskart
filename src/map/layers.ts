@@ -4,7 +4,7 @@ import { get as getProjection } from 'ol/proj.js';
 import { WMTS } from 'ol/source';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 
-const projection = getProjection('EPSG:3857')!!;
+const projection = getProjection('EPSG:3857')!;
 const projectionExtent = projection.getExtent();
 const size = getWidth(projectionExtent) / 256;
 
