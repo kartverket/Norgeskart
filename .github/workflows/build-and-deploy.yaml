@@ -70,6 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     permissions:
+      contents: read
       id-token: write
     if: github.event_name != 'pull_request'
     steps:    
@@ -93,9 +94,9 @@ jobs:
 
       - name: Update deployment
         env:
-          COMMIT_MESSAGE: Update norgeskart5 image to ${{ steps.octo-sts.outputs.token }}
+          COMMIT_MESSAGE: Update norgeskart5 image to ${{ needs.build.outputs.docker_tag }}
         run: |
-          echo "\"${{ steps.octo-sts.outputs.token }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
+          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push  
