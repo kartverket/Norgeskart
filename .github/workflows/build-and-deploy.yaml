@@ -89,8 +89,8 @@ jobs:
 
       - name: Git setup for deploy
         run: |
-          git config --global user.email ${{ env.commit-email }}
-          git config --global user.name ${{ env.commit-username }}
+          git config --global user.email "tnt-nk@kartverket.no"
+          git config --global user.name "tnt-nk CI"
 
       - name: Update deployment
         env:
