@@ -10,7 +10,7 @@ on:
       - main
 
 permissions:
-  identity: write
+  id-token: write
   packages: write
 
 env:
