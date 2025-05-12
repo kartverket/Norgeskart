@@ -9,7 +9,6 @@ on:
     branches:
       - main
 
-
 env:
   image_registry: ghcr.io
 
@@ -17,6 +16,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.meta.outputs.tags }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -42,7 +43,6 @@ jobs:
         run: npm run build
 
       - name: Login to GitHub Container Registry
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
           registry: ${{ env.image_registry }}
@@ -55,10 +55,8 @@ jobs:
         with:
           images: ${{ env.image_registry }}/${{ github.repository }}
           tags: |
-            type=sha,enable=${{ github.ref == 'refs/heads/main' }},prefix=commit-
-            type=raw,enable=${{ github.ref == 'refs/heads/main' }},value=latest
-            type=raw,enable=${{ github.ref != 'refs/heads/main' }},prefix=branch-,value=${{ needs.init.outputs.env_name }}
-
+            type=sha, prefix=commit-
+      
       - name: Build and push Docker image
         id: docker
         uses: docker/build-push-action@v4
@@ -67,6 +65,38 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+    if: github.event_name != 'pull_request'
+    steps:    
+      - uses: octo-sts/action@6177b4481c00308b3839969c3eca88c96a91775f
+        id: octo-sts
+        with:
+          scope: kartverket/tnt-apps
+          identity: norgeskart5
           
+      - name: Checkout apps repository
+        uses: actions/checkout@v4
+        with:
+          repository: kartverket/tnt-apps
+          ref: main
+          token: ${{ steps.octo-sts.outputs.token }}
+
+      - name: Git setup for deploy
+        run: |
+          git config --global user.email ${{ env.commit-email }}
+          git config --global user.name ${{ env.commit-username }}
+
+      - name: Update deployment
+        env:
+          COMMIT_MESSAGE: Update norgeskart5 image to ${{ steps.octo-sts.outputs.token }}
+        run: |
+          echo "\"${{ steps.octo-sts.outputs.token }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
+          git add .
+          git commit -m "$COMMIT_MESSAGE"
+          git push  
+    
