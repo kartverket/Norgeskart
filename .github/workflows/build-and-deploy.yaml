@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+permissions:
+  identity: write
+  packages: write
 
 env:
   image_registry: ghcr.io
@@ -72,12 +75,32 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    # if: github.event_name != 'pull_request'
-    steps:
-      - name: "echo"
-        run: echo "${{ needs.build.outputs.docker_tag }}"
+    if: github.event_name != 'pull_request'
+    steps:    
+      - uses: octo-sts/action@6177b4481c00308b3839969c3eca88c96a91775f
+        id: octo-sts
+        with:
+          scope: kartverket/tnt-apps
+          identity: norgeskart5
+          
+      - name: Checkout apps repository
+        uses: actions/checkout@v4
+        with:
+          repository: kartverket/tnt-apps
+          ref: main
+          token: ${{ steps.octo-sts.outputs.token }}
 
+      - name: Git setup for deploy
+        run: |
+          git config --global user.email ${{ env.commit-email }}
+          git config --global user.name ${{ env.commit-username }}
 
-
-
-
+      - name: Update deployment
+        env:
+          COMMIT_MESSAGE: Update norgeskart5 image to ${{ steps.octo-sts.outputs.token }}
+        run: |
+          echo "\"${{ steps.octo-sts.outputs.token }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
+          git add .
+          git commit -m "$COMMIT_MESSAGE"
+          git push  
+    
