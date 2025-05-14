@@ -23,6 +23,7 @@ const mapLayers = {
         url: 'https://cache.atkv3-dev.kartverket-intern.cloud/v1/service',
         layer: 'topo',
         matrixSet: 'utm33n',
+        projection: projection,
         format: 'image/png',
         tileGrid: new WMTSTileGrid({
           origin: getTopLeft(projectionExtent),
