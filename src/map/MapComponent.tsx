@@ -15,7 +15,7 @@ export const MapComponent = () => {
       }),
     });
     map.addLayer(mapLayers.europaForenklet.layer);
-    map.addLayer(mapLayers.topo.layer);
+    map.addLayer(mapLayers.newTopo.layer);
 
     return () => {
       map.setTarget(undefined);

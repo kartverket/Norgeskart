@@ -17,6 +17,25 @@ for (let z = 0; z < 19; ++z) {
 }
 
 const mapLayers = {
+  newTopo: {
+    layer: new TileLayer({
+      source: new WMTS({
+        url: 'https://cache.atgcp1-prod.kartverket.cloud/v1/service',
+        layer: 'topo',
+        matrixSet: 'utm33n',
+        projection: projection,
+        format: 'image/png',
+        tileGrid: new WMTSTileGrid({
+          origin: getTopLeft(projectionExtent),
+          resolutions: resolutions,
+          matrixIds: matrixIds,
+        }),
+        style: 'default',
+        wrapX: true,
+      }),
+    }),
+  },
+
   topo: {
     layer: new TileLayer({
       source: new WMTS({
