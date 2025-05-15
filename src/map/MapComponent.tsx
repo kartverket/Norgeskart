@@ -3,14 +3,38 @@ import { useAtomValue } from 'jotai';
 import { View } from 'ol';
 import Map from 'ol/Map.js';
 import 'ol/ol.css';
+import { get as getProjection } from 'ol/proj';
+import { register } from 'ol/proj/proj4';
+import proj4 from 'proj4';
 import { useEffect, useRef } from 'react';
 import { projectionAtom } from './atoms.ts';
 import { mapLayers } from './layers.ts';
 
+// Register custom EPSG codes
+proj4.defs(
+  'EPSG:25832',
+  '+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',
+);
+proj4.defs(
+  'EPSG:25833',
+  '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',
+);
+proj4.defs(
+  'EPSG:25835',
+  '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',
+);
+
+register(proj4);
+
+getProjection('EPSG:25832')?.setExtent([166021.44, 0.00, 534994.66, 9329005.18])
+getProjection('EPSG:25833')?.setExtent([500000.00, 0.00, 833978.56, 9329005.18])
+getProjection('EPSG:25835')?.setExtent([166021.44, 0.00, 534994.66, 9329005.18])
+
+
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const projection = useAtomValue(projectionAtom);
-  const mapInstance = useRef<Map | null>(null); // Store the map instance
+  const projectionId = useAtomValue(projectionAtom);
+  const mapInstance = useRef<Map | null>(null);
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -18,58 +42,52 @@ export const MapComponent = () => {
       return;
     }
 
-    // Cleanup function to remove layers and dispose of the map
     return () => {
       if (mapInstance.current) {
         console.log('Cleaning up map');
-        mapInstance.current.getLayers().clear(); // Remove all layers
-        mapInstance.current.setTarget(undefined); // Remove the target
-        mapInstance.current = null; // Clear the map instance
+        mapInstance.current.getLayers().clear();
+        mapInstance.current.setTarget(undefined);
+        mapInstance.current = null;
       }
     };
-  }, [projection]);
+  }, [projectionId]);
 
   useEffect(() => {
     if (!mapRef.current) {
       console.error('Map ref is null');
       return;
     }
-    let map: Map;
-    try {
-      map = new Map({
-        // Create a new map instance
-        target: mapRef.current,
-        view: new View({
-          center: [570130, 7032300],
-          zoom: 3,
-          projection, // Set the projection
-        }),
-      });
-    } catch (error) {
-      console.error('Error creating map:', error);
+
+    const projection = getProjection(projectionId);
+
+    if (!projection) {
+      console.error(`Projection ${projectionId} not found`);
       return;
     }
 
-    // Add layers to the map
+    const map = new Map({
+      target: mapRef.current,
+      view: new View({
+        center: [570130, 7032300],
+        zoom: 3,
+        projection: projection, // Use the registered projection
+      }),
+    });
+
     try {
-      map.addLayer(mapLayers.europaForenklet.getLayer(projection));
+      map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
     } catch (error) {
       console.error('Error adding europaForenklet layer:', error);
     }
 
     try {
-      map.addLayer(mapLayers.newTopo.getLayer(projection));
+      map.addLayer(mapLayers.newTopo.getLayer(projectionId));
     } catch (error) {
       console.error('Error adding newTopo layer:', error);
     }
 
-    // Store the map instance in the ref
     mapInstance.current = map;
-
-    return () => {
-      // Cleanup is handled in the other useEffect
-    };
-  }, [projection]);
+  }, [projectionId]);
 
   return (
     <Box ref={mapRef} id="map" style={{ width: '100%', height: '100vh' }} />
