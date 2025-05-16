@@ -31,8 +31,7 @@ export const Settings = () => {
         <SelectRoot
           collection={createListCollection({ items: projectionCollection })}
         >
-          <SelectTrigger></SelectTrigger>
-
+          <SelectTrigger />
           <SelectContent>
             {projectionCollection.map((item) => (
               <SelectItem
