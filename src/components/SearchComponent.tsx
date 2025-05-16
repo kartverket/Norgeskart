@@ -1,21 +1,17 @@
 import { Box, Search } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Adresser } from '../types/adresseTypes.ts';
+import { getSearchResults } from '../api/searchApi.ts';
 
 export const SearchComponent = () => {
-  const [search,setSearch] = useState('')
+  const [searchQuery,setSearchQuery] = useState('')
 
-  const { isPending, error, data } = useQuery({
-    queryKey: [search, 'search'],
-    queryFn: () =>
-       fetch(`https://ws.geonorge.no/adresser/v1/sok?sok=${search}`).then((res) =>
-        res.json(),
-      ),
-    enabled: !!search,
-  })
-
-
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['search', searchQuery],
+    queryFn: () => getSearchResults(searchQuery),
+    enabled: !!searchQuery
+    }
+  );
 
   return (
     <>
@@ -23,20 +19,31 @@ export const SearchComponent = () => {
         backgroundColor="white"
         placeholder="Søk i Norgeskart"
         size="lg"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      ></Search>
-      {isPending && <p>Laster...</p>}
-      {error && <p>Det oppsto en feil: {error.message}</p>}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
+      <Box backgroundColor="white">
+      {isLoading && <p>Loading...</p>}
+      {error && <p>{error.message}</p>}
       {data && (
+        <>
         <ul>
-          {data.adresser.map((adresse: Adresser) => (
-            <li key={adresse.adressekode}>{adresse.adressenavn}</li>
+          <p>Adresser</p>
+          {data.addresses.adresser.map((address, index) => (
+            <li key={index}>{address.adressenavn}</li>
           ))}
         </ul>
+          <ul>
+            <p>Stedsnavn</p>
+            {data.placeNames.navn.map((placeName, index) => (
+              <li key={index}>{placeName.skrivemåte}, {placeName.navneobjekttype}</li>
+            ))}
+          </ul>
+
+        </>
       )}
-
-
+      </Box>
     </>
   );
 };
