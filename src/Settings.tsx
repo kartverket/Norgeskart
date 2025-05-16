@@ -16,7 +16,7 @@ export const Settings = () => {
 
   const projectionCollection = [
     'EPSG:3857',
-    'EPSG:25832',
+    //'EPSG:25832',
     'EPSG:25833',
     'EPSG:25835',
   ].map((projection) => ({
