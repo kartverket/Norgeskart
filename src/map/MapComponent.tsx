@@ -101,7 +101,7 @@ export const MapComponent = () => {
     }
 
     mapInstance.current = map;
-  }, [projectionId]);
+  }, [backgroundLayerId, projectionId]);
 
   useEffect(() => {
     if (!mapInstance.current) {
@@ -112,9 +112,7 @@ export const MapComponent = () => {
 
     const backgroundLayerIndex = mapInstance.current
       .getAllLayers()
-      .findIndex((layer) => {
-        layer.get('id') === baseLayerIdRef.current;
-      });
+      .findIndex((layer) => layer.get('id') === baseLayerIdRef.current);
 
     if (backgroundLayerIndex !== -1) {
       mapInstance.current.removeLayer(allLayers[backgroundLayerIndex]);
@@ -137,7 +135,7 @@ export const MapComponent = () => {
     } catch (error) {
       console.error('Error adding new background layer:', error);
     }
-  }, [backgroundLayerId]);
+  }, [projectionId, backgroundLayerId]);
 
   return (
     <Box ref={mapRef} id="map" style={{ width: '100%', height: '100vh' }} />
