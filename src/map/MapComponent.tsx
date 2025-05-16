@@ -103,6 +103,42 @@ export const MapComponent = () => {
     mapInstance.current = map;
   }, [projectionId]);
 
+  useEffect(() => {
+    if (!mapInstance.current) {
+      console.error('Map instance is null');
+      return;
+    }
+    const allLayers = mapInstance.current.getLayers().getArray();
+
+    const backgroundLayerIndex = mapInstance.current
+      .getAllLayers()
+      .findIndex((layer) => {
+        layer.get('id') === baseLayerIdRef.current;
+      });
+
+    if (backgroundLayerIndex !== -1) {
+      mapInstance.current.removeLayer(allLayers[backgroundLayerIndex]);
+    }
+    try {
+      // Create the new background layer
+      const newBackgroundLayer =
+        mapLayers.backgroundLayers[backgroundLayerId].getLayer(projectionId);
+      backgroundLayerIdRef.current = getUid(newBackgroundLayer);
+
+      // Add the new background layer at the same index
+      if (backgroundLayerIndex !== -1) {
+        mapInstance.current
+          .getLayers()
+          .insertAt(backgroundLayerIndex, newBackgroundLayer);
+      } else {
+        // If no old layer was found, just add it to the map
+        mapInstance.current.addLayer(newBackgroundLayer);
+      }
+    } catch (error) {
+      console.error('Error adding new background layer:', error);
+    }
+  }, [backgroundLayerId]);
+
   return (
     <Box ref={mapRef} id="map" style={{ width: '100%', height: '100vh' }} />
   );

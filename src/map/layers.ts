@@ -46,6 +46,8 @@ export type MapLayers = {
   europaForenklet: MapLayer;
 };
 
+export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
+
 const mapLayers: MapLayers = {
   backgroundLayers: {
     newTopo: {
