@@ -1,4 +1,8 @@
 import { atom } from 'jotai';
+import { MapLayers } from './layers';
+
+
+
 
 export type ProjectionIdentifier =
   | 'EPSG:3857' // webmercator
@@ -7,3 +11,4 @@ export type ProjectionIdentifier =
   | 'EPSG:25835'; // utm35n
 
 export const projectionAtom = atom<ProjectionIdentifier>('EPSG:3857');
+export const backgroundLayerAtom = atom<keyof MapLayers["backgroundLayers"] >('newTopo');

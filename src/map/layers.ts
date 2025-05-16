@@ -34,62 +34,77 @@ const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
   return { projection, projectionExtent, resolutions, matrixIds, matrixSet };
 };
 
-const mapLayers = {
-  newTopo: {
-    getLayer: (projectionId: ProjectionIdentifier) => {
-      const {
-        projection,
-        projectionExtent,
-        resolutions,
-        matrixIds,
-        matrixSet,
-      } = getProjectionParameters(projectionId);
-      return new TileLayer({
-        source: new WMTS({
-          url: 'https://cache.atgcp1-prod.kartverket.cloud/v1/service',
-          layer: 'topo',
-          matrixSet: matrixSet,
-          projection: projection,
-          format: 'image/png',
-          tileGrid: new WMTSTileGrid({
-            origin: getTopLeft(projectionExtent),
-            resolutions: resolutions,
-            matrixIds: matrixIds,
+export type MapLayer = {
+  getLayer: (projectionId: ProjectionIdentifier) => TileLayer;
+};
+
+export type MapLayers = {
+  backgroundLayers: {
+    newTopo: MapLayer;
+    topo: MapLayer;
+  };
+  europaForenklet: MapLayer;
+};
+
+const mapLayers: MapLayers = {
+  backgroundLayers: {
+    newTopo: {
+      getLayer: (projectionId: ProjectionIdentifier) => {
+        const {
+          projection,
+          projectionExtent,
+          resolutions,
+          matrixIds,
+          matrixSet,
+        } = getProjectionParameters(projectionId);
+        return new TileLayer({
+          source: new WMTS({
+            url: 'https://cache.atgcp1-prod.kartverket.cloud/v1/service',
+            layer: 'topo',
+            matrixSet: matrixSet,
+            projection: projection,
+            format: 'image/png',
+            tileGrid: new WMTSTileGrid({
+              origin: getTopLeft(projectionExtent),
+              resolutions: resolutions,
+              matrixIds: matrixIds,
+            }),
+            style: 'default',
+            wrapX: true,
           }),
-          style: 'default',
-          wrapX: true,
-        }),
-      });
+        });
+      },
+    },
+
+    topo: {
+      getLayer: (projectionId: ProjectionIdentifier) => {
+        const {
+          projection,
+          projectionExtent,
+          resolutions,
+          matrixIds,
+          matrixSet,
+        } = getProjectionParameters(projectionId);
+        return new TileLayer({
+          source: new WMTS({
+            url: 'https://cache.atkv3-dev.kartverket-intern.cloud/v1/service',
+            layer: 'topo',
+            matrixSet: matrixSet,
+            projection: projection,
+            format: 'image/png',
+            tileGrid: new WMTSTileGrid({
+              origin: getTopLeft(projectionExtent),
+              resolutions: resolutions,
+              matrixIds: matrixIds,
+            }),
+            style: 'default',
+            wrapX: true,
+          }),
+        });
+      },
     },
   },
 
-  topo: {
-    getLayer: (projectionId: ProjectionIdentifier) => {
-      const {
-        projection,
-        projectionExtent,
-        resolutions,
-        matrixIds,
-        matrixSet,
-      } = getProjectionParameters(projectionId);
-      return new TileLayer({
-        source: new WMTS({
-          url: 'https://cache.atkv3-dev.kartverket-intern.cloud/v1/service',
-          layer: 'topo',
-          matrixSet: matrixSet,
-          projection: projection,
-          format: 'image/png',
-          tileGrid: new WMTSTileGrid({
-            origin: getTopLeft(projectionExtent),
-            resolutions: resolutions,
-            matrixIds: matrixIds,
-          }),
-          style: 'default',
-          wrapX: true,
-        }),
-      });
-    },
-  },
   europaForenklet: {
     getLayer: (projectionId: ProjectionIdentifier) => {
       const {

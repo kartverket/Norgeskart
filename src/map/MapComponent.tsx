@@ -1,13 +1,13 @@
 import { Box } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { View } from 'ol';
+import { getUid, View } from 'ol';
 import Map from 'ol/Map.js';
 import 'ol/ol.css';
 import { get as getProjection } from 'ol/proj';
 import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
 import { useEffect, useRef } from 'react';
-import { projectionAtom } from './atoms.ts';
+import { backgroundLayerAtom, projectionAtom } from './atoms.ts';
 import { mapLayers } from './layers.ts';
 
 // Register custom EPSG codes
@@ -39,7 +39,10 @@ getProjection('EPSG:25835')?.setExtent([
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const baseLayerIdRef = useRef<string>(null);
+  const backgroundLayerIdRef = useRef<string>(null);
   const projectionId = useAtomValue(projectionAtom);
+  const backgroundLayerId = useAtomValue(backgroundLayerAtom);
   const mapInstance = useRef<Map | null>(null);
 
   useEffect(() => {
@@ -81,13 +84,18 @@ export const MapComponent = () => {
     });
 
     try {
-      map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
+      const europaLayer = mapLayers.europaForenklet.getLayer(projectionId);
+      baseLayerIdRef.current = getUid(europaLayer);
+      map.addLayer(europaLayer);
     } catch (error) {
       console.error('Error adding europaForenklet layer:', error);
     }
 
     try {
-      map.addLayer(mapLayers.newTopo.getLayer(projectionId));
+      const backgroundLayer =
+        mapLayers.backgroundLayers[backgroundLayerId].getLayer(projectionId);
+      backgroundLayerIdRef.current = getUid(backgroundLayer);
+      map.addLayer(backgroundLayer);
     } catch (error) {
       console.error('Error adding newTopo layer:', error);
     }
