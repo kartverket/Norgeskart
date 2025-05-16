@@ -6,16 +6,13 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import { ProjectionIdentifier } from './atoms';
 
 const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
-  console.log('Projection:', projectionId);
   const projection = getProjection(projectionId)!;
-  console.log('Projection:', projection);
   const projectionExtent = projection.getExtent();
   const size = getWidth(projectionExtent) / 256;
 
   const resolutions = new Array(19);
   const matrixIds = new Array(19);
   for (let z = 0; z < 19; ++z) {
-    // generate resolutions and matrixIds arrays for this WMTS
     resolutions[z] = size / Math.pow(2, z);
     matrixIds[z] = z;
   }

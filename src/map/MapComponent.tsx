@@ -26,10 +26,16 @@ proj4.defs(
 
 register(proj4);
 
-getProjection('EPSG:25832')?.setExtent([166021.44, 0.00, 534994.66, 9329005.18])
-getProjection('EPSG:25833')?.setExtent([500000.00, 0.00, 833978.56, 9329005.18])
-getProjection('EPSG:25835')?.setExtent([166021.44, 0.00, 534994.66, 9329005.18])
+getProjection('EPSG:25832')?.setExtent([
+  -1866822.47, 3680224.65, 3246120.36, 9483069.2,
+]);
 
+getProjection('EPSG:25833')?.setExtent([
+  -2450512.62, 3680451.78, 2665647.82, 9493779.8,
+]);
+getProjection('EPSG:25835')?.setExtent([
+  -3646007.42, 3680723.36, 1528001.15, 9567789.69,
+]);
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
