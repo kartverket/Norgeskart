@@ -15,7 +15,7 @@ route {
         header Content-Security-Policy "
                 default-src 'self';
                 script-src 'self';
-                img-src 'self' *.geonorge.no *.norgeskart.no cache.kartverket.no *.googletagmanager.com *.kartverket-intern.cloud;
+                img-src 'self' *.geonorge.no *.norgeskart.no cache.kartverket.no *.googletagmanager.com *.kartverket-intern.cloud cache.atgcp1-prod.kartverket.cloud;
                 connect-src 'self' *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no;
                 style-src 'self' 'unsafe-inline';
         "
