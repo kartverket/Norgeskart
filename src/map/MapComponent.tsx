@@ -59,7 +59,7 @@ export const MapComponent = () => {
         mapInstance.current = null;
       }
     };
-  }, [projectionId]);
+  }, [backgroundLayerId, projectionId]);
 
   useEffect(() => {
     if (!mapRef.current) {
