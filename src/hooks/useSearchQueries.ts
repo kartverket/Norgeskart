@@ -6,11 +6,11 @@ export const useAddresses = (searchQuery: string) =>
     queryKey: ['addresses', searchQuery],
     queryFn: () => getAddresses(searchQuery),
     enabled: !!searchQuery,
-  })
+  });
 
 export const usePlaceNames = (searchQuery: string) =>
   useQuery({
     queryKey: ['placeNames', searchQuery],
     queryFn: () => getPlaceNames(searchQuery),
-    enabled: !!searchQuery
-  })
+    enabled: !!searchQuery,
+  });

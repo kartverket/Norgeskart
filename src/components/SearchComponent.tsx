@@ -1,17 +1,24 @@
 import { Box, Search } from '@kvib/react';
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getSearchResults } from '../api/searchApi.ts';
+import { useAddresses, usePlaceNames } from '../hooks/useSearchQueries.ts';
 
 export const SearchComponent = () => {
-  const [searchQuery,setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const { data, error, isLoading } = useQuery({
-    queryKey: ['search', searchQuery],
-    queryFn: () => getSearchResults(searchQuery),
-    enabled: !!searchQuery
-    }
-  );
+  const {
+    data: addressData,
+    isLoading: addressLoading,
+    error: addressError,
+  } = useAddresses(searchQuery);
+
+  const {
+    data: placeData,
+    isLoading: placeLoading,
+    error: placeError,
+  } = usePlaceNames(searchQuery);
+
+  const isLoading = addressLoading || placeLoading;
+  const hasError = addressError || placeError;
 
   return (
     <>
@@ -24,25 +31,31 @@ export const SearchComponent = () => {
       />
 
       <Box backgroundColor="white">
-      {isLoading && <p>Loading...</p>}
-      {error && <p>{error.message}</p>}
-      {data && (
-        <>
-        <ul>
-          <p>Adresser</p>
-          {data.addresses.adresser.map((address, index) => (
-            <li key={index}>{address.adressenavn}</li>
-          ))}
-        </ul>
+        {isLoading && <p>Laster...</p>}
+        {hasError && <p>En feil oppstod ved søk.</p>}
+
+        {placeData ? (
           <ul>
-            <p>Stedsnavn</p>
-            {data.placeNames.navn.map((placeName, index) => (
-              <li key={index}>{placeName.skrivemåte}, {placeName.navneobjekttype}</li>
+            <p>STEDSNAVN</p>
+            {placeData?.navn.map((place, index) => (
+              <li key={index}>
+                {place.skrivemåte}, {place.navneobjekttype}{' '}
+                {place.kommuner ? 'i ' + place.kommuner[0].kommunenavn : null}
+              </li>
             ))}
           </ul>
+        ) : null}
 
-        </>
-      )}
+        {addressData ? (
+          <>
+            <ul>
+              <p>VEG</p>
+              {addressData?.adresser.map((address, index) => (
+                <li key={index}>{address.adressenavn}</li>
+              ))}
+            </ul>
+          </>
+        ) : null}
       </Box>
     </>
   );

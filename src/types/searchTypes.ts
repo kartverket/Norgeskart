@@ -2,7 +2,7 @@ export type RepresentasjonsPunkt = {
   espg: string;
   lon: number;
   lat: number;
-}
+};
 
 export type RepresentasjonsPunktNorsk = {
   koordsys: string;
@@ -28,23 +28,24 @@ export type Adresse = {
   postnummer: string;
   adressetekstutenadressetillegssnavn: string;
   stedfestingverifisert: boolean;
-  representasjonspunkt: RepresentasjonsPunkt,
-  oppdateringsdato: string,
-}
+  representasjonspunkt: RepresentasjonsPunkt;
+  oppdateringsdato: string;
+};
 
-export type Adresser = {
+export type AdresseApiResponse = {
+  metadata: Metadata;
   adresser: Adresse[];
-}
+};
 
 export type Fylke = {
   fylkesnavn: string;
   fylkesnummer: string;
-}
+};
 
 export type Kommune = {
   kommunenavn: string;
   kommunenummer: string;
-}
+};
 
 export type StedsNavn = {
   fylker: Fylke[];
@@ -56,7 +57,7 @@ export type StedsNavn = {
   språk: string;
   stedsnummer: number;
   stedstatus: string;
-}
+};
 
 export type Metadata = {
   side: number;
@@ -66,12 +67,9 @@ export type Metadata = {
   utkoordsys: number;
   viserFra: number;
   viserTil: number;
-}
+};
 
 export type StedsnavnApiResponse = {
   metadata: Metadata;
   navn: StedsNavn[];
-}
-
-
-
+};
