@@ -1,6 +1,6 @@
 import { Box, Search } from '@kvib/react';
 import { useState } from 'react';
-import { useAddresses, usePlaceNames } from '../hooks/useSearchQueries.ts';
+import { useAddresses, usePlaceNames } from './useSearchQueries.ts';
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');

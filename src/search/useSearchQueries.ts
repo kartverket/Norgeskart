@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAddresses, getPlaceNames } from '../api/searchApi.ts';
+import { getAddresses, getPlaceNames } from './searchApi.ts';
 
 export const useAddresses = (searchQuery: string) =>
   useQuery({

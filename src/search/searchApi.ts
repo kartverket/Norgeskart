@@ -1,7 +1,7 @@
 import {
   AdresseApiResponse,
   StedsnavnApiResponse,
-} from '../types/searchTypes.ts';
+} from './searchTypes.ts';
 
 export const getAddresses = async (
   query: string,
