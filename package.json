@@ -14,12 +14,15 @@
   },
   "dependencies": {
     "@kvib/react": "^5.2.0",
+    "jotai": "^2.12.4",
     "ol": "^10.5.0",
+    "proj4": "^2.16.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@types/proj4": "^2.5.6",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@typescript-eslint/eslint-plugin": "^8.32.0",
