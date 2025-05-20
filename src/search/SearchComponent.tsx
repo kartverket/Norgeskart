@@ -61,15 +61,19 @@ export const SearchComponent = () => {
         {placeNameData && (
           <>
             <List listStyleType="none">
-              <Heading size="md" backgroundColor="gray.100">
+              <Heading padding="10px" size="md" backgroundColor="gray.100">
                 STEDSNAVN
               </Heading>
               {placeNameData?.navn.map((place, index) => (
-                <li key={index} onClick={() => console.log('Klikk!!!!')}>
-                  {place.skrivemåte}, {place.navneobjekttype}{' '}
-                  {place.kommuner ? 'i ' + place.kommuner[0].kommunenavn : null}
-                  <Separator />
-                </li>
+                <Box padding="5px">
+                  <li key={index} onClick={() => console.log('Klikk!!!!')}>
+                    {place.skrivemåte}, {place.navneobjekttype}{' '}
+                    {place.kommuner
+                      ? 'i ' + place.kommuner[0].kommunenavn
+                      : null}
+                    <Separator />
+                  </li>
+                </Box>
               ))}
             </List>
             <PaginationRoot

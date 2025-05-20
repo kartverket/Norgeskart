@@ -3,6 +3,7 @@ import {
   StedsnavnApiResponse,
 } from '../types/searchTypes.ts';
 
+//Skjønner ikke helt hva denne url'en brukes til enda.
 export const getAddresses = async (
   query: string,
 ): Promise<AdresseApiResponse> => {
@@ -18,7 +19,7 @@ export const getPlaceNames = async (
   page: number,
 ): Promise<StedsnavnApiResponse> => {
   const res = await fetch(
-    `https://ws.geonorge.no/stedsnavn/v1/navn?sok=${query}&fuzzy=true&treffPerSide=15&side=${page}`,
+    `https://ws.geonorge.no/stedsnavn/v1/navn?sok=${query}*&treffPerSide=15&side=${page}`,
   );
   if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
   return res.json();

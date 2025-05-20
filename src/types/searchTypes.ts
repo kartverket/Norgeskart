@@ -73,3 +73,20 @@ export type StedsnavnApiResponse = {
   metadata: Metadata;
   navn: StedsNavn[];
 };
+
+export interface VEG {
+  ADRESSEKODE: string;
+  FYLKESNAVN: string;
+  FYLKESNR: string;
+  HUSNUMMER: string;
+  ID: string;
+  KILDE: string;
+  KOMMUNENAVN: string;
+  KOMMUNENR: string;
+  LATITUDE: string;
+  LONGITUDE: string;
+  NAVN: string;
+  OBJEKTTYPE: string;
+  TILHOERIGHET: string[];
+  TITTEL: string[];
+}
