@@ -1,7 +1,4 @@
-import {
-  AdresseApiResponse,
-  StedsnavnApiResponse,
-} from './searchTypes.ts';
+import { AdresseApiResponse, StedsnavnApiResponse } from './searchTypes.ts';
 
 export const getAddresses = async (
   query: string,
@@ -15,9 +12,10 @@ export const getAddresses = async (
 
 export const getPlaceNames = async (
   query: string,
+  page: number,
 ): Promise<StedsnavnApiResponse> => {
   const res = await fetch(
-    `https://ws.geonorge.no/stedsnavn/v1/navn?sok=${query}`,
+    `https://ws.geonorge.no/stedsnavn/v1/navn?sok=${query}&fuzzy=true&treffPerSide=15&side=${page}`,
   );
   if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
   return res.json();

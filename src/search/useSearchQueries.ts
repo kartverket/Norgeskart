@@ -8,9 +8,9 @@ export const useAddresses = (searchQuery: string) =>
     enabled: !!searchQuery,
   });
 
-export const usePlaceNames = (searchQuery: string) =>
+export const usePlaceNames = (searchQuery: string, page: number) =>
   useQuery({
-    queryKey: ['placeNames', searchQuery],
-    queryFn: () => getPlaceNames(searchQuery),
+    queryKey: ['placeNames', searchQuery, page],
+    queryFn: () => getPlaceNames(searchQuery, page),
     enabled: !!searchQuery,
   });
