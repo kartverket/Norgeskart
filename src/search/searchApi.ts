@@ -1,4 +1,7 @@
-import { AdresseApiResponse, StedsnavnApiResponse } from './searchTypes.ts';
+import {
+  AdresseApiResponse,
+  StedsnavnApiResponse,
+} from '../types/searchTypes.ts';
 
 export const getAddresses = async (
   query: string,

@@ -31,10 +31,8 @@ export const SearchComponent = () => {
   const isLoading = addressLoading || placeNameLoading;
   const hasError = addressError || placeNameError;
 
+  const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
   const treffPerSide = 15;
-  const totalPages = placeNameData?.metadata?.totaltAntallTreff
-    ? Math.ceil(placeNameData.metadata.totaltAntallTreff / treffPerSide)
-    : 0;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -59,7 +57,7 @@ export const SearchComponent = () => {
         {isLoading && <p>Laster...</p>}
         {hasError && <p>En feil oppstod ved søk.</p>}
 
-        {/*Resultater fra søk bør kanskje i egne filer etter hvert*/}
+        {/*Resultater fra søk bør kanskje i egen fil etter hvert*/}
         {placeNameData && (
           <>
             <List listStyleType="none">
@@ -67,7 +65,7 @@ export const SearchComponent = () => {
                 STEDSNAVN
               </Heading>
               {placeNameData?.navn.map((place, index) => (
-                <li key={index}>
+                <li key={index} onClick={() => console.log('Klikk!!!!')}>
                   {place.skrivemåte}, {place.navneobjekttype}{' '}
                   {place.kommuner ? 'i ' + place.kommuner[0].kommunenavn : null}
                   <Separator />
@@ -75,7 +73,8 @@ export const SearchComponent = () => {
               ))}
             </List>
             <PaginationRoot
-              count={totalPages}
+              count={totalResults}
+              pageSize={treffPerSide}
               page={currentPage}
               onPageChange={(e) => handlePageChange(e.page)}
             >
@@ -86,14 +85,14 @@ export const SearchComponent = () => {
           </>
         )}
 
-        {/*Hvis det er vegnavn som dukker opp skal det under "VEGER" */}
+        {/*Hvis det er vegnavn som dukker opp skal det under "VEGER"?? HMM. skjønner ikke helt */}
         {/*Eiendommer, også fra adressesøk? hmmm*/}
 
         {/*{addressData && (*/}
         {/*    <List listStyleType="none">*/}
-        {/*      <Heading size="md">VEG</Heading>*/}
+        {/*      <Heading size="md" backgroundColor="gray.100">VEG</Heading>*/}
         {/*      {addressData?.adresser.map((address, index) => (*/}
-        {/*        <ListItem key={index}>{address.adressenavn}, {address.kommunenavn}</ListItem>*/}
+        {/*        <li key={index}>{address.adressenavn}, {address.kommunenavn}</li>*/}
         {/*      ))}*/}
         {/*    </List>*/}
         {/*)}*/}
