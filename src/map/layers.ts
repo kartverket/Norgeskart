@@ -36,6 +36,7 @@ const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
 
 export type MapLayer = {
   getLayer: (projectionId: ProjectionIdentifier) => TileLayer;
+  id: string;
 };
 
 export type MapLayers = {
@@ -51,6 +52,7 @@ export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
 const mapLayers: MapLayers = {
   backgroundLayers: {
     newTopo: {
+      id: 'newTopo',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -60,6 +62,8 @@ const mapLayers: MapLayers = {
           matrixSet,
         } = getProjectionParameters(projectionId);
         return new TileLayer({
+          properties: { id: 'newTopo' },
+          zIndex: 1,
           source: new WMTS({
             url: 'https://cache.atgcp1-prod.kartverket.cloud/v1/service',
             layer: 'topo',
@@ -79,6 +83,7 @@ const mapLayers: MapLayers = {
     },
 
     topo: {
+      id: 'topo',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -88,6 +93,8 @@ const mapLayers: MapLayers = {
           matrixSet,
         } = getProjectionParameters(projectionId);
         return new TileLayer({
+          properties: { id: 'topo' },
+          zIndex: 1,
           source: new WMTS({
             url: 'https://cache.atkv3-dev.kartverket-intern.cloud/v1/service',
             layer: 'topo',
@@ -108,6 +115,7 @@ const mapLayers: MapLayers = {
   },
 
   europaForenklet: {
+    id: 'europaForenklet',
     getLayer: (projectionId: ProjectionIdentifier) => {
       const {
         projection,
@@ -118,6 +126,8 @@ const mapLayers: MapLayers = {
       } = getProjectionParameters(projectionId);
 
       return new TileLayer({
+        properties: { id: 'europaForenklet' },
+        zIndex: 0,
         source: new WMTS({
           url: 'https://cache.kartverket.no/test/wmts',
           layer: 'europa_forenklet',

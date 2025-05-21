@@ -8,10 +8,10 @@ import {
   SelectValueText,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
-import { projectionAtom, ProjectionIdentifier } from '../map/atoms';
+import { projectionIdAtom, ProjectionIdentifier } from '../map/atoms';
 
 export const ProjectionSettings = () => {
-  const [projection, setProjection] = useAtom(projectionAtom);
+  const [projection, setProjection] = useAtom(projectionIdAtom);
 
   const projectionCollection = [
     'EPSG:3857',

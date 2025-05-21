@@ -7,12 +7,11 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
-import { backgroundLayerAtom } from '../map/atoms';
 import { BackgroundLayer } from '../map/layers';
+import { useMapLayers } from '../map/mapHooks';
 
 export const BackgroundLayerSettings = () => {
-  const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
+  const { setBackgroundLayer } = useMapLayers();
 
   const backgroundLayerCollection: { value: BackgroundLayer; label: string }[] =
     [
@@ -32,7 +31,7 @@ export const BackgroundLayerSettings = () => {
     >
       <SelectLabel>Velg projeksjon</SelectLabel>
       <SelectTrigger>
-        <SelectValueText placeholder={backgroundLayer} />
+        <SelectValueText placeholder={'Velg bakgrunnskart'} />
       </SelectTrigger>
       <SelectContent>
         {backgroundLayerCollection.map((item) => (
