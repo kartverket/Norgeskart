@@ -12,6 +12,9 @@ export const MapComponent = () => {
     if (mapRef.current) {
       setTargetElement(mapRef.current);
     }
+    return () => {
+      setTargetElement(null);
+    };
   }, [setTargetElement, mapRef]);
 
   return (
