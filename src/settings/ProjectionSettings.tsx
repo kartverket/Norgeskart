@@ -7,15 +7,15 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
-import { projectionIdAtom, ProjectionIdentifier } from '../map/atoms';
+import { ProjectionIdentifier } from '../map/atoms';
+import { useMapSettings } from '../map/mapHooks';
 
 export const ProjectionSettings = () => {
-  const [projection, setProjection] = useAtom(projectionIdAtom);
+  const { setProjection } = useMapSettings();
 
   const projectionCollection = [
     'EPSG:3857',
-    //'EPSG:25832',
+    'EPSG:25832',
     'EPSG:25833',
     'EPSG:25835',
   ].map((projection) => ({
@@ -29,7 +29,7 @@ export const ProjectionSettings = () => {
     >
       <SelectLabel>Velg projeksjon</SelectLabel>
       <SelectTrigger>
-        <SelectValueText placeholder={projection} />
+        <SelectValueText placeholder={'Velg en projeksjon da vel'} />
       </SelectTrigger>
       <SelectContent>
         {projectionCollection.map((item) => (

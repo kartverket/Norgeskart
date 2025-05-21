@@ -8,10 +8,10 @@ import {
   SelectValueText,
 } from '@kvib/react';
 import { BackgroundLayer } from '../map/layers';
-import { useMapLayers } from '../map/mapHooks';
+import { useMapSettings } from '../map/mapHooks';
 
 export const BackgroundLayerSettings = () => {
-  const { setBackgroundLayer } = useMapLayers();
+  const { setBackgroundLayer } = useMapSettings();
 
   const backgroundLayerCollection: { value: BackgroundLayer; label: string }[] =
     [

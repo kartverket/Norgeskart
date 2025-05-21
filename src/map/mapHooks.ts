@@ -1,7 +1,9 @@
 import { useAtomValue } from 'jotai';
+import { View } from 'ol';
 import LayerGroup from 'ol/layer/Group';
+import { get as getProjection, transform } from 'ol/proj';
 import { useRef } from 'react';
-import { mapAtom } from './atoms';
+import { mapAtom, ProjectionIdentifier } from './atoms';
 import { BackgroundLayer } from './layers';
 
 const useMap = () => {
@@ -18,7 +20,7 @@ const useMap = () => {
   return { setTargetElement };
 };
 
-const useMapLayers = () => {
+const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
 
   const setBackgroundLayer = (layerName: BackgroundLayer) => {
@@ -38,7 +40,36 @@ const useMapLayers = () => {
     });
   };
 
-  return { setBackgroundLayer };
+  const setProjection = (projectionId: ProjectionIdentifier) => {
+    const projection = getProjection(projectionId)!;
+
+    // Optionally, transform the current center to the new projection
+    const oldView = map.getView();
+    const oldCenter = oldView.getCenter();
+    const oldProjection = oldView.getProjection();
+
+    let newCenter = undefined;
+    if (
+      oldCenter &&
+      oldProjection &&
+      oldProjection.getCode() !== projection.getCode()
+    ) {
+      // Transform center to new projection
+      newCenter = transform(oldCenter, oldProjection, projection);
+    }
+
+    // Create a new view with the new projection
+    const newView = new View({
+      center: newCenter || [570130, 7032300], // fallback center if needed
+      zoom: oldView.getZoom(),
+      projection: projection,
+      extent: projection.getExtent(),
+    });
+
+    map.setView(newView);
+  };
+
+  return { setBackgroundLayer, setProjection };
 };
 
-export { useMap, useMapLayers };
+export { useMap, useMapSettings };
