@@ -1,10 +1,12 @@
 import { atom } from 'jotai';
 import { View } from 'ol';
+import MousePosition from 'ol/control/MousePosition.js';
+import ScaleLine from 'ol/control/ScaleLine.js';
+import { createStringXY } from 'ol/coordinate.js';
 import LayerGroup from 'ol/layer/Group';
 import Map from 'ol/Map';
 import { get as getProjection, Projection } from 'ol/proj';
 import { BackgroundLayer, mapLayers } from './layers';
-import ScaleLine from 'ol/control/ScaleLine.js';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
 
@@ -48,6 +50,7 @@ export const mapAtom = atom<Map>(() => {
 
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
+  map.addControl(new MousePosition({ coordinateFormat: createStringXY(2) }));
 
   return map;
 });

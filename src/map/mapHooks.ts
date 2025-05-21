@@ -10,11 +10,12 @@ const useMap = () => {
   const mapElement = useRef<HTMLDivElement | null>(null);
   const map = useAtomValue(mapAtom);
 
-  const setTargetElement = (element: HTMLDivElement) => {
-    console.log('setTargetElement', element);
+  const setTargetElement = (element: HTMLDivElement | null) => {
     mapElement.current = element;
-    if (!map.getTarget()) {
+    if (!map.getTarget() && element) {
       map.setTarget(element);
+    } else if (element == null) {
+      map.setTarget(undefined);
     }
   };
   return { setTargetElement };
