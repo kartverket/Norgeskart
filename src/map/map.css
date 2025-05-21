@@ -1,0 +1,9 @@
+.ol-scale-line {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+}
+
+.ol-scale-line-inner {
+  font-size: 14px;
+}
