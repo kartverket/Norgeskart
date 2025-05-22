@@ -129,8 +129,8 @@ const mapLayers: MapLayers = {
         properties: { id: 'europaForenklet' },
         zIndex: 0,
         source: new WMTS({
-          url: 'https://cache.kartverket.no/test/wmts',
-          layer: 'europa_forenklet',
+          url: 'https://cache.kartverket.no/v1/service',
+          layer: 'europaForenklet',
           matrixSet: matrixSet,
           format: 'image/png',
           projection: projection,
