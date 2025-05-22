@@ -74,7 +74,7 @@ export type StedsnavnApiResponse = {
   navn: StedsNavn[];
 };
 
-export interface VEG {
+export type Veg = {
   ADRESSEKODE: string;
   FYLKESNAVN: string;
   FYLKESNR: string;

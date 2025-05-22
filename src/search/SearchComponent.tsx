@@ -10,26 +10,19 @@ import {
   Separator,
 } from '@kvib/react';
 import { useState } from 'react';
-import { useAddresses, usePlaceNames } from './useSearchQueries.ts';
+import { useAddresses, usePlaceNames, useRoads } from './useSearchQueries.ts';
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    data: addressData,
-    isLoading: addressLoading,
-    error: addressError,
-  } = useAddresses(searchQuery);
 
-  const {
-    data: placeNameData,
-    isLoading: placeNameLoading,
-    error: placeNameError,
-  } = usePlaceNames(searchQuery, currentPage);
+  const { addressData, addressLoading, addressError } = useAddresses(searchQuery);
+  const { placeNameData, placeNameLoading, placeNameError } = usePlaceNames(searchQuery, currentPage);
+  const { roadsData, roadsLoading, roadsError } = useRoads(searchQuery);
 
-  const isLoading = addressLoading || placeNameLoading;
-  const hasError = addressError || placeNameError;
+  const isLoading = addressLoading || placeNameLoading || roadsLoading
+  const hasError = addressError || placeNameError || roadsError
 
   const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
   const treffPerSide = 15;
@@ -42,6 +35,8 @@ export const SearchComponent = () => {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
+
+  console.log('Roadsdata: ', roadsData)
 
   return (
     <>
@@ -57,7 +52,7 @@ export const SearchComponent = () => {
         {isLoading && <p>Laster...</p>}
         {hasError && <p>En feil oppstod ved søk.</p>}
 
-        {/*Resultater fra søk bør kanskje i egen fil etter hvert*/}
+        {/*Resultater fra søk bør kanskje i egen fil */}
         {placeNameData && (
           <>
             <List listStyleType="none">
@@ -88,6 +83,12 @@ export const SearchComponent = () => {
             </PaginationRoot>
           </>
         )}
+
+        <Box>
+          <Heading>{roadsData?.ADRESSEKODE}</Heading>
+        </Box>
+
+
 
         {/*Hvis det er vegnavn som dukker opp skal det under "VEGER"?? HMM. skjønner ikke helt */}
         {/*Eiendommer, også fra adressesøk? hmmm*/}
