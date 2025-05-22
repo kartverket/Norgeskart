@@ -10,22 +10,15 @@ import {
   Separator,
 } from '@kvib/react';
 import { useState } from 'react';
-import { useAddresses, usePlaceNames, useRoads } from './useSearchQueries.ts';
+import { usePlaceNames, useProperties, useRoads } from './useSearchQueries.ts';
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { addressData, addressLoading, addressError } =
-    useAddresses(searchQuery);
-  const { placeNameData, placeNameLoading, placeNameError } = usePlaceNames(
-    searchQuery,
-    currentPage,
-  );
-  const { roadsData, roadsLoading, roadsError } = useRoads(searchQuery);
-
-  const isLoading = addressLoading || placeNameLoading || roadsLoading;
-  const hasError = addressError || placeNameError || roadsError;
+  const { placeNameData } = usePlaceNames(searchQuery, currentPage);
+  const { roadsData } = useRoads(searchQuery);
+  const { propertiesData } = useProperties(searchQuery);
 
   const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
   const treffPerSide = 15;
@@ -39,8 +32,6 @@ export const SearchComponent = () => {
     setCurrentPage(newPage);
   };
 
-  console.log('Roadsdata: ', roadsData);
-
   return (
     <>
       <Search
@@ -51,11 +42,7 @@ export const SearchComponent = () => {
         onChange={(e) => handleSearch(e.target.value)}
       />
 
-      <Box backgroundColor="white" mt="5px">
-        {isLoading && <p>Laster...</p>}
-        {hasError && <p>En feil oppstod ved søk.</p>}
-
-        {/*Resultater fra søk bør kanskje i egen fil */}
+      <Box backgroundColor="white" mt="5px" overflowY="scroll" maxH="1000px">
         {placeNameData && (
           <>
             <List listStyleType="none">
@@ -63,8 +50,8 @@ export const SearchComponent = () => {
                 STEDSNAVN
               </Heading>
               {placeNameData?.navn.map((place, index) => (
-                <Box padding="5px">
-                  <li key={index} onClick={() => console.log('Klikk!!!!')}>
+                <Box padding="5px" key={index}>
+                  <li>
                     {place.skrivemåte}, {place.navneobjekttype}{' '}
                     {place.kommuner
                       ? 'i ' + place.kommuner[0].kommunenavn
@@ -87,17 +74,36 @@ export const SearchComponent = () => {
           </>
         )}
 
-        {/*Hvis det er vegnavn som dukker opp skal det under "VEGER"?? HMM. skjønner ikke helt */}
-        {/*Eiendommer, også fra adressesøk? hmmm*/}
-
-        {/*{addressData && (*/}
-        {/*    <List listStyleType="none">*/}
-        {/*      <Heading size="md" backgroundColor="gray.100">VEG</Heading>*/}
-        {/*      {addressData?.adresser.map((address, index) => (*/}
-        {/*        <li key={index}>{address.adressenavn}, {address.kommunenavn}</li>*/}
-        {/*      ))}*/}
-        {/*    </List>*/}
-        {/*)}*/}
+        {roadsData && roadsData.length > 0 && (
+          <List listStyleType="none">
+            <Heading padding="10px" size="md" backgroundColor="gray.100">
+              VEGER
+            </Heading>
+            {roadsData?.map((road) => (
+              <Box padding="5px" key={road.ID}>
+                <li>
+                  {road.NAVN}, {road.KOMMUNENAVN}
+                </li>
+                <Separator />
+              </Box>
+            ))}
+          </List>
+        )}
+        {propertiesData && propertiesData.length > 0 && (
+          <List listStyleType="none">
+            <Heading padding="10px" size="md" backgroundColor="gray.100">
+              EIENDOMMER
+            </Heading>
+            {propertiesData?.map((property) => (
+              <Box padding="5px" key={property.ID}>
+                <li>
+                  {property.TITTEL}, {property.KOMMUNENAVN}
+                </li>
+                <Separator />
+              </Box>
+            ))}
+          </List>
+        )}
       </Box>
     </>
   );

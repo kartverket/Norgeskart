@@ -1,10 +1,10 @@
-import { HStack, Text, VStack } from '@kvib/react';
+import { Box, HStack, Text } from '@kvib/react';
 import { useEffect } from 'react';
 import { MapComponent } from './map/MapComponent.tsx';
-import { Settings } from './settings/Settings.tsx';
 import { projInit } from './projInit.ts';
-import { ErrorBoundary } from './shared/ErrorBoundary.tsx';
 import { SearchComponent } from './search/SearchComponent.tsx';
+import { Settings } from './settings/Settings.tsx';
+import { ErrorBoundary } from './shared/ErrorBoundary.tsx';
 
 function App() {
   useEffect(() => {
@@ -12,12 +12,13 @@ function App() {
   }, []);
   return (
     <HStack alignItems={'flex-start'} height={'100%'} gap={0}>
-      <VStack>
-        <Settings />
-        <SearchComponent />
-      </VStack>
+      <Settings />
       <ErrorBoundary fallback={<Text>Noe gikk veldig galt med kartet</Text>}>
         <MapComponent />
+        {/*Må fikse plassering av søk etter hvert, men gjør sånn her inntil videre*/}
+        <Box position="absolute" top="1rem" left="20rem" zIndex="10">
+          <SearchComponent />
+        </Box>
       </ErrorBoundary>
     </HStack>
   );

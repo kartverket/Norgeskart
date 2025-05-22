@@ -90,3 +90,26 @@ export type Veg = {
   TILHOERIGHET: string[];
   TITTEL: string[];
 };
+
+export type Eiendom = {
+  BRUKSNR: string;
+  FESTENR: string;
+  FYLKESNAVN: string;
+  FYLKESNR: string;
+  GARDSNR: string;
+  ID: string;
+  KOMMUNENAVN: string;
+  KOMMUNENR: string;
+  LATITUDE: string;
+  LONGITUDE: string;
+  NAVN: string;
+  OBJEKTTYPE: string;
+  SEKSJONSNR: string;
+  TILHOERIGHET: string[];
+  TITTEL: string;
+  TITTEL2: string;
+  TITTEL3: string[];
+  TITTEL4: string[];
+  VEGADRESSE: string[];
+  VEGADRESSE2: string;
+};
