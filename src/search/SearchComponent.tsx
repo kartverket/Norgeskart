@@ -16,13 +16,16 @@ export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-
-  const { addressData, addressLoading, addressError } = useAddresses(searchQuery);
-  const { placeNameData, placeNameLoading, placeNameError } = usePlaceNames(searchQuery, currentPage);
+  const { addressData, addressLoading, addressError } =
+    useAddresses(searchQuery);
+  const { placeNameData, placeNameLoading, placeNameError } = usePlaceNames(
+    searchQuery,
+    currentPage,
+  );
   const { roadsData, roadsLoading, roadsError } = useRoads(searchQuery);
 
-  const isLoading = addressLoading || placeNameLoading || roadsLoading
-  const hasError = addressError || placeNameError || roadsError
+  const isLoading = addressLoading || placeNameLoading || roadsLoading;
+  const hasError = addressError || placeNameError || roadsError;
 
   const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
   const treffPerSide = 15;
@@ -36,7 +39,7 @@ export const SearchComponent = () => {
     setCurrentPage(newPage);
   };
 
-  console.log('Roadsdata: ', roadsData)
+  console.log('Roadsdata: ', roadsData);
 
   return (
     <>
@@ -83,12 +86,6 @@ export const SearchComponent = () => {
             </PaginationRoot>
           </>
         )}
-
-        <Box>
-          <Heading>{roadsData?.ADRESSEKODE}</Heading>
-        </Box>
-
-
 
         {/*Hvis det er vegnavn som dukker opp skal det under "VEGER"?? HMM. skjønner ikke helt */}
         {/*Eiendommer, også fra adressesøk? hmmm*/}

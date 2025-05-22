@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAddresses, getPlaceNames, getRoads } from './searchApi.ts';
 
-
 export const useAddresses = (searchQuery: string) => {
   const {
     data: addressData,
@@ -30,7 +29,6 @@ export const usePlaceNames = (searchQuery: string, currentPage: number) => {
   return { placeNameData, placeNameLoading, placeNameError };
 };
 
-
 export const useRoads = (searchQuery: string) => {
   const {
     data: roadsData,
@@ -39,10 +37,8 @@ export const useRoads = (searchQuery: string) => {
   } = useQuery({
     queryKey: ['roads', searchQuery],
     queryFn: () => getRoads(searchQuery),
-    enabled: !!searchQuery
-  })
+    enabled: !!searchQuery,
+  });
 
-  return { roadsData, roadsLoading, roadsError}
-}
-
-
+  return { roadsData, roadsLoading, roadsError };
+};

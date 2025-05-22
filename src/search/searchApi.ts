@@ -1,6 +1,7 @@
 import {
   AdresseApiResponse,
-  StedsnavnApiResponse, Veg,
+  StedsnavnApiResponse,
+  Veg,
 } from '../types/searchTypes.ts';
 
 //Skjønner ikke helt hva denne url'en brukes til enda.
@@ -25,11 +26,10 @@ export const getPlaceNames = async (
   return res.json();
 };
 
-
-export const getRoads = async(query: string ): Promise<Veg> => {
+export const getRoads = async (query: string): Promise<Veg> => {
   const res = await fetch(
-    `https://testapi.norgeskart.no/v1/matrikkel/veg/${query}`
+    `https://testapi.norgeskart.no/v1/matrikkel/veg/${query}`,
   );
   if (!res.ok) throw new Error('Feil ved henting av veg');
   return res.json();
-}
+};

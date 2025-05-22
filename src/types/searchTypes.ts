@@ -89,4 +89,4 @@ export type Veg = {
   OBJEKTTYPE: string;
   TILHOERIGHET: string[];
   TITTEL: string[];
-}
+};
