@@ -1,0 +1,20 @@
+.ol-scale-line {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+}
+
+.ol-scale-line-inner {
+  font-size: 16px;
+}
+
+.ol-mouse-position {
+  position: absolute;
+  font-size: 16px;
+
+  top: 96%;
+  right: 2%;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+}
