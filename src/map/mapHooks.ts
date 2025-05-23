@@ -1,6 +1,8 @@
 import { useAtom, useAtomValue } from 'jotai';
 import { View } from 'ol';
 import Draw from 'ol/interaction/Draw.js';
+import Modify from 'ol/interaction/Modify';
+import Snap from 'ol/interaction/Snap';
 import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
 import { get as getProjection, transform } from 'ol/proj';
@@ -10,7 +12,9 @@ import {
   drawAtom,
   drawEnabledAtom,
   mapAtom,
+  modifyAtom,
   ProjectionIdentifier,
+  snapAtom,
 } from './atoms';
 import { BackgroundLayer } from './layers';
 
@@ -34,6 +38,8 @@ const useMap = () => {
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
   const [draw, setDraw] = useAtom(drawAtom);
+  const [snap, setSnap] = useAtom(snapAtom);
+  const [modify, setModify] = useAtom(modifyAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
 
   const setBackgroundLayer = (layerName: BackgroundLayer) => {
@@ -83,11 +89,24 @@ const useMapSettings = () => {
   };
 
   const toggleDrawEnabled = () => {
-    if (draw) {
-      map.removeInteraction(draw);
-      setDraw(null);
+    if (drawEnabled) {
+      if (draw) {
+        map.removeInteraction(draw);
+        setDraw(null);
+      }
+
+      if (snap) {
+        map.removeInteraction(snap);
+        setSnap(null);
+      }
+
+      if (modify) {
+        map.removeInteraction(modify);
+        setModify(null);
+      }
       return;
     }
+
     const drawLayer = map
       .getLayers()
       .getArray()
@@ -99,6 +118,19 @@ const useMapSettings = () => {
       source: drawLayer.getSource() as VectorSource,
       type: 'Polygon',
     });
+
+    const newSnap = new Snap({
+      source: drawLayer.getSource() as VectorSource,
+    });
+    const newModify = new Modify({
+      source: drawLayer.getSource() as VectorSource,
+    });
+
+    map.addInteraction(newModify);
+    setModify(newModify);
+
+    map.addInteraction(newSnap);
+    setSnap(newSnap);
 
     map.addInteraction(newDraw);
     setDraw(newDraw);

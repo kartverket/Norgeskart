@@ -4,6 +4,8 @@ import MousePosition from 'ol/control/MousePosition.js';
 import ScaleLine from 'ol/control/ScaleLine.js';
 import { createStringXY } from 'ol/coordinate.js';
 import Draw from 'ol/interaction/Draw';
+import Snap from 'ol/interaction/Snap.js';
+import Modify from 'ol/interaction/Modify.js';
 import LayerGroup from 'ol/layer/Group';
 import Map from 'ol/Map';
 import { get as getProjection, Projection } from 'ol/proj';
@@ -58,6 +60,8 @@ export const mapAtom = atom<Map>(() => {
 });
 
 export const drawAtom = atom<Draw | null>(null);
+export const snapAtom = atom<Snap | null>(null);
+export const modifyAtom = atom<Modify | null>(null);
 
 export const drawEnabledAtom = atom<boolean>((get) => {
   const draw = get(drawAtom);
