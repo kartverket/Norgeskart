@@ -1,7 +1,12 @@
 import { Search } from '@kvib/react';
 import { useState } from 'react';
 import { SearchResults } from './SearchResults.tsx';
-import { usePlaceNames, useProperties, useRoads } from './useSearchQueries.ts';
+import {
+  useAddresses,
+  usePlaceNames,
+  useProperties,
+  useRoads,
+} from './useSearchQueries.ts';
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,6 +15,7 @@ export const SearchComponent = () => {
   const { placeNameData } = usePlaceNames(searchQuery, currentPage);
   const { roadsData } = useRoads(searchQuery);
   const { propertiesData } = useProperties(searchQuery);
+  const { addressData } = useAddresses(searchQuery);
 
   const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
   const resultsPerPage = 15;
@@ -26,17 +32,18 @@ export const SearchComponent = () => {
   return (
     <>
       <Search
+        width="430px"
         backgroundColor="white"
         placeholder="Søk i Norgeskart"
         size="lg"
         value={searchQuery}
         onChange={(e) => handleSearch(e.target.value)}
       />
-
       <SearchResults
         placeNameData={placeNameData}
         roadsData={roadsData}
         propertiesData={propertiesData}
+        addressData={addressData}
         currentPage={currentPage}
         totalResults={totalResults}
         resultsPerPage={resultsPerPage}

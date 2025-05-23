@@ -5,12 +5,11 @@ import {
   Veg,
 } from '../types/searchTypes.ts';
 
-//Skjønner ikke helt hva denne url'en brukes til enda.
 export const getAddresses = async (
   query: string,
 ): Promise<AdresseApiResponse> => {
   const res = await fetch(
-    `https://ws.geonorge.no/adresser/v1/sok?sok=${query}`,
+    `https://ws.geonorge.no/adresser/v1/sok?sok=${query}&treffPerSide=10`,
   );
   if (!res.ok) throw new Error('Feil ved henting av adresser');
   return res.json();

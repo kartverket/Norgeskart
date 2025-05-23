@@ -8,12 +8,18 @@ import {
   PaginationRoot,
   Separator,
 } from '@kvib/react';
-import { Eiendom, StedsnavnApiResponse, Veg } from '../types/searchTypes.ts';
+import {
+  AdresseApiResponse,
+  Eiendom,
+  StedsnavnApiResponse,
+  Veg,
+} from '../types/searchTypes.ts';
 
 interface SearchResultsProps {
   placeNameData?: StedsnavnApiResponse;
   roadsData?: Veg[];
   propertiesData?: Eiendom[];
+  addressData?: AdresseApiResponse;
   currentPage: number;
   totalResults: number;
   resultsPerPage: number;
@@ -24,13 +30,20 @@ export const SearchResults = ({
   placeNameData,
   roadsData,
   propertiesData,
+  addressData,
   currentPage,
   totalResults,
   resultsPerPage,
   handlePageChange,
 }: SearchResultsProps) => {
   return (
-    <Box backgroundColor="white" mt="5px" overflowY="scroll" maxH="1000px">
+    <Box
+      backgroundColor="white"
+      mt="5px"
+      overflowY="scroll"
+      maxH="1000px"
+      width="450px"
+    >
       {placeNameData && (
         <>
           <List listStyleType="none">
@@ -47,6 +60,7 @@ export const SearchResults = ({
               </Box>
             ))}
           </List>
+          {/*Pagineringen er ikke helt bra*/}
           <PaginationRoot
             count={totalResults}
             pageSize={resultsPerPage}
@@ -61,7 +75,7 @@ export const SearchResults = ({
       )}
 
       {roadsData && roadsData.length > 0 && (
-        <List listStyleType="none">
+        <List listStyleType="none" mt="5px">
           <Heading padding="10px" size="md" backgroundColor="gray.100">
             VEGER
           </Heading>
@@ -76,7 +90,7 @@ export const SearchResults = ({
         </List>
       )}
       {propertiesData && propertiesData.length > 0 && (
-        <List listStyleType="none">
+        <List listStyleType="none" mt="5px">
           <Heading padding="10px" size="md" backgroundColor="gray.100">
             EIENDOMMER
           </Heading>
@@ -86,6 +100,20 @@ export const SearchResults = ({
                 {property.TITTEL}, {property.KOMMUNENAVN}
               </li>
               <Separator />
+            </Box>
+          ))}
+        </List>
+      )}
+      {addressData && (
+        <List listStyleType="none" mt="5px">
+          <Heading padding="10px" size="md" backgroundColor="gray.100">
+            ADRESSER
+          </Heading>
+          {addressData.adresser.map((address) => (
+            <Box padding="5px" key={address.adressekode}>
+              <li>
+                {address.adressenavn}, {address.adressetekst}
+              </li>
             </Box>
           ))}
         </List>
