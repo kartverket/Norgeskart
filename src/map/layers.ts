@@ -37,8 +37,12 @@ const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
   return { projection, projectionExtent, resolutions, matrixIds, matrixSet };
 };
 
+type LayerFunction =
+  | ((_: ProjectionIdentifier) => BaseLayer)
+  | (() => BaseLayer);
+
 export type MapLayer = {
-  getLayer: (projectionId: ProjectionIdentifier) => BaseLayer;
+  getLayer: LayerFunction;
   id: string;
 };
 
@@ -152,8 +156,9 @@ const mapLayers: MapLayers = {
 
   drawLayer: {
     id: 'drawLayer',
-    getLayer: (_: ProjectionIdentifier) => {
+    getLayer: () => {
       return new VectorLayer({
+        zIndex: 2,
         source: new VectorSource({ wrapX: false }),
         properties: { id: 'drawLayer' },
       });

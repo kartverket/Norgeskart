@@ -3,11 +3,10 @@ import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition.js';
 import ScaleLine from 'ol/control/ScaleLine.js';
 import { createStringXY } from 'ol/coordinate.js';
+import Draw from 'ol/interaction/Draw';
 import LayerGroup from 'ol/layer/Group';
-import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { get as getProjection, Projection } from 'ol/proj';
-import VectorSource from 'ol/source/Vector';
 import { BackgroundLayer, mapLayers } from './layers';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
@@ -49,11 +48,18 @@ export const mapAtom = atom<Map>(() => {
       properties: { id: 'backgroundLayers' },
     }),
   );
-  map.addLayer(mapLayers.drawLayer.getLayer(INITIAL_PROJECTION));  
+  map.addLayer(mapLayers.drawLayer.getLayer(INITIAL_PROJECTION));
 
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
   map.addControl(new MousePosition({ coordinateFormat: createStringXY(2) }));
 
   return map;
+});
+
+export const drawAtom = atom<Draw | null>(null);
+
+export const drawEnabledAtom = atom<boolean>((get) => {
+  const draw = get(drawAtom);
+  return draw !== null;
 });

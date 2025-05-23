@@ -1,10 +1,20 @@
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { View } from 'ol';
+import Draw from 'ol/interaction/Draw.js';
 import LayerGroup from 'ol/layer/Group';
+import VectorLayer from 'ol/layer/Vector';
 import { get as getProjection, transform } from 'ol/proj';
+import VectorSource from 'ol/source/Vector';
 import { useRef } from 'react';
-import { mapAtom, ProjectionIdentifier } from './atoms';
+import {
+  drawAtom,
+  drawEnabledAtom,
+  mapAtom,
+  ProjectionIdentifier,
+} from './atoms';
 import { BackgroundLayer } from './layers';
+
+export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle';
 
 const useMap = () => {
   const mapElement = useRef<HTMLDivElement | null>(null);
@@ -23,6 +33,8 @@ const useMap = () => {
 
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
+  const [draw, setDraw] = useAtom(drawAtom);
+  const drawEnabled = useAtomValue(drawEnabledAtom);
 
   const setBackgroundLayer = (layerName: BackgroundLayer) => {
     const backgroundLayers = map
@@ -70,7 +82,55 @@ const useMapSettings = () => {
     map.setView(newView);
   };
 
-  return { setBackgroundLayer, setProjection };
+  const toggleDrawEnabled = () => {
+    if (draw) {
+      map.removeInteraction(draw);
+      setDraw(null);
+      return;
+    }
+    const drawLayer = map
+      .getLayers()
+      .getArray()
+      .filter(
+        (layer) => layer.get('id') === 'drawLayer',
+      )[0] as unknown as VectorLayer;
+
+    const newDraw = new Draw({
+      source: drawLayer.getSource() as VectorSource,
+      type: 'Polygon',
+    });
+
+    map.addInteraction(newDraw);
+    setDraw(newDraw);
+  };
+
+  const setDrawType = (type: DrawType) => {
+    if (draw) {
+      map.removeInteraction(draw);
+      const drawLayer = map
+        .getLayers()
+        .getArray()
+        .filter(
+          (layer) => layer.get('id') === 'drawLayer',
+        )[0] as unknown as VectorLayer;
+
+      const newDraw = new Draw({
+        source: drawLayer.getSource() as VectorSource,
+        type: type,
+      });
+
+      map.addInteraction(newDraw);
+      setDraw(newDraw);
+    }
+  };
+
+  return {
+    drawEnabled,
+    setDrawType,
+    toggleDrawEnabled,
+    setBackgroundLayer,
+    setProjection,
+  };
 };
 
 export { useMap, useMapSettings };
