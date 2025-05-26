@@ -103,7 +103,6 @@ export const SearchResults = ({
           ))}
         </List>
       )}
-
       {addressData && addressData.adresser.length > 0 && (
         <List listStyleType="none" mt="5px">
           <Heading padding="10px" size="md" backgroundColor="gray.100">
