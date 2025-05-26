@@ -7,10 +7,12 @@ export type SearchResultBase = {
   lon: number;
 };
 
-export type SearchResult =
-  | (SearchResultBase & { property: Eiendom })
-  | { road: Veg }
-  | { locationName: StedsNavn }
-  | { address: Adresse };
+export type SearchResult = SearchResultBase &
+  (
+    | { property: Eiendom }
+    | { road: Veg }
+    | { locationName: StedsNavn }
+    | { address: Adresse }
+  );
 
 export const selectedSearchResultAtom = atom<SearchResult | null>(null);
