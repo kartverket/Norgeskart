@@ -16,10 +16,10 @@ function App() {
       <ErrorBoundary fallback={<Text>Noe gikk veldig galt med kartet</Text>}>
         <MapComponent />
         {/*Må fikse plassering av søk etter hvert, men gjør sånn her inntil videre*/}
-        <Box position="absolute" top="1rem" left="20rem" zIndex="10">
-          <SearchComponent />
-        </Box>
       </ErrorBoundary>
+      <Box position="absolute" top="1rem" left="20rem" zIndex="10">
+        <SearchComponent />
+      </Box>
     </HStack>
   );
 }

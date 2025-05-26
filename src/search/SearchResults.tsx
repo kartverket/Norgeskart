@@ -2,6 +2,7 @@ import {
   Box,
   Heading,
   List,
+  ListItem,
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
@@ -51,13 +52,11 @@ export const SearchResults = ({
               STEDSNAVN
             </Heading>
             {placeNameData.navn.map((place, index) => (
-              <Box padding="5px" key={index}>
-                <li>
-                  {place.skrivemåte}, {place.navneobjekttype}{' '}
-                  {place.kommuner ? 'i ' + place.kommuner[0].kommunenavn : null}
-                  <Separator />
-                </li>
-              </Box>
+              <ListItem padding="5px" key={index}>
+                {place.skrivemåte}, {place.navneobjekttype}{' '}
+                {place.kommuner ? 'i ' + place.kommuner[0].kommunenavn : null}
+                <Separator />
+              </ListItem>
             ))}
           </List>
           {/*Pagineringen er ikke helt bra*/}
@@ -80,12 +79,10 @@ export const SearchResults = ({
             VEGER
           </Heading>
           {roadsData.map((road, index) => (
-            <Box padding="5px" key={index}>
-              <li>
-                {road.NAVN}, {road.KOMMUNENAVN}
-              </li>
+            <ListItem padding="5px" key={index}>
+              {road.NAVN}, {road.KOMMUNENAVN}
               <Separator />
-            </Box>
+            </ListItem>
           ))}
         </List>
       )}
@@ -95,11 +92,9 @@ export const SearchResults = ({
             EIENDOMMER
           </Heading>
           {propertiesData.map((property, index) => (
-            <Box padding="5px" key={index}>
-              <li>
-                {property.TITTEL}, {property.KOMMUNENAVN}
-              </li>
-            </Box>
+            <ListItem padding="5px" key={index}>
+              {property.TITTEL}, {property.KOMMUNENAVN}
+            </ListItem>
           ))}
         </List>
       )}
@@ -109,11 +104,9 @@ export const SearchResults = ({
             ADRESSER
           </Heading>
           {addressData.adresser.map((address, index) => (
-            <Box padding="5px" key={index}>
-              <li>
-                {address.adressenavn}, {address.adressetekst}
-              </li>
-            </Box>
+            <ListItem padding="5px" key={index}>
+              {address.adressenavn}, {address.adressetekst}
+            </ListItem>
           ))}
         </List>
       )}
