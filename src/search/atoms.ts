@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { Adresse, Eiendom, StedsNavn, Veg } from '../types/searchTypes.ts';
+import { Address, PlaceName, Property, Road } from '../types/searchTypes.ts';
 
 export type SearchResultBase = {
   navn: string;
@@ -9,10 +9,10 @@ export type SearchResultBase = {
 
 export type SearchResult = SearchResultBase &
   (
-    | { property: Eiendom }
-    | { road: Veg }
-    | { locationName: StedsNavn }
-    | { address: Adresse }
+    | { property: Property }
+    | { road: Road }
+    | { locationName: PlaceName }
+    | { address: Address }
   );
 
 export const selectedSearchResultAtom = atom<SearchResult | null>(null);

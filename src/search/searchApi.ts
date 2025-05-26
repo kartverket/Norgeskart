@@ -1,13 +1,13 @@
 import {
-  AdresseApiResponse,
-  Eiendom,
-  StedsnavnApiResponse,
-  Veg,
+  AddressApiResponse,
+  PlaceNameApiResponse,
+  Property,
+  Road,
 } from '../types/searchTypes.ts';
 
 export const getAddresses = async (
   query: string,
-): Promise<AdresseApiResponse> => {
+): Promise<AddressApiResponse> => {
   const res = await fetch(
     `https://ws.geonorge.no/adresser/v1/sok?sok=${query}&treffPerSide=10`,
   );
@@ -18,7 +18,7 @@ export const getAddresses = async (
 export const getPlaceNames = async (
   query: string,
   page: number,
-): Promise<StedsnavnApiResponse> => {
+): Promise<PlaceNameApiResponse> => {
   const res = await fetch(
     `https://ws.geonorge.no/stedsnavn/v1/navn?sok=${query}*&treffPerSide=15&side=${page}`,
   );
@@ -26,7 +26,7 @@ export const getPlaceNames = async (
   return res.json();
 };
 
-export const getRoads = async (query: string): Promise<Veg[]> => {
+export const getRoads = async (query: string): Promise<Road[]> => {
   const res = await fetch(
     `https://testapi.norgeskart.no/v1/matrikkel/veg/${query}`,
   );
@@ -34,7 +34,7 @@ export const getRoads = async (query: string): Promise<Veg[]> => {
   return res.json();
 };
 
-export const getProperties = async (query: string): Promise<Eiendom[]> => {
+export const getProperties = async (query: string): Promise<Property[]> => {
   const res = await fetch(
     `https://testapi.norgeskart.no/v1/matrikkel/eie/${query}`,
   );

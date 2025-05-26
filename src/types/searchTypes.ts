@@ -10,7 +10,7 @@ export type RepresentasjonsPunktNorsk = {
   nord: number;
 };
 
-export type Adresse = {
+export type Address = {
   adressekode: number;
   adressenavn: string;
   adressetekst: string;
@@ -32,24 +32,24 @@ export type Adresse = {
   oppdateringsdato: string;
 };
 
-export type AdresseApiResponse = {
+export type AddressApiResponse = {
   metadata: Metadata;
-  adresser: Adresse[];
+  adresser: Address[];
 };
 
-export type Fylke = {
+export type County = {
   fylkesnavn: string;
   fylkesnummer: string;
 };
 
-export type Kommune = {
+export type Municipality = {
   kommunenavn: string;
   kommunenummer: string;
 };
 
-export type StedsNavn = {
-  fylker: Fylke[];
-  kommuner: Kommune[];
+export type PlaceName = {
+  fylker: County[];
+  kommuner: Municipality[];
   navneobjekttype: string;
   representasjonspunkt: RepresentasjonsPunktNorsk;
   skrivemåte: string;
@@ -69,12 +69,12 @@ export type Metadata = {
   viserTil: number;
 };
 
-export type StedsnavnApiResponse = {
+export type PlaceNameApiResponse = {
   metadata: Metadata;
-  navn: StedsNavn[];
+  navn: PlaceName[];
 };
 
-export type Veg = {
+export type Road = {
   ADRESSEKODE: string;
   FYLKESNAVN: string;
   FYLKESNR: string;
@@ -91,7 +91,7 @@ export type Veg = {
   TITTEL: string[];
 };
 
-export type Eiendom = {
+export type Property = {
   BRUKSNR: string;
   FESTENR: string;
   FYLKESNAVN: string;

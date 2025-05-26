@@ -10,17 +10,17 @@ import {
   Separator,
 } from '@kvib/react';
 import {
-  AdresseApiResponse,
-  Eiendom,
-  StedsnavnApiResponse,
-  Veg,
+  AddressApiResponse,
+  PlaceNameApiResponse,
+  Property,
+  Road,
 } from '../types/searchTypes.ts';
 
 interface SearchResultsProps {
-  placeNameData?: StedsnavnApiResponse;
-  roadsData?: Veg[];
-  propertiesData?: Eiendom[];
-  addressData?: AdresseApiResponse;
+  placeNameData?: PlaceNameApiResponse;
+  roadsData?: Road[];
+  propertiesData?: Property[];
+  addressData?: AddressApiResponse;
   currentPage: number;
   totalResults: number;
   resultsPerPage: number;
