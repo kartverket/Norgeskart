@@ -1,7 +1,18 @@
 import {
   Box,
   Button,
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerContent,
+  ColorPickerControl,
+  ColorPickerEyeDropper,
+  ColorPickerInput,
+  ColorPickerLabel,
+  ColorPickerSliders,
+  ColorPickerTrigger,
   createListCollection,
+  HStack,
+  parseColor,
   SelectContent,
   SelectItem,
   SelectLabel,
@@ -10,6 +21,9 @@ import {
   SelectValueText,
   VStack,
 } from '@kvib/react';
+import { Fill, Stroke } from 'ol/style';
+import Style from 'ol/style/Style';
+import CircleStyle from 'ol/style/Circle';
 import { DrawType, useMapSettings } from './mapHooks';
 
 const drawTypeCollection: { value: DrawType; label: string }[] = [
@@ -20,7 +34,11 @@ const drawTypeCollection: { value: DrawType; label: string }[] = [
 ];
 
 export const MapOverlay = () => {
-  const { drawEnabled, setDrawType, toggleDrawEnabled } = useMapSettings();
+  const { drawEnabled, drawStyle, setDrawType, toggleDrawEnabled, setDrawStyle } =
+    useMapSettings();
+const styleColorString = drawStyle.getFill()?.getColor()?.toString()
+const fillColor = parseColor(styleColorString? styleColorString : '#000000');
+   
   return (
     <>
       <Box position="absolute" bottom="16px" left="16px" zIndex={10}>
@@ -50,27 +68,69 @@ export const MapOverlay = () => {
             {drawEnabled ? 'Ferdig å tegne' : 'Tegn på kartet'}
           </Button>
           {drawEnabled && (
-            <SelectRoot
-              collection={createListCollection({
-                items: drawTypeCollection,
-              })}
-            >
-              <SelectLabel>Tegneverktøy:</SelectLabel>
-              <SelectTrigger>
-                <SelectValueText placeholder={'Velg bakgrunnskart'} />
-              </SelectTrigger>
-              <SelectContent>
-                {drawTypeCollection.map((item) => (
-                  <SelectItem
-                    key={item.value}
-                    item={item.value}
-                    onClick={() => setDrawType(item.value as DrawType)}
-                  >
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </SelectRoot>
+            <>
+              <SelectRoot
+                collection={createListCollection({
+                  items: drawTypeCollection,
+                })}
+              >
+                <SelectLabel>Tegneverktøy:</SelectLabel>
+                <SelectTrigger>
+                  <SelectValueText placeholder={'Velg bakgrunnskart'} />
+                </SelectTrigger>
+                <SelectContent>
+                  {drawTypeCollection.map((item) => (
+                    <SelectItem
+                      key={item.value}
+                      item={item.value}
+                      onClick={() => setDrawType(item.value as DrawType)}
+                    >
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+              <ColorPicker
+                value={fillColor}
+                defaultValue={fillColor}             
+                onValueChange={(value) => {
+                  value.value;
+                  const style = new Style({
+                    image: new CircleStyle({
+                      radius: 7,
+                      fill: new Fill({
+                        color: value.valueAsString,
+                      }),
+                      stroke: new Stroke({
+                        color: value.valueAsString,
+                        width: 2,
+                      }),
+                    }),
+                    stroke: new Stroke({
+                      color: value.valueAsString,
+                      width: 2,
+                    }),
+                    fill: new Fill({
+                      color: value.valueAsString,
+                    }),
+                  });
+                  setDrawStyle(style);
+                }}
+              >
+                <ColorPickerLabel>Velg farge</ColorPickerLabel>
+                <ColorPickerControl>
+                  <ColorPickerInput />
+                  <ColorPickerTrigger />
+                </ColorPickerControl>
+                <ColorPickerContent>
+                  <ColorPickerArea />
+                  <HStack>
+                    <ColorPickerEyeDropper />
+                    <ColorPickerSliders />
+                  </HStack>
+                </ColorPickerContent>
+              </ColorPicker>
+            </>
           )}
         </VStack>
       </Box>

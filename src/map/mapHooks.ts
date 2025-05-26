@@ -1,16 +1,19 @@
 import { useAtom, useAtomValue } from 'jotai';
 import { View } from 'ol';
-import Draw from 'ol/interaction/Draw.js';
+import BaseEvent from 'ol/events/Event';
+import Draw, { DrawEvent } from 'ol/interaction/Draw.js';
 import Modify from 'ol/interaction/Modify';
 import Snap from 'ol/interaction/Snap';
 import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
 import { get as getProjection, transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
+import Style from 'ol/style/Style';
 import { useRef } from 'react';
 import {
   drawAtom,
   drawEnabledAtom,
+  drawStyleAtom,
   mapAtom,
   modifyAtom,
   ProjectionIdentifier,
@@ -38,6 +41,7 @@ const useMap = () => {
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
   const [draw, setDraw] = useAtom(drawAtom);
+  const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
   const [snap, setSnap] = useAtom(snapAtom);
   const [modify, setModify] = useAtom(modifyAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
@@ -117,7 +121,10 @@ const useMapSettings = () => {
     const newDraw = new Draw({
       source: drawLayer.getSource() as VectorSource,
       type: 'Polygon',
+      style: drawStyle,
     });
+
+    newDraw.getOverlay().setStyle(drawStyle);
 
     const newSnap = new Snap({
       source: drawLayer.getSource() as VectorSource,
@@ -134,6 +141,8 @@ const useMapSettings = () => {
 
     map.addInteraction(newDraw);
     setDraw(newDraw);
+
+    newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
   };
 
   const setDrawType = (type: DrawType) => {
@@ -152,13 +161,38 @@ const useMapSettings = () => {
       });
 
       map.addInteraction(newDraw);
+
+      if (drawStyle) {
+        newDraw.getOverlay().setStyle(drawStyle);
+        newDraw.addEventListener('drawend', (event) =>
+          drawEnd(event, drawStyle),
+        );
+      }
       setDraw(newDraw);
+    }
+  };
+
+  const drawEnd = (event: BaseEvent | Event, style: Style) => {
+    const eventFeature = (event as any as DrawEvent).feature;
+    eventFeature.setStyle(style);
+  };
+
+  const setDrawStyle = (style: Style) => {
+    if (draw) {
+      draw.getOverlay().setStyle(style);
+      draw.getListeners('drawend')?.forEach((listener) => {
+        draw.removeEventListener('drawend', listener);
+      });
+      draw.addEventListener('drawend', (event) => drawEnd(event, style));
+      setDrawStyleAtom(style);
     }
   };
 
   return {
     drawEnabled,
+    drawStyle,
     setDrawType,
+    setDrawStyle,
     toggleDrawEnabled,
     setBackgroundLayer,
     setProjection,
