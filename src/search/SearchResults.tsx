@@ -51,10 +51,7 @@ export const SearchResults = ({
               STEDSNAVN
             </Heading>
             {placeNameData.navn.map((place, index) => (
-              <Box
-                padding="5px"
-                key={index}
-              >
+              <Box padding="5px" key={index}>
                 <li>
                   {place.skrivemåte}, {place.navneobjekttype}{' '}
                   {place.kommuner ? 'i ' + place.kommuner[0].kommunenavn : null}
@@ -97,8 +94,8 @@ export const SearchResults = ({
           <Heading padding="10px" size="md" backgroundColor="gray.100">
             EIENDOMMER
           </Heading>
-          {propertiesData.map((property) => (
-            <Box padding="5px" key={property.ID}>
+          {propertiesData.map((property, index) => (
+            <Box padding="5px" key={index}>
               <li>
                 {property.TITTEL}, {property.KOMMUNENAVN}
               </li>
@@ -106,6 +103,7 @@ export const SearchResults = ({
           ))}
         </List>
       )}
+
       {addressData && addressData.adresser.length > 0 && (
         <List listStyleType="none" mt="5px">
           <Heading padding="10px" size="md" backgroundColor="gray.100">
