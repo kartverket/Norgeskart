@@ -1,5 +1,7 @@
 import { Search } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useState } from 'react';
+import { selectedSearchResultAtom } from './atoms.ts';
 import { SearchResults } from './SearchResults.tsx';
 import {
   useAddresses,
@@ -28,6 +30,10 @@ export const SearchComponent = () => {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
+
+  const selected = useAtomValue(selectedSearchResultAtom);
+
+  console.log(selected);
 
   return (
     <>
