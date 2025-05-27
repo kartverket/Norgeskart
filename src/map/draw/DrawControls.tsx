@@ -61,7 +61,6 @@ export const DrawControls = () => {
         value={fillColor}
         defaultValue={fillColor}
         onValueChange={(value) => {
-          value.value;
           const style = new Style({
             image: new CircleStyle({
               radius: 7,

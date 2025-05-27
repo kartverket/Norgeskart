@@ -173,7 +173,7 @@ const useMapSettings = () => {
   };
 
   const drawEnd = (event: BaseEvent | Event, style: Style) => {
-    const eventFeature = (event as any as DrawEvent).feature;
+    const eventFeature = (event as unknown as DrawEvent).feature;
     eventFeature.setStyle(style);
   };
 
