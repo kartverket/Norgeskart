@@ -1,5 +1,6 @@
 import { Search } from '@kvib/react';
 import { useState } from 'react';
+import { SearchResult, SearchResultType } from './atoms.ts';
 import { SearchResults } from './SearchResults.tsx';
 import {
   useAddresses,
@@ -29,6 +30,45 @@ export const SearchComponent = () => {
     setCurrentPage(newPage);
   };
 
+  const combinedResults: SearchResult[] = [
+    ...(placeNameData?.navn.map(
+      (place): SearchResult => ({
+        type: SearchResultType.Place,
+        name: place.skrivemåte,
+        lat: place.representasjonspunkt.øst,
+        lon: place.representasjonspunkt.nord,
+        place: place,
+      }),
+    ) || []),
+    ...(roadsData?.map(
+      (road): SearchResult => ({
+        type: SearchResultType.Road,
+        name: road.NAVN,
+        lat: parseFloat(road.LATITUDE),
+        lon: parseFloat(road.LONGITUDE),
+        road: road,
+      }),
+    ) || []),
+    ...(propertiesData?.map(
+      (property): SearchResult => ({
+        type: SearchResultType.Property,
+        name: property.NAVN,
+        lat: parseFloat(property.LATITUDE),
+        lon: parseFloat(property.LONGITUDE),
+        property: property,
+      }),
+    ) || []),
+    ...(addressData?.adresser.map(
+      (address): SearchResult => ({
+        type: SearchResultType.Address,
+        name: address.adressetekst,
+        lat: address.representasjonspunkt.lat,
+        lon: address.representasjonspunkt.lon,
+        address: address,
+      }),
+    ) || []),
+  ];
+
   return (
     <>
       <Search
@@ -40,10 +80,7 @@ export const SearchComponent = () => {
         onChange={(e) => handleSearch(e.target.value)}
       />
       <SearchResults
-        placeNameData={placeNameData}
-        roadsData={roadsData}
-        propertiesData={propertiesData}
-        addressData={addressData}
+        results={combinedResults}
         currentPage={currentPage}
         totalResults={totalResults}
         resultsPerPage={resultsPerPage}
