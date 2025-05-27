@@ -6,7 +6,6 @@ interface SearchResultsProps {
   currentPage: number;
   totalResults: number;
   resultsPerPage: number;
-  handlePageChange: (newPage: number) => void;
 }
 
 export const SearchResults = ({ results }: SearchResultsProps) => {

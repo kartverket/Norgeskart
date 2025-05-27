@@ -21,15 +21,6 @@ export const SearchComponent = () => {
   const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
   const resultsPerPage = 15;
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    setCurrentPage(1);
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
-
   const combinedResults: SearchResult[] = [
     ...(placeNameData?.navn.map(
       (place): SearchResult => ({
@@ -77,14 +68,13 @@ export const SearchComponent = () => {
         placeholder="Søk i Norgeskart"
         size="lg"
         value={searchQuery}
-        onChange={(e) => handleSearch(e.target.value)}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
       <SearchResults
         results={combinedResults}
         currentPage={currentPage}
         totalResults={totalResults}
         resultsPerPage={resultsPerPage}
-        handlePageChange={handlePageChange}
       />
     </>
   );
