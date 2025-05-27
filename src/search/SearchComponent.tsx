@@ -18,6 +18,7 @@ export const SearchComponent = () => {
   const { propertiesData } = useProperties(searchQuery);
   const { addressData } = useAddresses(searchQuery);
 
+  //Til pagineringen som skal med etter hvert. kanskje
   const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
   const resultsPerPage = 15;
 
