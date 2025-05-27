@@ -11,7 +11,7 @@ import {
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = 1;
 
   const { placeNameData } = usePlaceNames(searchQuery, currentPage);
   const { roadsData } = useRoads(searchQuery);
