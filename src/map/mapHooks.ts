@@ -13,6 +13,8 @@ import { useRef } from 'react';
 import {
   drawAtom,
   drawEnabledAtom,
+  drawFillColorAtom,
+  drawStrokeColorAtom,
   drawStyleAtom,
   mapAtom,
   modifyAtom,
@@ -42,6 +44,9 @@ const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
   const [draw, setDraw] = useAtom(drawAtom);
   const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
+  const drawFillColor = useAtomValue(drawFillColorAtom);
+  const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
+
   const [snap, setSnap] = useAtom(snapAtom);
   const [modify, setModify] = useAtom(modifyAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
@@ -191,6 +196,8 @@ const useMapSettings = () => {
   return {
     drawEnabled,
     drawStyle,
+    drawFillColor,
+    drawStrokeColor,
     setDrawType,
     setDrawStyle,
     toggleDrawEnabled,

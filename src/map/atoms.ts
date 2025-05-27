@@ -83,6 +83,13 @@ export const drawStyleAtom = atom<Style>(
     }),
   }),
 );
+
+export const drawFillColorAtom = atom<string>(
+  (get) => get(drawStyleAtom).getFill()?.getColor()?.toString() || '#ffffff',
+);
+export const drawStrokeColorAtom = atom<string>(
+  (get) => get(drawStyleAtom).getStroke()?.getColor()?.toString() || '#ffffff',
+);
 export const snapAtom = atom<Snap | null>(null);
 export const modifyAtom = atom<Modify | null>(null);
 
