@@ -47,7 +47,6 @@ const useMapSettings = () => {
   const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
   const drawFillColor = useAtomValue(drawFillColorAtom);
   const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
-
   const [snap, setSnap] = useAtom(snapAtom);
   const [modify, setModify] = useAtom(modifyAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
@@ -205,6 +204,18 @@ const useMapSettings = () => {
     }
   };
 
+  const clearDrawing = () => {
+    const drawLayer = map
+      .getLayers()
+      .getArray()
+      .filter(
+        (layer) => layer.get('id') === 'drawLayer',
+      )[0] as unknown as VectorLayer;
+
+    const source = drawLayer.getSource() as VectorSource;
+    source.clear();
+  };
+
   return {
     drawEnabled,
     drawStyle,
@@ -214,6 +225,7 @@ const useMapSettings = () => {
     setDrawStyle,
     setDrawFillColor,
     setDrawStrokeColor,
+    clearDrawing,
     toggleDrawEnabled,
     setBackgroundLayer,
     setProjection,

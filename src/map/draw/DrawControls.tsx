@@ -1,4 +1,6 @@
 import {
+  Button,
+  ButtonGroup,
   ColorPicker,
   ColorPickerArea,
   ColorPickerContent,
@@ -11,13 +13,21 @@ import {
   createListCollection,
   HStack,
   parseColor,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverRoot,
+  PopoverTitle,
+  PopoverTrigger,
   SelectContent,
   SelectItem,
   SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  VStack,
 } from '@kvib/react';
+import { useState } from 'react';
 import { DrawType, useMapSettings } from '../mapHooks';
 
 export const DrawControls = () => {
@@ -27,7 +37,10 @@ export const DrawControls = () => {
     drawStrokeColor,
     setDrawFillColor,
     setDrawStrokeColor,
+    clearDrawing,
   } = useMapSettings();
+
+  const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
 
   const drawTypeCollection: { value: DrawType; label: string }[] = [
     { value: 'Point', label: 'Punkt' },
@@ -36,7 +49,7 @@ export const DrawControls = () => {
     { value: 'Circle', label: 'Sirkel' },
   ];
   return (
-    <>
+    <VStack>
       <SelectRoot
         collection={createListCollection({
           items: drawTypeCollection,
@@ -100,6 +113,40 @@ export const DrawControls = () => {
           </HStack>
         </ColorPickerContent>
       </ColorPicker>
-    </>
+      <ButtonGroup>
+        <PopoverRoot
+          open={clearPopoverOpen}
+          onOpenChange={(e) => setClearPopoverOpen(e.open)}
+        >
+          <PopoverTrigger asChild>
+            <Button colorPalette={'red'}>Fjern tegning</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverBody>
+              <PopoverTitle fontWeight="bold">Er du sikker?</PopoverTitle>
+
+              <Button
+                onClick={() => {
+                  setClearPopoverOpen(false);
+                  clearDrawing();
+                }}
+                colorPalette={'red'}
+              >
+                Ja
+              </Button>
+            </PopoverBody>
+          </PopoverContent>
+        </PopoverRoot>
+
+        <Button
+          onClick={() => {
+            alert('Denne gjør ingenting');
+          }}
+        >
+          Lagre
+        </Button>
+      </ButtonGroup>
+    </VStack>
   );
 };
