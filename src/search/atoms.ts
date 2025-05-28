@@ -7,29 +7,24 @@ export type SearchResultBase = {
   lon: number;
 };
 
-export enum SearchResultType {
-  Property = 'property',
-  Road = 'road',
-  Place = 'place',
-  Address = 'address',
-}
+export type SearchResultType = 'Property' | 'Road' | 'Place' | 'Address';
 
 export type SearchResult = SearchResultBase &
   (
     | {
-        type: SearchResultType.Property;
+        type: 'Property';
         property: Property;
       }
     | {
-        type: SearchResultType.Road;
+        type: 'Road';
         road: Road;
       }
     | {
-        type: SearchResultType.Place;
+        type: 'Place';
         place: PlaceName;
       }
     | {
-        type: SearchResultType.Address;
+        type: 'Address';
         address: Address;
       }
   );

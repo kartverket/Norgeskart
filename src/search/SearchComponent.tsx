@@ -1,6 +1,6 @@
 import { Search } from '@kvib/react';
 import { useState } from 'react';
-import { SearchResult, SearchResultType } from './atoms.ts';
+import { SearchResult } from './atoms.ts';
 import { SearchResults } from './SearchResults.tsx';
 import {
   useAddresses,
@@ -25,7 +25,7 @@ export const SearchComponent = () => {
   const combinedResults: SearchResult[] = [
     ...(placeNameData?.navn.map(
       (place): SearchResult => ({
-        type: SearchResultType.Place,
+        type: 'Place',
         name: place.skrivemåte,
         lat: place.representasjonspunkt.øst,
         lon: place.representasjonspunkt.nord,
@@ -34,7 +34,7 @@ export const SearchComponent = () => {
     ) || []),
     ...(roadsData?.map(
       (road): SearchResult => ({
-        type: SearchResultType.Road,
+        type: 'Road',
         name: road.NAVN,
         lat: parseFloat(road.LATITUDE),
         lon: parseFloat(road.LONGITUDE),
@@ -43,7 +43,7 @@ export const SearchComponent = () => {
     ) || []),
     ...(propertiesData?.map(
       (property): SearchResult => ({
-        type: SearchResultType.Property,
+        type: 'Property',
         name: property.NAVN,
         lat: parseFloat(property.LATITUDE),
         lon: parseFloat(property.LONGITUDE),
@@ -52,7 +52,7 @@ export const SearchComponent = () => {
     ) || []),
     ...(addressData?.adresser.map(
       (address): SearchResult => ({
-        type: SearchResultType.Address,
+        type: 'Address',
         name: address.adressetekst,
         lat: address.representasjonspunkt.lat,
         lon: address.representasjonspunkt.lon,
@@ -64,10 +64,8 @@ export const SearchComponent = () => {
   return (
     <>
       <Search
-        width="430px"
-        backgroundColor="white"
+        width="100%"
         placeholder="Søk i Norgeskart"
-        size="lg"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
