@@ -8,6 +8,7 @@ import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
 import { get as getProjection, transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
+import { Fill } from 'ol/style';
 import Style from 'ol/style/Style';
 import { useRef } from 'react';
 import {
@@ -182,6 +183,17 @@ const useMapSettings = () => {
     eventFeature.setStyle(style);
   };
 
+  const setDrawFillColor = (color: string) => {
+    const style = drawStyle.clone();
+    style.setFill(new Fill({ color }));
+    setDrawStyle(style);
+  };
+  const setDrawStrokeColor = (color: string) => {
+    const style = drawStyle.clone();
+    style.getStroke()?.setColor(color);
+    setDrawStyle(style);
+  };
+
   const setDrawStyle = (style: Style) => {
     if (draw) {
       draw.getOverlay().setStyle(style);
@@ -200,6 +212,8 @@ const useMapSettings = () => {
     drawStrokeColor,
     setDrawType,
     setDrawStyle,
+    setDrawFillColor,
+    setDrawStrokeColor,
     toggleDrawEnabled,
     setBackgroundLayer,
     setProjection,

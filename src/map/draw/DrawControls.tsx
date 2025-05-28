@@ -18,13 +18,16 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
-import { Fill, Stroke, Style } from 'ol/style';
-import CircleStyle from 'ol/style/Circle';
 import { DrawType, useMapSettings } from '../mapHooks';
 
 export const DrawControls = () => {
-  const { setDrawType, drawFillColor, drawStrokeColor, setDrawStyle } =
-    useMapSettings();
+  const {
+    setDrawType,
+    drawFillColor,
+    drawStrokeColor,
+    setDrawFillColor,
+    setDrawStrokeColor,
+  } = useMapSettings();
 
   const drawTypeCollection: { value: DrawType; label: string }[] = [
     { value: 'Point', label: 'Punkt' },
@@ -59,28 +62,10 @@ export const DrawControls = () => {
         value={parseColor(drawFillColor)}
         defaultValue={parseColor(drawFillColor)}
         onValueChange={(value) => {
-          const style = new Style({
-            image: new CircleStyle({
-              radius: 7,
-              fill: new Fill({
-                color: value.valueAsString,
-              }),
-              stroke: new Stroke({
-                color: value.valueAsString,
-                width: 2,
-              }),
-            }),
-            stroke: new Stroke({
-              color: value.valueAsString,
-              width: 2,
-            }),
-            fill: new Fill({
-              color: value.valueAsString,
-            }),
-          });
-          setDrawStyle(style);
+          setDrawFillColor(value.valueAsString);
         }}
       >
+        {/*TODO: Gjør hilke velgere som er synlig avhengig av hvilket verktøy som er valgt  */}
         <ColorPickerLabel>Velg fyllfarge</ColorPickerLabel>
         <ColorPickerControl>
           <ColorPickerInput />
@@ -98,26 +83,7 @@ export const DrawControls = () => {
         value={parseColor(drawStrokeColor)}
         defaultValue={parseColor(drawStrokeColor)}
         onValueChange={(value) => {
-          const style = new Style({
-            image: new CircleStyle({
-              radius: 7,
-              fill: new Fill({
-                color: value.valueAsString,
-              }),
-              stroke: new Stroke({
-                color: value.valueAsString,
-                width: 2,
-              }),
-            }),
-            stroke: new Stroke({
-              color: value.valueAsString,
-              width: 2,
-            }),
-            fill: new Fill({
-              color: value.valueAsString,
-            }),
-          });
-          setDrawStyle(style);
+          setDrawStrokeColor(value.valueAsString);
         }}
       >
         <ColorPickerLabel>Velg omrissfarge</ColorPickerLabel>
