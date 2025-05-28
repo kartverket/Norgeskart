@@ -11,9 +11,7 @@ import {
 import { useState } from 'react';
 import { DrawControls } from '../map/draw/DrawControls';
 import { SearchComponent } from '../search/SearchComponent';
-import { Settings } from '../settings/Settings';
-
-const TAB_WITH = '480px';
+import { MapSettings } from '../settings/MapSettings';
 
 type MainTabs = 'tab_search' | 'tab_layers' | 'tab_draw';
 
@@ -52,7 +50,7 @@ export const SidePanel = () => {
           <SearchComponent />
         </TabsContent>
         <TabsContent value="tab_layers" w={TAB_WITH}>
-          <Settings />
+          <MapSettings />
         </TabsContent>
         <TabsContent value="tab_draw" w={TAB_WITH}>
           <DrawControls />
