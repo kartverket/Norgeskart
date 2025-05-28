@@ -1,10 +1,30 @@
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { View } from 'ol';
+import BaseEvent from 'ol/events/Event';
+import Draw, { DrawEvent } from 'ol/interaction/Draw.js';
+import Modify from 'ol/interaction/Modify';
+import Snap from 'ol/interaction/Snap';
 import LayerGroup from 'ol/layer/Group';
+import VectorLayer from 'ol/layer/Vector';
 import { get as getProjection, transform } from 'ol/proj';
+import VectorSource from 'ol/source/Vector';
+import { Fill } from 'ol/style';
+import Style from 'ol/style/Style';
 import { useRef } from 'react';
-import { mapAtom, ProjectionIdentifier } from './atoms';
+import {
+  drawAtom,
+  drawEnabledAtom,
+  drawFillColorAtom,
+  drawStrokeColorAtom,
+  drawStyleAtom,
+  mapAtom,
+  modifyAtom,
+  ProjectionIdentifier,
+  snapAtom,
+} from './atoms';
 import { BackgroundLayer } from './layers';
+
+export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle';
 
 const useMap = () => {
   const mapElement = useRef<HTMLDivElement | null>(null);
@@ -23,6 +43,13 @@ const useMap = () => {
 
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
+  const [draw, setDraw] = useAtom(drawAtom);
+  const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
+  const drawFillColor = useAtomValue(drawFillColorAtom);
+  const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
+  const [snap, setSnap] = useAtom(snapAtom);
+  const [modify, setModify] = useAtom(modifyAtom);
+  const drawEnabled = useAtomValue(drawEnabledAtom);
 
   const setBackgroundLayer = (layerName: BackgroundLayer) => {
     const backgroundLayers = map
@@ -70,7 +97,139 @@ const useMapSettings = () => {
     map.setView(newView);
   };
 
-  return { setBackgroundLayer, setProjection };
+  const toggleDrawEnabled = () => {
+    if (drawEnabled) {
+      if (draw) {
+        map.removeInteraction(draw);
+        setDraw(null);
+      }
+
+      if (snap) {
+        map.removeInteraction(snap);
+        setSnap(null);
+      }
+
+      if (modify) {
+        map.removeInteraction(modify);
+        setModify(null);
+      }
+      return;
+    }
+
+    const drawLayer = map
+      .getLayers()
+      .getArray()
+      .filter(
+        (layer) => layer.get('id') === 'drawLayer',
+      )[0] as unknown as VectorLayer;
+
+    const newDraw = new Draw({
+      source: drawLayer.getSource() as VectorSource,
+      type: 'Polygon',
+      style: drawStyle,
+    });
+
+    newDraw.getOverlay().setStyle(drawStyle);
+
+    const newSnap = new Snap({
+      source: drawLayer.getSource() as VectorSource,
+    });
+    const newModify = new Modify({
+      source: drawLayer.getSource() as VectorSource,
+    });
+
+    map.addInteraction(newModify);
+    setModify(newModify);
+
+    map.addInteraction(newSnap);
+    setSnap(newSnap);
+
+    map.addInteraction(newDraw);
+    setDraw(newDraw);
+
+    newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
+  };
+
+  const setDrawType = (type: DrawType) => {
+    if (draw) {
+      map.removeInteraction(draw);
+      const drawLayer = map
+        .getLayers()
+        .getArray()
+        .filter(
+          (layer) => layer.get('id') === 'drawLayer',
+        )[0] as unknown as VectorLayer;
+
+      const newDraw = new Draw({
+        source: drawLayer.getSource() as VectorSource,
+        type: type,
+      });
+
+      map.addInteraction(newDraw);
+
+      if (drawStyle) {
+        newDraw.getOverlay().setStyle(drawStyle);
+        newDraw.addEventListener('drawend', (event) =>
+          drawEnd(event, drawStyle),
+        );
+      }
+      setDraw(newDraw);
+    }
+  };
+
+  const drawEnd = (event: BaseEvent | Event, style: Style) => {
+    const eventFeature = (event as unknown as DrawEvent).feature;
+    eventFeature.setStyle(style);
+  };
+
+  const setDrawFillColor = (color: string) => {
+    const style = drawStyle.clone();
+    style.setFill(new Fill({ color }));
+    setDrawStyle(style);
+  };
+  const setDrawStrokeColor = (color: string) => {
+    const style = drawStyle.clone();
+    style.getStroke()?.setColor(color);
+    setDrawStyle(style);
+  };
+
+  const setDrawStyle = (style: Style) => {
+    if (draw) {
+      draw.getOverlay().setStyle(style);
+      draw.getListeners('drawend')?.forEach((listener) => {
+        draw.removeEventListener('drawend', listener);
+      });
+      draw.addEventListener('drawend', (event) => drawEnd(event, style));
+      setDrawStyleAtom(style);
+    }
+  };
+
+  const clearDrawing = () => {
+    const drawLayer = map
+      .getLayers()
+      .getArray()
+      .filter(
+        (layer) => layer.get('id') === 'drawLayer',
+      )[0] as unknown as VectorLayer;
+
+    const source = drawLayer.getSource() as VectorSource;
+    source.clear();
+  };
+
+  return {
+    drawEnabled,
+    drawStyle,
+    drawFillColor,
+    drawStrokeColor,
+    setDrawType,
+    setDrawStyle,
+    setDrawFillColor,
+    setDrawStrokeColor,
+    clearDrawing,
+    toggleDrawEnabled,
+    setBackgroundLayer,
+    setProjection,
+  };
 };
 
 export { useMap, useMapSettings };

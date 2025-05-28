@@ -3,9 +3,14 @@ import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition.js';
 import ScaleLine from 'ol/control/ScaleLine.js';
 import { createStringXY } from 'ol/coordinate.js';
+import Draw from 'ol/interaction/Draw';
+import Modify from 'ol/interaction/Modify.js';
+import Snap from 'ol/interaction/Snap.js';
 import LayerGroup from 'ol/layer/Group';
 import Map from 'ol/Map';
 import { get as getProjection, Projection } from 'ol/proj';
+import { Fill, Stroke, Style } from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
 import { BackgroundLayer, mapLayers } from './layers';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
@@ -47,10 +52,48 @@ export const mapAtom = atom<Map>(() => {
       properties: { id: 'backgroundLayers' },
     }),
   );
+  map.addLayer(mapLayers.drawLayer.getLayer(INITIAL_PROJECTION));
 
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
   map.addControl(new MousePosition({ coordinateFormat: createStringXY(2) }));
 
   return map;
+});
+
+export const drawAtom = atom<Draw | null>(null);
+export const drawStyleAtom = atom<Style>(
+  new Style({
+    image: new CircleStyle({
+      radius: 7,
+      fill: new Fill({
+        color: '#ffffff',
+      }),
+      stroke: new Stroke({
+        color: '#ffffff',
+        width: 2,
+      }),
+    }),
+    stroke: new Stroke({
+      color: '#ffffff',
+      width: 2,
+    }),
+    fill: new Fill({
+      color: '#ffffff',
+    }),
+  }),
+);
+
+export const drawFillColorAtom = atom<string>(
+  (get) => get(drawStyleAtom).getFill()?.getColor()?.toString() || '#ffffff',
+);
+export const drawStrokeColorAtom = atom<string>(
+  (get) => get(drawStyleAtom).getStroke()?.getColor()?.toString() || '#ffffff',
+);
+export const snapAtom = atom<Snap | null>(null);
+export const modifyAtom = atom<Modify | null>(null);
+
+export const drawEnabledAtom = atom<boolean>((get) => {
+  const draw = get(drawAtom);
+  return draw !== null;
 });

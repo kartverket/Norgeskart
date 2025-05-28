@@ -1,7 +1,10 @@
 import { getTopLeft, getWidth } from 'ol/extent';
+import BaseLayer from 'ol/layer/Base';
 import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
 import { get as getProjection } from 'ol/proj.js';
 import { WMTS } from 'ol/source';
+import VectorSource from 'ol/source/Vector';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import { ProjectionIdentifier } from './atoms';
 
@@ -34,8 +37,12 @@ const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
   return { projection, projectionExtent, resolutions, matrixIds, matrixSet };
 };
 
+type LayerFunction =
+  | ((_: ProjectionIdentifier) => BaseLayer)
+  | (() => BaseLayer);
+
 export type MapLayer = {
-  getLayer: (projectionId: ProjectionIdentifier) => TileLayer;
+  getLayer: LayerFunction;
   id: string;
 };
 
@@ -45,6 +52,7 @@ export type MapLayers = {
     topo: MapLayer;
   };
   europaForenklet: MapLayer;
+  drawLayer: MapLayer;
 };
 
 export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
@@ -142,6 +150,17 @@ const mapLayers: MapLayers = {
           style: 'default',
           wrapX: true,
         }),
+      });
+    },
+  },
+
+  drawLayer: {
+    id: 'drawLayer',
+    getLayer: () => {
+      return new VectorLayer({
+        zIndex: 2,
+        source: new VectorSource({ wrapX: false }),
+        properties: { id: 'drawLayer' },
       });
     },
   },
