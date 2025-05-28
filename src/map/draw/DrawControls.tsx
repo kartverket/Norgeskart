@@ -58,7 +58,7 @@ export const DrawControls = () => {
         toggleDrawEnabled();
       }
     };
-  }, []);
+  }, [drawEnabled, toggleDrawEnabled]);
   return (
     <VStack>
       <Button onClick={() => toggleDrawEnabled()}>

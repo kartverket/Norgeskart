@@ -1,4 +1,5 @@
 import {
+  Flex,
   Heading,
   HStack,
   IconButton,
@@ -6,27 +7,35 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  VStack,
 } from '@kvib/react';
 import { useState } from 'react';
 import { DrawControls } from '../map/draw/DrawControls';
 import { SearchComponent } from '../search/SearchComponent';
 import { MapSettings } from '../settings/MapSettings';
+import { useIsMobileScreen } from '../shared/hooks';
 
 type MainTabs = 'tab_search' | 'tab_layers' | 'tab_draw';
 
 export const SidePanel = () => {
   const [activeTab, setActiveTab] = useState<MainTabs | null>(null);
+  const isMobileScreen = useIsMobileScreen();
+  const TAB_WITH = isMobileScreen ? '200px' : '300px';
   return (
-    <VStack gap={4} p={4} alignItems={'flex-start'}>
+    <Flex
+      gap={4}
+      p={4}
+      alignItems={'flex-start'}
+      md={{ flexDirection: 'column' }}
+      flexDirection={'row'}
+    >
       <HStack justifyContent={'space-between'} w={'100%'}>
-        <Heading as={'h2'} w={'200px'}>
+        <Heading as={'h2'} w={'100%'}>
           Instillinger
         </Heading>
         {activeTab && (
           <IconButton
             icon={'close'}
-            variant='ghost'
+            variant="ghost"
             onClick={() => {
               setActiveTab(null);
             }}
@@ -34,8 +43,8 @@ export const SidePanel = () => {
         )}
       </HStack>
       <Tabs
-        defaultValue="tab1"
-        orientation={'vertical'}
+        defaultValue={null}
+        orientation={isMobileScreen ? 'horizontal' : 'vertical'}
         variant={'outline'}
         value={activeTab}
         onValueChange={(e) => setActiveTab(e.value as MainTabs)}
@@ -56,6 +65,6 @@ export const SidePanel = () => {
           <DrawControls />
         </TabsContent>
       </Tabs>
-    </VStack>
+    </Flex>
   );
 };
