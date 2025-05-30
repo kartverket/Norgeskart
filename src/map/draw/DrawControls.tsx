@@ -27,11 +27,13 @@ import {
   SelectValueText,
   VStack,
 } from '@kvib/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DrawType, useMapSettings } from '../mapHooks';
 
 export const DrawControls = () => {
   const {
+    drawEnabled,
+    toggleDrawEnabled,
     setDrawType,
     drawFillColor,
     drawStrokeColor,
@@ -48,71 +50,87 @@ export const DrawControls = () => {
     { value: 'Polygon', label: 'Polygon' },
     { value: 'Circle', label: 'Sirkel' },
   ];
+
+  //To disable the draw mode when the controlls are unmounted
+  useEffect(() => {
+    return () => {
+      if (drawEnabled) {
+        toggleDrawEnabled();
+      }
+    };
+  }, [drawEnabled, toggleDrawEnabled]);
   return (
     <VStack>
-      <SelectRoot
-        collection={createListCollection({
-          items: drawTypeCollection,
-        })}
-      >
-        <SelectLabel>Tegneverktøy:</SelectLabel>
-        <SelectTrigger>
-          <SelectValueText placeholder={'Velg tegneform'} />
-        </SelectTrigger>
-        <SelectContent>
-          {drawTypeCollection.map((item) => (
-            <SelectItem
-              key={item.value}
-              item={item.value}
-              onClick={() => setDrawType(item.value as DrawType)}
-            >
-              {item.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </SelectRoot>
-      <ColorPicker
-        value={parseColor(drawFillColor)}
-        defaultValue={parseColor(drawFillColor)}
-        onValueChange={(value) => {
-          setDrawFillColor(value.valueAsString);
-        }}
-      >
-        {/*TODO: Gjør hilke velgere som er synlig avhengig av hvilket verktøy som er valgt  */}
-        <ColorPickerLabel>Velg fyllfarge</ColorPickerLabel>
-        <ColorPickerControl>
-          <ColorPickerInput />
-          <ColorPickerTrigger />
-        </ColorPickerControl>
-        <ColorPickerContent>
-          <ColorPickerArea />
-          <HStack>
-            <ColorPickerEyeDropper />
-            <ColorPickerSliders />
-          </HStack>
-        </ColorPickerContent>
-      </ColorPicker>
-      <ColorPicker
-        value={parseColor(drawStrokeColor)}
-        defaultValue={parseColor(drawStrokeColor)}
-        onValueChange={(value) => {
-          setDrawStrokeColor(value.valueAsString);
-        }}
-      >
-        <ColorPickerLabel>Velg omrissfarge</ColorPickerLabel>
+      <Button onClick={() => toggleDrawEnabled()}>
+        {drawEnabled ? 'Ferdig' : 'Tegn på kartet'}
+      </Button>
+      {drawEnabled && (
+        <>
+          <SelectRoot
+            collection={createListCollection({
+              items: drawTypeCollection,
+            })}
+          >
+            <SelectLabel>Tegneverktøy:</SelectLabel>
+            <SelectTrigger>
+              <SelectValueText placeholder={'Velg tegneform'} />
+            </SelectTrigger>
+            <SelectContent>
+              {drawTypeCollection.map((item) => (
+                <SelectItem
+                  key={item.value}
+                  item={item.value}
+                  onClick={() => setDrawType(item.value as DrawType)}
+                >
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+          <ColorPicker
+            value={parseColor(drawFillColor)}
+            defaultValue={parseColor(drawFillColor)}
+            onValueChange={(value) => {
+              setDrawFillColor(value.valueAsString);
+            }}
+          >
+            {/*TODO: Gjør hilke velgere som er synlig avhengig av hvilket verktøy som er valgt  */}
+            <ColorPickerLabel>Velg fyllfarge</ColorPickerLabel>
+            <ColorPickerControl>
+              <ColorPickerInput />
+              <ColorPickerTrigger />
+            </ColorPickerControl>
+            <ColorPickerContent>
+              <ColorPickerArea />
+              <HStack>
+                <ColorPickerEyeDropper />
+                <ColorPickerSliders />
+              </HStack>
+            </ColorPickerContent>
+          </ColorPicker>
+          <ColorPicker
+            value={parseColor(drawStrokeColor)}
+            defaultValue={parseColor(drawStrokeColor)}
+            onValueChange={(value) => {
+              setDrawStrokeColor(value.valueAsString);
+            }}
+          >
+            <ColorPickerLabel>Velg omrissfarge</ColorPickerLabel>
 
-        <ColorPickerControl>
-          <ColorPickerInput />
-          <ColorPickerTrigger />
-        </ColorPickerControl>
-        <ColorPickerContent>
-          <ColorPickerArea />
-          <HStack>
-            <ColorPickerEyeDropper />
-            <ColorPickerSliders />
-          </HStack>
-        </ColorPickerContent>
-      </ColorPicker>
+            <ColorPickerControl>
+              <ColorPickerInput />
+              <ColorPickerTrigger />
+            </ColorPickerControl>
+            <ColorPickerContent>
+              <ColorPickerArea />
+              <HStack>
+                <ColorPickerEyeDropper />
+                <ColorPickerSliders />
+              </HStack>
+            </ColorPickerContent>
+          </ColorPicker>
+        </>
+      )}
       <ButtonGroup>
         <PopoverRoot
           open={clearPopoverOpen}

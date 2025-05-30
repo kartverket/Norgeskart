@@ -1,6 +1,7 @@
-import { Box } from '@kvib/react';
+import { Box, Text } from '@kvib/react';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
+import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { useMap } from './mapHooks.ts';
 import { MapOverlay } from './MapOverlay.tsx';
 
@@ -19,9 +20,11 @@ export const MapComponent = () => {
   }, [setTargetElement, mapRef]);
 
   return (
-    <Box position={'relative'} width="100%" height="100%">
-      <Box ref={mapRef} id="map" style={{ width: '100%', height: '100vh' }} />
-      <MapOverlay />
-    </Box>
+    <ErrorBoundary fallback={<Text>Noe gikk veldig galt med kartet</Text>}>
+      <Box position={'relative'} width="100%" height="100%">
+        <Box ref={mapRef} id="map" style={{ width: '100%', height: '100vh' }} />
+        <MapOverlay />
+      </Box>
+    </ErrorBoundary>
   );
 };

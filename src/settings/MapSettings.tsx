@@ -3,11 +3,11 @@ import { BackgroundLayerSettings } from './BackgroundLayerSettings';
 
 import { ProjectionSettings } from './ProjectionSettings';
 
-export const Settings = () => {
+export const MapSettings = () => {
   return (
     <VStack
       height={'100%'}
-      w={'320px'}
+      w={'100%'}
       gap={4}
       padding={4}
       justifyContent={'flex-start'}

@@ -1,5 +1,5 @@
 import { Box, List, ListItem, Text } from '@kvib/react';
-import { SearchResult, SearchResultType } from './atoms.ts';
+import { SearchResult } from './atoms.ts';
 
 interface SearchResultsProps {
   results: SearchResult[];
@@ -21,22 +21,22 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
         {results.map((res, i) => {
           return (
             <ListItem key={i}>
-              {res.type === SearchResultType.Place && (
+              {res.type === 'Place' && (
                 <Text>
                   {res.place.skrivemåte}, {res.place.navneobjekttype}
                 </Text>
               )}
-              {res.type === SearchResultType.Road && (
+              {res.type === 'Road' && (
                 <Text>
                   {res.road.NAVN}, {res.road.KOMMUNENAVN}
                 </Text>
               )}
-              {res.type === SearchResultType.Property && (
+              {res.type === 'Property' && (
                 <Text>
                   {res.property.TITTEL}, {res.property.KOMMUNENAVN}
                 </Text>
               )}
-              {res.type === SearchResultType.Address && (
+              {res.type === 'Address' && (
                 <Text>
                   {res.address.adressenavn}, {res.address.adressetekst}
                 </Text>
