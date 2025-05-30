@@ -8,10 +8,12 @@ import Modify from 'ol/interaction/Modify';
 import Snap from 'ol/interaction/Snap';
 import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
-import { get as getProjection, transform } from 'ol/proj';
+import { fromLonLat, get as getProjection, transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { Fill } from 'ol/style';
 import Style from 'ol/style/Style';
+import { useEffect } from 'react';
+import { selectedSearchResultAtom } from '../search/atoms.ts';
 import {
   drawAtom,
   drawEnabledAtom,
@@ -300,4 +302,21 @@ const useDrawSettings = () => {
   };
 };
 
-export { useDrawSettings, useMap, useMapSettings };
+
+const useSelectedSearchResult = () => {
+  const selectedResult = useAtomValue(selectedSearchResultAtom);
+  const map = useAtomValue(mapAtom);
+
+  useEffect(() => {
+    if (!selectedResult || !map) return;
+
+    const { lon, lat } = selectedResult;
+
+    const coords = fromLonLat([Number(lon), Number(lat)]);
+    const view = map.getView();
+
+    view.setCenter(coords);
+  }, [selectedResult, map]);
+};
+
+export { useDrawSettings, useMap, useMapSettings, useSelectedSearchResult };
