@@ -1,5 +1,6 @@
-import { Box, List, ListItem, Text } from '@kvib/react';
-import { SearchResult } from './atoms.ts';
+import { Box, List, ListItem, Separator, Text } from '@kvib/react';
+import { useSetAtom } from 'jotai';
+import { SearchResult, selectedSearchResultAtom } from './atoms.ts';
 
 interface SearchResultsProps {
   results: SearchResult[];
@@ -9,6 +10,8 @@ interface SearchResultsProps {
 }
 
 export const SearchResults = ({ results }: SearchResultsProps) => {
+  const setSelectedSearchResult = useSetAtom(selectedSearchResultAtom);
+
   return (
     <Box
       backgroundColor="white"
@@ -17,10 +20,10 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
       maxH="1000px"
       width="450px"
     >
-      <List listStyleType="none">
+      <List listStyleType="none" variant="marker">
         {results.map((res, i) => {
           return (
-            <ListItem key={i}>
+            <ListItem key={i} onClick={() => setSelectedSearchResult(res)}>
               {res.type === 'Place' && (
                 <Text>
                   {res.place.skrivemåte}, {res.place.navneobjekttype}
@@ -41,6 +44,7 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
                   {res.address.adressenavn}, {res.address.adressetekst}
                 </Text>
               )}
+              <Separator />
             </ListItem>
           );
         })}

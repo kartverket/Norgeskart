@@ -5,6 +5,7 @@ export type SearchResultBase = {
   name: string;
   lat: number;
   lon: number;
+  epsg?: string;
 };
 
 export type SearchResultType = 'Property' | 'Road' | 'Place' | 'Address';
