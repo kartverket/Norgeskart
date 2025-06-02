@@ -1,8 +1,6 @@
 import { atom } from 'jotai';
 import { View } from 'ol';
-import MousePosition from 'ol/control/MousePosition.js';
 import ScaleLine from 'ol/control/ScaleLine.js';
-import { createStringXY } from 'ol/coordinate.js';
 import Draw from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Snap from 'ol/interaction/Snap.js';
@@ -12,6 +10,7 @@ import { get as getProjection, Projection } from 'ol/proj';
 import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { BackgroundLayer, mapLayers } from './layers';
+import { getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
 
@@ -35,6 +34,7 @@ export const mapAtom = atom<Map>(() => {
   const map = new Map();
   const projection = getProjection(INITIAL_PROJECTION)!;
   const projectionExtent = projection.getExtent();
+
   const intialView = new View({
     center: [570130, 7032300],
     minZoom: 3,
@@ -56,7 +56,7 @@ export const mapAtom = atom<Map>(() => {
 
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
-  map.addControl(new MousePosition({ coordinateFormat: createStringXY(2) }));
+  map.addControl(getMousePositionControl(INITIAL_PROJECTION));
 
   return map;
 });

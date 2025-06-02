@@ -1,5 +1,6 @@
 import { useAtom, useAtomValue } from 'jotai';
 import { View } from 'ol';
+import MousePosition from 'ol/control/MousePosition';
 import BaseEvent from 'ol/events/Event';
 import Draw, { DrawEvent } from 'ol/interaction/Draw.js';
 import Modify from 'ol/interaction/Modify';
@@ -22,6 +23,7 @@ import {
   snapAtom,
 } from './atoms';
 import { BackgroundLayer } from './layers';
+import { getMousePositionControl } from './mapControls';
 
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle';
 
@@ -94,6 +96,14 @@ const useMapSettings = () => {
     });
 
     map.setView(newView);
+    const mousePositionInteraction = map
+      .getControls()
+      .getArray()
+      .filter((control) => {
+        return control instanceof MousePosition;
+      })[0];
+    map.removeControl(mousePositionInteraction);
+    map.addControl(getMousePositionControl(projectionId));
   };
 
   const toggleDrawEnabled = () => {
