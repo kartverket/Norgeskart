@@ -10,7 +10,6 @@ import { get as getProjection, transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { Fill } from 'ol/style';
 import Style from 'ol/style/Style';
-import { useRef } from 'react';
 import {
   drawAtom,
   drawEnabledAtom,
@@ -27,18 +26,18 @@ import { BackgroundLayer } from './layers';
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle';
 
 const useMap = () => {
-  const mapElement = useRef<HTMLDivElement | null>(null);
   const map = useAtomValue(mapAtom);
 
   const setTargetElement = (element: HTMLDivElement | null) => {
-    mapElement.current = element;
     if (!map.getTarget() && element) {
       map.setTarget(element);
     } else if (element == null) {
       map.setTarget(undefined);
     }
   };
-  return { setTargetElement };
+
+  const mapElement = map.getTarget() as HTMLElement | undefined;
+  return { mapElement, setTargetElement };
 };
 
 const useMapSettings = () => {
@@ -216,11 +215,31 @@ const useMapSettings = () => {
     source.clear();
   };
 
+  const setMapFullScreen = (shouldBeFullscreen: boolean) => {
+    if (!document.fullscreenEnabled) {
+      return;
+    }
+    const mapElement = map.getTarget() as HTMLElement | undefined;
+    if (!mapElement) {
+      return;
+    }
+    if (shouldBeFullscreen) {
+      mapElement
+        .requestFullscreen()
+        .catch((err) =>
+          console.error('Error attempting to enable full-screen mode:', err),
+        );
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
   return {
     drawEnabled,
     drawStyle,
     drawFillColor,
     drawStrokeColor,
+    setMapFullScreen,
     setDrawType,
     setDrawStyle,
     setDrawFillColor,
