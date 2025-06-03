@@ -28,7 +28,7 @@ import {
   VStack,
 } from '@kvib/react';
 import { useState } from 'react';
-import { DrawType, useMapSettings } from '../mapHooks';
+import { DrawType, useDrawSettings } from '../mapHooks';
 
 export const DrawControls = () => {
   const {
@@ -40,7 +40,7 @@ export const DrawControls = () => {
     setDrawFillColor,
     setDrawStrokeColor,
     clearDrawing,
-  } = useMapSettings();
+  } = useDrawSettings();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
 
