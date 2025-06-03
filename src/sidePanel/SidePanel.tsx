@@ -9,9 +9,9 @@ import {
   TabsTrigger,
 } from '@kvib/react';
 import { useState } from 'react';
-import { DrawControls } from '../map/draw/DrawControls';
 import { SearchComponent } from '../search/SearchComponent';
-import { MapSettings } from '../settings/MapSettings';
+import { DrawSettings } from '../settings/draw/DrawSettings';
+import { MapSettings } from '../settings/map/MapSettings';
 import { useIsMobileScreen } from '../shared/hooks';
 
 type MainTabs = 'tab_search' | 'tab_layers' | 'tab_draw';
@@ -62,7 +62,7 @@ export const SidePanel = () => {
           <MapSettings />
         </TabsContent>
         <TabsContent value="tab_draw" w={TAB_WITH}>
-          <DrawControls />
+          <DrawSettings />
         </TabsContent>
       </Tabs>
     </Flex>
