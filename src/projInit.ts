@@ -16,6 +16,8 @@ export const projInit = () => {
     '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',
   );
 
+  proj4.defs('EPSG:4258', '+proj=longlat +ellps=GRS80 +no_defs');
+
   register(proj4);
 
   getProjection('EPSG:25832')?.setExtent([

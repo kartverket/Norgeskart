@@ -8,7 +8,7 @@ import Modify from 'ol/interaction/Modify';
 import Snap from 'ol/interaction/Snap';
 import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
-import { fromLonLat, get as getProjection, transform } from 'ol/proj';
+import { get as getProjection, transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { Fill } from 'ol/style';
 import Style from 'ol/style/Style';
@@ -302,20 +302,35 @@ const useDrawSettings = () => {
   };
 };
 
-
 const useSelectedSearchResult = () => {
   const selectedResult = useAtomValue(selectedSearchResultAtom);
   const map = useAtomValue(mapAtom);
+
+  console.log('Selected result:', selectedResult);
 
   useEffect(() => {
     if (!selectedResult || !map) return;
 
     const { lon, lat } = selectedResult;
 
-    const coords = fromLonLat([Number(lon), Number(lat)]);
-    const view = map.getView();
+    console.log('Lon:', lon, 'Lat:', lat);
 
+    const view = map.getView();
+    console.log('View instance:', view);
+
+    const coords = transform(
+      [lon, lat],
+      'EPSG:4258',
+      view.getProjection().getCode(),
+    );
+    console.log('Lon, Lat:', lon, lat);
+    console.log('coords:', coords);
+    console.log('Current view projection:', view.getProjection().getCode());
     view.setCenter(coords);
+    view.setZoom(10);
+
+    const extent = map.getView().get('extent');
+    console.log('View extent:', extent);
   }, [selectedResult, map]);
 };
 

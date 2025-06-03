@@ -1,5 +1,6 @@
 import { Search } from '@kvib/react';
 import { useState } from 'react';
+import { useSelectedSearchResult } from '../map/mapHooks.ts';
 import { SearchResult } from './atoms.ts';
 import { SearchResults } from './SearchResults.tsx';
 import {
@@ -18,6 +19,8 @@ export const SearchComponent = () => {
   const { propertiesData } = useProperties(searchQuery);
   const { addressData } = useAddresses(searchQuery);
 
+  useSelectedSearchResult();
+
   //Til pagineringen som skal med etter hvert. kanskje
   const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
   const resultsPerPage = 15;
@@ -27,9 +30,8 @@ export const SearchComponent = () => {
       (place): SearchResult => ({
         type: 'Place',
         name: place.skrivemåte,
-        lat: place.representasjonspunkt.nord,
         lon: place.representasjonspunkt.øst,
-        epsg: place.representasjonspunkt.koordsys,
+        lat: place.representasjonspunkt.nord,
         place: place,
       }),
     ) || []),
@@ -57,7 +59,6 @@ export const SearchComponent = () => {
         name: address.adressetekst,
         lat: address.representasjonspunkt.lat,
         lon: address.representasjonspunkt.lon,
-        epsg: address.representasjonspunkt.epsg,
         address: address,
       }),
     ) || []),
