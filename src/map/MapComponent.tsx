@@ -2,7 +2,7 @@ import { Box, Text } from '@kvib/react';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
-import { useMap, useSelectedSearchResult } from './mapHooks.ts';
+import { useMap } from './mapHooks.ts';
 import { MapOverlay } from './MapOverlay.tsx';
 
 export const MapComponent = () => {
@@ -18,10 +18,6 @@ export const MapComponent = () => {
       setTargetElement(null);
     };
   }, [setTargetElement, mapRef]);
-
-  useSelectedSearchResult();
-
-
 
   return (
     <ErrorBoundary fallback={<Text>Noe gikk veldig galt med kartet</Text>}>

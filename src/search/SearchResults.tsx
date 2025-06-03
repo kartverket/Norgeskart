@@ -20,7 +20,7 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
       maxH="1000px"
       width="450px"
     >
-      <List listStyleType="none" variant="marker">
+      <List listStyleType="none">
         {results.map((res, i) => {
           return (
             <ListItem key={i} onClick={() => setSelectedSearchResult(res)}>
