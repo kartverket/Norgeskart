@@ -33,7 +33,7 @@ import { DrawType, useDrawSettings } from '../mapHooks';
 export const DrawControls = () => {
   const {
     drawEnabled,
-    toggleDrawEnabled,
+    setDrawEnabled,
     setDrawType,
     drawFillColor,
     drawStrokeColor,
@@ -53,7 +53,7 @@ export const DrawControls = () => {
 
   return (
     <VStack>
-      <Button onClick={() => toggleDrawEnabled()}>
+      <Button onClick={() => setDrawEnabled(!drawEnabled)}>
         {drawEnabled ? 'Ferdig' : 'Tegn på kartet'}
       </Button>
       {drawEnabled && (

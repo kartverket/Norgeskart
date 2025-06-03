@@ -136,8 +136,41 @@ const useDrawSettings = () => {
   const [modify, setModify] = useAtom(modifyAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
 
-  const toggleDrawEnabled = () => {
-    if (drawEnabled) {
+  const setDrawEnabled = (enable: boolean) => {
+    if (enable) {
+      const drawLayer = map
+        .getLayers()
+        .getArray()
+        .filter(
+          (layer) => layer.get('id') === 'drawLayer',
+        )[0] as unknown as VectorLayer;
+
+      const newDraw = new Draw({
+        source: drawLayer.getSource() as VectorSource,
+        type: 'Polygon',
+        style: drawStyle,
+      });
+
+      newDraw.getOverlay().setStyle(drawStyle);
+
+      const newSnap = new Snap({
+        source: drawLayer.getSource() as VectorSource,
+      });
+      const newModify = new Modify({
+        source: drawLayer.getSource() as VectorSource,
+      });
+
+      map.addInteraction(newModify);
+      setModify(newModify);
+
+      map.addInteraction(newSnap);
+      setSnap(newSnap);
+
+      map.addInteraction(newDraw);
+      setDraw(newDraw);
+
+      newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
+    } else {
       if (draw) {
         map.removeInteraction(draw);
         setDraw(null);
@@ -152,42 +185,9 @@ const useDrawSettings = () => {
         map.removeInteraction(modify);
         setModify(null);
       }
-      return;
     }
-
-    const drawLayer = map
-      .getLayers()
-      .getArray()
-      .filter(
-        (layer) => layer.get('id') === 'drawLayer',
-      )[0] as unknown as VectorLayer;
-
-    const newDraw = new Draw({
-      source: drawLayer.getSource() as VectorSource,
-      type: 'Polygon',
-      style: drawStyle,
-    });
-
-    newDraw.getOverlay().setStyle(drawStyle);
-
-    const newSnap = new Snap({
-      source: drawLayer.getSource() as VectorSource,
-    });
-    const newModify = new Modify({
-      source: drawLayer.getSource() as VectorSource,
-    });
-
-    map.addInteraction(newModify);
-    setModify(newModify);
-
-    map.addInteraction(newSnap);
-    setSnap(newSnap);
-
-    map.addInteraction(newDraw);
-    setDraw(newDraw);
-
-    newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
   };
+
   const setDrawType = (type: DrawType) => {
     if (draw) {
       map.removeInteraction(draw);
@@ -259,9 +259,8 @@ const useDrawSettings = () => {
     drawStyle,
     drawFillColor,
     drawStrokeColor,
-    toggleDrawEnabled,
+    setDrawEnabled,
     setDrawType,
-    setDrawStyle,
     setDrawFillColor,
     setDrawStrokeColor,
     clearDrawing,

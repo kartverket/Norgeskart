@@ -10,8 +10,8 @@ import { ProjectionIdentifier } from './atoms';
 
 const getMatrixSetForProjection = (projectionId: ProjectionIdentifier) => {
   switch (projectionId) {
-    // case 'EPSG:25832':
-    //   return 'utm32n';
+    case 'EPSG:25832':
+      return 'utm32n';
     case 'EPSG:25833':
       return 'utm33n';
     case 'EPSG:25835':
