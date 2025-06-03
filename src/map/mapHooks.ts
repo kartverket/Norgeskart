@@ -44,13 +44,6 @@ const useMap = () => {
 
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
-  const [draw, setDraw] = useAtom(drawAtom);
-  const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
-  const drawFillColor = useAtomValue(drawFillColorAtom);
-  const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
-  const [snap, setSnap] = useAtom(snapAtom);
-  const [modify, setModify] = useAtom(modifyAtom);
-  const drawEnabled = useAtomValue(drawEnabledAtom);
 
   const setBackgroundLayer = (layerName: BackgroundLayer) => {
     const backgroundLayers = map
@@ -106,8 +99,78 @@ const useMapSettings = () => {
     map.addControl(getMousePositionControl(projectionId));
   };
 
-  const toggleDrawEnabled = () => {
-    if (drawEnabled) {
+  const setMapFullScreen = (shouldBeFullscreen: boolean) => {
+    if (!document.fullscreenEnabled) {
+      return;
+    }
+    const mapElement = map.getTarget() as HTMLElement | undefined;
+    if (!mapElement) {
+      return;
+    }
+    if (shouldBeFullscreen) {
+      mapElement
+        .requestFullscreen()
+        .catch((err) =>
+          console.error('Error attempting to enable full-screen mode:', err),
+        );
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  return {
+    setMapFullScreen,
+
+    setBackgroundLayer,
+    setProjection,
+  };
+};
+
+const useDrawSettings = () => {
+  const map = useAtomValue(mapAtom);
+  const [draw, setDraw] = useAtom(drawAtom);
+  const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
+  const drawFillColor = useAtomValue(drawFillColorAtom);
+  const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
+  const [snap, setSnap] = useAtom(snapAtom);
+  const [modify, setModify] = useAtom(modifyAtom);
+  const drawEnabled = useAtomValue(drawEnabledAtom);
+
+  const setDrawEnabled = (enable: boolean) => {
+    if (enable) {
+      const drawLayer = map
+        .getLayers()
+        .getArray()
+        .filter(
+          (layer) => layer.get('id') === 'drawLayer',
+        )[0] as unknown as VectorLayer;
+
+      const newDraw = new Draw({
+        source: drawLayer.getSource() as VectorSource,
+        type: 'Polygon',
+        style: drawStyle,
+      });
+
+      newDraw.getOverlay().setStyle(drawStyle);
+
+      const newSnap = new Snap({
+        source: drawLayer.getSource() as VectorSource,
+      });
+      const newModify = new Modify({
+        source: drawLayer.getSource() as VectorSource,
+      });
+
+      map.addInteraction(newModify);
+      setModify(newModify);
+
+      map.addInteraction(newSnap);
+      setSnap(newSnap);
+
+      map.addInteraction(newDraw);
+      setDraw(newDraw);
+
+      newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
+    } else {
       if (draw) {
         map.removeInteraction(draw);
         setDraw(null);
@@ -122,41 +185,7 @@ const useMapSettings = () => {
         map.removeInteraction(modify);
         setModify(null);
       }
-      return;
     }
-
-    const drawLayer = map
-      .getLayers()
-      .getArray()
-      .filter(
-        (layer) => layer.get('id') === 'drawLayer',
-      )[0] as unknown as VectorLayer;
-
-    const newDraw = new Draw({
-      source: drawLayer.getSource() as VectorSource,
-      type: 'Polygon',
-      style: drawStyle,
-    });
-
-    newDraw.getOverlay().setStyle(drawStyle);
-
-    const newSnap = new Snap({
-      source: drawLayer.getSource() as VectorSource,
-    });
-    const newModify = new Modify({
-      source: drawLayer.getSource() as VectorSource,
-    });
-
-    map.addInteraction(newModify);
-    setModify(newModify);
-
-    map.addInteraction(newSnap);
-    setSnap(newSnap);
-
-    map.addInteraction(newDraw);
-    setDraw(newDraw);
-
-    newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
   };
 
   const setDrawType = (type: DrawType) => {
@@ -225,40 +254,17 @@ const useMapSettings = () => {
     source.clear();
   };
 
-  const setMapFullScreen = (shouldBeFullscreen: boolean) => {
-    if (!document.fullscreenEnabled) {
-      return;
-    }
-    const mapElement = map.getTarget() as HTMLElement | undefined;
-    if (!mapElement) {
-      return;
-    }
-    if (shouldBeFullscreen) {
-      mapElement
-        .requestFullscreen()
-        .catch((err) =>
-          console.error('Error attempting to enable full-screen mode:', err),
-        );
-    } else {
-      document.exitFullscreen();
-    }
-  };
-
   return {
     drawEnabled,
     drawStyle,
     drawFillColor,
     drawStrokeColor,
-    setMapFullScreen,
+    setDrawEnabled,
     setDrawType,
-    setDrawStyle,
     setDrawFillColor,
     setDrawStrokeColor,
     clearDrawing,
-    toggleDrawEnabled,
-    setBackgroundLayer,
-    setProjection,
   };
 };
 
-export { useMap, useMapSettings };
+export { useDrawSettings, useMap, useMapSettings };

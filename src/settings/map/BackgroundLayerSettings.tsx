@@ -7,8 +7,8 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
-import { BackgroundLayer } from '../map/layers';
-import { useMapSettings } from '../map/mapHooks';
+import { BackgroundLayer } from '../../map/layers';
+import { useMapSettings } from '../../map/mapHooks';
 
 export const BackgroundLayerSettings = () => {
   const { setBackgroundLayer } = useMapSettings();

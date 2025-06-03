@@ -7,8 +7,8 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
-import { ProjectionIdentifier } from '../map/atoms';
-import { useMapSettings } from '../map/mapHooks';
+import { ProjectionIdentifier } from '../../map/atoms';
+import { useMapSettings } from '../../map/mapHooks';
 
 export const ProjectionSettings = () => {
   const { setProjection } = useMapSettings();

@@ -27,20 +27,20 @@ import {
   SelectValueText,
   VStack,
 } from '@kvib/react';
-import { useEffect, useState } from 'react';
-import { DrawType, useMapSettings } from '../mapHooks';
+import { useState } from 'react';
+import { DrawType, useDrawSettings } from '../mapHooks';
 
 export const DrawControls = () => {
   const {
     drawEnabled,
-    toggleDrawEnabled,
+    setDrawEnabled,
     setDrawType,
     drawFillColor,
     drawStrokeColor,
     setDrawFillColor,
     setDrawStrokeColor,
     clearDrawing,
-  } = useMapSettings();
+  } = useDrawSettings();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
 
@@ -51,17 +51,9 @@ export const DrawControls = () => {
     { value: 'Circle', label: 'Sirkel' },
   ];
 
-  //To disable the draw mode when the controlls are unmounted
-  useEffect(() => {
-    return () => {
-      if (drawEnabled) {
-        toggleDrawEnabled();
-      }
-    };
-  }, [drawEnabled, toggleDrawEnabled]);
   return (
     <VStack>
-      <Button onClick={() => toggleDrawEnabled()}>
+      <Button onClick={() => setDrawEnabled(!drawEnabled)}>
         {drawEnabled ? 'Ferdig' : 'Tegn på kartet'}
       </Button>
       {drawEnabled && (
