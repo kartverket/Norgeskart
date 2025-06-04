@@ -10,7 +10,9 @@ import { get as getProjection, Projection } from 'ol/proj';
 import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { BackgroundLayer, mapLayers } from './layers';
-import { getMousePositionControl } from './mapControls';
+
+import { defaults as defaultControls } from 'ol/control/defaults.js';
+import { ControlPortal, getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
 
@@ -31,7 +33,9 @@ export const backgroundLayerIdAtom = atom<string | null>(null);
 export const backgroundLayerAtom = atom<BackgroundLayer>('newTopo');
 
 export const mapAtom = atom<Map>(() => {
-  const map = new Map();
+  const map = new Map({
+    controls: defaultControls().extend([new ControlPortal()]),
+  });
   const projection = getProjection(INITIAL_PROJECTION)!;
   const projectionExtent = projection.getExtent();
 
