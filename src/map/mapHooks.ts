@@ -99,6 +99,7 @@ const useMapSettings = () => {
     });
 
     map.setView(newView);
+
     const mousePositionInteraction = map
       .getControls()
       .getArray()
@@ -318,19 +319,13 @@ const useSelectedSearchResult = () => {
     const view = map.getView();
     console.log('View instance:', view);
 
-    const coords = transform(
-      [lon, lat],
-      'EPSG:4258',
-      view.getProjection().getCode(),
-    );
-    console.log('Lon, Lat:', lon, lat);
+    console.log('Projection:', view.getProjection());
+    const coords = transform([lon, lat], 'EPSG:4258', view.getProjection());
+
     console.log('coords:', coords);
-    console.log('Current view projection:', view.getProjection().getCode());
     view.setCenter(coords);
     view.setZoom(10);
-
-    const extent = map.getView().get('extent');
-    console.log('View extent:', extent);
+    console.log('View after set center:', view.getCenter());
   }, [selectedResult, map]);
 };
 
