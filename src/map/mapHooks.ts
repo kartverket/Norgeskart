@@ -2,6 +2,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
 import BaseEvent from 'ol/events/Event';
+import { Extent } from 'ol/extent';
 import Draw, { DrawEvent } from 'ol/interaction/Draw.js';
 import Modify from 'ol/interaction/Modify';
 import Snap from 'ol/interaction/Snap';
@@ -19,6 +20,7 @@ import {
   drawStyleAtom,
   mapAtom,
   modifyAtom,
+  projectionAtom,
   ProjectionIdentifier,
   snapAtom,
 } from './atoms';
@@ -44,6 +46,12 @@ const useMap = () => {
 
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
+  const projection = useAtomValue(projectionAtom);
+
+  const getMapViewCenter = () => {
+    const view = map.getView();
+    return view.getCenter();
+  };
 
   const setBackgroundLayer = (layerName: BackgroundLayer) => {
     const backgroundLayers = map
@@ -85,7 +93,7 @@ const useMapSettings = () => {
       center: newCenter || [570130, 7032300], // fallback center if needed
       zoom: oldView.getZoom(),
       projection: projection,
-      extent: projection.getExtent(),
+      extent: projection.getExtent() as Extent,
     });
 
     map.setView(newView);
@@ -118,11 +126,32 @@ const useMapSettings = () => {
     }
   };
 
-  return {
-    setMapFullScreen,
+  const setMapLocation = (
+    location: [number, number],
+    locationProjection: ProjectionIdentifier,
+    zoomLevel: number = 7,
+  ) => {
+    const projection = getProjection(locationProjection);
+    if (!projection) {
+      console.error(`Projection ${locationProjection} not found`);
+      return;
+    }
+    const transformedLocation = transform(
+      location,
+      projection,
+      map.getView().getProjection(),
+    );
+    map.getView().setCenter(transformedLocation);
+    map.getView().setZoom(zoomLevel);
+  };
 
+  return {
+    projection,
+    getMapViewCenter,
+    setMapFullScreen,
     setBackgroundLayer,
     setProjection,
+    setMapLocation,
   };
 };
 
