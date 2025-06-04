@@ -36,9 +36,9 @@ export const mapAtom = atom<Map>(() => {
   const projectionExtent = projection.getExtent();
 
   const intialView = new View({
-    center: [570130, 7032300],
+    center: [1737122, 9591875],
     minZoom: 3,
-    zoom: 3,
+    zoom: 5,
     projection: projection,
     extent: projectionExtent,
   });

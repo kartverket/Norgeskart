@@ -16,6 +16,8 @@ const getMatrixSetForProjection = (projectionId: ProjectionIdentifier) => {
       return 'utm33n';
     case 'EPSG:25835':
       return 'utm35n';
+    case 'EPSG:3857':
+      return 'webmercator';
     default:
       return 'utm33n';
   }
