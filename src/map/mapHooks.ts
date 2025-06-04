@@ -128,21 +128,25 @@ const useMapSettings = () => {
 
   const setMapLocation = (
     location: [number, number],
-    locationProjection: ProjectionIdentifier,
-    zoomLevel: number = 7,
+    locationProjection: ProjectionIdentifier | null = null,
+    zoomLevel: number | null = null,
   ) => {
-    const projection = getProjection(locationProjection);
-    if (!projection) {
+    const sourceProjection = getProjection(
+      locationProjection || projection.getCode(),
+    );
+    if (!sourceProjection) {
       console.error(`Projection ${locationProjection} not found`);
       return;
     }
     const transformedLocation = transform(
       location,
-      projection,
+      sourceProjection,
       map.getView().getProjection(),
     );
     map.getView().setCenter(transformedLocation);
-    map.getView().setZoom(zoomLevel);
+    if (zoomLevel !== null) {
+      map.getView().setZoom(zoomLevel);
+    }
   };
 
   return {

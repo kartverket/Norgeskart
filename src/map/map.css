@@ -4,10 +4,12 @@
   background-color: transparent;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 1rem;
 
   button {
+    background-color: transparent;
     font-size: x-large;
+    font-weight: bolder;
     height: 2rem;
     width: 2rem;
   }
