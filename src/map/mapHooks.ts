@@ -128,7 +128,7 @@ const useMapSettings = () => {
 
   const setMapLocation = (
     location: [number, number],
-    locationProjection: ProjectionIdentifier | null = null,
+    locationProjection: string | null = null,
     zoomLevel: number | null = null,
   ) => {
     const sourceProjection = getProjection(

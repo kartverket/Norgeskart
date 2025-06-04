@@ -1,9 +1,9 @@
-import { Box, IconButton, Portal, Stack } from '@kvib/react';
+import { Box, IconButton, Portal, Stack, Tooltip } from '@kvib/react';
 import { useEffect, useRef, useState } from 'react';
 import { useMapSettings } from './mapHooks';
 
 export const MapOverlay = () => {
-  const { setMapFullScreen, setMapLocation, projection } = useMapSettings();
+  const { setMapFullScreen, setMapLocation } = useMapSettings();
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const portalRef = useRef<HTMLElement>(null);
 
@@ -12,7 +12,6 @@ export const MapOverlay = () => {
       const portalTargetElement = document.getElementById(
         'custom-control-portal',
       );
-      console.log('Portal target element:', portalTargetElement);
       portalRef.current = portalTargetElement;
       setPortalTarget(portalTargetElement);
     }, 10);
@@ -38,21 +37,31 @@ export const MapOverlay = () => {
           <Box position="absolute" top="16px" right="16px" zIndex={10}>
             <Stack>
               {document.fullscreenEnabled && (
+                <Tooltip content={'Fullskjerm'}>
+                  <IconButton
+                    onClick={() => {
+                      setMapFullScreen(true);
+                    }}
+                    variant="ghost"
+                    icon={'fullscreen'}
+                  />
+                </Tooltip>
+              )}
+              <Tooltip content={'Vis min posisjon'}>
                 <IconButton
                   onClick={() => {
-                    setMapFullScreen(true);
+                    navigator.geolocation.getCurrentPosition((pos) => {
+                      setMapLocation(
+                        [pos.coords.longitude, pos.coords.latitude],
+                        'EPSG:4326',
+                        15,
+                      );
+                    });
                   }}
                   variant="ghost"
-                  icon={'fullscreen'}
+                  icon={'my_location'}
                 />
-              )}
-              <IconButton
-                onClick={() => {
-                  setMapLocation([1145732.48, 8417044.21]);
-                }}
-                variant="ghost"
-                icon={'settings'}
-              />
+              </Tooltip>
             </Stack>
           </Box>
         </Portal>
