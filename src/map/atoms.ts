@@ -3,6 +3,7 @@ import { View } from 'ol';
 import ScaleLine from 'ol/control/ScaleLine.js';
 import Draw from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
+import Select from 'ol/interaction/Select.js';
 import Snap from 'ol/interaction/Snap.js';
 import LayerGroup from 'ol/layer/Group';
 import Map from 'ol/Map';
@@ -12,6 +13,7 @@ import CircleStyle from 'ol/style/Circle';
 import { BackgroundLayer, mapLayers } from './layers';
 
 import { defaults as defaultControls } from 'ol/control/defaults.js';
+import Translate from 'ol/interaction/Translate';
 import { ControlPortal, getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
@@ -97,6 +99,8 @@ export const drawStrokeColorAtom = atom<string>(
 );
 export const snapAtom = atom<Snap | null>(null);
 export const modifyAtom = atom<Modify | null>(null);
+export const selectAtom = atom<Select | null>(null);
+export const translateAtom = atom<Translate | null>(null);
 
 export const drawEnabledAtom = atom<boolean>((get) => {
   const draw = get(drawAtom);

@@ -45,6 +45,7 @@ export const DrawControls = () => {
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
 
   const drawTypeCollection: { value: DrawType; label: string }[] = [
+    { value: 'Move', label: 'Flytt' },
     { value: 'Point', label: 'Punkt' },
     { value: 'LineString', label: 'Linje' },
     { value: 'Polygon', label: 'Polygon' },

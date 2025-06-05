@@ -5,7 +5,9 @@ import BaseEvent from 'ol/events/Event';
 import { Extent } from 'ol/extent';
 import Draw, { DrawEvent } from 'ol/interaction/Draw.js';
 import Modify from 'ol/interaction/Modify';
+import Select from 'ol/interaction/Select';
 import Snap from 'ol/interaction/Snap';
+import Translate from 'ol/interaction/Translate';
 import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
 import { get as getProjection, transform } from 'ol/proj';
@@ -22,12 +24,14 @@ import {
   modifyAtom,
   projectionAtom,
   ProjectionIdentifier,
+  selectAtom,
   snapAtom,
+  translateAtom,
 } from './atoms';
 import { BackgroundLayer } from './layers';
 import { getMousePositionControl } from './mapControls';
 
-export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle';
+export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
 
 const useMap = () => {
   const map = useAtomValue(mapAtom);
@@ -168,6 +172,8 @@ const useDrawSettings = () => {
   const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
   const [snap, setSnap] = useAtom(snapAtom);
   const [modify, setModify] = useAtom(modifyAtom);
+  const [select, setSelect] = useAtom(selectAtom);
+  const [translate, setTranslate] = useAtom(translateAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
 
   const setDrawEnabled = (enable: boolean) => {
@@ -219,18 +225,44 @@ const useDrawSettings = () => {
         map.removeInteraction(modify);
         setModify(null);
       }
+
+      if (select) {
+        map.removeInteraction(select);
+        setSelect(null);
+      }
+      if (translate) {
+        map.removeInteraction(translate);
+        setTranslate(null);
+      }
     }
   };
 
   const setDrawType = (type: DrawType) => {
     if (draw) {
-      map.removeInteraction(draw);
       const drawLayer = map
         .getLayers()
         .getArray()
         .filter(
           (layer) => layer.get('id') === 'drawLayer',
         )[0] as unknown as VectorLayer;
+      map.removeInteraction(draw);
+
+      if (type === 'Move') {
+        const newSelect = new Select({
+          layers: [drawLayer],
+        });
+
+        const newTranslate = new Translate({
+          features: newSelect.getFeatures(),
+        });
+
+        map.addInteraction(newSelect);
+        setSelect(newSelect);
+
+        map.addInteraction(newTranslate);
+        setTranslate(newTranslate);
+        return;
+      }
 
       const newDraw = new Draw({
         source: drawLayer.getSource() as VectorSource,
