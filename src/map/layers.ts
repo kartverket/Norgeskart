@@ -55,6 +55,7 @@ export type MapLayers = {
   };
   europaForenklet: MapLayer;
   drawLayer: MapLayer;
+  markerLayer: MapLayer;
 };
 
 export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
@@ -163,6 +164,17 @@ const mapLayers: MapLayers = {
         zIndex: 2,
         source: new VectorSource({ wrapX: false }),
         properties: { id: 'drawLayer' },
+      });
+    },
+  },
+
+  markerLayer: {
+    id: 'markerLayer',
+    getLayer: () => {
+      return new VectorLayer({
+        zIndex: 3,
+        source: new VectorSource({ wrapX: false }),
+        properties: { id: 'markerLayer' },
       });
     },
   },

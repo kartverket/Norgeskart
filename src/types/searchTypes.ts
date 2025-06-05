@@ -1,5 +1,5 @@
 export type RepresentasjonsPunkt = {
-  espg: string;
+  epsg: string;
   lon: number;
   lat: number;
 };

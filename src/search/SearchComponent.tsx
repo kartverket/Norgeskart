@@ -27,8 +27,8 @@ export const SearchComponent = () => {
       (place): SearchResult => ({
         type: 'Place',
         name: place.skrivemåte,
-        lat: place.representasjonspunkt.øst,
-        lon: place.representasjonspunkt.nord,
+        lon: place.representasjonspunkt.øst,
+        lat: place.representasjonspunkt.nord,
         place: place,
       }),
     ) || []),

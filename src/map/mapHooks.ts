@@ -97,6 +97,7 @@ const useMapSettings = () => {
     });
 
     map.setView(newView);
+
     const mousePositionInteraction = map
       .getControls()
       .getArray()
