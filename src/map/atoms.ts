@@ -106,7 +106,7 @@ export const drawEnabledAtom = atom<boolean>((get) => {
 export const markerStyleAtom = atom<Style>(
   new Style({
     image: new Icon({
-      src: 'public/location.svg',
+      src: '/location.svg',
       anchor: [0.5, 1],
       scale: 1.5,
     }),

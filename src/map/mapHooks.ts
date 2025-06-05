@@ -14,7 +14,7 @@ import VectorSource from 'ol/source/Vector';
 import { Fill } from 'ol/style';
 import Style from 'ol/style/Style';
 import { useEffect } from 'react';
-import { selectedSearchResultAtom } from '../search/atoms.ts';
+import { SearchResult, selectedSearchResultAtom } from '../search/atoms.ts';
 import {
   drawAtom,
   drawEnabledAtom,
@@ -305,6 +305,21 @@ const useDrawSettings = () => {
   };
 };
 
+const getInputCRS = (selectedResult: SearchResult) => {
+  switch (selectedResult.type) {
+    case 'Road':
+      return 'EPSG:25832';
+    case 'Property':
+      return 'EPSG:25832';
+    case 'Place':
+      return 'EPSG:4258';
+    case 'Address':
+      return 'EPSG:4258';
+    default:
+      return 'EPSG:4258';
+  }
+};
+
 const useSelectedSearchResult = () => {
   const selectedResult = useAtomValue(selectedSearchResultAtom);
   const map = useAtomValue(mapAtom);
@@ -315,13 +330,9 @@ const useSelectedSearchResult = () => {
 
     const { lon, lat } = selectedResult;
 
-    let inputCRS = 'EPSG:4258';
-
-    if (selectedResult.type === 'Road' || selectedResult.type === 'Property') {
-      inputCRS = 'EPSG:25832';
-    }
-
     const view = map.getView();
+
+    const inputCRS = getInputCRS(selectedResult);
 
     const coordinates = transform([lon, lat], inputCRS, view.getProjection());
 
