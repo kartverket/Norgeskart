@@ -23,7 +23,12 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
       <List listStyleType="none">
         {results.map((res, i) => {
           return (
-            <ListItem key={i} onClick={() => setSelectedSearchResult(res)}>
+            <ListItem
+              key={i}
+              cursor="pointer"
+              _hover={{ bg: 'gray.100' }}
+              onClick={() => setSelectedSearchResult(res)}
+            >
               {res.type === 'Place' && (
                 <Text>
                   {res.place.skrivemåte}, {res.place.navneobjekttype}
@@ -31,8 +36,7 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
               )}
               {res.type === 'Road' && (
                 <Text>
-                  {res.road.NAVN}, {res.road.KOMMUNENAVN}, {res.road.LONGITUDE},{' '}
-                  {res.road.LATITUDE}
+                  {res.road.NAVN}, {res.road.KOMMUNENAVN}
                 </Text>
               )}
               {res.type === 'Property' && (
