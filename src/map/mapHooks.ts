@@ -4,9 +4,7 @@ import MousePosition from 'ol/control/MousePosition';
 import BaseEvent from 'ol/events/Event';
 import { Extent } from 'ol/extent';
 import Draw, { DrawEvent } from 'ol/interaction/Draw.js';
-import Modify from 'ol/interaction/Modify';
 import Select from 'ol/interaction/Select';
-import Snap from 'ol/interaction/Snap';
 import Translate from 'ol/interaction/Translate';
 import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
@@ -15,7 +13,6 @@ import VectorSource from 'ol/source/Vector';
 import { Fill } from 'ol/style';
 import Style from 'ol/style/Style';
 import {
-  drawAtom,
   drawEnabledAtom,
   drawFillColorAtom,
   drawStrokeColorAtom,
@@ -166,7 +163,7 @@ const useMapSettings = () => {
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
-  const [draw, setDraw] = useAtom(drawAtom);
+
   const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
   const drawFillColor = useAtomValue(drawFillColorAtom);
   const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
@@ -174,70 +171,30 @@ const useDrawSettings = () => {
   const [modify, setModify] = useAtom(modifyAtom);
   const [select, setSelect] = useAtom(selectAtom);
   const [translate, setTranslate] = useAtom(translateAtom);
-  const drawEnabled = useAtomValue(drawEnabledAtom);
+  const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
+
+  const getDrawInteraction = () => {
+    return map
+      .getInteractions()
+      .getArray()
+      .filter((interaction) => interaction instanceof Draw)[0] as
+      | Draw
+      | undefined;
+  };
 
   const setDrawEnabled = (enable: boolean) => {
-    if (enable) {
-      const drawLayer = map
-        .getLayers()
-        .getArray()
-        .filter(
-          (layer) => layer.get('id') === 'drawLayer',
-        )[0] as unknown as VectorLayer;
+    const drawInteraction = getDrawInteraction();
 
-      const newDraw = new Draw({
-        source: drawLayer.getSource() as VectorSource,
-        type: 'Polygon',
-        style: drawStyle,
-      });
-
-      newDraw.getOverlay().setStyle(drawStyle);
-
-      const newSnap = new Snap({
-        source: drawLayer.getSource() as VectorSource,
-      });
-      const newModify = new Modify({
-        source: drawLayer.getSource() as VectorSource,
-      });
-
-      map.addInteraction(newModify);
-      setModify(newModify);
-
-      map.addInteraction(newSnap);
-      setSnap(newSnap);
-
-      map.addInteraction(newDraw);
-      setDraw(newDraw);
-
-      newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
-    } else {
-      if (draw) {
-        map.removeInteraction(draw);
-        setDraw(null);
-      }
-
-      if (snap) {
-        map.removeInteraction(snap);
-        setSnap(null);
-      }
-
-      if (modify) {
-        map.removeInteraction(modify);
-        setModify(null);
-      }
-
-      if (select) {
-        map.removeInteraction(select);
-        setSelect(null);
-      }
-      if (translate) {
-        map.removeInteraction(translate);
-        setTranslate(null);
-      }
+    if (!drawInteraction) {
+      console.error('Not draw interaction found on map');
+      return;
     }
+    drawInteraction.setActive(enable);
+    setDrawAtomEnabled(enable);
   };
 
   const setDrawType = (type: DrawType) => {
+    const draw = getDrawInteraction();
     if (draw) {
       const drawLayer = map
         .getLayers()
@@ -277,7 +234,7 @@ const useDrawSettings = () => {
           drawEnd(event, drawStyle),
         );
       }
-      setDraw(newDraw);
+      //setDraw(newDraw);
     }
   };
 
@@ -298,6 +255,7 @@ const useDrawSettings = () => {
   };
 
   const setDrawStyle = (style: Style) => {
+    const draw = getDrawInteraction();
     if (draw) {
       draw.getOverlay().setStyle(style);
       draw.getListeners('drawend')?.forEach((listener) => {

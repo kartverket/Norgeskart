@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { View } from 'ol';
 import ScaleLine from 'ol/control/ScaleLine.js';
-import Draw from 'ol/interaction/Draw';
+import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select.js';
 import Snap from 'ol/interaction/Snap.js';
@@ -14,9 +14,31 @@ import { BackgroundLayer, mapLayers } from './layers';
 
 import { defaults as defaultControls } from 'ol/control/defaults.js';
 import Translate from 'ol/interaction/Translate';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import { ControlPortal, getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
+
+const INTIAL_STYLE = new Style({
+  image: new CircleStyle({
+    radius: 7,
+    fill: new Fill({
+      color: '#ffffff',
+    }),
+    stroke: new Stroke({
+      color: '#ffffff',
+      width: 2,
+    }),
+  }),
+  stroke: new Stroke({
+    color: '#ffffff',
+    width: 2,
+  }),
+  fill: new Fill({
+    color: '#ffffff',
+  }),
+});
 
 export type ProjectionIdentifier =
   | 'EPSG:3857' // webmercator
@@ -34,7 +56,7 @@ export const backgroundLayerIdAtom = atom<string | null>(null);
 
 export const backgroundLayerAtom = atom<BackgroundLayer>('newTopo');
 
-export const mapAtom = atom<Map>(() => {
+export const mapAtom = atom<Map>((get) => {
   const map = new Map({
     controls: defaultControls().extend([new ControlPortal()]),
   });
@@ -60,10 +82,27 @@ export const mapAtom = atom<Map>(() => {
   );
   map.addLayer(mapLayers.drawLayer.getLayer(INITIAL_PROJECTION));
   map.addLayer(mapLayers.markerLayer.getLayer(INITIAL_PROJECTION));
+  const drawLayer = mapLayers.drawLayer.getLayer(
+    INITIAL_PROJECTION,
+  ) as VectorLayer;
+  map.addLayer(drawLayer);
 
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
   map.addControl(getMousePositionControl(INITIAL_PROJECTION));
+
+  const drawInteraction = new Draw({
+    source: drawLayer.getSource() as VectorSource,
+    type: 'Polygon',
+    style: INTIAL_STYLE,
+  });
+
+  drawInteraction.addEventListener('drawend', (event) => {
+    const eventFeature = (event as unknown as DrawEvent).feature;
+    eventFeature.setStyle(INTIAL_STYLE);
+  });
+  drawInteraction.setActive(false);
+  map.addInteraction(drawInteraction);
 
   return map;
 });
@@ -102,10 +141,7 @@ export const modifyAtom = atom<Modify | null>(null);
 export const selectAtom = atom<Select | null>(null);
 export const translateAtom = atom<Translate | null>(null);
 
-export const drawEnabledAtom = atom<boolean>((get) => {
-  const draw = get(drawAtom);
-  return draw !== null;
-});
+export const drawEnabledAtom = atom<boolean>(false);
 
 export const markerStyleAtom = atom<Style>(
   new Style({
