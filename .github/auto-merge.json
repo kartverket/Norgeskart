@@ -1,0 +1,44 @@
+[
+  {
+    "match": {
+      "dependency_name": "eslint-plugin-prettier",
+      "update_type": "semver:patch"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "eslint",
+      "update_type": "semver:patch"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "typescript-eslint",
+      "update_type": "semver:minor"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "@types/react",
+      "update_type": "semver:patch"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "@types/react-dom",
+      "update_type": "semver:patch"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "vite",
+      "update_type": "semver:patch"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "globals",
+      "update_type": "semver:minor"
+    }
+  }
+]
