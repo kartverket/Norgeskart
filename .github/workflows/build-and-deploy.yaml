@@ -1,6 +1,6 @@
 name: Build and deploy
 
-on: 
+on:
   push:
     branches:
       - main
@@ -12,6 +12,10 @@ on:
 env:
   image_registry: ghcr.io
 
+permissions:
+  contents: write
+  id-token: write
+  packages: write
 
 jobs:
   build:
@@ -19,27 +23,27 @@ jobs:
     outputs:
       docker_tag: ${{ steps.meta.outputs.tags }}
     steps:
-      - name: "Checkout code"
+      - name: 'Checkout code'
         uses: actions/checkout@v4
-      
-      - name: "Setup node.js"
+
+      - name: 'Setup node.js'
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      
-      - name: "Install dependencies"
+
+      - name: 'Install dependencies'
         run: npm install
-      
-      - name: "Verify linting"
+
+      - name: 'Verify linting'
         run: npm run lint
 
-      - name: "Audit dependencies"
+      - name: 'Audit dependencies'
         run: npm audit --prodction --audit-level=high
 
-      - name: "Verify formatting"
+      - name: 'Verify formatting'
         run: npm run format-check
 
-      - name: "Build"
+      - name: 'Build'
         run: npm run build
 
       - name: Login to GitHub Container Registry
@@ -56,7 +60,7 @@ jobs:
           images: ${{ env.image_registry }}/${{ github.repository }}
           tags: |
             type=sha, prefix=commit-
-      
+
       - name: Build and push Docker image
         id: docker
         uses: docker/build-push-action@v4
@@ -65,7 +69,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -73,13 +77,13 @@ jobs:
       contents: read
       id-token: write
     if: github.event_name != 'pull_request'
-    steps:    
+    steps:
       - uses: octo-sts/action@6177b4481c00308b3839969c3eca88c96a91775f
         id: octo-sts
         with:
           scope: kartverket/tnt-apps
           identity: norgeskart5
-          
+
       - name: Checkout apps repository
         uses: actions/checkout@v4
         with:
@@ -99,5 +103,4 @@ jobs:
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
           git add .
           git commit -m "$COMMIT_MESSAGE"
-          git push  
-    
+          git push
