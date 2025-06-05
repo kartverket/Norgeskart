@@ -18,12 +18,8 @@ import {
   drawStrokeColorAtom,
   drawStyleAtom,
   mapAtom,
-  modifyAtom,
   projectionAtom,
   ProjectionIdentifier,
-  selectAtom,
-  snapAtom,
-  translateAtom,
 } from './atoms';
 import { BackgroundLayer } from './layers';
 import { getMousePositionControl } from './mapControls';
@@ -163,14 +159,9 @@ const useMapSettings = () => {
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
-
   const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
   const drawFillColor = useAtomValue(drawFillColorAtom);
   const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
-  const [snap, setSnap] = useAtom(snapAtom);
-  const [modify, setModify] = useAtom(modifyAtom);
-  const [select, setSelect] = useAtom(selectAtom);
-  const [translate, setTranslate] = useAtom(translateAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
 
   const getDrawInteraction = () => {
@@ -179,6 +170,32 @@ const useDrawSettings = () => {
       .getArray()
       .filter((interaction) => interaction instanceof Draw)[0] as
       | Draw
+      | undefined;
+  };
+
+  const getDrawLayer = () => {
+    return map
+      .getLayers()
+      .getArray()
+      .filter(
+        (layer) => layer.get('id') === 'drawLayer',
+      )[0] as unknown as VectorLayer;
+  };
+
+  const getSelectInteraction = () => {
+    return map
+      .getInteractions()
+      .getArray()
+      .filter((interaction) => interaction instanceof Select)[0] as
+      | Select
+      | undefined;
+  };
+  const getTranslateInteraction = () => {
+    return map
+      .getInteractions()
+      .getArray()
+      .filter((interaction) => interaction instanceof Translate)[0] as
+      | Translate
       | undefined;
   };
 
@@ -195,31 +212,21 @@ const useDrawSettings = () => {
 
   const setDrawType = (type: DrawType) => {
     const draw = getDrawInteraction();
+    const select = getSelectInteraction();
+    const translate = getTranslateInteraction();
+
+    if (type === 'Move') {
+      draw?.setActive(false);
+      select?.setActive(true);
+      translate?.setActive(true);
+      return;
+    }
+
     if (draw) {
-      const drawLayer = map
-        .getLayers()
-        .getArray()
-        .filter(
-          (layer) => layer.get('id') === 'drawLayer',
-        )[0] as unknown as VectorLayer;
+      select?.setActive(false);
+      translate?.setActive(false);
+      const drawLayer = getDrawLayer();
       map.removeInteraction(draw);
-
-      if (type === 'Move') {
-        const newSelect = new Select({
-          layers: [drawLayer],
-        });
-
-        const newTranslate = new Translate({
-          features: newSelect.getFeatures(),
-        });
-
-        map.addInteraction(newSelect);
-        setSelect(newSelect);
-
-        map.addInteraction(newTranslate);
-        setTranslate(newTranslate);
-        return;
-      }
 
       const newDraw = new Draw({
         source: drawLayer.getSource() as VectorSource,
@@ -234,7 +241,6 @@ const useDrawSettings = () => {
           drawEnd(event, drawStyle),
         );
       }
-      //setDraw(newDraw);
     }
   };
 
@@ -267,13 +273,7 @@ const useDrawSettings = () => {
   };
 
   const clearDrawing = () => {
-    const drawLayer = map
-      .getLayers()
-      .getArray()
-      .filter(
-        (layer) => layer.get('id') === 'drawLayer',
-      )[0] as unknown as VectorLayer;
-
+    const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
     source.clear();
   };

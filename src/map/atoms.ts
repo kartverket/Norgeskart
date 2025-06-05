@@ -56,7 +56,7 @@ export const backgroundLayerIdAtom = atom<string | null>(null);
 
 export const backgroundLayerAtom = atom<BackgroundLayer>('newTopo');
 
-export const mapAtom = atom<Map>((get) => {
+export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls().extend([new ControlPortal()]),
   });
@@ -103,6 +103,19 @@ export const mapAtom = atom<Map>((get) => {
   });
   drawInteraction.setActive(false);
   map.addInteraction(drawInteraction);
+
+  const selectInteraction = new Select({
+    layers: [drawLayer],
+  });
+  selectInteraction.setActive(false);
+  map.addInteraction(selectInteraction);
+
+  const translateInteraction = new Translate({
+    features: selectInteraction.getFeatures(),
+  });
+
+  translateInteraction.setActive(false);
+  map.addInteraction(translateInteraction);
 
   return map;
 });
