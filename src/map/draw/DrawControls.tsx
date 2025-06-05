@@ -27,19 +27,20 @@ import {
   SelectValueText,
   VStack,
 } from '@kvib/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DrawType, useDrawSettings } from '../mapHooks';
 
 export const DrawControls = () => {
   const {
     drawEnabled,
-    setDrawEnabled,
-    setDrawType,
     drawFillColor,
     drawStrokeColor,
+    setDrawEnabled,
+    setDrawType,
     setDrawFillColor,
     setDrawStrokeColor,
     clearDrawing,
+    abortDrawing,
   } = useDrawSettings();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
@@ -51,6 +52,18 @@ export const DrawControls = () => {
     { value: 'Polygon', label: 'Polygon' },
     { value: 'Circle', label: 'Sirkel' },
   ];
+
+  useEffect(() => {
+    const keyListener = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        abortDrawing();
+      }
+    };
+    document.addEventListener('keydown', keyListener);
+    return () => {
+      document.removeEventListener('keydown', keyListener);
+    };
+  }, [abortDrawing]);
 
   return (
     <VStack>

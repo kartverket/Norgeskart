@@ -278,6 +278,13 @@ const useDrawSettings = () => {
     source.clear();
   };
 
+  const abortDrawing = () => {
+    const drawInteraction = getDrawInteraction();
+    if (drawInteraction) {
+      drawInteraction.abortDrawing();
+    }
+  };
+
   return {
     drawEnabled,
     drawStyle,
@@ -287,6 +294,7 @@ const useDrawSettings = () => {
     setDrawType,
     setDrawFillColor,
     setDrawStrokeColor,
+    abortDrawing,
     clearDrawing,
   };
 };
