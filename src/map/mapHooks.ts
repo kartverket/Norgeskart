@@ -1,9 +1,8 @@
 import { useAtom, useAtomValue } from 'jotai';
-import { Feature, View } from 'ol';
+import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
 import BaseEvent from 'ol/events/Event';
 import { Extent } from 'ol/extent';
-import { Point } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw.js';
 import Modify from 'ol/interaction/Modify';
 import Snap from 'ol/interaction/Snap';
@@ -13,8 +12,6 @@ import { get as getProjection, transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { Fill } from 'ol/style';
 import Style from 'ol/style/Style';
-import { useEffect } from 'react';
-import { SearchResult, selectedSearchResultAtom } from '../search/atoms.ts';
 import {
   drawAtom,
   drawEnabledAtom,
@@ -22,7 +19,6 @@ import {
   drawStrokeColorAtom,
   drawStyleAtom,
   mapAtom,
-  markerStyleAtom,
   modifyAtom,
   projectionAtom,
   ProjectionIdentifier,
@@ -305,61 +301,4 @@ const useDrawSettings = () => {
   };
 };
 
-const getInputCRS = (selectedResult: SearchResult) => {
-  switch (selectedResult.type) {
-    case 'Road':
-      return 'EPSG:25832';
-    case 'Property':
-      return 'EPSG:25832';
-    case 'Place':
-      return 'EPSG:4258';
-    case 'Address':
-      return 'EPSG:4258';
-    default:
-      return 'EPSG:4258';
-  }
-};
-
-const useSelectedSearchResult = () => {
-  const selectedResult = useAtomValue(selectedSearchResultAtom);
-  const map = useAtomValue(mapAtom);
-  const markerStyle = useAtomValue(markerStyleAtom);
-
-  useEffect(() => {
-    if (!selectedResult || !map) return;
-
-    const { lon, lat } = selectedResult;
-
-    const view = map.getView();
-
-    const inputCRS = getInputCRS(selectedResult);
-
-    const coordinates = transform([lon, lat], inputCRS, view.getProjection());
-
-    view.setCenter(coordinates);
-    view.setZoom(15);
-
-    const markerLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === 'markerLayer');
-
-    if (!markerLayer) return;
-
-    const vectorMarkerLayer = markerLayer as VectorLayer;
-
-    const source = vectorMarkerLayer.getSource() as VectorSource;
-
-    source.clear();
-
-    const marker = new Feature({
-      geometry: new Point(coordinates),
-    });
-
-    marker.setStyle(markerStyle);
-
-    source.addFeature(marker);
-  }, [selectedResult, map]);
-};
-
-export { useDrawSettings, useMap, useMapSettings, useSelectedSearchResult };
+export { useDrawSettings, useMap, useMapSettings };

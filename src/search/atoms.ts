@@ -1,4 +1,3 @@
-import { atom } from 'jotai';
 import { Address, PlaceName, Property, Road } from '../types/searchTypes.ts';
 
 export type SearchResultBase = {
@@ -28,5 +27,3 @@ export type SearchResult = SearchResultBase &
         address: Address;
       }
   );
-
-export const selectedSearchResultAtom = atom<SearchResult | null>(null);

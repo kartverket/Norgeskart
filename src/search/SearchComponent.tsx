@@ -1,6 +1,5 @@
 import { Search } from '@kvib/react';
 import { useState } from 'react';
-import { useSelectedSearchResult } from '../map/mapHooks.ts';
 import { SearchResult } from './atoms.ts';
 import { SearchResults } from './SearchResults.tsx';
 import {
@@ -18,8 +17,6 @@ export const SearchComponent = () => {
   const { roadsData } = useRoads(searchQuery);
   const { propertiesData } = useProperties(searchQuery);
   const { addressData } = useAddresses(searchQuery);
-
-  useSelectedSearchResult();
 
   //Til pagineringen som skal med etter hvert. kanskje
   const totalResults = placeNameData?.metadata?.totaltAntallTreff || 0;
