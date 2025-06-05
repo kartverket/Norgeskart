@@ -1,5 +1,5 @@
 issuer: https://token.actions.githubusercontent.com
-subject: repo:kartverket/gcp-service-accounts:pull_request
+subject: repo:kartverket/Norgeskart:pull_request
 
 permissions:
   contents: write
