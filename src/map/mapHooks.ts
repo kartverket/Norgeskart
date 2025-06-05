@@ -323,9 +323,9 @@ const useSelectedSearchResult = () => {
 
     const view = map.getView();
 
-    const coords = transform([lon, lat], inputCRS, view.getProjection());
+    const coordinates = transform([lon, lat], inputCRS, view.getProjection());
 
-    view.setCenter(coords);
+    view.setCenter(coordinates);
     view.setZoom(15);
 
     const markerLayer = map
@@ -342,7 +342,7 @@ const useSelectedSearchResult = () => {
     source.clear();
 
     const marker = new Feature({
-      geometry: new Point(coords),
+      geometry: new Point(coordinates),
     });
 
     marker.setStyle(markerStyle);
