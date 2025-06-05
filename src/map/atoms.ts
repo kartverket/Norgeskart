@@ -7,7 +7,7 @@ import Snap from 'ol/interaction/Snap.js';
 import LayerGroup from 'ol/layer/Group';
 import Map from 'ol/Map';
 import { get as getProjection, Projection } from 'ol/proj';
-import { Fill, Stroke, Style } from 'ol/style';
+import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { BackgroundLayer, mapLayers } from './layers';
 
@@ -57,6 +57,7 @@ export const mapAtom = atom<Map>(() => {
     }),
   );
   map.addLayer(mapLayers.drawLayer.getLayer(INITIAL_PROJECTION));
+  map.addLayer(mapLayers.markerLayer.getLayer(INITIAL_PROJECTION));
 
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
@@ -101,3 +102,13 @@ export const drawEnabledAtom = atom<boolean>((get) => {
   const draw = get(drawAtom);
   return draw !== null;
 });
+
+export const markerStyleAtom = atom<Style>(
+  new Style({
+    image: new Icon({
+      src: 'public/location.svg',
+      anchor: [0.5, 1],
+      scale: 1.5,
+    }),
+  }),
+);

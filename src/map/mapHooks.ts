@@ -1,8 +1,9 @@
 import { useAtom, useAtomValue } from 'jotai';
-import { View } from 'ol';
+import { Feature, View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
 import BaseEvent from 'ol/events/Event';
 import { Extent } from 'ol/extent';
+import { Point } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw.js';
 import Modify from 'ol/interaction/Modify';
 import Snap from 'ol/interaction/Snap';
@@ -21,6 +22,7 @@ import {
   drawStrokeColorAtom,
   drawStyleAtom,
   mapAtom,
+  markerStyleAtom,
   modifyAtom,
   projectionAtom,
   ProjectionIdentifier,
@@ -306,26 +308,46 @@ const useDrawSettings = () => {
 const useSelectedSearchResult = () => {
   const selectedResult = useAtomValue(selectedSearchResultAtom);
   const map = useAtomValue(mapAtom);
-
-  console.log('Selected result:', selectedResult);
+  const markerStyle = useAtomValue(markerStyleAtom);
 
   useEffect(() => {
     if (!selectedResult || !map) return;
 
     const { lon, lat } = selectedResult;
 
-    console.log('Lon:', lon, 'Lat:', lat);
+    let inputCRS = 'EPSG:4258';
+
+    if (selectedResult.type === 'Road' || selectedResult.type === 'Property') {
+      inputCRS = 'EPSG:25832';
+    }
 
     const view = map.getView();
-    console.log('View instance:', view);
 
-    console.log('Projection:', view.getProjection());
-    const coords = transform([lon, lat], 'EPSG:4258', view.getProjection());
+    const coords = transform([lon, lat], inputCRS, view.getProjection());
 
-    console.log('coords:', coords);
     view.setCenter(coords);
-    view.setZoom(10);
-    console.log('View after set center:', view.getCenter());
+    view.setZoom(15);
+
+    const markerLayer = map
+      .getLayers()
+      .getArray()
+      .find((layer) => layer.get('id') === 'markerLayer');
+
+    if (!markerLayer) return;
+
+    const vectorMarkerLayer = markerLayer as VectorLayer;
+
+    const source = vectorMarkerLayer.getSource() as VectorSource;
+
+    source.clear();
+
+    const marker = new Feature({
+      geometry: new Point(coords),
+    });
+
+    marker.setStyle(markerStyle);
+
+    source.addFeature(marker);
   }, [selectedResult, map]);
 };
 

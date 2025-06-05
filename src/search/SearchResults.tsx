@@ -31,7 +31,8 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
               )}
               {res.type === 'Road' && (
                 <Text>
-                  {res.road.NAVN}, {res.road.KOMMUNENAVN}
+                  {res.road.NAVN}, {res.road.KOMMUNENAVN}, {res.road.LONGITUDE},{' '}
+                  {res.road.LATITUDE}
                 </Text>
               )}
               {res.type === 'Property' && (
