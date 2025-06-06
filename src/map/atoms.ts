@@ -104,19 +104,6 @@ export const mapAtom = atom<Map>(() => {
   drawInteraction.setActive(false);
   map.addInteraction(drawInteraction);
 
-  const selectInteraction = new Select({
-    layers: [drawLayer],
-  });
-  selectInteraction.setActive(false);
-  map.addInteraction(selectInteraction);
-
-  const translateInteraction = new Translate({
-    features: selectInteraction.getFeatures(),
-  });
-
-  translateInteraction.setActive(false);
-  map.addInteraction(translateInteraction);
-
   return map;
 });
 
