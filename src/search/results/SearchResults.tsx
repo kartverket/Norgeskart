@@ -71,13 +71,7 @@ export const SearchResults = ({
   };
 
   return (
-    <Box
-      backgroundColor="white"
-      mt="5px"
-      overflowY="scroll"
-      maxH="1000px"
-      width="450px"
-    >
+    <Box backgroundColor="white" mt="5px" overflowY="scroll" maxH="1000px">
       {places.length > 0 && (
         <>
           <Text>Stedsnavn</Text>
@@ -85,7 +79,7 @@ export const SearchResults = ({
             {places.map((place, i) => (
               <SearchResultLine
                 key={`place-${i}`}
-                text={`${place.skrivemåte}, ${place.navneobjekttype}`}
+                heading={place.skrivemåte}
                 onClick={() => {
                   handleClick({
                     type: 'Place',
@@ -95,6 +89,7 @@ export const SearchResults = ({
                     place,
                   });
                 }}
+                locationType={place.navneobjekttype}
               />
             ))}
           </List>
@@ -107,7 +102,7 @@ export const SearchResults = ({
             {roads.map((road, i) => (
               <SearchResultLine
                 key={`road-${i}`}
-                text={`${road.NAVN}, ${road.KOMMUNENAVN}`}
+                heading={road.NAVN}
                 onClick={() =>
                   handleClick({
                     type: 'Road',
@@ -129,7 +124,7 @@ export const SearchResults = ({
             {poperties.map((property, i) => (
               <SearchResultLine
                 key={`property-${i}`}
-                text={`${property.TITTEL}, ${property.KOMMUNENAVN}`}
+                heading={property.TITTEL}
                 onClick={() =>
                   handleClick({
                     type: 'Property',
@@ -139,6 +134,7 @@ export const SearchResults = ({
                     property,
                   })
                 }
+                locationType={property.KOMMUNENAVN}
               />
             ))}
           </List>
@@ -151,7 +147,7 @@ export const SearchResults = ({
             {addresses.map((address, i) => (
               <SearchResultLine
                 key={`address-${i}`}
-                text={`${address.adressenavn}, ${address.adressetekst}`}
+                heading={`${address.adressenavn}, ${address.adressetekst}`}
                 onClick={() =>
                   handleClick({
                     type: 'Address',

@@ -21,7 +21,7 @@ export const SidePanel = () => {
   const [activeTab, setActiveTab] = useState<MainTabs | null>(null);
   const { setDrawEnabled } = useDrawSettings();
   const isMobileScreen = useIsMobileScreen();
-  const TAB_WITH = isMobileScreen ? '200px' : '300px';
+  const TAB_WITH = isMobileScreen ? '200px' : '400px';
   return (
     <Flex
       gap={4}
