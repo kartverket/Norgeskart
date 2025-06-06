@@ -1,4 +1,4 @@
-import { Box, List, ListItem, Separator, Text } from '@kvib/react';
+import { Box, List, ListItem, Text } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { Feature } from 'ol';
 import { Point } from 'ol/geom';
@@ -7,13 +7,14 @@ import { transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { mapAtom, markerStyleAtom } from '../map/atoms.ts';
 import { useMapSettings } from '../map/mapHooks.ts';
+import { Address, PlaceName, Property, Road } from '../types/searchTypes.ts';
 import { SearchResult } from './atoms.ts';
 
 interface SearchResultsProps {
-  results: SearchResult[];
-  currentPage: number;
-  totalResults: number;
-  resultsPerPage: number;
+  poperties: Property[];
+  roads: Road[];
+  places: PlaceName[];
+  addresses: Address[];
 }
 
 const getInputCRS = (selectedResult: SearchResult) => {
@@ -31,7 +32,12 @@ const getInputCRS = (selectedResult: SearchResult) => {
   }
 };
 
-export const SearchResults = ({ results }: SearchResultsProps) => {
+export const SearchResults = ({
+  poperties,
+  roads,
+  places,
+  addresses,
+}: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
   const markerStyle = useAtomValue(markerStyleAtom);
   const { setMapLocation } = useMapSettings();
@@ -71,40 +77,114 @@ export const SearchResults = ({ results }: SearchResultsProps) => {
       maxH="1000px"
       width="450px"
     >
-      <List listStyleType="none">
-        {results.map((res, i) => {
-          return (
-            <ListItem
-              key={i}
-              cursor="pointer"
-              _hover={{ bg: 'gray.100' }}
-              onClick={() => handleClick(res)}
-            >
-              {res.type === 'Place' && (
+      {places.length > 0 && (
+        <>
+          <Text>Stedsnavn</Text>
+          <List>
+            {places.map((place, i) => (
+              <ListItem
+                key={`place-${i}`}
+                cursor="pointer"
+                _hover={{ bg: 'gray.100' }}
+                onClick={() =>
+                  handleClick({
+                    type: 'Place',
+                    name: place.skrivemåte,
+                    lat: place.representasjonspunkt.nord,
+                    lon: place.representasjonspunkt.øst,
+                    place,
+                  })
+                }
+              >
                 <Text>
-                  {res.place.skrivemåte}, {res.place.navneobjekttype}
+                  {place.skrivemåte}, {place.navneobjekttype}
                 </Text>
-              )}
-              {res.type === 'Road' && (
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+      {roads.length > 0 && (
+        <>
+          <Text>Vegnavn</Text>
+          <List>
+            {roads.map((road, i) => (
+              <ListItem
+                key={`road-${i}`}
+                cursor="pointer"
+                _hover={{ bg: 'gray.100' }}
+                onClick={() =>
+                  handleClick({
+                    type: 'Road',
+                    name: road.NAVN,
+                    lat: parseFloat(road.LATITUDE),
+                    lon: parseFloat(road.LONGITUDE),
+                    road,
+                  })
+                }
+              >
                 <Text>
-                  {res.road.NAVN}, {res.road.KOMMUNENAVN}
+                  {road.NAVN}, {road.KOMMUNENAVN}
                 </Text>
-              )}
-              {res.type === 'Property' && (
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+      {poperties.length > 0 && (
+        <>
+          <Text>Eiendommer</Text>
+          <List>
+            {poperties.map((property, i) => (
+              <ListItem
+                key={`property-${i}`}
+                cursor="pointer"
+                _hover={{ bg: 'gray.100' }}
+                onClick={() =>
+                  handleClick({
+                    type: 'Property',
+                    name: property.TITTEL,
+                    lat: parseFloat(property.LATITUDE),
+                    lon: parseFloat(property.LONGITUDE),
+                    property,
+                  })
+                }
+              >
                 <Text>
-                  {res.property.TITTEL}, {res.property.KOMMUNENAVN}
+                  {property.TITTEL}, {property.KOMMUNENAVN}
                 </Text>
-              )}
-              {res.type === 'Address' && (
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+      {addresses.length > 0 && (
+        <>
+          <Text>Adresser</Text>
+          <List>
+            {addresses.map((address, i) => (
+              <ListItem
+                key={`address-${i}`}
+                cursor="pointer"
+                _hover={{ bg: 'gray.100' }}
+                onClick={() =>
+                  handleClick({
+                    type: 'Address',
+                    name: address.adressenavn,
+                    lat: address.representasjonspunkt.lat,
+                    lon: address.representasjonspunkt.lon,
+                    address,
+                  })
+                }
+              >
                 <Text>
-                  {res.address.adressenavn}, {res.address.adressetekst}
+                  {address.adressenavn}, {address.adressetekst}
                 </Text>
-              )}
-              <Separator />
-            </ListItem>
-          );
-        })}
-      </List>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
     </Box>
   );
 };
