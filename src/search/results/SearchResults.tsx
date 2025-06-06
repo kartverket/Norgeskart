@@ -1,14 +1,15 @@
-import { Box, List, ListItem, Text } from '@kvib/react';
+import { Box, List, Text } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { Feature } from 'ol';
 import { Point } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
-import { mapAtom, markerStyleAtom } from '../map/atoms.ts';
-import { useMapSettings } from '../map/mapHooks.ts';
-import { Address, PlaceName, Property, Road } from '../types/searchTypes.ts';
-import { SearchResult } from './atoms.ts';
+import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
+import { useMapSettings } from '../../map/mapHooks.ts';
+import { Address, PlaceName, Property, Road } from '../../types/searchTypes.ts';
+import { SearchResult } from '../atoms.ts';
+import { SearchResultLine } from './SearchResultLine.tsx';
 
 interface SearchResultsProps {
   poperties: Property[];
@@ -82,24 +83,19 @@ export const SearchResults = ({
           <Text>Stedsnavn</Text>
           <List>
             {places.map((place, i) => (
-              <ListItem
+              <SearchResultLine
                 key={`place-${i}`}
-                cursor="pointer"
-                _hover={{ bg: 'gray.100' }}
-                onClick={() =>
+                text={`${place.skrivemåte}, ${place.navneobjekttype}`}
+                onClick={() => {
                   handleClick({
                     type: 'Place',
                     name: place.skrivemåte,
                     lat: place.representasjonspunkt.nord,
                     lon: place.representasjonspunkt.øst,
                     place,
-                  })
-                }
-              >
-                <Text>
-                  {place.skrivemåte}, {place.navneobjekttype}
-                </Text>
-              </ListItem>
+                  });
+                }}
+              />
             ))}
           </List>
         </>
@@ -109,10 +105,9 @@ export const SearchResults = ({
           <Text>Vegnavn</Text>
           <List>
             {roads.map((road, i) => (
-              <ListItem
+              <SearchResultLine
                 key={`road-${i}`}
-                cursor="pointer"
-                _hover={{ bg: 'gray.100' }}
+                text={`${road.NAVN}, ${road.KOMMUNENAVN}`}
                 onClick={() =>
                   handleClick({
                     type: 'Road',
@@ -122,11 +117,7 @@ export const SearchResults = ({
                     road,
                   })
                 }
-              >
-                <Text>
-                  {road.NAVN}, {road.KOMMUNENAVN}
-                </Text>
-              </ListItem>
+              />
             ))}
           </List>
         </>
@@ -136,10 +127,9 @@ export const SearchResults = ({
           <Text>Eiendommer</Text>
           <List>
             {poperties.map((property, i) => (
-              <ListItem
+              <SearchResultLine
                 key={`property-${i}`}
-                cursor="pointer"
-                _hover={{ bg: 'gray.100' }}
+                text={`${property.TITTEL}, ${property.KOMMUNENAVN}`}
                 onClick={() =>
                   handleClick({
                     type: 'Property',
@@ -149,11 +139,7 @@ export const SearchResults = ({
                     property,
                   })
                 }
-              >
-                <Text>
-                  {property.TITTEL}, {property.KOMMUNENAVN}
-                </Text>
-              </ListItem>
+              />
             ))}
           </List>
         </>
@@ -163,10 +149,9 @@ export const SearchResults = ({
           <Text>Adresser</Text>
           <List>
             {addresses.map((address, i) => (
-              <ListItem
+              <SearchResultLine
                 key={`address-${i}`}
-                cursor="pointer"
-                _hover={{ bg: 'gray.100' }}
+                text={`${address.adressenavn}, ${address.adressetekst}`}
                 onClick={() =>
                   handleClick({
                     type: 'Address',
@@ -176,11 +161,7 @@ export const SearchResults = ({
                     address,
                   })
                 }
-              >
-                <Text>
-                  {address.adressenavn}, {address.adressetekst}
-                </Text>
-              </ListItem>
+              />
             ))}
           </List>
         </>

@@ -1,6 +1,6 @@
 import { Search } from '@kvib/react';
 import { useState } from 'react';
-import { SearchResults } from './SearchResults.tsx';
+import { SearchResults } from './results/SearchResults.tsx';
 import {
   useAddresses,
   usePlaceNames,
