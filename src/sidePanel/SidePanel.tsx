@@ -1,7 +1,5 @@
 import {
   Flex,
-  Heading,
-  HStack,
   IconButton,
   Tabs,
   TabsContent,
@@ -21,29 +19,20 @@ export const SidePanel = () => {
   const [activeTab, setActiveTab] = useState<MainTabs | null>(null);
   const { setDrawEnabled } = useDrawSettings();
   const isMobileScreen = useIsMobileScreen();
-  const TAB_WITH = isMobileScreen ? '200px' : '300px';
+  const TAB_WITH = isMobileScreen ? '100%' : '400px';
   return (
     <Flex
       gap={4}
       p={4}
       alignItems={'flex-start'}
-      md={{ flexDirection: 'column' }}
+      md={{
+        width: 'fit-content',
+        justifyContent: 'flex-start',
+      }}
       flexDirection={'row'}
+      w={'100%'}
+      justifyContent={'space-between'}
     >
-      <HStack justifyContent={'space-between'} w={'100%'}>
-        <Heading as={'h2'} w={'100%'}>
-          Instillinger
-        </Heading>
-        {activeTab && (
-          <IconButton
-            icon={'close'}
-            variant="ghost"
-            onClick={() => {
-              setActiveTab(null);
-            }}
-          />
-        )}
-      </HStack>
       <Tabs
         defaultValue={null}
         orientation={isMobileScreen ? 'horizontal' : 'vertical'}
@@ -57,6 +46,7 @@ export const SidePanel = () => {
           setActiveTab(e.value as MainTabs);
         }}
         unmountOnExit
+        w={isMobileScreen ? '100%' : 'fit-content'}
       >
         <TabsList>
           <TabsTrigger value="tab_search">Søk</TabsTrigger>
@@ -73,6 +63,15 @@ export const SidePanel = () => {
           <DrawSettings />
         </TabsContent>
       </Tabs>
+      {activeTab && (
+        <IconButton
+          icon={'close'}
+          variant="ghost"
+          onClick={() => {
+            setActiveTab(null);
+          }}
+        />
+      )}
     </Flex>
   );
 };
