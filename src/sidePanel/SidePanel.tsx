@@ -46,7 +46,7 @@ export const SidePanel = () => {
           setActiveTab(e.value as MainTabs);
         }}
         unmountOnExit
-        w={TAB_WITH}
+        w={isMobileScreen ? '100%' : 'fit-content'}
       >
         <TabsList>
           <TabsTrigger value="tab_search">Søk</TabsTrigger>
