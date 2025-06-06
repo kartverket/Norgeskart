@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { View } from 'ol';
 import ScaleLine from 'ol/control/ScaleLine.js';
-import Draw, { DrawEvent } from 'ol/interaction/Draw';
+import Draw from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select.js';
 import Snap from 'ol/interaction/Snap.js';
@@ -15,30 +15,9 @@ import { BackgroundLayer, mapLayers } from './layers';
 import { defaults as defaultControls } from 'ol/control/defaults.js';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import { ControlPortal, getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
-
-const INTIAL_STYLE = new Style({
-  image: new CircleStyle({
-    radius: 7,
-    fill: new Fill({
-      color: '#ffffff',
-    }),
-    stroke: new Stroke({
-      color: '#ffffff',
-      width: 2,
-    }),
-  }),
-  stroke: new Stroke({
-    color: '#ffffff',
-    width: 2,
-  }),
-  fill: new Fill({
-    color: '#ffffff',
-  }),
-});
 
 export type ProjectionIdentifier =
   | 'EPSG:3857' // webmercator
@@ -90,19 +69,6 @@ export const mapAtom = atom<Map>(() => {
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
   map.addControl(getMousePositionControl(INITIAL_PROJECTION));
-
-  const drawInteraction = new Draw({
-    source: drawLayer.getSource() as VectorSource,
-    type: 'Polygon',
-    style: INTIAL_STYLE,
-  });
-
-  drawInteraction.addEventListener('drawend', (event) => {
-    const eventFeature = (event as unknown as DrawEvent).feature;
-    eventFeature.setStyle(INTIAL_STYLE);
-  });
-  drawInteraction.setActive(false);
-  map.addInteraction(drawInteraction);
 
   return map;
 });

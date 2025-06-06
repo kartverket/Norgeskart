@@ -201,12 +201,12 @@ const useDrawSettings = () => {
 
   const setDrawEnabled = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
-
-    if (!drawInteraction) {
-      console.error('Not draw interaction found on map');
-      return;
+    if (drawInteraction) {
+      map.removeInteraction(drawInteraction);
     }
-    drawInteraction.setActive(enable);
+    if (enable) {
+      setDrawType('Polygon');
+    }
     setDrawAtomEnabled(enable);
   };
 
