@@ -7,7 +7,7 @@ import {
   TabsTrigger,
 } from '@kvib/react';
 import { useState } from 'react';
-import { useDrawSettings } from '../map/mapHooks';
+import { useDrawSettings } from '../draw/drawHooks';
 import { SearchComponent } from '../search/SearchComponent';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
