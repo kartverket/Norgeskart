@@ -13,7 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@kvib/react": "^5.2.0",
+    "@kvib/react": "^5.2.2",
     "@tanstack/react-query": "^5.76.0",
     "jotai": "^2.12.5",
     "ol": "^10.5.0",
