@@ -201,12 +201,12 @@ const useDrawSettings = () => {
 
   const setDrawEnabled = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
-
-    if (!drawInteraction) {
-      console.error('Not draw interaction found on map');
-      return;
+    if (drawInteraction) {
+      map.removeInteraction(drawInteraction);
     }
-    drawInteraction.setActive(enable);
+    if (enable) {
+      setDrawType('Polygon');
+    }
     setDrawAtomEnabled(enable);
   };
 
@@ -214,33 +214,42 @@ const useDrawSettings = () => {
     const draw = getDrawInteraction();
     const select = getSelectInteraction();
     const translate = getTranslateInteraction();
+    if (select) {
+      map.removeInteraction(select);
+    }
+    if (translate) {
+      map.removeInteraction(translate);
+    }
+    if (draw) {
+      map.removeInteraction(draw);
+    }
 
     if (type === 'Move') {
-      draw?.setActive(false);
-      select?.setActive(true);
-      translate?.setActive(true);
+      const drawLayer = getDrawLayer();
+      const selectInteraction = new Select({
+        layers: [drawLayer],
+      });
+      map.addInteraction(selectInteraction);
+
+      const translateInteraction = new Translate({
+        features: selectInteraction.getFeatures(),
+      });
+      map.addInteraction(translateInteraction);
       return;
     }
 
-    if (draw) {
-      select?.setActive(false);
-      translate?.setActive(false);
-      const drawLayer = getDrawLayer();
-      map.removeInteraction(draw);
+    const drawLayer = getDrawLayer();
 
-      const newDraw = new Draw({
-        source: drawLayer.getSource() as VectorSource,
-        type: type,
-      });
+    const newDraw = new Draw({
+      source: drawLayer.getSource() as VectorSource,
+      type: type,
+    });
 
-      map.addInteraction(newDraw);
+    map.addInteraction(newDraw);
 
-      if (drawStyle) {
-        newDraw.getOverlay().setStyle(drawStyle);
-        newDraw.addEventListener('drawend', (event) =>
-          drawEnd(event, drawStyle),
-        );
-      }
+    if (drawStyle) {
+      newDraw.getOverlay().setStyle(drawStyle);
+      newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
     }
   };
 
