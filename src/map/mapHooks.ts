@@ -4,6 +4,7 @@ import MousePosition from 'ol/control/MousePosition';
 import { Extent } from 'ol/extent';
 import LayerGroup from 'ol/layer/Group';
 import { get as getProjection, transform } from 'ol/proj';
+import { setUrlParameter } from '../shared/utils/urlUtils';
 import { mapAtom, projectionAtom, ProjectionIdentifier } from './atoms';
 import { BackgroundLayer } from './layers';
 import { getMousePositionControl } from './mapControls';
@@ -85,6 +86,7 @@ const useMapSettings = () => {
       })[0];
     map.removeControl(mousePositionInteraction);
     map.addControl(getMousePositionControl(projectionId));
+    setUrlParameter('projection', projectionId);
   };
 
   const setMapFullScreen = (shouldBeFullscreen: boolean) => {
