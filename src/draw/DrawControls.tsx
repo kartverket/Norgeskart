@@ -11,6 +11,7 @@ import {
   ColorPickerSliders,
   ColorPickerTrigger,
   createListCollection,
+  Heading,
   HStack,
   parseColor,
   PopoverArrow,
@@ -28,7 +29,7 @@ import {
   VStack,
 } from '@kvib/react';
 import { useEffect, useState } from 'react';
-import { DrawType, useDrawSettings } from '../mapHooks';
+import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
 
 export const DrawControls = () => {
   const {
@@ -66,7 +67,10 @@ export const DrawControls = () => {
   }, [abortDrawing]);
 
   return (
-    <VStack>
+    <VStack alignItems={'flex-start'}>
+      <Heading size={'lg'} as="h3">
+        Tegn på kartet
+      </Heading>
       <Button onClick={() => setDrawEnabled(!drawEnabled)}>
         {drawEnabled ? 'Ferdig' : 'Tegn på kartet'}
       </Button>
