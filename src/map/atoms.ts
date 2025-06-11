@@ -1,20 +1,20 @@
 import { atom } from 'jotai';
 import { View } from 'ol';
+import { defaults as defaultControls } from 'ol/control/defaults.js';
 import ScaleLine from 'ol/control/ScaleLine.js';
 import Draw from 'ol/interaction/Draw';
+import Link from 'ol/interaction/Link.js';
 import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select.js';
 import Snap from 'ol/interaction/Snap.js';
+import Translate from 'ol/interaction/Translate';
 import LayerGroup from 'ol/layer/Group';
+import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { get as getProjection, Projection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { BackgroundLayer, mapLayers } from './layers';
-
-import { defaults as defaultControls } from 'ol/control/defaults.js';
-import Translate from 'ol/interaction/Translate';
-import VectorLayer from 'ol/layer/Vector';
 import { ControlPortal, getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
@@ -69,6 +69,11 @@ export const mapAtom = atom<Map>(() => {
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
   map.addControl(getMousePositionControl(INITIAL_PROJECTION));
+  const link = new Link({
+    params: ['x', 'y', 'z'],
+  });
+
+  map.addInteraction(link);
 
   return map;
 });
