@@ -47,6 +47,7 @@ const useMapSettings = () => {
         layer.setVisible(false);
       }
     });
+    setUrlParameter('backgroundLayer', layerName);
   };
 
   const setProjection = (projectionId: ProjectionIdentifier) => {
