@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import './i18n';
 import { MapComponent } from './map/MapComponent.tsx';
 import { useMapSettings } from './map/mapHooks.ts';
-import { projInit } from './projInit.ts';
+
 import { SidePanel } from './sidePanel/SidePanel.tsx';
 
 function App() {
@@ -16,9 +16,6 @@ function App() {
       event.stopPropagation();
     }
   };
-  useEffect(() => {
-    projInit();
-  }, []);
 
   useEffect(() => {
     document.addEventListener('keydown', fullscreenClickHandler);
