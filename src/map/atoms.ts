@@ -11,9 +11,11 @@ import Translate from 'ol/interaction/Translate';
 import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
-import { get as getProjection, Projection } from 'ol/proj';
+import { get as getProjection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
+import { validateProjectionIdString } from '../shared/utils/enumUtils';
+import { getUrlParameter } from '../shared/utils/urlUtils';
 import { BackgroundLayer, mapLayers } from './layers';
 import { ControlPortal, getMousePositionControl } from './mapControls';
 
@@ -25,11 +27,6 @@ export type ProjectionIdentifier =
   | 'EPSG:25833' // utm33n
   | 'EPSG:25835'; // utm35n
 
-export const projectionIdAtom = atom<ProjectionIdentifier>(INITIAL_PROJECTION);
-export const projectionAtom = atom<Projection>(
-  (get) => getProjection(get(projectionIdAtom))!,
-);
-
 export const baseLayerIdAtom = atom<string | null>(null);
 export const backgroundLayerIdAtom = atom<string | null>(null);
 
@@ -39,7 +36,15 @@ export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls().extend([new ControlPortal()]),
   });
-  const projection = getProjection(INITIAL_PROJECTION)!;
+
+  const projectionIdFromUrl = validateProjectionIdString(
+    getUrlParameter('projection'),
+  );
+  const projectionId = projectionIdFromUrl
+    ? projectionIdFromUrl
+    : INITIAL_PROJECTION;
+
+  const projection = getProjection(projectionId)!;
   const projectionExtent = projection.getExtent();
 
   const intialView = new View({
@@ -49,26 +54,24 @@ export const mapAtom = atom<Map>(() => {
     projection: projection,
     extent: projectionExtent,
   });
-  map.addLayer(mapLayers.europaForenklet.getLayer(INITIAL_PROJECTION));
+  map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
   map.addLayer(
     new LayerGroup({
       layers: [
-        mapLayers.backgroundLayers.newTopo.getLayer(INITIAL_PROJECTION),
-        mapLayers.backgroundLayers.topo.getLayer(INITIAL_PROJECTION),
+        mapLayers.backgroundLayers.newTopo.getLayer(projectionId),
+        mapLayers.backgroundLayers.topo.getLayer(projectionId),
       ],
       properties: { id: 'backgroundLayers' },
     }),
   );
-  map.addLayer(mapLayers.drawLayer.getLayer(INITIAL_PROJECTION));
-  map.addLayer(mapLayers.markerLayer.getLayer(INITIAL_PROJECTION));
-  const drawLayer = mapLayers.drawLayer.getLayer(
-    INITIAL_PROJECTION,
-  ) as VectorLayer;
+  map.addLayer(mapLayers.drawLayer.getLayer(projectionId));
+  map.addLayer(mapLayers.markerLayer.getLayer(projectionId));
+  const drawLayer = mapLayers.drawLayer.getLayer(projectionId) as VectorLayer;
   map.addLayer(drawLayer);
 
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
-  map.addControl(getMousePositionControl(INITIAL_PROJECTION));
+  map.addControl(getMousePositionControl(projectionId));
   const link = new Link({
     params: ['x', 'y', 'z'],
   });

@@ -1,5 +1,5 @@
 export const setUrlParameter = (
-  key: string,
+  key: NKUrlParameter,
   value: string | number | boolean,
 ): void => {
   const url = new URL(window.location.href);
@@ -7,7 +7,9 @@ export const setUrlParameter = (
   window.history.replaceState({}, '', url.toString());
 };
 
-export const getUrlParameter = (key: string): string | null => {
+export const getUrlParameter = (key: NKUrlParameter): string | null => {
   const url = new URL(window.location.href);
   return url.searchParams.get(key);
 };
+
+export type NKUrlParameter = 'projection' | 'backgroundLayer' | 'x' | 'y' | 'z';
