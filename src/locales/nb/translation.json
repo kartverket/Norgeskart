@@ -14,7 +14,6 @@
     "save": "Lagre"
   },
   "mapLayers": "Kartlag",
-  "search": "Søk",
   "export": {
     "heading": "Eksport av tegning",
     "format": {
@@ -33,5 +32,9 @@
       "myPosition": "Vis min posisjon"
     },
     "errorMessage": "Noe gikk veldig galt med kartet"
+  },
+  "search": {
+    "placeholder": "Søk i Norgeskart",
+    "tabHeading": "Søk"
   }
 }

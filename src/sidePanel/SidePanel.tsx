@@ -51,7 +51,7 @@ export const SidePanel = () => {
         w={isMobileScreen ? '100%' : 'fit-content'}
       >
         <TabsList>
-          <TabsTrigger value="tab_search">{t('search')}</TabsTrigger>
+          <TabsTrigger value="tab_search">{t('search.tabHeading')}</TabsTrigger>
           <TabsTrigger value="tab_layers">{t('mapLayers')}</TabsTrigger>
           <TabsTrigger value="tab_draw">{t('draw.tabHeading')}</TabsTrigger>
         </TabsList>

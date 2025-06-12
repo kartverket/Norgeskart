@@ -14,7 +14,6 @@
     "save": "Save"
   },
   "mapLayers": "Map layers",
-  "search": "Search",
   "export": {
     "heading": "Export drawing",
     "format": {
@@ -33,5 +32,9 @@
       "myPosition": "Show my location"
     },
     "errorMessage": "Something went very wrong with the map"
+  },
+  "search": {
+    "placeholder": "Search Norgeskart",
+    "tabHeading": "Search"
   }
 }
