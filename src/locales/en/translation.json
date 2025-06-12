@@ -26,5 +26,11 @@
     "actions": {
       "download": "Download"
     }
+  },
+  "map": {
+    "overlay": {
+      "fullscreen": "Toggle fullscreen",
+      "myPosition": "Show my location"
+    }
   }
 }

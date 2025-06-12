@@ -26,5 +26,11 @@
     "actions": {
       "download": "Last ned "
     }
+  },
+  "map": {
+    "overlay": {
+      "fullscreen": "Fullskjerm",
+      "myPosition": "Vis min posisjon"
+    }
   }
 }
