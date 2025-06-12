@@ -1,5 +1,6 @@
 import { Flex } from '@kvib/react';
 import { useEffect } from 'react';
+import './i18n';
 import { MapComponent } from './map/MapComponent.tsx';
 import { useMapSettings } from './map/mapHooks.ts';
 import { projInit } from './projInit.ts';
