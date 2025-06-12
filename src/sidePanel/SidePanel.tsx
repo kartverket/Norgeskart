@@ -7,16 +7,15 @@ import {
   TabsTrigger,
 } from '@kvib/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDrawSettings } from '../draw/drawHooks';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { SearchComponent } from '../search/SearchComponent';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
 import { useIsMobileScreen } from '../shared/hooks';
-import {useTranslation} from 'react-i18next'
-import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 
 type MainTabs = 'tab_search' | 'tab_layers' | 'tab_draw';
-
 
 export const SidePanel = () => {
   const [activeTab, setActiveTab] = useState<MainTabs | null>(null);
