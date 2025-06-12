@@ -14,5 +14,17 @@
     "save": "Save"
   },
   "mapLayers": "Map layers",
-  "search": "Search"
+  "search": "Search",
+  "export": {
+    "heading": "Export drawing",
+    "format": {
+      "label": "Chose format",
+      "placeholder": "Chose format"
+    }
+  },
+  "shared": {
+    "actions": {
+      "download": "Download"
+    }
+  }
 }

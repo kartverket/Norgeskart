@@ -14,5 +14,17 @@
     "save": "Lagre"
   },
   "mapLayers": "Kartlag",
-  "search": "Søk"
+  "search": "Søk",
+  "export": {
+    "heading": "Eksport av tekning",
+    "format": {
+      "label": "Velg filformat",
+      "placeholder": "Vel format"
+    }
+  },
+  "shared": {
+    "actions": {
+      "download": "Last ned "
+    }
+  }
 }
