@@ -14,41 +14,38 @@ The code contents are available under the MIT licence, see the LICENCE file for 
 
 For å kjøre applikasjonen kreves npm og node >= 20.0.0.
 
-`npm install`
-
-`npm run dev`
+```sh
+npm install &&\
+npm run dev
+```
 
 Skal starte en utviklingsserver og siden skal være mulig å nå på localhost:3000
 
 ## Bygge og pakke inn i kontainer
 
-For at applikasjonen skal kjøre på Kartverkets platform bygges den inn i et docker image. For å gjøre disse stegene kreves at du har docker installert og kjørende på maskinen din. Bygg gjøres på følgende måte:
+For at applikasjonen skal kjøre på Kartverkets platform bygges den inn i et docker image. For å gjøre disse stegene kreves at du har docker installert og kjørende på maskinen din. For å bygge, pakke sammen og kjøre en docker container gjør du følgende
 
-`npm run build `
-
-Som lager byggartefakter i /dist
-
-Deretter
-
-`docker build  -t norgeskart`
-
-For å bygge og
-
-`docker run -p 3000:3000 -d norgeskart`
-
-for å kjøre containeren du har laget
+```sh
+npm run build  &&\
+docker build -t norgeskart . &&\
+docker run -p 3000:3000 -d norgeskart
+```
 
 ## Språk
 
 For å støtte forskjellge språk har vi filer i `src/locales/[ditt språk her]`. Denne kan du redigere manuelt, eller du kan bruke scriptene addWord og removeWord. Disse kan du kjøre på følgende måte
 
-`npm run aword -- path.til.det.du.vil.sette "valgfri verdi`
+```sh
+npm run aword -- path.til.det.du.vil.sette "valgfri verdi"
+```
 
 Hvis du ikke legger ved en verdi får du spørsmål for hver av språkene scriptet finner
 
 For å fjerne et ord, selv om det er nøstet kjører du
 
-`npm run rword --path.til.det.som.skal.bort`
+```sh
+npm run rword --path.til.det.som.skal.bort
+```
 
 Disse verdiene kan så brukes i en komponent
 
