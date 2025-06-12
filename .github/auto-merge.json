@@ -40,5 +40,11 @@
       "dependency_name": "globals",
       "update_type": "semver:minor"
     }
+  },
+  {
+    "match": {
+      "dependency_name": "@tanstack/react-query",
+      "update_type": "semver:patch"
+    }
   }
 ]
