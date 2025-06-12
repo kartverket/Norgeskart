@@ -8,33 +8,49 @@
       "colorStroke": "Stroke color"
     },
     "end": "Done",
+    "save": "Save",
     "tabHeading": "Draw",
     "tools": "Tools",
-    "yesClear": "Yes clear",
-    "save": "Save"
+    "yesClear": "Yes clear"
   },
-  "mapLayers": "Map layers",
   "export": {
-    "heading": "Export drawing",
     "format": {
       "label": "Chose format",
       "placeholder": "Chose format"
+    },
+    "heading": "Export drawing"
+  },
+  "map": {
+    "errorMessage": "Something went very wrong with the map",
+    "overlay": {
+      "fullscreen": "Toggle fullscreen",
+      "myPosition": "Show my location"
+    },
+    "settings": {
+      "layers": {
+        "projection": {
+          "label": "Chose map projection",
+          "placeholder": "Chose"
+        },
+        "background": {
+          "placeholder": "Chose",
+          "label": "Chose background map"
+        },
+        "mapNames": {
+          "topo": "Topographic map",
+          "newTopo": "New Topo"
+        }
+      }
     }
+  },
+  "mapLayers": "Map layers",
+  "search": {
+    "placeholder": "Search Norgeskart",
+    "tabHeading": "Search"
   },
   "shared": {
     "actions": {
       "download": "Download"
     }
-  },
-  "map": {
-    "overlay": {
-      "fullscreen": "Toggle fullscreen",
-      "myPosition": "Show my location"
-    },
-    "errorMessage": "Something went very wrong with the map"
-  },
-  "search": {
-    "placeholder": "Search Norgeskart",
-    "tabHeading": "Search"
   }
 }
