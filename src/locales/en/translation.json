@@ -31,6 +31,7 @@
     "overlay": {
       "fullscreen": "Toggle fullscreen",
       "myPosition": "Show my location"
-    }
+    },
+    "errorMessage": "Something went very wrong with the map"
   }
 }
