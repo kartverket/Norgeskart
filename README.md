@@ -14,9 +14,9 @@ The code contents are available under the MIT licence, see the LICENCE file for 
 
 For å kjøre applikasjonen kreves npm og node >= 20.0.0.
 
-` npm install`
+`npm install`
 
-` npm run dev`
+`npm run dev`
 
 Skal starte en utviklingsserver og siden skal være mulig å nå på localhost:3000
 
@@ -37,3 +37,26 @@ For å bygge og
 `docker run -p 3000:3000 -d norgeskart`
 
 for å kjøre containeren du har laget
+
+## Språk
+
+For å støtte forskjellge språk har vi filer i `src/locales/[ditt språk her]`. Denne kan du redigere manuelt, eller du kan bruke scriptene addWord og removeWord. Disse kan du kjøre på følgende måte
+
+`npm run aword -- path.til.det.du.vil.sette "valgfri verdig`
+
+Hvis du ikke legger ved en verdi får du spørsmål for hver av språkene scriptet finner
+
+For å fjerne et ord, selv om det er nøstet kjører du
+
+`npm run rword --path.til.det.som.skal.bort`
+
+Disse verdiene kan så brukes i en komponent
+
+```js
+import { useTranslation } from 'react-i18next';
+
+const MinKomponent = () => {
+  const { t } = useTranslation();
+  return <>{t('path.til.det.du.vil.sette')}</>;
+};
+```
