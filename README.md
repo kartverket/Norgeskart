@@ -42,7 +42,7 @@ for å kjøre containeren du har laget
 
 For å støtte forskjellge språk har vi filer i `src/locales/[ditt språk her]`. Denne kan du redigere manuelt, eller du kan bruke scriptene addWord og removeWord. Disse kan du kjøre på følgende måte
 
-`npm run aword -- path.til.det.du.vil.sette "valgfri verdig`
+`npm run aword -- path.til.det.du.vil.sette "valgfri verdi`
 
 Hvis du ikke legger ved en verdi får du spørsmål for hver av språkene scriptet finner
 
