@@ -12,13 +12,17 @@ import { SearchComponent } from '../search/SearchComponent';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
 import { useIsMobileScreen } from '../shared/hooks';
+import {useTranslation} from 'react-i18next'
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 
 type MainTabs = 'tab_search' | 'tab_layers' | 'tab_draw';
+
 
 export const SidePanel = () => {
   const [activeTab, setActiveTab] = useState<MainTabs | null>(null);
   const { setDrawEnabled } = useDrawSettings();
   const isMobileScreen = useIsMobileScreen();
+  const { t } = useTranslation();
   const TAB_WITH = isMobileScreen ? '100%' : '400px';
   return (
     <Flex
@@ -33,6 +37,7 @@ export const SidePanel = () => {
       w={'100%'}
       justifyContent={'space-between'}
     >
+      <LanguageSwitcher></LanguageSwitcher>
       <Tabs
         defaultValue={null}
         orientation={isMobileScreen ? 'horizontal' : 'vertical'}
@@ -49,7 +54,7 @@ export const SidePanel = () => {
         w={isMobileScreen ? '100%' : 'fit-content'}
       >
         <TabsList>
-          <TabsTrigger value="tab_search">Søk</TabsTrigger>
+          <TabsTrigger value="tab_search">{t('search')}</TabsTrigger>
           <TabsTrigger value="tab_layers">Kartlag</TabsTrigger>
           <TabsTrigger value="tab_draw">Tegne</TabsTrigger>
         </TabsList>
