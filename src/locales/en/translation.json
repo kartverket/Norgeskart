@@ -1,6 +1,18 @@
 {
-    "search": "Search",
-    "mapLayers": "Map layers",
-    "draw" : "Draw"
+  "draw": {
+    "begin": "Draw on map",
+    "clear": "Clear drawing",
+    "confrimClear": "Are you sure?",
+    "controls": {
+      "colorFill": "Fill color",
+      "colorStroke": "Stroke color"
+    },
+    "end": "Done",
+    "tabHeading": "Draw",
+    "tools": "Tools",
+    "yesClear": "Yes clear",
+    "save": "Save"
+  },
+  "mapLayers": "Map layers",
+  "search": "Search"
 }
-

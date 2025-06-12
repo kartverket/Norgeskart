@@ -1,6 +1,18 @@
 {
-    "search": "Søk",
-    "mapLayers": "Kartlag",
-    "draw": "Tegne"
+  "draw": {
+    "begin": "Tegn på kartet",
+    "clear": "Fjern tegning",
+    "confrimClear": "Er du sikker?",
+    "controls": {
+      "colorFill": "Velg fyllfarge",
+      "colorStroke": "Velg ommrissfarge"
+    },
+    "end": "Ferdig",
+    "tabHeading": "Tegn",
+    "tools": "Tegneverktøy",
+    "yesClear": "Ja, fjern",
+    "save": "Lagre"
+  },
+  "mapLayers": "Kartlag",
+  "search": "Søk"
 }
-

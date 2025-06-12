@@ -53,7 +53,7 @@ export const SidePanel = () => {
         <TabsList>
           <TabsTrigger value="tab_search">{t('search')}</TabsTrigger>
           <TabsTrigger value="tab_layers">{t('mapLayers')}</TabsTrigger>
-          <TabsTrigger value="tab_draw">{t('draw')}</TabsTrigger>
+          <TabsTrigger value="tab_draw">{t('draw.tabHeading')}</TabsTrigger>
         </TabsList>
         <TabsContent value="tab_search" w={TAB_WITH}>
           <SearchComponent />
