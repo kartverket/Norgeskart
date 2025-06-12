@@ -9,7 +9,6 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrawSettings } from '../draw/drawHooks';
-import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { SearchComponent } from '../search/SearchComponent';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
@@ -36,7 +35,6 @@ export const SidePanel = () => {
       w={'100%'}
       justifyContent={'space-between'}
     >
-      <LanguageSwitcher></LanguageSwitcher>
       <Tabs
         defaultValue={null}
         orientation={isMobileScreen ? 'horizontal' : 'vertical'}
@@ -54,8 +52,8 @@ export const SidePanel = () => {
       >
         <TabsList>
           <TabsTrigger value="tab_search">{t('search')}</TabsTrigger>
-          <TabsTrigger value="tab_layers">Kartlag</TabsTrigger>
-          <TabsTrigger value="tab_draw">Tegne</TabsTrigger>
+          <TabsTrigger value="tab_layers">{t('mapLayers')}</TabsTrigger>
+          <TabsTrigger value="tab_draw">{t('draw')}</TabsTrigger>
         </TabsList>
         <TabsContent value="tab_search" w={TAB_WITH}>
           <SearchComponent />
