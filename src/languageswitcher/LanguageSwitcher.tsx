@@ -23,7 +23,7 @@ const LanguageSwitcher: React.FC = () => {
         htmlFor="language-select"
         style={{ display: 'block', marginBottom: '0.5rem' }}
       >
-        {t('chooseLanguage') || 'Velg språk'}
+        {t('languageSelector.chooseLanguage') || 'Velg språk'}
       </label>
       <select
         id="language-select"
@@ -37,9 +37,9 @@ const LanguageSwitcher: React.FC = () => {
           border: '1px solid #ccc',
         }}
       >
-        <option value="nb">{t('norwegianBokmaal')}</option>
-        <option value="nn">{t('norwegianNynorsk')}</option>
-        <option value="en">{t('english')}</option>
+        <option value="nb">{t('languageSelector.norwegianBokmaal')}</option>
+        <option value="nn">{t('languageSelector.norwegianNynorsk')}</option>
+        <option value="en">{t('languageSelector.english')}</option>
       </select>
     </Box>
   );
