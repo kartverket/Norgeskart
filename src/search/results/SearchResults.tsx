@@ -170,8 +170,8 @@ export const SearchResults = ({
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
-              {roads.map((road, i) => [
-                <Box>
+              {roads.map((road, i) => (
+                 <>
                   <SearchResultLine
                     key={`road-${i}`}
                     heading={road.NAVN}
@@ -210,8 +210,8 @@ export const SearchResults = ({
                       ))}
                     </List>
                   )}
-                </Box>,
-              ])}
+                  </>
+              ))}
             </List>
           </AccordionItemContent>
         </AccordionItem>
