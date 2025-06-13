@@ -62,7 +62,15 @@ export const SearchResults = ({
     'properties',
     'addresses',
   ]);
-  const [openRoad, setOpenRoad] = useState<string | null>(null);
+  const [openRoads, setOpenRoads] = useState<string[]>([]);
+
+  const toggleRoad = (roadId: string) => {
+    setOpenRoads((prev) =>
+      prev.includes(roadId)
+        ? prev.filter((id) => id !== roadId)
+        : [...prev, roadId],
+    );
+  };
 
   const handleAccordionTabClick = (value: AccordionTab) => {
     setAccordionTabsOpen((prev) =>
@@ -171,14 +179,11 @@ export const SearchResults = ({
           <AccordionItemContent>
             <List>
               {roads.map((road, i) => (
-                <>
+                <Box key={`road-${i}`}>
                   <SearchResultLine
-                    key={`road-${i}`}
                     heading={road.NAVN}
                     showButton={true}
-                    onButtonClick={() =>
-                      setOpenRoad(openRoad === road.ID ? null : road.ID)
-                    }
+                    onButtonClick={() => toggleRoad(road.ID)}
                     onClick={() =>
                       handleSearchClick({
                         type: 'Road',
@@ -189,7 +194,7 @@ export const SearchResults = ({
                       })
                     }
                   />
-                  {openRoad === road.ID && road.HUSNUMMER && (
+                  {openRoads.includes(road.ID) && road.HUSNUMMER && (
                     <List ml="20px">
                       {road.HUSNUMMER.map((houseNumber, i) => (
                         <ListItem
@@ -210,7 +215,7 @@ export const SearchResults = ({
                       ))}
                     </List>
                   )}
-                </>
+                </Box>
               ))}
             </List>
           </AccordionItemContent>
