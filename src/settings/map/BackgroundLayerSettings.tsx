@@ -7,31 +7,45 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
 import { BackgroundLayer } from '../../map/layers';
 import { useMapSettings } from '../../map/mapHooks';
+import { validateBackgroundLayerIdString } from '../../shared/utils/enumUtils';
+import { getUrlParameter } from '../../shared/utils/urlUtils';
 
 export const BackgroundLayerSettings = () => {
+  const { t } = useTranslation();
   const { setBackgroundLayer } = useMapSettings();
 
   const backgroundLayerCollection: { value: BackgroundLayer; label: string }[] =
     [
       {
         value: 'newTopo',
-        label: 'Nye topografiske kart',
+        label: t('map.settings.layers.mapNames.newTopo'),
       },
       {
         value: 'topo',
-        label: 'Topografiske kart',
+        label: t('map.settings.layers.mapNames.topo'),
       },
     ];
+
+  const backgrundLayerId = validateBackgroundLayerIdString(
+    getUrlParameter('backgroundLayer'),
+  );
+  const defaultBackgroundLayer = backgrundLayerId
+    ? backgrundLayerId
+    : 'newTopo'; // Default to 'newTopo' if no valid background layer is found
 
   return (
     <SelectRoot
       collection={createListCollection({ items: backgroundLayerCollection })}
+      defaultValue={[defaultBackgroundLayer]}
     >
-      <SelectLabel>Velg projeksjon</SelectLabel>
+      <SelectLabel>{t('map.settings.layers.background.label')}</SelectLabel>
       <SelectTrigger>
-        <SelectValueText placeholder={'Velg bakgrunnskart'} />
+        <SelectValueText
+          placeholder={t('map.settings.layers.background.placeholder')}
+        />
       </SelectTrigger>
       <SelectContent>
         {backgroundLayerCollection.map((item) => (

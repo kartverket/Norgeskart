@@ -14,6 +14,7 @@ import {
 import { GeoJSON, GML } from 'ol/format';
 import VectorLayer from 'ol/layer/Vector';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { downloadStringAsFile } from '../shared/utils/fileOperations';
 import { useDrawSettings } from './drawHooks';
 
@@ -65,6 +66,7 @@ const handleGmlExport = (layer: VectorLayer) => {
 
 export const ExportControls = () => {
   const { getDrawLayer } = useDrawSettings();
+  const { t } = useTranslation();
   const [exportFormat, setExportFormat] = useState<ExportFormat>('GeoJSON');
 
   const handleExport = () => {
@@ -84,7 +86,7 @@ export const ExportControls = () => {
   return (
     <VStack alignItems="flex-start" w={'100%'}>
       <Heading size={'lg'} as="h3">
-        Eksport av tegning
+        {t('export.heading')}
       </Heading>
 
       <HStack
@@ -98,9 +100,9 @@ export const ExportControls = () => {
           })}
           value={[exportFormat]}
         >
-          <SelectLabel>Tegneverktøy:</SelectLabel>
+          <SelectLabel>{t('export.format.label')}:</SelectLabel>
           <SelectTrigger>
-            <SelectValueText placeholder={'Velg tegneform'} />
+            <SelectValueText placeholder={t('export.format.placeholder')} />
           </SelectTrigger>
           <SelectContent>
             {exportFormatsCollection.map((item) => (
@@ -114,7 +116,7 @@ export const ExportControls = () => {
             ))}
           </SelectContent>
         </SelectRoot>
-        <Button onClick={handleExport}>Last ned</Button>
+        <Button onClick={handleExport}>{t('shared.actions.download')}</Button>
       </HStack>
     </VStack>
   );
