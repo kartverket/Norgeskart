@@ -1,27 +1,27 @@
 {
   "draw": {
-    "begin": "Tegn på kartet",
-    "clear": "Fjern tegning",
+    "begin": "Tekne på kartet",
+    "clear": "Fjern teikning",
     "confrimClear": "Er du sikker?",
     "controls": {
       "colorFill": "Velg fyllfarge",
-      "colorStroke": "Velg ommrissfarge"
+      "colorStroke": "Velg omrissfarge"
     },
     "end": "Ferdig",
     "save": "Lagre",
-    "tabHeading": "Tegn",
-    "tools": "Tegneverktøy",
+    "tabHeading": "Tekne",
+    "tools": "Verktøy",
     "yesClear": "Ja, fjern"
   },
   "export": {
     "format": {
       "label": "Velg filformat",
-      "placeholder": "Velg format"
+      "placeholder": "Vel format"
     },
-    "heading": "Eksport av tegning"
+    "heading": "Eksport av tekning"
   },
   "map": {
-    "errorMessage": "Noe gikk veldig galt med kartet",
+    "errorMessage": "Noko gikk galt med kartet",
     "overlay": {
       "fullscreen": "Fullskjerm",
       "myPosition": "Vis min posisjon"
@@ -29,12 +29,12 @@
     "settings": {
       "layers": {
         "projection": {
-          "label": "Velg projeksjon",
-          "placeholder": "Velg"
+          "label": "Vel projeksjon",
+          "placeholder": "Vel"
         },
         "background": {
-          "placeholder": "Velg",
-          "label": "Velg bakgrunnskart"
+          "placeholder": "Vel",
+          "label": "Vel bakgrunnskart"
         },
         "mapNames": {
           "topo": "Topo",
@@ -50,7 +50,7 @@
   },
   "shared": {
     "actions": {
-      "download": "Last ned"
+      "download": "Last ned "
     }
   },
   "languageSelector": {
