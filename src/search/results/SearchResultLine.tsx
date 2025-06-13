@@ -1,14 +1,12 @@
 import { Button, Flex, ListItem, Text } from '@kvib/react';
 
 export const SearchResultLine = ({
-  key,
   heading,
   locationType = null,
   onClick,
   showButton = false,
   onButtonClick,
 }: {
-  key: string;
   heading: string;
   locationType?: string | null;
   onClick: () => void;
@@ -17,7 +15,6 @@ export const SearchResultLine = ({
 }) => {
   return (
     <ListItem
-      key={key}
       cursor="pointer"
       _hover={{ fontWeight: '600' }}
       onClick={onClick}
