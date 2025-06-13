@@ -171,7 +171,7 @@ export const SearchResults = ({
           <AccordionItemContent>
             <List>
               {roads.map((road, i) => (
-                 <>
+                <>
                   <SearchResultLine
                     key={`road-${i}`}
                     heading={road.NAVN}
@@ -210,7 +210,7 @@ export const SearchResults = ({
                       ))}
                     </List>
                   )}
-                  </>
+                </>
               ))}
             </List>
           </AccordionItemContent>
