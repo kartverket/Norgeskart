@@ -197,11 +197,15 @@ export const SearchResults = ({
                           cursor="pointer"
                           as={'ul'}
                           key={`houseNumber-${i}`}
+                          mb={2}
                           onClick={() =>
                             handleHouseNumberClick(road.NAVN, houseNumber)
                           }
                         >
-                          Husnummer: {houseNumber}
+                          Husnummer
+                          <Box as="span" ml={5}>
+                            {houseNumber}
+                          </Box>
                         </ListItem>
                       ))}
                     </List>
