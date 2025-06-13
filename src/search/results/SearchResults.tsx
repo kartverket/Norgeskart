@@ -177,7 +177,7 @@ export const SearchResults = ({
                     heading={road.NAVN}
                     showButton={true}
                     onButtonClick={() =>
-                      setOpenRoad(openRoad === road.NAVN ? null : road.NAVN)
+                      setOpenRoad(openRoad === road.ID ? null : road.ID)
                     }
                     onClick={() =>
                       handleSearchClick({
@@ -189,10 +189,12 @@ export const SearchResults = ({
                       })
                     }
                   />
-                  {openRoad === road.NAVN && road.HUSNUMMER && (
+                  {openRoad === road.ID && road.HUSNUMMER && (
                     <List ml="20px">
                       {road.HUSNUMMER.map((houseNumber, i) => (
                         <ListItem
+                          _hover={{ fontWeight: '600' }}
+                          cursor="pointer"
                           as={'ul'}
                           key={`houseNumber-${i}`}
                           onClick={() =>
