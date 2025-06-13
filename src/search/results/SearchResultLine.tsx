@@ -24,8 +24,9 @@ export const SearchResultLine = ({
       as={'ul'}
       pr={2}
       pl={2}
+      mb={2}
     >
-      <Flex justifyContent={'space-between'} alignItems="flex-start">
+      <Flex justifyContent={'space-between'} alignItems="center">
         <Text truncate>{heading}</Text>
         {locationType && <Text fontStyle="italic">{locationType}</Text>}
         {showButton && (
