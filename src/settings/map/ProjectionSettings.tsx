@@ -10,10 +10,16 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
+import { validateProjectionIdString } from '../../shared/utils/enumUtils';
+import { getUrlParameter } from '../../shared/utils/urlUtils';
 
 export const ProjectionSettings = () => {
   const { setProjection } = useMapSettings();
   const { t } = useTranslation();
+  const projectionId = validateProjectionIdString(
+    getUrlParameter('projection'),
+  );
+  const defaultProjection = projectionId ? projectionId : 'EPSG:3857'; // Default to EPSG:3857 if no valid projection is found
 
   const projectionCollection = [
     'EPSG:3857',
@@ -28,6 +34,7 @@ export const ProjectionSettings = () => {
   return (
     <SelectRoot
       collection={createListCollection({ items: projectionCollection })}
+      defaultValue={[defaultProjection]}
     >
       <SelectLabel>{t('map.settings.layers.projection.label')}</SelectLabel>
       <SelectTrigger>

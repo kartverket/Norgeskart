@@ -4,7 +4,8 @@ import MousePosition from 'ol/control/MousePosition';
 import { Extent } from 'ol/extent';
 import LayerGroup from 'ol/layer/Group';
 import { get as getProjection, transform } from 'ol/proj';
-import { mapAtom, projectionAtom, ProjectionIdentifier } from './atoms';
+import { setUrlParameter } from '../shared/utils/urlUtils';
+import { mapAtom, ProjectionIdentifier } from './atoms';
 import { BackgroundLayer } from './layers';
 import { getMousePositionControl } from './mapControls';
 
@@ -25,7 +26,6 @@ const useMap = () => {
 
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
-  const projection = useAtomValue(projectionAtom);
 
   const getMapViewCenter = () => {
     const view = map.getView();
@@ -47,6 +47,7 @@ const useMapSettings = () => {
         layer.setVisible(false);
       }
     });
+    setUrlParameter('backgroundLayer', layerName);
   };
 
   const setProjection = (projectionId: ProjectionIdentifier) => {
@@ -85,6 +86,7 @@ const useMapSettings = () => {
       })[0];
     map.removeControl(mousePositionInteraction);
     map.addControl(getMousePositionControl(projectionId));
+    setUrlParameter('projection', projectionId);
   };
 
   const setMapFullScreen = (shouldBeFullscreen: boolean) => {
@@ -111,8 +113,9 @@ const useMapSettings = () => {
     locationProjection: string | null = null,
     zoomLevel: number | null = null,
   ) => {
+    const currentMapProjection = map.getView().getProjection();
     const sourceProjection = getProjection(
-      locationProjection || projection.getCode(),
+      locationProjection || currentMapProjection.getCode(),
     );
     if (!sourceProjection) {
       console.error(`Projection ${locationProjection} not found`);
@@ -127,10 +130,11 @@ const useMapSettings = () => {
     if (zoomLevel !== null) {
       map.getView().setZoom(zoomLevel);
     }
+    setUrlParameter('x', transformedLocation[0]);
+    setUrlParameter('y', transformedLocation[1]);
   };
 
   return {
-    projection,
     getMapViewCenter,
     setMapFullScreen,
     setBackgroundLayer,

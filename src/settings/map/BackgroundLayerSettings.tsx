@@ -10,6 +10,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { BackgroundLayer } from '../../map/layers';
 import { useMapSettings } from '../../map/mapHooks';
+import { validateBackgroundLayerIdString } from '../../shared/utils/enumUtils';
+import { getUrlParameter } from '../../shared/utils/urlUtils';
 
 export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
@@ -27,9 +29,17 @@ export const BackgroundLayerSettings = () => {
       },
     ];
 
+  const backgrundLayerId = validateBackgroundLayerIdString(
+    getUrlParameter('backgroundLayer'),
+  );
+  const defaultBackgroundLayer = backgrundLayerId
+    ? backgrundLayerId
+    : 'newTopo'; // Default to 'newTopo' if no valid background layer is found
+
   return (
     <SelectRoot
       collection={createListCollection({ items: backgroundLayerCollection })}
+      defaultValue={[defaultBackgroundLayer]}
     >
       <SelectLabel>{t('map.settings.layers.background.label')}</SelectLabel>
       <SelectTrigger>
