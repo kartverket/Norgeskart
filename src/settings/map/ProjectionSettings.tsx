@@ -7,11 +7,13 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 
 export const ProjectionSettings = () => {
   const { setProjection } = useMapSettings();
+  const { t } = useTranslation();
 
   const projectionCollection = [
     'EPSG:3857',
@@ -27,9 +29,11 @@ export const ProjectionSettings = () => {
     <SelectRoot
       collection={createListCollection({ items: projectionCollection })}
     >
-      <SelectLabel>Velg projeksjon</SelectLabel>
+      <SelectLabel>{t('map.settings.layers.projection.label')}</SelectLabel>
       <SelectTrigger>
-        <SelectValueText placeholder={'Velg en projeksjon da vel'} />
+        <SelectValueText
+          placeholder={t('map.settings.layers.projection.placeholder')}
+        />
       </SelectTrigger>
       <SelectContent>
         {projectionCollection.map((item) => (

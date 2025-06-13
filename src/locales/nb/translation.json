@@ -1,6 +1,56 @@
 {
-    "search": "Søk",
-    "mapLayers": "Kartlag",
-    "draw": "Tegne"
+  "draw": {
+    "begin": "Tegn på kartet",
+    "clear": "Fjern tegning",
+    "confrimClear": "Er du sikker?",
+    "controls": {
+      "colorFill": "Velg fyllfarge",
+      "colorStroke": "Velg ommrissfarge"
+    },
+    "end": "Ferdig",
+    "save": "Lagre",
+    "tabHeading": "Tegn",
+    "tools": "Tegneverktøy",
+    "yesClear": "Ja, fjern"
+  },
+  "export": {
+    "format": {
+      "label": "Velg filformat",
+      "placeholder": "Velg format"
+    },
+    "heading": "Eksport av tegning"
+  },
+  "map": {
+    "errorMessage": "Noe gikk veldig galt med kartet",
+    "overlay": {
+      "fullscreen": "Fullskjerm",
+      "myPosition": "Vis min posisjon"
+    },
+    "settings": {
+      "layers": {
+        "projection": {
+          "label": "Velg projeksjon",
+          "placeholder": "Velg"
+        },
+        "background": {
+          "placeholder": "Velg",
+          "label": "Velg bakgrunnskart"
+        },
+        "mapNames": {
+          "topo": "Topo",
+          "newTopo": "Nye topo"
+        }
+      }
+    }
+  },
+  "mapLayers": "Kartlag",
+  "search": {
+    "placeholder": "Søk i Norgeskart",
+    "tabHeading": "Søk"
+  },
+  "shared": {
+    "actions": {
+      "download": "Last ned"
+    }
+  }
 }
-

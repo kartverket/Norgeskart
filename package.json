@@ -10,7 +10,9 @@
     "lint-fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\"",
     "format-check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css}\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "aword": "node scripts/addWord.js",
+    "rword": "node scripts/removeWord.js"
   },
   "dependencies": {
     "@kvib/react": "^5.2.2",

@@ -29,8 +29,8 @@ import {
   VStack,
 } from '@kvib/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
-
 export const DrawControls = () => {
   const {
     drawEnabled,
@@ -43,6 +43,7 @@ export const DrawControls = () => {
     clearDrawing,
     abortDrawing,
   } = useDrawSettings();
+  const { t } = useTranslation();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
 
@@ -69,10 +70,10 @@ export const DrawControls = () => {
   return (
     <VStack alignItems={'flex-start'}>
       <Heading size={'lg'} as="h3">
-        Tegn på kartet
+        {t('draw.tabHeading')}
       </Heading>
       <Button onClick={() => setDrawEnabled(!drawEnabled)}>
-        {drawEnabled ? 'Ferdig' : 'Tegn på kartet'}
+        {drawEnabled ? t('draw.begin') : t('draw.end')}
       </Button>
       {drawEnabled && (
         <>
@@ -81,7 +82,7 @@ export const DrawControls = () => {
               items: drawTypeCollection,
             })}
           >
-            <SelectLabel>Tegneverktøy:</SelectLabel>
+            <SelectLabel>{t('draw.tools')}:</SelectLabel>
             <SelectTrigger>
               <SelectValueText placeholder={'Velg tegneform'} />
             </SelectTrigger>
@@ -105,7 +106,9 @@ export const DrawControls = () => {
             }}
           >
             {/*TODO: Gjør hilke velgere som er synlig avhengig av hvilket verktøy som er valgt  */}
-            <ColorPickerLabel>Velg fyllfarge</ColorPickerLabel>
+            <ColorPickerLabel>
+              {t('draw.controls.colorStroke')}
+            </ColorPickerLabel>
             <ColorPickerControl>
               <ColorPickerInput />
               <ColorPickerTrigger />
@@ -125,7 +128,7 @@ export const DrawControls = () => {
               setDrawStrokeColor(value.valueAsString);
             }}
           >
-            <ColorPickerLabel>Velg omrissfarge</ColorPickerLabel>
+            <ColorPickerLabel>{t('draw.controls.colorFill')}</ColorPickerLabel>
 
             <ColorPickerControl>
               <ColorPickerInput />
@@ -147,12 +150,14 @@ export const DrawControls = () => {
           onOpenChange={(e) => setClearPopoverOpen(e.open)}
         >
           <PopoverTrigger asChild>
-            <Button colorPalette={'red'}>Fjern tegning</Button>
+            <Button colorPalette={'red'}>{t('draw.clear')}</Button>
           </PopoverTrigger>
           <PopoverContent>
             <PopoverArrow />
             <PopoverBody>
-              <PopoverTitle fontWeight="bold">Er du sikker?</PopoverTitle>
+              <PopoverTitle fontWeight="bold">
+                {t('draw.clearConfirm')}
+              </PopoverTitle>
 
               <Button
                 onClick={() => {
@@ -172,7 +177,7 @@ export const DrawControls = () => {
             alert('Denne gjør ingenting');
           }}
         >
-          Lagre
+          {t('draw.save')}
         </Button>
       </ButtonGroup>
     </VStack>

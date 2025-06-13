@@ -1,11 +1,13 @@
 import { Box, IconButton, Portal, Stack, Tooltip } from '@kvib/react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMapSettings } from './mapHooks';
 
 export const MapOverlay = () => {
   const { setMapFullScreen, setMapLocation } = useMapSettings();
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const portalRef = useRef<HTMLElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setTimeout(() => {
@@ -37,7 +39,7 @@ export const MapOverlay = () => {
           <Box position="absolute" top="16px" right="16px" zIndex={10}>
             <Stack>
               {document.fullscreenEnabled && (
-                <Tooltip content={'Fullskjerm'}>
+                <Tooltip content={t('map.overlay.fullscreen')}>
                   <IconButton
                     onClick={() => {
                       setMapFullScreen(true);
@@ -47,7 +49,7 @@ export const MapOverlay = () => {
                   />
                 </Tooltip>
               )}
-              <Tooltip content={'Vis min posisjon'}>
+              <Tooltip content={t('map.overlay.myPosition')}>
                 <IconButton
                   onClick={() => {
                     navigator.geolocation.getCurrentPosition((pos) => {

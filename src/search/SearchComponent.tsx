@@ -1,5 +1,6 @@
 import { Flex, Search } from '@kvib/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../shared/hooks.ts';
 import { SearchResults } from './results/SearchResults.tsx';
 import {
@@ -17,6 +18,7 @@ export const SearchComponent = () => {
   const { propertiesData } = useProperties(searchQuery);
   const { addressData } = useAddresses(searchQuery);
   const isMobileScreen = useIsMobileScreen();
+  const { t } = useTranslation();
 
   return (
     <Flex
@@ -27,7 +29,7 @@ export const SearchComponent = () => {
     >
       <Search
         width={isMobileScreen ? '75%' : '100%'}
-        placeholder="Søk i Norgeskart"
+        placeholder={t('search.placeholder')}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />

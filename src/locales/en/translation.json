@@ -1,6 +1,56 @@
 {
-    "search": "Search",
-    "mapLayers": "Map layers",
-    "draw" : "Draw"
+  "draw": {
+    "begin": "Draw on map",
+    "clear": "Clear drawing",
+    "confrimClear": "Are you sure?",
+    "controls": {
+      "colorFill": "Fill color",
+      "colorStroke": "Stroke color"
+    },
+    "end": "Done",
+    "save": "Save",
+    "tabHeading": "Draw",
+    "tools": "Tools",
+    "yesClear": "Yes clear"
+  },
+  "export": {
+    "format": {
+      "label": "Chose format",
+      "placeholder": "Chose format"
+    },
+    "heading": "Export drawing"
+  },
+  "map": {
+    "errorMessage": "Something went very wrong with the map",
+    "overlay": {
+      "fullscreen": "Toggle fullscreen",
+      "myPosition": "Show my location"
+    },
+    "settings": {
+      "layers": {
+        "projection": {
+          "label": "Chose map projection",
+          "placeholder": "Chose"
+        },
+        "background": {
+          "placeholder": "Chose",
+          "label": "Chose background map"
+        },
+        "mapNames": {
+          "topo": "Topographic map",
+          "newTopo": "New Topo"
+        }
+      }
+    }
+  },
+  "mapLayers": "Maps",
+  "search": {
+    "placeholder": "Search Norgeskart",
+    "tabHeading": "Search"
+  },
+  "shared": {
+    "actions": {
+      "download": "Download"
+    }
+  }
 }
-
