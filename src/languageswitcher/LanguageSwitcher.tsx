@@ -1,29 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Box } from '@kvib/react'; // Kan også bruke <div> hvis du ønsker helt native
+
+type Language = 'nb' | 'nn' | 'en';
 
 const LanguageSwitcher: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLang = event.target.value;
-    i18n.changeLanguage(selectedLang);
-  };
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(() => {
+    if (i18n.language.startsWith('nn')) return 'nn';
+    if (i18n.language.startsWith('en')) return 'en';
+    return 'nb';
+  });
+
+  useEffect(() => {
+    i18n.changeLanguage(selectedLanguage);
+  }, [selectedLanguage, i18n]);
 
   return (
-    <div>
-      <label htmlFor="language-select" style={{ marginRight: '0.5rem' }}>
-        Språk:
+    <Box width="200px">
+      <label htmlFor="language-select" style={{ display: 'block', marginBottom: '0.5rem' }}>
+        {t('chooseLanguage') || 'Velg språk'}
       </label>
       <select
         id="language-select"
-        value={i18n.language}
-        onChange={handleChange}
+        value={selectedLanguage}
+        onChange={(e) => setSelectedLanguage(e.target.value as Language)}
+        style={{
+          width: '100%',
+          padding: '0.5rem',
+          fontSize: '1rem',
+          borderRadius: '4px',
+          border: '1px solid #ccc',
+        }}
       >
-        <option value="nb">Norsk (Bokmål)</option>
-        <option value="nn">Nynorsk</option>
-        <option value="en">English</option>
+        <option value="nb">{t('norwegianBokmaal')}</option>
+        <option value="nn">{t('norwegianNynorsk')}</option>
+        <option value="en">{t('english')}</option>
       </select>
-    </div>
+    </Box>
   );
 };
 

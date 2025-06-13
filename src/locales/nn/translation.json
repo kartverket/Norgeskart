@@ -1,6 +1,10 @@
 {
     "search": "SøkNN",
     "mapLayers": "Kartlag",
-    "draw": "Tegne"
+    "draw": "Tegne",
+     "english":"Engelsk",
+    "norwegianBokmaal":"Norsk bokmål",
+    "norwegianNynorsk": "Norsk nynorsk",
+    "chooseLanguage" :"Velg språk"
 }
 

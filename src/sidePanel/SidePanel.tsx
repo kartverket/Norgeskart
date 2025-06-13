@@ -13,6 +13,7 @@ import { SearchComponent } from '../search/SearchComponent';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
 import { useIsMobileScreen } from '../shared/hooks';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 
 type MainTabs = 'tab_search' | 'tab_layers' | 'tab_draw';
 
@@ -21,59 +22,69 @@ export const SidePanel = () => {
   const { setDrawEnabled } = useDrawSettings();
   const isMobileScreen = useIsMobileScreen();
   const { t } = useTranslation();
-  const TAB_WITH = isMobileScreen ? '100%' : '400px';
+  const TAB_WIDTH = isMobileScreen ? '100%' : '400px';
+
   return (
     <Flex
-      gap={4}
-      p={4}
-      alignItems={'flex-start'}
-      md={{
-        width: 'fit-content',
-        justifyContent: 'flex-start',
-      }}
-      flexDirection={'row'}
-      w={'100%'}
-      justifyContent={'space-between'}
+      direction="column"
+      justifyContent="space-between"
+      height="100vh"
+      w={isMobileScreen ? '100%' : 'fit-content'}
     >
-      <Tabs
-        defaultValue={null}
-        orientation={isMobileScreen ? 'horizontal' : 'vertical'}
-        variant={'outline'}
-        value={activeTab}
-        onValueChange={(e) => {
-          if (e.value !== 'tab_draw') {
-            setDrawEnabled(false);
-          }
-
-          setActiveTab(e.value as MainTabs);
-        }}
-        unmountOnExit
-        w={isMobileScreen ? '100%' : 'fit-content'}
+      {/* Top panel with tabs and close button */}
+      <Flex
+        gap={4}
+        p={4}
+        alignItems="flex-start"
+        flexDirection="row"
+        justifyContent="space-between"
+        w="100%"
       >
-        <TabsList>
-          <TabsTrigger value="tab_search">{t('search')}</TabsTrigger>
-          <TabsTrigger value="tab_layers">{t('mapLayers')}</TabsTrigger>
-          <TabsTrigger value="tab_draw">{t('draw')}</TabsTrigger>
-        </TabsList>
-        <TabsContent value="tab_search" w={TAB_WITH}>
-          <SearchComponent />
-        </TabsContent>
-        <TabsContent value="tab_layers" w={TAB_WITH}>
-          <MapSettings />
-        </TabsContent>
-        <TabsContent value="tab_draw" w={TAB_WITH}>
-          <DrawSettings />
-        </TabsContent>
-      </Tabs>
-      {activeTab && (
-        <IconButton
-          icon={'close'}
-          variant="ghost"
-          onClick={() => {
-            setActiveTab(null);
+        <Tabs
+          defaultValue={null}
+          orientation={isMobileScreen ? 'horizontal' : 'vertical'}
+          variant="outline"
+          value={activeTab}
+          onValueChange={(e) => {
+            if (e.value !== 'tab_draw') {
+              setDrawEnabled(false);
+            }
+            setActiveTab(e.value as MainTabs);
           }}
-        />
-      )}
+          unmountOnExit
+          w={isMobileScreen ? '100%' : 'fit-content'}
+        >
+          <TabsList>
+            <TabsTrigger value="tab_search">{t('search')}</TabsTrigger>
+            <TabsTrigger value="tab_layers">{t('mapLayers')}</TabsTrigger>
+            <TabsTrigger value="tab_draw">{t('draw')}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="tab_search" w={TAB_WIDTH}>
+            <SearchComponent />
+          </TabsContent>
+          <TabsContent value="tab_layers" w={TAB_WIDTH}>
+            <MapSettings />
+          </TabsContent>
+          <TabsContent value="tab_draw" w={TAB_WIDTH}>
+            <DrawSettings />
+          </TabsContent>
+        </Tabs>
+
+        {activeTab && (
+          <IconButton
+            icon="close"
+            variant="ghost"
+            onClick={() => {
+              setActiveTab(null);
+            }}
+          />
+        )}
+      </Flex>
+
+      {/* Bottom language switcher */}
+      <Flex p={4} justifyContent="flex-start">
+        <LanguageSwitcher />
+      </Flex>
     </Flex>
   );
 };

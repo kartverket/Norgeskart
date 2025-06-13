@@ -1,6 +1,10 @@
 {
     "search": "Search",
     "mapLayers": "Map layers",
-    "draw" : "Draw"
+    "draw" : "Draw",
+    "english":"English",
+    "norwegianBokmaal":"Norwegian bokmål",
+    "norwegianNynorsk": "Norwegian nynorsk",
+    "chooseLanguage":"Select language"
 }
 
