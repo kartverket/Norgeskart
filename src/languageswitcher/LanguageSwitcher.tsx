@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Box } from '@kvib/react'; // Kan også bruke <div> hvis du ønsker helt native
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Language = 'nb' | 'nn' | 'en';
 
@@ -19,7 +19,10 @@ const LanguageSwitcher: React.FC = () => {
 
   return (
     <Box width="200px">
-      <label htmlFor="language-select" style={{ display: 'block', marginBottom: '0.5rem' }}>
+      <label
+        htmlFor="language-select"
+        style={{ display: 'block', marginBottom: '0.5rem' }}
+      >
         {t('chooseLanguage') || 'Velg språk'}
       </label>
       <select
