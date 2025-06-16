@@ -140,7 +140,7 @@ export const SearchResults = ({
       backgroundColor="white"
       mt="5px"
       overflowY="auto"
-      height={isMobileScreen ? '10vh' : 'calc(100vh - 130px)'}
+      height={isMobileScreen ? '10vh' : '70vh'}
     >
       {places.length > 0 && (
         <AccordionItem value="places">
