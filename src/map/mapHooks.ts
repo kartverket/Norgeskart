@@ -9,6 +9,8 @@ import { mapAtom, mapOrientationAtom, ProjectionIdentifier } from './atoms';
 import { BackgroundLayer } from './layers';
 import { getMousePositionControl } from './mapControls';
 
+const ROTATION_ANIMATION_DURATION = 250;
+
 const useMap = () => {
   const map = useAtomValue(mapAtom);
   const setMapOrientation = useSetAtom(mapOrientationAtom);
@@ -141,18 +143,22 @@ const useMapSettings = () => {
 
   const setMapAngle = (angle: number) => {
     const view = map.getView();
-    view.setRotation(angle);
+    view.animate({
+      rotation: angle,
+      duration: ROTATION_ANIMATION_DURATION,
+    });
   };
 
   const rotatateMap = (angle: number) => {
     const view = map.getView();
     const currentRotation = view.getRotation();
     const newRotation = currentRotation + angle;
-    view.setRotation(newRotation);
+    view.animate({
+      rotation: newRotation,
+      duration: ROTATION_ANIMATION_DURATION,
+    });
   };
 
-  //Rotate the map left or right
-  // increment of 45 degrees. If between a whole muiltiple of 45 degrees, round to the nearest multiple of 45 degrees
   const rotateSnappy = (direction: 'left' | 'right') => {
     const view = map.getView();
     const currentRotation = view.getRotation();
@@ -168,7 +174,10 @@ const useMapSettings = () => {
     // Round to the nearest multiple of 45 degrees
     newRotation = Math.round(newRotation / angle) * angle;
 
-    view.setRotation(newRotation);
+    view.animate({
+      rotation: newRotation,
+      duration: ROTATION_ANIMATION_DURATION,
+    });
   };
 
   return {
