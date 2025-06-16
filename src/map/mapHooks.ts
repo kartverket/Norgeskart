@@ -9,7 +9,7 @@ import { mapAtom, mapOrientationAtom, ProjectionIdentifier } from './atoms';
 import { BackgroundLayer } from './layers';
 import { getMousePositionControl } from './mapControls';
 
-const ROTATION_ANIMATION_DURATION = 250;
+const ROTATION_ANIMATION_DURATION = 500;
 
 const useMap = () => {
   const map = useAtomValue(mapAtom);
