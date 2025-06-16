@@ -46,7 +46,12 @@
   "mapLayers": "Kartlag",
   "search": {
     "placeholder": "Søk i Norgeskart",
-    "tabHeading": "Søk"
+    "tabHeading": "Søk",
+    "placeName": "Stadnamn",
+    "roads": "Vegar",
+    "properties": "Eigedomar",
+    "addresses": "Adresser",
+    "houseNumber": "Husnummer"
   },
   "shared": {
     "actions": {

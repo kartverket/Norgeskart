@@ -3,7 +3,9 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   AccordionRoot,
+  Box,
   List,
+  ListItem,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { Feature } from 'ol';
@@ -12,11 +14,13 @@ import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { Address, PlaceName, Property, Road } from '../../types/searchTypes.ts';
 import { SearchResult } from '../atoms.ts';
+import { getAddresses } from '../searchApi.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
@@ -59,6 +63,16 @@ export const SearchResults = ({
     'properties',
     'addresses',
   ]);
+  const [openRoads, setOpenRoads] = useState<string[]>([]);
+  const { t } = useTranslation();
+
+  const toggleRoad = (roadId: string) => {
+    setOpenRoads((prev) =>
+      prev.includes(roadId)
+        ? prev.filter((id) => id !== roadId)
+        : [...prev, roadId],
+    );
+  };
 
   const handleAccordionTabClick = (value: AccordionTab) => {
     setAccordionTabsOpen((prev) =>
@@ -68,7 +82,7 @@ export const SearchResults = ({
     );
   };
 
-  const handleClick = (res: SearchResult) => {
+  const handleSearchClick = (res: SearchResult) => {
     const { lon, lat } = res;
 
     setMapLocation([lon, lat], getInputCRS(res), 15);
@@ -95,6 +109,29 @@ export const SearchResults = ({
     source.addFeature(marker);
   };
 
+  const handleHouseNumberClick = async (
+    roadName: string,
+    houseNumber: string,
+  ) => {
+    try {
+      const query = `${roadName} ${houseNumber}`;
+      const response = await getAddresses(query);
+
+      const address = response.adresser?.[0];
+      if (!address) return;
+
+      handleSearchClick({
+        type: 'Address',
+        name: address.adressenavn,
+        lat: address.representasjonspunkt.lat,
+        lon: address.representasjonspunkt.lon,
+        address,
+      });
+    } catch (e) {
+      console.error('Failed to fetch address', e);
+    }
+  };
+
   return (
     <AccordionRoot
       collapsible
@@ -110,7 +147,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('places')}
           >
-            Stedsnavn ({places.length})
+            {t('search.placeName')} ({places.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
@@ -119,7 +156,7 @@ export const SearchResults = ({
                   key={`place-${i}`}
                   heading={place.skrivemåte}
                   onClick={() => {
-                    handleClick({
+                    handleSearchClick({
                       type: 'Place',
                       name: place.skrivemåte,
                       lat: place.representasjonspunkt.nord,
@@ -139,24 +176,48 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('roads')}
           >
-            Vegnavn ({roads.length})
+            {t('search.roads')} ({roads.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
               {roads.map((road, i) => (
-                <SearchResultLine
-                  key={`road-${i}`}
-                  heading={road.NAVN}
-                  onClick={() =>
-                    handleClick({
-                      type: 'Road',
-                      name: road.NAVN,
-                      lat: parseFloat(road.LATITUDE),
-                      lon: parseFloat(road.LONGITUDE),
-                      road,
-                    })
-                  }
-                />
+                <Box key={`road-${i}`}>
+                  <SearchResultLine
+                    heading={road.NAVN}
+                    showButton={true}
+                    onButtonClick={() => toggleRoad(road.ID)}
+                    onClick={() =>
+                      handleSearchClick({
+                        type: 'Road',
+                        name: road.NAVN,
+                        lat: parseFloat(road.LATITUDE),
+                        lon: parseFloat(road.LONGITUDE),
+                        road,
+                      })
+                    }
+                  />
+                  {openRoads.includes(road.ID) && road.HUSNUMMER && (
+                    <List ml="20px">
+                      {road.HUSNUMMER.map((houseNumber, i) => (
+                        <ListItem
+                          _hover={{ fontWeight: '600' }}
+                          cursor="pointer"
+                          as={'ul'}
+                          key={`houseNumber-${i}`}
+                          mb={2}
+                          onClick={() =>
+                            handleHouseNumberClick(road.NAVN, houseNumber)
+                          }
+                        >
+                          {t('search.houseNumber')}
+                          <Box as="span" ml={5}>
+                            {houseNumber}
+                          </Box>
+                        </ListItem>
+                      ))}
+                    </List>
+                  )}
+                </Box>
               ))}
             </List>
           </AccordionItemContent>
@@ -167,7 +228,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('properties')}
           >
-            Eiendommer ({poperties.length})
+            {t('search.properties')} ({poperties.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
@@ -176,7 +237,7 @@ export const SearchResults = ({
                   key={`property-${i}`}
                   heading={property.TITTEL}
                   onClick={() =>
-                    handleClick({
+                    handleSearchClick({
                       type: 'Property',
                       name: property.TITTEL,
                       lat: parseFloat(property.LATITUDE),
@@ -196,7 +257,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('addresses')}
           >
-            Adresser ({addresses.length})
+            {t('search.adresses')} ({addresses.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
@@ -205,7 +266,7 @@ export const SearchResults = ({
                   key={`address-${i}`}
                   heading={`${address.adressenavn}, ${address.adressetekst}`}
                   onClick={() =>
-                    handleClick({
+                    handleSearchClick({
                       type: 'Address',
                       name: address.adressenavn,
                       lat: address.representasjonspunkt.lat,
