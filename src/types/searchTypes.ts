@@ -78,7 +78,7 @@ export type Road = {
   ADRESSEKODE: string;
   FYLKESNAVN: string;
   FYLKESNR: string;
-  HUSNUMMER: string;
+  HUSNUMMER: string[];
   ID: string;
   KILDE: string;
   KOMMUNENAVN: string;
