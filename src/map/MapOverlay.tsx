@@ -46,6 +46,7 @@ export const MapOverlay = () => {
               <IconButton
                 icon={'switch_access_shortcut'}
                 variant="ghost"
+                _hover={{ bg: 'transparent' }}
                 m={0}
                 p={0}
                 onClick={() => {
@@ -53,7 +54,7 @@ export const MapOverlay = () => {
                 }}
               />
               <IconButton
-                icon={'assistant_navigation'}
+                icon={'navigation'}
                 variant="ghost"
                 _hover={{ bg: 'transparent' }}
                 onClick={() => {
@@ -66,6 +67,7 @@ export const MapOverlay = () => {
               <IconButton
                 icon={'switch_access_shortcut'}
                 variant="ghost"
+                _hover={{ bg: 'transparent' }}
                 transform={'scale(-1,1)'}
                 m={0}
                 p={0}
