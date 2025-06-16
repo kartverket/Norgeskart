@@ -1,16 +1,17 @@
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
 import { Extent } from 'ol/extent';
 import LayerGroup from 'ol/layer/Group';
 import { get as getProjection, transform } from 'ol/proj';
 import { setUrlParameter } from '../shared/utils/urlUtils';
-import { mapAtom, ProjectionIdentifier } from './atoms';
+import { mapAtom, mapOrientationAtom, ProjectionIdentifier } from './atoms';
 import { BackgroundLayer } from './layers';
 import { getMousePositionControl } from './mapControls';
 
 const useMap = () => {
   const map = useAtomValue(mapAtom);
+  const setMapOrientation = useSetAtom(mapOrientationAtom);
 
   const setTargetElement = (element: HTMLDivElement | null) => {
     if (!map.getTarget() && element) {
@@ -19,6 +20,10 @@ const useMap = () => {
       map.setTarget(undefined);
     }
   };
+  map.getView().on('change:rotation', (e) => {
+    const rotation = e.target.getRotation();
+    setMapOrientation(rotation);
+  });
 
   const mapElement = map.getTarget() as HTMLElement | undefined;
   return { mapElement, setTargetElement };
