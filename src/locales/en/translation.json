@@ -59,9 +59,9 @@
     }
   },
   "languageSelector": {
-    "english":"English",
-    "norwegianBokmaal":"Norwegian bokmål",
+    "english": "English",
+    "norwegianBokmaal": "Norwegian bokmål",
     "norwegianNynorsk": "Norwegian nynorsk",
-    "chooseLanguage":"Select language"
+    "chooseLanguage": "Select language"
   }
 }
