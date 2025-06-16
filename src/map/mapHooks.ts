@@ -139,7 +139,42 @@ const useMapSettings = () => {
     setUrlParameter('y', transformedLocation[1]);
   };
 
+  const setMapAngle = (angle: number) => {
+    const view = map.getView();
+    view.setRotation(angle);
+  };
+
+  const rotatateMap = (angle: number) => {
+    const view = map.getView();
+    const currentRotation = view.getRotation();
+    const newRotation = currentRotation + angle;
+    view.setRotation(newRotation);
+  };
+
+  //Rotate the map left or right
+  // increment of 45 degrees. If between a whole muiltiple of 45 degrees, round to the nearest multiple of 45 degrees
+  const rotateSnappy = (direction: 'left' | 'right') => {
+    const view = map.getView();
+    const currentRotation = view.getRotation();
+    const angle = Math.PI / 4; // 45 degrees in radians
+    let newRotation;
+
+    if (direction === 'left') {
+      newRotation = currentRotation - angle;
+    } else {
+      newRotation = currentRotation + angle;
+    }
+
+    // Round to the nearest multiple of 45 degrees
+    newRotation = Math.round(newRotation / angle) * angle;
+
+    view.setRotation(newRotation);
+  };
+
   return {
+    setMapAngle,
+    rotatateMap,
+    rotateSnappy,
     getMapViewCenter,
     setMapFullScreen,
     setBackgroundLayer,

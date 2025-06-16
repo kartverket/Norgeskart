@@ -1,12 +1,4 @@
-import {
-  Box,
-  HStack,
-  Icon,
-  IconButton,
-  Portal,
-  Stack,
-  Tooltip,
-} from '@kvib/react';
+import { Box, HStack, IconButton, Portal, Stack, Tooltip } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +6,8 @@ import { mapOrientationDegreesAtom } from './atoms';
 import { useMapSettings } from './mapHooks';
 
 export const MapOverlay = () => {
-  const { setMapFullScreen, setMapLocation } = useMapSettings();
+  const { setMapFullScreen, setMapLocation, setMapAngle, rotateSnappy } =
+    useMapSettings();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const portalRef = useRef<HTMLElement>(null);
@@ -58,13 +51,20 @@ export const MapOverlay = () => {
                 variant="ghost"
                 m={0}
                 p={0}
+                onClick={() => {
+                  rotateSnappy('right');
+                }}
               />
-              <Icon
+              <IconButton
                 icon={'assistant_navigation'}
+                variant="ghost"
+                _hover={{ bg: 'transparent' }}
+                onClick={() => {
+                  setMapAngle(0);
+                }}
                 m={0}
                 p={0}
-                style={{ rotate: `${mapOrientation}deg` }}
-                //rotate={`${mapOrientation}deg`} // Rotate the icon based on map orientation
+                rotate={mapOrientation + 'deg'}
               />
               <IconButton
                 icon={'switch_access_shortcut'}
@@ -72,6 +72,9 @@ export const MapOverlay = () => {
                 transform={'scale(-1,1)'}
                 m={0}
                 p={0}
+                onClick={() => {
+                  rotateSnappy('left');
+                }}
               />
             </HStack>
           </Box>
