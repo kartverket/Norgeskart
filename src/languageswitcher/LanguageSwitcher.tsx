@@ -1,46 +1,53 @@
-import { Box } from '@kvib/react'; // Kan også bruke <div> hvis du ønsker helt native
-import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  createListCollection,
+} from '@kvib/react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-
-type Language = 'nb' | 'nn' | 'en';
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n, t } = useTranslation();
 
-  const [selectedLanguage, setSelectedLanguage] = useState<Language>(() => {
-    if (i18n.language.startsWith('nn')) return 'nn';
-    if (i18n.language.startsWith('en')) return 'en';
-    return 'nb';
-  });
-
-  useEffect(() => {
-    i18n.changeLanguage(selectedLanguage);
-  }, [selectedLanguage, i18n]);
+  const languageOptions = [
+    { value: 'nb', label: t('languageSelector.norwegianBokmaal') || 'Bokmål' },
+    { value: 'nn', label: t('languageSelector.norwegianNynorsk') || 'Nynorsk' },
+    { value: 'en', label: t('languageSelector.english') || 'English' },
+  ];
 
   return (
-    <Box width="200px">
-      <label
-        htmlFor="language-select"
-        style={{ display: 'block', marginBottom: '0.5rem' }}
+    <Box width="150px">
+      <SelectRoot
+        collection={createListCollection({
+          items: languageOptions.map((opt) => ({
+            key: opt.value,
+            ...opt,
+          })),
+        })}
       >
-        {t('languageSelector.chooseLanguage') || 'Velg språk'}
-      </label>
-      <select
-        id="language-select"
-        value={selectedLanguage}
-        onChange={(e) => setSelectedLanguage(e.target.value as Language)}
-        style={{
-          width: '100%',
-          padding: '0.5rem',
-          fontSize: '1rem',
-          borderRadius: '4px',
-          border: '1px solid #ccc',
-        }}
-      >
-        <option value="nb">{t('languageSelector.norwegianBokmaal')}</option>
-        <option value="nn">{t('languageSelector.norwegianNynorsk')}</option>
-        <option value="en">{t('languageSelector.english')}</option>
-      </select>
+        <SelectLabel>
+          {t('languageSelector.chooseLanguage') || 'Velg språk'}
+        </SelectLabel>
+        <SelectTrigger>
+          <SelectValueText placeholder="Velg språk" />
+        </SelectTrigger>
+        <SelectContent>
+          {languageOptions.map((lang) => (
+            <SelectItem
+              key={lang.value}
+              item={lang.value}
+              onClick={() => i18n.changeLanguage(lang.value)}
+            >
+              {lang.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectRoot>
     </Box>
   );
 };
