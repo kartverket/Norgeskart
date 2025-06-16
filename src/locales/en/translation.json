@@ -46,7 +46,12 @@
   "mapLayers": "Maps",
   "search": {
     "placeholder": "Search Norgeskart",
-    "tabHeading": "Search"
+    "tabHeading": "Search",
+    "placeName": "Placenames",
+    "roads": "Roads",
+    "properties": "Properties",
+    "addresses": "Addresses",
+    "houseNumber": "Housenumber"
   },
   "shared": {
     "actions": {

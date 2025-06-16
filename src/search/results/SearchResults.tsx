@@ -14,6 +14,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -63,6 +64,7 @@ export const SearchResults = ({
     'addresses',
   ]);
   const [openRoads, setOpenRoads] = useState<string[]>([]);
+  const { t } = useTranslation();
 
   const toggleRoad = (roadId: string) => {
     setOpenRoads((prev) =>
@@ -145,7 +147,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('places')}
           >
-            Stedsnavn ({places.length})
+            {t('search.placeName')} ({places.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
@@ -174,7 +176,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('roads')}
           >
-            Vegnavn ({roads.length})
+            {t('search.roads')} ({roads.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
@@ -207,7 +209,7 @@ export const SearchResults = ({
                             handleHouseNumberClick(road.NAVN, houseNumber)
                           }
                         >
-                          Husnummer
+                          {t('search.houseNumber')}
                           <Box as="span" ml={5}>
                             {houseNumber}
                           </Box>
@@ -226,7 +228,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('properties')}
           >
-            Eiendommer ({poperties.length})
+            {t('search.properties')} ({poperties.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
@@ -255,7 +257,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('addresses')}
           >
-            Adresser ({addresses.length})
+            {t('search.adresses')} ({addresses.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
