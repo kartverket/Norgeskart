@@ -57,7 +57,9 @@ export const SidePanel = () => {
           <TabsTrigger value="tab_search">{t('search.tabHeading')}</TabsTrigger>
           <TabsTrigger value="tab_layers">{t('mapLayers')}</TabsTrigger>
           <TabsTrigger value="tab_draw">{t('draw.tabHeading')}</TabsTrigger>
-          <TabsTrigger value="tab_language">{t('languageSelector.tabHeading')}</TabsTrigger>
+          <TabsTrigger value="tab_language">
+            {t('languageSelector.tabHeading')}
+          </TabsTrigger>
         </TabsList>
 
         {/* TabsContent section */}
@@ -94,7 +96,7 @@ export const SidePanel = () => {
           }}
           style={{
             position: isMobileScreen ? 'absolute' : 'initial',
-            top: isMobileScreen ? 35 : 'auto',
+            top: isMobileScreen ? 4 : 'auto',
             right: isMobileScreen ? 4 : 'auto',
           }}
         />
@@ -102,4 +104,3 @@ export const SidePanel = () => {
     </Flex>
   );
 };
-
