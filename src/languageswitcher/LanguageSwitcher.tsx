@@ -1,11 +1,11 @@
 import {
   Box,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   SelectContent,
   SelectItem,
   SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
   createListCollection,
 } from '@kvib/react';
 import React from 'react';
