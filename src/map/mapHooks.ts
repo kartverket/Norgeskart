@@ -1,6 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
+import { Listener } from 'ol/events';
 import { Extent } from 'ol/extent';
 import LayerGroup from 'ol/layer/Group';
 import { get as getProjection, transform } from 'ol/proj';
@@ -81,6 +82,10 @@ const useMapSettings = () => {
       zoom: oldView.getZoom(),
       projection: projection,
       extent: projection.getExtent() as Extent,
+    });
+
+    oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {
+      newView.addEventListener('change:rotation', listener);
     });
 
     map.setView(newView);
