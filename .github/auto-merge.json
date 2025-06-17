@@ -2,13 +2,19 @@
   {
     "match": {
       "dependency_name": "eslint-plugin-prettier",
-      "update_type": "semver:patch"
+      "update_type": "semver:minor"
     }
   },
   {
     "match": {
       "dependency_name": "eslint",
-      "update_type": "semver:patch"
+      "update_type": "semver:minor"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "eslint/js",
+      "update_type": "semver:minor"
     }
   },
   {
