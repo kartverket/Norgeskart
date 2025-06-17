@@ -59,6 +59,7 @@
     }
   },
   "languageSelector": {
+    "tabHeading":"Language",
     "english": "English",
     "norwegianBokmaal": "Norwegian bokmål",
     "norwegianNynorsk": "Norwegian nynorsk",

@@ -26,41 +26,50 @@ export const SidePanel = () => {
 
   return (
     <Flex
-      direction="column"
-      justifyContent="space-between"
-      height="100vh"
+      direction={isMobileScreen ? 'column' : 'row'}
       w={isMobileScreen ? '100%' : 'fit-content'}
+      h={isMobileScreen ? 'auto' : '100vh'}
     >
-      {/* Top panel with tabs and close button */}
-      <Flex
-        gap={4}
-        p={4}
-        alignItems="flex-start"
-        flexDirection="row"
-        justifyContent="space-between"
-        w="100%"
+      {/* Tabs wrapper */}
+      <Tabs
+        defaultValue={null}
+        orientation={isMobileScreen ? 'horizontal' : 'vertical'}
+        variant="outline"
+        value={activeTab}
+        onValueChange={(e) => {
+          if (e.value !== 'tab_draw') {
+            setDrawEnabled(false);
+          }
+          setActiveTab(e.value as MainTabs);
+        }}
+        unmountOnExit
+        w={isMobileScreen ? '100%' : 'fit-content'}
       >
-        <Tabs
-          defaultValue={null}
-          orientation={isMobileScreen ? 'horizontal' : 'vertical'}
-          variant="outline"
-          value={activeTab}
-          onValueChange={(e) => {
-            if (e.value !== 'tab_draw') {
-              setDrawEnabled(false);
-            }
-            setActiveTab(e.value as MainTabs);
+        {/* TabsList fixed at top on mobile */}
+        <TabsList
+          style={{
+            width: isMobileScreen ? '100%' : 'auto',
+            overflowX: isMobileScreen ? 'auto' : 'visible',
+            whiteSpace: isMobileScreen ? 'nowrap' : 'normal',
+            flexShrink: 0,
           }}
-          unmountOnExit
-          w={isMobileScreen ? '100%' : 'fit-content'}
         >
-          <TabsList>
-            <TabsTrigger value="tab_search">
-              {t('search.tabHeading')}
-            </TabsTrigger>
-            <TabsTrigger value="tab_layers">{t('mapLayers')}</TabsTrigger>
-            <TabsTrigger value="tab_draw">{t('draw.tabHeading')}</TabsTrigger>
-          </TabsList>
+          <TabsTrigger value="tab_search">{t('search.tabHeading')}</TabsTrigger>
+          <TabsTrigger value="tab_layers">{t('mapLayers')}</TabsTrigger>
+          <TabsTrigger value="tab_draw">{t('draw.tabHeading')}</TabsTrigger>
+          <TabsTrigger value="tab_language">{t('languageSelector.tabHeading')}</TabsTrigger>
+        </TabsList>
+
+        {/* TabsContent section */}
+        <Flex
+          direction="row"
+          p={4}
+          gap={4}
+          flexWrap="wrap"
+          w="100%"
+          overflowY="auto"
+          maxHeight={isMobileScreen ? 'unset' : '100vh'}
+        >
           <TabsContent value="tab_search" w={TAB_WIDTH}>
             <SearchComponent />
           </TabsContent>
@@ -70,23 +79,27 @@ export const SidePanel = () => {
           <TabsContent value="tab_draw" w={TAB_WIDTH}>
             <DrawSettings />
           </TabsContent>
-        </Tabs>
+          <TabsContent value="tab_language" w={TAB_WIDTH}>
+            <LanguageSwitcher />
+          </TabsContent>
+        </Flex>
+      </Tabs>
 
-        {activeTab && (
-          <IconButton
-            icon="close"
-            variant="ghost"
-            onClick={() => {
-              setActiveTab(null);
-            }}
-          />
-        )}
-      </Flex>
-
-      {/* Bottom language switcher */}
-      <Flex p={4} justifyContent="flex-start">
-        <LanguageSwitcher />
-      </Flex>
+      {activeTab && (
+        <IconButton
+          icon="close"
+          variant="ghost"
+          onClick={() => {
+            setActiveTab(null);
+          }}
+          style={{
+            position: isMobileScreen ? 'absolute' : 'initial',
+            top: isMobileScreen ? 35 : 'auto',
+            right: isMobileScreen ? 4 : 'auto',
+          }}
+        />
+      )}
     </Flex>
   );
 };
+
