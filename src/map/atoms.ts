@@ -29,6 +29,11 @@ export type ProjectionIdentifier =
 
 export const baseLayerIdAtom = atom<string | null>(null);
 export const backgroundLayerIdAtom = atom<string | null>(null);
+export const mapOrientationAtom = atom<number>(0);
+export const mapOrientationDegreesAtom = atom<number>((get) => {
+  const radians = get(mapOrientationAtom);
+  return (radians * 180) / Math.PI; // Convert radians to degrees
+});
 
 export const backgroundLayerAtom = atom<BackgroundLayer>('newTopo');
 
