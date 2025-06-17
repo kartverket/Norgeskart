@@ -1,29 +1,54 @@
+import {
+  Box,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  createListCollection,
+} from '@kvib/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const LanguageSwitcher: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLang = event.target.value;
-    i18n.changeLanguage(selectedLang);
-  };
+  const languageOptions = [
+    { value: 'nb', label: t('languageSelector.norwegianBokmaal') || 'Bokmål' },
+    { value: 'nn', label: t('languageSelector.norwegianNynorsk') || 'Nynorsk' },
+    { value: 'en', label: t('languageSelector.english') || 'English' },
+  ];
 
   return (
-    <div>
-      <label htmlFor="language-select" style={{ marginRight: '0.5rem' }}>
-        Språk:
-      </label>
-      <select
-        id="language-select"
-        value={i18n.language}
-        onChange={handleChange}
+    <Box width="150px">
+      <SelectRoot
+        collection={createListCollection({
+          items: languageOptions.map((opt) => ({
+            key: opt.value,
+            ...opt,
+          })),
+        })}
       >
-        <option value="nb">Norsk (Bokmål)</option>
-        <option value="nn">Nynorsk</option>
-        <option value="en">English</option>
-      </select>
-    </div>
+        <SelectLabel>
+          {t('languageSelector.chooseLanguage') || 'Velg språk'}
+        </SelectLabel>
+        <SelectTrigger>
+          <SelectValueText placeholder="Velg språk" />
+        </SelectTrigger>
+        <SelectContent>
+          {languageOptions.map((lang) => (
+            <SelectItem
+              key={lang.value}
+              item={lang.value}
+              onClick={() => i18n.changeLanguage(lang.value)}
+            >
+              {lang.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectRoot>
+    </Box>
   );
 };
 

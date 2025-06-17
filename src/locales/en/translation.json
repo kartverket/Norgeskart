@@ -57,5 +57,12 @@
     "actions": {
       "download": "Download"
     }
+  },
+  "languageSelector": {
+    "tabHeading": "Language",
+    "english": "English",
+    "norwegianBokmaal": "Norwegian bokmål",
+    "norwegianNynorsk": "Norwegian nynorsk",
+    "chooseLanguage": "Select language"
   }
 }
