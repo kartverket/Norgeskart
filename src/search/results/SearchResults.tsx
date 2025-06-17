@@ -6,6 +6,10 @@ import {
   Box,
   List,
   ListItem,
+  Pagination,
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { Feature } from 'ol';
@@ -18,7 +22,13 @@ import { useTranslation } from 'react-i18next';
 import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
-import { Address, PlaceName, Property, Road } from '../../types/searchTypes.ts';
+import {
+  Address,
+  Metadata,
+  PlaceName,
+  Property,
+  Road,
+} from '../../types/searchTypes.ts';
 import { SearchResult } from '../atoms.ts';
 import { getAddresses } from '../searchApi.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
@@ -30,6 +40,8 @@ interface SearchResultsProps {
   roads: Road[];
   places: PlaceName[];
   addresses: Address[];
+  placesMetadata?: Metadata;
+  onPlacesPageChange?: (page: number) => void;
 }
 
 const getInputCRS = (selectedResult: SearchResult) => {
@@ -52,6 +64,8 @@ export const SearchResults = ({
   roads,
   places,
   addresses,
+  placesMetadata,
+  onPlacesPageChange,
 }: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
   const markerStyle = useAtomValue(markerStyleAtom);
@@ -168,6 +182,23 @@ export const SearchResults = ({
                 />
               ))}
             </List>
+            {placesMetadata &&
+              placesMetadata.totaltAntallTreff >
+                placesMetadata.treffPerSide && (
+                <Pagination
+                  size="sm"
+                  count={placesMetadata.totaltAntallTreff}
+                  page={placesMetadata.side}
+                  pageSize={placesMetadata.treffPerSide}
+                  onPageChange={(e: { page: number }) =>
+                    onPlacesPageChange && onPlacesPageChange(e.page)
+                  }
+                >
+                  <PaginationPrevTrigger />
+                  <PaginationItems />
+                  <PaginationNextTrigger />
+                </Pagination>
+              )}
           </AccordionItemContent>
         </AccordionItem>
       )}

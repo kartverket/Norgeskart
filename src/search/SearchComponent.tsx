@@ -12,8 +12,9 @@ import {
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [placesPage, setPlacesPage] = useState(1);
 
-  const { placeNameData } = usePlaceNames(searchQuery, 1);
+  const { placeNameData } = usePlaceNames(searchQuery, placesPage);
   const { roadsData } = useRoads(searchQuery);
   const { propertiesData } = useProperties(searchQuery);
   const { addressData } = useAddresses(searchQuery);
@@ -31,13 +32,18 @@ export const SearchComponent = () => {
         width={isMobileScreen ? '75%' : '100%'}
         placeholder={t('search.placeholder')}
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+          setPlacesPage(1);
+        }}
       />
       <SearchResults
         poperties={propertiesData ? propertiesData : []}
         roads={roadsData ? roadsData : []}
         places={placeNameData ? placeNameData.navn : []}
         addresses={addressData ? addressData.adresser : []}
+        placesMetadata={placeNameData?.metadata}
+        onPlacesPageChange={setPlacesPage}
       />
     </Flex>
   );
