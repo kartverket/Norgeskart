@@ -38,7 +38,7 @@ export const SearchComponent = () => {
         }}
       />
       <SearchResults
-        poperties={propertiesData ? propertiesData : []}
+        properties={propertiesData ? propertiesData : []}
         roads={roadsData ? roadsData : []}
         places={placeNameData ? placeNameData.navn : []}
         addresses={addressData ? addressData.adresser : []}

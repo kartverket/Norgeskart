@@ -36,7 +36,7 @@ import { SearchResultLine } from './SearchResultLine.tsx';
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
 interface SearchResultsProps {
-  poperties: Property[];
+  properties: Property[];
   roads: Road[];
   places: PlaceName[];
   addresses: Address[];
@@ -60,7 +60,7 @@ const getInputCRS = (selectedResult: SearchResult) => {
 };
 
 export const SearchResults = ({
-  poperties,
+  properties: poperties,
   roads,
   places,
   addresses,
