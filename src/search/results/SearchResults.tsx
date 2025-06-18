@@ -6,6 +6,10 @@ import {
   Box,
   List,
   ListItem,
+  Pagination,
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { Feature } from 'ol';
@@ -18,7 +22,13 @@ import { useTranslation } from 'react-i18next';
 import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
-import { Address, PlaceName, Property, Road } from '../../types/searchTypes.ts';
+import {
+  Address,
+  Metadata,
+  PlaceName,
+  Property,
+  Road,
+} from '../../types/searchTypes.ts';
 import { SearchResult } from '../atoms.ts';
 import { getAddresses } from '../searchApi.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
@@ -26,10 +36,12 @@ import { SearchResultLine } from './SearchResultLine.tsx';
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
 interface SearchResultsProps {
-  poperties: Property[];
+  properties: Property[];
   roads: Road[];
   places: PlaceName[];
   addresses: Address[];
+  placesMetadata?: Metadata;
+  onPlacesPageChange?: (page: number) => void;
 }
 
 const getInputCRS = (selectedResult: SearchResult) => {
@@ -48,10 +60,12 @@ const getInputCRS = (selectedResult: SearchResult) => {
 };
 
 export const SearchResults = ({
-  poperties,
+  properties,
   roads,
   places,
   addresses,
+  placesMetadata,
+  onPlacesPageChange,
 }: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
   const markerStyle = useAtomValue(markerStyleAtom);
@@ -132,6 +146,10 @@ export const SearchResults = ({
     }
   };
 
+  if (!placesMetadata) {
+    return null;
+  }
+
   return (
     <AccordionRoot
       collapsible
@@ -168,6 +186,21 @@ export const SearchResults = ({
                 />
               ))}
             </List>
+            {placesMetadata.totaltAntallTreff > placesMetadata.treffPerSide && (
+              <Pagination
+                size="sm"
+                count={placesMetadata.totaltAntallTreff}
+                page={placesMetadata.side}
+                pageSize={placesMetadata.treffPerSide}
+                onPageChange={(e: { page: number }) =>
+                  onPlacesPageChange?.(e.page)
+                }
+              >
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </Pagination>
+            )}
           </AccordionItemContent>
         </AccordionItem>
       )}
@@ -223,16 +256,16 @@ export const SearchResults = ({
           </AccordionItemContent>
         </AccordionItem>
       )}
-      {poperties.length > 0 && (
+      {properties.length > 0 && (
         <AccordionItem value="properties">
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('properties')}
           >
-            {t('search.properties')} ({poperties.length})
+            {t('search.properties')} ({properties.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
-              {poperties.map((property, i) => (
+              {properties.map((property, i) => (
                 <SearchResultLine
                   key={`property-${i}`}
                   heading={property.TITTEL}
