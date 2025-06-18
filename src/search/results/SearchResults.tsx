@@ -60,7 +60,7 @@ const getInputCRS = (selectedResult: SearchResult) => {
 };
 
 export const SearchResults = ({
-  properties: poperties,
+  properties,
   roads,
   places,
   addresses,
@@ -256,16 +256,16 @@ export const SearchResults = ({
           </AccordionItemContent>
         </AccordionItem>
       )}
-      {poperties.length > 0 && (
+      {properties.length > 0 && (
         <AccordionItem value="properties">
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('properties')}
           >
-            {t('search.properties')} ({poperties.length})
+            {t('search.properties')} ({properties.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
-              {poperties.map((property, i) => (
+              {properties.map((property, i) => (
                 <SearchResultLine
                   key={`property-${i}`}
                   heading={property.TITTEL}
