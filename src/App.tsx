@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import './i18n';
-
-import { useMapSettings } from './map/mapHooks.ts';
-
 import Layout from './layout/Layout.tsx';
+import { useMapSettings } from './map/mapHooks.ts';
 
 function App() {
   const { setMapFullScreen } = useMapSettings();

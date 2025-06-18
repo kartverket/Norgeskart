@@ -1,11 +1,9 @@
 import {
   Box,
-  Button,
   Drawer,
   DrawerBody,
   DrawerCloseTrigger,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerPositioner,
   DrawerTitle,
@@ -16,7 +14,8 @@ import {
 } from '@kvib/react';
 import React from 'react';
 import { MapComponent } from '../map/MapComponent.tsx';
-import { SidePanelAccordion } from '../sidePanel/SidePanelAccordion.tsx';
+import { SearchComponent } from '../search/SearchComponent.tsx';
+import { Menu } from '../sidePanel/Menu.tsx';
 
 const Layout: React.FC = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -35,7 +34,6 @@ const Layout: React.FC = () => {
               zIndex="overlay"
             />
           </DrawerTrigger>
-
           <DrawerPositioner>
             <DrawerContent>
               <DrawerCloseTrigger />
@@ -44,23 +42,22 @@ const Layout: React.FC = () => {
               </DrawerHeader>
               <DrawerBody>
                 {/* Her kan menyinnholdet ditt ligge */}
-                <SidePanelAccordion />
+                <SearchComponent />
+                <Menu />
               </DrawerBody>
-              <DrawerFooter>
-                <Button variant="ghost">Lukk</Button>
-              </DrawerFooter>
             </DrawerContent>
           </DrawerPositioner>
         </Drawer>
       ) : (
         <Box
-          flexBasis="20%"
+          flexBasis="15%"
           flexGrow={0}
           flexShrink={0}
           height="100%"
           bg="#fffff"
         >
-          <SidePanelAccordion />
+          <SearchComponent />
+          <Menu />
         </Box>
       )}
 
