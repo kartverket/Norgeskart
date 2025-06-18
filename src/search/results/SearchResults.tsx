@@ -145,6 +145,10 @@ export const SearchResults = ({
       console.error('Failed to fetch address', e);
     }
   };
+  
+  if (!placesMetadata) {
+    return null;
+  }
 
   return (
     <AccordionRoot
@@ -182,23 +186,21 @@ export const SearchResults = ({
                 />
               ))}
             </List>
-            {placesMetadata &&
-              placesMetadata.totaltAntallTreff >
-                placesMetadata.treffPerSide && (
-                <Pagination
-                  size="sm"
-                  count={placesMetadata.totaltAntallTreff}
-                  page={placesMetadata.side}
-                  pageSize={placesMetadata.treffPerSide}
-                  onPageChange={(e: { page: number }) =>
-                    onPlacesPageChange && onPlacesPageChange(e.page)
-                  }
-                >
-                  <PaginationPrevTrigger />
-                  <PaginationItems />
-                  <PaginationNextTrigger />
-                </Pagination>
-              )}
+            {placesMetadata.totaltAntallTreff > placesMetadata.treffPerSide && (
+              <Pagination
+                size="sm"
+                count={placesMetadata.totaltAntallTreff}
+                page={placesMetadata.side}
+                pageSize={placesMetadata.treffPerSide}
+                onPageChange={(e: { page: number }) =>
+                  onPlacesPageChange?.(e.page)
+                }
+              >
+                <PaginationPrevTrigger />
+                <PaginationItems />
+                <PaginationNextTrigger />
+              </Pagination>
+            )}
           </AccordionItemContent>
         </AccordionItem>
       )}
