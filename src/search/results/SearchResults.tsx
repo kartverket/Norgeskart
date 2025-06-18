@@ -32,6 +32,7 @@ import {
 import { SearchResult } from '../atoms.ts';
 import { getAddresses } from '../searchApi.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
+import { InfoBox } from './InfoBox';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
@@ -78,6 +79,7 @@ export const SearchResults = ({
     'addresses',
   ]);
   const [openRoads, setOpenRoads] = useState<string[]>([]);
+  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
 
   const toggleRoad = (roadId: string) => {
@@ -98,7 +100,7 @@ export const SearchResults = ({
 
   const handleSearchClick = (res: SearchResult) => {
     const { lon, lat } = res;
-
+    setSelectedResult(res);
     setMapLocation([lon, lat], getInputCRS(res), 15);
 
     const markerLayer = map

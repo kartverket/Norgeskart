@@ -88,6 +88,6 @@ export const SearchComponent = () => {
           setPlacesPage(page);
         }}
       />
-    </Flex>
+          </Flex>
   );
 };
