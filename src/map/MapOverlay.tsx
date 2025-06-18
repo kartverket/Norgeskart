@@ -10,7 +10,7 @@ import {
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapOrientationDegreesAtom } from './atoms';
+import { displayCompassOverlayAtom, mapOrientationDegreesAtom } from './atoms';
 import { useMapSettings } from './mapHooks';
 
 export const MapOverlay = () => {
@@ -22,6 +22,7 @@ export const MapOverlay = () => {
   const [zoomControl, setZoomControl] = useState<HTMLElement | null>(null);
   const zoomRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
+  const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
 
   useEffect(() => {
     setTimeout(() => {
@@ -48,16 +49,18 @@ export const MapOverlay = () => {
     <>
       {portalTarget && (
         <Portal container={portalRef}>
-          <Image
-            rotate={mapOrientation + 'deg'}
-            position={'absolute'}
-            width="16%"
-            top="42%"
-            left="42%"
-            src="compass_no.svg"
-            userSelect={'none'}
-            pointerEvents={'none'}
-          />
+          {displayCompassOverlay && (
+            <Image
+              rotate={mapOrientation + 'deg'}
+              position={'absolute'}
+              width="16%"
+              top="42%"
+              left="42%"
+              src="compass_no.svg"
+              userSelect={'none'}
+              pointerEvents={'none'}
+            />
+          )}
 
           <Box position="absolute" bottom="16px" left="16px" zIndex={10}>
             <a
