@@ -1,4 +1,12 @@
-import { Box, HStack, IconButton, Portal, Stack, Tooltip } from '@kvib/react';
+import {
+  Box,
+  HStack,
+  IconButton,
+  Image,
+  Portal,
+  Stack,
+  Tooltip,
+} from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -40,6 +48,17 @@ export const MapOverlay = () => {
     <>
       {portalTarget && (
         <Portal container={portalRef}>
+          <Image
+            rotate={mapOrientation + 'deg'}
+            position={'absolute'}
+            width="16%"
+            top="42%"
+            left="42%"
+            src="compass_no.svg"
+            userSelect={'none'}
+            pointerEvents={'none'}
+          />
+
           <Box position="absolute" bottom="16px" left="16px" zIndex={10}>
             <a
               href="https://www.kartverket.no"
