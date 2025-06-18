@@ -1,4 +1,4 @@
-import { Flex, Search, Box, Icon} from '@kvib/react';
+import { Box, Flex, Icon, Search } from '@kvib/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchResults } from './results/SearchResults.tsx';
@@ -21,21 +21,15 @@ export const SearchComponent = () => {
   const { t } = useTranslation();
 
   return (
-    <Flex
-      flexDir='column'
-      alignItems="stretch"
-      gap={4}
-      p={4}
-    >
-
-     <Box position="relative" width='100%'>
+    <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>
+ 
+     <Box position="relative" width="100%">
         <Search
           width="100%"
           placeholder={t('search.placeholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
-         
         />
         {!isFocused && (
           <Box
@@ -45,7 +39,7 @@ export const SearchComponent = () => {
             transform="translateY(-50%)"
             pointerEvents="none"
           >
-            <Icon icon='search' size={24} weight={500} color='green' />
+            <Icon icon="search" size={24} weight={500} color="green" />
           </Box>
         )}
       </Box>
