@@ -52,7 +52,6 @@ export type MapLayers = {
   backgroundLayers: {
     newTopo: MapLayer;
     topoGrayscale: MapLayer;
-    //topo: MapLayer;
   };
   europaForenklet: MapLayer;
   drawLayer: MapLayer;

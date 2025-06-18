@@ -4,12 +4,20 @@ import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
 import { Extent } from 'ol/extent';
 import { get as getProjection, transform } from 'ol/proj';
-import { setUrlParameter } from '../shared/utils/urlUtils';
+import { validateBackgroundLayerIdString } from '../shared/utils/enumUtils';
+import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapAtom, mapOrientationAtom, ProjectionIdentifier } from './atoms';
 import { BackgroundLayer, mapLayers } from './layers';
 import { getMousePositionControl } from './mapControls';
 
 const ROTATION_ANIMATION_DURATION = 500;
+
+const getBackgroundLayerId = () => {
+  const backgroundLayerIdFromUrl = validateBackgroundLayerIdString(
+    getUrlParameter('backgroundLayer'),
+  );
+  return backgroundLayerIdFromUrl ? backgroundLayerIdFromUrl : 'newTopo';
+};
 
 const useMap = () => {
   const map = useAtomValue(mapAtom);
@@ -76,6 +84,22 @@ const useMapSettings = () => {
       // Transform center to new projection
       newCenter = transform(oldCenter, oldProjection, projection);
     }
+
+    map
+      .getLayers()
+      .getArray()
+      .filter((layer) => {
+        const layerId = layer.get('id') as string;
+        return layerId === 'europaForenklet' || layerId.startsWith('bg_');
+      })
+      .forEach((layer) => {
+        map.removeLayer(layer);
+      });
+
+    map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
+    map.addLayer(
+      mapLayers.backgroundLayers[getBackgroundLayerId()].getLayer(projectionId),
+    );
 
     // Create a new view with the new projection
     const newView = new View({
@@ -198,4 +222,4 @@ const useMapSettings = () => {
   };
 };
 
-export { useMap, useMapSettings };
+export { getBackgroundLayerId, useMap, useMapSettings };

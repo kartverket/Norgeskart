@@ -13,13 +13,11 @@ import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
-import {
-  validateBackgroundLayerIdString,
-  validateProjectionIdString,
-} from '../shared/utils/enumUtils';
+import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter } from '../shared/utils/urlUtils';
 import { BackgroundLayer, mapLayers } from './layers';
 import { ControlPortal, getMousePositionControl } from './mapControls';
+import { getBackgroundLayerId } from './mapHooks';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
 
@@ -55,16 +53,9 @@ export const mapAtom = atom<Map>(() => {
   const projectionExtent = projection.getExtent();
 
   map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
-  const backgroundLayerIdFromUrl = validateBackgroundLayerIdString(
-    getUrlParameter('backgroundLayer'),
-  );
-
-  const initialBackgroundLayer = backgroundLayerIdFromUrl
-    ? backgroundLayerIdFromUrl
-    : 'newTopo'; // Default to 'newTopo' if no valid background layer is found
 
   map.addLayer(
-    mapLayers.backgroundLayers[initialBackgroundLayer].getLayer(projectionId),
+    mapLayers.backgroundLayers[getBackgroundLayerId()].getLayer(projectionId),
   );
   map.addLayer(mapLayers.drawLayer.getLayer(projectionId));
   map.addLayer(mapLayers.markerLayer.getLayer(projectionId));
