@@ -51,7 +51,7 @@ export type MapLayer = {
 export type MapLayers = {
   backgroundLayers: {
     newTopo: MapLayer;
-    topo: MapLayer;
+    topoGrayscale: MapLayer;
   };
   europaForenklet: MapLayer;
   drawLayer: MapLayer;
@@ -63,7 +63,7 @@ export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
 const mapLayers: MapLayers = {
   backgroundLayers: {
     newTopo: {
-      id: 'newTopo',
+      id: 'bg_newTopo',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -73,10 +73,10 @@ const mapLayers: MapLayers = {
           matrixSet,
         } = getProjectionParameters(projectionId);
         return new TileLayer({
-          properties: { id: 'newTopo' },
+          properties: { id: 'bg_newTopo' },
           zIndex: 1,
           source: new WMTS({
-            url: 'https://cache.atgcp1-prod.kartverket.cloud/v1/service',
+            url: 'https://cache.kartverket.no/v1/service',
             layer: 'topo',
             matrixSet: matrixSet,
             projection: projection,
@@ -93,8 +93,8 @@ const mapLayers: MapLayers = {
       },
     },
 
-    topo: {
-      id: 'topo',
+    topoGrayscale: {
+      id: 'bg_topoGrayscale',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -104,11 +104,11 @@ const mapLayers: MapLayers = {
           matrixSet,
         } = getProjectionParameters(projectionId);
         return new TileLayer({
-          properties: { id: 'topo' },
+          properties: { id: 'bg_topoGrayscale' },
           zIndex: 1,
           source: new WMTS({
-            url: 'https://cache.atkv3-dev.kartverket-intern.cloud/v1/service',
-            layer: 'topo',
+            url: 'https://cache.kartverket.no/v1/service',
+            layer: 'topograatone',
             matrixSet: matrixSet,
             projection: projection,
             format: 'image/png',

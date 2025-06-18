@@ -24,8 +24,8 @@ export const BackgroundLayerSettings = () => {
         label: t('map.settings.layers.mapNames.newTopo'),
       },
       {
-        value: 'topo',
-        label: t('map.settings.layers.mapNames.topo'),
+        value: 'topoGrayscale',
+        label: t('map.settings.layers.mapNames.topoGrayscale'),
       },
     ];
 
