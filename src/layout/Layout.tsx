@@ -14,15 +14,38 @@ import React, { useState } from 'react';
 import { MapComponent } from '../map/MapComponent.tsx';
 import { SearchComponent } from '../search/SearchComponent.tsx';
 import { Menu } from '../sidePanel/Menu.tsx';
+import transition from '../theme/transitions.ts';
 
 const Layout: React.FC = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const sidebarWidth = 400;
+
+  const sidebarStyle = {
+    width: isSidebarOpen ? `${sidebarWidth}px` : '0',
+    transform: isSidebarOpen
+      ? 'translateX(0)'
+      : `translateX(-${sidebarWidth}px)`,
+    transition: `width ${transition.duration.normal} ${transition.easing['ease-in-out']}, transform ${transition.duration.normal} ${transition.easing['ease-in-out']}`,
+    overflow: 'hidden',
+    height: '100%',
+    bg: 'white',
+    boxShadow: 'sm',
+    flexShrink: 0,
+    pt: '4rem',
+  };
+
+  const menuWrapperStyle = {
+    my: '3rem',
+    opacity: isSidebarOpen ? 1 : 0,
+    pointerEvents: isSidebarOpen ? 'auto' : 'none',
+    transition: `opacity ${transition.duration.fast} ${transition.easing['ease-in']}`,
+  };
 
   return (
-    <Flex height="100vh" width="100vw">
+    <Flex height="100vh" width="100vw" position="relative">
       {isMobile ? (
-        <Drawer placement="start" size="sm" trapFocus>
+        <Drawer placement="start" trapFocus>
           <DrawerTrigger asChild>
             <IconButton
               aria-label="Åpne meny"
@@ -45,49 +68,36 @@ const Layout: React.FC = () => {
         </Drawer>
       ) : (
         <>
-          {isSidebarOpen && (
-            <Box
-              flexBasis="300px"
-              flexShrink={0}
-              height="100%"
-              position="relative"
-              bg="white"
-              boxShadow="sm"
-            >
-              <SearchComponent />
+          {/* SearchComponent over sidebar */}
+          <Box
+            position="absolute"
+            width="100%"
+            maxWidth={`${sidebarWidth}px`}
+            zIndex="overlay"
+          >
+            <SearchComponent />
+          </Box>
+
+          {/* Sidebar */}
+          <Box {...sidebarStyle}>
+            <Box {...menuWrapperStyle}>
               <Menu />
-
-              {/* Collapse-knapp midt på høyre kant */}
-              <IconButton
-                icon="chevron_left"
-                aria-label="Skjul meny"
-                position="absolute"
-                right={0}
-                top="50%"
-                transform="translate(50%, -50%)"
-                zIndex="overlay"
-                onClick={() => setIsSidebarOpen(false)}
-                variant="solid"
-                border-radius="full"
-              />
             </Box>
-          )}
+          </Box>
 
-      {!isSidebarOpen && (
-        <IconButton
-          icon="chevron_right"
-          aria-label="Vis meny"
-          position="absolute"
-          top="50%"
-          left="1.5rem"
-          transform="translate(-50%, -50%)"
-          zIndex="overlay"
-          onClick={() => setIsSidebarOpen(true)}
-          variant="solid"
-          bg="green"
-          boxShadow="md"
-        />
-      )}
+          {/* Collapse/Expand knapper */}
+          <IconButton
+            icon={isSidebarOpen ? 'chevron_left' : 'chevron_right'}
+            aria-label={isSidebarOpen ? 'Skjul meny' : 'Vis meny'}
+            position="absolute"
+            left={isSidebarOpen ? `${sidebarWidth}px` : '20px'}
+            top="50%"
+            transform="translate(-50%, -50%)"
+            zIndex="overlay"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            variant="solid"
+            {...(!isSidebarOpen && { bg: 'green' })}
+          />
         </>
       )}
 

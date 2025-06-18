@@ -61,6 +61,7 @@ export const SearchComponent = () => {
             style={{ paddingLeft: '50px' }}
             height="45px"
             fontSize="1.1rem"
+            bg="white"
           />
 
           {!isFocused && (
