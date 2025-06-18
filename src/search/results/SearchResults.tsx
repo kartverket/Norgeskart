@@ -188,6 +188,7 @@ export const SearchResults = ({
             </List>
             {placesMetadata.totaltAntallTreff > placesMetadata.treffPerSide && (
               <Pagination
+                siblingCount={4}
                 size="sm"
                 count={placesMetadata.totaltAntallTreff}
                 page={placesMetadata.side}
