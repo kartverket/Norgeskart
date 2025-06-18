@@ -1,10 +1,9 @@
-import { Flex } from '@kvib/react';
 import { useEffect } from 'react';
 import './i18n';
-import { MapComponent } from './map/MapComponent.tsx';
+
 import { useMapSettings } from './map/mapHooks.ts';
 
-import { SidePanel } from './sidePanel/SidePanel.tsx';
+import Layout from './layout/Layout.tsx'
 
 function App() {
   const { setMapFullScreen } = useMapSettings();
@@ -24,17 +23,7 @@ function App() {
     };
   });
   return (
-    <Flex
-      alignItems={'flex-start'}
-      height={'100%'}
-      gap={0}
-      flexDir={'column'}
-      md={{ flexDirection: 'row' }}
-      w={'100%'}
-    >
-      <SidePanel />
-      <MapComponent />
-    </Flex>
+    <Layout/>
   );
 }
 
