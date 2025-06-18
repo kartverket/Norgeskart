@@ -41,6 +41,10 @@
           "newTopo": "Nye topo",
           "topoGrayscale": "Topo Gråtone"
         }
+      },
+      "compass": {
+        "enabled": "Vis kompass",
+        "magneticNorth": "Bruk magnetisk nord"
       }
     }
   },

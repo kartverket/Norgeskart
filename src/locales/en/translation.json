@@ -41,6 +41,10 @@
           "newTopo": "New Topo",
           "topoGrayscale": "Topo Gray"
         }
+      },
+      "compass": {
+        "enabled": "Show compass",
+        "magneticNorth": "Use magnetic north"
       }
     }
   },

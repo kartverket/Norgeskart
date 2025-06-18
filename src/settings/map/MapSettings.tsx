@@ -1,6 +1,7 @@
 import { VStack } from '@kvib/react';
 import { BackgroundLayerSettings } from './BackgroundLayerSettings';
 
+import { CompassSettings } from './CompassSettings';
 import { ProjectionSettings } from './ProjectionSettings';
 
 export const MapSettings = () => {
@@ -14,6 +15,7 @@ export const MapSettings = () => {
     >
       <ProjectionSettings />
       <BackgroundLayerSettings />
+      <CompassSettings />
     </VStack>
   );
 };
