@@ -1,24 +1,23 @@
-import React from 'react';
 import {
   Box,
-  Flex,
-  useBreakpointValue,
-  IconButton,
-  Drawer,
-  DrawerTrigger,
-  DrawerPositioner,
-  DrawerContent,
-  DrawerCloseTrigger,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerBody,
-  DrawerFooter,
   Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseTrigger,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerPositioner,
+  DrawerTitle,
+  DrawerTrigger,
+  Flex,
+  IconButton,
+  useBreakpointValue,
 } from '@kvib/react';
+import React from 'react';
 import { MapComponent } from '../map/MapComponent.tsx';
-import { SidePanel
+import { SidePanelAccordion } from '../sidePanel/SidePanelAccordion.tsx';
 
- } from '../sidePanel/SidePanel.tsx';
 const Layout: React.FC = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -29,7 +28,7 @@ const Layout: React.FC = () => {
           <DrawerTrigger asChild>
             <IconButton
               aria-label="Åpne meny"
-              icon='menu'
+              icon="menu"
               position="absolute"
               top="1rem"
               left="1rem"
@@ -45,7 +44,7 @@ const Layout: React.FC = () => {
               </DrawerHeader>
               <DrawerBody>
                 {/* Her kan menyinnholdet ditt ligge */}
-                <SidePanel/>
+                <SidePanelAccordion />
               </DrawerBody>
               <DrawerFooter>
                 <Button variant="ghost">Lukk</Button>
@@ -59,21 +58,17 @@ const Layout: React.FC = () => {
           flexGrow={0}
           flexShrink={0}
           height="100%"
-          bg="hotpink"
-          p={4}
+          bg="#fffff"
         >
-          <SidePanel/>
+          <SidePanelAccordion />
         </Box>
       )}
 
       <Box flex="1" height="100%" bg="gray.200">
-       <MapComponent/>
+        <MapComponent />
       </Box>
     </Flex>
   );
 };
 
 export default Layout;
-
-
-      

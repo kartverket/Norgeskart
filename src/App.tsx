@@ -3,7 +3,7 @@ import './i18n';
 
 import { useMapSettings } from './map/mapHooks.ts';
 
-import Layout from './layout/Layout.tsx'
+import Layout from './layout/Layout.tsx';
 
 function App() {
   const { setMapFullScreen } = useMapSettings();
@@ -22,9 +22,7 @@ function App() {
       document.removeEventListener('keydown', fullscreenClickHandler);
     };
   });
-  return (
-    <Layout/>
-  );
+  return <Layout />;
 }
 
 export default App;
