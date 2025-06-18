@@ -3,11 +3,10 @@ import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
 import { Extent } from 'ol/extent';
-import LayerGroup from 'ol/layer/Group';
 import { get as getProjection, transform } from 'ol/proj';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import { mapAtom, mapOrientationAtom, ProjectionIdentifier } from './atoms';
-import { BackgroundLayer } from './layers';
+import { BackgroundLayer, mapLayers } from './layers';
 import { getMousePositionControl } from './mapControls';
 
 const ROTATION_ANIMATION_DURATION = 500;
@@ -44,17 +43,19 @@ const useMapSettings = () => {
     const backgroundLayers = map
       .getLayers()
       .getArray()
-      .filter(
-        (layer) => layer.get('id') === 'backgroundLayers',
-      )[0] as unknown as LayerGroup;
+      .filter((layer) => {
+        const layerId = layer.get('id') as string;
+        return layerId.startsWith('bg_');
+      });
 
-    backgroundLayers.getLayers().forEach((layer) => {
-      if (layer.get('id') === layerName) {
-        layer.setVisible(true);
-      } else {
-        layer.setVisible(false);
-      }
+    backgroundLayers.forEach((layer) => {
+      map.removeLayer(layer);
     });
+    map.addLayer(
+      mapLayers.backgroundLayers[layerName].getLayer(
+        map.getView().getProjection().getCode() as ProjectionIdentifier,
+      ),
+    );
     setUrlParameter('backgroundLayer', layerName);
   };
 

@@ -8,13 +8,15 @@ import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select.js';
 import Snap from 'ol/interaction/Snap.js';
 import Translate from 'ol/interaction/Translate';
-import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
-import { validateProjectionIdString } from '../shared/utils/enumUtils';
+import {
+  validateBackgroundLayerIdString,
+  validateProjectionIdString,
+} from '../shared/utils/enumUtils';
 import { getUrlParameter } from '../shared/utils/urlUtils';
 import { BackgroundLayer, mapLayers } from './layers';
 import { ControlPortal, getMousePositionControl } from './mapControls';
@@ -52,6 +54,23 @@ export const mapAtom = atom<Map>(() => {
   const projection = getProjection(projectionId)!;
   const projectionExtent = projection.getExtent();
 
+  map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
+  const backgroundLayerIdFromUrl = validateBackgroundLayerIdString(
+    getUrlParameter('backgroundLayer'),
+  );
+
+  const initialBackgroundLayer = backgroundLayerIdFromUrl
+    ? backgroundLayerIdFromUrl
+    : 'newTopo'; // Default to 'newTopo' if no valid background layer is found
+
+  map.addLayer(
+    mapLayers.backgroundLayers[initialBackgroundLayer].getLayer(projectionId),
+  );
+  map.addLayer(mapLayers.drawLayer.getLayer(projectionId));
+  map.addLayer(mapLayers.markerLayer.getLayer(projectionId));
+  const drawLayer = mapLayers.drawLayer.getLayer(projectionId) as VectorLayer;
+  map.addLayer(drawLayer);
+
   const intialView = new View({
     center: [1737122, 9591875],
     minZoom: 3,
@@ -59,21 +78,6 @@ export const mapAtom = atom<Map>(() => {
     projection: projection,
     extent: projectionExtent,
   });
-  map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
-  map.addLayer(
-    new LayerGroup({
-      layers: [
-        mapLayers.backgroundLayers.newTopo.getLayer(projectionId),
-        mapLayers.backgroundLayers.topo.getLayer(projectionId),
-      ],
-      properties: { id: 'backgroundLayers' },
-    }),
-  );
-  map.addLayer(mapLayers.drawLayer.getLayer(projectionId));
-  map.addLayer(mapLayers.markerLayer.getLayer(projectionId));
-  const drawLayer = mapLayers.drawLayer.getLayer(projectionId) as VectorLayer;
-  map.addLayer(drawLayer);
-
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
   map.addControl(getMousePositionControl(projectionId));

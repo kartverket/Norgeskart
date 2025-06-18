@@ -38,7 +38,8 @@
         },
         "mapNames": {
           "topo": "Topographic map",
-          "newTopo": "New Topo"
+          "newTopo": "New Topo",
+          "topoGrayscale": "Topo Gray"
         }
       }
     }
