@@ -145,7 +145,7 @@ export const SearchResults = ({
       console.error('Failed to fetch address', e);
     }
   };
-  
+
   if (!placesMetadata) {
     return null;
   }
