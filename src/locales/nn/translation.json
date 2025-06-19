@@ -87,6 +87,9 @@
     "municipality": "Kommune",
     "cadastralIdentifier": "Gards- og bruksnummer",
     "address": "Adresse",
-    "in": "i"
+    "in": "i",
+    "heightEstimatedByInterpolation": "Høgde (anslått ved interpolering):",
+    "metersAboveSeaLevel": "moh",
+    "whatDoYouWantToDo": "Kva vil du gjere?"
   }
 }

@@ -87,6 +87,9 @@
     "municipality": "Municipality",
     "cadastralIdentifier": "Cadastral identifier",
     "address": "Address",
-    "in": "in"
+    "in": "in",
+    "heightEstimatedByInterpolation": "Height (estimated by interpolation):",
+    "metersAboveSeaLevel": "m.a.s.l.",
+    "whatDoYouWantToDo": "What do you want to do?"
   }
 }

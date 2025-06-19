@@ -41,3 +41,11 @@ export const getProperties = async (query: string): Promise<Property[]> => {
   if (!res.ok) throw new Error('Feil ved henting av eiendom');
   return res.json();
 };
+
+export const getElevation = async (x: number, y: number) => {
+  const res = await fetch(
+    `https://hoydedata.no/arcgis/rest/services/NHM_DTM_TOPOBATHY_25833/ImageServer/identify?f=json&geometry=${x},${y}&geometryType=esriGeometryPoint&sr=25833&returnGeometry=false&returnCatalogItems=false`,
+  );
+  if (!res.ok) throw new Error('Feil ved henting av høyde');
+  return res.json();
+};

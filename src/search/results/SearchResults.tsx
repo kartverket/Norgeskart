@@ -43,10 +43,10 @@ interface SearchResultsProps {
   addresses: Address[];
   placesMetadata?: Metadata;
   onPlacesPageChange: (_page: number) => void;
-  searchQuery: string; 
+  searchQuery: string;
 }
 
-const getInputCRS = (selectedResult: SearchResult) => {
+export const getInputCRS = (selectedResult: SearchResult) => {
   switch (selectedResult.type) {
     case 'Road':
       return 'EPSG:25832';
