@@ -81,5 +81,11 @@
     "privacyPolicy": "Privacy policy ",
     "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
     "sendEmail": "Send e-mail"
+  },
+  "infoBox": {
+    "roadName": "Road name",
+    "municipality": "Municipality",
+    "cadastralIdentifier": "Cadastral identifier",
+    "address": "Address"
   }
 }

@@ -141,4 +141,3 @@ export type SearchResult = SearchResultBase &
         address: Address;
       }
   );
-

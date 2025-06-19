@@ -81,5 +81,11 @@
     "privacyPolicy": "Personvernerklæring ",
     "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
     "sendEmail": "Send e-post"
+  },
+  "infoBox": {
+    "roadName": "Vegnamn",
+    "municipality": "Kommune",
+    "cadastralIdentifier": "Gards- og bruksnummer",
+    "address": "Adresse"
   }
 }
