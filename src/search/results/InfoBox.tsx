@@ -1,9 +1,12 @@
 import { Card, CardBody, CardDescription } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
+
 interface InfoBoxProps {
   result: SearchResult;
 }
+
+const capitalizeFirstLetter = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 
 export const InfoBox = ({ result }: InfoBoxProps) => {
   const { t } = useTranslation();
@@ -17,21 +20,21 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
     case 'Road':
       content = (
         <CardDescription>
-          {t('infoBox.roadName')} i {result.road.KOMMUNENAVN} kommune
+          {t('infoBox.roadName')} {t('infoBox.in')} {capitalizeFirstLetter(result.road.KOMMUNENAVN)} {t('infoBox.municipality').toLowerCase()}
         </CardDescription>
       );
       break;
     case 'Property':
       content = (
         <CardDescription>
-          {t('')} i {result.property.KOMMUNENAVN} kommune
+          {t('infoBox.cadastralIdentifier')} {t('infoBox.in')} {capitalizeFirstLetter(result.property.KOMMUNENAVN)} {t('infoBox.municipality').toLowerCase()}
         </CardDescription>
       );
       break;
     case 'Address':
       content = (
         <CardDescription>
-          {t('search.addresses')} i {result.address.kommunenavn} kommune
+          {t('search.addresses')} {t('infoBox.in')} {result.address.kommunenavn} {t('infoBox.municipality').toLowerCase()}
         </CardDescription>
       );
       break;

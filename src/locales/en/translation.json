@@ -86,6 +86,7 @@
     "roadName": "Road name",
     "municipality": "Municipality",
     "cadastralIdentifier": "Cadastral identifier",
-    "address": "Address"
+    "address": "Address",
+    "in": "in"
   }
 }

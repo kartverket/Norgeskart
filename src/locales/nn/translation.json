@@ -86,6 +86,7 @@
     "roadName": "Vegnamn",
     "municipality": "Kommune",
     "cadastralIdentifier": "Gards- og bruksnummer",
-    "address": "Adresse"
+    "address": "Adresse",
+    "in": "i"
   }
 }
