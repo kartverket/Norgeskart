@@ -15,7 +15,12 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
 
   switch (result.type) {
     case 'Place':
-      content = <CardDescription>{t('search.placeName')} i</CardDescription>;
+      content = (
+        <CardDescription>
+          {t('search.placeName')} {t('infoBox.in')}{' '}
+          {result.place.kommuner.map((k) => k.kommunenavn).join(', ')} {t('infoBox.municipality').toLowerCase()} 
+        </CardDescription>
+      );
       break;
     case 'Road':
       content = (
@@ -34,7 +39,7 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
     case 'Address':
       content = (
         <CardDescription>
-          {t('search.addresses')} {t('infoBox.in')} {result.address.kommunenavn} {t('infoBox.municipality').toLowerCase()}
+          {t('infoBox.address')} {t('infoBox.in')} {capitalizeFirstLetter(result.address.kommunenavn)} {t('infoBox.municipality').toLowerCase()}
         </CardDescription>
       );
       break;

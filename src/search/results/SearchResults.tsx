@@ -17,7 +17,7 @@ import { Point } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
@@ -43,6 +43,7 @@ interface SearchResultsProps {
   addresses: Address[];
   placesMetadata?: Metadata;
   onPlacesPageChange: (_page: number) => void;
+  searchQuery: string; 
 }
 
 const getInputCRS = (selectedResult: SearchResult) => {
@@ -67,6 +68,7 @@ export const SearchResults = ({
   addresses,
   placesMetadata,
   onPlacesPageChange,
+  searchQuery,
 }: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
   const markerStyle = useAtomValue(markerStyleAtom);
@@ -83,6 +85,10 @@ export const SearchResults = ({
     null,
   );
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setSelectedResult(null);
+  }, [searchQuery]);
 
   const toggleRoad = (roadId: string) => {
     setOpenRoads((prev) =>
