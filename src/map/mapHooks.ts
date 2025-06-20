@@ -26,16 +26,6 @@ const getBackgroundLayerId = () => {
   return backgroundLayerIdFromUrl ? backgroundLayerIdFromUrl : 'newTopo';
 };
 
-// const useMagneticDeclination = () => {
-//   const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
-//   if (!useMagneticNorth) {
-//     return 0; // If magnetic north is not used, return 0
-//   }
-//   return useQuery({
-
-//   })
-// };
-
 const useMap = () => {
   const map = useAtomValue(mapAtom);
   const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
@@ -58,7 +48,6 @@ const useMap = () => {
 
     const projection = map.getView().getProjection();
     const angleCoords = transform(newCenter, projection, 'EPSG:4326');
-    console.log(`New center coordinates (EPSG:4326): ${angleCoords}`);
 
     const magneticNorth = [162.867, 86.494];
     const azimuth = calculateAzimuth(
@@ -151,6 +140,9 @@ const useMapSettings = () => {
 
     oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {
       newView.addEventListener('change:rotation', listener);
+    });
+    oldView.getListeners('change:center')?.forEach((listener: Listener) => {
+      newView.addEventListener('change:center', listener);
     });
 
     map.setView(newView);

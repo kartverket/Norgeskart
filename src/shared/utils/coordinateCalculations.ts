@@ -11,8 +11,6 @@ export const calculateAzimuth = (
 
   const deltaLon = lon2Rad - lon1Rad;
 
-  // Calculate the azimuth in radians
-
   const arg1 = Math.sin(deltaLon) * Math.cos(lat2Rad);
   const arg2 =
     Math.cos(lat1Rad) * Math.sin(lat2Rad) -
