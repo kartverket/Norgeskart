@@ -4,6 +4,7 @@ import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
 import { Extent } from 'ol/extent';
 import { get as getProjection, transform } from 'ol/proj';
+import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import { validateBackgroundLayerIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
@@ -254,4 +255,18 @@ const useMapSettings = () => {
   };
 };
 
-export { getBackgroundLayerId, useMap, useMapSettings };
+const useCompassFileName = () => {
+  const { i18n } = useTranslation();
+  switch (i18n.language) {
+    case 'nb':
+    case 'nn':
+      return 'compass_no.svg';
+
+    case 'en':
+      return 'compass_en.svg';
+    default:
+      return 'compass_no.svg'; // Default to Norwegian Bokmål
+  }
+};
+
+export { getBackgroundLayerId, useCompassFileName, useMap, useMapSettings };
