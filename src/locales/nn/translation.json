@@ -90,6 +90,10 @@
     "in": "i",
     "heightEstimatedByInterpolation": "Høgde (anslått ved interpolering):",
     "metersAboveSeaLevel": "moh",
-    "whatDoYouWantToDo": "Kva vil du gjere?"
+    "propertyInfo": "Sjå eigedomsinformasjon",
+    "coordinateInfo": "Sjå koordinater",
+    "placeinfo": "Sjå fakta om stadnamnet",
+    "map": "Lag turkart",
+    "emergencyPoster": "Lag nødplakat"
   }
 }

@@ -90,6 +90,10 @@
     "in": "in",
     "heightEstimatedByInterpolation": "Height (estimated by interpolation):",
     "metersAboveSeaLevel": "m.a.s.l.",
-    "whatDoYouWantToDo": "What do you want to do?"
+    "propertyInfo": "See property information",
+    "coordinateInfo": "See coordinates",
+    "placeinfo": "See facts about placename",
+    "map": "Make map",
+    "emergencyPoster": "Make emergency poster"
   }
 }

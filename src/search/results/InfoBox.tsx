@@ -1,4 +1,12 @@
-import { Card, CardBody, CardDescription } from '@kvib/react';
+import {
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
+  AccordionRoot,
+  Card,
+  CardBody,
+  CardDescription,
+} from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
@@ -69,12 +77,42 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
 
   return (
     <Card>
-      <CardBody>
+      <CardBody pb={2}>
         <CardDescription>
           {content} <br /> {t('infoBox.heightEstimatedByInterpolation')}{' '}
           {Number(elevationData?.value).toFixed(1)}{' '}
           {t('infoBox.metersAboveSeaLevel')}
         </CardDescription>
+        <AccordionRoot collapsible mr={2} mt={5}>
+          <AccordionItem value="propertyInfo">
+            <AccordionItemTrigger pl={0}>
+              {t('infoBox.propertyInfo')}
+            </AccordionItemTrigger>
+            <AccordionItemContent>
+              {/* Her kan du legge til ønsket innhold for handlinger */}
+            </AccordionItemContent>
+          </AccordionItem>
+          <AccordionItem value="placeInfo">
+            <AccordionItemTrigger pl={0}>
+              {t('infoBox.placeInfo')}
+            </AccordionItemTrigger>
+          </AccordionItem>
+          <AccordionItem value="coordinateInfo">
+            <AccordionItemTrigger pl={0}>
+              {t('infoBox.coordinateInfo')}
+            </AccordionItemTrigger>
+          </AccordionItem>
+          <AccordionItem value="makeMap">
+            <AccordionItemTrigger pl={0}>
+              {t('infoBox.makeMap')}
+            </AccordionItemTrigger>
+          </AccordionItem>
+          <AccordionItem value="emergencyPoster">
+            <AccordionItemTrigger pl={0}>
+              {t('infoBox.emergencyPoster')}
+            </AccordionItemTrigger>
+          </AccordionItem>
+        </AccordionRoot>
       </CardBody>
     </Card>
   );
