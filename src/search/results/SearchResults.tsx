@@ -147,7 +147,7 @@ export const SearchResults = ({
   };
   //Mattis 18.06.26. For å sjekke om det er resultater for høydesetting på resultatene
   const hasResults =
-    poperties.length > 0 ||
+    properties.length > 0 ||
     roads.length > 0 ||
     places.length > 0 ||
     addresses.length > 0;
