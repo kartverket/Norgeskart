@@ -13,7 +13,6 @@ import {
   mapAtom,
   mapOrientationAtom,
   ProjectionIdentifier,
-  useMagneticNorthAtom,
 } from './atoms';
 import { BackgroundLayer, mapLayers } from './layers';
 import { getMousePositionControl } from './mapControls';
@@ -29,7 +28,6 @@ const getBackgroundLayerId = () => {
 
 const useMap = () => {
   const map = useAtomValue(mapAtom);
-  const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
   const setMapOrientation = useSetAtom(mapOrientationAtom);
   const setMagneticDeclination = useSetAtom(magneticDeclinationAtom);
 
@@ -42,9 +40,6 @@ const useMap = () => {
   };
 
   map.getView().on('change:center', (e) => {
-    if (!useMagneticNorth) {
-      return;
-    }
     const newCenter = e.target.getCenter();
 
     const projection = map.getView().getProjection();
