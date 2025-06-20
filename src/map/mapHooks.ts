@@ -4,9 +4,16 @@ import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
 import { Extent } from 'ol/extent';
 import { get as getProjection, transform } from 'ol/proj';
+import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import { validateBackgroundLayerIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
-import { mapAtom, mapOrientationAtom, ProjectionIdentifier } from './atoms';
+import {
+  magneticDeclinationAtom,
+  mapAtom,
+  mapOrientationAtom,
+  ProjectionIdentifier,
+  useMagneticNorthAtom,
+} from './atoms';
 import { BackgroundLayer, mapLayers } from './layers';
 import { getMousePositionControl } from './mapControls';
 
@@ -19,9 +26,21 @@ const getBackgroundLayerId = () => {
   return backgroundLayerIdFromUrl ? backgroundLayerIdFromUrl : 'newTopo';
 };
 
+// const useMagneticDeclination = () => {
+//   const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
+//   if (!useMagneticNorth) {
+//     return 0; // If magnetic north is not used, return 0
+//   }
+//   return useQuery({
+
+//   })
+// };
+
 const useMap = () => {
   const map = useAtomValue(mapAtom);
+  const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
   const setMapOrientation = useSetAtom(mapOrientationAtom);
+  const setMagneticDeclination = useSetAtom(magneticDeclinationAtom);
 
   const setTargetElement = (element: HTMLDivElement | null) => {
     if (!map.getTarget() && element) {
@@ -30,6 +49,27 @@ const useMap = () => {
       map.setTarget(undefined);
     }
   };
+
+  map.getView().on('change:center', (e) => {
+    if (!useMagneticNorth) {
+      return;
+    }
+    const newCenter = e.target.getCenter();
+
+    const projection = map.getView().getProjection();
+    const angleCoords = transform(newCenter, projection, 'EPSG:4326');
+    console.log(`New center coordinates (EPSG:4326): ${angleCoords}`);
+
+    const magneticNorth = [162.867, 86.494];
+    const azimuth = calculateAzimuth(
+      angleCoords[1], // latitude
+      angleCoords[0], // longitude
+      magneticNorth[1], // magnetic north latitude
+      magneticNorth[0], // magnetic north longitude)
+    );
+
+    setMagneticDeclination(azimuth);
+  });
   map.getView().on('change:rotation', (e) => {
     const rotation = e.target.getRotation();
     setMapOrientation(rotation);
