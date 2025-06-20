@@ -1,19 +1,39 @@
-import { Box, HStack, IconButton, Portal, Stack, Tooltip } from '@kvib/react';
+import {
+  Box,
+  HStack,
+  IconButton,
+  Image,
+  Portal,
+  Stack,
+  Tooltip,
+} from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapOrientationDegreesAtom } from './atoms';
-import { useMapSettings } from './mapHooks';
+import {
+  displayCompassOverlayAtom,
+  magneticDeclinationAtom,
+  mapOrientationDegreesAtom,
+  useMagneticNorthAtom,
+} from './atoms';
+import { useCompassFileName, useMapSettings } from './mapHooks';
 
 export const MapOverlay = () => {
   const { setMapFullScreen, setMapLocation, setMapAngle, rotateSnappy } =
     useMapSettings();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
+  const magneticDeclination = useAtomValue(magneticDeclinationAtom);
+  const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const portalRef = useRef<HTMLElement>(null);
   const [zoomControl, setZoomControl] = useState<HTMLElement | null>(null);
   const zoomRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
+  const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
+  const compassFileName = useCompassFileName();
+
+  const compassOrientation =
+    mapOrientation + (useMagneticNorth ? magneticDeclination : 0);
 
   useEffect(() => {
     setTimeout(() => {
@@ -40,6 +60,19 @@ export const MapOverlay = () => {
     <>
       {portalTarget && (
         <Portal container={portalRef}>
+          {displayCompassOverlay && (
+            <Image
+              rotate={compassOrientation + 'deg'}
+              position={'absolute'}
+              width="16%"
+              top="42%"
+              left="42%"
+              src={compassFileName}
+              userSelect={'none'}
+              pointerEvents={'none'}
+            />
+          )}
+
           <Box position="absolute" bottom="16px" left="16px" zIndex={10}>
             <a
               href="https://www.kartverket.no"

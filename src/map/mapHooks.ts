@@ -4,9 +4,16 @@ import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
 import { Extent } from 'ol/extent';
 import { get as getProjection, transform } from 'ol/proj';
+import { useTranslation } from 'react-i18next';
+import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import { validateBackgroundLayerIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
-import { mapAtom, mapOrientationAtom, ProjectionIdentifier } from './atoms';
+import {
+  magneticDeclinationAtom,
+  mapAtom,
+  mapOrientationAtom,
+  ProjectionIdentifier,
+} from './atoms';
 import { BackgroundLayer, mapLayers } from './layers';
 import { getMousePositionControl } from './mapControls';
 
@@ -22,6 +29,7 @@ const getBackgroundLayerId = () => {
 const useMap = () => {
   const map = useAtomValue(mapAtom);
   const setMapOrientation = useSetAtom(mapOrientationAtom);
+  const setMagneticDeclination = useSetAtom(magneticDeclinationAtom);
 
   const setTargetElement = (element: HTMLDivElement | null) => {
     if (!map.getTarget() && element) {
@@ -30,6 +38,23 @@ const useMap = () => {
       map.setTarget(undefined);
     }
   };
+
+  map.getView().on('change:center', (e) => {
+    const newCenter = e.target.getCenter();
+
+    const projection = map.getView().getProjection();
+    const angleCoords = transform(newCenter, projection, 'EPSG:4326');
+
+    const magneticNorth = [162.867, 86.494];
+    const azimuth = calculateAzimuth(
+      angleCoords[1], // latitude
+      angleCoords[0], // longitude
+      magneticNorth[1], // magnetic north latitude
+      magneticNorth[0], // magnetic north longitude)
+    );
+
+    setMagneticDeclination(azimuth);
+  });
   map.getView().on('change:rotation', (e) => {
     const rotation = e.target.getRotation();
     setMapOrientation(rotation);
@@ -111,6 +136,9 @@ const useMapSettings = () => {
 
     oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {
       newView.addEventListener('change:rotation', listener);
+    });
+    oldView.getListeners('change:center')?.forEach((listener: Listener) => {
+      newView.addEventListener('change:center', listener);
     });
 
     map.setView(newView);
@@ -222,4 +250,18 @@ const useMapSettings = () => {
   };
 };
 
-export { getBackgroundLayerId, useMap, useMapSettings };
+const useCompassFileName = () => {
+  const { i18n } = useTranslation();
+  switch (i18n.language) {
+    case 'nb':
+    case 'nn':
+      return 'compass_no.svg';
+
+    case 'en':
+      return 'compass_en.svg';
+    default:
+      return 'compass_no.svg'; // Default to Norwegian Bokmål
+  }
+};
+
+export { getBackgroundLayerId, useCompassFileName, useMap, useMapSettings };
