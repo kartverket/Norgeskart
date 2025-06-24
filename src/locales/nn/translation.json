@@ -92,8 +92,11 @@
     "metersAboveSeaLevel": "moh",
     "propertyInfo": "Sjå eigedomsinformasjon",
     "coordinateInfo": "Sjå koordinater",
-    "placeinfo": "Sjå fakta om stadnamnet",
-    "map": "Lag turkart",
+    "placeInfo": "Sjå fakta om stadnamnet",
+    "makeMap": "Lag turkart",
     "emergencyPoster": "Lag nødplakat"
+  },
+  "propertyInfo": {
+    "municipalityNr": "Kommunenr"
   }
 }

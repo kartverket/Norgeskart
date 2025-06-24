@@ -93,7 +93,10 @@
     "propertyInfo": "See property information",
     "coordinateInfo": "See coordinates",
     "placeinfo": "See facts about placename",
-    "map": "Make map",
+    "makeMap": "Make map",
     "emergencyPoster": "Make emergency poster"
+  },
+  "propertyInfo": {
+    "municipalityNr": "Municipality nr."
   }
 }

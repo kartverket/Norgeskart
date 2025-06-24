@@ -49,3 +49,11 @@ export const getElevation = async (x: number, y: number) => {
   if (!res.ok) throw new Error('Feil ved henting av høyde');
   return res.json();
 };
+
+export const getPropetyInfo = async (lat: number, lon: number) => {
+  const res = await fetch(
+    `https://ws.geonorge.no/eiendom/v1/punkt/omrader?radius=1&nord=${lat}&ost=${lon}&koordsys=4326`,
+  );
+  if (!res.ok) throw new Error('Feil ved henting av eiendomsinformasjon');
+  return res.json();
+};

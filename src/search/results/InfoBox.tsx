@@ -12,6 +12,7 @@ import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
 import { getElevation } from '../searchApi';
+import { PropertyInfo } from './PropertyInfo';
 import { getInputCRS } from './SearchResults';
 
 interface InfoBoxProps {
@@ -31,8 +32,6 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
     queryFn: () => getElevation(x, y),
     enabled: x != null && y != null,
   });
-
-  console.log('Elevation data:', elevationData);
 
   let content;
 
@@ -88,29 +87,37 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
             <AccordionItemTrigger pl={0}>
               {t('infoBox.propertyInfo')}
             </AccordionItemTrigger>
-            <AccordionItemContent>
-              {/* Her kan du legge til ønsket innhold for handlinger */}
+            <AccordionItemContent pl={0}>
+              <PropertyInfo
+                lon={result.lon}
+                lat={result.lat}
+                inputCRS={inputCRS}
+              />
             </AccordionItemContent>
           </AccordionItem>
           <AccordionItem value="placeInfo">
             <AccordionItemTrigger pl={0}>
               {t('infoBox.placeInfo')}
             </AccordionItemTrigger>
+            <AccordionItemContent>{/*Info kommer her  */}</AccordionItemContent>
           </AccordionItem>
           <AccordionItem value="coordinateInfo">
             <AccordionItemTrigger pl={0}>
               {t('infoBox.coordinateInfo')}
             </AccordionItemTrigger>
+            <AccordionItemContent>{/* Info kommer her */}</AccordionItemContent>
           </AccordionItem>
           <AccordionItem value="makeMap">
             <AccordionItemTrigger pl={0}>
               {t('infoBox.makeMap')}
             </AccordionItemTrigger>
+            <AccordionItemContent>{/* Info kommer her */}</AccordionItemContent>
           </AccordionItem>
           <AccordionItem value="emergencyPoster">
             <AccordionItemTrigger pl={0}>
               {t('infoBox.emergencyPoster')}
             </AccordionItemTrigger>
+            <AccordionItemContent>{/* Info kommer her*/}</AccordionItemContent>
           </AccordionItem>
         </AccordionRoot>
       </CardBody>

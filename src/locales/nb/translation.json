@@ -93,7 +93,10 @@
     "propertyInfo": "Se eiendomsinformasjon",
     "coordinateInfo": "Se koordinater",
     "placeinfo": "Se fakta om stedsnavnet",
-    "map": "Lag turkart",
+    "makeMap": "Lag turkart",
     "emergencyPoster": "Lag nødplakat"
+  },
+  "propertyInfo": {
+    "municipalityNr": "Kommunenr."
   }
 }
