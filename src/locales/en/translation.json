@@ -97,6 +97,10 @@
     "emergencyPoster": "Make emergency poster"
   },
   "propertyInfo": {
-    "municipalityNr": "Municipality nr."
+    "municipalityNr": "Municipality nr.",
+    "holdingNr": "Holding nr.",
+    "subholdingNr": "Subholding nr.",
+    "leaseNr": "Lease nr.",
+    "sectionNr": "Section nr."
   }
 }

@@ -87,7 +87,7 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
             <AccordionItemTrigger pl={0}>
               {t('infoBox.propertyInfo')}
             </AccordionItemTrigger>
-            <AccordionItemContent pl={0}>
+            <AccordionItemContent>
               <PropertyInfo
                 lon={result.lon}
                 lat={result.lat}

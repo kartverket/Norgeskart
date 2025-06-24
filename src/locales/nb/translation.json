@@ -97,6 +97,10 @@
     "emergencyPoster": "Lag nødplakat"
   },
   "propertyInfo": {
-    "municipalityNr": "Kommunenr."
+    "municipalityNr": "Kommunenr.",
+    "holdingNr": "Gårdsnr.",
+    "subholdingNr": "Bruksnr.",
+    "leaseNr": "Festenr.",
+    "sectionNr": "Seksjonsnr."
   }
 }

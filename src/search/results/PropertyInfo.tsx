@@ -1,6 +1,7 @@
 import { Box, Flex, Stack, Text } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
+import { useTranslation } from 'react-i18next';
 import { getPropetyInfo } from '../searchApi';
 
 export interface PropertyInfoProps {
@@ -10,6 +11,7 @@ export interface PropertyInfoProps {
 }
 
 export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
+  const { t } = useTranslation();
   const [lon4326, lat4326] = transform([lon, lat], inputCRS, 'EPSG:4326');
 
   const {
@@ -31,23 +33,22 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     return <>Ingen eiendomsinformasjon funnet.</>;
   }
   const rows = [
-    ['Kommunenr:', property.kommunenummer],
-    ['Gårdsnr:', property.gardsnummer],
-    ['Bruksnr:', property.bruksnummer],
-    ['Festenr:', property.festenummer],
-    ['Seksjonsnr:', property.seksjonsnummer],
+    [t('propertyInfo.municipalityNr'), property.kommunenummer],
+    [t('propertyInfo.holdingNr'), property.gardsnummer],
+    [t('propertyInfo.subholdingNr'), property.bruksnummer],
+    [t('propertyInfo.leaseNr'), property.festenummer],
+    [t('propertyInfo.sectionNr'), property.seksjonsnummer],
   ];
 
   return (
     <Box>
-      <Stack>
+      <Stack gap={0}>
         {rows.map(([label, value], index) => (
           <Flex
             key={label}
             justify="space-between"
             bg={index % 2 === 0 ? 'gray.50' : 'white'}
-            px={2}
-            py={2}
+            p={2}
           >
             <Text fontSize="sm">{label}</Text>
             <Text fontSize="sm">{value}</Text>
