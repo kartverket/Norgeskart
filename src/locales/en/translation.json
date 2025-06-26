@@ -97,6 +97,7 @@
     "holdingNr": "Holding nr.",
     "subholdingNr": "Subholding nr.",
     "leaseNr": "Lease nr.",
-    "sectionNr": "Section nr."
+    "sectionNr": "Section nr.",
+    "multipleAddressesText": "The property has several addresses"
   }
 }

@@ -73,7 +73,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
       <Stack gap={0}>
         {hasMultipleAddresses && (
           <Text mb={4} fontSize="sm">
-            Eiendommen har flere adresser
+            {t('propertyInfo.multipleAddressesText')}
           </Text>
         )}
         {rows.map(([label, value], index) => (
