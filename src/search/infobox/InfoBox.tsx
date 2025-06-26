@@ -11,15 +11,15 @@ import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
+import { getInputCRS } from '../results/SearchResults';
 import { getElevation } from '../searchApi';
 import { PropertyInfo } from './PropertyInfo';
-import { getInputCRS } from './SearchResults';
 
 interface InfoBoxProps {
   result: SearchResult;
 }
 
-const capitalizeFirstLetter = (s: string) =>
+export const capitalizeFirstLetter = (s: string) =>
   s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 
 export const InfoBox = ({ result }: InfoBoxProps) => {
@@ -97,7 +97,7 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
           </AccordionItem>
           <AccordionItem value="placeInfo">
             <AccordionItemTrigger pl={0}>
-              {t('infoBox.placeInfo')}
+              {t('infoBox.placeinfo')}
             </AccordionItemTrigger>
             <AccordionItemContent>{/*Info kommer her  */}</AccordionItemContent>
           </AccordionItem>

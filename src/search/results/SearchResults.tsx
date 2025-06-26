@@ -30,8 +30,8 @@ import {
   Road,
   SearchResult,
 } from '../../types/searchTypes.ts';
+import { InfoBox } from '../infobox/InfoBox.tsx';
 import { getAddresses } from '../searchApi.ts';
-import { InfoBox } from './InfoBox.tsx';
 import { SearchResultLine } from './SearchResultLine.tsx';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
