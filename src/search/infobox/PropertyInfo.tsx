@@ -10,6 +10,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
+import { Property } from '../../types/searchTypes';
 import {
   getPropertyDetailsByMatrikkelId,
   getPropetyInfoByCoordinates,
@@ -25,7 +26,7 @@ export interface PropertyInfoProps {
 const fetchPropertyDetailsByCoordinates = async (
   lat4326: number,
   lon4326: number,
-) => {
+): Promise<Property | Property[]> => {
   const info = await getPropetyInfoByCoordinates(lat4326, lon4326);
   const property = info?.features?.[0]?.properties;
   if (!property) throw new Error('Ingen matrikkelreferanse funnet');
@@ -79,6 +80,8 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     [t('propertyInfo.sectionNr'), property.SEKSJONSNR],
   ];
 
+  const propertyRegisterUrl = `https://eiendomsregisteret.kartverket.no/eiendom/${property.KOMMUNENR}/${property.GARDSNR}/${property.BRUKSNR}/${property.FESTENR}/${property.SEKSJONSNR}`;
+
   return (
     <Box>
       <Stack gap={0}>
@@ -103,8 +106,14 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
         <CheckboxRoot>
           <Checkbox>Marker</Checkbox>
         </CheckboxRoot>
-        <Button mt={4} size="xs">
-          Vis mer informasjon{' '}
+        <Button
+          mt={4}
+          size="xs"
+          onClick={() =>
+            window.open(propertyRegisterUrl, '_blank', 'noopener,noreferrer')
+          }
+        >
+          {t('propertyInfo.moreInformation')}
         </Button>
       </Flex>
     </Box>

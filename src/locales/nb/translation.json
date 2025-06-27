@@ -102,6 +102,7 @@
     "subholdingNr": "Bruksnr.",
     "leaseNr": "Festenr.",
     "sectionNr": "Seksjonsnr.",
-    "multipleAddressesText": "Eiendommen har flere adresser"
+    "multipleAddressesText": "Eiendommen har flere adresser",
+    "moreInformation": "Vis mer informasjon"
   }
 }
