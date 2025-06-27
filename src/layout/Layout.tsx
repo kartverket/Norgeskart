@@ -103,7 +103,7 @@ const Layout: React.FC = () => {
 
       {/* Kartseksjon */}
       <Box flex="1" height="100%" bg="gray.200">
-        <MapComponent />
+        <MapComponent/>
       </Box>
     </Flex>
   );
