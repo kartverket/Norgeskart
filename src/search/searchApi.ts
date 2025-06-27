@@ -52,7 +52,7 @@ export const getElevation = async (x: number, y: number) => {
 
 export const getPropetyInfoByCoordinates = async (lat: number, lon: number) => {
   const res = await fetch(
-    `https://ws.geonorge.no/eiendom/v1/punkt/omrader?radius=1&nord=${lat}&ost=${lon}&koordsys=4326`,
+    `https://ws.geonorge.no/eiendom/v1/punkt/omrader?radius=1&nord=${lat}&ost=${lon}&koordsys=4258`,
   );
   if (!res.ok) throw new Error('Feil ved henting av eiendomsinformasjon');
   return res.json();

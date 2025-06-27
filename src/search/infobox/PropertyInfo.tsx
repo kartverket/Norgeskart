@@ -1,4 +1,12 @@
-import { Box, Flex, Stack, Text } from '@kvib/react';
+import {
+  Box,
+  Button,
+  Checkbox,
+  CheckboxRoot,
+  Flex,
+  Stack,
+  Text,
+} from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +22,27 @@ export interface PropertyInfoProps {
   inputCRS: string;
 }
 
+const fetchPropertyDetailsByCoordinates = async (
+  lat4326: number,
+  lon4326: number,
+) => {
+  const info = await getPropetyInfoByCoordinates(lat4326, lon4326);
+  const property = info?.features?.[0]?.properties;
+  if (!property) throw new Error('Ingen matrikkelreferanse funnet');
+  const municipalityNumber = property.kommunenummer;
+  const holdingNumber = property.gardsnummer;
+  const subholdingNumber = property.bruksnummer;
+  const leaseNumber = property.festenummer || '0';
+  const sectionNumber = property.seksjonsnummer || '0';
+  return getPropertyDetailsByMatrikkelId(
+    municipalityNumber,
+    holdingNumber,
+    subholdingNumber,
+    leaseNumber,
+    sectionNumber,
+  );
+};
+
 export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   const { t } = useTranslation();
   const [lon4326, lat4326] = transform([lon, lat], inputCRS, 'EPSG:4326');
@@ -24,30 +53,12 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     error,
   } = useQuery({
     queryKey: ['propertyDetails', lat4326, lon4326],
-    queryFn: async () => {
-      const info = await getPropetyInfoByCoordinates(lat4326, lon4326);
-      const property = info?.features?.[0]?.properties;
-      if (!property) throw new Error('Ingen matrikkelreferanse funnet');
-      const kommunenr = property.kommunenummer;
-      const gardsnr = property.gardsnummer;
-      const bruksnr = property.bruksnummer;
-      const festenr = property.festenummer || '0';
-      const seksjonsnr = property.seksjonsnummer || '0';
-      return getPropertyDetailsByMatrikkelId(
-        kommunenr,
-        gardsnr,
-        bruksnr,
-        festenr,
-        seksjonsnr,
-      );
-    },
+    queryFn: () => fetchPropertyDetailsByCoordinates(lat4326, lon4326),
     enabled: lat4326 != null && lon4326 != null,
   });
 
   if (isLoading) return <>Laster eiendomsinformasjon...</>;
   if (error) return <>Feil ved henting av eiendomsinformasjon.</>;
-
-  console.log('Property details:', propertyDetails);
 
   const property = Array.isArray(propertyDetails)
     ? propertyDetails[0]
@@ -78,7 +89,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
         )}
         {rows.map(([label, value], index) => (
           <Flex
-            key={label}
+            key={label as string}
             justify="space-between"
             bg={index % 2 === 0 ? 'gray.50' : 'white'}
             p={2}
@@ -88,6 +99,14 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
           </Flex>
         ))}
       </Stack>
+      <Flex justify="space-between" align="center">
+        <CheckboxRoot>
+          <Checkbox>Marker</Checkbox>
+        </CheckboxRoot>
+        <Button mt={4} size="xs">
+          Vis mer informasjon{' '}
+        </Button>
+      </Flex>
     </Box>
   );
 };
