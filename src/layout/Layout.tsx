@@ -15,6 +15,7 @@ import LanguageSwitcher from '../languageswitcher/LanguageSwitcher.tsx';
 import { MapComponent } from '../map/MapComponent.tsx';
 import { SearchComponent } from '../search/SearchComponent.tsx';
 import { Menu } from '../sidePanel/Menu.tsx';
+
 import transition from '../theme/transitions.ts';
 
 const Layout: React.FC = () => {

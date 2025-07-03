@@ -49,7 +49,11 @@
       }
     }
   },
-  "mapLayers": "Kartlag",
+  "mapLayers": {
+    "label": "Kartlag",
+    "open": "Åpne kartlaginnstillinger",
+    "close": "Lukk kartlaginstillinger"
+  },
   "search": {
     "placeholder": "Søk i Norgeskart",
     "tabHeading": "Søk",

@@ -49,7 +49,11 @@
       }
     }
   },
-  "mapLayers": "Maps",
+  "mapLayers": {
+    "label": "Maplayers",
+    "open": "Open map layer settings",
+    "close": "Close map layer settings"
+  },
   "search": {
     "placeholder": "Search Norgeskart",
     "tabHeading": "Search",
