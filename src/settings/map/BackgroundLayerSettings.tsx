@@ -36,9 +36,7 @@ export const BackgroundLayerSettings = () => {
   const backgrundLayerId = validateBackgroundLayerIdString(
     getUrlParameter('backgroundLayer'),
   );
-  const defaultBackgroundLayer = backgrundLayerId
-    ? backgrundLayerId
-    : 'topo'; // Default to 'topo' if no valid background layer is found
+  const defaultBackgroundLayer = backgrundLayerId ? backgrundLayerId : 'topo'; // Default to 'topo' if no valid background layer is found
 
   return (
     <SelectRoot
