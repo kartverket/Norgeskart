@@ -38,8 +38,8 @@
         },
         "mapNames": {
           "topo": "Topo",
-          "newTopo": "Nye topo",
-          "topoGrayscale": "Topo Gråtone"
+          "topoGrayscale": "Topo Gråtone",
+          "topo_2025": "Topo 2025"
         }
       },
       "compass": {

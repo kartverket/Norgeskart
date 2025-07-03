@@ -20,12 +20,16 @@ export const BackgroundLayerSettings = () => {
   const backgroundLayerCollection: { value: BackgroundLayer; label: string }[] =
     [
       {
-        value: 'newTopo',
-        label: t('map.settings.layers.mapNames.newTopo'),
+        value: 'topo',
+        label: t('map.settings.layers.mapNames.topo'),
       },
       {
         value: 'topoGrayscale',
         label: t('map.settings.layers.mapNames.topoGrayscale'),
+      },
+      {
+        value: 'topo_2025',
+        label: t('map.settings.layers.mapNames.topo_2025'),
       },
     ];
 
@@ -34,7 +38,7 @@ export const BackgroundLayerSettings = () => {
   );
   const defaultBackgroundLayer = backgrundLayerId
     ? backgrundLayerId
-    : 'newTopo'; // Default to 'newTopo' if no valid background layer is found
+    : 'topo'; // Default to 'topo' if no valid background layer is found
 
   return (
     <SelectRoot

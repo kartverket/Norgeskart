@@ -50,8 +50,9 @@ export type MapLayer = {
 
 export type MapLayers = {
   backgroundLayers: {
-    newTopo: MapLayer;
+    topo: MapLayer;
     topoGrayscale: MapLayer;
+    topo_2025: MapLayer;
   };
   europaForenklet: MapLayer;
   drawLayer: MapLayer;
@@ -62,8 +63,8 @@ export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
 
 const mapLayers: MapLayers = {
   backgroundLayers: {
-    newTopo: {
-      id: 'bg_newTopo',
+    topo: {
+      id: 'bg_topo',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -73,7 +74,7 @@ const mapLayers: MapLayers = {
           matrixSet,
         } = getProjectionParameters(projectionId);
         return new TileLayer({
-          properties: { id: 'bg_newTopo' },
+          properties: { id: 'bg_topo' },
           zIndex: 1,
           source: new WMTS({
             url: 'https://cache.kartverket.no/v1/service',
@@ -109,6 +110,37 @@ const mapLayers: MapLayers = {
           source: new WMTS({
             url: 'https://cache.kartverket.no/v1/service',
             layer: 'topograatone',
+            matrixSet: matrixSet,
+            projection: projection,
+            format: 'image/png',
+            tileGrid: new WMTSTileGrid({
+              origin: getTopLeft(projectionExtent),
+              resolutions: resolutions,
+              matrixIds: matrixIds,
+            }),
+            style: 'default',
+            wrapX: true,
+          }),
+        });
+      },
+    },
+
+    topo_2025: {
+      id: 'bg_topo_2025',
+      getLayer: (projectionId: ProjectionIdentifier) => {
+        const {
+          projection,
+          projectionExtent,
+          resolutions,
+          matrixIds,
+          matrixSet,
+        } = getProjectionParameters(projectionId);
+        return new TileLayer({
+          properties: { id: 'bg_topo_2025' },
+          zIndex: 1,
+          source: new WMTS({
+            url: 'https://cache.atkv3-dev.kartverket.cloud/v1/service',
+            layer: 'topo',
             matrixSet: matrixSet,
             projection: projection,
             format: 'image/png',

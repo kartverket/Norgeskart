@@ -38,8 +38,8 @@
         },
         "mapNames": {
           "topo": "Topographic map",
-          "newTopo": "New Topo",
-          "topoGrayscale": "Topo Gray"
+          "topoGrayscale": "Topo Gray",
+          "topo_2025": "Topo 2025"
         }
       },
       "compass": {

@@ -19,7 +19,8 @@ export const validateBackgroundLayerIdString = (
   layerId: string | null,
 ): BackgroundLayer | null => {
   switch (layerId) {
-    case 'newTopo':
+    case 'topo':
+    case 'topo_2025':
     case 'topoGrayscale':
       return layerId as BackgroundLayer;
     default:
