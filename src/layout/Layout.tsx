@@ -15,6 +15,8 @@ import { MapComponent } from '../map/MapComponent.tsx';
 import { SearchComponent } from '../search/SearchComponent.tsx';
 import { Menu } from '../sidePanel/Menu.tsx';
 import transition from '../theme/transitions.ts';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher.tsx';
+
 
 const Layout: React.FC = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -60,8 +62,9 @@ const Layout: React.FC = () => {
             <DrawerContent>
               <DrawerCloseTrigger />
               <DrawerBody>
-                <SearchComponent />
-                <Menu />
+                <SearchComponent/>
+                <Menu/>
+                <LanguageSwitcher/>
               </DrawerBody>
             </DrawerContent>
           </DrawerPositioner>
@@ -78,10 +81,11 @@ const Layout: React.FC = () => {
             <SearchComponent />
           </Box>
 
-          {/* Sidebar */}
+          {/* Sidebar desktop */}
           <Box {...sidebarStyle}>
             <Box {...menuWrapperStyle}>
               <Menu />
+              <LanguageSwitcher/>
             </Box>
           </Box>
 

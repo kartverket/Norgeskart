@@ -137,7 +137,7 @@ export const MapOverlay = () => {
             variant="solid"
             onClick={() => setShowDrawSettings((prev) => !prev)}
           >
-            Tegne
+            {showDrawSettings ? t('draw.close') : t('draw.tabHeading')}
           </Button>
 
           {showDrawSettings && (

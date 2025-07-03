@@ -21,7 +21,7 @@ const LanguageSwitcher: React.FC = () => {
   ];
 
   return (
-    <Box width="150px">
+    <Box p="12px">
       <SelectRoot
         collection={createListCollection({
           items: languageOptions.map((opt) => ({

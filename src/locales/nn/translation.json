@@ -11,7 +11,8 @@
     "save": "Lagre",
     "tabHeading": "Tekne",
     "tools": "Verktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "close": "Lukk"
   },
   "export": {
     "format": {

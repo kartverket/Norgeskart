@@ -11,7 +11,8 @@
     "save": "Save",
     "tabHeading": "Draw",
     "tools": "Tools",
-    "yesClear": "Yes clear"
+    "yesClear": "Yes clear",
+    "close": "Close"
   },
   "export": {
     "format": {
