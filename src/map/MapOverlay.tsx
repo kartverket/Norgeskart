@@ -161,17 +161,10 @@ export const MapOverlay = () => {
 
             {/* Tegneverktøy-panelet, vises under knappene */}
             {showDrawSettings && (
-              <Box
-                mt={2}
-                width="300px"
-                boxShadow="lg"
-                bg="white"
-                borderRadius="md"
-                p={2}
-              >
-                <Card>
+              <Box mt={5} width="350px" boxShadow="lg" borderRadius="md">
+                <Card variant="elevated">
                   <CardHeader fontWeight="bold">
-                    {t('draw.tabHeading') || 'Tegneverktøy'}
+                    {t('draw.tabHeading')}
                   </CardHeader>
                   <CardBody>
                     <DrawSettings />
@@ -182,14 +175,7 @@ export const MapOverlay = () => {
 
             {/* Kartinnstillinger-panelet, også under knappene */}
             {showMapSettings && (
-              <Box
-                mt={2}
-                width="300px"
-                boxShadow="lg"
-                bg="white"
-                borderRadius="md"
-                p={2}
-              >
+              <Box mt={5} width="350px" boxShadow="lg" borderRadius="md">
                 <Card>
                   <CardHeader fontWeight="bold">
                     {t('mapLayers.label')}
