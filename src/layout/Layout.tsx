@@ -11,12 +11,11 @@ import {
   useBreakpointValue,
 } from '@kvib/react';
 import React, { useState } from 'react';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher.tsx';
 import { MapComponent } from '../map/MapComponent.tsx';
 import { SearchComponent } from '../search/SearchComponent.tsx';
 import { Menu } from '../sidePanel/Menu.tsx';
 import transition from '../theme/transitions.ts';
-import LanguageSwitcher from '../languageswitcher/LanguageSwitcher.tsx';
-
 
 const Layout: React.FC = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -62,9 +61,9 @@ const Layout: React.FC = () => {
             <DrawerContent>
               <DrawerCloseTrigger />
               <DrawerBody>
-                <SearchComponent/>
-                <Menu/>
-                <LanguageSwitcher/>
+                <SearchComponent />
+                <Menu />
+                <LanguageSwitcher />
               </DrawerBody>
             </DrawerContent>
           </DrawerPositioner>
@@ -85,7 +84,7 @@ const Layout: React.FC = () => {
           <Box {...sidebarStyle}>
             <Box {...menuWrapperStyle}>
               <Menu />
-              <LanguageSwitcher/>
+              <LanguageSwitcher />
             </Box>
           </Box>
 
@@ -107,7 +106,7 @@ const Layout: React.FC = () => {
 
       {/* Kartseksjon */}
       <Box flex="1" height="100%" bg="gray.200">
-        <MapComponent/>
+        <MapComponent />
       </Box>
     </Flex>
   );
