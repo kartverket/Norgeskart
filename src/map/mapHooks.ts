@@ -23,7 +23,7 @@ const getBackgroundLayerId = () => {
   const backgroundLayerIdFromUrl = validateBackgroundLayerIdString(
     getUrlParameter('backgroundLayer'),
   );
-  return backgroundLayerIdFromUrl ? backgroundLayerIdFromUrl : 'newTopo';
+  return backgroundLayerIdFromUrl ? backgroundLayerIdFromUrl : 'topo';
 };
 
 const useMap = () => {

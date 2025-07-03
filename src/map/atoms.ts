@@ -38,7 +38,7 @@ export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
 export const magneticDeclinationAtom = atom<number>(0);
 
-export const backgroundLayerAtom = atom<BackgroundLayer>('newTopo');
+export const backgroundLayerAtom = atom<BackgroundLayer>('topo');
 
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
