@@ -1,4 +1,17 @@
-import { Box, Button, Flex, Link } from '@kvib/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Link,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogCloseTrigger,
+  DialogBody,
+  Icon
+} from '@kvib/react';
+
 
 const PrivacyPolicy = () => {
   return (
@@ -16,19 +29,55 @@ const PrivacyPolicy = () => {
           colorPalette="green"
           variant="plain"
           p={0}
+          size="sm"
         >
           Personvernerklæring
         </Link>
 
-        <Button
-          colorPalette="green"
-          rightIcon="waving_hand"
-          size="md"
-          variant="plain"
-          p={0}
-        >
-          Kontakt oss
-        </Button>
+        <Dialog motionPreset="slide-in-left">
+          <DialogTrigger asChild>
+            <Button
+              colorPalette="green"
+              rightIcon="waving_hand"
+              size="sm"
+              variant="plain"
+              p={0}
+            >
+              Kontakt oss
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent>
+            <DialogHeader>Kontakt oss</DialogHeader>
+            <DialogCloseTrigger />
+            <DialogBody>
+              <Box >
+                Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon
+              </Box>
+              <Box my={4}>
+               <Link
+                colorPalette="green"
+                  href="tel:+47123456789"
+                size="lg"
+                variant="underline"
+              >
+                +47 32 11 80 00
+              </Link>
+              </Box>
+              <Box>
+               <Link
+                colorPalette="green"
+                  href="mailto:kontakt@firma.no"
+                size="lg"
+                variant="underline"
+              >
+                Send e-post
+              </Link>
+              </Box>
+            </DialogBody>
+           
+          </DialogContent>
+        </Dialog>
       </Flex>
     </Box>
   );
