@@ -15,7 +15,8 @@ import LanguageSwitcher from '../languageswitcher/LanguageSwitcher.tsx';
 import { MapComponent } from '../map/MapComponent.tsx';
 import { SearchComponent } from '../search/SearchComponent.tsx';
 import { Menu } from '../sidePanel/Menu.tsx';
-import PrivacyPolicy from '../sidePanel/PrivacyPolicy.tsx';
+import PrivacyPolicyAndContact from '../sidePanel/PrivacyPolicyAndContact.tsx';
+import ShareOrPrintMap from '../sidePanel/ShareOrPrintMap.tsx';
 import transition from '../theme/transitions.ts';
 
 const Layout: React.FC = () => {
@@ -34,7 +35,6 @@ const Layout: React.FC = () => {
     bg: 'white',
     boxShadow: 'sm',
     flexShrink: 0,
-    pt: '4rem',
   };
 
   const menuWrapperStyle = {
@@ -59,13 +59,14 @@ const Layout: React.FC = () => {
             />
           </DrawerTrigger>
           <DrawerPositioner>
-            <DrawerContent>
+            <DrawerContent maxWidth="none">
               <DrawerCloseTrigger />
               <DrawerBody>
                 <SearchComponent />
                 <Menu />
+                <ShareOrPrintMap />
                 <LanguageSwitcher />
-                <PrivacyPolicy />
+                <PrivacyPolicyAndContact />
               </DrawerBody>
             </DrawerContent>
           </DrawerPositioner>
@@ -86,8 +87,9 @@ const Layout: React.FC = () => {
           <Box {...sidebarStyle}>
             <Box {...menuWrapperStyle}>
               <Menu />
+              <ShareOrPrintMap />
               <LanguageSwitcher />
-              <PrivacyPolicy />
+              <PrivacyPolicyAndContact />
             </Box>
           </Box>
 

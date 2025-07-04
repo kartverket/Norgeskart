@@ -30,7 +30,7 @@ export const SearchComponent = () => {
   return (
     <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>
       <Box position="relative" width="100%">
-        <Box position="relative" width="100%">
+        <Box position="relative" width="90%">
           {/* Logo som absolutt posisjonert inni Search-feltet */}
           <Box
             position="absolute"

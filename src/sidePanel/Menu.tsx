@@ -22,7 +22,7 @@ export const Menu = () => {
   };
 
   return (
-    <AccordionRoot multiple collapsible value={openTabs}>
+    <AccordionRoot multiple collapsible value={openTabs} pt={10}>
       <AccordionItem value="eiendom">
         <AccordionItemTrigger onClick={() => toggleTab('eiendom')}>
           Eiendom

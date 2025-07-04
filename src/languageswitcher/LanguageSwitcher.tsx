@@ -21,7 +21,7 @@ const LanguageSwitcher: React.FC = () => {
   ];
 
   return (
-    <Box p="12px">
+    <Box p={{ base: 0, md: 3 }} py={3}>
       <SelectRoot
         collection={createListCollection({
           items: languageOptions.map((opt) => ({
@@ -36,7 +36,7 @@ const LanguageSwitcher: React.FC = () => {
         <SelectTrigger>
           <SelectValueText placeholder="Velg språk" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent style={{ zIndex: 3000 }}>
           {languageOptions.map((lang) => (
             <SelectItem
               key={lang.value}
