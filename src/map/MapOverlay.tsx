@@ -112,7 +112,7 @@ export const MapOverlay = () => {
                 <Tooltip content={t('map.overlay.fullscreen')}>
                   <IconButton
                     onClick={() => setMapFullScreen(true)}
-                    variant="ghost"
+                    variant="solid"
                     icon="fullscreen"
                   />
                 </Tooltip>
@@ -129,7 +129,7 @@ export const MapOverlay = () => {
                       );
                     });
                   }}
-                  variant="ghost"
+                  variant="solid"
                   icon="my_location"
                 />
               </Tooltip>
@@ -141,7 +141,7 @@ export const MapOverlay = () => {
               >
                 <IconButton
                   onClick={toggleDrawSettings}
-                  variant="ghost"
+                  variant="solid"
                   icon="edit"
                 />
               </Tooltip>
@@ -153,7 +153,7 @@ export const MapOverlay = () => {
               >
                 <IconButton
                   onClick={toggleMapSettings}
-                  variant="ghost"
+                  variant="solid"
                   icon="layers"
                 />
               </Tooltip>
