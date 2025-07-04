@@ -161,8 +161,8 @@ export const MapOverlay = () => {
 
             {/* Tegneverktøy-panelet, vises under knappene */}
             {showDrawSettings && (
-              <Box mt={5} width="350px" boxShadow="lg" borderRadius="md">
-                <Card variant="elevated">
+              <Box mt={5} width="350px">
+                <Card opacity={.9} borderRadius="lg">
                   <CardHeader fontWeight="bold">
                     {t('draw.tabHeading')}
                   </CardHeader>
