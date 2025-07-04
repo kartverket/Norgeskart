@@ -15,7 +15,7 @@ import LanguageSwitcher from '../languageswitcher/LanguageSwitcher.tsx';
 import { MapComponent } from '../map/MapComponent.tsx';
 import { SearchComponent } from '../search/SearchComponent.tsx';
 import { Menu } from '../sidePanel/Menu.tsx';
-
+import PrivacyPolicy from '../sidePanel/PrivacyPolicy.tsx';
 import transition from '../theme/transitions.ts';
 
 const Layout: React.FC = () => {
@@ -65,6 +65,7 @@ const Layout: React.FC = () => {
                 <SearchComponent />
                 <Menu />
                 <LanguageSwitcher />
+                <PrivacyPolicy />
               </DrawerBody>
             </DrawerContent>
           </DrawerPositioner>
@@ -86,6 +87,7 @@ const Layout: React.FC = () => {
             <Box {...menuWrapperStyle}>
               <Menu />
               <LanguageSwitcher />
+              <PrivacyPolicy />
             </Box>
           </Box>
 
