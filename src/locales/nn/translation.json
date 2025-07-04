@@ -74,5 +74,11 @@
     "norwegianBokmaal": "Norsk bokmål",
     "norwegianNynorsk": "Norsk nynorsk",
     "chooseLanguage": "Velg språk"
+  },
+  "privacyAndContact": {
+    "contactUs": "Kontakt",
+    "privacyPolicy": "Personvernerklæring ",
+    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
+    "sendEmail": "Send e-post"
   }
 }

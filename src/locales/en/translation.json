@@ -74,5 +74,11 @@
     "norwegianBokmaal": "Norwegian bokmål",
     "norwegianNynorsk": "Norwegian nynorsk",
     "chooseLanguage": "Select language"
+  },
+  "privacyAndContact": {
+    "contactUs": "Contact us",
+    "privacyPolicy": "Privacy policy ",
+    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
+    "sendEmail": "Send e-mail"
   }
 }

@@ -1,19 +1,21 @@
 import {
   Box,
   Button,
-  Flex,
-  Link,
   Dialog,
-  DialogTrigger,
+  DialogBody,
+  DialogCloseTrigger,
   DialogContent,
   DialogHeader,
-  DialogCloseTrigger,
-  DialogBody,
-  Icon
+  DialogTrigger,
+  Flex,
+  Link,
 } from '@kvib/react';
 
+import { useTranslation } from 'react-i18next';
 
 const PrivacyPolicy = () => {
+  const { t } = useTranslation();
+
   return (
     <Box p={3}>
       <Flex
@@ -31,7 +33,7 @@ const PrivacyPolicy = () => {
           p={0}
           size="sm"
         >
-          Personvernerklæring
+          {t('privacyAndContact.privacyPolicy')}
         </Link>
 
         <Dialog motionPreset="slide-in-left">
@@ -43,39 +45,36 @@ const PrivacyPolicy = () => {
               variant="plain"
               p={0}
             >
-              Kontakt oss
+              {t('privacyAndContact.contactUs')}
             </Button>
           </DialogTrigger>
 
           <DialogContent>
-            <DialogHeader>Kontakt oss</DialogHeader>
+            <DialogHeader>{t('privacyAndContact.contactUs')}</DialogHeader>
             <DialogCloseTrigger />
             <DialogBody>
-              <Box >
-                Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon
-              </Box>
-              <Box my={4}>
-               <Link
-                colorPalette="green"
+              <Box>{t('privacyAndContact.dialogContent')}</Box>
+              <Box my={5}>
+                <Link
+                  colorPalette="green"
                   href="tel:+47123456789"
-                size="lg"
-                variant="underline"
-              >
-                +47 32 11 80 00
-              </Link>
+                  size="lg"
+                  variant="underline"
+                >
+                  +47 32 11 80 00
+                </Link>
               </Box>
               <Box>
-               <Link
-                colorPalette="green"
+                <Link
+                  colorPalette="green"
                   href="mailto:kontakt@firma.no"
-                size="lg"
-                variant="underline"
-              >
-                Send e-post
-              </Link>
+                  size="lg"
+                  variant="underline"
+                >
+                  {t('privacyAndContact.sendEmail')}
+                </Link>
               </Box>
             </DialogBody>
-           
           </DialogContent>
         </Dialog>
       </Flex>
