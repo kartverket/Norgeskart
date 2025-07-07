@@ -10,15 +10,22 @@ i18n
   .use(LanguageDetector)
   .init({
     supportedLngs: ['nb', 'nn', 'en'],
+    fallbackLng: 'nb',
+    detection: {
+      order: ['localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage'],
+    },
+    load: 'languageOnly', // <-- viktig!
     resources: {
       nb: { translation: nb },
       nn: { translation: nn },
       en: { translation: en },
     },
-    fallbackLng: 'nb',
     interpolation: {
       escapeValue: false,
     },
   });
+
+
 
 export default i18n;
