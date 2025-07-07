@@ -15,7 +15,7 @@ i18n
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
     },
-    load: 'languageOnly', // <-- viktig!
+    load: 'languageOnly',
     resources: {
       nb: { translation: nb },
       nn: { translation: nn },
