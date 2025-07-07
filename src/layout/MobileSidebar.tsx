@@ -7,11 +7,11 @@ import {
   DrawerTrigger,
   IconButton,
 } from '@kvib/react';
-import { Menu } from '../sidePanel/Menu';
-import ShareOrPrintMap from '../sidePanel/ShareOrPrintMap';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
-import PrivacyPolicyAndContact from '../sidePanel/PrivacyPolicyAndContact';
 import { SearchComponent } from '../search/SearchComponent';
+import { Menu } from '../sidePanel/Menu';
+import PrivacyPolicyAndContact from '../sidePanel/PrivacyPolicyAndContact';
+import ShareOrPrintMap from '../sidePanel/ShareOrPrintMap';
 
 const MobileSidebar = () => (
   <Drawer placement="start" trapFocus>

@@ -1,9 +1,9 @@
 import { Box } from '@kvib/react';
-import { Menu } from '../sidePanel/Menu';
-import ShareOrPrintMap from '../sidePanel/ShareOrPrintMap';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
+import { Menu } from '../sidePanel/Menu';
 import PrivacyPolicyAndContact from '../sidePanel/PrivacyPolicyAndContact';
-import { sidebarStyle, menuWrapperStyle } from './LayoutStyles'
+import ShareOrPrintMap from '../sidePanel/ShareOrPrintMap';
+import { menuWrapperStyle, sidebarStyle } from './LayoutStyles';
 
 const DesktopSidebar = ({ isOpen }: { isOpen: boolean }) => {
   return (

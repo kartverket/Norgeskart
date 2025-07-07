@@ -2,8 +2,8 @@ import { Box, Flex, useBreakpointValue } from '@kvib/react';
 import React, { useState } from 'react';
 import { MapComponent } from '../map/MapComponent';
 import { SearchComponent } from '../search/SearchComponent';
-import MobileSidebar from './MobileSidebar';
 import DesktopSidebar from './DesktopSidebar';
+import MobileSidebar from './MobileSidebar';
 import SidebarToggleButton from './SidebarToggleButton';
 
 const Layout: React.FC = () => {
@@ -16,7 +16,12 @@ const Layout: React.FC = () => {
         <MobileSidebar />
       ) : (
         <>
-          <Box position="absolute" width="100%" maxWidth="400px" zIndex="overlay">
+          <Box
+            position="absolute"
+            width="100%"
+            maxWidth="400px"
+            zIndex="overlay"
+          >
             <SearchComponent />
           </Box>
 
