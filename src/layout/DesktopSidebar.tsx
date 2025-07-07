@@ -3,7 +3,7 @@ import { Menu } from '../sidePanel/Menu';
 import ShareOrPrintMap from '../sidePanel/ShareOrPrintMap';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import PrivacyPolicyAndContact from '../sidePanel/PrivacyPolicyAndContact';
-import { sidebarStyle, menuWrapperStyle } from './styles'
+import { sidebarStyle, menuWrapperStyle } from './LayoutStyles'
 
 const DesktopSidebar = ({ isOpen }: { isOpen: boolean }) => {
   return (
