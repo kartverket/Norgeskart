@@ -57,7 +57,7 @@ const PrivacyPolicy = () => {
               <Box my={5}>
                 <Link
                   colorPalette="green"
-                  href="tel:+47123456789"
+                  href="tel:+4732118000"
                   size="lg"
                   variant="underline"
                 >
