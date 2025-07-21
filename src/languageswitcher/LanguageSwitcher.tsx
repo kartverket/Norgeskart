@@ -8,10 +8,9 @@ import {
   SelectValueText,
   createListCollection,
 } from '@kvib/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const LanguageSwitcher: React.FC = () => {
+const LanguageSwitcher = () => {
   const { i18n, t } = useTranslation();
 
   const languageOptions = [
@@ -21,7 +20,7 @@ const LanguageSwitcher: React.FC = () => {
   ];
 
   return (
-    <Box width="150px">
+    <Box p={{ base: 0, md: 3 }} py={3}>
       <SelectRoot
         collection={createListCollection({
           items: languageOptions.map((opt) => ({

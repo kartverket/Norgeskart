@@ -73,7 +73,7 @@ export const DrawControls = () => {
         {t('draw.tabHeading')}
       </Heading>
       <Button onClick={() => setDrawEnabled(!drawEnabled)}>
-        {drawEnabled ? t('draw.begin') : t('draw.end')}
+        {drawEnabled ? t('draw.end') : t('draw.begin')}
       </Button>
       {drawEnabled && (
         <>

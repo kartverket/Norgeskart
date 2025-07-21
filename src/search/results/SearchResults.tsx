@@ -145,6 +145,12 @@ export const SearchResults = ({
       console.error('Failed to fetch address', e);
     }
   };
+  //Mattis 18.06.26. For å sjekke om det er resultater for høydesetting på resultatene
+  const hasResults =
+    properties.length > 0 ||
+    roads.length > 0 ||
+    places.length > 0 ||
+    addresses.length > 0;
 
   if (!placesMetadata) {
     return null;
@@ -158,7 +164,12 @@ export const SearchResults = ({
       backgroundColor="white"
       mt="5px"
       overflowY="auto"
-      height={isMobileScreen ? '10vh' : 'calc(100vh - 130px)'}
+      height={
+        hasResults ? (isMobileScreen ? '10vh' : 'calc(100vh - 130px)') : 'auto'
+      }
+      maxHeight={
+        hasResults ? (isMobileScreen ? '10vh' : 'calc(100vh - 130px)') : 'none'
+      }
     >
       {places.length > 0 && (
         <AccordionItem value="places">
