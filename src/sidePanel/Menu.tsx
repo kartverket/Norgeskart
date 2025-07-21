@@ -7,12 +7,10 @@ import {
   ListItem,
 } from '@kvib/react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 type AccordionTab = 'eiendom' | 'friluftsliv' | 'stedskart';
 
 export const Menu = () => {
-  const { t } = useTranslation();
   const [openTabs, setOpenTabs] = useState<AccordionTab[]>(['eiendom']);
 
   const toggleTab = (tab: AccordionTab) => {
