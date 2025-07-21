@@ -8,10 +8,9 @@ import {
   SelectValueText,
   createListCollection,
 } from '@kvib/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const LanguageSwitcher: React.FC = () => {
+const LanguageSwitcher = () => {
   const { i18n, t } = useTranslation();
 
   const languageOptions = [
@@ -36,7 +35,7 @@ const LanguageSwitcher: React.FC = () => {
         <SelectTrigger>
           <SelectValueText placeholder="Velg språk" />
         </SelectTrigger>
-        <SelectContent style={{ zIndex: 3000 }}>
+        <SelectContent>
           {languageOptions.map((lang) => (
             <SelectItem
               key={lang.value}

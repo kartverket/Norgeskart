@@ -1,6 +1,6 @@
 .ol-zoom {
-  top: unset !important;
-  right: unset !important;
+  top: unset;
+  right: unset;
   bottom: 100px;
   left: 16px;
   background-color: rgba(255, 255, 255, 0.7);
