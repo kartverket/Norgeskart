@@ -2,7 +2,6 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
-import { Extent } from 'ol/extent';
 import { get as getProjection, transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
@@ -53,7 +52,13 @@ const useMap = () => {
       magneticNorth[0], // magnetic north longitude)
     );
 
-    setMagneticDeclination(azimuth);
+    setMagneticDeclination((prev) => {
+      const diff = Math.abs(azimuth - prev);
+      if (isNaN(diff) || diff < 0.01) {
+        return prev; // No significant change, return previous value
+      }
+      return azimuth;
+    });
   });
   map.getView().on('change:rotation', (e) => {
     const rotation = e.target.getRotation();
@@ -101,15 +106,12 @@ const useMapSettings = () => {
     const oldProjection = oldView.getProjection();
 
     let newCenter = undefined;
-    if (
-      oldCenter &&
-      oldProjection &&
-      oldProjection.getCode() !== projection.getCode()
-    ) {
+    if (oldProjection.getCode() === projection.getCode()) {
+      newCenter = oldCenter; // No transformation needed if projections are the same
+    } else if (oldCenter && oldProjection) {
       // Transform center to new projection
       newCenter = transform(oldCenter, oldProjection, projection);
     }
-
     map
       .getLayers()
       .getArray()
@@ -128,10 +130,13 @@ const useMapSettings = () => {
 
     // Create a new view with the new projection
     const newView = new View({
-      center: newCenter || [570130, 7032300], // fallback center if needed
+      center: newCenter,
       zoom: oldView.getZoom(),
+      minZoom: oldView.getMinZoom(),
+      maxZoom: oldView.getMaxZoom(),
       projection: projection,
-      extent: projection.getExtent() as Extent,
+
+      extent: projection.getExtent(),
     });
 
     oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {

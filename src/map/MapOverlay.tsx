@@ -54,7 +54,7 @@ export const MapOverlay = () => {
       portalRef.current = null;
       setPortalTargetFound(false);
     };
-  });
+  }, []);
 
   useEffect(() => {
     if (!zoomRef.current) {
@@ -70,7 +70,7 @@ export const MapOverlay = () => {
       zoomRef.current = null;
       setZoomControlFound(false);
     };
-  });
+  }, []);
 
   const [showDrawSettings, setShowDrawSettings] = useState(false);
   const [showMapSettings, setShowMapSettings] = useState(false);
