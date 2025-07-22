@@ -40,7 +40,8 @@
         "mapNames": {
           "topo": "Topo",
           "topoGrayscale": "Topo Gråtone",
-          "topo_2025": "Topo 2025"
+          "topo_2025": "Topo 2025",
+          "orthophoto": "Flyfoto"
         }
       },
       "compass": {

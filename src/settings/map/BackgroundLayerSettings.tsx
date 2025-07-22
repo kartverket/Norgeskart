@@ -31,6 +31,10 @@ export const BackgroundLayerSettings = () => {
         value: 'topo_2025',
         label: t('map.settings.layers.mapNames.topo_2025'),
       },
+      {
+        value: 'orthophoto',
+        label: t('map.settings.layers.mapNames.orthophoto'),
+      },
     ];
 
   const backgrundLayerId = validateBackgroundLayerIdString(
