@@ -81,7 +81,7 @@ export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
 const mapLayers: MapLayers = {
   backgroundLayers: {
     topo: {
-      id: 'bg_topo',
+      id: 'topo',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -112,7 +112,7 @@ const mapLayers: MapLayers = {
     },
 
     topoGrayscale: {
-      id: 'bg_topoGrayscale',
+      id: 'topoGrayscale',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -143,7 +143,7 @@ const mapLayers: MapLayers = {
     },
 
     topo_2025: {
-      id: 'bg_topo_2025',
+      id: 'topo_2025',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -174,7 +174,7 @@ const mapLayers: MapLayers = {
     },
 
     orthophoto: {
-      id: 'bg_orthophoto',
+      id: 'orthophoto',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const { projection, projectionExtent, resolutions, matrixIds } =
           getProjectionParameters(projectionId);

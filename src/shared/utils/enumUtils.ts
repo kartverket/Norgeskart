@@ -22,6 +22,7 @@ export const validateBackgroundLayerIdString = (
     case 'topo':
     case 'topo_2025':
     case 'topoGrayscale':
+    case 'orthophoto':
       return layerId as BackgroundLayer;
     default:
       return null;
