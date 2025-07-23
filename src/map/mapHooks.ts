@@ -89,11 +89,14 @@ const useMapSettings = () => {
     backgroundLayers.forEach((layer) => {
       map.removeLayer(layer);
     });
+    const layerProperties = mapLayers.backgroundLayers[layerName];
     map.addLayer(
-      mapLayers.backgroundLayers[layerName].getLayer(
+      layerProperties.getLayer(
         map.getView().getProjection().getCode() as ProjectionIdentifier,
       ),
     );
+    map.getView().setMaxZoom(layerProperties.maxZoom || 20);
+
     setUrlParameter('backgroundLayer', layerName);
   };
 

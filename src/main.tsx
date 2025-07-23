@@ -5,10 +5,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import { projInit } from './projInit.ts'; // Uncomment if projInit is needed1
+import { projInit } from './projInit.ts';
 
 const queryClient = new QueryClient();
-projInit(); // Initialize proj4 projections if needed
+projInit();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

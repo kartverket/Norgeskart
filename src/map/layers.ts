@@ -62,6 +62,7 @@ type LayerFunction =
 export type MapLayer = {
   getLayer: LayerFunction;
   id: string;
+  maxZoom?: number;
 };
 
 export type MapLayers = {
@@ -197,6 +198,7 @@ const mapLayers: MapLayers = {
           }),
         });
       },
+      maxZoom: 17,
     },
   },
 
