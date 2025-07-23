@@ -41,7 +41,7 @@ interface SearchResultsProps {
   places: PlaceName[];
   addresses: Address[];
   placesMetadata?: Metadata;
-  onPlacesPageChange?: (page: number) => void;
+  onPlacesPageChange: (_page: number) => void;
 }
 
 const getInputCRS = (selectedResult: SearchResult) => {
@@ -205,7 +205,7 @@ export const SearchResults = ({
                 page={placesMetadata.side}
                 pageSize={placesMetadata.treffPerSide}
                 onPageChange={(e: { page: number }) =>
-                  onPlacesPageChange?.(e.page)
+                  onPlacesPageChange(e.page)
                 }
               >
                 <PaginationPrevTrigger />
