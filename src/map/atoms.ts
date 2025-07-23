@@ -77,7 +77,7 @@ export const mapAtom = atom<Map>(() => {
   map.addControl(new ScaleLine({ units: 'metric' }));
   map.addControl(getMousePositionControl(projectionId));
   const link = new Link({
-    params: ['x', 'y', 'z'],
+    params: ['x', 'y', 'z', 'r'],
   });
 
   map.addInteraction(link);
