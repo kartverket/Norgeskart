@@ -26,14 +26,10 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       'prettier/prettier': 'error',
-      'no-unused-vars': [
-        'warn',
-        { "argsIgnorePattern": '^_+$' , "varsIgnorePattern": '^_+$' },
-      ],
       '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { "argsIgnorePattern": '^_+$' , "varsIgnorePattern": '^_+$' },
-      ]
+        'error',
+        { argsIgnorePattern: '^_+.*$', varsIgnorePattern: '^_+$' },
+      ],
     },
   },
 );

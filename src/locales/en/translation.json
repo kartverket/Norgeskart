@@ -40,7 +40,8 @@
         "mapNames": {
           "topo": "Topographic map",
           "topoGrayscale": "Topo Gray",
-          "topo_2025": "Topo 2025"
+          "topo_2025": "Topo 2025",
+          "orthophoto": "Aerial photography"
         }
       },
       "compass": {

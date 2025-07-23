@@ -29,9 +29,9 @@ export const MapOverlay = () => {
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const magneticDeclination = useAtomValue(magneticDeclinationAtom);
   const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
-  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+  const [portalTargetFound, setPortalTargetFound] = useState<boolean>(false);
   const portalRef = useRef<HTMLElement>(null);
-  const [zoomControl, setZoomControl] = useState<HTMLElement | null>(null);
+  const [zoomControlFound, setZoomControlFound] = useState<boolean>(false);
   const zoomRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
@@ -41,24 +41,36 @@ export const MapOverlay = () => {
     mapOrientation + (useMagneticNorth ? magneticDeclination : 0);
 
   useEffect(() => {
-    setTimeout(() => {
-      const portalTargetElement = document.getElementById(
-        'custom-control-portal',
-      );
-      portalRef.current = portalTargetElement;
-      setPortalTarget(portalTargetElement);
-    }, 10);
+    if (!portalRef.current) {
+      setTimeout(() => {
+        const portalTargetElement = document.getElementById(
+          'custom-control-portal',
+        );
+        portalRef.current = portalTargetElement;
+        setPortalTargetFound(true);
+      }, 10);
+    }
+    return () => {
+      portalRef.current = null;
+      setPortalTargetFound(false);
+    };
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      const olZoomControlElement = document.getElementsByClassName(
-        'ol-zoom',
-      )[0] as HTMLElement;
-      zoomRef.current = olZoomControlElement;
-      setZoomControl(olZoomControlElement);
-    }, 10);
-  });
+    if (!zoomRef.current) {
+      setTimeout(() => {
+        const olZoomControlElement = document.getElementsByClassName(
+          'ol-zoom',
+        )[0] as HTMLElement;
+        zoomRef.current = olZoomControlElement;
+        setZoomControlFound(true);
+      }, 10);
+    }
+    return () => {
+      zoomRef.current = null;
+      setZoomControlFound(false);
+    };
+  }, []);
 
   const [showDrawSettings, setShowDrawSettings] = useState(false);
   const [showMapSettings, setShowMapSettings] = useState(false);
@@ -76,7 +88,7 @@ export const MapOverlay = () => {
 
   return (
     <>
-      {portalTarget && (
+      {portalTargetFound && (
         <Portal container={portalRef}>
           {displayCompassOverlay && (
             <Image
@@ -190,7 +202,7 @@ export const MapOverlay = () => {
         </Portal>
       )}
 
-      {zoomControl && (
+      {zoomControlFound && (
         <Portal container={zoomRef}>
           <Box zIndex={10}>
             <HStack gap={0}>

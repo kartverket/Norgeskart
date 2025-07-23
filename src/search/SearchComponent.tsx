@@ -84,7 +84,9 @@ export const SearchComponent = () => {
         places={placeNameData ? placeNameData.navn : []}
         addresses={addressData ? addressData.adresser : []}
         placesMetadata={placeNameData?.metadata}
-        onPlacesPageChange={setPlacesPage}
+        onPlacesPageChange={(page: number) => {
+          setPlacesPage(page);
+        }}
       />
     </Flex>
   );

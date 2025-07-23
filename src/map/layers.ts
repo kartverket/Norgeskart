@@ -39,6 +39,22 @@ const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
   return { projection, projectionExtent, resolutions, matrixIds, matrixSet };
 };
 
+const getOrthphotoUrl = (projectionId: ProjectionIdentifier) => {
+  const urlPrefix = 'https://opencache.statkart.no/gatekeeper/gk/';
+  switch (projectionId) {
+    case 'EPSG:25832':
+      return urlPrefix + 'gk.open_nib_utm32_wmts_v2';
+    case 'EPSG:25833':
+      return urlPrefix + 'gk.open_nib_utm33_wmts_v2?';
+    case 'EPSG:25835':
+      return urlPrefix + 'gk.open_nib_utm35_wmts_v2?';
+    case 'EPSG:3857':
+      return urlPrefix + 'gk.open_nib_web_mercator_wmts_v2?';
+    default:
+      return urlPrefix + 'gk.open_nib_web_mercator_wmts_v2?';
+  }
+};
+
 type LayerFunction =
   | ((_: ProjectionIdentifier) => BaseLayer)
   | (() => BaseLayer);
@@ -46,6 +62,7 @@ type LayerFunction =
 export type MapLayer = {
   getLayer: LayerFunction;
   id: string;
+  maxZoom?: number;
 };
 
 export type MapLayers = {
@@ -53,6 +70,7 @@ export type MapLayers = {
     topo: MapLayer;
     topoGrayscale: MapLayer;
     topo_2025: MapLayer;
+    orthophoto: MapLayer;
   };
   europaForenklet: MapLayer;
   drawLayer: MapLayer;
@@ -64,7 +82,7 @@ export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
 const mapLayers: MapLayers = {
   backgroundLayers: {
     topo: {
-      id: 'bg_topo',
+      id: 'topo',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -95,7 +113,7 @@ const mapLayers: MapLayers = {
     },
 
     topoGrayscale: {
-      id: 'bg_topoGrayscale',
+      id: 'topoGrayscale',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -126,7 +144,7 @@ const mapLayers: MapLayers = {
     },
 
     topo_2025: {
-      id: 'bg_topo_2025',
+      id: 'topo_2025',
       getLayer: (projectionId: ProjectionIdentifier) => {
         const {
           projection,
@@ -154,6 +172,33 @@ const mapLayers: MapLayers = {
           }),
         });
       },
+    },
+
+    orthophoto: {
+      id: 'orthophoto',
+      getLayer: (projectionId: ProjectionIdentifier) => {
+        const { projection, projectionExtent, resolutions, matrixIds } =
+          getProjectionParameters(projectionId);
+        return new TileLayer({
+          properties: { id: 'bg_orthophoto' },
+          zIndex: 1,
+          source: new WMTS({
+            url: getOrthphotoUrl(projectionId),
+            layer: 'Nibcache_web_mercator_v2',
+            matrixSet: 'GoogleMapsCompatible',
+            projection: projection,
+            format: 'image/png',
+            tileGrid: new WMTSTileGrid({
+              origin: getTopLeft(projectionExtent),
+              resolutions: resolutions,
+              matrixIds: matrixIds,
+            }),
+            style: 'default',
+            wrapX: true,
+          }),
+        });
+      },
+      maxZoom: 17,
     },
   },
 
