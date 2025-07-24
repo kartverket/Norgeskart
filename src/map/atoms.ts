@@ -66,10 +66,10 @@ export const mapAtom = atom<Map>(() => {
   map.addLayer(drawLayer);
 
   const intialView = new View({
-    center: [1737122, 9591875],
+    center: [500000, 7600000],
     minZoom: 3,
     maxZoom: 20,
-    zoom: 5,
+    zoom: 8,
     projection: projection,
     extent: projectionExtent,
   });
