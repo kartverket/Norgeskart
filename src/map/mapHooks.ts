@@ -13,7 +13,12 @@ import {
   mapOrientationAtom,
   ProjectionIdentifier,
 } from './atoms';
-import { BackgroundLayer, mapLayers } from './layers';
+import {
+  BackgroundLayer,
+  isMapLayerBackground,
+  isMapLayerEuropaForenklet,
+  mapLayers,
+} from './layers';
 import { getMousePositionControl } from './mapControls';
 
 const ROTATION_ANIMATION_DURATION = 500;
@@ -81,10 +86,7 @@ const useMapSettings = () => {
     const backgroundLayers = map
       .getLayers()
       .getArray()
-      .filter((layer) => {
-        const layerId = layer.get('id') as string;
-        return layerId.startsWith('bg_');
-      });
+      .filter(isMapLayerBackground);
 
     backgroundLayers.forEach((layer) => {
       map.removeLayer(layer);
@@ -118,10 +120,7 @@ const useMapSettings = () => {
     map
       .getLayers()
       .getArray()
-      .filter((layer) => {
-        const layerId = layer.get('id') as string;
-        return layerId === 'europaForenklet' || layerId.startsWith('bg_');
-      })
+      .filter((l) => isMapLayerBackground(l) || isMapLayerEuropaForenklet(l))
       .forEach((layer) => {
         map.removeLayer(layer);
       });
