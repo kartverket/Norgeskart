@@ -120,6 +120,26 @@ export type MapLayers = {
   markerLayer: MapLayer;
 };
 
+const getWMTSSource = (
+  url: string,
+  layer: string,
+  projectionId: ProjectionIdentifier,
+  overrideMatrixSet?: string,
+) => {
+  const { projection, tileGrid, matrixSet } =
+    getProjectionParameters(projectionId);
+  return new WMTS({
+    url,
+    layer,
+    matrixSet: overrideMatrixSet || matrixSet,
+    projection,
+    format: 'image/png',
+    tileGrid,
+    style: 'default',
+    wrapX: true,
+  });
+};
+
 export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
 
 const mapLayers: MapLayers = {
@@ -127,21 +147,14 @@ const mapLayers: MapLayers = {
     topo: {
       id: 'topo',
       getLayer: (projectionId: ProjectionIdentifier) => {
-        const { projection, tileGrid, matrixSet } =
-          getProjectionParameters(projectionId);
         return new TileLayer({
           properties: { id: 'topo' },
           zIndex: 1,
-          source: new WMTS({
-            url: 'https://cache.kartverket.no/v1/service',
-            layer: 'topo',
-            matrixSet: matrixSet,
-            projection: projection,
-            format: 'image/png',
-            tileGrid: tileGrid,
-            style: 'default',
-            wrapX: true,
-          }),
+          source: getWMTSSource(
+            'https://cache.kartverket.no/v1/service',
+            'topo',
+            projectionId,
+          ),
         });
       },
     },
@@ -149,21 +162,14 @@ const mapLayers: MapLayers = {
     topoGrayscale: {
       id: 'topoGrayscale',
       getLayer: (projectionId: ProjectionIdentifier) => {
-        const { projection, tileGrid, matrixSet } =
-          getProjectionParameters(projectionId);
         return new TileLayer({
           properties: { id: 'topoGrayscale' },
           zIndex: 1,
-          source: new WMTS({
-            url: 'https://cache.kartverket.no/v1/service',
-            layer: 'topograatone',
-            matrixSet: matrixSet,
-            projection: projection,
-            format: 'image/png',
-            tileGrid: tileGrid,
-            style: 'default',
-            wrapX: true,
-          }),
+          source: getWMTSSource(
+            'https://cache.kartverket.no/v1/service',
+            'topograatone',
+            projectionId,
+          ),
         });
       },
     },
@@ -171,21 +177,14 @@ const mapLayers: MapLayers = {
     topo_2025: {
       id: 'topo_2025',
       getLayer: (projectionId: ProjectionIdentifier) => {
-        const { projection, tileGrid, matrixSet } =
-          getProjectionParameters(projectionId);
         return new TileLayer({
           properties: { id: 'topo_2025' },
           zIndex: 1,
-          source: new WMTS({
-            url: 'https://cache.atkv3-dev.kartverket.cloud/v1/service',
-            layer: 'topo',
-            matrixSet: matrixSet,
-            projection: projection,
-            format: 'image/png',
-            tileGrid: tileGrid,
-            style: 'default',
-            wrapX: true,
-          }),
+          source: getWMTSSource(
+            'https://cache.atkv3-dev.kartverket.cloud/v1/service',
+            'topo',
+            projectionId,
+          ),
         });
       },
     },
@@ -193,20 +192,15 @@ const mapLayers: MapLayers = {
     orthophoto: {
       id: 'orthophoto',
       getLayer: (projectionId: ProjectionIdentifier) => {
-        const { projection, tileGrid } = getProjectionParameters(projectionId);
         return new TileLayer({
           properties: { id: 'orthophoto' },
           zIndex: 1,
-          source: new WMTS({
-            url: getOrthphotoUrl(projectionId),
-            layer: 'Nibcache_web_mercator_v2',
-            matrixSet: 'default028mm',
-            projection: projection,
-            format: 'image/png',
-            tileGrid: tileGrid,
-            style: 'default',
-            wrapX: true,
-          }),
+          source: getWMTSSource(
+            getOrthphotoUrl(projectionId),
+            'Nibcache_web_mercator_v2',
+            projectionId,
+            'default028mm',
+          ),
         });
       },
       maxZoom: 17,
