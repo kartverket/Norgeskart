@@ -1,4 +1,4 @@
-import { getTopLeft, getWidth } from 'ol/extent';
+import { getWidth } from 'ol/extent';
 import BaseLayer from 'ol/layer/Base';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -23,10 +23,44 @@ const getMatrixSetForProjection = (projectionId: ProjectionIdentifier) => {
   }
 };
 
+//Sjekk disse om de egentlig gir mening
+const getExtentsForProjection = (projectionId: ProjectionIdentifier) => {
+  switch (projectionId) {
+    case 'EPSG:25832':
+      return [-1866822.47, 3680224.65, 3246120.36, 9483069.2];
+    case 'EPSG:25833':
+      return [-2500000, 3500000, 3045984, 9045984];
+    case 'EPSG:25835':
+      return [-3646007.42, 3680723.36, 1528001.15, 9567789.69];
+    case 'EPSG:3857':
+      return [-20037508.34, -20048966.1, 20037508.34, 20048966.1];
+    default:
+      return [-20037508.34, -20048966.1, 20037508.34, 20048966.1];
+  }
+};
+
+const getWMTSTileGrid = (extent: number[]) => {
+  const size = getWidth(extent) / 256;
+  const resolutions = new Array(19);
+  const matrixIds = new Array(19);
+  for (let z = 0; z < 19; ++z) {
+    resolutions[z] = size / Math.pow(2, z);
+    matrixIds[z] = z.toString();
+  }
+
+  return new WMTSTileGrid({
+    extent,
+    resolutions,
+    matrixIds,
+  });
+};
+
 const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
   const projection = getProjection(projectionId)!;
-  const projectionExtent = projection.getExtent();
+  const projectionExtent = getExtentsForProjection(projectionId);
   const size = getWidth(projectionExtent) / 256;
+
+  const tileGrid = getWMTSTileGrid(projectionExtent);
 
   const resolutions = new Array(19);
   const matrixIds = new Array(19);
@@ -36,7 +70,7 @@ const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
   }
 
   const matrixSet = getMatrixSetForProjection(projectionId);
-  return { projection, projectionExtent, resolutions, matrixIds, matrixSet };
+  return { projection, tileGrid, matrixSet };
 };
 
 const getOrthphotoUrl = (projectionId: ProjectionIdentifier) => {
@@ -59,6 +93,15 @@ type LayerFunction =
   | ((_: ProjectionIdentifier) => BaseLayer)
   | (() => BaseLayer);
 
+export const isMapLayerBackground = (layer: BaseLayer) => {
+  return Object.keys(mapLayers.backgroundLayers).some(
+    (bgLayerId) => bgLayerId === layer.get('id'),
+  );
+};
+
+export const isMapLayerEuropaForenklet = (layer: BaseLayer) => {
+  return layer.get('id') === 'europaForenklet';
+};
 export type MapLayer = {
   getLayer: LayerFunction;
   id: string;
@@ -84,15 +127,10 @@ const mapLayers: MapLayers = {
     topo: {
       id: 'topo',
       getLayer: (projectionId: ProjectionIdentifier) => {
-        const {
-          projection,
-          projectionExtent,
-          resolutions,
-          matrixIds,
-          matrixSet,
-        } = getProjectionParameters(projectionId);
+        const { projection, tileGrid, matrixSet } =
+          getProjectionParameters(projectionId);
         return new TileLayer({
-          properties: { id: 'bg_topo' },
+          properties: { id: 'topo' },
           zIndex: 1,
           source: new WMTS({
             url: 'https://cache.kartverket.no/v1/service',
@@ -100,11 +138,7 @@ const mapLayers: MapLayers = {
             matrixSet: matrixSet,
             projection: projection,
             format: 'image/png',
-            tileGrid: new WMTSTileGrid({
-              origin: getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-            }),
+            tileGrid: tileGrid,
             style: 'default',
             wrapX: true,
           }),
@@ -115,15 +149,10 @@ const mapLayers: MapLayers = {
     topoGrayscale: {
       id: 'topoGrayscale',
       getLayer: (projectionId: ProjectionIdentifier) => {
-        const {
-          projection,
-          projectionExtent,
-          resolutions,
-          matrixIds,
-          matrixSet,
-        } = getProjectionParameters(projectionId);
+        const { projection, tileGrid, matrixSet } =
+          getProjectionParameters(projectionId);
         return new TileLayer({
-          properties: { id: 'bg_topoGrayscale' },
+          properties: { id: 'topoGrayscale' },
           zIndex: 1,
           source: new WMTS({
             url: 'https://cache.kartverket.no/v1/service',
@@ -131,11 +160,7 @@ const mapLayers: MapLayers = {
             matrixSet: matrixSet,
             projection: projection,
             format: 'image/png',
-            tileGrid: new WMTSTileGrid({
-              origin: getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-            }),
+            tileGrid: tileGrid,
             style: 'default',
             wrapX: true,
           }),
@@ -146,15 +171,10 @@ const mapLayers: MapLayers = {
     topo_2025: {
       id: 'topo_2025',
       getLayer: (projectionId: ProjectionIdentifier) => {
-        const {
-          projection,
-          projectionExtent,
-          resolutions,
-          matrixIds,
-          matrixSet,
-        } = getProjectionParameters(projectionId);
+        const { projection, tileGrid, matrixSet } =
+          getProjectionParameters(projectionId);
         return new TileLayer({
-          properties: { id: 'bg_topo_2025' },
+          properties: { id: 'topo_2025' },
           zIndex: 1,
           source: new WMTS({
             url: 'https://cache.atkv3-dev.kartverket.cloud/v1/service',
@@ -162,11 +182,7 @@ const mapLayers: MapLayers = {
             matrixSet: matrixSet,
             projection: projection,
             format: 'image/png',
-            tileGrid: new WMTSTileGrid({
-              origin: getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-            }),
+            tileGrid: tileGrid,
             style: 'default',
             wrapX: true,
           }),
@@ -177,22 +193,17 @@ const mapLayers: MapLayers = {
     orthophoto: {
       id: 'orthophoto',
       getLayer: (projectionId: ProjectionIdentifier) => {
-        const { projection, projectionExtent, resolutions, matrixIds } =
-          getProjectionParameters(projectionId);
+        const { projection, tileGrid } = getProjectionParameters(projectionId);
         return new TileLayer({
-          properties: { id: 'bg_orthophoto' },
+          properties: { id: 'orthophoto' },
           zIndex: 1,
           source: new WMTS({
             url: getOrthphotoUrl(projectionId),
             layer: 'Nibcache_web_mercator_v2',
-            matrixSet: 'GoogleMapsCompatible',
+            matrixSet: 'default028mm',
             projection: projection,
             format: 'image/png',
-            tileGrid: new WMTSTileGrid({
-              origin: getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-            }),
+            tileGrid: tileGrid,
             style: 'default',
             wrapX: true,
           }),
@@ -205,13 +216,8 @@ const mapLayers: MapLayers = {
   europaForenklet: {
     id: 'europaForenklet',
     getLayer: (projectionId: ProjectionIdentifier) => {
-      const {
-        projection,
-        projectionExtent,
-        resolutions,
-        matrixIds,
-        matrixSet,
-      } = getProjectionParameters(projectionId);
+      const { projection, tileGrid, matrixSet } =
+        getProjectionParameters(projectionId);
 
       return new TileLayer({
         properties: { id: 'europaForenklet' },
@@ -222,11 +228,7 @@ const mapLayers: MapLayers = {
           matrixSet: matrixSet,
           format: 'image/png',
           projection: projection,
-          tileGrid: new WMTSTileGrid({
-            origin: getTopLeft(projectionExtent),
-            resolutions: resolutions,
-            matrixIds: matrixIds,
-          }),
+          tileGrid: tileGrid,
           style: 'default',
           wrapX: true,
         }),
