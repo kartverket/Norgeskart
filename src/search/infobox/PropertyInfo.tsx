@@ -92,7 +92,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
         )}
         {rows.map(([label, value], index) => (
           <Flex
-            key={label as string}
+            key={label}
             justify="space-between"
             bg={index % 2 === 0 ? 'gray.50' : 'white'}
             p={2}
