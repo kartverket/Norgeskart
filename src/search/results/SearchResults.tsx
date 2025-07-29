@@ -180,22 +180,32 @@ export const SearchResults = ({
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>
-              {places.map((place, i) => (
-                <SearchResultLine
-                  key={`place-${i}`}
-                  heading={place.skrivemåte}
-                  onClick={() => {
-                    handleSearchClick({
-                      type: 'Place',
-                      name: place.skrivemåte,
-                      lat: place.representasjonspunkt.nord,
-                      lon: place.representasjonspunkt.øst,
-                      place,
-                    });
-                  }}
-                  locationType={place.navneobjekttype}
-                />
-              ))}
+              {places.map((place, i) => {
+                const municipalityNames =
+                  place.kommuner && place.kommuner.length > 0
+                    ? place.kommuner.map((k) => k.kommunenavn).join(', ')
+                    : '';
+                return (
+                  <SearchResultLine
+                    key={`place-${i}`}
+                    heading={place.skrivemåte}
+                    onClick={() => {
+                      handleSearchClick({
+                        type: 'Place',
+                        name: place.skrivemåte,
+                        lat: place.representasjonspunkt.nord,
+                        lon: place.representasjonspunkt.øst,
+                        place,
+                      });
+                    }}
+                    locationType={
+                      municipalityNames
+                        ? `${place.navneobjekttype} i ${municipalityNames}`
+                        : place.navneobjekttype
+                    }
+                  />
+                );
+              })}
             </List>
             {placesMetadata.totaltAntallTreff > placesMetadata.treffPerSide && (
               <Pagination
@@ -302,7 +312,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('addresses')}
           >
-            {t('search.adresses')} ({addresses.length})
+            {t('search.addresses')} ({addresses.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>

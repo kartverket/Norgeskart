@@ -62,7 +62,7 @@
     "roads": "Roads",
     "properties": "Properties",
     "addresses": "Addresses",
-    "houseNumber": "House number"
+    "houseNumber": "House nr."
   },
   "shared": {
     "actions": {
