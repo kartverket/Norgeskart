@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Image, Search } from '@kvib/react';
+import { Box, Flex, Icon, Search } from '@kvib/react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchResults } from './results/SearchResults.tsx';
@@ -28,31 +28,12 @@ export const SearchComponent = () => {
       <Box position="relative" width="100%">
         <Box position="relative" width="90%">
           {/* Logo som absolutt posisjonert inni Search-feltet */}
-          <Box
-            position="absolute"
-            left="10px"
-            top="50%"
-            transform="translateY(-50%)"
-            pointerEvents="none"
-            zIndex={2}
-            height="24px"
-            width="auto"
-          >
-            <Image
-              src="/logos/KV_logo_staa_color.svg"
-              alt="Kartverket"
-              height="24px"
-              width="auto"
-              objectFit="contain"
-            />
-          </Box>
 
           <Search
             width="100%"
             placeholder={t('search.placeholder')}
             value={searchQuery}
             onChange={handleChange}
-            style={{ paddingLeft: '50px' }}
             height="45px"
             fontSize="1.1rem"
             bg="white"
