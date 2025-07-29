@@ -14,7 +14,6 @@ export const SearchResultLine = ({
   showButton?: boolean;
   onButtonClick?: () => void;
 }) => {
-
   const { t } = useTranslation();
 
   return (
@@ -56,7 +55,7 @@ export const SearchResultLine = ({
               onButtonClick?.();
             }}
           >
-           {t('search.houseNumber')}
+            {t('search.houseNumber')}
           </Button>
         )}
       </Flex>
