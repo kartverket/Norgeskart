@@ -87,6 +87,7 @@ export const SearchComponent = () => {
         onPlacesPageChange={(page: number) => {
           setPlacesPage(page);
         }}
+        searchQuery={searchQuery}
       />
     </Flex>
   );
