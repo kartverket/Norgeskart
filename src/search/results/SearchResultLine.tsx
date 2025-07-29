@@ -1,4 +1,4 @@
-import { Button, Flex, ListItem, Text } from '@kvib/react';
+import { Box, Button, Flex, ListItem, Separator, Text } from '@kvib/react';
 
 export const SearchResultLine = ({
   heading,
@@ -23,9 +23,26 @@ export const SearchResultLine = ({
       pl={2}
       mb={2}
     >
-      <Flex justifyContent={'space-between'} alignItems="center">
-        <Text truncate>{heading}</Text>
-        {locationType && <Text fontStyle="italic">{locationType}</Text>}
+      <Flex
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={2}
+        pb={2}
+      >
+        <Box>
+          <Text>{heading}</Text>
+          {locationType && (
+            <Text
+              fontSize="sm"
+              color="gray.600"
+              fontStyle="italic"
+              title={locationType}
+            >
+              {locationType}
+            </Text>
+          )}
+        </Box>
         {showButton && (
           <Button
             size="sm"
@@ -39,6 +56,7 @@ export const SearchResultLine = ({
           </Button>
         )}
       </Flex>
+      <Separator />
     </ListItem>
   );
 };
