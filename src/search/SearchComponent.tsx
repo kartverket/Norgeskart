@@ -12,7 +12,6 @@ import {
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [placesPage, setPlacesPage] = useState(1);
-  const [isFocused, setIsFocused] = useState(false);
   const { t } = useTranslation();
 
   const { placeNameData } = usePlaceNames(searchQuery, placesPage);
@@ -23,9 +22,6 @@ export const SearchComponent = () => {
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   }, []);
-
-  const handleFocus = useCallback(() => setIsFocused(true), []);
-  const handleBlur = useCallback(() => setIsFocused(false), []);
 
   return (
     <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>
@@ -56,25 +52,20 @@ export const SearchComponent = () => {
             placeholder={t('search.placeholder')}
             value={searchQuery}
             onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
             style={{ paddingLeft: '50px' }}
             height="45px"
             fontSize="1.1rem"
             bg="white"
           />
-
-          {!isFocused && (
-            <Box
-              position="absolute"
-              right="10px"
-              top="50%"
-              transform="translateY(-50%)"
-              pointerEvents="none"
-            >
-              <Icon icon="search" size={24} weight={500} color="green" />
-            </Box>
-          )}
+          <Box
+            position="absolute"
+            right="10px"
+            top="50%"
+            transform="translateY(-50%)"
+            pointerEvents="none"
+          >
+            <Icon icon="search" size={24} weight={500} color="green" />
+          </Box>
         </Box>
       </Box>
 
