@@ -312,7 +312,7 @@ export const SearchResults = ({
           <AccordionItemTrigger
             onClick={() => handleAccordionTabClick('addresses')}
           >
-            {t('search.adresses')} ({addresses.length})
+            {t('search.addresses')} ({addresses.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
             <List>

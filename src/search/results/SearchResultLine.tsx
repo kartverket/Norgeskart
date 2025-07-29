@@ -1,4 +1,5 @@
 import { Box, Button, Flex, ListItem, Separator, Text } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
 
 export const SearchResultLine = ({
   heading,
@@ -13,6 +14,9 @@ export const SearchResultLine = ({
   showButton?: boolean;
   onButtonClick?: () => void;
 }) => {
+
+  const { t } = useTranslation();
+
   return (
     <ListItem
       cursor="pointer"
@@ -52,7 +56,7 @@ export const SearchResultLine = ({
               onButtonClick?.();
             }}
           >
-            Husnr
+           {t('search.houseNumber')}
           </Button>
         )}
       </Flex>

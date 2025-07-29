@@ -62,7 +62,7 @@
     "roads": "Vegar",
     "properties": "Eigedomar",
     "addresses": "Adresser",
-    "houseNumber": "Husnummer"
+    "houseNumber": "Husnr"
   },
   "shared": {
     "actions": {
