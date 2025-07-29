@@ -43,6 +43,10 @@
           "topo_2025": "Topo 2025",
           "orthophoto": "Aerial photography"
         }
+      },
+      "compass": {
+        "enabled": "Show compass",
+        "magneticNorth": "Use magnetic north"
       }
     }
   },
