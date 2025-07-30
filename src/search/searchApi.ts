@@ -65,6 +65,18 @@ export const getPropertyDetailsByMatrikkelId = async (
   festenr: string = '0',
   seksjonsnr: string = '0',
 ) => {
+  const isNumeric = (value: string) => /^\d+$/.test(value);
+
+  if (
+    !isNumeric(kommunenr) ||
+    !isNumeric(gardsnr) ||
+    !isNumeric(bruksnr) ||
+    !isNumeric(festenr) ||
+    !isNumeric(seksjonsnr)
+  ) {
+    throw new Error('Alle parametere må være numeriske verdier.');
+  }
+
   let url = `https://testapi.norgeskart.no/v1/matrikkel/eiendom/`;
   if (festenr !== '0') {
     if (seksjonsnr === '0') {
