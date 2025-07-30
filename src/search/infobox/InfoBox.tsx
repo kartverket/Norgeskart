@@ -10,17 +10,15 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
+import { getInputCRS } from '../../shared/utils/crsUtils';
+import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import { SearchResult } from '../../types/searchTypes';
-import { getInputCRS } from '../results/SearchResults';
 import { getElevation } from '../searchApi';
 import { PropertyInfo } from './PropertyInfo';
 
 interface InfoBoxProps {
   result: SearchResult;
 }
-
-export const capitalizeFirstLetter = (s: string) =>
-  s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 
 export const InfoBox = ({ result }: InfoBoxProps) => {
   const { t } = useTranslation();

@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
+import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import {
   Address,
   Metadata,
@@ -45,21 +46,6 @@ interface SearchResultsProps {
   onPlacesPageChange: (_page: number) => void;
   searchQuery: string;
 }
-
-export const getInputCRS = (selectedResult: SearchResult) => {
-  switch (selectedResult.type) {
-    case 'Road':
-      return 'EPSG:25832';
-    case 'Property':
-      return 'EPSG:25832';
-    case 'Place':
-      return 'EPSG:4258';
-    case 'Address':
-      return 'EPSG:4258';
-    default:
-      return 'EPSG:4258';
-  }
-};
 
 export const SearchResults = ({
   properties,

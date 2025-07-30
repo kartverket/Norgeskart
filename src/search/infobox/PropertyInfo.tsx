@@ -10,12 +10,12 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
+import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import { Property } from '../../types/searchTypes';
 import {
   getPropertyDetailsByMatrikkelId,
   getPropetyInfoByCoordinates,
 } from '../searchApi';
-import { capitalizeFirstLetter } from './InfoBox';
 
 export interface PropertyInfoProps {
   lon: number;
