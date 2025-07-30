@@ -6,6 +6,7 @@ import {
   Card,
   CardBody,
   CardDescription,
+  Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
@@ -76,7 +77,8 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
     <Card>
       <CardBody pb={2}>
         <CardDescription>
-          {content} <br /> {t('infoBox.heightEstimatedByInterpolation')}{' '}
+          <Text>{content}</Text>
+          {t('infoBox.heightEstimatedByInterpolation')}{' '}
           {Number(elevationData?.value).toFixed(1)}{' '}
           {t('infoBox.metersAboveSeaLevel')}
         </CardDescription>
