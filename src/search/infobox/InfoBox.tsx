@@ -5,7 +5,6 @@ import {
   AccordionRoot,
   Card,
   CardBody,
-  CardDescription,
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
@@ -76,12 +75,10 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
   return (
     <Card>
       <CardBody pb={2}>
-        <CardDescription>
-          <Text>{content}</Text>
-          {t('infoBox.heightEstimatedByInterpolation')}{' '}
-          {Number(elevationData?.value).toFixed(1)}{' '}
-          {t('infoBox.metersAboveSeaLevel')}
-        </CardDescription>
+        <Text>{content}</Text>
+        {t('infoBox.heightEstimatedByInterpolation')}{' '}
+        {Number(elevationData?.value).toFixed(1)}{' '}
+        {t('infoBox.metersAboveSeaLevel')}
         <AccordionRoot collapsible mr={2} mt={5}>
           <AccordionItem value="propertyInfo">
             <AccordionItemTrigger pl={0}>
