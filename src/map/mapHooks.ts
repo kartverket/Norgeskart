@@ -2,6 +2,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
+import TileLayer from 'ol/layer/Tile';
 import { get as getProjection, transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
@@ -19,6 +20,11 @@ import {
   isMapLayerEuropaForenklet,
   mapLayers,
 } from './layers';
+import {
+  loadableWMTS,
+  WMTSLayerName,
+  WMTSProviderId,
+} from './layers/backgroundProviders';
 import { getMousePositionControl } from './mapControls';
 
 const ROTATION_ANIMATION_DURATION = 500;
@@ -76,10 +82,42 @@ const useMap = () => {
 
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
+  const WMTSloadable = useAtomValue(loadableWMTS);
 
   const getMapViewCenter = () => {
     const view = map.getView();
     return view.getCenter();
+  };
+
+  const setWMTSBackgroundLayer = (
+    WTMSProvider: WMTSProviderId,
+    layerName: WMTSLayerName,
+  ) => {
+    if (WMTSloadable.state !== 'hasData') {
+      console.warn('WMTS data is not loaded yet');
+      return;
+    }
+    const layerToAdd = WMTSloadable.data.get(`${WTMSProvider}_${layerName}`);
+    if (layerToAdd == null) {
+      console.warn(`WMTS layer ${layerName} is not available`);
+      return;
+    }
+    const WTMSLayers = map
+      .getLayers()
+      .getArray()
+      .filter((layer) => {
+        return layer.get('id').startsWith('bg_');
+      });
+    WTMSLayers.forEach((layer) => {
+      map.removeLayer(layer);
+    });
+
+    map.addLayer(
+      new TileLayer({
+        source: layerToAdd,
+        properties: { id: `bg_${layerName}` },
+      }),
+    );
   };
 
   const setBackgroundLayer = (layerName: BackgroundLayer) => {
@@ -252,6 +290,7 @@ const useMapSettings = () => {
     getMapViewCenter,
     setMapFullScreen,
     setBackgroundLayer,
+    setWMTSBackgroundLayer,
     setProjection,
     setMapLocation,
   };
