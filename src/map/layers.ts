@@ -94,14 +94,9 @@ type LayerFunction =
   | (() => BaseLayer);
 
 export const isMapLayerBackground = (layer: BaseLayer) => {
-  return Object.keys(mapLayers.backgroundLayers).some(
-    (bgLayerId) => bgLayerId === layer.get('id'),
-  );
+  return layer.get('id')?.startsWith('bg_');
 };
 
-export const isMapLayerEuropaForenklet = (layer: BaseLayer) => {
-  return layer.get('id') === 'europaForenklet';
-};
 export type MapLayer = {
   getLayer: LayerFunction;
   id: string;
