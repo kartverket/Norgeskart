@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atom, useSetAtom } from 'jotai';
 import { loadable } from 'jotai/utils';
 import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
@@ -42,6 +42,7 @@ const providers: WMTSProviders = {
 };
 
 const WMTSAtom = atom(async (get) => {
+  get(wmtsRefreshTriggerAtom);
   const parser = new WMTSCapabilities();
   const projection = get(mapAtom).getView().getProjection();
 
@@ -70,5 +71,12 @@ const WMTSAtom = atom(async (get) => {
   );
   return layerOptMap;
 });
-
+const wmtsRefreshTriggerAtom = atom(0);
 export const loadableWMTS = loadable(WMTSAtom);
+
+export const useRefreshWMTS = () => {
+  const refreshWMTS = useSetAtom(wmtsRefreshTriggerAtom);
+  return () => {
+    refreshWMTS((c) => c + 1);
+  };
+};

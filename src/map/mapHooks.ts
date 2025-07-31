@@ -14,14 +14,10 @@ import {
   mapOrientationAtom,
   ProjectionIdentifier,
 } from './atoms';
-import {
-  BackgroundLayer,
-  isMapLayerBackground,
-  isMapLayerEuropaForenklet,
-  mapLayers,
-} from './layers';
+import { isMapLayerBackground } from './layers';
 import {
   loadableWMTS,
+  useRefreshWMTS,
   WMTSLayerName,
   WMTSProviderId,
 } from './layers/backgroundProviders';
@@ -83,6 +79,7 @@ const useMap = () => {
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
   const WMTSloadable = useAtomValue(loadableWMTS);
+  const refreshWMTS = useRefreshWMTS();
 
   const getMapViewCenter = () => {
     const view = map.getView();
@@ -115,29 +112,9 @@ const useMapSettings = () => {
     map.addLayer(
       new TileLayer({
         source: layerToAdd,
-        properties: { id: `bg_${layerName}` },
+        properties: { id: `bg_${WTMSProvider}_${layerName}` },
       }),
     );
-  };
-
-  const setBackgroundLayer = (layerName: BackgroundLayer) => {
-    const backgroundLayers = map
-      .getLayers()
-      .getArray()
-      .filter(isMapLayerBackground);
-
-    backgroundLayers.forEach((layer) => {
-      map.removeLayer(layer);
-    });
-    const layerProperties = mapLayers.backgroundLayers[layerName];
-    map.addLayer(
-      layerProperties.getLayer(
-        map.getView().getProjection().getCode() as ProjectionIdentifier,
-      ),
-    );
-    map.getView().setMaxZoom(layerProperties.maxZoom || 20);
-
-    setUrlParameter('backgroundLayer', layerName);
   };
 
   const setProjection = (projectionId: ProjectionIdentifier) => {
@@ -155,18 +132,14 @@ const useMapSettings = () => {
       // Transform center to new projection
       newCenter = transform(oldCenter, oldProjection, projection);
     }
-    map
+    const currentBackgoundLayers = map
       .getLayers()
       .getArray()
-      .filter((l) => isMapLayerBackground(l) || isMapLayerEuropaForenklet(l))
-      .forEach((layer) => {
-        map.removeLayer(layer);
-      });
+      .filter((l) => isMapLayerBackground(l));
 
-    map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
-    map.addLayer(
-      mapLayers.backgroundLayers[getBackgroundLayerId()].getLayer(projectionId),
-    );
+    currentBackgoundLayers.forEach((layer) => {
+      map.removeLayer(layer);
+    });
 
     // Create a new view with the new projection
     const newView = new View({
@@ -178,7 +151,6 @@ const useMapSettings = () => {
 
       extent: projection.getExtent(),
     });
-
     oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {
       newView.addEventListener('change:rotation', listener);
     });
@@ -187,6 +159,8 @@ const useMapSettings = () => {
     });
 
     map.setView(newView);
+
+    refreshWMTS();
 
     const mousePositionInteraction = map
       .getControls()
@@ -289,7 +263,6 @@ const useMapSettings = () => {
     rotateSnappy,
     getMapViewCenter,
     setMapFullScreen,
-    setBackgroundLayer,
     setWMTSBackgroundLayer,
     setProjection,
     setMapLocation,
