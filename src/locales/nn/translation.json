@@ -41,7 +41,8 @@
           "topo": "Topo",
           "topoGrayscale": "Topo Gråtone",
           "topo_2025": "Topo 2025",
-          "orthophoto": "Flyfoto"
+          "orthophoto": "Flyfoto",
+          "seamap": "Sjøkart"
         }
       },
       "compass": {

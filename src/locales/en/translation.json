@@ -41,7 +41,8 @@
           "topo": "Topographic map",
           "topoGrayscale": "Topo Gray",
           "topo_2025": "Topo 2025",
-          "orthophoto": "Aerial photography"
+          "orthophoto": "Aerial photography",
+          "seamap": "Sea map"
         }
       },
       "compass": {
