@@ -41,3 +41,54 @@ export const getProperties = async (query: string): Promise<Property[]> => {
   if (!res.ok) throw new Error('Feil ved henting av eiendom');
   return res.json();
 };
+
+export const getElevation = async (x: number, y: number) => {
+  const res = await fetch(
+    `https://hoydedata.no/arcgis/rest/services/NHM_DTM_TOPOBATHY_25833/ImageServer/identify?f=json&geometry=${x},${y}&geometryType=esriGeometryPoint&sr=25833&returnGeometry=false&returnCatalogItems=false`,
+  );
+  if (!res.ok) throw new Error('Feil ved henting av høyde');
+  return res.json();
+};
+
+export const getPropetyInfoByCoordinates = async (lat: number, lon: number) => {
+  const res = await fetch(
+    `https://ws.geonorge.no/eiendom/v1/punkt/omrader?radius=1&nord=${lat}&ost=${lon}&koordsys=4258`,
+  );
+  if (!res.ok) throw new Error('Feil ved henting av eiendomsinformasjon');
+  return res.json();
+};
+
+export const getPropertyDetailsByMatrikkelId = async (
+  kommunenr: string,
+  gardsnr: string,
+  bruksnr: string,
+  festenr: string = '0',
+  seksjonsnr: string = '0',
+) => {
+  const isNumeric = (value: string) => /^\d+$/.test(value);
+
+  if (
+    !isNumeric(kommunenr) ||
+    !isNumeric(gardsnr) ||
+    !isNumeric(bruksnr) ||
+    !isNumeric(festenr) ||
+    !isNumeric(seksjonsnr)
+  ) {
+    throw new Error('Alle parametere må være numeriske verdier.');
+  }
+
+  let url = `https://testapi.norgeskart.no/v1/matrikkel/eiendom/`;
+  if (festenr !== '0') {
+    if (seksjonsnr === '0') {
+      url += `${kommunenr}-${gardsnr}/${bruksnr}/${festenr}`;
+    } else {
+      url += `${kommunenr}-${gardsnr}/${bruksnr}/${festenr}/${seksjonsnr}`;
+    }
+  } else {
+    url += `${kommunenr}-${gardsnr}/${bruksnr}`;
+  }
+  url += `&KILDE:Eiendom KOMMUNENR:${kommunenr} GARDSNR:${gardsnr} BRUKSNR:${bruksnr} SEKSJONSNR:${seksjonsnr} FESTENR:${festenr}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Feil ved henting av matrikkeldetaljer');
+  return res.json();
+};

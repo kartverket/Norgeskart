@@ -81,5 +81,28 @@
     "privacyPolicy": "Personvernerklæring ",
     "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
     "sendEmail": "Send e-post"
+  },
+  "infoBox": {
+    "roadName": "Veinavn",
+    "municipality": "Kommune",
+    "cadastralIdentifier": "Gårds- og bruksnummer",
+    "address": "Adresse",
+    "in": "i",
+    "heightEstimatedByInterpolation": "Høyde (anslått ved interpolering):",
+    "metersAboveSeaLevel": "moh",
+    "propertyInfo": "Se eiendomsinformasjon",
+    "coordinateInfo": "Se koordinater",
+    "placeinfo": "Se fakta om stedsnavnet",
+    "makeMap": "Lag turkart",
+    "emergencyPoster": "Lag nødplakat"
+  },
+  "propertyInfo": {
+    "municipalityNr": "Kommunenr.",
+    "holdingNr": "Gårdsnr.",
+    "subholdingNr": "Bruksnr.",
+    "leaseNr": "Festenr.",
+    "sectionNr": "Seksjonsnr.",
+    "multipleAddressesText": "Eiendommen har flere adresser",
+    "moreInformation": "Vis mer informasjon"
   }
 }

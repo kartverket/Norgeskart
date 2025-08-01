@@ -81,5 +81,28 @@
     "privacyPolicy": "Privacy policy ",
     "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
     "sendEmail": "Send e-mail"
+  },
+  "infoBox": {
+    "roadName": "Road name",
+    "municipality": "Municipality",
+    "cadastralIdentifier": "Cadastral identifier",
+    "address": "Address",
+    "in": "in",
+    "heightEstimatedByInterpolation": "Height (estimated by interpolation):",
+    "metersAboveSeaLevel": "m.a.s.l.",
+    "propertyInfo": "See property information",
+    "coordinateInfo": "See coordinates",
+    "placeinfo": "See facts about placename",
+    "makeMap": "Make map",
+    "emergencyPoster": "Make emergency poster"
+  },
+  "propertyInfo": {
+    "municipalityNr": "Municipality nr.",
+    "holdingNr": "Holding nr.",
+    "subholdingNr": "Subholding nr.",
+    "leaseNr": "Lease nr.",
+    "sectionNr": "Section nr.",
+    "multipleAddressesText": "The property has several addresses",
+    "moreInformation": "Show more information"
   }
 }

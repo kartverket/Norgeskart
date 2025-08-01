@@ -17,19 +17,21 @@ import { Point } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
+import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import {
   Address,
   Metadata,
   PlaceName,
   Property,
   Road,
+  SearchResult,
 } from '../../types/searchTypes.ts';
-import { SearchResult } from '../atoms.ts';
+import { InfoBox } from '../infobox/InfoBox.tsx';
 import { getAddresses } from '../searchApi.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
 
@@ -42,22 +44,8 @@ interface SearchResultsProps {
   addresses: Address[];
   placesMetadata?: Metadata;
   onPlacesPageChange: (_page: number) => void;
+  searchQuery: string;
 }
-
-const getInputCRS = (selectedResult: SearchResult) => {
-  switch (selectedResult.type) {
-    case 'Road':
-      return 'EPSG:25832';
-    case 'Property':
-      return 'EPSG:25832';
-    case 'Place':
-      return 'EPSG:4258';
-    case 'Address':
-      return 'EPSG:4258';
-    default:
-      return 'EPSG:4258';
-  }
-};
 
 export const SearchResults = ({
   properties,
@@ -66,6 +54,7 @@ export const SearchResults = ({
   addresses,
   placesMetadata,
   onPlacesPageChange,
+  searchQuery,
 }: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
   const markerStyle = useAtomValue(markerStyleAtom);
@@ -78,7 +67,14 @@ export const SearchResults = ({
     'addresses',
   ]);
   const [openRoads, setOpenRoads] = useState<string[]>([]);
+  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
+    null,
+  );
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setSelectedResult(null);
+  }, [searchQuery]);
 
   const toggleRoad = (roadId: string) => {
     setOpenRoads((prev) =>
@@ -98,7 +94,7 @@ export const SearchResults = ({
 
   const handleSearchClick = (res: SearchResult) => {
     const { lon, lat } = res;
-
+    setSelectedResult(res);
     setMapLocation([lon, lat], getInputCRS(res), 15);
 
     const markerLayer = map
@@ -154,6 +150,10 @@ export const SearchResults = ({
 
   if (!placesMetadata) {
     return null;
+  }
+
+  if (selectedResult) {
+    return <InfoBox result={selectedResult} />;
   }
 
   return (
