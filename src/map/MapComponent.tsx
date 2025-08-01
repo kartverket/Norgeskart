@@ -39,8 +39,11 @@ export const MapComponent = () => {
         return l.get('id')?.startsWith('bg_');
       }) != null;
 
+    if (hasBackgroundLayer) {
+      return;
+    }
     const wmtsLayer = WMTSloadable.data;
-    if (wmtsLayer && !hasBackgroundLayer) {
+    if (wmtsLayer) {
       setWMTSBackgroundLayer('kartverketCache', 'topo');
     } else {
       console.error(t('map.errorMessage'));
