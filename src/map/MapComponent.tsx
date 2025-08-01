@@ -4,15 +4,16 @@ import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
+import { mapAtom } from './atoms.ts';
 import { loadableWMTS } from './layers/backgroundProviders.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import { MapOverlay } from './MapOverlay.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const firstRender = useRef(true);
   const WMTSloadable = useAtomValue(loadableWMTS);
   const { setWMTSBackgroundLayer } = useMapSettings();
+  const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
 
   const { setTargetElement } = useMap();
@@ -26,21 +27,25 @@ export const MapComponent = () => {
     };
   }, [setTargetElement, mapRef]);
 
-  // Used to set the WMTS background layer on the first render.
-  // The loadable will be renewed when the projection settings changes,
-  // but that should not trigger a new layer addition.
   useEffect(() => {
     if (WMTSloadable.state !== 'hasData') {
       return;
     }
+    if (!map) {
+      return;
+    }
+    const hasBackgroundLayer =
+      map.getAllLayers().find((l) => {
+        return l.get('id')?.startsWith('bg_');
+      }) != null;
+
     const wmtsLayer = WMTSloadable.data;
-    if (wmtsLayer && firstRender.current) {
+    if (wmtsLayer && !hasBackgroundLayer) {
       setWMTSBackgroundLayer('kartverketCache', 'topo');
-      firstRender.current = false;
     } else {
       console.error(t('map.errorMessage'));
     }
-  }, [WMTSloadable]);
+  }, [WMTSloadable, map]);
 
   return (
     <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>
