@@ -9,7 +9,6 @@ import {
 } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import {
-  WMTSLayerID,
   WMTSLayerName,
   WMTSProviderId,
 } from '../../map/layers/backgroundProviders';
@@ -19,30 +18,40 @@ export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
   const { setWMTSBackgroundLayer } = useMapSettings();
 
-  const backgroundLayerCollection: { value: WMTSLayerID; label: string }[] = [
+  const backgroundLayerCollection: {
+    value: [WMTSProviderId, WMTSLayerName];
+    label: string;
+  }[] = [
     {
-      value: 'kartverketCache_topo',
+      value: ['kartverketCache', 'topo'],
       label: t('map.settings.layers.mapNames.topo'),
     },
     {
-      value: 'kartverketCache_topograatone',
+      value: ['kartverketCache', 'topograatone'],
       label: t('map.settings.layers.mapNames.topoGrayscale'),
     },
     {
-      value: 'kartverketATKV3dev_topo',
+      value: ['kartverketATKV3dev', 'topo'],
       label: t('map.settings.layers.mapNames.topo_2025'),
     },
     {
-      value: 'kartverketCache_sjokartraster',
+      value: ['kartverketCache', 'sjokartraster'],
       label: t('map.settings.layers.mapNames.seamap'),
+    },
+    {
+      value: ['norgeibilder_webmercator', 'Nibcache_web_mercator_v2'],
+      label: t('map.settings.layers.mapNames.orthophoto'),
     },
   ];
 
   //TODO: Fix url parameter handling
+  const listCollection = createListCollection({
+    items: backgroundLayerCollection,
+  });
 
   return (
     <SelectRoot
-      collection={createListCollection({ items: backgroundLayerCollection })}
+      collection={listCollection}
       defaultValue={['kartverketCache_topo']}
     >
       <SelectLabel>{t('map.settings.layers.background.label')}</SelectLabel>
@@ -52,16 +61,12 @@ export const BackgroundLayerSettings = () => {
         />
       </SelectTrigger>
       <SelectContent>
-        {backgroundLayerCollection.map((item) => (
+        {listCollection.items.map((item) => (
           <SelectItem
-            key={item.value}
-            item={item.value}
+            key={item.value[0] + '-' + item.value[1]}
+            item={item}
             onClick={() => {
-              const [WTMSProvider, layerName] = item.value.split('_');
-              setWMTSBackgroundLayer(
-                WTMSProvider as WMTSProviderId,
-                layerName as WMTSLayerName,
-              );
+              setWMTSBackgroundLayer(item.value[0], item.value[1]);
             }}
           >
             {item.label}

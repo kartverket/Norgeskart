@@ -20,6 +20,13 @@ import { ControlPortal, getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
 
+export const AvailableProjections: ProjectionIdentifier[] = [
+  'EPSG:3857', // webmercator
+  'EPSG:25832', // utm32n
+  'EPSG:25833', // utm33n
+  'EPSG:25835', // utm35n
+];
+
 export type ProjectionIdentifier =
   | 'EPSG:3857' // webmercator
   | 'EPSG:25832' // utm32n

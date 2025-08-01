@@ -45,7 +45,7 @@ export const MapComponent = () => {
     } else {
       console.error(t('map.errorMessage'));
     }
-  }, [WMTSloadable, map]);
+  }, [setWMTSBackgroundLayer, t, WMTSloadable, map]);
 
   return (
     <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>

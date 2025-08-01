@@ -2,15 +2,19 @@ import { atom, useSetAtom } from 'jotai';
 import { loadable } from 'jotai/utils';
 import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
-import { mapAtom } from '../atoms';
+import { AvailableProjections, ProjectionIdentifier } from '../atoms';
 
 export type WMTSLayerName =
   | 'topo'
   | 'topograatone'
   | 'sjokartraster'
-  | 'topoProd';
+  | 'topoProd'
+  | 'Nibcache_web_mercator_v2';
 
-export type WMTSProviderId = 'kartverketCache' | 'kartverketATKV3dev';
+export type WMTSProviderId =
+  | 'kartverketCache'
+  | 'kartverketATKV3dev'
+  | 'norgeibilder_webmercator';
 
 type WMTSProvider = {
   baseUrl: string;
@@ -21,8 +25,6 @@ type WMTSProvider = {
 };
 
 type WMTSProviders = Record<WMTSProviderId, WMTSProvider>;
-
-export type WMTSLayerID = `${WMTSProviderId}_${WMTSLayerName}`;
 
 const providers: WMTSProviders = {
   kartverketCache: {
@@ -39,14 +41,33 @@ const providers: WMTSProviders = {
     },
     layers: ['topoProd', 'topo'],
   },
+  norgeibilder_webmercator: {
+    baseUrl: 'https://opencache.statkart.no',
+    endpoints: {
+      getCapabilities:
+        '/gatekeeper/gk/gk.open_nib_web_mercator_wmts_v2?Request=GetCapabilities&Service=WMTS',
+    },
+    layers: ['Nibcache_web_mercator_v2'],
+  },
+};
+// To allow the strange matrix set identifiers in NorgeIBilder
+const parseMatrixSetString = (identifier: string) => {
+  const parsed = identifier.replace('::', ':').split('crs:')[1];
+  return parsed ? parsed : identifier;
+};
+
+const isStringInSelectableProjection = (identifier: string) => {
+  return AvailableProjections.includes(identifier as ProjectionIdentifier);
 };
 
 const WMTSAtom = atom(async (get) => {
   get(wmtsRefreshTriggerAtom);
   const parser = new WMTSCapabilities();
-  const projection = get(mapAtom).getView().getProjection();
 
-  let layerOptMap: Map<WMTSLayerID, WMTS | null> = new Map();
+  const providerLayerMap: Map<
+    WMTSProviderId,
+    Map<ProjectionIdentifier, Map<WMTSLayerName, WMTS>>
+  > = new Map();
 
   await Promise.all(
     Object.keys(providers).map(async (pid) => {
@@ -58,18 +79,41 @@ const WMTSAtom = atom(async (get) => {
       );
       const capabilitiesText = await capabiltiesRes.text();
       const providerCapabilities = parser.read(capabilitiesText);
-      provider.layers.forEach((layer) => {
-        const options = optionsFromCapabilities(providerCapabilities, {
-          layer,
-          projection,
+
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      const availableMatrixSets: ProjectionIdentifier[] =
+        providerCapabilities.Contents.TileMatrixSet.map(
+          (m: any) => m.SupportedCRS,
+        )
+          .map(parseMatrixSetString)
+          .filter(isStringInSelectableProjection);
+
+      /* eslint-enable @typescript-eslint/no-explicit-any */
+      const projectionLayerMapForProvider: Map<
+        ProjectionIdentifier,
+        Map<WMTSLayerName, WMTS>
+      > = new Map();
+
+      availableMatrixSets.forEach((prId) => {
+        const layersForProjection: Map<WMTSLayerName, WMTS> = new Map();
+
+        provider.layers.forEach((layer) => {
+          const options = optionsFromCapabilities(providerCapabilities, {
+            layer,
+            projection: prId,
+          });
+          if (options != null) {
+            layersForProjection.set(layer, new WMTS(options));
+          }
         });
-        if (options != null) {
-          layerOptMap.set(`${providerId}_${layer}`, new WMTS(options));
-        }
+        projectionLayerMapForProvider.set(prId, layersForProjection);
       });
+
+      providerLayerMap.set(providerId, projectionLayerMapForProvider);
     }),
   );
-  return layerOptMap;
+
+  return providerLayerMap;
 });
 const wmtsRefreshTriggerAtom = atom(0);
 export const loadableWMTS = loadable(WMTSAtom);

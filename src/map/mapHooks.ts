@@ -94,7 +94,16 @@ const useMapSettings = () => {
       console.warn('WMTS data is not loaded yet');
       return;
     }
-    const layerToAdd = WMTSloadable.data.get(`${WTMSProvider}_${layerName}`);
+    const currentProjectionCode = map
+      .getView()
+      .getProjection()
+      .getCode() as ProjectionIdentifier;
+
+    const layerToAdd = WMTSloadable.data
+      .get(WTMSProvider)
+      ?.get(currentProjectionCode)
+      ?.get(layerName);
+
     if (layerToAdd == null) {
       console.warn(`WMTS layer ${layerName} is not available`);
       return;

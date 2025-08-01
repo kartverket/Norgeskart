@@ -20,9 +20,10 @@ const capabilitiesUrls: Record<BackgroundLayer | string, string> = {
 
 //Se om det hjelper å fjerne det med ortofoto og se om vi kan lage noe smart kapabilitetsmessig eller wmts layer atom som fikser dette.
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const capabilitiesAtom = atom(async () => {
   const parser = new WMTSCapabilities();
-  let capabilitiesRecord: Record<BackgroundLayer, any> = {
+  const capabilitiesRecord: Record<BackgroundLayer, any> = {
     topo: null,
     topo_2025: null,
     topoGrayscale: null,
@@ -39,6 +40,7 @@ const capabilitiesAtom = atom(async () => {
   );
   return capabilitiesRecord;
 });
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 const wmtsLayersAtom = atom(async (get) => {
   const projection = get(mapAtom).getView().getProjection();
