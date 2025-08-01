@@ -9,12 +9,18 @@ export type WMTSLayerName =
   | 'topograatone'
   | 'sjokartraster'
   | 'topoProd'
-  | 'Nibcache_web_mercator_v2';
+  | 'Nibcache_web_mercator_v2'
+  | 'Nibcache_UTM32_EUREF89_v2'
+  | 'Nibcache_UTM33_EUREF89_v2'
+  | 'Nibcache_UTM35_EUREF89_v2';
 
 export type WMTSProviderId =
   | 'kartverketCache'
   | 'kartverketATKV3dev'
-  | 'norgeibilder_webmercator';
+  | 'norgeibilder_webmercator'
+  | 'norgeibilder_utm32'
+  | 'norgeibilder_utm33'
+  | 'norgeibilder_utm35';
 
 type WMTSProvider = {
   baseUrl: string;
@@ -48,6 +54,33 @@ const providers: WMTSProviders = {
         '/gatekeeper/gk/gk.open_nib_web_mercator_wmts_v2?Request=GetCapabilities&Service=WMTS',
     },
     layers: ['Nibcache_web_mercator_v2'],
+  },
+
+  norgeibilder_utm32: {
+    baseUrl: 'https://opencache.statkart.no',
+    endpoints: {
+      getCapabilities:
+        '/gatekeeper/gk/gk.open_nib_utm32_wmts_v2?Request=GetCapabilities&Service=WMTS',
+    },
+    layers: ['Nibcache_UTM32_EUREF89_v2'],
+  },
+
+  norgeibilder_utm33: {
+    baseUrl: 'https://opencache.statkart.no',
+    endpoints: {
+      getCapabilities:
+        '/gatekeeper/gk/gk.open_nib_utm33_wmts_v2?Request=GetCapabilities&Service=WMTS',
+    },
+    layers: ['Nibcache_UTM33_EUREF89_v2'],
+  },
+
+  norgeibilder_utm35: {
+    baseUrl: 'https://opencache.statkart.no',
+    endpoints: {
+      getCapabilities:
+        '/gatekeeper/gk/gk.open_nib_utm35_wmts_v2?Request=GetCapabilities&Service=WMTS',
+    },
+    layers: ['Nibcache_UTM35_EUREF89_v2'],
   },
 };
 // To allow the strange matrix set identifiers in NorgeIBilder
