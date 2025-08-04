@@ -92,3 +92,14 @@ export const getPropertyDetailsByMatrikkelId = async (
   if (!res.ok) throw new Error('Feil ved henting av matrikkeldetaljer');
   return res.json();
 };
+
+export const getPlaceNamesByCoordinates = async (
+  north: number,
+  east: number,
+): Promise<PlaceNameApiResponse> => {
+  const res = await fetch(
+    `https://ws.geonorge.no/stedsnavn/v1/punkt?nord=${north}&ost=${east}&treffPerSide=35&koordsys=25833&radius=150&side=1`,
+  );
+  if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
+  return res.json();
+};

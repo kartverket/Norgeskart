@@ -14,6 +14,7 @@ import { getInputCRS } from '../../shared/utils/crsUtils';
 import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import { SearchResult } from '../../types/searchTypes';
 import { getElevation } from '../searchApi';
+import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
 
 interface InfoBoxProps {
@@ -96,7 +97,13 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
             <AccordionItemTrigger pl={0}>
               {t('infoBox.placeinfo')}
             </AccordionItemTrigger>
-            <AccordionItemContent>{/*Info kommer her  */}</AccordionItemContent>
+            <AccordionItemContent>
+              <PlaceInfo
+                lon={result.lon}
+                lat={result.lat}
+                inputCRS={inputCRS}
+              />
+            </AccordionItemContent>
           </AccordionItem>
           <AccordionItem value="coordinateInfo">
             <AccordionItemTrigger pl={0}>

@@ -59,6 +59,23 @@ export type PlaceName = {
   stedstatus: string;
 };
 
+export type PlaceNamePoint = {
+  meterFraPunkt: number;
+  representasjonspunkt: RepresentasjonsPunktNorsk;
+  stedsnavn: PlaceNameDetails[];
+  stedsnummer: number;
+  stedstatus: string;
+  navneobjekttype: string;
+};
+
+export type PlaceNameDetails = {
+  navnestatus: string;
+  skrivemåte: string;
+  skrivemåtestatus: string;
+  språk: string;
+  stedsnavnnummer: number;
+};
+
 export type Metadata = {
   side: number;
   sokeStreng: string;
