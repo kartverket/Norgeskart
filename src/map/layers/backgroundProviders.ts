@@ -45,7 +45,7 @@ const providers: WMTSProviders = {
     endpoints: {
       getCapabilities: '/v1/service?Request=GetCapabilities&Service=WMTS',
     },
-    layers: ['topoProd', 'topo'],
+    layers: ['topo'],
   },
   norgeibilder_webmercator: {
     baseUrl: 'https://opencache.statkart.no',
