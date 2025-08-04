@@ -50,32 +50,6 @@ export const BackgroundLayerSettings = () => {
     avaiableLayers.push(...avaialbeLayersForPriovider);
   }
 
-  const backgroundLayerCollection: {
-    value: [WMTSProviderId, WMTSLayerName];
-    label: string;
-  }[] = [
-    {
-      value: ['kartverketCache', 'topo'],
-      label: t('map.settings.layers.mapNames.topo'),
-    },
-    {
-      value: ['kartverketCache', 'topograatone'],
-      label: t('map.settings.layers.mapNames.topoGrayscale'),
-    },
-    {
-      value: ['kartverketATKV3dev', 'topo'],
-      label: t('map.settings.layers.mapNames.topo_2025'),
-    },
-    {
-      value: ['kartverketCache', 'sjokartraster'],
-      label: t('map.settings.layers.mapNames.seamap'),
-    },
-    {
-      value: ['norgeibilder_webmercator', 'Nibcache_web_mercator_v2'],
-      label: t('map.settings.layers.mapNames.orthophoto'),
-    },
-  ];
-
   //TODO: Fix url parameter handling
   const listCollection = createListCollection({
     items: avaiableLayers,
