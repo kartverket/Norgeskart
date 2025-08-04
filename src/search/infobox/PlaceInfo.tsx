@@ -25,6 +25,11 @@ export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
   if (isLoading) return <>Laster stedsnavninformasjon...</>;
   if (error) return <>Feil ved henting av stedsnavninformasjon.</>;
 
+  const handlePlaceClick = (placeNumber: number) => {
+    const url = `https://stadnamn.kartverket.no/fakta/${placeNumber}`;
+    window.open(url, '_blank');
+  };
+
   return (
     <Box>
       {placeData?.navn.map((place) => (
@@ -32,9 +37,10 @@ export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
           key={place.stedsnummer}
           mb={4}
           _hover={{ fontWeight: '600', cursor: 'pointer' }}
+          onClick={() => handlePlaceClick(place.stedsnummer)}
         >
-          {place.stedsnavn.map((stedsnavn) => (
-            <Text key={stedsnavn.stedsnavnnummer}>{stedsnavn.skrivemåte}</Text>
+          {place.stedsnavn.map((placeName) => (
+            <Text key={placeName.stedsnavnnummer}>{placeName.skrivemåte}</Text>
           ))}
           <Text fontSize="sm">Stedsnummer: {place.stedsnummer}</Text>
           <Text fontSize="sm">Navneobjekttype: {place.navneobjekttype}</Text>
