@@ -55,7 +55,6 @@ const providers: WMTSProviders = {
     },
     layers: ['Nibcache_web_mercator_v2'],
   },
-
   norgeibilder_utm32: {
     baseUrl: 'https://opencache.statkart.no',
     endpoints: {
@@ -64,7 +63,6 @@ const providers: WMTSProviders = {
     },
     layers: ['Nibcache_UTM32_EUREF89_v2'],
   },
-
   norgeibilder_utm33: {
     baseUrl: 'https://opencache.statkart.no',
     endpoints: {
@@ -73,7 +71,6 @@ const providers: WMTSProviders = {
     },
     layers: ['Nibcache_UTM33_EUREF89_v2'],
   },
-
   norgeibilder_utm35: {
     baseUrl: 'https://opencache.statkart.no',
     endpoints: {

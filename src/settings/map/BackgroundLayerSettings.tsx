@@ -16,6 +16,27 @@ import {
 } from '../../map/layers/backgroundProviders';
 import { useMapSettings } from '../../map/mapHooks';
 
+const layerPriorityMap = new Map<WMTSLayerName, number>([
+  ['topo', 1],
+  ['topoProd', 1],
+  ['topograatone', 2],
+  ['sjokartraster', 3],
+  ['Nibcache_web_mercator_v2', 6],
+  ['Nibcache_UTM32_EUREF89_v2', 7],
+  ['Nibcache_UTM33_EUREF89_v2', 8],
+  ['Nibcache_UTM35_EUREF89_v2', 8],
+]);
+
+const layerPrioritySort = (
+  a: { value: [WMTSProviderId, WMTSLayerName]; label: string },
+  b: { value: [WMTSProviderId, WMTSLayerName]; label: string },
+) => {
+  const priorityA = layerPriorityMap.get(a.value[1]) || 0;
+  const priorityB = layerPriorityMap.get(b.value[1]) || 0;
+
+  return priorityA - priorityB;
+};
+
 export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
   const { setWMTSBackgroundLayer, getMapProjectionCode } = useMapSettings();
@@ -52,7 +73,7 @@ export const BackgroundLayerSettings = () => {
 
   //TODO: Fix url parameter handling
   const listCollection = createListCollection({
-    items: avaiableLayers,
+    items: avaiableLayers.sort(layerPrioritySort),
   });
 
   return (
