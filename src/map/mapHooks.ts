@@ -86,6 +86,14 @@ const useMapSettings = () => {
     return view.getCenter();
   };
 
+  const getMapProjection = () => {
+    return map.getView().getProjection();
+  };
+
+  const getMapProjectionCode = () => {
+    return getMapProjection().getCode() as ProjectionIdentifier;
+  };
+
   const setWMTSBackgroundLayer = (
     WTMSProvider: WMTSProviderId,
     layerName: WMTSLayerName,
@@ -267,14 +275,16 @@ const useMapSettings = () => {
   };
 
   return {
-    setMapAngle,
+    getMapProjection,
+    getMapProjectionCode,
+    getMapViewCenter,
     rotatateMap,
     rotateSnappy,
-    getMapViewCenter,
+    setMapAngle,
     setMapFullScreen,
-    setWMTSBackgroundLayer,
-    setProjection,
     setMapLocation,
+    setProjection,
+    setWMTSBackgroundLayer,
   };
 };
 

@@ -7,8 +7,10 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
+  loadableWMTS,
   WMTSLayerName,
   WMTSProviderId,
 } from '../../map/layers/backgroundProviders';
@@ -16,7 +18,37 @@ import { useMapSettings } from '../../map/mapHooks';
 
 export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
-  const { setWMTSBackgroundLayer } = useMapSettings();
+  const { setWMTSBackgroundLayer, getMapProjectionCode } = useMapSettings();
+  const WMTSProviders = useAtomValue(loadableWMTS);
+
+  if (WMTSProviders.state !== 'hasData') {
+    return null;
+  }
+
+  const projectionCode = getMapProjectionCode();
+  const providers = WMTSProviders.data.keys();
+
+  const avaiableLayers: {
+    value: [WMTSProviderId, WMTSLayerName];
+    label: string;
+  }[] = [];
+
+  for (const providerId of providers) {
+    const projectionLayersIterator = WMTSProviders.data
+      .get(providerId)
+      ?.get(projectionCode)
+      ?.keys();
+    const projectionLayerNames = Array.from(projectionLayersIterator || []);
+
+    const avaialbeLayersForPriovider = projectionLayerNames.map((layerName) => {
+      return {
+        value: [providerId, layerName] as [WMTSProviderId, WMTSLayerName],
+        label: t(`map.settings.layers.mapNames.${layerName}`),
+      };
+    });
+
+    avaiableLayers.push(...avaialbeLayersForPriovider);
+  }
 
   const backgroundLayerCollection: {
     value: [WMTSProviderId, WMTSLayerName];
@@ -46,7 +78,7 @@ export const BackgroundLayerSettings = () => {
 
   //TODO: Fix url parameter handling
   const listCollection = createListCollection({
-    items: backgroundLayerCollection,
+    items: avaiableLayers,
   });
 
   return (
