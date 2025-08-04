@@ -6,7 +6,6 @@ import TileLayer from 'ol/layer/Tile';
 import { get as getProjection, transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
-import { validateBackgroundLayerIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import {
   magneticDeclinationAtom,
@@ -24,13 +23,6 @@ import {
 import { getMousePositionControl } from './mapControls';
 
 const ROTATION_ANIMATION_DURATION = 500;
-
-const getBackgroundLayerId = () => {
-  const backgroundLayerIdFromUrl = validateBackgroundLayerIdString(
-    getUrlParameter('backgroundLayer'),
-  );
-  return backgroundLayerIdFromUrl ? backgroundLayerIdFromUrl : 'topo';
-};
 
 const useMap = () => {
   const map = useAtomValue(mapAtom);
@@ -327,4 +319,4 @@ const useCompassFileName = () => {
   }
 };
 
-export { getBackgroundLayerId, useCompassFileName, useMap, useMapSettings };
+export { useCompassFileName, useMap, useMapSettings };
