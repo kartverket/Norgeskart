@@ -1,4 +1,4 @@
-import { Box } from '@kvib/react';
+import { Box, Separator, Text } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { getPlaceNamesByCoordinates } from '../searchApi';
@@ -25,11 +25,22 @@ export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
   if (isLoading) return <>Laster stedsnavninformasjon...</>;
   if (error) return <>Feil ved henting av stedsnavninformasjon.</>;
 
-  console.log('PlaceData info:', placeData);
-  console.log('Placedata navn:', placeData?.navn);
-
-  if (!placeData || !placeData.navn || placeData.navn.length === 0) {
-    return <>Ingen stedsnavn funnet</>;
-  }
-  return <Box></Box>;
+  return (
+    <Box>
+      {placeData?.navn.map((place) => (
+        <Box
+          key={place.stedsnummer}
+          mb={4}
+          _hover={{ fontWeight: '600', cursor: 'pointer' }}
+        >
+          {place.stedsnavn.map((stedsnavn) => (
+            <Text key={stedsnavn.stedsnavnnummer}>{stedsnavn.skrivemåte}</Text>
+          ))}
+          <Text fontSize="sm">Stedsnummer: {place.stedsnummer}</Text>
+          <Text fontSize="sm">Navneobjekttype: {place.navneobjekttype}</Text>
+          <Separator mt={2} />
+        </Box>
+      ))}
+    </Box>
+  );
 };

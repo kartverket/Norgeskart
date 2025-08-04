@@ -91,6 +91,11 @@ export type PlaceNameApiResponse = {
   navn: PlaceName[];
 };
 
+export type PlaceNamePointApiResponse = {
+  metadata: Metadata;
+  navn: PlaceNamePoint[];
+};
+
 export type Road = {
   ADRESSEKODE: string;
   FYLKESNAVN: string;
