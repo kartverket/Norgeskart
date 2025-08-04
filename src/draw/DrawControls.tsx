@@ -11,7 +11,6 @@ import {
   ColorPickerSliders,
   ColorPickerTrigger,
   createListCollection,
-  Heading,
   HStack,
   parseColor,
   PopoverArrow,
@@ -69,9 +68,6 @@ export const DrawControls = () => {
 
   return (
     <VStack alignItems={'flex-start'}>
-      <Heading size={'lg'} as="h3">
-        {t('draw.tabHeading')}
-      </Heading>
       <Button onClick={() => setDrawEnabled(!drawEnabled)}>
         {drawEnabled ? t('draw.end') : t('draw.begin')}
       </Button>
