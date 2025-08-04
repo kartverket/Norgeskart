@@ -10,11 +10,13 @@ import {
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
+  DEFAULT_BACKGROUND_LAYER,
   loadableWMTS,
   WMTSLayerName,
   WMTSProviderId,
 } from '../../map/layers/backgroundProviders';
 import { useMapSettings } from '../../map/mapHooks';
+import { getUrlParameter } from '../../shared/utils/urlUtils';
 
 const layerPriorityMap = new Map<WMTSLayerName, number>([
   ['topo', 1],
@@ -28,11 +30,13 @@ const layerPriorityMap = new Map<WMTSLayerName, number>([
 ]);
 
 const layerPrioritySort = (
-  a: { value: [WMTSProviderId, WMTSLayerName]; label: string },
-  b: { value: [WMTSProviderId, WMTSLayerName]; label: string },
+  a: { value: `$${WMTSProviderId}.${WMTSLayerName}`; label: string },
+  b: { value: `$${WMTSProviderId}.${WMTSLayerName}`; label: string },
 ) => {
-  const priorityA = layerPriorityMap.get(a.value[1]) || 0;
-  const priorityB = layerPriorityMap.get(b.value[1]) || 0;
+  const priorityA =
+    layerPriorityMap.get(a.value.split('.')[1] as WMTSLayerName) || 0;
+  const priorityB =
+    layerPriorityMap.get(b.value.split('.')[1] as WMTSLayerName) || 0;
 
   return priorityA - priorityB;
 };
@@ -51,7 +55,7 @@ export const BackgroundLayerSettings = () => {
   const providers = WMTSProviders.data.keys();
 
   const avaiableLayers: {
-    value: [WMTSProviderId, WMTSLayerName];
+    value: `$${WMTSProviderId}.${WMTSLayerName}`;
     label: string;
   }[] = [];
 
@@ -64,7 +68,8 @@ export const BackgroundLayerSettings = () => {
 
     const avaialbeLayersForPriovider = projectionLayerNames.map((layerName) => {
       return {
-        value: [providerId, layerName] as [WMTSProviderId, WMTSLayerName],
+        value:
+          `${providerId}.${layerName}` as `$${WMTSProviderId}.${WMTSLayerName}`,
         label: t(`map.settings.layers.mapNames.${layerName}`),
       };
     });
@@ -72,15 +77,15 @@ export const BackgroundLayerSettings = () => {
     avaiableLayers.push(...avaialbeLayersForPriovider);
   }
 
-  //TODO: Fix url parameter handling
   const listCollection = createListCollection({
     items: avaiableLayers.sort(layerPrioritySort),
   });
+  const layerFromUrl = getUrlParameter('backgroundLayer');
 
   return (
     <SelectRoot
       collection={listCollection}
-      defaultValue={['kartverketCache_topo']}
+      defaultValue={layerFromUrl ? [layerFromUrl] : [DEFAULT_BACKGROUND_LAYER]}
     >
       <SelectLabel>{t('map.settings.layers.background.label')}</SelectLabel>
       <SelectTrigger>
@@ -91,10 +96,13 @@ export const BackgroundLayerSettings = () => {
       <SelectContent>
         {listCollection.items.map((item) => (
           <SelectItem
-            key={item.value[0] + '-' + item.value[1]}
+            key={item.value}
             item={item}
             onClick={() => {
-              setWMTSBackgroundLayer(item.value[0], item.value[1]);
+              setWMTSBackgroundLayer(
+                item.value.split('.')[0] as WMTSProviderId,
+                item.value.split('.')[1] as WMTSLayerName,
+              );
             }}
           >
             {item.label}
