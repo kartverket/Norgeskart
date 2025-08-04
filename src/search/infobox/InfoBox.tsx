@@ -75,7 +75,7 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
 
   return (
     <Card>
-      <CardBody pb={2}>
+      <CardBody pb={2} maxHeight='calc(100vh - 130px)' overflowY="auto" overflowX="hidden">
         <Text>{content}</Text>
         {t('infoBox.heightEstimatedByInterpolation')}{' '}
         {Number(elevationData?.value).toFixed(1)}{' '}
