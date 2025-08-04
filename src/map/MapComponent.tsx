@@ -4,15 +4,21 @@ import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
+import { getUrlParameter } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
-import { loadableWMTS } from './layers/backgroundProviders.ts';
+import {
+  DEFAULT_BACKGROUND_LAYER,
+  loadableWMTS,
+  WMTSLayerName,
+  WMTSProviderId,
+} from './layers/backgroundProviders.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import { MapOverlay } from './MapOverlay.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const WMTSloadable = useAtomValue(loadableWMTS);
-  const { setWMTSBackgroundLayer } = useMapSettings();
+  const { setBackgroundLayer } = useMapSettings();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
 
@@ -36,19 +42,26 @@ export const MapComponent = () => {
     }
     const hasBackgroundLayer =
       map.getAllLayers().find((l) => {
-        return l.get('id')?.startsWith('bg_');
+        return l.get('id')?.startsWith('bg.');
       }) != null;
 
     if (hasBackgroundLayer) {
       return;
     }
+    const [providerId, layerName] = (
+      getUrlParameter('backgroundLayer') || DEFAULT_BACKGROUND_LAYER
+    ).split('.');
+
     const wmtsLayer = WMTSloadable.data;
     if (wmtsLayer) {
-      setWMTSBackgroundLayer('kartverketCache', 'topo');
+      setBackgroundLayer(
+        providerId as WMTSProviderId,
+        layerName as WMTSLayerName,
+      );
     } else {
       console.error(t('map.errorMessage'));
     }
-  }, [setWMTSBackgroundLayer, t, WMTSloadable, map]);
+  }, [setBackgroundLayer, t, WMTSloadable, map]);
 
   return (
     <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>

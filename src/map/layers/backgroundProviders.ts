@@ -1,8 +1,10 @@
-import { atom, useSetAtom } from 'jotai';
+import { atom } from 'jotai';
 import { loadable } from 'jotai/utils';
 import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import { AvailableProjections, ProjectionIdentifier } from '../atoms';
+
+export const DEFAULT_BACKGROUND_LAYER = 'kartverketCache.topo';
 
 export type WMTSLayerName =
   | 'topo'
@@ -90,8 +92,7 @@ const isStringInSelectableProjection = (identifier: string) => {
   return AvailableProjections.includes(identifier as ProjectionIdentifier);
 };
 
-const WMTSAtom = atom(async (get) => {
-  get(wmtsRefreshTriggerAtom);
+const WMTSAtom = atom(async () => {
   const parser = new WMTSCapabilities();
 
   const providerLayerMap: Map<
@@ -145,12 +146,4 @@ const WMTSAtom = atom(async (get) => {
 
   return providerLayerMap;
 });
-const wmtsRefreshTriggerAtom = atom(0);
 export const loadableWMTS = loadable(WMTSAtom);
-
-export const useRefreshWMTS = () => {
-  const refreshWMTS = useSetAtom(wmtsRefreshTriggerAtom);
-  return () => {
-    refreshWMTS((c) => c + 1);
-  };
-};

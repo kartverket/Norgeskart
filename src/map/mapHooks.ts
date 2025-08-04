@@ -16,8 +16,8 @@ import {
 } from './atoms';
 import { isMapLayerBackground } from './layers';
 import {
+  DEFAULT_BACKGROUND_LAYER,
   loadableWMTS,
-  useRefreshWMTS,
   WMTSLayerName,
   WMTSProviderId,
 } from './layers/backgroundProviders';
@@ -79,7 +79,6 @@ const useMap = () => {
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
   const WMTSloadable = useAtomValue(loadableWMTS);
-  const refreshWMTS = useRefreshWMTS();
 
   const getMapViewCenter = () => {
     const view = map.getView();
@@ -94,7 +93,7 @@ const useMapSettings = () => {
     return getMapProjection().getCode() as ProjectionIdentifier;
   };
 
-  const setWMTSBackgroundLayer = (
+  const setBackgroundLayer = (
     WTMSProvider: WMTSProviderId,
     layerName: WMTSLayerName,
   ) => {
@@ -120,27 +119,49 @@ const useMapSettings = () => {
       .getLayers()
       .getArray()
       .filter((layer) => {
-        return layer.get('id').startsWith('bg_');
+        return layer.get('id').startsWith('bg.');
       });
     WTMSLayers.forEach((layer) => {
       map.removeLayer(layer);
     });
 
+    setUrlParameter('backgroundLayer', `${WTMSProvider}.${layerName}`);
+
     map.addLayer(
       new TileLayer({
         source: layerToAdd,
-        properties: { id: `bg_${WTMSProvider}_${layerName}` },
+        properties: { id: `bg.${WTMSProvider}.${layerName}` },
       }),
     );
   };
 
   const setProjection = (projectionId: ProjectionIdentifier) => {
     const projection = getProjection(projectionId)!;
+    if (WMTSloadable.state !== 'hasData') {
+      console.warn('WMTS data is not loaded yet');
+      return;
+    }
 
     // Optionally, transform the current center to the new projection
     const oldView = map.getView();
     const oldCenter = oldView.getCenter();
     const oldProjection = oldView.getProjection();
+
+    //Find the old background and check if it is available, otherwise use topo
+    const [providerId, layerName] = (
+      getUrlParameter('backgroundLayer') || DEFAULT_BACKGROUND_LAYER
+    ).split('.');
+
+    const layerToAdd = WMTSloadable.data
+      .get(providerId as WMTSProviderId)
+      ?.get(projectionId)
+      ?.get(layerName as WMTSLayerName);
+    if (!layerToAdd) {
+      console.warn(
+        `WMTS layer ${layerName} for provider ${providerId} is not available in projection ${projectionId}`,
+      );
+      return;
+    }
 
     let newCenter = undefined;
     if (oldProjection.getCode() === projection.getCode()) {
@@ -176,8 +197,12 @@ const useMapSettings = () => {
     });
 
     map.setView(newView);
-
-    refreshWMTS();
+    map.addLayer(
+      new TileLayer({
+        source: layerToAdd,
+        properties: { id: `bg.${providerId}.${layerName}` },
+      }),
+    );
 
     const mousePositionInteraction = map
       .getControls()
@@ -284,7 +309,7 @@ const useMapSettings = () => {
     setMapFullScreen,
     setMapLocation,
     setProjection,
-    setWMTSBackgroundLayer,
+    setBackgroundLayer,
   };
 };
 

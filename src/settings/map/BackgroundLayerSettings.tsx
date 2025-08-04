@@ -39,7 +39,8 @@ const layerPrioritySort = (
 
 export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
-  const { setWMTSBackgroundLayer, getMapProjectionCode } = useMapSettings();
+  const { setBackgroundLayer: setWMTSBackgroundLayer, getMapProjectionCode } =
+    useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
 
   if (WMTSProviders.state !== 'hasData') {
