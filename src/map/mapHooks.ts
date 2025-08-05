@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import {
+  INITIAL_ZOOM_LEVEL,
   magneticDeclinationAtom,
   mapAtom,
   mapOrientationAtom,
@@ -197,10 +198,24 @@ const useMapSettings = () => {
       map.removeLayer(layer);
     });
 
-    // Create a new view with the new projection
+    let newZoom = oldView.getZoom() || INITIAL_ZOOM_LEVEL;
+    if (
+      projectionId === 'EPSG:3857' &&
+      oldProjection.getCode() !== 'EPSG:3857'
+    ) {
+      newZoom += 1;
+    }
+
+    if (
+      projectionId !== 'EPSG:3857' &&
+      oldProjection.getCode() === 'EPSG:3857'
+    ) {
+      newZoom -= 1;
+    }
+
     const newView = new View({
       center: newCenter,
-      zoom: oldView.getZoom(),
+      zoom: newZoom,
       minZoom: oldView.getMinZoom(),
       maxZoom: oldView.getMaxZoom(),
       projection: projection,
