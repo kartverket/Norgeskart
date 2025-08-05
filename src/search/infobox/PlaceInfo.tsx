@@ -1,6 +1,7 @@
 import { Box, Separator, Text } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
+import { useTranslation } from 'react-i18next';
 import { getPlaceNamesByCoordinates } from '../searchApi';
 
 interface PlaceInfoProps {
@@ -11,6 +12,7 @@ interface PlaceInfoProps {
 
 export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
   const [east, north] = transform([lon, lat], inputCRS, 'EPSG:25833');
+  const { t } = useTranslation();
 
   const {
     data: placeData,
@@ -25,8 +27,8 @@ export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
   if (isLoading) return <>Laster stedsnavninformasjon...</>;
   if (error) return <>Feil ved henting av stedsnavninformasjon.</>;
 
-  const handlePlaceClick = (placeNumber: number) => {
-    const url = `https://stadnamn.kartverket.no/fakta/${placeNumber}`;
+  const handlePlaceClick = (locationNumber: number) => {
+    const url = `https://stadnamn.kartverket.no/fakta/${locationNumber}`;
     window.open(url, '_blank');
   };
 
@@ -42,8 +44,14 @@ export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
           {place.stedsnavn.map((placeName) => (
             <Text key={placeName.stedsnavnnummer}>{placeName.skrivemåte}</Text>
           ))}
-          <Text fontSize="sm">Stedsnummer: {place.stedsnummer}</Text>
-          <Text fontSize="sm">Navneobjekttype: {place.navneobjekttype}</Text>
+          <Text fontSize="sm">
+            {' '}
+            {t('placeInfo.locationNumber')}: {place.stedsnummer}
+          </Text>
+          <Text fontSize="sm">
+            {' '}
+            {t('placeInfo.nameObjectType')}: {place.navneobjekttype}
+          </Text>
           <Separator mt={2} />
         </Box>
       ))}

@@ -104,5 +104,9 @@
     "sectionNr": "Seksjonsnr.",
     "multipleAddressesText": "Eiendommen har flere adresser",
     "moreInformation": "Vis mer informasjon"
+  },
+  "placeInfo": {
+    "locationNumber": "Stedsnummer",
+    "nameObjectType": "Navneobjekttype"
   }
 }
