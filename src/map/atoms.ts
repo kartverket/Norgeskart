@@ -15,11 +15,17 @@ import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter } from '../shared/utils/urlUtils';
-import { BackgroundLayer, mapLayers } from './layers';
+import { mapLayers } from './layers';
 import { ControlPortal, getMousePositionControl } from './mapControls';
-import { getBackgroundLayerId } from './mapHooks';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
+
+export const AvailableProjections: ProjectionIdentifier[] = [
+  'EPSG:3857', // webmercator
+  'EPSG:25832', // utm32n
+  'EPSG:25833', // utm33n
+  'EPSG:25835', // utm35n
+];
 
 export type ProjectionIdentifier =
   | 'EPSG:3857' // webmercator
@@ -38,8 +44,6 @@ export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
 export const magneticDeclinationAtom = atom<number>(0);
 
-export const backgroundLayerAtom = atom<BackgroundLayer>('topo');
-
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls().extend([new ControlPortal()]),
@@ -54,19 +58,12 @@ export const mapAtom = atom<Map>(() => {
 
   const projection = getProjection(projectionId)!;
   const projectionExtent = projection.getExtent();
-
-  map.addLayer(mapLayers.europaForenklet.getLayer(projectionId));
-
-  map.addLayer(
-    mapLayers.backgroundLayers[getBackgroundLayerId()].getLayer(projectionId),
-  );
-  map.addLayer(mapLayers.drawLayer.getLayer(projectionId));
   map.addLayer(mapLayers.markerLayer.getLayer(projectionId));
   const drawLayer = mapLayers.drawLayer.getLayer(projectionId) as VectorLayer;
   map.addLayer(drawLayer);
 
   const intialView = new View({
-    center: [1737122, 9591875],
+    center: [1900000, 9500000],
     minZoom: 3,
     maxZoom: 20,
     zoom: 5,
@@ -77,7 +74,7 @@ export const mapAtom = atom<Map>(() => {
   map.addControl(new ScaleLine({ units: 'metric' }));
   map.addControl(getMousePositionControl(projectionId));
   const link = new Link({
-    params: ['x', 'y', 'z'],
+    params: ['x', 'y', 'z', 'r'],
   });
 
   map.addInteraction(link);

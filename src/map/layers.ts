@@ -1,63 +1,15 @@
-import { getTopLeft, getWidth } from 'ol/extent';
 import BaseLayer from 'ol/layer/Base';
-import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import { get as getProjection } from 'ol/proj.js';
-import { WMTS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
-import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import { ProjectionIdentifier } from './atoms';
-
-const getMatrixSetForProjection = (projectionId: ProjectionIdentifier) => {
-  switch (projectionId) {
-    case 'EPSG:25832':
-      return 'utm32n';
-    case 'EPSG:25833':
-      return 'utm33n';
-    case 'EPSG:25835':
-      return 'utm35n';
-    case 'EPSG:3857':
-      return 'webmercator';
-    default:
-      return 'utm33n';
-  }
-};
-
-const getProjectionParameters = (projectionId: ProjectionIdentifier) => {
-  const projection = getProjection(projectionId)!;
-  const projectionExtent = projection.getExtent();
-  const size = getWidth(projectionExtent) / 256;
-
-  const resolutions = new Array(19);
-  const matrixIds = new Array(19);
-  for (let z = 0; z < 19; ++z) {
-    resolutions[z] = size / Math.pow(2, z);
-    matrixIds[z] = z;
-  }
-
-  const matrixSet = getMatrixSetForProjection(projectionId);
-  return { projection, projectionExtent, resolutions, matrixIds, matrixSet };
-};
-
-const getOrthphotoUrl = (projectionId: ProjectionIdentifier) => {
-  const urlPrefix = 'https://opencache.statkart.no/gatekeeper/gk/';
-  switch (projectionId) {
-    case 'EPSG:25832':
-      return urlPrefix + 'gk.open_nib_utm32_wmts_v2';
-    case 'EPSG:25833':
-      return urlPrefix + 'gk.open_nib_utm33_wmts_v2?';
-    case 'EPSG:25835':
-      return urlPrefix + 'gk.open_nib_utm35_wmts_v2?';
-    case 'EPSG:3857':
-      return urlPrefix + 'gk.open_nib_web_mercator_wmts_v2?';
-    default:
-      return urlPrefix + 'gk.open_nib_web_mercator_wmts_v2?';
-  }
-};
 
 type LayerFunction =
   | ((_: ProjectionIdentifier) => BaseLayer)
   | (() => BaseLayer);
+
+export const isMapLayerBackground = (layer: BaseLayer) => {
+  return layer.get('id')?.startsWith('bg.');
+};
 
 export type MapLayer = {
   getLayer: LayerFunction;
@@ -66,174 +18,11 @@ export type MapLayer = {
 };
 
 export type MapLayers = {
-  backgroundLayers: {
-    topo: MapLayer;
-    topoGrayscale: MapLayer;
-    topo_2025: MapLayer;
-    orthophoto: MapLayer;
-  };
-  europaForenklet: MapLayer;
   drawLayer: MapLayer;
   markerLayer: MapLayer;
 };
 
-export type BackgroundLayer = keyof MapLayers['backgroundLayers'];
-
 const mapLayers: MapLayers = {
-  backgroundLayers: {
-    topo: {
-      id: 'topo',
-      getLayer: (projectionId: ProjectionIdentifier) => {
-        const {
-          projection,
-          projectionExtent,
-          resolutions,
-          matrixIds,
-          matrixSet,
-        } = getProjectionParameters(projectionId);
-        return new TileLayer({
-          properties: { id: 'bg_topo' },
-          zIndex: 1,
-          source: new WMTS({
-            url: 'https://cache.kartverket.no/v1/service',
-            layer: 'topo',
-            matrixSet: matrixSet,
-            projection: projection,
-            format: 'image/png',
-            tileGrid: new WMTSTileGrid({
-              origin: getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-            }),
-            style: 'default',
-            wrapX: true,
-          }),
-        });
-      },
-    },
-
-    topoGrayscale: {
-      id: 'topoGrayscale',
-      getLayer: (projectionId: ProjectionIdentifier) => {
-        const {
-          projection,
-          projectionExtent,
-          resolutions,
-          matrixIds,
-          matrixSet,
-        } = getProjectionParameters(projectionId);
-        return new TileLayer({
-          properties: { id: 'bg_topoGrayscale' },
-          zIndex: 1,
-          source: new WMTS({
-            url: 'https://cache.kartverket.no/v1/service',
-            layer: 'topograatone',
-            matrixSet: matrixSet,
-            projection: projection,
-            format: 'image/png',
-            tileGrid: new WMTSTileGrid({
-              origin: getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-            }),
-            style: 'default',
-            wrapX: true,
-          }),
-        });
-      },
-    },
-
-    topo_2025: {
-      id: 'topo_2025',
-      getLayer: (projectionId: ProjectionIdentifier) => {
-        const {
-          projection,
-          projectionExtent,
-          resolutions,
-          matrixIds,
-          matrixSet,
-        } = getProjectionParameters(projectionId);
-        return new TileLayer({
-          properties: { id: 'bg_topo_2025' },
-          zIndex: 1,
-          source: new WMTS({
-            url: 'https://cache.atkv3-dev.kartverket.cloud/v1/service',
-            layer: 'topo',
-            matrixSet: matrixSet,
-            projection: projection,
-            format: 'image/png',
-            tileGrid: new WMTSTileGrid({
-              origin: getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-            }),
-            style: 'default',
-            wrapX: true,
-          }),
-        });
-      },
-    },
-
-    orthophoto: {
-      id: 'orthophoto',
-      getLayer: (projectionId: ProjectionIdentifier) => {
-        const { projection, projectionExtent, resolutions, matrixIds } =
-          getProjectionParameters(projectionId);
-        return new TileLayer({
-          properties: { id: 'bg_orthophoto' },
-          zIndex: 1,
-          source: new WMTS({
-            url: getOrthphotoUrl(projectionId),
-            layer: 'Nibcache_web_mercator_v2',
-            matrixSet: 'GoogleMapsCompatible',
-            projection: projection,
-            format: 'image/png',
-            tileGrid: new WMTSTileGrid({
-              origin: getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-            }),
-            style: 'default',
-            wrapX: true,
-          }),
-        });
-      },
-      maxZoom: 17,
-    },
-  },
-
-  europaForenklet: {
-    id: 'europaForenklet',
-    getLayer: (projectionId: ProjectionIdentifier) => {
-      const {
-        projection,
-        projectionExtent,
-        resolutions,
-        matrixIds,
-        matrixSet,
-      } = getProjectionParameters(projectionId);
-
-      return new TileLayer({
-        properties: { id: 'europaForenklet' },
-        zIndex: 0,
-        source: new WMTS({
-          url: 'https://cache.kartverket.no/v1/service',
-          layer: 'europaForenklet',
-          matrixSet: matrixSet,
-          format: 'image/png',
-          projection: projection,
-          tileGrid: new WMTSTileGrid({
-            origin: getTopLeft(projectionExtent),
-            resolutions: resolutions,
-            matrixIds: matrixIds,
-          }),
-          style: 'default',
-          wrapX: true,
-        }),
-      });
-    },
-  },
-
   drawLayer: {
     id: 'drawLayer',
     getLayer: () => {

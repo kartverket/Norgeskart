@@ -39,9 +39,14 @@
         },
         "mapNames": {
           "topo": "Topo",
-          "topoGrayscale": "Topo Gråtone",
           "topo_2025": "Topo 2025",
-          "orthophoto": "Flyfoto"
+          "Nibcache_web_mercator_v2": "Flyfoto",
+          "topoProd": "Topografisk",
+          "topograatone": "Topografisk, gråtone",
+          "sjokartraster": "Sjøkart",
+          "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
+          "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
+          "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)"
         }
       },
       "compass": {
