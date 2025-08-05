@@ -8,7 +8,7 @@ type LayerFunction =
   | (() => BaseLayer);
 
 export const isMapLayerBackground = (layer: BaseLayer) => {
-  return layer.get('id')?.startsWith('bg_');
+  return layer.get('id')?.startsWith('bg.');
 };
 
 export type MapLayer = {

@@ -72,6 +72,20 @@ const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
   const WMTSloadable = useAtomValue(loadableWMTS);
 
+  const getNibProviderKeyForProjections = (
+    projection: ProjectionIdentifier,
+  ) => {
+    if (WMTSloadable.state !== 'hasData') {
+      console.warn('WMTS data is not loaded yet');
+      return null;
+    }
+    const nibKeys = Array.from(WMTSloadable.data.keys()).filter((key) => {
+      const provider = WMTSloadable.data.get(key);
+      return provider && provider.has(projection);
+    });
+    return nibKeys.length > 0 ? (nibKeys[0] as WMTSProviderId) : null;
+  };
+
   const getMapViewCenter = () => {
     const view = map.getView();
     return view.getCenter();
@@ -144,13 +158,25 @@ const useMapSettings = () => {
       getUrlParameter('backgroundLayer') || DEFAULT_BACKGROUND_LAYER
     ).split('.');
 
-    const layerToAdd = WMTSloadable.data
+    let layerToAdd = WMTSloadable.data
       .get(providerId as WMTSProviderId)
       ?.get(projectionId)
       ?.get(layerName as WMTSLayerName);
+    if (!layerToAdd && providerId.startsWith('norgeibilder_')) {
+      const nibKey = getNibProviderKeyForProjections(projectionId);
+      console.log(nibKey);
+      if (nibKey) {
+        layerToAdd = WMTSloadable.data
+          .get(nibKey as WMTSProviderId)
+          ?.get(projectionId)
+          ?.entries()
+          .next().value?.[1];
+      }
+    }
+
     if (!layerToAdd) {
       console.warn(
-        `WMTS layer ${layerName} for provider ${providerId} is not available in projection ${projectionId}`,
+        `WMTS layer ${layerName} for provider ${providerId} is not available in projection ${projectionId} and no fallback was found.`,
       );
       return;
     }
@@ -205,6 +231,7 @@ const useMapSettings = () => {
     map.removeControl(mousePositionInteraction);
     map.addControl(getMousePositionControl(projectionId));
     setUrlParameter('projection', projectionId);
+    setUrlParameter('backgroundLayer', `${providerId}.${layerName}`);
   };
 
   const setMapFullScreen = (shouldBeFullscreen: boolean) => {
