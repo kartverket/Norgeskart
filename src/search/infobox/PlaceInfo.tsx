@@ -45,11 +45,9 @@ export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
             <Text key={placeName.stedsnavnnummer}>{placeName.skrivemåte}</Text>
           ))}
           <Text fontSize="sm">
-            {' '}
             {t('placeInfo.locationNumber')}: {place.stedsnummer}
           </Text>
           <Text fontSize="sm">
-            {' '}
             {t('placeInfo.nameObjectType')}: {place.navneobjekttype}
           </Text>
           <Separator mt={2} />
