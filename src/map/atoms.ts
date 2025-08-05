@@ -19,6 +19,7 @@ import { mapLayers } from './layers';
 import { ControlPortal, getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
+export const INITIAL_ZOOM_LEVEL = 5;
 
 export const AvailableProjections: ProjectionIdentifier[] = [
   'EPSG:3857', // webmercator
@@ -66,7 +67,7 @@ export const mapAtom = atom<Map>(() => {
     center: [1900000, 9500000],
     minZoom: 3,
     maxZoom: 20,
-    zoom: 5,
+    zoom: INITIAL_ZOOM_LEVEL,
     projection: projection,
     extent: projectionExtent,
   });
