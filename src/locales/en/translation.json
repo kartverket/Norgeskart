@@ -104,5 +104,11 @@
     "sectionNr": "Section nr.",
     "multipleAddressesText": "The property has several addresses",
     "moreInformation": "Show more information"
+  },
+  "placeInfo": {
+    "locationNumber": "Location number",
+    "nameObjectType": "Name object type",
+    "loadingPlaceNameInfo": "Loading place name information",
+    "errorPlaceNameInfo": "Error fetching place name information"
   }
 }
