@@ -107,6 +107,8 @@
   },
   "placeInfo": {
     "locationNumber": "Stadnummer",
-    "nameObjectType": "Namnobjekttype"
+    "nameObjectType": "Namnobjekttype",
+    "loadingPlaceNameInfo": "Lastar stadnamninformasjon",
+    "errorPlaceNameInfo": "Feil ved henting av stadnamninformasjon"
   }
 }

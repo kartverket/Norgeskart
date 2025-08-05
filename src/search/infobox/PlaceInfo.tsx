@@ -24,8 +24,8 @@ export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
     enabled: north != null && east != null,
   });
 
-  if (isLoading) return <>Laster stedsnavninformasjon...</>;
-  if (error) return <>Feil ved henting av stedsnavninformasjon.</>;
+  if (isLoading) return <>{t('placeInfo.loadingPlaceNameInfo')}</>;
+  if (error) return <>{t('placeInfo.errorPlaceNameInfo')}</>;
 
   const handlePlaceClick = (locationNumber: number) => {
     const url = `https://stadnamn.kartverket.no/fakta/${locationNumber}`;
