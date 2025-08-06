@@ -70,6 +70,7 @@ export const mapAtom = atom<Map>(() => {
     zoom: INITIAL_ZOOM_LEVEL,
     projection: projection,
     extent: projectionExtent,
+    constrainResolution: true,
   });
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
