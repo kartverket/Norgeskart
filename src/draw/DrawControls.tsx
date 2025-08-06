@@ -25,6 +25,10 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  SwitchControl,
+  SwitchHiddenInput,
+  SwitchLabel,
+  SwitchRoot,
   VStack,
 } from '@kvib/react';
 import { useEffect, useState } from 'react';
@@ -39,6 +43,7 @@ export const DrawControls = () => {
     setDrawType,
     setDrawFillColor,
     setDrawStrokeColor,
+    setShowMeasurements,
     clearDrawing,
     abortDrawing,
   } = useDrawSettings();
@@ -138,6 +143,16 @@ export const DrawControls = () => {
               </HStack>
             </ColorPickerContent>
           </ColorPicker>
+
+          <SwitchRoot
+            onCheckedChange={(e) => {
+              setShowMeasurements(e.checked);
+            }}
+          >
+            <SwitchHiddenInput />
+            <SwitchControl />
+            <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
+          </SwitchRoot>
         </>
       )}
       <ButtonGroup>

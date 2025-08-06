@@ -1,5 +1,7 @@
 import { useAtom, useAtomValue } from 'jotai';
+import { Overlay } from 'ol';
 import BaseEvent from 'ol/events/Event';
+import { Circle, LineString, Polygon } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
@@ -140,6 +142,68 @@ const useDrawSettings = () => {
     }
   };
 
+  const setShowMeasurements = (enable: boolean) => {
+    const drawInteraction = getDrawInteraction();
+    if (!drawInteraction) {
+      return;
+    }
+
+    const handleMouseOut = () => {
+      document.getElementById('measurement-tooltip')?.classList.add('hidden');
+    };
+    const handleMouseIn = () => {
+      document
+        .getElementById('measurement-tooltip')
+        ?.classList.remove('hidden');
+    };
+
+    if (enable) {
+      const elm = document.createElement('div');
+      elm.id = 'measurement-tooltip';
+      elm.classList.add('hidden');
+      elm.classList.add('ol-tooltip');
+      elm.classList.add('ol-tooltip-measure');
+
+      const toolTip = new Overlay({
+        element: elm,
+        offset: [0, -15],
+        positioning: 'bottom-center',
+        id: 'measurement-tooltip',
+      });
+      map.addOverlay(toolTip);
+      map.getViewport().addEventListener('mouseout', handleMouseOut);
+      map.getViewport().addEventListener('mouseover', handleMouseIn);
+      drawInteraction.on('drawstart', (event: DrawEvent) => {
+        const feature = event.feature;
+        feature.getGeometry()?.on('change', (geomEvent) => {
+          const gemoetry = geomEvent.target;
+
+          if (gemoetry instanceof Polygon) {
+            const area = gemoetry.getArea();
+            console.log(`Area: ${area}`);
+          }
+          if (gemoetry instanceof LineString) {
+            const length = gemoetry.getLength();
+            console.log(`Length: ${length}`);
+          }
+          if (gemoetry instanceof Circle) {
+            const radius = gemoetry.getRadius();
+            console.log(`Radius: ${radius}`);
+          }
+        });
+      });
+    } else {
+      map.getViewport().removeEventListener('mouseout', handleMouseOut);
+      drawInteraction.getListeners('drawstart')?.forEach((listener) => {
+        drawInteraction.removeEventListener('drawstart', listener);
+      });
+      const overlay = map.getOverlayById('measurement-tooltip');
+      if (overlay) {
+        map.removeOverlay(overlay);
+      }
+    }
+  };
+
   const clearDrawing = () => {
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
@@ -162,6 +226,7 @@ const useDrawSettings = () => {
     setDrawType,
     setDrawFillColor,
     setDrawStrokeColor,
+    setShowMeasurements,
     abortDrawing,
     clearDrawing,
     getDrawLayer,

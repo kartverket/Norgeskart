@@ -5,7 +5,8 @@
     "confrimClear": "Er du sikker?",
     "controls": {
       "colorFill": "Velg fyllfarge",
-      "colorStroke": "Velg omrissfarge"
+      "colorStroke": "Velg omrissfarge",
+      "showMeasurements": "Vis mål"
     },
     "end": "Ferdig",
     "save": "Lagre",

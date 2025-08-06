@@ -5,7 +5,8 @@
     "confrimClear": "Are you sure?",
     "controls": {
       "colorFill": "Fill color",
-      "colorStroke": "Stroke color"
+      "colorStroke": "Stroke color",
+      "showMeasurements": "Show measurments"
     },
     "end": "Done",
     "save": "Save",
