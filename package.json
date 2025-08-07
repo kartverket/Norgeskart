@@ -10,6 +10,7 @@
     "lint-fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,json}\" --list-different",
     "format-check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,json}\"",
+    "format-secific": "prettier --write ",
     "preview": "vite preview",
     "aword": "node scripts/addWord.js",
     "rword": "node scripts/removeWord.js"
