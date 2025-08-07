@@ -1,13 +1,14 @@
 import { useAtom, useAtomValue } from 'jotai';
-import { Overlay } from 'ol';
+import { Feature, Overlay } from 'ol';
 import BaseEvent from 'ol/events/Event';
-import { Circle, LineString, Polygon } from 'ol/geom';
+import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Style } from 'ol/style';
+import { v4 as uuidv4 } from 'uuid';
 import {
   drawEnabledAtom,
   drawFillColorAtom,
@@ -63,6 +64,7 @@ const useDrawSettings = () => {
   const setDrawEnabled = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
     if (drawInteraction) {
+      console.log('Removing draw interaction');
       map.removeInteraction(drawInteraction);
     }
     if (enable) {
@@ -106,6 +108,12 @@ const useDrawSettings = () => {
       type: type,
     });
 
+    newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
+      const eventFeature = (event as unknown as DrawEvent).feature;
+      const featureId = uuidv4();
+      eventFeature.setId(featureId);
+    });
+
     map.addInteraction(newDraw);
 
     if (drawStyle) {
@@ -142,12 +150,11 @@ const useDrawSettings = () => {
     }
   };
 
-  const setShowMeasurements = (enable: boolean) => {
+  const setDisplayInteractiveMeasurement = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
     if (!drawInteraction) {
       return;
     }
-
     const handleMouseOut = () => {
       document.getElementById('measurement-tooltip')?.classList.add('hidden');
     };
@@ -228,6 +235,64 @@ const useDrawSettings = () => {
         map.removeOverlay(overlay);
       }
     }
+  };
+
+  const setDisplayStaticMeasurement = (enable: boolean) => {
+    const drawLayer = getDrawLayer();
+    const source = drawLayer?.getSource() as VectorSource | undefined;
+    if (!source) {
+      return;
+    }
+    const drawnFeatures = source.getFeatures();
+    if (!drawnFeatures) {
+      return;
+    }
+    if (!enable) {
+      return;
+    }
+    drawnFeatures.forEach((feature) => {
+      let measurementText = '';
+      addFeatureMeasurementOverlay(feature);
+      const geometry = feature.getGeometry();
+      if (geometry instanceof Polygon) {
+        const area = geometry.getArea();
+        measurementText = `Area: ${area.toFixed(2)} m²`;
+      }
+      if (geometry instanceof LineString) {
+        const length = geometry.getLength();
+        measurementText = `Length: ${length.toFixed(2)} m`;
+      }
+      if (geometry instanceof Circle) {
+        const radius = geometry.getRadius();
+        measurementText = `Area: ${(radius * radius * Math.PI).toFixed(2)} m²`;
+      }
+      console.log(measurementText);
+    });
+  };
+
+  const addFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
+    const featId = feature.getId();
+    console.log('featid', featId);
+    return;
+    const elm = document.createElement('div');
+    elm.id = 'measurement-tooltip';
+    elm.classList.add('hidden');
+    elm.classList.add('ol-tooltip');
+    elm.classList.add('ol-tooltip-measure');
+
+    const toolTip = new Overlay({
+      element: elm,
+      offset: [0, -15],
+      positioning: 'bottom-center',
+      id: 'measurement-tooltip',
+    });
+  };
+
+  const removeFeatureMeasurementOverlays = () => {};
+
+  const setShowMeasurements = (enable: boolean) => {
+    setDisplayInteractiveMeasurement(enable);
+    setDisplayStaticMeasurement(enable);
   };
 
   const clearDrawing = () => {
