@@ -63,11 +63,17 @@ const useDrawSettings = () => {
 
   const setDrawEnabled = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
+    const selectInteraction = getSelectInteraction();
     if (drawInteraction) {
       map.removeInteraction(drawInteraction);
     }
     if (enable) {
       setDrawType('Polygon');
+    }
+    if (!enable) {
+      if (selectInteraction) {
+        map.removeInteraction(selectInteraction);
+      }
     }
     setDrawAtomEnabled(enable);
   };
