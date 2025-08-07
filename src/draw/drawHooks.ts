@@ -182,27 +182,12 @@ const useDrawSettings = () => {
       drawInteraction.on('drawstart', (event: DrawEvent) => {
         const feature = event.feature;
         feature.getGeometry()?.on('change', (geomEvent) => {
-          const gemoetry = geomEvent.target;
-          let gemoetryPosition;
-          let tooltipText = 'placeholder';
-          if (gemoetry instanceof Polygon) {
-            const area = gemoetry.getArea();
-            gemoetryPosition = gemoetry.getInteriorPoint().getCoordinates();
-            tooltipText = `Area: ${area.toFixed(2)} m²`;
-          }
-          if (gemoetry instanceof LineString) {
-            const length = gemoetry.getLength();
-            gemoetryPosition = gemoetry.getLastCoordinate();
-            tooltipText = `Length: ${length.toFixed(2)} m`;
-          }
-          if (gemoetry instanceof Circle) {
-            const radius = gemoetry.getRadius();
-            gemoetryPosition = gemoetry.getCenter();
-            tooltipText = `Area: ${(radius * radius * Math.PI).toFixed(2)} m²`;
-          }
+          const geometry = geomEvent.target;
+          const geometryPosition = getGeometryPositionForOverlay(geometry);
+          let tooltipText = getMeasurementText(geometry);
 
-          if (gemoetryPosition) {
-            toolTip.setPosition(gemoetryPosition);
+          if (geometryPosition) {
+            toolTip.setPosition(geometryPosition);
             elm.innerHTML = tooltipText;
             elm.classList.remove('hidden');
           }
@@ -219,6 +204,10 @@ const useDrawSettings = () => {
           });
         toolTip.setPosition(undefined);
         elm.classList.add('hidden');
+        addFeatureMeasurementOverlay(
+          feature,
+          getMeasurementText(feature.getGeometry()!),
+        );
       });
     } else {
       map.getViewport().removeEventListener('mouseout', handleMouseOut);
@@ -233,6 +222,24 @@ const useDrawSettings = () => {
         map.removeOverlay(overlay);
       }
     }
+  };
+
+  const getMeasurementText = (geometry: Geometry) => {
+    let measurementText = '';
+
+    if (geometry instanceof Polygon) {
+      const area = geometry.getArea();
+      measurementText = `${area.toFixed(2)} m²`;
+    }
+    if (geometry instanceof LineString) {
+      const length = geometry.getLength();
+      measurementText = `${length.toFixed(2)} m`;
+    }
+    if (geometry instanceof Circle) {
+      const radius = geometry.getRadius();
+      measurementText = `${(radius * radius * Math.PI).toFixed(2)} m²`;
+    }
+    return measurementText;
   };
 
   const setDisplayStaticMeasurement = (enable: boolean) => {
@@ -250,23 +257,12 @@ const useDrawSettings = () => {
         return;
       }
       drawnFeatures.forEach((feature) => {
-        let measurementText = null;
         const geometry = feature.getGeometry();
-        if (geometry instanceof Polygon) {
-          const area = geometry.getArea();
-          measurementText = `${area.toFixed(2)} m²`;
-        }
-        if (geometry instanceof LineString) {
-          const length = geometry.getLength();
-          measurementText = `${length.toFixed(2)} m`;
-        }
-        if (geometry instanceof Circle) {
-          const radius = geometry.getRadius();
-          measurementText = `${(radius * radius * Math.PI).toFixed(2)} m²`;
-        }
-        if (!measurementText) {
+        if (!geometry) {
           return;
         }
+        const measurementText = getMeasurementText(geometry);
+
         addFeatureMeasurementOverlay(feature, measurementText);
       });
     } else {
@@ -302,9 +298,7 @@ const useDrawSettings = () => {
     }
     const elm = document.createElement('div');
     elm.id = 'measurement-tooltip-' + featId;
-    elm.classList.add('ol-tooltip');
-    elm.classList.add('ol-tooltip-measure');
-    elm.classList.add('ol-tooltip-static');
+    elm.classList.add('ol-tooltip', 'ol-tooltip-measure', 'ol-tooltip-static');
     elm.innerHTML = text;
 
     const toolTip = new Overlay({
