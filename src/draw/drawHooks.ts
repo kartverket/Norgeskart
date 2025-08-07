@@ -195,9 +195,9 @@ const useDrawSettings = () => {
         feature.getGeometry()?.on('change', (geomEvent) => {
           const geometry = geomEvent.target;
           const geometryPosition = getGeometryPositionForOverlay(geometry);
-          let tooltipText = getMeasurementText(geometry);
+          const tooltipText = getMeasurementText(geometry);
 
-          if (geometryPosition) {
+          if (geometryPosition && tooltipText) {
             toolTip.setPosition(geometryPosition);
             elm.innerHTML = tooltipText;
             elm.classList.remove('hidden');
