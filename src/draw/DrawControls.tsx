@@ -39,6 +39,7 @@ export const DrawControls = () => {
     drawEnabled,
     drawFillColor,
     drawStrokeColor,
+    showMeasurements,
     setDrawEnabled,
     setDrawType,
     setDrawFillColor,
@@ -145,6 +146,7 @@ export const DrawControls = () => {
           </ColorPicker>
 
           <SwitchRoot
+            checked={showMeasurements}
             onCheckedChange={(e) => {
               setShowMeasurements(e.checked);
             }}

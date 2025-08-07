@@ -109,6 +109,7 @@ export const drawStrokeColorAtom = atom<string>(
 );
 
 export const drawEnabledAtom = atom<boolean>(false);
+export const showMeasurementsAtom = atom<boolean>(false);
 
 export const markerStyleAtom = atom<Style>(
   new Style({

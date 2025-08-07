@@ -15,6 +15,7 @@ import {
   drawStrokeColorAtom,
   drawStyleAtom,
   mapAtom,
+  showMeasurementsAtom,
 } from '../map/atoms';
 
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
@@ -25,6 +26,8 @@ const useDrawSettings = () => {
   const drawFillColor = useAtomValue(drawFillColorAtom);
   const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
+  const [showMeasurements, setShowMeasurementsAtom] =
+    useAtom(showMeasurementsAtom);
 
   const getDrawInteraction = () => {
     return map
@@ -125,6 +128,8 @@ const useDrawSettings = () => {
       newDraw.getOverlay().setStyle(drawStyle);
       newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
     }
+
+    setShowMeasurements(showMeasurements);
   };
 
   const drawEnd = (event: BaseEvent | Event, style: Style) => {
@@ -342,6 +347,7 @@ const useDrawSettings = () => {
   };
 
   const setShowMeasurements = (enable: boolean) => {
+    setShowMeasurementsAtom(enable);
     setDisplayInteractiveMeasurement(enable);
     setDisplayStaticMeasurement(enable);
   };
@@ -350,6 +356,7 @@ const useDrawSettings = () => {
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
     source.clear();
+    setShowMeasurements(false);
   };
 
   const abortDrawing = () => {
@@ -364,6 +371,7 @@ const useDrawSettings = () => {
     drawStyle,
     drawFillColor,
     drawStrokeColor,
+    showMeasurements,
     setDrawEnabled,
     setDrawType,
     setDrawFillColor,
