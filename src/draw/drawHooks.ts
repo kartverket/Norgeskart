@@ -174,28 +174,54 @@ const useDrawSettings = () => {
       map.getViewport().addEventListener('mouseout', handleMouseOut);
       map.getViewport().addEventListener('mouseover', handleMouseIn);
       drawInteraction.on('drawstart', (event: DrawEvent) => {
+        console.log('draw start');
         const feature = event.feature;
         feature.getGeometry()?.on('change', (geomEvent) => {
           const gemoetry = geomEvent.target;
-
+          let gemoetryPosition;
+          let tooltipText = 'placeholder';
           if (gemoetry instanceof Polygon) {
             const area = gemoetry.getArea();
-            console.log(`Area: ${area}`);
+            gemoetryPosition = gemoetry.getInteriorPoint().getCoordinates();
+            tooltipText = `Area: ${area.toFixed(2)} m²`;
           }
           if (gemoetry instanceof LineString) {
             const length = gemoetry.getLength();
-            console.log(`Length: ${length}`);
+            gemoetryPosition = gemoetry.getLastCoordinate();
+            tooltipText = `Length: ${length.toFixed(2)} m`;
           }
           if (gemoetry instanceof Circle) {
             const radius = gemoetry.getRadius();
-            console.log(`Radius: ${radius}`);
+            gemoetryPosition = gemoetry.getCenter();
+            tooltipText = `Area: ${(radius * radius * Math.PI).toFixed(2)} m²`;
+          }
+
+          if (gemoetryPosition) {
+            toolTip.setPosition(gemoetryPosition);
+            elm.innerHTML = tooltipText;
+            elm.classList.remove('hidden');
           }
         });
+      });
+
+      drawInteraction.on('drawend', (event: DrawEvent) => {
+        const feature = event.feature;
+        feature
+          .getGeometry()
+          ?.getListeners('change')
+          ?.forEach((listener) => {
+            feature.getGeometry()?.removeEventListener('change', listener);
+          });
+        toolTip.setPosition(undefined);
+        elm.classList.add('hidden');
       });
     } else {
       map.getViewport().removeEventListener('mouseout', handleMouseOut);
       drawInteraction.getListeners('drawstart')?.forEach((listener) => {
         drawInteraction.removeEventListener('drawstart', listener);
+      });
+      drawInteraction.getListeners('drawend')?.forEach((listener) => {
+        drawInteraction.removeEventListener('drawend', listener);
       });
       const overlay = map.getOverlayById('measurement-tooltip');
       if (overlay) {
