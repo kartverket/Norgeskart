@@ -6,7 +6,10 @@
     "controls": {
       "colorFill": "Fill color",
       "colorStroke": "Stroke color",
-      "showMeasurements": "Show measurments"
+      "showMeasurements": "Show measurments",
+      "toolSelect": {
+        "placeholder": "Select draw tool"
+      }
     },
     "end": "Done",
     "save": "Save",
@@ -73,7 +76,8 @@
   "shared": {
     "actions": {
       "download": "Download"
-    }
+    },
+    "yes": "Yes"
   },
   "languageSelector": {
     "tabHeading": "Language",

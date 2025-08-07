@@ -6,7 +6,10 @@
     "controls": {
       "colorFill": "Velg fyllfarge",
       "colorStroke": "Velg ommrissfarge",
-      "showMeasurements": "Vis mål"
+      "showMeasurements": "Vis mål",
+      "toolSelect": {
+        "placeholder": "Velg tegnemåte"
+      }
     },
     "end": "Ferdig",
     "save": "Lagre",
@@ -73,7 +76,8 @@
   "shared": {
     "actions": {
       "download": "Last ned"
-    }
+    },
+    "yes": "Ja"
   },
   "languageSelector": {
     "tabHeading": "Språk",

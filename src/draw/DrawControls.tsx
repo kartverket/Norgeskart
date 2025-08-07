@@ -53,10 +53,10 @@ export const DrawControls = () => {
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
 
   const drawTypeCollection: { value: DrawType; label: string }[] = [
+    { value: 'Polygon', label: 'Polygon' },
     { value: 'Move', label: 'Flytt' },
     { value: 'Point', label: 'Punkt' },
     { value: 'LineString', label: 'Linje' },
-    { value: 'Polygon', label: 'Polygon' },
     { value: 'Circle', label: 'Sirkel' },
   ];
 
@@ -83,10 +83,13 @@ export const DrawControls = () => {
             collection={createListCollection({
               items: drawTypeCollection,
             })}
+            defaultValue={[drawTypeCollection[0].value]}
           >
             <SelectLabel>{t('draw.tools')}:</SelectLabel>
             <SelectTrigger>
-              <SelectValueText placeholder={'Velg tegneform'} />
+              <SelectValueText
+                placeholder={t('draw.controls.toolSelect.placeholder')}
+              />
             </SelectTrigger>
             <SelectContent>
               {drawTypeCollection.map((item) => (
@@ -169,7 +172,7 @@ export const DrawControls = () => {
             <PopoverArrow />
             <PopoverBody>
               <PopoverTitle fontWeight="bold">
-                {t('draw.clearConfirm')}
+                {t('draw.confrimClear')}
               </PopoverTitle>
 
               <Button
@@ -179,7 +182,7 @@ export const DrawControls = () => {
                 }}
                 colorPalette={'red'}
               >
-                Ja
+                {t('shared.yes')}
               </Button>
             </PopoverBody>
           </PopoverContent>
