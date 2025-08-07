@@ -64,7 +64,6 @@ const useDrawSettings = () => {
   const setDrawEnabled = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
     if (drawInteraction) {
-      console.log('Removing draw interaction');
       map.removeInteraction(drawInteraction);
     }
     if (enable) {
@@ -181,7 +180,6 @@ const useDrawSettings = () => {
       map.getViewport().addEventListener('mouseout', handleMouseOut);
       map.getViewport().addEventListener('mouseover', handleMouseIn);
       drawInteraction.on('drawstart', (event: DrawEvent) => {
-        console.log('draw start');
         const feature = event.feature;
         feature.getGeometry()?.on('change', (geomEvent) => {
           const gemoetry = geomEvent.target;
@@ -238,57 +236,110 @@ const useDrawSettings = () => {
   };
 
   const setDisplayStaticMeasurement = (enable: boolean) => {
-    const drawLayer = getDrawLayer();
-    const source = drawLayer?.getSource() as VectorSource | undefined;
-    if (!source) {
-      return;
-    }
-    const drawnFeatures = source.getFeatures();
-    if (!drawnFeatures) {
-      return;
-    }
-    if (!enable) {
-      return;
-    }
-    drawnFeatures.forEach((feature) => {
-      let measurementText = '';
-      addFeatureMeasurementOverlay(feature);
-      const geometry = feature.getGeometry();
-      if (geometry instanceof Polygon) {
-        const area = geometry.getArea();
-        measurementText = `Area: ${area.toFixed(2)} m²`;
+    if (enable) {
+      const drawLayer = getDrawLayer();
+      const source = drawLayer?.getSource() as VectorSource | undefined;
+      if (!source) {
+        return;
       }
-      if (geometry instanceof LineString) {
-        const length = geometry.getLength();
-        measurementText = `Length: ${length.toFixed(2)} m`;
+      const drawnFeatures = source.getFeatures();
+      if (!drawnFeatures) {
+        return;
       }
-      if (geometry instanceof Circle) {
-        const radius = geometry.getRadius();
-        measurementText = `Area: ${(radius * radius * Math.PI).toFixed(2)} m²`;
+      if (!enable) {
+        return;
       }
-      console.log(measurementText);
-    });
+      drawnFeatures.forEach((feature) => {
+        let measurementText = null;
+        const geometry = feature.getGeometry();
+        if (geometry instanceof Polygon) {
+          const area = geometry.getArea();
+          measurementText = `${area.toFixed(2)} m²`;
+        }
+        if (geometry instanceof LineString) {
+          const length = geometry.getLength();
+          measurementText = `${length.toFixed(2)} m`;
+        }
+        if (geometry instanceof Circle) {
+          const radius = geometry.getRadius();
+          measurementText = `${(radius * radius * Math.PI).toFixed(2)} m²`;
+        }
+        if (!measurementText) {
+          return;
+        }
+        addFeatureMeasurementOverlay(feature, measurementText);
+      });
+    } else {
+      removeFeatureMeasurementOverlays();
+    }
   };
 
-  const addFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
+  const getGeometryPositionForOverlay = (geometry: Geometry) => {
+    if (geometry instanceof Polygon) {
+      return geometry.getInteriorPoint().getCoordinates();
+    }
+    if (geometry instanceof LineString) {
+      return geometry.getLastCoordinate();
+    }
+    if (geometry instanceof Circle) {
+      return geometry.getCenter();
+    }
+    return null;
+  };
+
+  const addFeatureMeasurementOverlay = (
+    feature: Feature<Geometry>,
+    text: string,
+  ) => {
     const featId = feature.getId();
-    console.log('featid', featId);
-    return;
+    const geometry = feature.getGeometry();
+    if (!geometry) {
+      return;
+    }
+    const overlayPosition = getGeometryPositionForOverlay(geometry);
+    if (!overlayPosition) {
+      return;
+    }
     const elm = document.createElement('div');
-    elm.id = 'measurement-tooltip';
-    elm.classList.add('hidden');
+    elm.id = 'measurement-tooltip-' + featId;
     elm.classList.add('ol-tooltip');
     elm.classList.add('ol-tooltip-measure');
+    elm.classList.add('ol-tooltip-static');
+    elm.innerHTML = text;
 
     const toolTip = new Overlay({
       element: elm,
       offset: [0, -15],
       positioning: 'bottom-center',
-      id: 'measurement-tooltip',
+      id: 'measurement-tooltip-' + featId,
     });
+
+    toolTip.setPosition(overlayPosition);
+    map.addOverlay(toolTip);
   };
 
-  const removeFeatureMeasurementOverlays = () => {};
+  const removeFeatureMeasurementOverlays = () => {
+    const overlays = map.getOverlays().getArray();
+    overlays.forEach((overlay) => {
+      if (!overlay) {
+        return;
+      }
+      const overlayId = overlay.getId()?.toString();
+      if (!overlayId) {
+        return;
+      }
+
+      if (overlayId.startsWith('measurement-tooltip-')) {
+        map.removeOverlay(overlay);
+      }
+    });
+    const overlayElements = document.querySelectorAll(
+      '[id^="measurement-tooltip-"]',
+    );
+    overlayElements.forEach((element) => {
+      element.remove();
+    });
+  };
 
   const setShowMeasurements = (enable: boolean) => {
     setDisplayInteractiveMeasurement(enable);
