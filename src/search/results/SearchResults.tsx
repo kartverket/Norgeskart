@@ -12,11 +12,6 @@ import {
   PaginationPrevTrigger,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { Feature } from 'ol';
-import { Point } from 'ol/geom';
-import VectorLayer from 'ol/layer/Vector';
-import { transform } from 'ol/proj';
-import VectorSource from 'ol/source/Vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
@@ -34,6 +29,7 @@ import {
 import { InfoBox } from '../infobox/InfoBox.tsx';
 import { getAddresses } from '../searchApi.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
+import { addMarkersToMap } from '../../shared/utils/markersUtils.ts';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
@@ -70,11 +66,51 @@ export const SearchResults = ({
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
     null,
   );
+  const [hoveredResult, setHoveredResult] = useState<{ lon: number; lat: number } | null>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
     setSelectedResult(null);
   }, [searchQuery]);
+
+  const allResults: SearchResult[] = [
+    ...places.map((place) => ({
+      type: 'Place' as const,
+      name: place.skrivemåte,
+      lat: place.representasjonspunkt.nord,
+      lon: place.representasjonspunkt.øst,
+      place,
+    })),
+    ...roads.map((road) => ({
+      type: 'Road' as const,
+      name: road.NAVN,
+      lat: parseFloat(road.LATITUDE),
+      lon: parseFloat(road.LONGITUDE),
+      road,
+    })),
+    ...addresses.map((address) => ({
+      type: 'Address' as const,
+      name: address.adressenavn,
+      lat: address.representasjonspunkt.lat,
+      lon: address.representasjonspunkt.lon,
+      address,
+    })),
+    ...properties.map((property) => ({
+      type: 'Property' as const,
+      name: property.TITTEL,
+      lat: parseFloat(property.LATITUDE),
+      lon: parseFloat(property.LONGITUDE),
+      property,
+    })),
+  ];
+
+  useEffect(() => {
+    addMarkersToMap(map, allResults, hoveredResult, selectedResult);
+  }, [map, allResults, hoveredResult, selectedResult]);
+
+  const handleHover = (res: SearchResult) => {
+    setHoveredResult({ lon: res.lon, lat: res.lat });
+  };
 
   const toggleRoad = (roadId: string) => {
     setOpenRoads((prev) =>
@@ -96,27 +132,6 @@ export const SearchResults = ({
     const { lon, lat } = res;
     setSelectedResult(res);
     setMapLocation([lon, lat], getInputCRS(res), 15);
-
-    const markerLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === 'markerLayer');
-
-    if (!markerLayer) return;
-
-    const vectorMarkerLayer = markerLayer as VectorLayer;
-    const source = vectorMarkerLayer.getSource() as VectorSource;
-
-    source.clear();
-
-    const marker = new Feature({
-      geometry: new Point(
-        transform([lon, lat], getInputCRS(res), map.getView().getProjection()),
-      ),
-    });
-
-    marker.setStyle(markerStyle);
-    source.addFeature(marker);
   };
 
   const handleHouseNumberClick = async (
@@ -198,6 +213,13 @@ export const SearchResults = ({
                         place,
                       });
                     }}
+                    onMouseEnter={() => handleHover({
+                      type: 'Place',
+                      name: place.skrivemåte,
+                      lat: place.representasjonspunkt.nord,
+                      lon: place.representasjonspunkt.øst,
+                      place,
+                    })}
                     locationType={
                       municipalityNames
                         ? `${place.navneobjekttype} i ${municipalityNames}`
@@ -250,6 +272,13 @@ export const SearchResults = ({
                         road,
                       })
                     }
+                    onMouseEnter={() => handleHover({
+                      type: 'Road',
+                      name: road.NAVN,
+                      lat: parseFloat(road.LATITUDE),
+                      lon: parseFloat(road.LONGITUDE),
+                      road,
+                    })}
                   />
                   {openRoads.includes(road.ID) && road.HUSNUMMER && (
                     <List ml="20px">
@@ -300,6 +329,13 @@ export const SearchResults = ({
                       property,
                     })
                   }
+                  onMouseEnter={() => handleHover({
+                    type: 'Property',
+                    name: property.TITTEL,
+                    lat: parseFloat(property.LATITUDE),
+                    lon: parseFloat(property.LONGITUDE),
+                    property,
+                  })}
                   locationType={property.KOMMUNENAVN}
                 />
               ))}
@@ -329,6 +365,13 @@ export const SearchResults = ({
                       address,
                     })
                   }
+                  onMouseEnter={() => handleHover({
+                    type: 'Address',
+                    name: address.adressenavn,
+                    lat: address.representasjonspunkt.lat,
+                    lon: address.representasjonspunkt.lon,
+                    address,
+                  })}
                 />
               ))}
             </List>
