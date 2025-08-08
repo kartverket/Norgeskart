@@ -49,6 +49,7 @@ export const DrawControls = () => {
     setShowMeasurements,
     clearDrawing,
     abortDrawing,
+    refreshMeasurements,
   } = useDrawSettings();
   const { t } = useTranslation();
 
@@ -67,6 +68,13 @@ export const DrawControls = () => {
     { value: 'm', label: `${t('shared.units.meter')} [m]` },
     { value: 'NM', label: `${t('shared.units.nauticalMile')} [NM]` },
   ];
+
+  //Look into jotai-effect to have it be reactive globally
+  useEffect(() => {
+    if (showMeasurements) {
+      refreshMeasurements();
+    }
+  }, [measurementUnit, showMeasurements, refreshMeasurements]);
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
@@ -221,7 +229,9 @@ export const DrawControls = () => {
                 <SelectItem
                   key={item.value}
                   item={item.value}
-                  onClick={() => setMeasurementUnit(item.value)}
+                  onClick={() => {
+                    setMeasurementUnit(item.value);
+                  }}
                 >
                   {item.label}
                 </SelectItem>

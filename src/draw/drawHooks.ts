@@ -11,6 +11,7 @@ import { getArea, getLength } from 'ol/sphere';
 import { Fill, Style } from 'ol/style';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  distanceUnitAtom,
   drawEnabledAtom,
   drawFillColorAtom,
   drawStrokeColorAtom,
@@ -28,6 +29,7 @@ const useDrawSettings = () => {
   const drawFillColor = useAtomValue(drawFillColorAtom);
   const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
+  const distanceUnit = useAtomValue(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
 
@@ -243,15 +245,15 @@ const useDrawSettings = () => {
 
     if (geometry instanceof Polygon) {
       const area = getArea(geometry, { projection: projectionCode });
-      measurementText = formatArea(area);
+      measurementText = formatArea(area, distanceUnit);
     }
     if (geometry instanceof LineString) {
       const length = getLength(geometry, { projection: projectionCode });
-      measurementText = formatDistance(length);
+      measurementText = formatDistance(length, distanceUnit);
     }
     if (geometry instanceof Circle) {
       const radius = geometry.getRadius();
-      measurementText = formatArea(radius * radius * Math.PI);
+      measurementText = formatArea(radius * radius * Math.PI, distanceUnit);
     }
     return measurementText;
   };
@@ -355,6 +357,12 @@ const useDrawSettings = () => {
     setDisplayStaticMeasurement(enable);
   };
 
+  //I hate this
+  const refreshMeasurements = () => {
+    setShowMeasurements(false);
+    setShowMeasurements(true);
+  };
+
   const clearDrawing = () => {
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
@@ -380,6 +388,7 @@ const useDrawSettings = () => {
     setDrawFillColor,
     setDrawStrokeColor,
     setShowMeasurements,
+    refreshMeasurements,
     abortDrawing,
     clearDrawing,
     getDrawLayer,
