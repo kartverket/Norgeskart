@@ -18,6 +18,7 @@ import {
   mapAtom,
   showMeasurementsAtom,
 } from '../map/atoms';
+import { formatArea, formatDistance } from '../shared/utils/stringUtils';
 
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
 
@@ -242,15 +243,15 @@ const useDrawSettings = () => {
 
     if (geometry instanceof Polygon) {
       const area = getArea(geometry, { projection: projectionCode });
-      measurementText = `${area.toFixed(2)} m²`;
+      measurementText = formatArea(area);
     }
     if (geometry instanceof LineString) {
       const length = getLength(geometry, { projection: projectionCode });
-      measurementText = `${length.toFixed(2)} m`;
+      measurementText = formatDistance(length);
     }
     if (geometry instanceof Circle) {
       const radius = geometry.getRadius();
-      measurementText = `${(radius * radius * Math.PI).toFixed(2)} m²`;
+      measurementText = formatArea(radius * radius * Math.PI);
     }
     return measurementText;
   };
