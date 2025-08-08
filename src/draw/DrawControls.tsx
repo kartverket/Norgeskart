@@ -193,12 +193,13 @@ export const DrawControls = () => {
           {t('draw.save')}
         </Button>
       </ButtonGroup>
-      <HStack width={'100%'} justifyContent={'space-between'}>
+      <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
         <SwitchRoot
           checked={showMeasurements}
           onCheckedChange={(e) => {
             setShowMeasurements(e.checked);
           }}
+          w={'50%'}
         >
           <SwitchHiddenInput />
           <SwitchControl />
