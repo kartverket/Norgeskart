@@ -5,6 +5,12 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      bypassValidation:
+        description: 'Bypass validation checks'
+        required: false
+        default: 'false'
+        type: boolean
   pull_request:
     branches:
       - main
@@ -35,12 +41,15 @@ jobs:
         run: npm install
 
       - name: 'Verify linting'
+        if: ${{ github.event.inputs.bypassValidation != 'true' }}
         run: npm run lint
 
       - name: 'Audit dependencies'
+        if: ${{ github.event.inputs.bypassValidation != 'true' }}
         run: npm audit --prodction --audit-level=high
 
       - name: 'Verify formatting'
+        if: ${{ github.event.inputs.bypassValidation != 'true' }}
         run: npm run format-check
 
       - name: 'Build'
