@@ -1,3 +1,4 @@
+import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
@@ -56,6 +57,7 @@ async function main() {
   }
 
   rl.close();
+  exec('npm run format-specific -- src/locales/**/*.json');
 }
 
 main();

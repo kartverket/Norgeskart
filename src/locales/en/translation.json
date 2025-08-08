@@ -5,7 +5,11 @@
     "confrimClear": "Are you sure?",
     "controls": {
       "colorFill": "Fill color",
-      "colorStroke": "Stroke color"
+      "colorStroke": "Stroke color",
+      "showMeasurements": "Show measurments",
+      "toolSelect": {
+        "placeholder": "Select draw tool"
+      }
     },
     "end": "Done",
     "save": "Save",
@@ -72,6 +76,11 @@
   "shared": {
     "actions": {
       "download": "Download"
+    },
+    "yes": "Yes",
+    "units": {
+      "meter": "Metre",
+      "nauticalMile": "Nautical mile"
     }
   },
   "languageSelector": {

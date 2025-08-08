@@ -2,12 +2,7 @@ import { atom } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls } from 'ol/control/defaults.js';
 import ScaleLine from 'ol/control/ScaleLine.js';
-import Draw from 'ol/interaction/Draw';
 import Link from 'ol/interaction/Link.js';
-import Modify from 'ol/interaction/Modify.js';
-import Select from 'ol/interaction/Select.js';
-import Snap from 'ol/interaction/Snap.js';
-import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
@@ -33,6 +28,8 @@ export type ProjectionIdentifier =
   | 'EPSG:25832' // utm32n
   | 'EPSG:25833' // utm33n
   | 'EPSG:25835'; // utm35n
+
+export type DistanceUnit = 'm' | 'NM';
 
 export const baseLayerIdAtom = atom<string | null>(null);
 export const backgroundLayerIdAtom = atom<string | null>(null);
@@ -70,6 +67,7 @@ export const mapAtom = atom<Map>(() => {
     zoom: INITIAL_ZOOM_LEVEL,
     projection: projection,
     extent: projectionExtent,
+    constrainResolution: true,
   });
   map.setView(intialView);
   map.addControl(new ScaleLine({ units: 'metric' }));
@@ -83,7 +81,6 @@ export const mapAtom = atom<Map>(() => {
   return map;
 });
 
-export const drawAtom = atom<Draw | null>(null);
 export const drawStyleAtom = atom<Style>(
   new Style({
     image: new CircleStyle({
@@ -112,12 +109,10 @@ export const drawFillColorAtom = atom<string>(
 export const drawStrokeColorAtom = atom<string>(
   (get) => get(drawStyleAtom).getStroke()?.getColor()?.toString() || '#ffffff',
 );
-export const snapAtom = atom<Snap | null>(null);
-export const modifyAtom = atom<Modify | null>(null);
-export const selectAtom = atom<Select | null>(null);
-export const translateAtom = atom<Translate | null>(null);
 
 export const drawEnabledAtom = atom<boolean>(false);
+export const showMeasurementsAtom = atom<boolean>(false);
+export const distanceUnitAtom = atom<DistanceUnit>('m');
 
 export const markerStyleAtom = atom<Style>(
   new Style({

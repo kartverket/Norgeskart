@@ -1,2 +1,42 @@
+import { DistanceUnit } from '../../map/atoms';
+
 export const capitalizeFirstLetter = (s: string) =>
   s.charAt(0).toUpperCase() + s.slice(1);
+
+export const formatDistance = (
+  distanceInMeters: number,
+  unit?: DistanceUnit,
+) => {
+  switch (unit) {
+    case 'NM': {
+      const distanceInNauticalMiles = distanceInMeters / 1852;
+      return `${distanceInNauticalMiles.toFixed(2)} NM`;
+    }
+    case undefined: // Default to meters if no unit is specified
+    case 'm': {
+      if (distanceInMeters < 1000) {
+        return `${distanceInMeters.toFixed(2)} m`;
+      } else {
+        return `${(distanceInMeters / 1000).toFixed(2)} km`;
+      }
+    }
+  }
+};
+
+export const formatArea = (areaInSquareMeters: number, unit?: DistanceUnit) => {
+  switch (unit) {
+    case 'NM': {
+      const areaInSquareNauticalMiles = areaInSquareMeters / (1852 * 1852);
+      return `${areaInSquareNauticalMiles.toFixed(2)} NM²`;
+    }
+
+    case undefined: // Default to square meters if no unit is specified
+    case 'm': {
+      if (areaInSquareMeters < 10000) {
+        return `${areaInSquareMeters.toFixed(2)} m²`;
+      } else {
+        return `${(areaInSquareMeters / 10000).toFixed(2)} km²`;
+      }
+    }
+  }
+};

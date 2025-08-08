@@ -5,7 +5,11 @@
     "confrimClear": "Er du sikker?",
     "controls": {
       "colorFill": "Velg fyllfarge",
-      "colorStroke": "Velg omrissfarge"
+      "colorStroke": "Velg omrissfarge",
+      "showMeasurements": "Vis mål",
+      "toolSelect": {
+        "placeholder": "Velg teknemåte"
+      }
     },
     "end": "Ferdig",
     "save": "Lagre",
@@ -72,6 +76,11 @@
   "shared": {
     "actions": {
       "download": "Last ned "
+    },
+    "yes": "Ja",
+    "units": {
+      "meter": "Meter",
+      "nauticalMile": "Nautisk mil"
     }
   },
   "languageSelector": {

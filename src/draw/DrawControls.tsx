@@ -25,34 +25,56 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  SwitchControl,
+  SwitchHiddenInput,
+  SwitchLabel,
+  SwitchRoot,
   VStack,
 } from '@kvib/react';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
+import { DistanceUnit, distanceUnitAtom } from '../map/atoms.ts';
 export const DrawControls = () => {
   const {
     drawEnabled,
     drawFillColor,
     drawStrokeColor,
+    showMeasurements,
     setDrawEnabled,
     setDrawType,
     setDrawFillColor,
     setDrawStrokeColor,
+    setShowMeasurements,
     clearDrawing,
     abortDrawing,
+    refreshMeasurements,
   } = useDrawSettings();
   const { t } = useTranslation();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
+  const [measurementUnit, setMeasurementUnit] = useAtom(distanceUnitAtom);
 
   const drawTypeCollection: { value: DrawType; label: string }[] = [
+    { value: 'Polygon', label: 'Polygon' },
     { value: 'Move', label: 'Flytt' },
     { value: 'Point', label: 'Punkt' },
     { value: 'LineString', label: 'Linje' },
-    { value: 'Polygon', label: 'Polygon' },
     { value: 'Circle', label: 'Sirkel' },
   ];
+
+  const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
+    { value: 'm', label: `${t('shared.units.meter')} [m]` },
+    { value: 'NM', label: `${t('shared.units.nauticalMile')} [NM]` },
+  ];
+
+  //Look into jotai-effect to have it be reactive globally
+  useEffect(() => {
+    if (showMeasurements) {
+      refreshMeasurements();
+    }
+  }, [measurementUnit, showMeasurements, refreshMeasurements]);
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
@@ -67,7 +89,7 @@ export const DrawControls = () => {
   }, [abortDrawing]);
 
   return (
-    <VStack alignItems={'flex-start'}>
+    <VStack alignItems={'flex-start'} width={'100%'}>
       <Button onClick={() => setDrawEnabled(!drawEnabled)}>
         {drawEnabled ? t('draw.end') : t('draw.begin')}
       </Button>
@@ -77,10 +99,13 @@ export const DrawControls = () => {
             collection={createListCollection({
               items: drawTypeCollection,
             })}
+            defaultValue={[drawTypeCollection[0].value]}
           >
             <SelectLabel>{t('draw.tools')}:</SelectLabel>
             <SelectTrigger>
-              <SelectValueText placeholder={'Velg tegneform'} />
+              <SelectValueText
+                placeholder={t('draw.controls.toolSelect.placeholder')}
+              />
             </SelectTrigger>
             <SelectContent>
               {drawTypeCollection.map((item) => (
@@ -152,7 +177,7 @@ export const DrawControls = () => {
             <PopoverArrow />
             <PopoverBody>
               <PopoverTitle fontWeight="bold">
-                {t('draw.clearConfirm')}
+                {t('draw.confrimClear')}
               </PopoverTitle>
 
               <Button
@@ -162,7 +187,7 @@ export const DrawControls = () => {
                 }}
                 colorPalette={'red'}
               >
-                Ja
+                {t('shared.yes')}
               </Button>
             </PopoverBody>
           </PopoverContent>
@@ -176,6 +201,45 @@ export const DrawControls = () => {
           {t('draw.save')}
         </Button>
       </ButtonGroup>
+      <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
+        <SwitchRoot
+          checked={showMeasurements}
+          onCheckedChange={(e) => {
+            setShowMeasurements(e.checked);
+          }}
+          w={'50%'}
+        >
+          <SwitchHiddenInput />
+          <SwitchControl />
+          <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
+        </SwitchRoot>
+        {showMeasurements && (
+          <SelectRoot
+            value={[measurementUnit]}
+            collection={createListCollection({
+              items: measurementUnitCollection,
+            })}
+            defaultValue={[measurementUnitCollection[0].value]}
+          >
+            <SelectTrigger>
+              <SelectValueText />
+            </SelectTrigger>
+            <SelectContent>
+              {measurementUnitCollection.map((item) => (
+                <SelectItem
+                  key={item.value}
+                  item={item.value}
+                  onClick={() => {
+                    setMeasurementUnit(item.value);
+                  }}
+                >
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+        )}
+      </HStack>
     </VStack>
   );
 };

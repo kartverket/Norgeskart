@@ -1,3 +1,4 @@
+import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
@@ -45,6 +46,8 @@ folders.forEach((folder) => {
       JSON.stringify(existingLanguageFile, null, 2),
       'utf8',
     );
+
+    exec('npm run format-specific -- src/locales/**/*.json');
   } else {
     console.log(`File ${filePath} does not exist.`);
   }
