@@ -77,7 +77,11 @@
     "actions": {
       "download": "Download"
     },
-    "yes": "Yes"
+    "yes": "Yes",
+    "units": {
+      "meter": "Metre",
+      "nauticalMile": "Nautical mile"
+    }
   },
   "languageSelector": {
     "tabHeading": "Language",

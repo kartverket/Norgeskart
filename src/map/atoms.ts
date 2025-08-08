@@ -29,6 +29,8 @@ export type ProjectionIdentifier =
   | 'EPSG:25833' // utm33n
   | 'EPSG:25835'; // utm35n
 
+export type DistanceUnit = 'm' | 'NM';
+
 export const baseLayerIdAtom = atom<string | null>(null);
 export const backgroundLayerIdAtom = atom<string | null>(null);
 export const mapOrientationAtom = atom<number>(0);
@@ -110,6 +112,7 @@ export const drawStrokeColorAtom = atom<string>(
 
 export const drawEnabledAtom = atom<boolean>(false);
 export const showMeasurementsAtom = atom<boolean>(false);
+export const distanceUnitAtom = atom<DistanceUnit>('m');
 
 export const markerStyleAtom = atom<Style>(
   new Style({

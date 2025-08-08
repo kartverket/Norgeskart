@@ -77,7 +77,11 @@
     "actions": {
       "download": "Last ned"
     },
-    "yes": "Ja"
+    "yes": "Ja",
+    "units": {
+      "meter": "Meter",
+      "nauticalMile": "Nautisk mil"
+    }
   },
   "languageSelector": {
     "tabHeading": "Språk",

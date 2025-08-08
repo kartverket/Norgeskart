@@ -31,9 +31,11 @@ import {
   SwitchRoot,
   VStack,
 } from '@kvib/react';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
+import { DistanceUnit, distanceUnitAtom } from '../map/atoms.ts';
 export const DrawControls = () => {
   const {
     drawEnabled,
@@ -51,6 +53,7 @@ export const DrawControls = () => {
   const { t } = useTranslation();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
+  const [measurementUnit, setMeasurementUnit] = useAtom(distanceUnitAtom);
 
   const drawTypeCollection: { value: DrawType; label: string }[] = [
     { value: 'Polygon', label: 'Polygon' },
@@ -58,6 +61,11 @@ export const DrawControls = () => {
     { value: 'Point', label: 'Punkt' },
     { value: 'LineString', label: 'Linje' },
     { value: 'Circle', label: 'Sirkel' },
+  ];
+
+  const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
+    { value: 'm', label: `${t('shared.units.meter')} [m]` },
+    { value: 'NM', label: `${t('shared.units.nauticalMile')} [NM]` },
   ];
 
   useEffect(() => {
@@ -73,7 +81,7 @@ export const DrawControls = () => {
   }, [abortDrawing]);
 
   return (
-    <VStack alignItems={'flex-start'}>
+    <VStack alignItems={'flex-start'} width={'100%'}>
       <Button onClick={() => setDrawEnabled(!drawEnabled)}>
         {drawEnabled ? t('draw.end') : t('draw.begin')}
       </Button>
@@ -185,16 +193,39 @@ export const DrawControls = () => {
           {t('draw.save')}
         </Button>
       </ButtonGroup>
-      <SwitchRoot
-        checked={showMeasurements}
-        onCheckedChange={(e) => {
-          setShowMeasurements(e.checked);
-        }}
-      >
-        <SwitchHiddenInput />
-        <SwitchControl />
-        <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
-      </SwitchRoot>
+      <HStack width={'100%'} justifyContent={'space-between'}>
+        <SwitchRoot
+          checked={showMeasurements}
+          onCheckedChange={(e) => {
+            setShowMeasurements(e.checked);
+          }}
+        >
+          <SwitchHiddenInput />
+          <SwitchControl />
+          <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
+        </SwitchRoot>
+        <SelectRoot
+          collection={createListCollection({
+            items: measurementUnitCollection,
+          })}
+          defaultValue={[measurementUnitCollection[0].value]}
+        >
+          <SelectTrigger>
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent>
+            {measurementUnitCollection.map((item) => (
+              <SelectItem
+                key={item.value}
+                item={item.value}
+                onClick={() => setMeasurementUnit(item.value)}
+              >
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </HStack>
     </VStack>
   );
 };
