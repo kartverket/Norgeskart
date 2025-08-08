@@ -71,7 +71,14 @@
     "roads": "Vegar",
     "properties": "Eigedomar",
     "addresses": "Adresser",
-    "houseNumber": "Husnr"
+    "houseNumber": "Husnr",
+    "actions": {
+      "print": { "tooltip": "Skriv ut" },
+      "shareMap": {
+        "tooltip": "Del kartet",
+        "success": "Lenka er kopiert til utklippstavla"
+      }
+    }
   },
   "shared": {
     "actions": {

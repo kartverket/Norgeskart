@@ -71,7 +71,14 @@
     "roads": "Veger",
     "properties": "Eiendommer",
     "addresses": "Adresser",
-    "houseNumber": "Husnr"
+    "houseNumber": "Husnr",
+    "actions": {
+      "print": { "tooltip": "Skriv ut" },
+      "shareMap": {
+        "tooltip": "Del kartet",
+        "success": "Lenken er kopiert til utklippstavlen"
+      }
+    }
   },
   "shared": {
     "actions": {
