@@ -7,6 +7,7 @@ import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import { getArea, getLength } from 'ol/sphere';
 import { Fill, Style } from 'ol/style';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -237,13 +238,14 @@ const useDrawSettings = () => {
 
   const getMeasurementText = (geometry: Geometry) => {
     let measurementText = '';
+    const projectionCode = map.getView().getProjection().getCode();
 
     if (geometry instanceof Polygon) {
-      const area = geometry.getArea();
+      const area = getArea(geometry, { projection: projectionCode });
       measurementText = `${area.toFixed(2)} m²`;
     }
     if (geometry instanceof LineString) {
-      const length = geometry.getLength();
+      const length = getLength(geometry, { projection: projectionCode });
       measurementText = `${length.toFixed(2)} m`;
     }
     if (geometry instanceof Circle) {

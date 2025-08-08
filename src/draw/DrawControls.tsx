@@ -147,17 +147,6 @@ export const DrawControls = () => {
               </HStack>
             </ColorPickerContent>
           </ColorPicker>
-
-          <SwitchRoot
-            checked={showMeasurements}
-            onCheckedChange={(e) => {
-              setShowMeasurements(e.checked);
-            }}
-          >
-            <SwitchHiddenInput />
-            <SwitchControl />
-            <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
-          </SwitchRoot>
         </>
       )}
       <ButtonGroup>
@@ -196,6 +185,16 @@ export const DrawControls = () => {
           {t('draw.save')}
         </Button>
       </ButtonGroup>
+      <SwitchRoot
+        checked={showMeasurements}
+        onCheckedChange={(e) => {
+          setShowMeasurements(e.checked);
+        }}
+      >
+        <SwitchHiddenInput />
+        <SwitchControl />
+        <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
+      </SwitchRoot>
     </VStack>
   );
 };
