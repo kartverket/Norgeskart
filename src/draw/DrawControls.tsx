@@ -204,27 +204,30 @@ export const DrawControls = () => {
           <SwitchControl />
           <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
         </SwitchRoot>
-        <SelectRoot
-          collection={createListCollection({
-            items: measurementUnitCollection,
-          })}
-          defaultValue={[measurementUnitCollection[0].value]}
-        >
-          <SelectTrigger>
-            <SelectValueText />
-          </SelectTrigger>
-          <SelectContent>
-            {measurementUnitCollection.map((item) => (
-              <SelectItem
-                key={item.value}
-                item={item.value}
-                onClick={() => setMeasurementUnit(item.value)}
-              >
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
+        {showMeasurements && (
+          <SelectRoot
+            value={[measurementUnit]}
+            collection={createListCollection({
+              items: measurementUnitCollection,
+            })}
+            defaultValue={[measurementUnitCollection[0].value]}
+          >
+            <SelectTrigger>
+              <SelectValueText />
+            </SelectTrigger>
+            <SelectContent>
+              {measurementUnitCollection.map((item) => (
+                <SelectItem
+                  key={item.value}
+                  item={item.value}
+                  onClick={() => setMeasurementUnit(item.value)}
+                >
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+        )}
       </HStack>
     </VStack>
   );
