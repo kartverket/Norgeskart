@@ -71,6 +71,7 @@ const useDrawSettings = () => {
   const setDrawEnabled = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
     const selectInteraction = getSelectInteraction();
+    const translateInteraction = getTranslateInteraction();
     if (drawInteraction) {
       map.removeInteraction(drawInteraction);
     }
@@ -80,6 +81,9 @@ const useDrawSettings = () => {
     if (!enable) {
       if (selectInteraction) {
         map.removeInteraction(selectInteraction);
+      }
+      if (translateInteraction) {
+        map.removeInteraction(translateInteraction);
       }
     }
     setDrawAtomEnabled(enable);
