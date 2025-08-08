@@ -33,6 +33,14 @@
       outline: none;
     }
   }
+
+  @media (max-width: 48rem) {
+    width: 3rem;
+    button {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+  }
 }
 
 .ol-scale-line {
