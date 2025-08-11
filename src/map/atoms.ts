@@ -2,19 +2,20 @@ import { atom } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls } from 'ol/control/defaults.js';
 import ScaleLine from 'ol/control/ScaleLine.js';
-import Link from 'ol/interaction/Link.js';
 import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
-import { getUrlParameter } from '../shared/utils/urlUtils';
+import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
 import { ControlPortal, getMousePositionControl } from './mapControls';
 
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
-export const INITIAL_ZOOM_LEVEL = 5;
+export const DEFAULT_ZOOM_LEVEL = 5;
+export const DEFAULT_CENTER = [1900000, 9500000]; // Center in EPSG:3857
+export const DEFAULT_ROTATION = 0;
 
 export const AvailableProjections: ProjectionIdentifier[] = [
   'EPSG:3857', // webmercator
@@ -42,11 +43,7 @@ export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
 export const magneticDeclinationAtom = atom<number>(0);
 
-export const mapAtom = atom<Map>(() => {
-  const map = new Map({
-    controls: defaultControls().extend([new ControlPortal()]),
-  });
-
+const getInitialMapView = () => {
   const projectionIdFromUrl = validateProjectionIdString(
     getUrlParameter('projection'),
   );
@@ -54,29 +51,80 @@ export const mapAtom = atom<Map>(() => {
     ? projectionIdFromUrl
     : INITIAL_PROJECTION;
 
-  const projection = getProjection(projectionId)!;
-  const projectionExtent = projection.getExtent();
-  map.addLayer(mapLayers.markerLayer.getLayer(projectionId));
-  const drawLayer = mapLayers.drawLayer.getLayer(projectionId) as VectorLayer;
-  map.addLayer(drawLayer);
+  const initialProjection = getProjection(projectionId)!;
+  const projectionExtent = initialProjection.getExtent();
 
-  const intialView = new View({
-    center: [1900000, 9500000],
+  let initialZoom = DEFAULT_ZOOM_LEVEL;
+  let initialCenter = DEFAULT_CENTER;
+  let initialRotation = DEFAULT_ROTATION;
+
+  const lon = getUrlParameter('lon');
+  const lat = getUrlParameter('lat');
+  if (lon != null && lat != null) {
+    const parsedLon = parseFloat(lon);
+    const parsedLat = parseFloat(lat);
+    if (!Number.isNaN(parsedLon) && !Number.isNaN(parsedLat)) {
+      initialCenter = [parsedLon, parsedLat];
+    }
+  }
+
+  const zoom = getUrlParameter('zoom');
+  if (zoom != null) {
+    const parsedZoom = parseFloat(zoom);
+    if (!Number.isNaN(parsedZoom)) {
+      initialZoom = parsedZoom;
+    }
+  }
+  const rotation = getUrlParameter('rotation');
+  if (rotation != null) {
+    const parsedRotation = parseFloat(rotation);
+    if (!Number.isNaN(parsedRotation)) {
+      initialRotation = parsedRotation;
+    }
+  }
+
+  return new View({
+    center: initialCenter,
     minZoom: 3,
     maxZoom: 20,
-    zoom: INITIAL_ZOOM_LEVEL,
-    projection: projection,
+    zoom: initialZoom,
+    rotation: initialRotation,
+    projection: initialProjection,
     extent: projectionExtent,
     constrainResolution: true,
   });
-  map.setView(intialView);
-  map.addControl(new ScaleLine({ units: 'metric' }));
-  map.addControl(getMousePositionControl(projectionId));
-  const link = new Link({
-    params: ['x', 'y', 'z', 'r'],
+};
+
+export const mapAtom = atom<Map>(() => {
+  const map = new Map({
+    controls: defaultControls().extend([new ControlPortal()]),
   });
 
-  map.addInteraction(link);
+  map.addLayer(mapLayers.markerLayer.getLayer());
+  const drawLayer = mapLayers.drawLayer.getLayer() as VectorLayer;
+  map.addLayer(drawLayer);
+
+  const intialView = getInitialMapView();
+
+  map.setView(intialView);
+  map.addControl(new ScaleLine({ units: 'metric' }));
+  map.addControl(getMousePositionControl(intialView.getProjection().getCode()));
+  map.on('moveend', (e) => {
+    const view = e.map.getView();
+    const center = view.getCenter();
+    if (center) {
+      setUrlParameter('lon', center[0].toString());
+      setUrlParameter('lat', center[1].toString());
+    }
+    const rotation = view.getRotation();
+    if (!Number.isNaN(rotation)) {
+      setUrlParameter('rotation', rotation.toString());
+    }
+    const zoom = view.getZoom();
+    if (zoom && !Number.isNaN(zoom)) {
+      setUrlParameter('zoom', zoom.toString());
+    }
+  });
 
   return map;
 });
