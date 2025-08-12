@@ -18,7 +18,7 @@ const createMarkerStyle = (iconSrc: string): Style => {
   });
 };
 
-export const addMarkersToMap = (
+export const addSearchMarkers = (
   map: Map,
   searchResults: SearchResult[],
   hoveredResult: { lon: number; lat: number } | null,

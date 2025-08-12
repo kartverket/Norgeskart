@@ -18,7 +18,7 @@ import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
-import { addMarkersToMap } from '../../shared/utils/markersUtils.ts';
+import { addSearchMarkers } from '../../shared/utils/markersUtils.ts';
 import {
   Address,
   Metadata,
@@ -108,7 +108,7 @@ export const SearchResults = ({
   ];
 
   useEffect(() => {
-    addMarkersToMap(map, allResults, hoveredResult, selectedResult);
+    addSearchMarkers(map, allResults, hoveredResult, selectedResult);
   }, [map, allResults, hoveredResult, selectedResult]);
 
   const handleHover = (res: SearchResult) => {
