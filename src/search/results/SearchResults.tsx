@@ -14,10 +14,11 @@ import {
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom, markerStyleAtom } from '../../map/atoms.ts';
+import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
+import { addMarkersToMap } from '../../shared/utils/markersUtils.ts';
 import {
   Address,
   Metadata,
@@ -29,7 +30,6 @@ import {
 import { InfoBox } from '../infobox/InfoBox.tsx';
 import { getAddresses } from '../searchApi.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
-import { addMarkersToMap } from '../../shared/utils/markersUtils.ts';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
@@ -53,7 +53,6 @@ export const SearchResults = ({
   searchQuery,
 }: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
-  const markerStyle = useAtomValue(markerStyleAtom);
   const isMobileScreen = useIsMobileScreen();
   const { setMapLocation } = useMapSettings();
   const [accordionTabsOpen, setAccordionTabsOpen] = useState<AccordionTab[]>([
@@ -66,11 +65,15 @@ export const SearchResults = ({
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
     null,
   );
-  const [hoveredResult, setHoveredResult] = useState<{ lon: number; lat: number } | null>(null);
+  const [hoveredResult, setHoveredResult] = useState<{
+    lon: number;
+    lat: number;
+  } | null>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
     setSelectedResult(null);
+    setHoveredResult(null);
   }, [searchQuery]);
 
   const allResults: SearchResult[] = [
@@ -213,13 +216,15 @@ export const SearchResults = ({
                         place,
                       });
                     }}
-                    onMouseEnter={() => handleHover({
-                      type: 'Place',
-                      name: place.skrivemåte,
-                      lat: place.representasjonspunkt.nord,
-                      lon: place.representasjonspunkt.øst,
-                      place,
-                    })}
+                    onMouseEnter={() =>
+                      handleHover({
+                        type: 'Place',
+                        name: place.skrivemåte,
+                        lat: place.representasjonspunkt.nord,
+                        lon: place.representasjonspunkt.øst,
+                        place,
+                      })
+                    }
                     locationType={
                       municipalityNames
                         ? `${place.navneobjekttype} i ${municipalityNames}`
@@ -272,13 +277,15 @@ export const SearchResults = ({
                         road,
                       })
                     }
-                    onMouseEnter={() => handleHover({
-                      type: 'Road',
-                      name: road.NAVN,
-                      lat: parseFloat(road.LATITUDE),
-                      lon: parseFloat(road.LONGITUDE),
-                      road,
-                    })}
+                    onMouseEnter={() =>
+                      handleHover({
+                        type: 'Road',
+                        name: road.NAVN,
+                        lat: parseFloat(road.LATITUDE),
+                        lon: parseFloat(road.LONGITUDE),
+                        road,
+                      })
+                    }
                   />
                   {openRoads.includes(road.ID) && road.HUSNUMMER && (
                     <List ml="20px">
@@ -329,13 +336,15 @@ export const SearchResults = ({
                       property,
                     })
                   }
-                  onMouseEnter={() => handleHover({
-                    type: 'Property',
-                    name: property.TITTEL,
-                    lat: parseFloat(property.LATITUDE),
-                    lon: parseFloat(property.LONGITUDE),
-                    property,
-                  })}
+                  onMouseEnter={() =>
+                    handleHover({
+                      type: 'Property',
+                      name: property.TITTEL,
+                      lat: parseFloat(property.LATITUDE),
+                      lon: parseFloat(property.LONGITUDE),
+                      property,
+                    })
+                  }
                   locationType={property.KOMMUNENAVN}
                 />
               ))}
@@ -365,13 +374,15 @@ export const SearchResults = ({
                       address,
                     })
                   }
-                  onMouseEnter={() => handleHover({
-                    type: 'Address',
-                    name: address.adressenavn,
-                    lat: address.representasjonspunkt.lat,
-                    lon: address.representasjonspunkt.lon,
-                    address,
-                  })}
+                  onMouseEnter={() =>
+                    handleHover({
+                      type: 'Address',
+                      name: address.adressenavn,
+                      lat: address.representasjonspunkt.lat,
+                      lon: address.representasjonspunkt.lon,
+                      address,
+                    })
+                  }
                 />
               ))}
             </List>

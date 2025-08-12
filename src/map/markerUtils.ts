@@ -1,7 +1,7 @@
 import { useSetAtom } from 'jotai';
 import { useEffect } from 'react';
-import { hoveredMarkerAtom, markersAtom, selectedMarkerAtom } from './atoms';
 import { SearchResult } from '../types/searchTypes';
+import { hoveredMarkerAtom, markersAtom, selectedMarkerAtom } from './atoms';
 
 /**
  * Custom hook for managing map markers.

@@ -42,7 +42,11 @@ export const addMarkersToMap = (
     if (isFinite(lon) && isFinite(lat)) {
       const marker = new Feature({
         geometry: new Point(
-          transform([lon, lat], getInputCRS(selectedResult), map.getView().getProjection()),
+          transform(
+            [lon, lat],
+            getInputCRS(selectedResult),
+            map.getView().getProjection(),
+          ),
         ),
       });
       marker.setStyle(createMarkerStyle('/location_red.svg'));
