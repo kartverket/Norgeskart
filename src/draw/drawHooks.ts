@@ -140,9 +140,39 @@ const useDrawSettings = () => {
     setShowMeasurements(showMeasurements);
   };
 
+  const getDrawnFeatures = () => {
+    return getDrawLayer()?.getSource()?.getFeatures();
+  };
+
   const drawEnd = (event: BaseEvent | Event, style: Style) => {
     const eventFeature = (event as unknown as DrawEvent).feature;
     eventFeature.setStyle(style);
+
+  const setDrawLayerFeatures = (
+    featureCollection: FeatureCollection,
+    sourceProjection: ProjectionIdentifier,
+  ) => {
+    const drawLayer = getDrawLayer();
+    const drawSource = drawLayer.getSource() as VectorSource | null;
+    if (!drawSource) {
+      console.warn('no draw source');
+      return;
+    }
+    const mapProjection = map.getView().getProjection().getCode();
+    const featuresToAdd = new GeoJSON().readFeatures(featureCollection);
+    const transformedFeatures = featuresToAdd.map((feature) => {
+      const transformedGeometry = feature
+        .getGeometry()
+        ?.transform(sourceProjection, mapProjection);
+      const featureStyle = getStyleFromFeatureProperties(feature);
+      console.log('transformedStyle:', featureStyle);
+      return new Feature({
+        geometry: transformedGeometry,
+        style: featureStyle,
+      });
+    });
+    drawSource.clear();
+    drawSource.addFeatures(transformedFeatures);
   };
 
   const setDrawFillColor = (color: string) => {
@@ -387,6 +417,7 @@ const useDrawSettings = () => {
     drawFillColor,
     drawStrokeColor,
     showMeasurements,
+    setDrawLayerFeatures,
     setDrawEnabled,
     setDrawType,
     setDrawFillColor,
@@ -396,6 +427,7 @@ const useDrawSettings = () => {
     abortDrawing,
     clearDrawing,
     getDrawLayer,
+    getDrawnFeatures,
   };
 };
 

@@ -18,4 +18,5 @@ export type NKUrlParameter =
   | 'rotation'
   | 'lat'
   | 'lon'
-  | 'zoom';
+  | 'zoom'
+  | 'drawing';

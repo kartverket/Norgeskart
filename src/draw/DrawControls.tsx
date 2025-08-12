@@ -49,12 +49,17 @@ export const DrawControls = () => {
     setShowMeasurements,
     clearDrawing,
     abortDrawing,
+    setDrawLayerFeatures,
     refreshMeasurements,
+    getDrawnFeatures,
   } = useDrawSettings();
+
+  const { getMapProjectionCode } = useMapSettings();
   const { t } = useTranslation();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
   const [measurementUnit, setMeasurementUnit] = useAtom(distanceUnitAtom);
+  const [drawId, setDrawId] = useState<string | null>(null);
 
   const drawTypeCollection: { value: DrawType; label: string }[] = [
     { value: 'Polygon', label: 'Polygon' },
@@ -165,6 +170,23 @@ export const DrawControls = () => {
           </ColorPicker>
         </>
       )}
+      <Input
+        value={drawId ?? ''}
+        onChange={(e) => {
+          setDrawId(e.target.value);
+        }}
+      ></Input>
+      <Button
+        onClick={() => {
+          if (!drawId) return;
+          getFeatures(drawId).then((fetchedFeatures) => {
+            console.log('fetched:', fetchedFeatures);
+            setDrawLayerFeatures(fetchedFeatures, 'EPSG:4326');
+          });
+        }}
+      >
+        Hent tegning fra API
+      </Button>
       <ButtonGroup>
         <PopoverRoot
           open={clearPopoverOpen}
@@ -192,10 +214,27 @@ export const DrawControls = () => {
             </PopoverBody>
           </PopoverContent>
         </PopoverRoot>
-
         <Button
           onClick={() => {
-            alert('Denne gjør ingenting');
+            const drawnFeatures = getDrawnFeatures();
+            const mapProjection = getMapProjectionCode();
+
+            if (drawnFeatures == null) {
+              return;
+            }
+            const geojsonFormat = new GeoJSON();
+            const geojson = geojsonFormat.writeFeaturesObject(drawnFeatures, {
+              featureProjection: mapProjection,
+              dataProjection: 'EPSG:4326',
+            });
+
+            console.log(geojson);
+
+            saveFeatures(geojson, mapProjection).then((id) => {
+              if (id != null) {
+                setUrlParameter('drawing', id);
+              }
+            });
           }}
         >
           {t('draw.save')}
