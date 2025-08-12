@@ -8,6 +8,7 @@ export const SearchResultLine = ({
   showButton = false,
   onButtonClick,
   onMouseEnter,
+  onMouseLeave,
 }: {
   heading: string;
   locationType?: string | null;
@@ -15,6 +16,7 @@ export const SearchResultLine = ({
   showButton?: boolean;
   onButtonClick?: () => void;
   onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }) => {
   const { t } = useTranslation();
 
@@ -24,6 +26,7 @@ export const SearchResultLine = ({
       _hover={{ fontWeight: '600' }}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       as={'ul'}
       pr={2}
       pl={2}

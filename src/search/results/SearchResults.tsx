@@ -225,6 +225,7 @@ export const SearchResults = ({
                         place,
                       })
                     }
+                    onMouseLeave={() => setHoveredResult(null)}
                     locationType={
                       municipalityNames
                         ? `${place.navneobjekttype} i ${municipalityNames}`
@@ -286,6 +287,7 @@ export const SearchResults = ({
                         road,
                       })
                     }
+                    onMouseLeave={() => setHoveredResult(null)}
                   />
                   {openRoads.includes(road.ID) && road.HUSNUMMER && (
                     <List ml="20px">
@@ -345,6 +347,7 @@ export const SearchResults = ({
                       property,
                     })
                   }
+                  onMouseLeave={() => setHoveredResult(null)}
                   locationType={property.KOMMUNENAVN}
                 />
               ))}
@@ -383,6 +386,7 @@ export const SearchResults = ({
                       address,
                     })
                   }
+                  onMouseLeave={() => setHoveredResult(null)}
                 />
               ))}
             </List>
