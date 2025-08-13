@@ -8,6 +8,9 @@ import { Icon, Style } from 'ol/style';
 import { getInputCRS } from '../shared/utils/crsUtils';
 import { SearchResult } from '../types/searchTypes';
 
+const LOCATION_RED_SVG = '/location/location_red.svg';
+const LOCATION_BLUE_SVG = '/location/location_blue.svg';
+
 const createMarkerStyle = (iconSrc: string): Style => {
   return new Style({
     image: new Icon({
@@ -49,7 +52,7 @@ export const addSearchMarkers = (
           ),
         ),
       });
-      marker.setStyle(createMarkerStyle('/location_red.svg'));
+      marker.setStyle(createMarkerStyle(LOCATION_RED_SVG));
       source.addFeature(marker);
     }
     return;
@@ -64,7 +67,7 @@ export const addSearchMarkers = (
 
     const isHovered =
       hoveredResult && hoveredResult.lon === lon && hoveredResult.lat === lat;
-    const svgSrc = isHovered ? '/location_red.svg' : '/location_blue.svg';
+    const svgSrc = isHovered ? LOCATION_RED_SVG : LOCATION_BLUE_SVG;
 
     const marker = new Feature({
       geometry: new Point(
