@@ -6,10 +6,6 @@ import {
   Box,
   List,
   ListItem,
-  Pagination,
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPrevTrigger,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
@@ -29,6 +25,7 @@ import {
 import { InfoBox } from '../infobox/InfoBox.tsx';
 import { getAddresses } from '../searchApi.ts';
 import { addSearchMarkers } from '../searchMarkers.ts';
+import { PlacesResult } from './PlacesResults.tsx';
 import { SearchResultLine } from './SearchResultLine.tsx';
 import { searchResultsMapper } from './searchresultsMapper.ts';
 
@@ -158,71 +155,14 @@ export const SearchResults = ({
         hasResults ? (isMobileScreen ? '10vh' : 'calc(100vh - 130px)') : 'none'
       }
     >
-      {places.length > 0 && (
-        <AccordionItem value="places">
-          <AccordionItemTrigger
-            onClick={() => handleAccordionTabClick('places')}
-          >
-            {t('search.placeName')} ({places.length})
-          </AccordionItemTrigger>
-          <AccordionItemContent>
-            <List>
-              {places.map((place, i) => {
-                const municipalityNames =
-                  place.kommuner && place.kommuner.length > 0
-                    ? place.kommuner.map((k) => k.kommunenavn).join(', ')
-                    : '';
-                return (
-                  <SearchResultLine
-                    key={`place-${i}`}
-                    heading={place.skrivemåte}
-                    onClick={() => {
-                      handleSearchClick({
-                        type: 'Place',
-                        name: place.skrivemåte,
-                        lat: place.representasjonspunkt.nord,
-                        lon: place.representasjonspunkt.øst,
-                        place,
-                      });
-                    }}
-                    onMouseEnter={() =>
-                      handleHover({
-                        type: 'Place',
-                        name: place.skrivemåte,
-                        lat: place.representasjonspunkt.nord,
-                        lon: place.representasjonspunkt.øst,
-                        place,
-                      })
-                    }
-                    onMouseLeave={() => setHoveredResult(null)}
-                    locationType={
-                      municipalityNames
-                        ? `${place.navneobjekttype} i ${municipalityNames}`
-                        : place.navneobjekttype
-                    }
-                  />
-                );
-              })}
-            </List>
-            {placesMetadata.totaltAntallTreff > placesMetadata.treffPerSide && (
-              <Pagination
-                siblingCount={4}
-                size="sm"
-                count={placesMetadata.totaltAntallTreff}
-                page={placesMetadata.side}
-                pageSize={placesMetadata.treffPerSide}
-                onPageChange={(e: { page: number }) =>
-                  onPlacesPageChange(e.page)
-                }
-              >
-                <PaginationPrevTrigger />
-                <PaginationItems />
-                <PaginationNextTrigger />
-              </Pagination>
-            )}
-          </AccordionItemContent>
-        </AccordionItem>
-      )}
+      <PlacesResult
+        places={places}
+        placesMetadata={placesMetadata}
+        onPlacesPageChange={onPlacesPageChange}
+        handleSearchClick={handleSearchClick}
+        handleHover={handleHover}
+        setHoveredResult={setHoveredResult}
+      />
       {roads.length > 0 && (
         <AccordionItem value="roads">
           <AccordionItemTrigger
