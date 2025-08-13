@@ -8,10 +8,12 @@ import { Icon, Style } from 'ol/style';
 import { getInputCRS } from '../shared/utils/crsUtils';
 import { SearchResult } from '../types/searchTypes';
 
-const LOCATION_RED_SVG = '/location/location_red.svg';
-const LOCATION_BLUE_SVG = '/location/location_blue.svg';
+type MarkerIcon = '/location/location_red.svg' | '/location/location_blue.svg';
 
-const createMarkerStyle = (iconSrc: string): Style => {
+const LOCATION_RED_SVG: MarkerIcon = '/location/location_red.svg';
+const LOCATION_BLUE_SVG: MarkerIcon = '/location/location_blue.svg';
+
+const createMarkerStyle = (iconSrc: MarkerIcon): Style => {
   return new Style({
     image: new Icon({
       src: iconSrc,
