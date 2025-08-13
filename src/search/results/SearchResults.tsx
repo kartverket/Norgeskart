@@ -18,7 +18,6 @@ import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
-import { addSearchMarkers } from '../../shared/utils/markersUtils.ts';
 import {
   Address,
   Metadata,
@@ -29,6 +28,7 @@ import {
 } from '../../types/searchTypes.ts';
 import { InfoBox } from '../infobox/InfoBox.tsx';
 import { getAddresses } from '../searchApi.ts';
+import { addSearchMarkers } from '../searchMarkers.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
 import { searchResultsMapper } from './searchresultsMapper.ts';
 

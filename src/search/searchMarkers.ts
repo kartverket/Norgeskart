@@ -5,8 +5,8 @@ import Map from 'ol/Map';
 import { transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { Icon, Style } from 'ol/style';
-import { SearchResult } from '../../types/searchTypes';
-import { getInputCRS } from './crsUtils';
+import { getInputCRS } from '../shared/utils/crsUtils';
+import { SearchResult } from '../types/searchTypes';
 
 const createMarkerStyle = (iconSrc: string): Style => {
   return new Style({
