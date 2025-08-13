@@ -12,6 +12,7 @@ import {
   ColorPickerTrigger,
   createListCollection,
   HStack,
+  Input,
   parseColor,
   PopoverArrow,
   PopoverBody,
@@ -32,10 +33,14 @@ import {
   VStack,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { GeoJSON } from 'ol/format';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getFeatures, saveFeatures } from '../api/nkApiClient.ts';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
 import { DistanceUnit, distanceUnitAtom } from '../map/atoms.ts';
+import { useMapSettings } from '../map/mapHooks.ts';
+import { setUrlParameter } from '../shared/utils/urlUtils.ts';
 export const DrawControls = () => {
   const {
     drawEnabled,
