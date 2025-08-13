@@ -131,10 +131,7 @@ export const DrawControls = () => {
               setDrawFillColor(value.valueAsString);
             }}
           >
-            {/*TODO: Gjør hilke velgere som er synlig avhengig av hvilket verktøy som er valgt  */}
-            <ColorPickerLabel>
-              {t('draw.controls.colorStroke')}
-            </ColorPickerLabel>
+            <ColorPickerLabel>{t('draw.controls.colorFill')}</ColorPickerLabel>
             <ColorPickerControl>
               <ColorPickerInput />
               <ColorPickerTrigger />
@@ -154,8 +151,9 @@ export const DrawControls = () => {
               setDrawStrokeColor(value.valueAsString);
             }}
           >
-            <ColorPickerLabel>{t('draw.controls.colorFill')}</ColorPickerLabel>
-
+            <ColorPickerLabel>
+              {t('draw.controls.colorStroke')}
+            </ColorPickerLabel>
             <ColorPickerControl>
               <ColorPickerInput />
               <ColorPickerTrigger />
