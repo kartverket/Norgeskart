@@ -41,8 +41,10 @@ export const PlaceInfo = ({ lat, lon, inputCRS }: PlaceInfoProps) => {
           _hover={{ fontWeight: '600', cursor: 'pointer' }}
           onClick={() => handlePlaceClick(place.stedsnummer)}
         >
-          {place.stedsnavn.map((placeName) => (
-            <Text key={placeName.stedsnavnnummer}>{placeName.skrivemåte}</Text>
+          {place.stedsnavn.map((placeName, index) => (
+            <Text key={`${placeName.stedsnavnnummer}-${index}`}>
+              {placeName.skrivemåte}
+            </Text>
           ))}
           <Text fontSize="sm">
             {t('placeInfo.locationNumber')}: {place.stedsnummer}
