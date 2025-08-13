@@ -3,9 +3,7 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   AccordionRoot,
-  Box,
   List,
-  ListItem,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
@@ -23,9 +21,9 @@ import {
   SearchResult,
 } from '../../types/searchTypes.ts';
 import { InfoBox } from '../infobox/InfoBox.tsx';
-import { getAddresses } from '../searchApi.ts';
 import { addSearchMarkers } from '../searchMarkers.ts';
 import { PlacesResult } from './PlacesResults.tsx';
+import { RoadsResults } from './RoadsResults.tsx';
 import { SearchResultLine } from './SearchResultLine.tsx';
 import { searchResultsMapper } from './searchresultsMapper.ts';
 
@@ -59,7 +57,6 @@ export const SearchResults = ({
     'properties',
     'addresses',
   ]);
-  const [openRoads, setOpenRoads] = useState<string[]>([]);
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
     null,
   );
@@ -81,14 +78,6 @@ export const SearchResults = ({
     setHoveredResult(res);
   };
 
-  const toggleRoad = (roadId: string) => {
-    setOpenRoads((prev) =>
-      prev.includes(roadId)
-        ? prev.filter((id) => id !== roadId)
-        : [...prev, roadId],
-    );
-  };
-
   const handleAccordionTabClick = (value: AccordionTab) => {
     setAccordionTabsOpen((prev) =>
       prev.includes(value)
@@ -103,28 +92,6 @@ export const SearchResults = ({
     setMapLocation([lon, lat], getInputCRS(res), 15);
   };
 
-  const handleHouseNumberClick = async (
-    roadName: string,
-    houseNumber: string,
-  ) => {
-    try {
-      const query = `${roadName} ${houseNumber}`;
-      const response = await getAddresses(query);
-
-      const address = response.adresser?.[0];
-      if (!address) return;
-
-      handleSearchClick({
-        type: 'Address',
-        name: address.adressenavn,
-        lat: address.representasjonspunkt.lat,
-        lon: address.representasjonspunkt.lon,
-        address,
-      });
-    } catch (e) {
-      console.error('Failed to fetch address', e);
-    }
-  };
   //Mattis 18.06.26. For å sjekke om det er resultater for høydesetting på resultatene
   const hasResults =
     properties.length > 0 ||
@@ -163,68 +130,12 @@ export const SearchResults = ({
         handleHover={handleHover}
         setHoveredResult={setHoveredResult}
       />
-      {roads.length > 0 && (
-        <AccordionItem value="roads">
-          <AccordionItemTrigger
-            onClick={() => handleAccordionTabClick('roads')}
-          >
-            {t('search.roads')} ({roads.length})
-          </AccordionItemTrigger>
-          <AccordionItemContent>
-            <List>
-              {roads.map((road, i) => (
-                <Box key={`road-${i}`}>
-                  <SearchResultLine
-                    heading={road.NAVN}
-                    showButton={true}
-                    onButtonClick={() => toggleRoad(road.ID)}
-                    onClick={() =>
-                      handleSearchClick({
-                        type: 'Road',
-                        name: road.NAVN,
-                        lat: parseFloat(road.LATITUDE),
-                        lon: parseFloat(road.LONGITUDE),
-                        road,
-                      })
-                    }
-                    onMouseEnter={() =>
-                      handleHover({
-                        type: 'Road',
-                        name: road.NAVN,
-                        lat: parseFloat(road.LATITUDE),
-                        lon: parseFloat(road.LONGITUDE),
-                        road,
-                      })
-                    }
-                    onMouseLeave={() => setHoveredResult(null)}
-                  />
-                  {openRoads.includes(road.ID) && road.HUSNUMMER && (
-                    <List ml="20px">
-                      {road.HUSNUMMER.map((houseNumber, i) => (
-                        <ListItem
-                          _hover={{ fontWeight: '600' }}
-                          cursor="pointer"
-                          as={'ul'}
-                          key={`houseNumber-${i}`}
-                          mb={2}
-                          onClick={() =>
-                            handleHouseNumberClick(road.NAVN, houseNumber)
-                          }
-                        >
-                          {t('search.houseNumber')}
-                          <Box as="span" ml={5}>
-                            {houseNumber}
-                          </Box>
-                        </ListItem>
-                      ))}
-                    </List>
-                  )}
-                </Box>
-              ))}
-            </List>
-          </AccordionItemContent>
-        </AccordionItem>
-      )}
+      <RoadsResults
+        roads={roads}
+        handleSearchClick={handleSearchClick}
+        handleHover={handleHover}
+        setHoveredResult={setHoveredResult}
+      />
       {properties.length > 0 && (
         <AccordionItem value="properties">
           <AccordionItemTrigger
