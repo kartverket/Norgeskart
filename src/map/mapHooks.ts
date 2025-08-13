@@ -290,8 +290,8 @@ const useMapSettings = () => {
     if (zoomLevel !== null) {
       map.getView().setZoom(zoomLevel);
     }
-    setUrlParameter('x', transformedLocation[0]);
-    setUrlParameter('y', transformedLocation[1]);
+    setUrlParameter('lon', transformedLocation[0]);
+    setUrlParameter('lat', transformedLocation[1]);
   };
 
   const setMapAngle = (angle: number) => {
