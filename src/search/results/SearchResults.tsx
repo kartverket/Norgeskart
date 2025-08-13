@@ -30,6 +30,7 @@ import {
 import { InfoBox } from '../infobox/InfoBox.tsx';
 import { getAddresses } from '../searchApi.ts';
 import { SearchResultLine } from './SearchResultLine.tsx';
+import { searchResultsMapper } from './searchresultsMapper.ts';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
@@ -76,36 +77,7 @@ export const SearchResults = ({
     setHoveredResult(null);
   }, [searchQuery]);
 
-  const allResults: SearchResult[] = [
-    ...places.map((place) => ({
-      type: 'Place' as const,
-      name: place.skrivemåte,
-      lat: place.representasjonspunkt.nord,
-      lon: place.representasjonspunkt.øst,
-      place,
-    })),
-    ...roads.map((road) => ({
-      type: 'Road' as const,
-      name: road.NAVN,
-      lat: parseFloat(road.LATITUDE),
-      lon: parseFloat(road.LONGITUDE),
-      road,
-    })),
-    ...addresses.map((address) => ({
-      type: 'Address' as const,
-      name: address.adressenavn,
-      lat: address.representasjonspunkt.lat,
-      lon: address.representasjonspunkt.lon,
-      address,
-    })),
-    ...properties.map((property) => ({
-      type: 'Property' as const,
-      name: property.TITTEL,
-      lat: parseFloat(property.LATITUDE),
-      lon: parseFloat(property.LONGITUDE),
-      property,
-    })),
-  ];
+  const allResults = searchResultsMapper(places, roads, addresses, properties);
 
   useEffect(() => {
     addSearchMarkers(map, allResults, hoveredResult, selectedResult);
