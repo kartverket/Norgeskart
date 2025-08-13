@@ -27,7 +27,7 @@ export const searchResultsMapper = (
       name: road.NAVN,
       lat: parseFloat(road.LATITUDE),
       lon: parseFloat(road.LONGITUDE),
-      road,
+      road
     }),
   ),
   ...addresses.map(

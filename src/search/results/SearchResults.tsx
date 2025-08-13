@@ -66,10 +66,7 @@ export const SearchResults = ({
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
     null,
   );
-  const [hoveredResult, setHoveredResult] = useState<{
-    lon: number;
-    lat: number;
-  } | null>(null);
+  const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -84,7 +81,7 @@ export const SearchResults = ({
   }, [map, allResults, hoveredResult, selectedResult]);
 
   const handleHover = (res: SearchResult) => {
-    setHoveredResult({ lon: res.lon, lat: res.lat });
+    setHoveredResult(res);
   };
 
   const toggleRoad = (roadId: string) => {
