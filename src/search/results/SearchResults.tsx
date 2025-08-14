@@ -23,6 +23,7 @@ import {
 import { InfoBox } from '../infobox/InfoBox.tsx';
 import { addSearchMarkers } from '../searchMarkers.ts';
 import { PlacesResult } from './PlacesResults.tsx';
+import { PropertiesResults } from './PropertiesResults.tsx';
 import { RoadsResults } from './RoadsResults.tsx';
 import { SearchResultLine } from './SearchResultLine.tsx';
 import { searchResultsMapper } from './searchresultsMapper.ts';
@@ -136,45 +137,12 @@ export const SearchResults = ({
         handleHover={handleHover}
         setHoveredResult={setHoveredResult}
       />
-      {properties.length > 0 && (
-        <AccordionItem value="properties">
-          <AccordionItemTrigger
-            onClick={() => handleAccordionTabClick('properties')}
-          >
-            {t('search.properties')} ({properties.length})
-          </AccordionItemTrigger>
-          <AccordionItemContent>
-            <List>
-              {properties.map((property, i) => (
-                <SearchResultLine
-                  key={`property-${i}`}
-                  heading={property.TITTEL}
-                  onClick={() =>
-                    handleSearchClick({
-                      type: 'Property',
-                      name: property.TITTEL,
-                      lat: parseFloat(property.LATITUDE),
-                      lon: parseFloat(property.LONGITUDE),
-                      property,
-                    })
-                  }
-                  onMouseEnter={() =>
-                    handleHover({
-                      type: 'Property',
-                      name: property.TITTEL,
-                      lat: parseFloat(property.LATITUDE),
-                      lon: parseFloat(property.LONGITUDE),
-                      property,
-                    })
-                  }
-                  onMouseLeave={() => setHoveredResult(null)}
-                  locationType={property.KOMMUNENAVN}
-                />
-              ))}
-            </List>
-          </AccordionItemContent>
-        </AccordionItem>
-      )}
+      <PropertiesResults
+        properties={properties}
+        handleSearchClick={handleSearchClick}
+        handleHover={handleHover}
+        setHoveredResult={setHoveredResult}
+      />
       {addresses.length > 0 && (
         <AccordionItem value="addresses">
           <AccordionItemTrigger
