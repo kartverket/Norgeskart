@@ -5,17 +5,16 @@ import {
   AccordionRoot,
   Card,
   CardBody,
-  Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { getInputCRS } from '../../shared/utils/crsUtils';
-import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import { SearchResult } from '../../types/searchTypes';
 import { getElevation } from '../searchApi';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
+import { InfoBoxContent } from './InfoBoxContent';
 
 interface InfoBoxProps {
   result: SearchResult;
@@ -32,47 +31,6 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
     enabled: x != null && y != null,
   });
 
-  let content;
-
-  switch (result.type) {
-    case 'Place':
-      content = (
-        <>
-          {t('search.placeName')} {t('infoBox.in')}{' '}
-          {result.place.kommuner.map((k) => k.kommunenavn).join(', ')}{' '}
-          {t('infoBox.municipality').toLowerCase()}
-        </>
-      );
-      break;
-    case 'Road':
-      content = (
-        <>
-          {t('infoBox.roadName')} {t('infoBox.in')}{' '}
-          {capitalizeFirstLetter(result.road.KOMMUNENAVN)}{' '}
-          {t('infoBox.municipality').toLowerCase()}
-        </>
-      );
-      break;
-    case 'Property':
-      content = (
-        <>
-          {t('infoBox.cadastralIdentifier')} {t('infoBox.in')}{' '}
-          {capitalizeFirstLetter(result.property.KOMMUNENAVN)}{' '}
-          {t('infoBox.municipality').toLowerCase()}
-        </>
-      );
-      break;
-    case 'Address':
-      content = (
-        <>
-          {t('infoBox.address')} {t('infoBox.in')}{' '}
-          {capitalizeFirstLetter(result.address.kommunenavn)}{' '}
-          {t('infoBox.municipality').toLowerCase()}
-        </>
-      );
-      break;
-  }
-
   return (
     <Card>
       <CardBody
@@ -81,10 +39,7 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
         overflowY="auto"
         overflowX="hidden"
       >
-        <Text>{content}</Text>
-        {t('infoBox.heightEstimatedByInterpolation')}{' '}
-        {Number(elevationData?.value).toFixed(1)}{' '}
-        {t('infoBox.metersAboveSeaLevel')}
+       <InfoBoxContent result={result} elevationData={elevationData} />
         <AccordionRoot collapsible mr={2} mt={5}>
           <AccordionItem value="propertyInfo">
             <AccordionItemTrigger pl={0}>
