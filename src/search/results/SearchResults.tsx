@@ -64,7 +64,13 @@ export const SearchResults = ({
   const allResults = searchResultsMapper(places, roads, addresses, properties);
 
   useEffect(() => {
-    addSearchMarkers(map, allResults, hoveredResult, selectedResult);
+    addSearchMarkers(
+      map,
+      allResults,
+      hoveredResult,
+      selectedResult,
+      handleSearchClick,
+    );
   }, [map, allResults, hoveredResult, selectedResult]);
 
   const handleHover = (res: SearchResult) => {

@@ -23,11 +23,33 @@ const createMarkerStyle = (iconSrc: MarkerIcon): Style => {
   });
 };
 
+const createMarker = (
+  res: SearchResult,
+  iconSrc: MarkerIcon,
+  map: Map,
+): Feature => {
+  const marker = new Feature({
+    geometry: new Point(
+      transform(
+        [res.lon, res.lat],
+        getInputCRS(res),
+        map.getView().getProjection(),
+      ),
+    ),
+  });
+  marker.setProperties({ searchResult: res });
+  marker.setStyle(createMarkerStyle(iconSrc));
+  return marker;
+};
+
+let isClickHandlerAttached = false;
+
 export const addSearchMarkers = (
   map: Map,
   searchResults: SearchResult[],
   hoveredResult: { lon: number; lat: number } | null,
   selectedResult: SearchResult | null,
+  onMarkerClick: (res: SearchResult) => void,
 ) => {
   const markerLayer = map
     .getLayers()
@@ -42,41 +64,34 @@ export const addSearchMarkers = (
   source.clear();
 
   if (selectedResult) {
-    const { lon, lat } = selectedResult;
-
-    if (isFinite(lon) && isFinite(lat)) {
-      const marker = new Feature({
-        geometry: new Point(
-          transform(
-            [lon, lat],
-            getInputCRS(selectedResult),
-            map.getView().getProjection(),
-          ),
-        ),
-      });
-      marker.setStyle(createMarkerStyle(LOCATION_RED_SVG));
-      source.addFeature(marker);
+    if (isFinite(selectedResult.lon) && isFinite(selectedResult.lat)) {
+      source.addFeature(createMarker(selectedResult, LOCATION_RED_SVG, map));
     }
     return;
   }
 
   searchResults.forEach((res) => {
-    const { lon, lat } = res;
-
-    if (!isFinite(lon) || !isFinite(lat)) {
-      return;
-    }
+    if (!isFinite(res.lon) || !isFinite(res.lat)) return;
 
     const isHovered =
-      hoveredResult && hoveredResult.lon === lon && hoveredResult.lat === lat;
-    const svgSrc = isHovered ? LOCATION_RED_SVG : LOCATION_BLUE_SVG;
+      hoveredResult &&
+      hoveredResult.lon === res.lon &&
+      hoveredResult.lat === res.lat;
+    const iconSrc = isHovered ? LOCATION_RED_SVG : LOCATION_BLUE_SVG;
 
-    const marker = new Feature({
-      geometry: new Point(
-        transform([lon, lat], getInputCRS(res), map.getView().getProjection()),
-      ),
-    });
-    marker.setStyle(createMarkerStyle(svgSrc));
-    source.addFeature(marker);
+    source.addFeature(createMarker(res, iconSrc, map));
   });
+
+  if (!isClickHandlerAttached) {
+    isClickHandlerAttached = true;
+
+    map.on('singleclick', (evt) => {
+      map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+        const res = feature.get('searchResult');
+        if (res) {
+          onMarkerClick(res);
+        }
+      });
+    });
+  }
 };
