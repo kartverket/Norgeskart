@@ -134,10 +134,8 @@ const useDrawSettings = () => {
 
     map.addInteraction(newDraw);
 
-    if (drawStyle) {
-      newDraw.getOverlay().setStyle(drawStyle);
-      newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
-    }
+    newDraw.getOverlay().setStyle(drawStyle);
+    newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
 
     setShowMeasurements(showMeasurements);
     setDrawTypeState(type);
@@ -245,17 +243,17 @@ const useDrawSettings = () => {
   const setDrawFillColor = (color: string) => {
     const style = drawStyle.clone();
     style.setFill(new Fill({ color }));
+    const circleStyle = new CircleStyle({
+      radius: 5,
+      fill: new Fill({ color }),
+    });
+    style.setImage(circleStyle);
     setDrawStyle(style);
   };
 
   const setDrawStrokeColor = (color: string) => {
     const style = drawStyle.clone();
     style.getStroke()?.setColor(color);
-    const circleStyle = new CircleStyle({
-      radius: 5,
-      fill: new Fill({ color }),
-    });
-    style.setImage(circleStyle);
     setDrawStyle(style);
   };
 
@@ -266,6 +264,8 @@ const useDrawSettings = () => {
       fill: new Fill({ color }),
     });
     style.setImage(circleStyle);
+    style.setFill(new Fill({ color }));
+    style.getStroke()?.setColor(color);
     setDrawStyle(style);
   };
 

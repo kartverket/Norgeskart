@@ -12,15 +12,19 @@ import {
   parseColor,
 } from '@kvib/react';
 import { t } from 'i18next';
-import { useEffect, useState } from 'react';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import {
+  DEFAULT_PRIMARY_COLOR,
+  DEFAULT_SECONDARY_COLOR,
+  primaryColorAtom,
+  secondaryColorAtom,
+} from '../map/atoms';
 import { useDrawSettings } from './drawHooks';
 
-export const DEFAULT_PRIMARY_COLOR = '#000000';
-export const DEFAULT_SECONDARY_COLOR = '#ffffff';
-
 export const ColorControls = () => {
-  const [primaryColor, setPrimaryColor] = useState(DEFAULT_PRIMARY_COLOR);
-  const [secondaryColor, setSecondaryColor] = useState(DEFAULT_SECONDARY_COLOR);
+  const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
+  const [secondaryColor, setSecondaryColor] = useAtom(secondaryColorAtom);
 
   const {
     drawTypeState,

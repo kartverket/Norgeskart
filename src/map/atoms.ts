@@ -7,10 +7,7 @@ import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
-import {
-  DEFAULT_PRIMARY_COLOR,
-  DEFAULT_SECONDARY_COLOR,
-} from '../draw/ColorControls';
+
 import { DrawType } from '../draw/drawHooks';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
@@ -21,6 +18,9 @@ const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
 export const DEFAULT_ZOOM_LEVEL = 5;
 export const DEFAULT_CENTER = [1900000, 9500000]; // Center in EPSG:3857
 export const DEFAULT_ROTATION = 0;
+
+export const DEFAULT_PRIMARY_COLOR = '#000000';
+export const DEFAULT_SECONDARY_COLOR = '#ffffff';
 
 export const AvailableProjections: ProjectionIdentifier[] = [
   'EPSG:3857', // webmercator
@@ -162,6 +162,8 @@ export const drawTypeStateAtom = atom<DrawType | null>(null);
 export const drawEnabledAtom = atom<boolean>(false);
 export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
+export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
+export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
 
 export const markerStyleAtom = atom<Style>(
   new Style({
