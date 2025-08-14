@@ -31,9 +31,9 @@ export const InfoBoxContent = ({
 
   return (
     <Box>
-      <Text fontSize="xl" mb={2}>
+      <Heading as="h3" fontSize="xl" mb={2}>
         {result.name}
-      </Text>
+      </Heading>
       <Text>{content}</Text>
       {t('infoBox.heightEstimatedByInterpolation')}{' '}
       {Number(elevationData?.value).toFixed(1)}{' '}
