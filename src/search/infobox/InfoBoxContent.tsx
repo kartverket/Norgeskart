@@ -1,4 +1,4 @@
-import { Box, Text } from '@kvib/react';
+import { Box, Heading, Text } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
 
