@@ -43,14 +43,14 @@ export const ColorControls = () => {
       setDrawFillColor(DEFAULT_PRIMARY_COLOR);
       setDrawPointColor(DEFAULT_PRIMARY_COLOR);
     };
-  }, [primaryColor, drawTypeState]);
+  }, [primaryColor, drawTypeState, setDrawPointColor, setDrawFillColor]);
 
   useEffect(() => {
     setDrawStrokeColor(secondaryColor);
     return () => {
       setDrawStrokeColor(DEFAULT_SECONDARY_COLOR);
     };
-  }, [secondaryColor, drawTypeState]);
+  }, [secondaryColor, drawTypeState, setDrawStrokeColor]);
 
   return (
     <>
