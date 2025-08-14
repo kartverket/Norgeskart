@@ -7,6 +7,7 @@ import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
+import { DrawType } from '../draw/drawHooks';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
@@ -151,6 +152,8 @@ export const drawStyleAtom = atom<Style>(
     }),
   }),
 );
+
+export const drawTypeStateAtom = atom<DrawType | null>(null);
 
 export const drawFillColorAtom = atom<string>(
   (get) => get(drawStyleAtom).getFill()?.getColor()?.toString() || '#ffffff',

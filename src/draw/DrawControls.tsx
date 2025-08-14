@@ -1,19 +1,8 @@
 import {
   Button,
   ButtonGroup,
-  ColorPicker,
-  ColorPickerArea,
-  ColorPickerContent,
-  ColorPickerControl,
-  ColorPickerEyeDropper,
-  ColorPickerInput,
-  ColorPickerLabel,
-  ColorPickerSliders,
-  ColorPickerTrigger,
   createListCollection,
-  HStack,
   Input,
-  parseColor,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
@@ -26,36 +15,25 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  SwitchControl,
-  SwitchHiddenInput,
-  SwitchLabel,
-  SwitchRoot,
   VStack,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
 import { GeoJSON } from 'ol/format';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures, saveFeatures } from '../api/nkApiClient.ts';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
-import { DistanceUnit, distanceUnitAtom } from '../map/atoms.ts';
 import { useMapSettings } from '../map/mapHooks.ts';
 import { setUrlParameter } from '../shared/utils/urlUtils.ts';
+import { ColorControls } from './ColorControls.tsx';
+import { MeasurementControls } from './MeasurementControls.tsx';
 export const DrawControls = () => {
   const {
     drawEnabled,
-    drawFillColor,
-    drawStrokeColor,
-    showMeasurements,
     setDrawEnabled,
     setDrawType,
-    setDrawFillColor,
-    setDrawStrokeColor,
-    setShowMeasurements,
     clearDrawing,
     abortDrawing,
     setDrawLayerFeatures,
-    refreshMeasurements,
     getDrawnFeatures,
   } = useDrawSettings();
 
@@ -63,7 +41,6 @@ export const DrawControls = () => {
   const { t } = useTranslation();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
-  const [measurementUnit, setMeasurementUnit] = useAtom(distanceUnitAtom);
   const [drawId, setDrawId] = useState<string | null>(null);
 
   const drawTypeCollection: { value: DrawType; label: string }[] = [
@@ -73,18 +50,6 @@ export const DrawControls = () => {
     { value: 'LineString', label: 'Linje' },
     { value: 'Circle', label: 'Sirkel' },
   ];
-
-  const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
-    { value: 'm', label: `${t('shared.units.meter')} [m]` },
-    { value: 'NM', label: `${t('shared.units.nauticalMile')} [NM]` },
-  ];
-
-  //Look into jotai-effect to have it be reactive globally
-  useEffect(() => {
-    if (showMeasurements) {
-      refreshMeasurements();
-    }
-  }, [measurementUnit, showMeasurements, refreshMeasurements]);
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
@@ -129,48 +94,8 @@ export const DrawControls = () => {
               ))}
             </SelectContent>
           </SelectRoot>
-          <ColorPicker
-            value={parseColor(drawFillColor)}
-            defaultValue={parseColor(drawFillColor)}
-            onValueChange={(value) => {
-              setDrawFillColor(value.valueAsString);
-            }}
-          >
-            <ColorPickerLabel>{t('draw.controls.colorFill')}</ColorPickerLabel>
-            <ColorPickerControl>
-              <ColorPickerInput />
-              <ColorPickerTrigger />
-            </ColorPickerControl>
-            <ColorPickerContent>
-              <ColorPickerArea />
-              <HStack>
-                <ColorPickerEyeDropper />
-                <ColorPickerSliders />
-              </HStack>
-            </ColorPickerContent>
-          </ColorPicker>
-          <ColorPicker
-            value={parseColor(drawStrokeColor)}
-            defaultValue={parseColor(drawStrokeColor)}
-            onValueChange={(value) => {
-              setDrawStrokeColor(value.valueAsString);
-            }}
-          >
-            <ColorPickerLabel>
-              {t('draw.controls.colorStroke')}
-            </ColorPickerLabel>
-            <ColorPickerControl>
-              <ColorPickerInput />
-              <ColorPickerTrigger />
-            </ColorPickerControl>
-            <ColorPickerContent>
-              <ColorPickerArea />
-              <HStack>
-                <ColorPickerEyeDropper />
-                <ColorPickerSliders />
-              </HStack>
-            </ColorPickerContent>
-          </ColorPicker>
+          <ColorControls />
+          <MeasurementControls />
         </>
       )}
       <Input
@@ -243,45 +168,6 @@ export const DrawControls = () => {
           {t('draw.save')}
         </Button>
       </ButtonGroup>
-      <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
-        <SwitchRoot
-          checked={showMeasurements}
-          onCheckedChange={(e) => {
-            setShowMeasurements(e.checked);
-          }}
-          w={'50%'}
-        >
-          <SwitchHiddenInput />
-          <SwitchControl />
-          <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
-        </SwitchRoot>
-        {showMeasurements && (
-          <SelectRoot
-            value={[measurementUnit]}
-            collection={createListCollection({
-              items: measurementUnitCollection,
-            })}
-            defaultValue={[measurementUnitCollection[0].value]}
-          >
-            <SelectTrigger>
-              <SelectValueText />
-            </SelectTrigger>
-            <SelectContent>
-              {measurementUnitCollection.map((item) => (
-                <SelectItem
-                  key={item.value}
-                  item={item.value}
-                  onClick={() => {
-                    setMeasurementUnit(item.value);
-                  }}
-                >
-                  {item.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
-        )}
-      </HStack>
     </VStack>
   );
 };
