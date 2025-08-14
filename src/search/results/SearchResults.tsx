@@ -1,13 +1,6 @@
-import {
-  AccordionItem,
-  AccordionItemContent,
-  AccordionItemTrigger,
-  AccordionRoot,
-  List,
-} from '@kvib/react';
+import { AccordionRoot } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -22,10 +15,10 @@ import {
 } from '../../types/searchTypes.ts';
 import { InfoBox } from '../infobox/InfoBox.tsx';
 import { addSearchMarkers } from '../searchMarkers.ts';
+import { AddressesResults } from './AddressesResults.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
 import { PropertiesResults } from './PropertiesResults.tsx';
 import { RoadsResults } from './RoadsResults.tsx';
-import { SearchResultLine } from './SearchResultLine.tsx';
 import { searchResultsMapper } from './searchresultsMapper.ts';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
@@ -62,7 +55,6 @@ export const SearchResults = ({
     null,
   );
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
-  const { t } = useTranslation();
 
   useEffect(() => {
     setSelectedResult(null);
@@ -143,44 +135,12 @@ export const SearchResults = ({
         handleHover={handleHover}
         setHoveredResult={setHoveredResult}
       />
-      {addresses.length > 0 && (
-        <AccordionItem value="addresses">
-          <AccordionItemTrigger
-            onClick={() => handleAccordionTabClick('addresses')}
-          >
-            {t('search.addresses')} ({addresses.length})
-          </AccordionItemTrigger>
-          <AccordionItemContent>
-            <List>
-              {addresses.map((address, i) => (
-                <SearchResultLine
-                  key={`address-${i}`}
-                  heading={`${address.adressenavn}, ${address.adressetekst}`}
-                  onClick={() =>
-                    handleSearchClick({
-                      type: 'Address',
-                      name: address.adressenavn,
-                      lat: address.representasjonspunkt.lat,
-                      lon: address.representasjonspunkt.lon,
-                      address,
-                    })
-                  }
-                  onMouseEnter={() =>
-                    handleHover({
-                      type: 'Address',
-                      name: address.adressenavn,
-                      lat: address.representasjonspunkt.lat,
-                      lon: address.representasjonspunkt.lon,
-                      address,
-                    })
-                  }
-                  onMouseLeave={() => setHoveredResult(null)}
-                />
-              ))}
-            </List>
-          </AccordionItemContent>
-        </AccordionItem>
-      )}
+      <AddressesResults
+        addresses={addresses}
+        handleSearchClick={handleSearchClick}
+        handleHover={handleHover}
+        setHoveredResult={setHoveredResult}
+      />
     </AccordionRoot>
   );
 };
