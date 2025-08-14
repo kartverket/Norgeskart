@@ -15,6 +15,10 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  SwitchControl,
+  SwitchHiddenInput,
+  SwitchLabel,
+  SwitchRoot,
   VStack,
 } from '@kvib/react';
 import { GeoJSON } from 'ol/format';
@@ -65,9 +69,18 @@ export const DrawControls = () => {
 
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
-      <Button onClick={() => setDrawEnabled(!drawEnabled)}>
-        {drawEnabled ? t('draw.end') : t('draw.begin')}
-      </Button>
+      <SwitchRoot
+        checked={drawEnabled}
+        onCheckedChange={(e) => {
+          setDrawEnabled(e.checked);
+        }}
+        w={'50%'}
+      >
+        <SwitchHiddenInput />
+        <SwitchControl />
+        <SwitchLabel>{t('draw.begin')}</SwitchLabel>
+      </SwitchRoot>
+
       {drawEnabled && (
         <>
           <SelectRoot
@@ -95,7 +108,6 @@ export const DrawControls = () => {
             </SelectContent>
           </SelectRoot>
           <ColorControls />
-          <MeasurementControls />
         </>
       )}
       <Input
@@ -115,6 +127,7 @@ export const DrawControls = () => {
       >
         Hent tegning fra API
       </Button>
+      <MeasurementControls />
       <ButtonGroup>
         <PopoverRoot
           open={clearPopoverOpen}
