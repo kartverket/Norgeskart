@@ -155,6 +155,11 @@ export const drawStyleAtom = atom<Style>(
 
 export const drawTypeStateAtom = atom<DrawType | null>(null);
 
+export const drawPointColorAtom = atom<string>((get) => {
+  const drawStyle = get(drawStyleAtom);
+  return drawStyle.getImage()?.getFill()?.getColor()?.toString();
+  return get(drawStyleAtom).getFill()?.getColor()?.toString() || '#ffffff';
+});
 export const drawFillColorAtom = atom<string>(
   (get) => get(drawStyleAtom).getFill()?.getColor()?.toString() || '#ffffff',
 );

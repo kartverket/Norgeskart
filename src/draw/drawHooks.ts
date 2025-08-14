@@ -17,6 +17,7 @@ import {
   distanceUnitAtom,
   drawEnabledAtom,
   drawFillColorAtom,
+  drawPointColorAtom,
   drawStrokeColorAtom,
   drawStyleAtom,
   drawTypeStateAtom,
@@ -32,6 +33,7 @@ const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
   const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
   const [drawTypeState, setDrawTypeState] = useAtom(drawTypeStateAtom);
+  const drawPointColor = useAtomValue(drawPointColorAtom);
   const drawFillColor = useAtomValue(drawFillColorAtom);
   const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
@@ -237,7 +239,6 @@ const useDrawSettings = () => {
         .getGeometry()
         ?.transform(sourceProjection, mapProjection);
       const featureStyle = getStyleFromFeatureProperties(feature);
-      console.log('transformedStyle:', featureStyle);
       return new Feature({
         geometry: transformedGeometry,
         style: featureStyle,
@@ -252,17 +253,24 @@ const useDrawSettings = () => {
     style.setFill(new Fill({ color }));
     setDrawStyle(style);
   };
+
   const setDrawStrokeColor = (color: string) => {
     const style = drawStyle.clone();
     style.getStroke()?.setColor(color);
+    const circleStyle = new CircleStyle({
+      radius: 5,
+      fill: new Fill({ color }),
+    });
+    style.setImage(circleStyle);
     setDrawStyle(style);
   };
 
   const setDrawPointColor = (color: string) => {
     const style = drawStyle.clone();
-    const circleStyle = new CircleStyle();
-    circleStyle.setRadius(10);
-    circleStyle.setFill(new Fill({ color }));
+    const circleStyle = new CircleStyle({
+      radius: 5,
+      fill: new Fill({ color }),
+    });
     style.setImage(circleStyle);
     setDrawStyle(style);
   };
@@ -496,6 +504,7 @@ const useDrawSettings = () => {
     drawEnabled,
     drawStyle,
     drawTypeState,
+    drawPointColor,
     drawFillColor,
     drawStrokeColor,
     showMeasurements,

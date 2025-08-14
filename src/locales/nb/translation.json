@@ -4,12 +4,13 @@
     "clear": "Fjern tegning",
     "confrimClear": "Er du sikker?",
     "controls": {
-      "colorFill": "Velg fyllfarge",
-      "colorStroke": "Velg ommrissfarge",
+      "colorFill": "Fyllfarge",
+      "colorStroke": "Omrissfarge",
       "showMeasurements": "Vis mål",
       "toolSelect": {
         "placeholder": "Velg tegnemåte"
-      }
+      },
+      "colorPoint": "Punktfarge"
     },
     "end": "Ferdig",
     "save": "Lagre",
@@ -73,7 +74,9 @@
     "addresses": "Adresser",
     "houseNumber": "Husnr",
     "actions": {
-      "print": { "tooltip": "Skriv ut" },
+      "print": {
+        "tooltip": "Skriv ut"
+      },
       "shareMap": {
         "tooltip": "Del kartet",
         "success": "Lenken er kopiert til utklippstavlen"
