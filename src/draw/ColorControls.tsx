@@ -12,26 +12,49 @@ import {
   parseColor,
 } from '@kvib/react';
 import { t } from 'i18next';
+import { useEffect, useState } from 'react';
 import { useDrawSettings } from './drawHooks';
 
+export const DEFAULT_PRIMARY_COLOR = '#000000';
+export const DEFAULT_SECONDARY_COLOR = '#ffffff';
+
 export const ColorControls = () => {
+  const [primaryColor, setPrimaryColor] = useState(DEFAULT_PRIMARY_COLOR);
+  const [secondaryColor, setSecondaryColor] = useState(DEFAULT_SECONDARY_COLOR);
+
   const {
-    drawPointColor,
     drawTypeState,
-    drawFillColor,
-    drawStrokeColor,
     setDrawFillColor,
     setDrawStrokeColor,
     setDrawPointColor,
   } = useDrawSettings();
 
+  useEffect(() => {
+    if (drawTypeState == 'Point') {
+      setDrawPointColor(primaryColor);
+    } else {
+      setDrawFillColor(primaryColor);
+    }
+    return () => {
+      setDrawFillColor(DEFAULT_PRIMARY_COLOR);
+      setDrawPointColor(DEFAULT_PRIMARY_COLOR);
+    };
+  }, [primaryColor, drawTypeState]);
+
+  useEffect(() => {
+    setDrawStrokeColor(secondaryColor);
+    return () => {
+      setDrawStrokeColor(DEFAULT_SECONDARY_COLOR);
+    };
+  }, [secondaryColor, drawTypeState]);
+
   return (
     <>
       {(drawTypeState == 'Circle' || drawTypeState == 'Polygon') && (
         <ColorPicker
-          value={parseColor(drawFillColor)}
+          value={parseColor(primaryColor)}
           onValueChange={(value) => {
-            setDrawFillColor(value.valueAsString);
+            setPrimaryColor(value.valueAsString);
           }}
         >
           <ColorPickerLabel>{t('draw.controls.colorFill')}</ColorPickerLabel>
@@ -52,9 +75,9 @@ export const ColorControls = () => {
         drawTypeState == 'Polygon' ||
         drawTypeState == 'LineString') && (
         <ColorPicker
-          value={parseColor(drawStrokeColor)}
+          value={parseColor(secondaryColor)}
           onValueChange={(value) => {
-            setDrawStrokeColor(value.valueAsString);
+            setSecondaryColor(value.valueAsString);
           }}
         >
           <ColorPickerLabel>{t('draw.controls.colorStroke')}</ColorPickerLabel>
@@ -73,9 +96,9 @@ export const ColorControls = () => {
       )}
       {drawTypeState == 'Point' && (
         <ColorPicker
-          value={parseColor(drawPointColor)}
+          value={parseColor(primaryColor)}
           onValueChange={(value) => {
-            setDrawPointColor(value.valueAsString);
+            setPrimaryColor(value.valueAsString);
           }}
         >
           <ColorPickerLabel>{t('draw.controls.colorPoint')}</ColorPickerLabel>

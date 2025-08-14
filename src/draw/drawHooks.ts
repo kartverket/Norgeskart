@@ -16,9 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   distanceUnitAtom,
   drawEnabledAtom,
-  drawFillColorAtom,
-  drawPointColorAtom,
-  drawStrokeColorAtom,
   drawStyleAtom,
   drawTypeStateAtom,
   mapAtom,
@@ -33,9 +30,6 @@ const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
   const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
   const [drawTypeState, setDrawTypeState] = useAtom(drawTypeStateAtom);
-  const drawPointColor = useAtomValue(drawPointColorAtom);
-  const drawFillColor = useAtomValue(drawFillColorAtom);
-  const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
   const distanceUnit = useAtomValue(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
@@ -504,9 +498,6 @@ const useDrawSettings = () => {
     drawEnabled,
     drawStyle,
     drawTypeState,
-    drawPointColor,
-    drawFillColor,
-    drawStrokeColor,
     showMeasurements,
     setDrawLayerFeatures,
     setDrawPointColor,

@@ -7,6 +7,10 @@ import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
+import {
+  DEFAULT_PRIMARY_COLOR,
+  DEFAULT_SECONDARY_COLOR,
+} from '../draw/ColorControls';
 import { DrawType } from '../draw/drawHooks';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
@@ -134,38 +138,26 @@ export const mapAtom = atom<Map>(() => {
 export const drawStyleAtom = atom<Style>(
   new Style({
     image: new CircleStyle({
-      radius: 7,
+      radius: 5,
       fill: new Fill({
-        color: '#ffffff',
+        color: DEFAULT_PRIMARY_COLOR,
       }),
       stroke: new Stroke({
-        color: '#ffffff',
+        color: DEFAULT_SECONDARY_COLOR,
         width: 2,
       }),
     }),
     stroke: new Stroke({
-      color: '#ffffff',
+      color: DEFAULT_SECONDARY_COLOR,
       width: 2,
     }),
     fill: new Fill({
-      color: '#ffffff',
+      color: DEFAULT_PRIMARY_COLOR,
     }),
   }),
 );
 
 export const drawTypeStateAtom = atom<DrawType | null>(null);
-
-export const drawPointColorAtom = atom<string>((get) => {
-  const drawStyle = get(drawStyleAtom);
-  return drawStyle.getImage()?.getFill()?.getColor()?.toString();
-  return get(drawStyleAtom).getFill()?.getColor()?.toString() || '#ffffff';
-});
-export const drawFillColorAtom = atom<string>(
-  (get) => get(drawStyleAtom).getFill()?.getColor()?.toString() || '#ffffff',
-);
-export const drawStrokeColorAtom = atom<string>(
-  (get) => get(drawStyleAtom).getStroke()?.getColor()?.toString() || '#ffffff',
-);
 
 export const drawEnabledAtom = atom<boolean>(false);
 export const showMeasurementsAtom = atom<boolean>(false);
