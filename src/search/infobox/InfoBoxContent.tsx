@@ -14,7 +14,7 @@ export const InfoBoxContent = ({
   const { t } = useTranslation();
   let content;
 
-    switch (result.type) {
+  switch (result.type) {
     case 'Place':
       content = `${t('search.placeName')} ${t('infoBox.in')} ${result.place.kommuner.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`;
       break;
