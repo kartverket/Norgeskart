@@ -19,6 +19,7 @@ interface PlacesResultProps {
   handleSearchClick: (res: SearchResult) => void;
   handleHover: (res: SearchResult) => void;
   setHoveredResult: (res: SearchResult | null) => void;
+  onTabClick: () => void;
 }
 
 export const PlacesResult = ({
@@ -28,12 +29,13 @@ export const PlacesResult = ({
   handleSearchClick,
   handleHover,
   setHoveredResult,
+  onTabClick,
 }: PlacesResultProps) => {
   const { t } = useTranslation();
 
   return (
     <AccordionItem value="places">
-      <AccordionItemTrigger onClick={() => {}}>
+      <AccordionItemTrigger onClick={onTabClick}>
         {t('search.placeName')} ({places.length})
       </AccordionItemTrigger>
       <AccordionItemContent>

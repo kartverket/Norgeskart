@@ -17,6 +17,7 @@ interface RoadsResultsProps {
   handleSearchClick: (res: SearchResult) => void;
   handleHover: (res: SearchResult) => void;
   setHoveredResult: (res: SearchResult | null) => void;
+  onTabClick: () => void;
 }
 
 export const RoadsResults = ({
@@ -24,6 +25,7 @@ export const RoadsResults = ({
   handleSearchClick,
   handleHover,
   setHoveredResult,
+  onTabClick,
 }: RoadsResultsProps) => {
   const { t } = useTranslation();
   const [openRoads, setOpenRoads] = useState<string[]>([]);
@@ -61,7 +63,7 @@ export const RoadsResults = ({
 
   return (
     <AccordionItem value="roads">
-      <AccordionItemTrigger onClick={() => {}}>
+      <AccordionItemTrigger onClick={onTabClick}>
         {t('search.roads')} ({roads.length})
       </AccordionItemTrigger>
       <AccordionItemContent>

@@ -122,24 +122,28 @@ export const SearchResults = ({
         handleSearchClick={handleSearchClick}
         handleHover={handleHover}
         setHoveredResult={setHoveredResult}
+        onTabClick={() => handleAccordionTabClick('places')}
       />
       <RoadsResults
         roads={roads}
         handleSearchClick={handleSearchClick}
         handleHover={handleHover}
         setHoveredResult={setHoveredResult}
+        onTabClick={() => handleAccordionTabClick('roads')}
       />
       <PropertiesResults
         properties={properties}
         handleSearchClick={handleSearchClick}
         handleHover={handleHover}
         setHoveredResult={setHoveredResult}
+        onTabClick={() => handleAccordionTabClick('properties')}
       />
       <AddressesResults
         addresses={addresses}
         handleSearchClick={handleSearchClick}
         handleHover={handleHover}
         setHoveredResult={setHoveredResult}
+        onTabClick={() => handleAccordionTabClick('addresses')}
       />
     </AccordionRoot>
   );

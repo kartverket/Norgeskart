@@ -13,6 +13,7 @@ interface AddressesResultsProps {
   handleSearchClick: (res: SearchResult) => void;
   handleHover: (res: SearchResult) => void;
   setHoveredResult: (res: SearchResult | null) => void;
+  onTabClick: () => void;
 }
 
 export const AddressesResults = ({
@@ -20,12 +21,13 @@ export const AddressesResults = ({
   handleSearchClick,
   handleHover,
   setHoveredResult,
+  onTabClick,
 }: AddressesResultsProps) => {
   const { t } = useTranslation();
 
   return (
     <AccordionItem value="addresses">
-      <AccordionItemTrigger onClick={() => {}}>
+      <AccordionItemTrigger onClick={onTabClick}>
         {t('search.addresses')} ({addresses.length})
       </AccordionItemTrigger>
       <AccordionItemContent>
