@@ -14,40 +14,18 @@ export const InfoBoxContent = ({
   const { t } = useTranslation();
   let content;
 
-  switch (result.type) {
+    switch (result.type) {
     case 'Place':
-      content = (
-        <>
-          {t('search.placeName')} {t('infoBox.in')}{' '}
-          {result.place.kommuner.map((k) => k.kommunenavn).join(', ')}{' '}
-          {t('infoBox.municipality').toLowerCase()}
-        </>
-      );
+      content = `${t('search.placeName')} ${t('infoBox.in')} ${result.place.kommuner.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`;
       break;
     case 'Road':
-      content = (
-        <>
-          {t('infoBox.roadName')} {t('infoBox.in')} {result.road.KOMMUNENAVN}{' '}
-          {t('infoBox.municipality').toLowerCase()}
-        </>
-      );
+      content = `${t('infoBox.roadName')} ${t('infoBox.in')} ${result.road.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`;
       break;
     case 'Property':
-      content = (
-        <>
-          {t('infoBox.cadastralIdentifier')} {t('infoBox.in')}{' '}
-          {result.property.KOMMUNENAVN}{' '}
-          {t('infoBox.municipality').toLowerCase()}
-        </>
-      );
+      content = `${t('infoBox.cadastralIdentifier')} ${t('infoBox.in')} ${result.property.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`;
       break;
     case 'Address':
-      content = (
-        <>
-          {t('infoBox.address')} {t('infoBox.in')} {result.address.kommunenavn}{' '}
-          {t('infoBox.municipality').toLowerCase()}
-        </>
-      );
+      content = `${t('infoBox.address')} ${t('infoBox.in')} ${result.address.kommunenavn} ${t('infoBox.municipality').toLowerCase()}`;
       break;
   }
 
