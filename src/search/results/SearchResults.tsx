@@ -85,12 +85,7 @@ export const SearchResults = ({
     setMapLocation([lon, lat], getInputCRS(res), 15);
   };
 
-  //Mattis 18.06.26. For å sjekke om det er resultater for høydesetting på resultatene
-  const hasResults =
-    properties.length > 0 ||
-    roads.length > 0 ||
-    places.length > 0 ||
-    addresses.length > 0;
+  const hasResults = allResults.length > 0;
 
   if (!placesMetadata) {
     return null;
