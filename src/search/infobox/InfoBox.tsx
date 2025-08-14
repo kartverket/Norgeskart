@@ -12,9 +12,9 @@ import { useTranslation } from 'react-i18next';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
 import { getElevation } from '../searchApi';
+import { InfoBoxContent } from './InfoBoxContent';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
-import { InfoBoxContent } from './InfoBoxContent';
 
 interface InfoBoxProps {
   result: SearchResult;
@@ -39,7 +39,7 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
         overflowY="auto"
         overflowX="hidden"
       >
-       <InfoBoxContent result={result} elevationData={elevationData} />
+        <InfoBoxContent result={result} elevationData={elevationData} />
         <AccordionRoot collapsible mr={2} mt={5}>
           <AccordionItem value="propertyInfo">
             <AccordionItemTrigger pl={0}>

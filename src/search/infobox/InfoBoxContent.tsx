@@ -1,13 +1,16 @@
+import { Box, Text } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
-import { Box, Text } from '@kvib/react';
 
 interface InfoBoxContentProps {
   result: SearchResult;
   elevationData?: { value: number };
 }
 
-export const InfoBoxContent = ({ result, elevationData }: InfoBoxContentProps) => {
+export const InfoBoxContent = ({
+  result,
+  elevationData,
+}: InfoBoxContentProps) => {
   const { t } = useTranslation();
   let content;
 
@@ -24,8 +27,7 @@ export const InfoBoxContent = ({ result, elevationData }: InfoBoxContentProps) =
     case 'Road':
       content = (
         <>
-          {t('infoBox.roadName')} {t('infoBox.in')}{' '}
-          {result.road.KOMMUNENAVN}{' '}
+          {t('infoBox.roadName')} {t('infoBox.in')} {result.road.KOMMUNENAVN}{' '}
           {t('infoBox.municipality').toLowerCase()}
         </>
       );
@@ -42,21 +44,22 @@ export const InfoBoxContent = ({ result, elevationData }: InfoBoxContentProps) =
     case 'Address':
       content = (
         <>
-          {t('infoBox.address')} {t('infoBox.in')}{' '}
-          {result.address.kommunenavn}{' '}
+          {t('infoBox.address')} {t('infoBox.in')} {result.address.kommunenavn}{' '}
           {t('infoBox.municipality').toLowerCase()}
         </>
       );
       break;
   }
 
-  return(
+  return (
     <Box>
-      <Text fontSize='xl' mb={2}>{result.name}</Text>
+      <Text fontSize="xl" mb={2}>
+        {result.name}
+      </Text>
       <Text>{content}</Text>
       {t('infoBox.heightEstimatedByInterpolation')}{' '}
       {Number(elevationData?.value).toFixed(1)}{' '}
       {t('infoBox.metersAboveSeaLevel')}
     </Box>
-  )
+  );
 };
