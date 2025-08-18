@@ -8,6 +8,7 @@ import { get as getProjection } from 'ol/proj';
 import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 
+import { v4 as uuidv4 } from 'uuid';
 import { DrawType } from '../draw/drawHooks';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
@@ -58,7 +59,6 @@ const getInitialMapView = () => {
     : INITIAL_PROJECTION;
 
   const initialProjection = getProjection(projectionId)!;
-  const projectionExtent = initialProjection.getExtent();
 
   let initialZoom = DEFAULT_ZOOM_LEVEL;
   let initialCenter = DEFAULT_CENTER;
@@ -96,7 +96,6 @@ const getInitialMapView = () => {
     zoom: initialZoom,
     rotation: initialRotation,
     projection: initialProjection,
-    extent: projectionExtent,
     constrainResolution: true,
   });
 };
@@ -131,6 +130,8 @@ export const mapAtom = atom<Map>(() => {
       setUrlParameter('zoom', zoom.toString());
     }
   });
+  const mapId = uuidv4();
+  map.setProperties({ id: mapId });
 
   return map;
 });
