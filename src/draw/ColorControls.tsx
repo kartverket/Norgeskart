@@ -3,12 +3,10 @@ import {
   ColorPickerArea,
   ColorPickerContent,
   ColorPickerControl,
-  ColorPickerEyeDropper,
   ColorPickerInput,
   ColorPickerLabel,
   ColorPickerSliders,
   ColorPickerTrigger,
-  HStack,
   parseColor,
 } from '@kvib/react';
 import { t } from 'i18next';
@@ -38,10 +36,7 @@ export const ColorControls = () => {
           </ColorPickerControl>
           <ColorPickerContent>
             <ColorPickerArea />
-            <HStack>
-              <ColorPickerEyeDropper />
-              <ColorPickerSliders />
-            </HStack>
+            <ColorPickerSliders />
           </ColorPickerContent>
         </ColorPicker>
       )}
@@ -61,10 +56,7 @@ export const ColorControls = () => {
           </ColorPickerControl>
           <ColorPickerContent>
             <ColorPickerArea />
-            <HStack>
-              <ColorPickerEyeDropper />
-              <ColorPickerSliders />
-            </HStack>
+            <ColorPickerSliders />
           </ColorPickerContent>
         </ColorPicker>
       )}
@@ -82,10 +74,7 @@ export const ColorControls = () => {
           </ColorPickerControl>
           <ColorPickerContent>
             <ColorPickerArea />
-            <HStack>
-              <ColorPickerEyeDropper />
-              <ColorPickerSliders />
-            </HStack>
+            <ColorPickerSliders />
           </ColorPickerContent>
         </ColorPicker>
       )}
