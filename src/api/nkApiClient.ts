@@ -95,7 +95,7 @@ export const saveFeatures = async (
       throw new Error('Failed to save features');
     }
     const responseText = await res.text();
-    const filterRegex = /^\/((?:\w|\d|-)*)\.json$/; //the response is of type "/someGuidLikeThings.json" Capture just the guid
+    const filterRegex = /^\/([\w-]*)\.json$/; //the response is of type "/someGuidLikeThings.json" Capture just the guid
     const parts = filterRegex.exec(responseText);
     const id = parts ? parts[1] : null;
     return id;
