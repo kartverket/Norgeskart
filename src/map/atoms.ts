@@ -158,6 +158,30 @@ export const drawStyleAtom = atom<Style>(
   }),
 );
 
+export const drawStyleReadAtom = atom((get) => {
+  const primaryColor = get(primaryColorAtom);
+  const secondaryColor = get(secondaryColorAtom);
+  return new Style({
+    image: new CircleStyle({
+      radius: 5,
+      fill: new Fill({
+        color: primaryColor,
+      }),
+      stroke: new Stroke({
+        color: secondaryColor,
+        width: 2,
+      }),
+    }),
+    stroke: new Stroke({
+      color: secondaryColor,
+      width: 2,
+    }),
+    fill: new Fill({
+      color: primaryColor,
+    }),
+  });
+});
+
 export const drawTypeStateAtom = atom<DrawType | null>(null);
 
 export const drawEnabledAtom = atom<boolean>(false);

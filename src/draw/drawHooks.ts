@@ -1,5 +1,5 @@
 import { FeatureCollection } from 'geojson';
-import { useAtom, useAtomValue } from 'jotai';
+import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
@@ -11,12 +11,11 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { getArea, getLength } from 'ol/sphere';
 import { Fill, Style } from 'ol/style';
-import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import {
   distanceUnitAtom,
   drawEnabledAtom,
-  drawStyleAtom,
+  drawStyleReadAtom,
   drawTypeStateAtom,
   mapAtom,
   ProjectionIdentifier,
@@ -28,7 +27,6 @@ export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
-  const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
   const [drawTypeState, setDrawTypeState] = useAtom(drawTypeStateAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
   const distanceUnit = useAtomValue(distanceUnitAtom);
@@ -133,9 +131,11 @@ const useDrawSettings = () => {
     });
 
     map.addInteraction(newDraw);
+    const store = getDefaultStore();
+    const style = store.get(drawStyleReadAtom);
 
-    newDraw.getOverlay().setStyle(drawStyle);
-    newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
+    newDraw.getOverlay().setStyle(style);
+    newDraw.addEventListener('drawend', (event) => drawEnd(event, style));
 
     setShowMeasurements(showMeasurements);
     setDrawTypeState(type);
@@ -238,47 +238,6 @@ const useDrawSettings = () => {
     });
     drawSource.clear();
     drawSource.addFeatures(transformedFeatures);
-  };
-
-  const setDrawFillColor = (color: string) => {
-    const style = drawStyle.clone();
-    style.setFill(new Fill({ color }));
-    const circleStyle = new CircleStyle({
-      radius: 5,
-      fill: new Fill({ color }),
-    });
-    style.setImage(circleStyle);
-    setDrawStyle(style);
-  };
-
-  const setDrawStrokeColor = (color: string) => {
-    const style = drawStyle.clone();
-    style.getStroke()?.setColor(color);
-    setDrawStyle(style);
-  };
-
-  const setDrawPointColor = (color: string) => {
-    const style = drawStyle.clone();
-    const circleStyle = new CircleStyle({
-      radius: 5,
-      fill: new Fill({ color }),
-    });
-    style.setImage(circleStyle);
-    style.setFill(new Fill({ color }));
-    style.getStroke()?.setColor(color);
-    setDrawStyle(style);
-  };
-
-  const setDrawStyle = (style: Style) => {
-    const draw = getDrawInteraction();
-    if (draw) {
-      draw.getOverlay().setStyle(style);
-      draw.getListeners('drawend')?.forEach((listener) => {
-        draw.removeEventListener('drawend', listener);
-      });
-      draw.addEventListener('drawend', (event) => drawEnd(event, style));
-      setDrawStyleAtom(style);
-    }
   };
 
   const setDisplayInteractiveMeasurement = (enable: boolean) => {
@@ -496,21 +455,18 @@ const useDrawSettings = () => {
 
   return {
     drawEnabled,
-    drawStyle,
     drawTypeState,
     showMeasurements,
     setDrawLayerFeatures,
-    setDrawPointColor,
     setDrawEnabled,
     setDrawType,
-    setDrawFillColor,
-    setDrawStrokeColor,
     setShowMeasurements,
     refreshMeasurements,
     abortDrawing,
     clearDrawing,
     getDrawLayer,
     getDrawnFeatures,
+    getDrawType,
   };
 };
 
