@@ -52,5 +52,11 @@
       "dependency_name": "@tanstack/react-query",
       "update_type": "semver:patch"
     }
+  },
+  {
+    "match": {
+      "dependency_name": "jotai",
+      "update_type": "semver:minor"
+    }
   }
 ]
