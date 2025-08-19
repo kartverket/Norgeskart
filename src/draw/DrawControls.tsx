@@ -85,7 +85,7 @@ export const DrawControls = () => {
 
     console.log(geojson);
 
-    saveFeatures(geojson, mapProjection).then((id) => {
+    saveFeatures(geojson).then((id) => {
       if (id != null) {
         setUrlParameter('drawing', id);
       }
@@ -148,7 +148,6 @@ export const DrawControls = () => {
             onClick={() => {
               if (!drawId) return;
               getFeatures(drawId).then((fetchedFeatures) => {
-                console.log('fetched:', fetchedFeatures);
                 setDrawLayerFeatures(fetchedFeatures, 'EPSG:4326');
               });
             }}
