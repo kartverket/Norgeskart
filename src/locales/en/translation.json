@@ -9,7 +9,8 @@
       "showMeasurements": "Show measurments",
       "toolSelect": {
         "placeholder": "Select draw tool"
-      }
+      },
+      "colorPoint": "Point color"
     },
     "end": "Done",
     "save": "Save",
@@ -71,7 +72,16 @@
     "roads": "Roads",
     "properties": "Properties",
     "addresses": "Addresses",
-    "houseNumber": "House nr."
+    "houseNumber": "House nr.",
+    "actions": {
+      "print": {
+        "tooltip": "Print"
+      },
+      "shareMap": {
+        "tooltip": "Share map",
+        "success": "Url copied to clipboard"
+      }
+    }
   },
   "shared": {
     "actions": {

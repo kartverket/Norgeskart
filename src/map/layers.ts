@@ -1,11 +1,8 @@
 import BaseLayer from 'ol/layer/Base';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { ProjectionIdentifier } from './atoms';
 
-type LayerFunction =
-  | ((_: ProjectionIdentifier) => BaseLayer)
-  | (() => BaseLayer);
+type LayerFunction = () => BaseLayer;
 
 export const isMapLayerBackground = (layer: BaseLayer) => {
   return layer.get('id')?.startsWith('bg.');

@@ -4,12 +4,13 @@
     "clear": "Fjern teikning",
     "confrimClear": "Er du sikker?",
     "controls": {
-      "colorFill": "Velg fyllfarge",
-      "colorStroke": "Velg omrissfarge",
+      "colorFill": "Fyllfarge",
+      "colorStroke": "Omrissfarge",
       "showMeasurements": "Vis mål",
       "toolSelect": {
         "placeholder": "Velg teknemåte"
-      }
+      },
+      "colorPoint": "Punktfarge"
     },
     "end": "Ferdig",
     "save": "Lagre",
@@ -71,7 +72,16 @@
     "roads": "Vegar",
     "properties": "Eigedomar",
     "addresses": "Adresser",
-    "houseNumber": "Husnr"
+    "houseNumber": "Husnr",
+    "actions": {
+      "print": {
+        "tooltip": "Skriv ut"
+      },
+      "shareMap": {
+        "tooltip": "Del kartet",
+        "success": "Lenka er kopiert til utklippstavla"
+      }
+    }
   },
   "shared": {
     "actions": {

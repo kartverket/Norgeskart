@@ -12,4 +12,11 @@ export const getUrlParameter = (key: NKUrlParameter): string | null => {
   return url.searchParams.get(key);
 };
 
-export type NKUrlParameter = 'projection' | 'backgroundLayer' | 'x' | 'y' | 'z';
+export type NKUrlParameter =
+  | 'projection'
+  | 'backgroundLayer'
+  | 'rotation'
+  | 'lat'
+  | 'lon'
+  | 'zoom'
+  | 'drawing';

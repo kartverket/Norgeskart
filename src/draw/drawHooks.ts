@@ -1,6 +1,8 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { FeatureCollection } from 'geojson';
+import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
 import BaseEvent from 'ol/events/Event';
+import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Select from 'ol/interaction/Select';
@@ -13,10 +15,10 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   distanceUnitAtom,
   drawEnabledAtom,
-  drawFillColorAtom,
-  drawStrokeColorAtom,
-  drawStyleAtom,
+  drawStyleReadAtom,
+  drawTypeStateAtom,
   mapAtom,
+  ProjectionIdentifier,
   showMeasurementsAtom,
 } from '../map/atoms';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
@@ -25,9 +27,7 @@ export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
-  const [drawStyle, setDrawStyleAtom] = useAtom(drawStyleAtom);
-  const drawFillColor = useAtomValue(drawFillColorAtom);
-  const drawStrokeColor = useAtomValue(drawStrokeColorAtom);
+  const [drawTypeState, setDrawTypeState] = useAtom(drawTypeStateAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
   const distanceUnit = useAtomValue(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
@@ -131,13 +131,20 @@ const useDrawSettings = () => {
     });
 
     map.addInteraction(newDraw);
+    const store = getDefaultStore();
+    const style = store.get(drawStyleReadAtom);
 
-    if (drawStyle) {
-      newDraw.getOverlay().setStyle(drawStyle);
-      newDraw.addEventListener('drawend', (event) => drawEnd(event, drawStyle));
-    }
+    newDraw.getOverlay().setStyle(style);
+    newDraw.addEventListener('drawend', (event) => drawEnd(event, style));
 
     setShowMeasurements(showMeasurements);
+    setDrawTypeState(type);
+  };
+
+  const getDrawnFeatures = () => {
+    return getDrawLayer()?.getSource()?.getFeatures() as
+      | Feature<Geometry>[]
+      | undefined;
   };
 
   const drawEnd = (event: BaseEvent | Event, style: Style) => {
@@ -145,27 +152,92 @@ const useDrawSettings = () => {
     eventFeature.setStyle(style);
   };
 
-  const setDrawFillColor = (color: string) => {
-    const style = drawStyle.clone();
-    style.setFill(new Fill({ color }));
-    setDrawStyle(style);
-  };
-  const setDrawStrokeColor = (color: string) => {
-    const style = drawStyle.clone();
-    style.getStroke()?.setColor(color);
-    setDrawStyle(style);
+  const getDrawType = () => {
+    const select = getSelectInteraction();
+    const draw = getDrawInteraction();
+    if (select) {
+      return 'Move';
+    }
+    if (!draw) {
+      return null;
+    }
+    return draw['type_'] as DrawType | null;
   };
 
-  const setDrawStyle = (style: Style) => {
-    const draw = getDrawInteraction();
-    if (draw) {
-      draw.getOverlay().setStyle(style);
-      draw.getListeners('drawend')?.forEach((listener) => {
-        draw.removeEventListener('drawend', listener);
-      });
-      draw.addEventListener('drawend', (event) => drawEnd(event, style));
-      setDrawStyleAtom(style);
+  const getStyleFromFeatureProperties = (feature: Feature<Geometry>) => {
+    const geometryType = feature.getGeometry()?.getType();
+    if (!geometryType) {
+      return null;
     }
+    const styleObj = feature.getProperties().style;
+    if (!styleObj) {
+      return null;
+    }
+    switch (geometryType) {
+      case 'Point': {
+        const pointColor = styleObj.regularshape.fill.color;
+        const pointStyle = new Style({
+          fill: new Fill({
+            color: pointColor,
+          }),
+        });
+        console.log(pointStyle);
+
+        return pointStyle;
+      }
+
+      case 'LineString': {
+        // console.log('line');
+        // console.log(styleObj);
+        return null;
+      }
+
+      case 'Polygon': {
+        // console.log('polygon');
+        // console.log(styleObj);
+        return null;
+      }
+
+      default:
+        return null;
+    }
+    const geoName = feature.getGeometryName();
+    const geometry = feature.getGeometry();
+    console.log(geoName);
+    console.log(geometry?.getType());
+    console.log(styleObj);
+
+    if (styleObj == null) {
+      return null;
+    }
+    const style = new Style(styleObj);
+    return style;
+  };
+
+  const setDrawLayerFeatures = (
+    featureCollection: FeatureCollection,
+    sourceProjection: ProjectionIdentifier,
+  ) => {
+    const drawLayer = getDrawLayer();
+    const drawSource = drawLayer.getSource() as VectorSource | null;
+    if (!drawSource) {
+      console.warn('no draw source');
+      return;
+    }
+    const mapProjection = map.getView().getProjection().getCode();
+    const featuresToAdd = new GeoJSON().readFeatures(featureCollection);
+    const transformedFeatures = featuresToAdd.map((feature) => {
+      const transformedGeometry = feature
+        .getGeometry()
+        ?.transform(sourceProjection, mapProjection);
+      const featureStyle = getStyleFromFeatureProperties(feature);
+      return new Feature({
+        geometry: transformedGeometry,
+        style: featureStyle,
+      });
+    });
+    drawSource.clear();
+    drawSource.addFeatures(transformedFeatures);
   };
 
   const setDisplayInteractiveMeasurement = (enable: boolean) => {
@@ -383,19 +455,18 @@ const useDrawSettings = () => {
 
   return {
     drawEnabled,
-    drawStyle,
-    drawFillColor,
-    drawStrokeColor,
+    drawTypeState,
     showMeasurements,
+    setDrawLayerFeatures,
     setDrawEnabled,
     setDrawType,
-    setDrawFillColor,
-    setDrawStrokeColor,
     setShowMeasurements,
     refreshMeasurements,
     abortDrawing,
     clearDrawing,
     getDrawLayer,
+    getDrawnFeatures,
+    getDrawType,
   };
 };
 

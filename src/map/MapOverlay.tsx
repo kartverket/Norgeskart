@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
+import { useIsMobileScreen } from '../shared/hooks';
 import {
   displayCompassOverlayAtom,
   magneticDeclinationAtom,
@@ -36,6 +37,7 @@ export const MapOverlay = () => {
   const { t } = useTranslation();
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const compassFileName = useCompassFileName();
+  const isMobile = useIsMobileScreen();
 
   const compassOrientation =
     mapOrientation + (useMagneticNorth ? magneticDeclination : 0);
@@ -206,15 +208,17 @@ export const MapOverlay = () => {
         <Portal container={zoomRef}>
           <Box zIndex={10}>
             <HStack gap={0}>
-              <IconButton
-                icon="switch_access_shortcut"
-                variant="ghost"
-                _hover={{ bg: 'transparent' }}
-                m={0}
-                p={0}
-                onClick={() => rotateSnappy('right')}
-                mr={-3}
-              />
+              {!isMobile && (
+                <IconButton
+                  icon="switch_access_shortcut"
+                  variant="ghost"
+                  _hover={{ bg: 'transparent' }}
+                  m={0}
+                  p={0}
+                  onClick={() => rotateSnappy('right')}
+                  mr={-3}
+                />
+              )}
               <IconButton
                 icon="navigation"
                 variant="ghost"
@@ -225,15 +229,17 @@ export const MapOverlay = () => {
                 rotate={mapOrientation + 'deg'}
                 mr={-3}
               />
-              <IconButton
-                icon="switch_access_shortcut"
-                variant="ghost"
-                _hover={{ bg: 'transparent' }}
-                transform="scale(-1,1)"
-                m={0}
-                p={0}
-                onClick={() => rotateSnappy('left')}
-              />
+              {!isMobile && (
+                <IconButton
+                  icon="switch_access_shortcut"
+                  variant="ghost"
+                  _hover={{ bg: 'transparent' }}
+                  transform="scale(-1,1)"
+                  m={0}
+                  p={0}
+                  onClick={() => rotateSnappy('left')}
+                />
+              )}
             </HStack>
           </Box>
         </Portal>
