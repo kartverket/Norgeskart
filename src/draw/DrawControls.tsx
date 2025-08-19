@@ -26,6 +26,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures, saveFeatures } from '../api/nkApiClient.ts';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
+import { getEnvName } from '../env.ts';
 import { useMapSettings } from '../map/mapHooks.ts';
 import { setUrlParameter } from '../shared/utils/urlUtils.ts';
 import { ColorControls } from './ColorControls.tsx';
@@ -43,6 +44,7 @@ export const DrawControls = () => {
 
   const { getMapProjectionCode } = useMapSettings();
   const { t } = useTranslation();
+  const envName = getEnvName();
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
   const [drawId, setDrawId] = useState<string | null>(null);
@@ -110,23 +112,27 @@ export const DrawControls = () => {
           <ColorControls />
         </>
       )}
-      <Input
-        value={drawId ?? ''}
-        onChange={(e) => {
-          setDrawId(e.target.value);
-        }}
-      ></Input>
-      <Button
-        onClick={() => {
-          if (!drawId) return;
-          getFeatures(drawId).then((fetchedFeatures) => {
-            console.log('fetched:', fetchedFeatures);
-            setDrawLayerFeatures(fetchedFeatures, 'EPSG:4326');
-          });
-        }}
-      >
-        Hent tegning fra API
-      </Button>
+      {envName == 'local' && (
+        <>
+          <Input
+            value={drawId ?? ''}
+            onChange={(e) => {
+              setDrawId(e.target.value);
+            }}
+          ></Input>
+          <Button
+            onClick={() => {
+              if (!drawId) return;
+              getFeatures(drawId).then((fetchedFeatures) => {
+                console.log('fetched:', fetchedFeatures);
+                setDrawLayerFeatures(fetchedFeatures, 'EPSG:4326');
+              });
+            }}
+          >
+            Hent tegning fra API
+          </Button>
+        </>
+      )}
       <MeasurementControls />
       <ButtonGroup>
         <PopoverRoot
