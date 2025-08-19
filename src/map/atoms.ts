@@ -136,28 +136,6 @@ export const mapAtom = atom<Map>(() => {
   return map;
 });
 
-export const drawStyleAtom = atom<Style>(
-  new Style({
-    image: new CircleStyle({
-      radius: 5,
-      fill: new Fill({
-        color: DEFAULT_PRIMARY_COLOR,
-      }),
-      stroke: new Stroke({
-        color: DEFAULT_SECONDARY_COLOR,
-        width: 2,
-      }),
-    }),
-    stroke: new Stroke({
-      color: DEFAULT_SECONDARY_COLOR,
-      width: 2,
-    }),
-    fill: new Fill({
-      color: DEFAULT_PRIMARY_COLOR,
-    }),
-  }),
-);
-
 export const drawStyleReadAtom = atom((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
