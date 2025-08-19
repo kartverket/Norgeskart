@@ -17,7 +17,10 @@
     "tabHeading": "Tegn",
     "tools": "Tegneverktøy",
     "yesClear": "Ja, fjern",
-    "close": "Lukk"
+    "close": "Lukk",
+    "size": {
+      "label": "Størrelse"
+    }
   },
   "export": {
     "format": {

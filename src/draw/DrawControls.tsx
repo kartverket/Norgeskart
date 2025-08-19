@@ -30,6 +30,7 @@ import { getEnvName } from '../env.ts';
 import { useMapSettings } from '../map/mapHooks.ts';
 import { setUrlParameter } from '../shared/utils/urlUtils.ts';
 import { ColorControls } from './ColorControls.tsx';
+import { LineWidthControl } from './LineWidthControl.tsx';
 import { MeasurementControls } from './MeasurementControls.tsx';
 export const DrawControls = () => {
   const {
@@ -110,6 +111,7 @@ export const DrawControls = () => {
             </SelectContent>
           </SelectRoot>
           <ColorControls />
+          <LineWidthControl />
         </>
       )}
       {envName == 'local' && (

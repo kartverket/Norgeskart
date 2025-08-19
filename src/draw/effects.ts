@@ -1,3 +1,4 @@
+import { getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import BaseEvent from 'ol/events/Event';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
@@ -49,10 +50,12 @@ export const primaryColorEffect = atomEffect((get) => {
     return;
   }
   const newStyle = style.clone() as Style;
+  const store = getDefaultStore();
+  const lineWidth = store.get(lineWidthAtom);
 
   newStyle.getFill()?.setColor(primaryColor);
   const circleStyle = new CircleStyle({
-    radius: 5,
+    radius: lineWidth,
     fill: new Fill({ color: primaryColor }),
   });
   newStyle.setImage(circleStyle);
@@ -91,5 +94,13 @@ export const lineWidthEffect = atomEffect((get) => {
   }
   const newStyle = style.clone();
   newStyle.getStroke()?.setWidth(lineWidth);
+  const store = getDefaultStore();
+  const primaryColor = store.get(primaryColorAtom);
+
+  const circleStyle = new CircleStyle({
+    radius: lineWidth,
+    fill: new Fill({ color: primaryColor }),
+  });
+  newStyle.setImage(circleStyle);
   setNewStyle(drawInteraction, newStyle);
 });
