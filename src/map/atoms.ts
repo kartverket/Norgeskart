@@ -39,6 +39,8 @@ export type ProjectionIdentifier =
 
 export type DistanceUnit = 'm' | 'NM';
 
+export type LineWidth = 2 | 4 | 8;
+
 export const baseLayerIdAtom = atom<string | null>(null);
 export const backgroundLayerIdAtom = atom<string | null>(null);
 export const mapOrientationAtom = atom<number>(0);
@@ -167,6 +169,7 @@ export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
+export const lineWidthAtom = atom<LineWidth>(2);
 
 export const markerStyleAtom = atom<Style>(
   new Style({
