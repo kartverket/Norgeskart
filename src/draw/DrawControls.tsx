@@ -70,6 +70,28 @@ export const DrawControls = () => {
     };
   }, [abortDrawing]);
 
+  const onSaveFeatures = () => {
+    const drawnFeatures = getDrawnFeatures();
+    const mapProjection = getMapProjectionCode();
+
+    if (drawnFeatures == null) {
+      return;
+    }
+    const geojsonFormat = new GeoJSON();
+    const geojson = geojsonFormat.writeFeaturesObject(drawnFeatures, {
+      featureProjection: mapProjection,
+      dataProjection: 'EPSG:4326',
+    });
+
+    console.log(geojson);
+
+    saveFeatures(geojson, mapProjection).then((id) => {
+      if (id != null) {
+        setUrlParameter('drawing', id);
+      }
+    });
+  };
+
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
       <SwitchRoot
@@ -163,31 +185,7 @@ export const DrawControls = () => {
             </PopoverBody>
           </PopoverContent>
         </PopoverRoot>
-        <Button
-          onClick={() => {
-            const drawnFeatures = getDrawnFeatures();
-            const mapProjection = getMapProjectionCode();
-
-            if (drawnFeatures == null) {
-              return;
-            }
-            const geojsonFormat = new GeoJSON();
-            const geojson = geojsonFormat.writeFeaturesObject(drawnFeatures, {
-              featureProjection: mapProjection,
-              dataProjection: 'EPSG:4326',
-            });
-
-            console.log(geojson);
-
-            saveFeatures(geojson, mapProjection).then((id) => {
-              if (id != null) {
-                setUrlParameter('drawing', id);
-              }
-            });
-          }}
-        >
-          {t('draw.save')}
-        </Button>
+        <Button onClick={onSaveFeatures}>{t('draw.save')}</Button>
       </ButtonGroup>
     </VStack>
   );
