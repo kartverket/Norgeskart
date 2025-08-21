@@ -1,4 +1,4 @@
-import { FeatureCollection } from 'geojson';
+import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
 import BaseEvent from 'ol/events/Event';
@@ -10,8 +10,9 @@ import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { getArea, getLength } from 'ol/sphere';
-import { Fill, Style } from 'ol/style';
+import { Fill, Stroke, Style } from 'ol/style';
 import { v4 as uuidv4 } from 'uuid';
+import { StyleForStorage } from '../api/nkApiClient';
 import {
   distanceUnitAtom,
   drawEnabledAtom,
@@ -164,53 +165,25 @@ const useDrawSettings = () => {
     return draw['type_'] as DrawType | null;
   };
 
-  const getStyleFromFeatureProperties = (feature: Feature<Geometry>) => {
-    const geometryType = feature.getGeometry()?.getType();
-    if (!geometryType) {
+  const getStyleFromProperties = (props: GeoJsonProperties) => {
+    if (props == null) {
       return null;
     }
-    const styleObj = feature.getProperties().style;
-    if (!styleObj) {
+    const styleFromProps = props.style as StyleForStorage | undefined;
+    if (styleFromProps == null) {
       return null;
     }
-    switch (geometryType) {
-      case 'Point': {
-        const pointColor = styleObj.regularshape.fill.color;
-        const pointStyle = new Style({
-          fill: new Fill({
-            color: pointColor,
-          }),
-        });
-        console.log(pointStyle);
+    const fill = new Fill({ color: styleFromProps.fill.color });
+    const stroke = new Stroke({
+      color: styleFromProps.stroke.color,
+      width: styleFromProps.stroke.width,
+    });
 
-        return pointStyle;
-      }
+    const style = new Style({
+      fill,
+      stroke,
+    });
 
-      case 'LineString': {
-        // console.log('line');
-        // console.log(styleObj);
-        return null;
-      }
-
-      case 'Polygon': {
-        // console.log('polygon');
-        // console.log(styleObj);
-        return null;
-      }
-
-      default:
-        return null;
-    }
-    const geoName = feature.getGeometryName();
-    const geometry = feature.getGeometry();
-    console.log(geoName);
-    console.log(geometry?.getType());
-    console.log(styleObj);
-
-    if (styleObj == null) {
-      return null;
-    }
-    const style = new Style(styleObj);
     return style;
   };
 
@@ -225,19 +198,46 @@ const useDrawSettings = () => {
       return;
     }
     const mapProjection = map.getView().getProjection().getCode();
-    const featuresToAdd = new GeoJSON().readFeatures(featureCollection);
-    const transformedFeatures = featuresToAdd.map((feature) => {
-      const transformedGeometry = feature
-        .getGeometry()
-        ?.transform(sourceProjection, mapProjection);
-      const featureStyle = getStyleFromFeatureProperties(feature);
-      return new Feature({
-        geometry: transformedGeometry,
-        style: featureStyle,
-      });
+    const geojsonReader = new GeoJSON();
+
+    const featuresToAddWithStyle: Feature<Geometry>[] = [];
+
+    featureCollection.features.forEach((feature) => {
+      const geometryOriginalProjection = geojsonReader.readFeature(
+        feature.geometry,
+      );
+      if (Array.isArray(geometryOriginalProjection)) {
+        geometryOriginalProjection.forEach((geom) => {
+          const transformedGeometry = geom
+            .getGeometry()
+            ?.transform(sourceProjection, mapProjection);
+          const featureStyle = feature.properties?.style as Style | null;
+          if (transformedGeometry) {
+            const newFeature = new Feature({
+              geometry: transformedGeometry,
+              style: featureStyle,
+            });
+            featuresToAddWithStyle.push(newFeature);
+          }
+        });
+      } else {
+        const transformedGeometry = geometryOriginalProjection
+          .getGeometry()
+          ?.transform(sourceProjection, mapProjection);
+        const featureStyle = getStyleFromProperties(feature.properties); //
+        if (transformedGeometry) {
+          const newFeature = new Feature({
+            geometry: transformedGeometry,
+          });
+          if (featureStyle) {
+            newFeature.setStyle(featureStyle);
+          }
+          featuresToAddWithStyle.push(newFeature);
+        }
+      }
     });
     drawSource.clear();
-    drawSource.addFeatures(transformedFeatures);
+    drawSource.addFeatures(featuresToAddWithStyle);
   };
 
   const setDisplayInteractiveMeasurement = (enable: boolean) => {

@@ -28,7 +28,11 @@ import { transform } from 'ol/proj';
 import { Style } from 'ol/style';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getFeatures, saveFeatures } from '../api/nkApiClient.ts';
+import {
+  getFeatures,
+  saveFeatures,
+  StyleForStorage,
+} from '../api/nkApiClient.ts';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
 import { getEnvName } from '../env.ts';
 import { useMapSettings } from '../map/mapHooks.ts';
@@ -76,6 +80,25 @@ export const DrawControls = () => {
     { value: 'Circle', label: 'Sirkel' },
   ];
 
+  const getStyleForStorage = (style: Style | null): StyleForStorage | null => {
+    if (!style) {
+      return null;
+    }
+    const fill = style.getFill();
+    const stroke = style.getStroke();
+    const image = style.getImage();
+
+    const fillColor = fill ? fill.getColor() : 'none';
+    const strokeColor = stroke ? stroke.getColor() : 'none';
+    const strokeWidth = stroke ? stroke.getWidth() : 1;
+    //Få med image. Sjekk ut om alt bare bør være regular shape fra ol
+
+    return {
+      fill: { color: fillColor },
+      stroke: { color: strokeColor, width: strokeWidth },
+    };
+  };
+
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -107,6 +130,7 @@ export const DrawControls = () => {
             coords.map((c) => transform(c, mapProjection, 'EPSG:4326')),
         );
         const featureStyle = feature.getStyle() as Style | null;
+        const styleForStorage = getStyleForStorage(featureStyle);
         return {
           type: 'Feature',
           geometry: {
@@ -114,7 +138,7 @@ export const DrawControls = () => {
             coordinates: featureCoordinates,
           },
           properties: {
-            style: featureStyle,
+            style: styleForStorage,
           },
         } as Feature;
       })
