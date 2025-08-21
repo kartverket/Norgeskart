@@ -1,25 +1,17 @@
 import { FeatureCollection } from 'geojson';
+import { Color } from 'ol/color';
+import { ColorLike, PatternDescriptor } from 'ol/colorlike';
 import { getEnv } from '../env';
 
 const BASE_API_URL = getEnv().apiUrl;
 
-// type GeometryWithStyle = {
-//   type: string;
-//   coordinates: Coordinate[][];
-//   properties: {
-//     style: {
-//       stroke: string;
-//       strokeWidth: number;
-//       fill: string;
-//       image: any;
-//     };
-//   };
-// };
-
-// export type SaveFeaturesBody = {
-//   type: 'FeatureCollection';
-//   features: GeometryWithStyle[];
-// };
+export type StyleForStorage = {
+  fill: { color: Color | ColorLike | PatternDescriptor | null };
+  stroke: {
+    color: Color | ColorLike | undefined;
+    width: number | undefined;
+  };
+};
 
 export const getFeatures = async (
   drawingId: string,
@@ -38,8 +30,6 @@ export const getFeatures = async (
     throw error;
   }
 };
-
-//https://openlayers.org/en/latest/examples/geojson.html  Stapp dette greien inn i draw layer på oppstart?
 
 export const saveFeatures = async (
   features: FeatureCollection,
