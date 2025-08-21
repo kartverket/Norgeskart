@@ -3,6 +3,24 @@ import { getEnv } from '../env';
 
 const BASE_API_URL = getEnv().apiUrl;
 
+// type GeometryWithStyle = {
+//   type: string;
+//   coordinates: Coordinate[][];
+//   properties: {
+//     style: {
+//       stroke: string;
+//       strokeWidth: number;
+//       fill: string;
+//       image: any;
+//     };
+//   };
+// };
+
+// export type SaveFeaturesBody = {
+//   type: 'FeatureCollection';
+//   features: GeometryWithStyle[];
+// };
+
 export const getFeatures = async (
   drawingId: string,
 ): Promise<FeatureCollection> => {
