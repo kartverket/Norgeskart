@@ -41,14 +41,22 @@ import { ColorControls } from './ColorControls.tsx';
 import { LineWidthControl } from './LineWidthControl.tsx';
 import { MeasurementControls } from './MeasurementControls.tsx';
 
-const getGeometryCoordinates = (geo: Geometry) => {
-  let coordinates: Coordinate[][] = [];
+const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
+  let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
   if (geo instanceof Polygon) {
-    coordinates = geo.getCoordinates();
+    coordinates = geo
+      .getCoordinates()
+      .map((c) =>
+        c.map((coord) => transform(coord, mapProjection, 'EPSG:4326')),
+      );
   } else if (geo instanceof LineString) {
-    coordinates = [geo.getCoordinates()];
+    coordinates = [
+      geo
+        .getCoordinates()
+        .map((coord) => transform(coord, mapProjection, 'EPSG:4326')),
+    ];
   } else if (geo instanceof Point) {
-    coordinates = [[geo.getCoordinates()]];
+    coordinates = transform(geo.getCoordinates(), mapProjection, 'EPSG:4326');
   }
 
   return coordinates;
@@ -106,9 +114,9 @@ export const DrawControls = () => {
         if (!geometry) {
           return null;
         }
-        const featureCoordinates = getGeometryCoordinates(geometry).map(
-          (coords) =>
-            coords.map((c) => transform(c, mapProjection, 'EPSG:4326')),
+        const featureCoordinates = getGeometryCoordinates(
+          geometry,
+          mapProjection,
         );
         const featureStyle = feature.getStyle() as Style | null;
         const styleForStorage = getStyleForStorage(featureStyle);

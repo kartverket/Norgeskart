@@ -11,6 +11,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { getArea, getLength } from 'ol/sphere';
 import { Fill, Stroke, Style } from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../api/nkApiClient';
 import {
@@ -179,10 +180,20 @@ const useDrawSettings = () => {
       width: styleFromProps.stroke.width,
     });
 
+    const icon =
+      styleFromProps.icon.radius != null && styleFromProps.icon.color != null
+        ? new CircleStyle({
+            radius: styleFromProps.icon.radius,
+            fill: new Fill({ color: styleFromProps.icon.color }),
+          })
+        : undefined;
+
     const style = new Style({
       fill,
       stroke,
+      image: icon,
     });
+    console.log('getStyleFromProperties', style);
 
     return style;
   };

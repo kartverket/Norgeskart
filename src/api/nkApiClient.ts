@@ -2,6 +2,7 @@ import { FeatureCollection } from 'geojson';
 import { Color } from 'ol/color';
 import { ColorLike, PatternDescriptor } from 'ol/colorlike';
 import { Style } from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
 import { getEnv } from '../env';
 
 const BASE_API_URL = getEnv().apiUrl;
@@ -11,6 +12,10 @@ export type StyleForStorage = {
   stroke: {
     color: Color | ColorLike | undefined;
     width: number | undefined;
+  };
+  icon: {
+    radius: number | undefined;
+    color: Color | ColorLike | PatternDescriptor | null | undefined;
   };
 };
 
@@ -65,15 +70,22 @@ export const getStyleForStorage = (
   }
   const fill = style.getFill();
   const stroke = style.getStroke();
-  const image = style.getImage();
 
-  const fillColor = fill ? fill.getColor() : 'none';
-  const strokeColor = stroke ? stroke.getColor() : 'none';
+  const image = style.getImage();
+  let circleRadius: number | undefined;
+  let imageFillColor: Color | ColorLike | PatternDescriptor | null | undefined;
+  if (image && image instanceof CircleStyle) {
+    circleRadius = image.getRadius();
+    imageFillColor = image.getFill()?.getColor();
+  }
+
+  const fillColor = fill ? fill.getColor() : null;
+  const strokeColor = stroke ? stroke.getColor() : undefined;
   const strokeWidth = stroke ? stroke.getWidth() : 1;
-  //Få med image. Sjekk ut om alt bare bør være regular shape fra ol
 
   return {
     fill: { color: fillColor },
     stroke: { color: strokeColor, width: strokeWidth },
+    icon: { radius: circleRadius, color: imageFillColor },
   };
 };

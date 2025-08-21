@@ -75,7 +75,7 @@ export const MapComponent = () => {
       }
     };
     asyncEffect();
-  }, [map]);
+  }, [map, setDrawLayerFeatures]);
 
   return (
     <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>
