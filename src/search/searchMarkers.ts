@@ -57,7 +57,6 @@ const createClusterStyle = (feature: FeatureLike): Style => {
   const clusterFeatures = feature.get('features');
 
   if (clusterFeatures && clusterFeatures.length > 1) {
-    // Flere markører i cluster - vis sirkel med antall
     return new Style({
       image: new CircleStyle({
         radius: 15,
@@ -72,14 +71,12 @@ const createClusterStyle = (feature: FeatureLike): Style => {
     });
   }
 
-  // Kun én markør - bruk markørens egen stil hvis satt
   const singleFeature = clusterFeatures?.[0];
   if (singleFeature) {
     const style = singleFeature.getStyle?.();
     if (style) return style;
   }
 
-  // Fallback-stil om noe skulle være galt
   return createMarkerStyle(LOCATION_BLUE_SVG);
 };
 
@@ -102,14 +99,12 @@ export const addSearchMarkers = (
   const markerSource = new VectorSource();
 
   const clusterSource = new Cluster({
-    distance: 40, // hvor nærme markørene må være for å clustres
+    distance: 40, 
     source: markerSource,
   });
 
-  // Sett clusterSource som source på laget
   vectorMarkerLayer.setSource(clusterSource);
 
-  // Sett stilfunksjon som håndterer cluster/enkeltmarkør
   vectorMarkerLayer.setStyle(createClusterStyle);
 
   markerSource.clear();
@@ -155,10 +150,8 @@ export const addSearchMarkers = (
             onMarkerClick(res);
           }
         } else {
-          // Flere treff i cluster - du kan lage en popup, liste osv.
           const results = clusteredFeatures.map((f) => f.get('searchResult'));
           console.log('Klikket på cluster med flere treff:', results);
-          // TODO: Vis liste eller popup her
         }
       });
     });
