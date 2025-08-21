@@ -1,10 +1,19 @@
 import { Feature } from 'ol';
+import { FeatureLike } from 'ol/Feature';
 import { Point } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { transform } from 'ol/proj';
+import Cluster from 'ol/source/Cluster';
 import VectorSource from 'ol/source/Vector';
-import { Icon, Style } from 'ol/style';
+import {
+  Circle as CircleStyle,
+  Fill,
+  Icon,
+  Stroke,
+  Style,
+  Text,
+} from 'ol/style';
 import { getInputCRS } from '../shared/utils/crsUtils';
 import { SearchResult } from '../types/searchTypes';
 
@@ -44,6 +53,36 @@ const createMarker = (
 
 let isClickHandlerAttached = false;
 
+const createClusterStyle = (feature: FeatureLike): Style => {
+  const clusterFeatures = feature.get('features');
+
+  if (clusterFeatures && clusterFeatures.length > 1) {
+    // Flere markører i cluster - vis sirkel med antall
+    return new Style({
+      image: new CircleStyle({
+        radius: 15,
+        fill: new Fill({ color: '#476ED4B3' }),
+        stroke: new Stroke({ color: '#fff', width: 2 }),
+      }),
+      text: new Text({
+        text: clusterFeatures.length.toString(),
+        fill: new Fill({ color: '#fff' }),
+        font: 'bold 14px Arial',
+      }),
+    });
+  }
+
+  // Kun én markør - bruk markørens egen stil hvis satt
+  const singleFeature = clusterFeatures?.[0];
+  if (singleFeature) {
+    const style = singleFeature.getStyle?.();
+    if (style) return style;
+  }
+
+  // Fallback-stil om noe skulle være galt
+  return createMarkerStyle(LOCATION_BLUE_SVG);
+};
+
 export const addSearchMarkers = (
   map: Map,
   searchResults: SearchResult[],
@@ -59,13 +98,30 @@ export const addSearchMarkers = (
   if (!markerLayer) return;
 
   const vectorMarkerLayer = markerLayer as VectorLayer;
-  const source = vectorMarkerLayer.getSource() as VectorSource;
 
-  source.clear();
+  const markerSource = new VectorSource();
+
+  const clusterSource = new Cluster({
+    distance: 40, // hvor nærme markørene må være for å clustres
+    source: markerSource,
+  });
+
+  // Sett clusterSource som source på laget
+  vectorMarkerLayer.setSource(clusterSource);
+
+  // Sett stilfunksjon som håndterer cluster/enkeltmarkør
+  vectorMarkerLayer.setStyle(createClusterStyle);
+
+  markerSource.clear();
 
   if (selectedResult) {
     if (isFinite(selectedResult.lon) && isFinite(selectedResult.lat)) {
-      source.addFeature(createMarker(selectedResult, LOCATION_RED_SVG, map));
+      const selectedMarker = createMarker(
+        selectedResult,
+        LOCATION_RED_SVG,
+        map,
+      );
+      markerSource.addFeature(selectedMarker);
     }
     return;
   }
@@ -77,9 +133,11 @@ export const addSearchMarkers = (
       hoveredResult &&
       hoveredResult.lon === res.lon &&
       hoveredResult.lat === res.lat;
+
     const iconSrc = isHovered ? LOCATION_RED_SVG : LOCATION_BLUE_SVG;
 
-    source.addFeature(createMarker(res, iconSrc, map));
+    const marker = createMarker(res, iconSrc, map);
+    markerSource.addFeature(marker);
   });
 
   if (!isClickHandlerAttached) {
@@ -87,9 +145,20 @@ export const addSearchMarkers = (
 
     map.on('singleclick', (evt) => {
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-        const res = feature.get('searchResult');
-        if (res) {
-          onMarkerClick(res);
+        const clusteredFeatures: Feature[] | undefined =
+          feature.get('features');
+        if (!clusteredFeatures) return;
+
+        if (clusteredFeatures.length === 1) {
+          const res = clusteredFeatures[0].get('searchResult');
+          if (res) {
+            onMarkerClick(res);
+          }
+        } else {
+          // Flere treff i cluster - du kan lage en popup, liste osv.
+          const results = clusteredFeatures.map((f) => f.get('searchResult'));
+          console.log('Klikket på cluster med flere treff:', results);
+          // TODO: Vis liste eller popup her
         }
       });
     });

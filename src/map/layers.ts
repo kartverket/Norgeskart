@@ -49,10 +49,10 @@ const mapLayers: MapLayers = {
       return new VectorLayer({
         zIndex: 4,
         source: new VectorSource({ wrapX: false }),
-        properties: { id: 'clusterLayer'}
-      })
-    }
-  }
+        properties: { id: 'clusterLayer' },
+      });
+    },
+  },
 };
 
 export { mapLayers };
