@@ -193,7 +193,6 @@ const useDrawSettings = () => {
       stroke,
       image: icon,
     });
-    console.log('getStyleFromProperties', style);
 
     return style;
   };
