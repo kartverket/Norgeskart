@@ -141,20 +141,17 @@ export const mapAtom = atom<Map>(() => {
 export const drawStyleReadAtom = atom((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
+  const lineWidth = get(lineWidthAtom);
   return new Style({
     image: new CircleStyle({
-      radius: 5,
+      radius: lineWidth,
       fill: new Fill({
         color: primaryColor,
-      }),
-      stroke: new Stroke({
-        color: secondaryColor,
-        width: 2,
       }),
     }),
     stroke: new Stroke({
       color: secondaryColor,
-      width: 2,
+      width: lineWidth,
     }),
     fill: new Fill({
       color: primaryColor,
