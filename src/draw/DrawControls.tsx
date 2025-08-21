@@ -30,8 +30,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   getFeatures,
+  getStyleForStorage,
   saveFeatures,
-  StyleForStorage,
 } from '../api/nkApiClient.ts';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
 import { getEnvName } from '../env.ts';
@@ -79,25 +79,6 @@ export const DrawControls = () => {
     { value: 'LineString', label: 'Linje' },
     { value: 'Circle', label: 'Sirkel' },
   ];
-
-  const getStyleForStorage = (style: Style | null): StyleForStorage | null => {
-    if (!style) {
-      return null;
-    }
-    const fill = style.getFill();
-    const stroke = style.getStroke();
-    const image = style.getImage();
-
-    const fillColor = fill ? fill.getColor() : 'none';
-    const strokeColor = stroke ? stroke.getColor() : 'none';
-    const strokeWidth = stroke ? stroke.getWidth() : 1;
-    //Få med image. Sjekk ut om alt bare bør være regular shape fra ol
-
-    return {
-      fill: { color: fillColor },
-      stroke: { color: strokeColor, width: strokeWidth },
-    };
-  };
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {

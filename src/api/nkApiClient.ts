@@ -1,6 +1,7 @@
 import { FeatureCollection } from 'geojson';
 import { Color } from 'ol/color';
 import { ColorLike, PatternDescriptor } from 'ol/colorlike';
+import { Style } from 'ol/style';
 import { getEnv } from '../env';
 
 const BASE_API_URL = getEnv().apiUrl;
@@ -54,4 +55,25 @@ export const saveFeatures = async (
     console.error('Error saving features:', e);
     return null;
   }
+};
+
+export const getStyleForStorage = (
+  style: Style | null,
+): StyleForStorage | null => {
+  if (!style) {
+    return null;
+  }
+  const fill = style.getFill();
+  const stroke = style.getStroke();
+  const image = style.getImage();
+
+  const fillColor = fill ? fill.getColor() : 'none';
+  const strokeColor = stroke ? stroke.getColor() : 'none';
+  const strokeWidth = stroke ? stroke.getWidth() : 1;
+  //Få med image. Sjekk ut om alt bare bør være regular shape fra ol
+
+  return {
+    fill: { color: fillColor },
+    stroke: { color: strokeColor, width: strokeWidth },
+  };
 };
