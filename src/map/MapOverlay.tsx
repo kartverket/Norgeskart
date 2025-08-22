@@ -90,9 +90,11 @@ export const MapOverlay = () => {
     if (!showMapSettings) setShowDrawSettings(false);
   };
 
+  /*eslint-disable react-hooks/exhaustive-deps*/
   useEffect(() => {
     setDrawEnabled(showDrawSettings);
-  }, [showDrawSettings, setDrawEnabled]);
+  }, [showDrawSettings]);
+  /*eslint-enable react-hooks/exhaustive-deps*/
 
   return (
     <>
