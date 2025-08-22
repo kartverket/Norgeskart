@@ -1,6 +1,8 @@
-import { VStack } from '@kvib/react';
+import { Button, VStack } from '@kvib/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDrawSettings } from '../draw/drawHooks.ts';
+import { useIsMobileScreen } from '../shared/hooks.ts';
 import { ColorControls } from './ColorControls.tsx';
 import { DrawControlFooter } from './DrawControlsFooter.tsx';
 import { DrawToolSelector } from './DrawToolSelector.tsx';
@@ -8,7 +10,9 @@ import { LineWidthControl } from './LineWidthControl.tsx';
 import { MeasurementControls } from './MeasurementControls.tsx';
 
 export const DrawControls = () => {
-  const { abortDrawing } = useDrawSettings();
+  const { drawType, abortDrawing, deleteSelected } = useDrawSettings();
+  const isMobile = useIsMobileScreen();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
@@ -22,10 +26,25 @@ export const DrawControls = () => {
     };
   }, [abortDrawing]);
 
+  useEffect(() => {
+    const keyListener = (event: KeyboardEvent) => {
+      if (event.key === 'Delete') {
+        deleteSelected();
+      }
+    };
+    document.addEventListener('keydown', keyListener);
+    return () => {
+      document.removeEventListener('keydown', keyListener);
+    };
+  }, [abortDrawing]);
+
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
       <DrawToolSelector />
       <ColorControls />
+      {isMobile && drawType == 'Move' && (
+        <Button onClick={deleteSelected}>{t('draw.deleteSelection')}</Button>
+      )}
       <LineWidthControl />
       <MeasurementControls />
       <DrawControlFooter />

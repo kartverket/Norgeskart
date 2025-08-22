@@ -29,7 +29,8 @@
     "close": "Lukk",
     "size": {
       "label": "Størrelse"
-    }
+    },
+    "deleteSelection": "Fjern valgte"
   },
   "export": {
     "format": {
