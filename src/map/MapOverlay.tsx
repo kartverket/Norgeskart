@@ -13,6 +13,7 @@ import {
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDrawSettings } from '../draw/drawHooks';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
 import { useIsMobileScreen } from '../shared/hooks';
@@ -38,6 +39,7 @@ export const MapOverlay = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const compassFileName = useCompassFileName();
   const isMobile = useIsMobileScreen();
+  const { setDrawEnabled } = useDrawSettings();
 
   const compassOrientation =
     mapOrientation + (useMagneticNorth ? magneticDeclination : 0);
@@ -87,6 +89,10 @@ export const MapOverlay = () => {
     setShowMapSettings((prev) => !prev);
     if (!showMapSettings) setShowDrawSettings(false);
   };
+
+  useEffect(() => {
+    setDrawEnabled(showDrawSettings);
+  }, [showDrawSettings]);
 
   return (
     <>

@@ -8,10 +8,6 @@ import {
   PopoverRoot,
   PopoverTitle,
   PopoverTrigger,
-  SwitchControl,
-  SwitchHiddenInput,
-  SwitchLabel,
-  SwitchRoot,
   VStack,
 } from '@kvib/react';
 import { Feature, FeatureCollection } from 'geojson';
@@ -57,14 +53,8 @@ const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
 };
 
 export const DrawControls = () => {
-  const {
-    drawEnabled,
-    setDrawEnabled,
-    clearDrawing,
-    abortDrawing,
-    setDrawLayerFeatures,
-    getDrawnFeatures,
-  } = useDrawSettings();
+  const { clearDrawing, abortDrawing, setDrawLayerFeatures, getDrawnFeatures } =
+    useDrawSettings();
 
   const { getMapProjectionCode } = useMapSettings();
   const { t } = useTranslation();
@@ -132,25 +122,10 @@ export const DrawControls = () => {
 
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
-      <SwitchRoot
-        checked={drawEnabled}
-        onCheckedChange={(e) => {
-          setDrawEnabled(e.checked);
-        }}
-        w={'50%'}
-      >
-        <SwitchHiddenInput />
-        <SwitchControl />
-        <SwitchLabel>{t('draw.begin')}</SwitchLabel>
-      </SwitchRoot>
+      <DrawToolSelector />
+      <ColorControls />
+      <LineWidthControl />
 
-      {drawEnabled && (
-        <>
-          <DrawToolSelector />
-          <ColorControls />
-          <LineWidthControl />
-        </>
-      )}
       {envName == 'local' && (
         <>
           <Input
