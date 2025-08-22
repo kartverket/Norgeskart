@@ -18,11 +18,11 @@ export const ColorControls = () => {
   const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
   const [secondaryColor, setSecondaryColor] = useAtom(secondaryColorAtom);
 
-  const { drawTypeState } = useDrawSettings();
+  const { drawType } = useDrawSettings();
 
   return (
     <>
-      {(drawTypeState == 'Circle' || drawTypeState == 'Polygon') && (
+      {(drawType == 'Circle' || drawType == 'Polygon') && (
         <ColorPicker
           value={parseColor(primaryColor)}
           onValueChange={(value) => {
@@ -40,9 +40,9 @@ export const ColorControls = () => {
           </ColorPickerContent>
         </ColorPicker>
       )}
-      {(drawTypeState == 'Circle' ||
-        drawTypeState == 'Polygon' ||
-        drawTypeState == 'LineString') && (
+      {(drawType == 'Circle' ||
+        drawType == 'Polygon' ||
+        drawType == 'LineString') && (
         <ColorPicker
           value={parseColor(secondaryColor)}
           onValueChange={(value) => {
@@ -60,7 +60,7 @@ export const ColorControls = () => {
           </ColorPickerContent>
         </ColorPicker>
       )}
-      {drawTypeState == 'Point' && (
+      {drawType == 'Point' && (
         <ColorPicker
           value={parseColor(primaryColor)}
           onValueChange={(value) => {

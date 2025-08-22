@@ -30,7 +30,7 @@ export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
-  const [drawTypeState, setDrawTypeState] = useAtom(drawTypeStateAtom);
+  const [drawType, setDrawTypeState] = useAtom(drawTypeStateAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
   const distanceUnit = useAtomValue(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
@@ -121,6 +121,7 @@ const useDrawSettings = () => {
       });
       map.addInteraction(translateInteraction);
       map.addInteraction(modifyInteraction);
+      setDrawTypeState(type);
       return;
     }
 
@@ -470,7 +471,7 @@ const useDrawSettings = () => {
 
   return {
     drawEnabled,
-    drawTypeState,
+    drawType,
     showMeasurements,
     setDrawLayerFeatures,
     setDrawEnabled,

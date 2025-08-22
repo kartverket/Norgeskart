@@ -10,7 +10,16 @@
       "toolSelect": {
         "placeholder": "Velg teknemåte"
       },
-      "colorPoint": "Punktfarge"
+      "colorPoint": "Punktfarge",
+      "tool": {
+        "tooltip": {
+          "polygon": "Polygon",
+          "edit": "Endre og flytt",
+          "point": "Punkt",
+          "linestring": "Linjesegmet",
+          "circle": "Sirkel"
+        }
+      }
     },
     "end": "Ferdig",
     "save": "Lagre",

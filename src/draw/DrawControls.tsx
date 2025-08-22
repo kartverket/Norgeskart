@@ -158,7 +158,7 @@ export const DrawControls = () => {
             onChange={(e) => {
               setDrawId(e.target.value);
             }}
-          ></Input>
+          />
           <Button
             onClick={() => {
               if (!drawId) return;
