@@ -156,7 +156,7 @@ export const MapOverlay = () => {
                 <IconButton
                   onClick={toggleDrawSettings}
                   variant="solid"
-                  icon="edit"
+                  icon={showDrawSettings ? 'close' : 'edit'}
                 />
               </Tooltip>
 
@@ -168,7 +168,7 @@ export const MapOverlay = () => {
                 <IconButton
                   onClick={toggleMapSettings}
                   variant="solid"
-                  icon="layers"
+                  icon={showMapSettings ? 'close' : 'layers'}
                 />
               </Tooltip>
             </Stack>
