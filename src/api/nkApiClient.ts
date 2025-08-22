@@ -1,9 +1,23 @@
 import { FeatureCollection } from 'geojson';
-import proj4 from 'proj4';
+import { Color } from 'ol/color';
+import { ColorLike, PatternDescriptor } from 'ol/colorlike';
+import { Style } from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
 import { getEnv } from '../env';
-import { ProjectionIdentifier } from '../map/atoms';
 
 const BASE_API_URL = getEnv().apiUrl;
+
+export type StyleForStorage = {
+  fill: { color: Color | ColorLike | PatternDescriptor | null };
+  stroke: {
+    color: Color | ColorLike | undefined;
+    width: number | undefined;
+  };
+  icon: {
+    radius: number | undefined;
+    color: Color | ColorLike | PatternDescriptor | null | undefined;
+  };
+};
 
 export const getFeatures = async (
   drawingId: string,
@@ -23,73 +37,16 @@ export const getFeatures = async (
   }
 };
 
-//https://openlayers.org/en/latest/examples/geojson.html  Stapp dette greien inn i draw layer på oppstart?
-
-const transformFeatureCollection = (
-  features: FeatureCollection,
-  srcProj: ProjectionIdentifier,
-  destProj: ProjectionIdentifier,
-) => {
-  const transformedFeatures = {
-    ...features,
-    features: features.features.map((feature) => {
-      if (feature.geometry && feature.geometry.type === 'Point') {
-        const [x, y] = feature.geometry.coordinates as [number, number];
-        const [lon, lat] = proj4(srcProj, destProj, [x, y]);
-        return {
-          ...feature,
-          geometry: {
-            ...feature.geometry,
-            coordinates: [lon, lat],
-          },
-        };
-      } else if (feature.geometry && feature.geometry.type === 'LineString') {
-        const coords = (feature.geometry.coordinates as [number, number][]).map(
-          ([x, y]) => proj4(srcProj, destProj, [x, y]),
-        );
-        return {
-          ...feature,
-          geometry: {
-            ...feature.geometry,
-            coordinates: coords,
-          },
-        };
-      } else if (feature.geometry && feature.geometry.type === 'Polygon') {
-        const coords = (
-          feature.geometry.coordinates as [number, number][][]
-        ).map((ring) => ring.map(([x, y]) => proj4(srcProj, destProj, [x, y])));
-        return {
-          ...feature,
-          geometry: {
-            ...feature.geometry,
-            coordinates: coords,
-          },
-        };
-      }
-      return feature;
-    }),
-  };
-  return transformedFeatures;
-};
-
 export const saveFeatures = async (
   features: FeatureCollection,
-  projection: ProjectionIdentifier,
 ): Promise<string | null> => {
   try {
-    const transformedFeatures = transformFeatureCollection(
-      //Noe ble megawack med transformasjonen tror jeg
-      features,
-      projection,
-      'EPSG:4326',
-    );
-
     const res = await fetch(`${BASE_API_URL}/upload-json.py`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(transformedFeatures),
+      body: JSON.stringify(features),
     });
     if (!res.ok) {
       throw new Error('Failed to save features');
@@ -103,4 +60,32 @@ export const saveFeatures = async (
     console.error('Error saving features:', e);
     return null;
   }
+};
+
+export const getStyleForStorage = (
+  style: Style | null,
+): StyleForStorage | null => {
+  if (!style) {
+    return null;
+  }
+  const fill = style.getFill();
+  const stroke = style.getStroke();
+
+  const image = style.getImage();
+  let circleRadius: number | undefined;
+  let imageFillColor: Color | ColorLike | PatternDescriptor | null | undefined;
+  if (image && image instanceof CircleStyle) {
+    circleRadius = image.getRadius();
+    imageFillColor = image.getFill()?.getColor();
+  }
+
+  const fillColor = fill ? fill.getColor() : null;
+  const strokeColor = stroke ? stroke.getColor() : undefined;
+  const strokeWidth = stroke ? stroke.getWidth() : 1;
+
+  return {
+    fill: { color: fillColor },
+    stroke: { color: strokeColor, width: strokeWidth },
+    icon: { radius: circleRadius, color: imageFillColor },
+  };
 };

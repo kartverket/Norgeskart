@@ -3,6 +3,8 @@ import { useAtomValue } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getFeatures } from '../api/nkApiClient.ts';
+import { useDrawSettings } from '../draw/drawHooks.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { getUrlParameter } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
@@ -21,6 +23,7 @@ export const MapComponent = () => {
   const { setBackgroundLayer } = useMapSettings();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
+  const { setDrawLayerFeatures } = useDrawSettings();
 
   const { setTargetElement } = useMap();
 
@@ -62,6 +65,17 @@ export const MapComponent = () => {
       console.error(t('map.errorMessage'));
     }
   }, [setBackgroundLayer, t, WMTSloadable, map]);
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const drawingId = getUrlParameter('drawing');
+      if (drawingId) {
+        const features = await getFeatures(drawingId);
+        setDrawLayerFeatures(features, 'EPSG:4326');
+      }
+    };
+    asyncEffect();
+  }, [map, setDrawLayerFeatures]);
 
   return (
     <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>

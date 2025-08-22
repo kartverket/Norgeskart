@@ -21,10 +21,18 @@ import {
   SwitchRoot,
   VStack,
 } from '@kvib/react';
-import { GeoJSON } from 'ol/format';
+import { Feature, FeatureCollection } from 'geojson';
+import { Coordinate } from 'ol/coordinate';
+import { Geometry, LineString, Point, Polygon } from 'ol/geom';
+import { transform } from 'ol/proj';
+import { Style } from 'ol/style';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getFeatures, saveFeatures } from '../api/nkApiClient.ts';
+import {
+  getFeatures,
+  getStyleForStorage,
+  saveFeatures,
+} from '../api/nkApiClient.ts';
 import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
 import { getEnvName } from '../env.ts';
 import { useMapSettings } from '../map/mapHooks.ts';
@@ -32,6 +40,28 @@ import { setUrlParameter } from '../shared/utils/urlUtils.ts';
 import { ColorControls } from './ColorControls.tsx';
 import { LineWidthControl } from './LineWidthControl.tsx';
 import { MeasurementControls } from './MeasurementControls.tsx';
+
+const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
+  let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
+  if (geo instanceof Polygon) {
+    coordinates = geo
+      .getCoordinates()
+      .map((c) =>
+        c.map((coord) => transform(coord, mapProjection, 'EPSG:4326')),
+      );
+  } else if (geo instanceof LineString) {
+    coordinates = [
+      geo
+        .getCoordinates()
+        .map((coord) => transform(coord, mapProjection, 'EPSG:4326')),
+    ];
+  } else if (geo instanceof Point) {
+    coordinates = transform(geo.getCoordinates(), mapProjection, 'EPSG:4326');
+  }
+
+  return coordinates;
+};
+
 export const DrawControls = () => {
   const {
     drawEnabled,
@@ -69,6 +99,51 @@ export const DrawControls = () => {
       document.removeEventListener('keydown', keyListener);
     };
   }, [abortDrawing]);
+
+  const onSaveFeatures = () => {
+    const drawnFeatures = getDrawnFeatures();
+    const mapProjection = getMapProjectionCode();
+
+    if (drawnFeatures == null) {
+      return;
+    }
+
+    const geometryWithStyle = drawnFeatures
+      .map((feature) => {
+        const geometry = feature.getGeometry();
+        if (!geometry) {
+          return null;
+        }
+        const featureCoordinates = getGeometryCoordinates(
+          geometry,
+          mapProjection,
+        );
+        const featureStyle = feature.getStyle() as Style | null;
+        const styleForStorage = getStyleForStorage(featureStyle);
+        return {
+          type: 'Feature',
+          geometry: {
+            type: geometry.getType(),
+            coordinates: featureCoordinates,
+          },
+          properties: {
+            style: styleForStorage,
+          },
+        } as Feature;
+      })
+      .filter((f) => f !== null);
+
+    const collection = {
+      type: 'FeatureCollection',
+      features: geometryWithStyle,
+    } as FeatureCollection;
+
+    saveFeatures(collection).then((id) => {
+      if (id != null) {
+        setUrlParameter('drawing', id);
+      }
+    });
+  };
 
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
@@ -126,7 +201,6 @@ export const DrawControls = () => {
             onClick={() => {
               if (!drawId) return;
               getFeatures(drawId).then((fetchedFeatures) => {
-                console.log('fetched:', fetchedFeatures);
                 setDrawLayerFeatures(fetchedFeatures, 'EPSG:4326');
               });
             }}
@@ -163,31 +237,7 @@ export const DrawControls = () => {
             </PopoverBody>
           </PopoverContent>
         </PopoverRoot>
-        <Button
-          onClick={() => {
-            const drawnFeatures = getDrawnFeatures();
-            const mapProjection = getMapProjectionCode();
-
-            if (drawnFeatures == null) {
-              return;
-            }
-            const geojsonFormat = new GeoJSON();
-            const geojson = geojsonFormat.writeFeaturesObject(drawnFeatures, {
-              featureProjection: mapProjection,
-              dataProjection: 'EPSG:4326',
-            });
-
-            console.log(geojson);
-
-            saveFeatures(geojson, mapProjection).then((id) => {
-              if (id != null) {
-                setUrlParameter('drawing', id);
-              }
-            });
-          }}
-        >
-          {t('draw.save')}
-        </Button>
+        <Button onClick={onSaveFeatures}>{t('draw.save')}</Button>
       </ButtonGroup>
     </VStack>
   );

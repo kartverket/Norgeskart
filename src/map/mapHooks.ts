@@ -165,7 +165,6 @@ const useMapSettings = () => {
       ?.get(layerName as WMTSLayerName);
     if (!layerToAdd && providerId.startsWith('norgeibilder_')) {
       const nibKey = getNibProviderKeyForProjections(projectionId);
-      console.log(nibKey);
       if (nibKey) {
         layerToAdd = WMTSloadable.data
           .get(nibKey as WMTSProviderId)
