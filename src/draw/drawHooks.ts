@@ -206,6 +206,7 @@ const useDrawSettings = () => {
   const setDrawLayerFeatures = (
     featureCollection: FeatureCollection,
     sourceProjection: ProjectionIdentifier,
+    overwrite: boolean = false,
   ) => {
     const drawLayer = getDrawLayer();
     const drawSource = drawLayer.getSource() as VectorSource | null;
@@ -213,6 +214,12 @@ const useDrawSettings = () => {
       console.warn('no draw source');
       return;
     }
+    const hasExistingFeatures = drawSource.getFeatures().length > 0;
+    if (hasExistingFeatures && !overwrite) {
+      console.warn('Draw source already has features');
+      return;
+    }
+
     const mapProjection = map.getView().getProjection().getCode();
     const geojsonReader = new GeoJSON();
 
