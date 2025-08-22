@@ -1,7 +1,6 @@
 import {
   Button,
   ButtonGroup,
-  createListCollection,
   Input,
   PopoverArrow,
   PopoverBody,
@@ -9,12 +8,6 @@ import {
   PopoverRoot,
   PopoverTitle,
   PopoverTrigger,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   SwitchControl,
   SwitchHiddenInput,
   SwitchLabel,
@@ -33,11 +26,12 @@ import {
   getStyleForStorage,
   saveFeatures,
 } from '../api/nkApiClient.ts';
-import { DrawType, useDrawSettings } from '../draw/drawHooks.ts';
+import { useDrawSettings } from '../draw/drawHooks.ts';
 import { getEnvName } from '../env.ts';
 import { useMapSettings } from '../map/mapHooks.ts';
 import { setUrlParameter } from '../shared/utils/urlUtils.ts';
 import { ColorControls } from './ColorControls.tsx';
+import { DrawToolSelector } from './DrawToolSelector.tsx';
 import { LineWidthControl } from './LineWidthControl.tsx';
 import { MeasurementControls } from './MeasurementControls.tsx';
 
@@ -66,7 +60,6 @@ export const DrawControls = () => {
   const {
     drawEnabled,
     setDrawEnabled,
-    setDrawType,
     clearDrawing,
     abortDrawing,
     setDrawLayerFeatures,
@@ -79,14 +72,6 @@ export const DrawControls = () => {
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
   const [drawId, setDrawId] = useState<string | null>(null);
-
-  const drawTypeCollection: { value: DrawType; label: string }[] = [
-    { value: 'Polygon', label: 'Polygon' },
-    { value: 'Move', label: 'Flytt' },
-    { value: 'Point', label: 'Punkt' },
-    { value: 'LineString', label: 'Linje' },
-    { value: 'Circle', label: 'Sirkel' },
-  ];
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
@@ -161,30 +146,7 @@ export const DrawControls = () => {
 
       {drawEnabled && (
         <>
-          <SelectRoot
-            collection={createListCollection({
-              items: drawTypeCollection,
-            })}
-            defaultValue={[drawTypeCollection[0].value]}
-          >
-            <SelectLabel>{t('draw.tools')}:</SelectLabel>
-            <SelectTrigger>
-              <SelectValueText
-                placeholder={t('draw.controls.toolSelect.placeholder')}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {drawTypeCollection.map((item) => (
-                <SelectItem
-                  key={item.value}
-                  item={item.value}
-                  onClick={() => setDrawType(item.value as DrawType)}
-                >
-                  {item.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
+          <DrawToolSelector />
           <ColorControls />
           <LineWidthControl />
         </>
@@ -196,7 +158,7 @@ export const DrawControls = () => {
             onChange={(e) => {
               setDrawId(e.target.value);
             }}
-          ></Input>
+          />
           <Button
             onClick={() => {
               if (!drawId) return;

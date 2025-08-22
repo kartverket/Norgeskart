@@ -10,7 +10,16 @@
       "toolSelect": {
         "placeholder": "Select draw tool"
       },
-      "colorPoint": "Point color"
+      "colorPoint": "Point color",
+      "tool": {
+        "tooltip": {
+          "polygon": "Polygon",
+          "edit": "Edit and move",
+          "point": "Points",
+          "linestring": "Line segments",
+          "circle": "Circle"
+        }
+      }
     },
     "end": "Done",
     "save": "Save",

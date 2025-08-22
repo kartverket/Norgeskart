@@ -12,13 +12,13 @@ const lineWidthCollection: { value: LineWidth; label: string }[] = [
 
 export const LineWidthControl = () => {
   const [lineWidth, setLineWidth] = useAtom(lineWidthAtom);
-  const { drawTypeState } = useDrawSettings();
+  const { drawType } = useDrawSettings();
   const { t } = useTranslation();
 
   if (
-    drawTypeState !== 'LineString' &&
-    drawTypeState !== 'Point' &&
-    drawTypeState !== 'Polygon'
+    drawType !== 'LineString' &&
+    drawType !== 'Point' &&
+    drawType !== 'Polygon'
   ) {
     return null;
   }
