@@ -462,6 +462,10 @@ const useDrawSettings = () => {
     setShowMeasurements(true);
   };
 
+  const undoLast = () => {
+    getDrawInteraction()?.removeLastPoint();
+  };
+
   const clearDrawing = () => {
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
@@ -485,6 +489,7 @@ const useDrawSettings = () => {
     setDrawType,
     setShowMeasurements,
     refreshMeasurements,
+    undoLast,
     abortDrawing,
     clearDrawing,
     getDrawLayer,
