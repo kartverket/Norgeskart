@@ -5,6 +5,7 @@ import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
+import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
@@ -115,7 +116,11 @@ const useDrawSettings = () => {
       const translateInteraction = new Translate({
         features: selectInteraction.getFeatures(),
       });
+      const modifyInteraction = new Modify({
+        features: selectInteraction.getFeatures(),
+      });
       map.addInteraction(translateInteraction);
+      map.addInteraction(modifyInteraction);
       return;
     }
 
