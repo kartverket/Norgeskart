@@ -92,7 +92,7 @@ export const MapOverlay = () => {
 
   useEffect(() => {
     setDrawEnabled(showDrawSettings);
-  }, [showDrawSettings]);
+  }, [showDrawSettings, setDrawEnabled]);
 
   return (
     <>

@@ -1,58 +1,14 @@
-import {
-  Button,
-  ButtonGroup,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverRoot,
-  PopoverTitle,
-  PopoverTrigger,
-  VStack,
-} from '@kvib/react';
-import { Feature, FeatureCollection } from 'geojson';
-import { Coordinate } from 'ol/coordinate';
-import { Geometry, LineString, Point, Polygon } from 'ol/geom';
-import { transform } from 'ol/proj';
-import { Style } from 'ol/style';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { getStyleForStorage, saveFeatures } from '../api/nkApiClient.ts';
+import { VStack } from '@kvib/react';
+import { useEffect } from 'react';
 import { useDrawSettings } from '../draw/drawHooks.ts';
-import { useMapSettings } from '../map/mapHooks.ts';
-import { setUrlParameter } from '../shared/utils/urlUtils.ts';
 import { ColorControls } from './ColorControls.tsx';
+import { DrawControlFooter } from './DrawControlsFooter.tsx';
 import { DrawToolSelector } from './DrawToolSelector.tsx';
 import { LineWidthControl } from './LineWidthControl.tsx';
 import { MeasurementControls } from './MeasurementControls.tsx';
 
-const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
-  let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
-  if (geo instanceof Polygon) {
-    coordinates = geo
-      .getCoordinates()
-      .map((c) =>
-        c.map((coord) => transform(coord, mapProjection, 'EPSG:4326')),
-      );
-  } else if (geo instanceof LineString) {
-    coordinates = [
-      geo
-        .getCoordinates()
-        .map((coord) => transform(coord, mapProjection, 'EPSG:4326')),
-    ];
-  } else if (geo instanceof Point) {
-    coordinates = transform(geo.getCoordinates(), mapProjection, 'EPSG:4326');
-  }
-
-  return coordinates;
-};
-
 export const DrawControls = () => {
-  const { clearDrawing, abortDrawing, getDrawnFeatures } = useDrawSettings();
-
-  const { getMapProjectionCode } = useMapSettings();
-  const { t } = useTranslation();
-
-  const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
+  const { abortDrawing } = useDrawSettings();
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
@@ -66,86 +22,13 @@ export const DrawControls = () => {
     };
   }, [abortDrawing]);
 
-  const onSaveFeatures = () => {
-    const drawnFeatures = getDrawnFeatures();
-    const mapProjection = getMapProjectionCode();
-
-    if (drawnFeatures == null) {
-      return;
-    }
-
-    const geometryWithStyle = drawnFeatures
-      .map((feature) => {
-        const geometry = feature.getGeometry();
-        if (!geometry) {
-          return null;
-        }
-        const featureCoordinates = getGeometryCoordinates(
-          geometry,
-          mapProjection,
-        );
-        const featureStyle = feature.getStyle() as Style | null;
-        const styleForStorage = getStyleForStorage(featureStyle);
-        return {
-          type: 'Feature',
-          geometry: {
-            type: geometry.getType(),
-            coordinates: featureCoordinates,
-          },
-          properties: {
-            style: styleForStorage,
-          },
-        } as Feature;
-      })
-      .filter((f) => f !== null);
-
-    const collection = {
-      type: 'FeatureCollection',
-      features: geometryWithStyle,
-    } as FeatureCollection;
-
-    saveFeatures(collection).then((id) => {
-      if (id != null) {
-        setUrlParameter('drawing', id);
-      }
-    });
-  };
-
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
       <DrawToolSelector />
       <ColorControls />
       <LineWidthControl />
       <MeasurementControls />
-      <ButtonGroup>
-        <PopoverRoot
-          open={clearPopoverOpen}
-          onOpenChange={(e) => setClearPopoverOpen(e.open)}
-        >
-          <PopoverTrigger asChild>
-            <Button colorPalette={'red'}>{t('draw.clear')}</Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverBody>
-              <PopoverTitle fontWeight="bold">
-                {t('draw.confrimClear')}
-              </PopoverTitle>
-
-              <Button
-                onClick={() => {
-                  setClearPopoverOpen(false);
-                  clearDrawing();
-                }}
-                colorPalette={'red'}
-              >
-                {t('shared.yes')}
-              </Button>
-            </PopoverBody>
-          </PopoverContent>
-        </PopoverRoot>
-        <Button onClick={onSaveFeatures}>{t('draw.save')}</Button>
-      </ButtonGroup>
+      <DrawControlFooter />
     </VStack>
   );
 };

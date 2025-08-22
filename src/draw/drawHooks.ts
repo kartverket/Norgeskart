@@ -466,6 +466,21 @@ const useDrawSettings = () => {
     getDrawInteraction()?.removeLastPoint();
   };
 
+  const deleteSelected = () => {
+    const selectInteraction = getSelectInteraction();
+    if (!selectInteraction) {
+      return;
+    }
+    const drawLayerSource = getDrawLayer()?.getSource() as VectorSource | null;
+    if (!drawLayerSource) {
+      return;
+    }
+
+    selectInteraction.getFeatures().forEach((feature) => {
+      drawLayerSource.removeFeature(feature);
+    });
+  };
+
   const clearDrawing = () => {
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
@@ -491,6 +506,7 @@ const useDrawSettings = () => {
     refreshMeasurements,
     undoLast,
     abortDrawing,
+    deleteSelected,
     clearDrawing,
     getDrawLayer,
     getDrawnFeatures,
