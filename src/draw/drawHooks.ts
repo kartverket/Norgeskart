@@ -463,7 +463,12 @@ const useDrawSettings = () => {
   };
 
   const undoLast = () => {
-    getDrawInteraction()?.removeLastPoint();
+    const drawInteraction = getDrawInteraction();
+    if (!drawInteraction) {
+      console.warn('no drawinteraction found');
+      return;
+    }
+    drawInteraction.removeLastPoint();
   };
 
   const deleteSelected = () => {

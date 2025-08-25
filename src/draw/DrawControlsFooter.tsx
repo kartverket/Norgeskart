@@ -42,7 +42,7 @@ const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
 };
 
 export const DrawControlFooter = () => {
-  const { getDrawnFeatures, clearDrawing } = useDrawSettings();
+  const { getDrawnFeatures, clearDrawing, undoLast } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
   const onSaveFeatures = () => {
@@ -118,6 +118,7 @@ export const DrawControlFooter = () => {
         </PopoverContent>
       </PopoverRoot>
       <Button onClick={onSaveFeatures}>{t('draw.save')}</Button>
+      <Button onClick={undoLast}>Undo</Button>
     </ButtonGroup>
   );
 };
