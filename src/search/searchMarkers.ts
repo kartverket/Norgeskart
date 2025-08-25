@@ -1,4 +1,5 @@
 import { Feature } from 'ol';
+import { createEmpty, extend } from 'ol/extent';
 import { FeatureLike } from 'ol/Feature';
 import { Point } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
@@ -53,14 +54,29 @@ const createMarker = (
 
 let isClickHandlerAttached = false;
 
-const createClusterStyle = (feature: FeatureLike): Style => {
+const createClusterStyle = (
+  feature: FeatureLike,
+  hoveredResult: { lon: number; lat: number } | null,
+): Style => {
   const clusterFeatures = feature.get('features');
 
   if (clusterFeatures && clusterFeatures.length > 1) {
+    const containsHoveredResult = clusterFeatures.some((f: Feature) => {
+      const res = f.get('searchResult');
+      return (
+        hoveredResult &&
+        res &&
+        res.lon === hoveredResult.lon &&
+        res.lat === hoveredResult.lat
+      );
+    });
+
     return new Style({
       image: new CircleStyle({
         radius: 15,
-        fill: new Fill({ color: '#476ED4B3' }),
+        fill: new Fill({
+          color: containsHoveredResult ? '#E54848FF' : '#476ED4B3',
+        }),
         stroke: new Stroke({ color: '#fff', width: 2 }),
       }),
       text: new Text({
@@ -99,13 +115,15 @@ export const addSearchMarkers = (
   const markerSource = new VectorSource();
 
   const clusterSource = new Cluster({
-    distance: 40, 
+    distance: 40,
     source: markerSource,
   });
 
   vectorMarkerLayer.setSource(clusterSource);
 
-  vectorMarkerLayer.setStyle(createClusterStyle);
+  vectorMarkerLayer.setStyle((feature) =>
+    createClusterStyle(feature, hoveredResult),
+  );
 
   markerSource.clear();
 
@@ -140,9 +158,8 @@ export const addSearchMarkers = (
 
     map.on('singleclick', (evt) => {
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-        const clusteredFeatures: Feature[] | undefined =
-          feature.get('features');
-        if (!clusteredFeatures) return;
+        const clusteredFeatures = feature.get('features');
+        if (!Array.isArray(clusteredFeatures)) return;
 
         if (clusteredFeatures.length === 1) {
           const res = clusteredFeatures[0].get('searchResult');
@@ -150,8 +167,22 @@ export const addSearchMarkers = (
             onMarkerClick(res);
           }
         } else {
-          const results = clusteredFeatures.map((f) => f.get('searchResult'));
-          console.log('Klikket på cluster med flere treff:', results);
+          const clusterMembers = feature.get('features');
+          if (clusterMembers && clusterMembers.length > 1) {
+            const extent = createEmpty();
+            clusterMembers.forEach((clusterFeature: Feature<Point>) => {
+              const geometry = clusterFeature.getGeometry();
+              if (geometry) {
+                extend(extent, geometry.getExtent());
+              }
+            });
+
+            const view = map.getView();
+            view.fit(extent, {
+              duration: 500,
+              padding: [50, 50, 50, 50],
+            });
+          }
         }
       });
     });
