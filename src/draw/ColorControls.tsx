@@ -11,7 +11,7 @@ import {
 } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
-import { primaryColorAtom, secondaryColorAtom } from '../map/atoms';
+import { primaryColorAtom, secondaryColorAtom } from '../settings/draw/atoms';
 import { useDrawSettings } from './drawHooks';
 
 export const ColorControls = () => {

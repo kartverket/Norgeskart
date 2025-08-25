@@ -1,4 +1,4 @@
-import { DistanceUnit } from '../../map/atoms';
+import { DistanceUnit } from '../../settings/draw/atoms';
 
 export const capitalizeFirstLetter = (s: string) =>
   s.charAt(0).toUpperCase() + s.slice(1);

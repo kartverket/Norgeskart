@@ -15,15 +15,14 @@ import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../api/nkApiClient';
+import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import {
   distanceUnitAtom,
   drawEnabledAtom,
   drawStyleReadAtom,
   drawTypeStateAtom,
-  mapAtom,
-  ProjectionIdentifier,
   showMeasurementsAtom,
-} from '../map/atoms';
+} from '../settings/draw/atoms';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
 
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';

@@ -14,7 +14,7 @@ import {
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { DistanceUnit, distanceUnitAtom } from '../map/atoms';
+import { DistanceUnit, distanceUnitAtom } from '../settings/draw/atoms';
 import { useDrawSettings } from './drawHooks';
 
 const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [

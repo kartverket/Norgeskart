@@ -5,12 +5,13 @@ import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Map from 'ol/Map';
 import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
+import { mapAtom } from '../map/atoms';
+
 import {
   lineWidthAtom,
-  mapAtom,
   primaryColorAtom,
   secondaryColorAtom,
-} from '../map/atoms';
+} from '../settings/draw/atoms';
 
 const getDrawInteraction = (map: Map) => {
   const drawInteraction = map
