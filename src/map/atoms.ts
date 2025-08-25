@@ -20,8 +20,8 @@ export const DEFAULT_ZOOM_LEVEL = 5;
 export const DEFAULT_CENTER = [1900000, 9500000]; // Center in EPSG:3857
 export const DEFAULT_ROTATION = 0;
 
-export const DEFAULT_PRIMARY_COLOR = '#000000';
-export const DEFAULT_SECONDARY_COLOR = '#ffffff';
+export const DEFAULT_PRIMARY_COLOR = '#1d823b80';
+export const DEFAULT_SECONDARY_COLOR = '#0e5aa0ff';
 
 export const AvailableProjections: ProjectionIdentifier[] = [
   'EPSG:3857', // webmercator
