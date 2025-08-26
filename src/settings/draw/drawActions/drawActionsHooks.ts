@@ -30,8 +30,6 @@ export const useDrawActions = () => {
       return;
     }
 
-    console.log('Undoing action', actionToUndo);
-
     switch (actionToUndo.type) {
       case 'CREATE':
         removeDrawnFeatureById(actionToUndo.featureId);
@@ -84,15 +82,12 @@ export const useDrawActionsState = () => {
 
   const addDrawAction = (action: DrawAction) => {
     const store = getDefaultStore();
-
     const currentOffset = store.get(actionOffsetAtom);
     const previousActions = store.get(drawActionsAtom);
     const offsetActionList = previousActions.slice(
       0,
       previousActions.length - currentOffset,
     );
-
-    console.log(offsetActionList, currentOffset);
     setDrawActions([...offsetActionList, action]);
     resetOffset();
   };
