@@ -36,7 +36,7 @@ export const DrawControls = () => {
     return () => {
       document.removeEventListener('keydown', keyListener);
     };
-  }, [abortDrawing]);
+  }, [deleteSelected]);
 
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>

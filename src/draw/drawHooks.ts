@@ -1,6 +1,7 @@
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
+import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
@@ -129,6 +130,7 @@ const useDrawSettings = () => {
     const newDraw = new Draw({
       source: drawLayer.getSource() as VectorSource,
       type: type,
+      condition: (e) => noModifierKeys(e) && primaryAction(e),
     });
 
     newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
