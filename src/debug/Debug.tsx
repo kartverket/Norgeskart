@@ -44,7 +44,9 @@ export const Debug = () => {
         </Flex>
         <Tabs>
           <TabsList>
-            <TabsTrigger value="actions">Draw Actions</TabsTrigger>
+            <TabsTrigger value="actions">
+              Draw Actions [{drawActions.length}]
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="actions">
             {drawActions.map((action, index) => (
@@ -54,7 +56,6 @@ export const Debug = () => {
             ))}
           </TabsContent>
         </Tabs>
-        Debuginfo
       </Box>
     );
   }
