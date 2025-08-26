@@ -11,7 +11,8 @@ import { LineWidthControl } from './LineWidthControl.tsx';
 import { MeasurementControls } from './MeasurementControls.tsx';
 
 export const DrawControls = () => {
-  const { drawType, abortDrawing, deleteSelected } = useDrawSettings();
+  const { drawType, drawEnabled, abortDrawing, deleteSelected } =
+    useDrawSettings();
   const { undoLast, redoLastUndone } = useDrawActions();
   const isMobile = useIsMobileScreen();
   const { t } = useTranslation();
@@ -42,6 +43,9 @@ export const DrawControls = () => {
 
   useEffect(() => {
     const undoListener = (event: KeyboardEvent) => {
+      if (!drawEnabled) {
+        return;
+      }
       if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
         if (event.shiftKey) {
           redoLastUndone();
@@ -56,7 +60,7 @@ export const DrawControls = () => {
     return () => {
       document.removeEventListener('keydown', undoListener);
     };
-  }, [undoLast]);
+  }, [undoLast, redoLastUndone, drawEnabled]);
 
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
