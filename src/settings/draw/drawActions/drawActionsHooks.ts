@@ -44,6 +44,7 @@ export const useDrawActions = () => {
   };
 
   return {
+    drawActions,
     canUndo,
     canRedo,
     addDrawAction,
