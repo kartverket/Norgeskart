@@ -17,6 +17,7 @@ import { Style } from 'ol/style';
 import { useState } from 'react';
 import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
+import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import { useDrawSettings } from './drawHooks';
 
@@ -42,8 +43,9 @@ const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
 };
 
 export const DrawControlFooter = () => {
-  const { getDrawnFeatures, clearDrawing, undoLast } = useDrawSettings();
+  const { getDrawnFeatures, clearDrawing } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
+  const { undoLast } = useDrawActions();
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
   const onSaveFeatures = () => {
     const drawnFeatures = getDrawnFeatures();

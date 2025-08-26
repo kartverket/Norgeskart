@@ -24,6 +24,7 @@ import {
   drawTypeStateAtom,
   showMeasurementsAtom,
 } from '../settings/draw/atoms';
+import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
 
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
@@ -35,6 +36,8 @@ const useDrawSettings = () => {
   const distanceUnit = useAtomValue(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
+
+  const { addDrawAction } = useDrawActionsState();
 
   const getDrawInteraction = () => {
     return map
@@ -133,18 +136,15 @@ const useDrawSettings = () => {
       condition: (e) => noModifierKeys(e) && primaryAction(e),
     });
 
-    newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
-      const eventFeature = (event as unknown as DrawEvent).feature;
-      const featureId = uuidv4();
-      eventFeature.setId(featureId);
-    });
-
-    map.addInteraction(newDraw);
     const store = getDefaultStore();
     const style = store.get(drawStyleReadAtom);
 
+    newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
     newDraw.getOverlay().setStyle(style);
-    newDraw.addEventListener('drawend', (event) => drawEnd(event, style));
+    newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
+      drawEnd(event, style);
+    });
+    map.addInteraction(newDraw);
 
     setShowMeasurements(showMeasurements);
     setDrawTypeState(type);
@@ -159,6 +159,9 @@ const useDrawSettings = () => {
   const drawEnd = (event: BaseEvent | Event, style: Style) => {
     const eventFeature = (event as unknown as DrawEvent).feature;
     eventFeature.setStyle(style);
+    const featureId = uuidv4();
+    eventFeature.setId(featureId);
+    addDrawAction({ type: 'CREATE', featureId: featureId });
   };
 
   const getDrawType = () => {
@@ -202,6 +205,19 @@ const useDrawSettings = () => {
     });
 
     return style;
+  };
+
+  const removeDrawnFeatureById = (featureId: string) => {
+    const drawLayer = getDrawLayer();
+    const drawSource = drawLayer.getSource() as VectorSource | null;
+    if (!drawSource) {
+      console.warn('no draw source');
+      return;
+    }
+    const feature = drawSource.getFeatureById(featureId);
+    if (feature) {
+      drawSource.removeFeature(feature);
+    }
   };
 
   const setDrawLayerFeatures = (
@@ -505,6 +521,7 @@ const useDrawSettings = () => {
     drawEnabled,
     drawType,
     showMeasurements,
+    removeDrawnFeatureById,
     setDrawLayerFeatures,
     setDrawEnabled,
     setDrawType,

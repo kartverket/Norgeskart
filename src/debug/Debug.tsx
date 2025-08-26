@@ -7,14 +7,19 @@ import {
   TabsList,
   TabsTrigger,
 } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { getEnvName } from '../env';
-import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
+import {
+  actionOffsetAtom,
+  drawActionsAtom,
+} from '../settings/draw/drawActions/atoms';
 
 export const Debug = () => {
   const hideDebug = localStorage.getItem('hideDebug') === 'true';
   const [_showStuff, setShowStuff] = useState(true);
-  const { drawActions } = useDrawActions();
+  const drawActions = useAtomValue(drawActionsAtom);
+  const actionOffset = useAtomValue(actionOffsetAtom);
   if (hideDebug) {
     return null;
   }
@@ -26,7 +31,7 @@ export const Debug = () => {
     return (
       <Box
         position={'absolute'}
-        width={200}
+        width={500}
         backgroundColor="hotpink"
         bottom={20}
         left={20}
@@ -49,6 +54,7 @@ export const Debug = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="actions">
+            Offset: {actionOffset}
             {drawActions.map((action, index) => (
               <Box key={index}>
                 {action.featureId} - {action.type}
