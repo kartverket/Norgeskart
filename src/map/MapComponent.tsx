@@ -87,7 +87,9 @@ export const MapComponent = () => {
         undoLast();
       }
     };
-    window.addEventListener('contextmenu', (e) => {
+    const mapElement = document.getElementById('map');
+    if (!mapElement) return;
+    mapElement.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       e.stopPropagation();
       handleUndo();
