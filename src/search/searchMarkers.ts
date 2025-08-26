@@ -158,30 +158,38 @@ export const addSearchMarkers = (
 
     map.on('singleclick', (evt) => {
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-        const clusteredFeatures = feature.get('features');
-        if (!Array.isArray(clusteredFeatures)) return;
+        const featuresAtPixel = feature.get('features');
+        if (!Array.isArray(featuresAtPixel)) return;
 
-        if (clusteredFeatures.length === 1) {
-          const res = clusteredFeatures[0].get('searchResult');
+        if (featuresAtPixel.length === 1) {
+          const res = featuresAtPixel[0].get('searchResult');
           if (res) {
             onMarkerClick(res);
           }
         } else {
-          const clusterMembers = feature.get('features');
-          if (clusterMembers && clusterMembers.length > 1) {
-            const extent = createEmpty();
-            clusterMembers.forEach((clusterFeature: Feature<Point>) => {
-              const geometry = clusterFeature.getGeometry();
-              if (geometry) {
-                extend(extent, geometry.getExtent());
-              }
-            });
-
+          const clusterFeatures = feature.get('features');
+          if (clusterFeatures && clusterFeatures.length > 1) {
+            const results = clusterFeatures.map((f: Feature) =>
+              f.get('searchResult'),
+            );
             const view = map.getView();
-            view.fit(extent, {
-              duration: 500,
-              padding: [50, 50, 50, 50],
-            });
+            const currentZoom = view.getZoom() || 0;
+            const maxZoom = view.getMaxZoom();
+            if (currentZoom === maxZoom) {
+              console.log('Klikket på cluster', results);
+            } else {
+              const extent = createEmpty();
+              clusterFeatures.forEach((clusterFeature: Feature<Point>) => {
+                const geometry = clusterFeature.getGeometry();
+                if (geometry) {
+                  extend(extent, geometry.getExtent());
+                }
+              });
+              view.fit(extent, {
+                duration: 500,
+                padding: [50, 50, 50, 50],
+              });
+            }
           }
         }
       });
