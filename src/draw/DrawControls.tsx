@@ -2,6 +2,7 @@ import { Button, VStack } from '@kvib/react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrawSettings } from '../draw/drawHooks.ts';
+import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks.ts';
 import { useIsMobileScreen } from '../shared/hooks.ts';
 import { ColorControls } from './ColorControls.tsx';
 import { DrawControlFooter } from './DrawControlsFooter.tsx';
@@ -11,6 +12,7 @@ import { MeasurementControls } from './MeasurementControls.tsx';
 
 export const DrawControls = () => {
   const { drawType, abortDrawing, deleteSelected } = useDrawSettings();
+  const { undoLast, redoLastUndone } = useDrawActions();
   const isMobile = useIsMobileScreen();
   const { t } = useTranslation();
 
@@ -37,6 +39,24 @@ export const DrawControls = () => {
       document.removeEventListener('keydown', keyListener);
     };
   }, [deleteSelected]);
+
+  useEffect(() => {
+    const undoListener = (event: KeyboardEvent) => {
+      if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+        if (event.shiftKey) {
+          redoLastUndone();
+        } else {
+          undoLast();
+        }
+
+        event.preventDefault();
+      }
+    };
+    document.addEventListener('keydown', undoListener);
+    return () => {
+      document.removeEventListener('keydown', undoListener);
+    };
+  }, [undoLast]);
 
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
