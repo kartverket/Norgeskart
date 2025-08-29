@@ -17,7 +17,7 @@ import {
 
 export const Debug = () => {
   const hideDebug = localStorage.getItem('hideDebug') === 'true';
-  const [_showStuff, setShowStuff] = useState(true);
+  const [_, setShowStuff] = useState(true);
   const drawActions = useAtomValue(drawActionsAtom);
   const actionOffset = useAtomValue(actionOffsetAtom);
   if (hideDebug) {

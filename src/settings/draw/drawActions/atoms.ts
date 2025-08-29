@@ -1,4 +1,5 @@
 import { atom } from 'jotai';
+import { Feature } from 'ol';
 
 export type DrawActionType =
   | 'CREATE'
@@ -8,7 +9,12 @@ export type DrawActionType =
 export type DrawAction = DrawActionBase &
   (CreateFeatureData | EditGeometryData | DeleteFeatureDetails | EditStyleData);
 
-type CreateFeatureData = { type: 'CREATE' };
+type CreateFeatureData = {
+  type: 'CREATE';
+  details: {
+    feature: Feature;
+  };
+};
 type EditStyleData = {
   type: 'EDIT_STYLE';
   details: {

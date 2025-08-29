@@ -13,11 +13,9 @@ export const useDrawActions = () => {
   const drawActions = useAtomValue(drawActionsAtom);
   const canUndo = useAtomValue(canUndoAtom);
   const canRedo = useAtomValue(canRedoAtom);
-  const { removeDrawnFeatureById } = useDrawSettings();
-  const { decrementOffset, incrementOffset, addDrawAction } =
-    useDrawActionsState();
+  const { removeDrawnFeatureById, addFeature } = useDrawSettings();
+  const { decrementOffset, incrementOffset } = useDrawActionsState();
   const undoLast = () => {
-    console.log('sup');
     if (!canUndo) {
       console.warn('Cannot undo');
       return;
@@ -50,6 +48,33 @@ export const useDrawActions = () => {
   };
 
   const redoLastUndone = () => {
+    if (!canRedo) {
+      console.warn('Cannot redo');
+    }
+    const actionIndex = drawActions.length - actionOffset;
+    const actionToRedo = drawActions[actionIndex];
+
+    if (actionToRedo == null) {
+      console.warn('No action to redo');
+      return;
+    }
+    console.log('Redoing action', actionToRedo);
+
+    switch (actionToRedo.type) {
+      case 'CREATE':
+        addFeature(actionToRedo.details.feature);
+        break;
+      case 'EDIT_STYLE':
+        // Handle update action redo
+        break;
+      case 'EDIT_GEOMETRY':
+        // Handle update action redo
+        break;
+      case 'DELETE':
+        // Handle delete action redo
+        break;
+    }
+
     decrementOffset();
   };
 

@@ -161,7 +161,11 @@ const useDrawSettings = () => {
     eventFeature.setStyle(style);
     const featureId = uuidv4();
     eventFeature.setId(featureId);
-    addDrawAction({ type: 'CREATE', featureId: featureId });
+    addDrawAction({
+      type: 'CREATE',
+      featureId: featureId,
+      details: { feature: eventFeature },
+    });
   };
 
   const getDrawType = () => {
@@ -218,6 +222,16 @@ const useDrawSettings = () => {
     if (feature) {
       drawSource.removeFeature(feature);
     }
+  };
+
+  const addFeature = (feature: Feature) => {
+    const drawLayer = getDrawLayer();
+    const drawSource = drawLayer.getSource() as VectorSource | null;
+    if (!drawSource) {
+      console.warn('no draw source');
+      return;
+    }
+    drawSource.addFeature(feature);
   };
 
   const setDrawLayerFeatures = (
@@ -522,6 +536,7 @@ const useDrawSettings = () => {
     drawType,
     showMeasurements,
     removeDrawnFeatureById,
+    addFeature,
     setDrawLayerFeatures,
     setDrawEnabled,
     setDrawType,
