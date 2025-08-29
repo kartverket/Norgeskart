@@ -16,7 +16,7 @@
     "rword": "node scripts/removeWord.js"
   },
   "dependencies": {
-    "@kvib/react": "^6.0.4",
+    "@kvib/react": "^6.1.1",
     "@types/geojson": "^7946.0.16",
     "@tanstack/react-query": "^5.85.5",
     "i18next": "^25.3.4",
