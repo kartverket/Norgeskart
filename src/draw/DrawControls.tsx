@@ -46,7 +46,11 @@ export const DrawControls = () => {
       if (!drawEnabled) {
         return;
       }
-      if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+
+      if (
+        event.key.toLocaleLowerCase() === 'z' &&
+        (event.ctrlKey || event.metaKey)
+      ) {
         if (event.shiftKey) {
           redoLastUndone();
         } else {
