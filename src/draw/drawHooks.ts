@@ -515,6 +515,19 @@ const useDrawSettings = () => {
     selectInteraction.getFeatures().forEach((feature) => {
       drawLayerSource.removeFeature(feature);
     });
+    addDrawAction({
+      type: 'DELETE',
+      details: {
+        features: selectInteraction
+          .getFeatures()
+          .getArray()
+          .map((f) => {
+            const featureToCopy = f.clone();
+            featureToCopy.setId(f.getId());
+            return featureToCopy;
+          }),
+      },
+    });
   };
 
   const clearDrawing = () => {

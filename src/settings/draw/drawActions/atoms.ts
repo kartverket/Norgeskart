@@ -6,16 +6,21 @@ export type DrawActionType =
   | 'EDIT_GEOMETRY'
   | 'DELETE'
   | 'EDIT_STYLE';
-export type DrawAction = DrawActionBase &
-  (CreateFeatureData | EditGeometryData | DeleteFeatureDetails | EditStyleData);
+export type DrawAction =
+  | CreateFeatureData
+  | EditGeometryData
+  | DeleteFeaturesDetails
+  | EditStyleData;
 
 type CreateFeatureData = {
+  featureId: string;
   type: 'CREATE';
   details: {
     feature: Feature;
   };
 };
 type EditStyleData = {
+  featureId: string;
   type: 'EDIT_STYLE';
   details: {
     oldStroke: string;
@@ -24,6 +29,7 @@ type EditStyleData = {
 };
 
 type EditGeometryData = {
+  featureId: string;
   type: 'EDIT_GEOMETRY';
   details: {
     oldCoordinates: number[];
@@ -31,16 +37,11 @@ type EditGeometryData = {
   };
 };
 
-type DeleteFeatureDetails = {
+type DeleteFeaturesDetails = {
   type: 'DELETE';
   details: {
-    coordinates: number[];
-    fill: string;
+    features: Feature[];
   };
-};
-
-type DrawActionBase = {
-  featureId: string;
 };
 
 export const drawActionsAtom = atom<DrawAction[]>([]);

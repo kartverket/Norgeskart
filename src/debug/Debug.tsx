@@ -10,22 +10,18 @@ import {
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { getEnvName } from '../env';
-import {
-  actionOffsetAtom,
-  drawActionsAtom,
-} from '../settings/draw/drawActions/atoms';
+import { drawActionsAtom } from '../settings/draw/drawActions/atoms';
+import { Actions } from './Actions';
 
 export const Debug = () => {
   const hideDebug = localStorage.getItem('hideDebug') === 'true';
   const [_, setShowStuff] = useState(true);
   const drawActions = useAtomValue(drawActionsAtom);
-  const actionOffset = useAtomValue(actionOffsetAtom);
   if (hideDebug) {
     return null;
   }
   const envName = getEnvName();
   if (envName !== 'local') {
-    console.log('sike', envName);
     return null;
   } else {
     return (
@@ -54,12 +50,7 @@ export const Debug = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="actions">
-            Offset: {actionOffset}
-            {drawActions.map((action, index) => (
-              <Box key={index}>
-                {action.featureId} - {action.type}
-              </Box>
-            ))}
+            <Actions />
           </TabsContent>
         </Tabs>
       </Box>

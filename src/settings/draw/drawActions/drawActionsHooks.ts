@@ -40,7 +40,9 @@ export const useDrawActions = () => {
         // Handle update action undo
         break;
       case 'DELETE':
-        // Handle delete action undo
+        actionToUndo.details.features.forEach((feature) => {
+          addFeature(feature);
+        });
         break;
     }
 
@@ -58,7 +60,6 @@ export const useDrawActions = () => {
       console.warn('No action to redo');
       return;
     }
-    console.log('Redoing action', actionToRedo);
 
     switch (actionToRedo.type) {
       case 'CREATE':
@@ -71,7 +72,14 @@ export const useDrawActions = () => {
         // Handle update action redo
         break;
       case 'DELETE':
-        // Handle delete action redo
+        actionToRedo.details.features.forEach((feature) => {
+          const featureId = feature.getId();
+          if (!featureId) {
+            console.warn('Feature ID is null');
+            return;
+          }
+          removeDrawnFeatureById(featureId.toString());
+        });
         break;
     }
 
