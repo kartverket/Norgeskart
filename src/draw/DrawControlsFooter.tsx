@@ -1,39 +1,28 @@
 import {
   Button,
   ButtonGroup,
-  Input,
+  IconButton,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverRoot,
   PopoverTitle,
   PopoverTrigger,
-  SwitchControl,
-  SwitchHiddenInput,
-  SwitchLabel,
-  SwitchRoot,
-  VStack,
 } from '@kvib/react';
 import { Feature, FeatureCollection } from 'geojson';
+import { t } from 'i18next';
+import { useAtomValue } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
 import { Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
 import { Style } from 'ol/style';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  getFeatures,
-  getStyleForStorage,
-  saveFeatures,
-} from '../api/nkApiClient.ts';
-import { useDrawSettings } from '../draw/drawHooks.ts';
-import { getEnvName } from '../env.ts';
-import { useMapSettings } from '../map/mapHooks.ts';
-import { setUrlParameter } from '../shared/utils/urlUtils.ts';
-import { ColorControls } from './ColorControls.tsx';
-import { DrawToolSelector } from './DrawToolSelector.tsx';
-import { LineWidthControl } from './LineWidthControl.tsx';
-import { MeasurementControls } from './MeasurementControls.tsx';
+import { useState } from 'react';
+import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
+import { useMapSettings } from '../map/mapHooks';
+import { canRedoAtom, canUndoAtom } from '../settings/draw/drawActions/atoms';
+import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
+import { setUrlParameter } from '../shared/utils/urlUtils';
+import { useDrawSettings } from './drawHooks';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
@@ -56,35 +45,13 @@ const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   return coordinates;
 };
 
-export const DrawControls = () => {
-  const {
-    drawEnabled,
-    setDrawEnabled,
-    clearDrawing,
-    abortDrawing,
-    setDrawLayerFeatures,
-    getDrawnFeatures,
-  } = useDrawSettings();
-
+export const DrawControlFooter = () => {
+  const { getDrawnFeatures, clearDrawing } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
-  const { t } = useTranslation();
-  const envName = getEnvName();
-
+  const { undoLast, redoLastUndone } = useDrawActions();
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
-  const [drawId, setDrawId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const keyListener = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        abortDrawing();
-      }
-    };
-    document.addEventListener('keydown', keyListener);
-    return () => {
-      document.removeEventListener('keydown', keyListener);
-    };
-  }, [abortDrawing]);
-
+  const canUndoDrawAction = useAtomValue(canUndoAtom);
+  const canRedoDrawAction = useAtomValue(canRedoAtom);
   const onSaveFeatures = () => {
     const drawnFeatures = getDrawnFeatures();
     const mapProjection = getMapProjectionCode();
@@ -129,49 +96,24 @@ export const DrawControls = () => {
       }
     });
   };
-
   return (
-    <VStack alignItems={'flex-start'} width={'100%'}>
-      <SwitchRoot
-        checked={drawEnabled}
-        onCheckedChange={(e) => {
-          setDrawEnabled(e.checked);
-        }}
-        w={'50%'}
-      >
-        <SwitchHiddenInput />
-        <SwitchControl />
-        <SwitchLabel>{t('draw.begin')}</SwitchLabel>
-      </SwitchRoot>
-
-      {drawEnabled && (
-        <>
-          <DrawToolSelector />
-          <ColorControls />
-          <LineWidthControl />
-        </>
-      )}
-      {envName == 'local' && (
-        <>
-          <Input
-            value={drawId ?? ''}
-            onChange={(e) => {
-              setDrawId(e.target.value);
-            }}
+    <>
+      <ButtonGroup>
+        <IconButton
+          variant="ghost"
+          disabled={!canUndoDrawAction}
+          onClick={undoLast}
+          icon={'undo'}
+        />
+        {canRedoDrawAction && (
+          <IconButton
+            variant="ghost"
+            disabled={!canRedoDrawAction}
+            onClick={redoLastUndone}
+            icon={'redo'}
           />
-          <Button
-            onClick={() => {
-              if (!drawId) return;
-              getFeatures(drawId).then((fetchedFeatures) => {
-                setDrawLayerFeatures(fetchedFeatures, 'EPSG:4326');
-              });
-            }}
-          >
-            Hent tegning fra API
-          </Button>
-        </>
-      )}
-      <MeasurementControls />
+        )}
+      </ButtonGroup>
       <ButtonGroup>
         <PopoverRoot
           open={clearPopoverOpen}
@@ -200,7 +142,8 @@ export const DrawControls = () => {
           </PopoverContent>
         </PopoverRoot>
         <Button onClick={onSaveFeatures}>{t('draw.save')}</Button>
+        <Button onClick={undoLast}>Undo</Button>
       </ButtonGroup>
-    </VStack>
+    </>
   );
 };

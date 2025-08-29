@@ -29,7 +29,8 @@
     "close": "Close",
     "size": {
       "label": "Size"
-    }
+    },
+    "deleteSelection": "Remove selected"
   },
   "export": {
     "format": {

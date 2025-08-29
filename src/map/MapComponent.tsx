@@ -23,7 +23,8 @@ export const MapComponent = () => {
   const { setBackgroundLayer } = useMapSettings();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
-  const { setDrawLayerFeatures } = useDrawSettings();
+  const { setDrawLayerFeatures, drawEnabled, undoLast, drawType } =
+    useDrawSettings();
 
   const { setTargetElement } = useMap();
 
@@ -76,6 +77,27 @@ export const MapComponent = () => {
     };
     asyncEffect();
   }, [map, setDrawLayerFeatures]);
+
+  useEffect(() => {
+    const handleUndo = () => {
+      if (
+        drawEnabled &&
+        (drawType === 'Polygon' || drawType === 'LineString')
+      ) {
+        undoLast();
+      }
+    };
+    const mapElement = document.getElementById('map');
+    if (!mapElement) return;
+    mapElement.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      handleUndo();
+    });
+    return () => {
+      window.removeEventListener('contextmenu', handleUndo);
+    };
+  }, [drawType, drawEnabled, undoLast]);
 
   return (
     <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>

@@ -5,11 +5,8 @@ import ScaleLine from 'ol/control/ScaleLine.js';
 import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
-import { Fill, Icon, Stroke, Style } from 'ol/style';
-import CircleStyle from 'ol/style/Circle';
 
 import { v4 as uuidv4 } from 'uuid';
-import { DrawType } from '../draw/drawHooks';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
@@ -19,9 +16,6 @@ const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
 export const DEFAULT_ZOOM_LEVEL = 5;
 export const DEFAULT_CENTER = [1900000, 9500000]; // Center in EPSG:3857
 export const DEFAULT_ROTATION = 0;
-
-export const DEFAULT_PRIMARY_COLOR = '#000000';
-export const DEFAULT_SECONDARY_COLOR = '#ffffff';
 
 export const AvailableProjections: ProjectionIdentifier[] = [
   'EPSG:3857', // webmercator
@@ -36,10 +30,6 @@ export type ProjectionIdentifier =
   | 'EPSG:25832' // utm32n
   | 'EPSG:25833' // utm33n
   | 'EPSG:25835'; // utm35n
-
-export type DistanceUnit = 'm' | 'NM';
-
-export type LineWidth = 2 | 4 | 8;
 
 export const baseLayerIdAtom = atom<string | null>(null);
 export const backgroundLayerIdAtom = atom<string | null>(null);
@@ -137,43 +127,3 @@ export const mapAtom = atom<Map>(() => {
 
   return map;
 });
-
-export const drawStyleReadAtom = atom((get) => {
-  const primaryColor = get(primaryColorAtom);
-  const secondaryColor = get(secondaryColorAtom);
-  const lineWidth = get(lineWidthAtom);
-  return new Style({
-    image: new CircleStyle({
-      radius: lineWidth,
-      fill: new Fill({
-        color: primaryColor,
-      }),
-    }),
-    stroke: new Stroke({
-      color: secondaryColor,
-      width: lineWidth,
-    }),
-    fill: new Fill({
-      color: primaryColor,
-    }),
-  });
-});
-
-export const drawTypeStateAtom = atom<DrawType | null>(null);
-
-export const drawEnabledAtom = atom<boolean>(false);
-export const showMeasurementsAtom = atom<boolean>(false);
-export const distanceUnitAtom = atom<DistanceUnit>('m');
-export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
-export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
-export const lineWidthAtom = atom<LineWidth>(2);
-
-export const markerStyleAtom = atom<Style>(
-  new Style({
-    image: new Icon({
-      src: '/location.svg',
-      anchor: [0.5, 1],
-      scale: 1.5,
-    }),
-  }),
-);

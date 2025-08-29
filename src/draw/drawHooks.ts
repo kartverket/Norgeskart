@@ -1,6 +1,7 @@
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
+import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
@@ -15,15 +16,15 @@ import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../api/nkApiClient';
+import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import {
   distanceUnitAtom,
   drawEnabledAtom,
   drawStyleReadAtom,
   drawTypeStateAtom,
-  mapAtom,
-  ProjectionIdentifier,
   showMeasurementsAtom,
-} from '../map/atoms';
+} from '../settings/draw/atoms';
+import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
 
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
@@ -35,6 +36,8 @@ const useDrawSettings = () => {
   const distanceUnit = useAtomValue(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
+
+  const { addDrawAction, resetActions } = useDrawActionsState();
 
   const getDrawInteraction = () => {
     return map
@@ -130,20 +133,18 @@ const useDrawSettings = () => {
     const newDraw = new Draw({
       source: drawLayer.getSource() as VectorSource,
       type: type,
+      condition: (e) => noModifierKeys(e) && primaryAction(e),
     });
 
-    newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
-      const eventFeature = (event as unknown as DrawEvent).feature;
-      const featureId = uuidv4();
-      eventFeature.setId(featureId);
-    });
-
-    map.addInteraction(newDraw);
     const store = getDefaultStore();
     const style = store.get(drawStyleReadAtom);
 
+    newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
     newDraw.getOverlay().setStyle(style);
-    newDraw.addEventListener('drawend', (event) => drawEnd(event, style));
+    newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
+      drawEnd(event, style);
+    });
+    map.addInteraction(newDraw);
 
     setShowMeasurements(showMeasurements);
     setDrawTypeState(type);
@@ -158,6 +159,13 @@ const useDrawSettings = () => {
   const drawEnd = (event: BaseEvent | Event, style: Style) => {
     const eventFeature = (event as unknown as DrawEvent).feature;
     eventFeature.setStyle(style);
+    const featureId = uuidv4();
+    eventFeature.setId(featureId);
+    addDrawAction({
+      type: 'CREATE',
+      featureId: featureId,
+      details: { feature: eventFeature },
+    });
   };
 
   const getDrawType = () => {
@@ -201,6 +209,29 @@ const useDrawSettings = () => {
     });
 
     return style;
+  };
+
+  const removeDrawnFeatureById = (featureId: string) => {
+    const drawLayer = getDrawLayer();
+    const drawSource = drawLayer.getSource() as VectorSource | null;
+    if (!drawSource) {
+      console.warn('no draw source');
+      return;
+    }
+    const feature = drawSource.getFeatureById(featureId);
+    if (feature) {
+      drawSource.removeFeature(feature);
+    }
+  };
+
+  const addFeature = (feature: Feature) => {
+    const drawLayer = getDrawLayer();
+    const drawSource = drawLayer.getSource() as VectorSource | null;
+    if (!drawSource) {
+      console.warn('no draw source');
+      return;
+    }
+    drawSource.addFeature(feature);
   };
 
   const setDrawLayerFeatures = (
@@ -462,11 +493,49 @@ const useDrawSettings = () => {
     setShowMeasurements(true);
   };
 
+  const undoLast = () => {
+    const drawInteraction = getDrawInteraction();
+    if (!drawInteraction) {
+      console.warn('no drawinteraction found');
+      return;
+    }
+    drawInteraction.removeLastPoint();
+  };
+
+  const deleteSelected = () => {
+    const selectInteraction = getSelectInteraction();
+    if (!selectInteraction) {
+      return;
+    }
+    const drawLayerSource = getDrawLayer()?.getSource() as VectorSource | null;
+    if (!drawLayerSource) {
+      return;
+    }
+
+    selectInteraction.getFeatures().forEach((feature) => {
+      drawLayerSource.removeFeature(feature);
+    });
+    addDrawAction({
+      type: 'DELETE',
+      details: {
+        features: selectInteraction
+          .getFeatures()
+          .getArray()
+          .map((f) => {
+            const featureToCopy = f.clone();
+            featureToCopy.setId(f.getId());
+            return featureToCopy;
+          }),
+      },
+    });
+  };
+
   const clearDrawing = () => {
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
     source.clear();
     setShowMeasurements(false);
+    resetActions();
   };
 
   const abortDrawing = () => {
@@ -480,12 +549,16 @@ const useDrawSettings = () => {
     drawEnabled,
     drawType,
     showMeasurements,
+    removeDrawnFeatureById,
+    addFeature,
     setDrawLayerFeatures,
     setDrawEnabled,
     setDrawType,
     setShowMeasurements,
     refreshMeasurements,
+    undoLast,
     abortDrawing,
+    deleteSelected,
     clearDrawing,
     getDrawLayer,
     getDrawnFeatures,
