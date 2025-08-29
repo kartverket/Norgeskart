@@ -1,5 +1,5 @@
 import { Separator, VStack } from '@kvib/react';
-import { DrawControls } from '../../draw/DrawControls';
+import { DrawControls } from '../../draw/drawControls/DrawControls';
 import { ExportControls } from '../../draw/ExportControls';
 
 export const DrawSettings = () => {
