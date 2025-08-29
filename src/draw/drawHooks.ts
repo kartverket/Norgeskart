@@ -37,7 +37,7 @@ const useDrawSettings = () => {
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
 
-  const { addDrawAction } = useDrawActionsState();
+  const { addDrawAction, resetActions } = useDrawActionsState();
 
   const getDrawInteraction = () => {
     return map
@@ -535,6 +535,7 @@ const useDrawSettings = () => {
     const source = drawLayer.getSource() as VectorSource;
     source.clear();
     setShowMeasurements(false);
+    resetActions();
   };
 
   const abortDrawing = () => {

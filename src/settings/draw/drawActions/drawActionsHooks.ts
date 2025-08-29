@@ -96,6 +96,11 @@ export const useDrawActionsState = () => {
   const [drawActions, setDrawActions] = useAtom(drawActionsAtom);
   const [actionOffset, setActionOffset] = useAtom(actionOffsetAtom);
 
+  const resetActions = () => {
+    setDrawActions([]);
+    resetOffset();
+  };
+
   const incrementOffset = () => {
     const maxPossibleOffset = drawActions.length;
     if (actionOffset < maxPossibleOffset) {
@@ -130,5 +135,6 @@ export const useDrawActionsState = () => {
     incrementOffset,
     resetOffset,
     addDrawAction,
+    resetActions,
   };
 };
