@@ -96,6 +96,41 @@ const createClusterStyle = (
   return createMarkerStyle(LOCATION_BLUE_SVG);
 };
 
+const handleMarkerClick = (
+  feature: Feature,
+  onMarkerClick: (res: SearchResult) => void,
+) => {
+  const res = feature.get('searchResult');
+  if (res) {
+    onMarkerClick(res);
+  }
+};
+
+const handleClusterClick = (clusterFeatures: Feature[], map: Map) => {
+  const results = clusterFeatures.map(
+    (f) => f.get('searchResult') as SearchResult,
+  );
+  const view = map.getView();
+  const currentZoom = view.getZoom() || 0;
+  const maxZoom = view.getMaxZoom();
+
+  if (currentZoom === maxZoom) {
+    console.log('Klikket på cluster på maks zoom:', results);
+  } else {
+    const extent = createEmpty();
+    clusterFeatures.forEach((clusterFeature: Feature) => {
+      const geometry = clusterFeature.getGeometry();
+      if (geometry) {
+        extend(extent, geometry.getExtent());
+      }
+    });
+    view.fit(extent, {
+      duration: 500,
+      padding: [50, 50, 50, 50],
+    });
+  }
+};
+
 export const addSearchMarkers = (
   map: Map,
   searchResults: SearchResult[],
@@ -158,39 +193,15 @@ export const addSearchMarkers = (
 
     map.on('singleclick', (evt) => {
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-        const featuresAtPixel = feature.get('features');
-        if (!Array.isArray(featuresAtPixel)) return;
+        const featuresAtPixel = feature.get('features') as
+          | Feature[]
+          | undefined;
+        if (!featuresAtPixel) return;
 
         if (featuresAtPixel.length === 1) {
-          const res = featuresAtPixel[0].get('searchResult');
-          if (res) {
-            onMarkerClick(res);
-          }
+          handleMarkerClick(featuresAtPixel[0], onMarkerClick);
         } else {
-          const clusterFeatures = feature.get('features');
-          if (clusterFeatures && clusterFeatures.length > 1) {
-            const results = clusterFeatures.map((f: Feature) =>
-              f.get('searchResult'),
-            );
-            const view = map.getView();
-            const currentZoom = view.getZoom() || 0;
-            const maxZoom = view.getMaxZoom();
-            if (currentZoom === maxZoom) {
-              console.log('Klikket på cluster', results);
-            } else {
-              const extent = createEmpty();
-              clusterFeatures.forEach((clusterFeature: Feature<Point>) => {
-                const geometry = clusterFeature.getGeometry();
-                if (geometry) {
-                  extend(extent, geometry.getExtent());
-                }
-              });
-              view.fit(extent, {
-                duration: 500,
-                padding: [50, 50, 50, 50],
-              });
-            }
-          }
+          handleClusterClick(featuresAtPixel, map);
         }
       });
     });
