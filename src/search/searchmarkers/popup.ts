@@ -1,6 +1,6 @@
-import { Overlay } from 'ol';
 import Map from 'ol/Map';
-import { SearchResult } from '../../types/searchTypes';
+import { SearchResult } from "../../types/searchTypes";
+import { Overlay } from 'ol';
 
 const popupStyle = {
   backgroundColor: 'white',
