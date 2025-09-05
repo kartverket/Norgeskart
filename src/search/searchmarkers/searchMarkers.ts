@@ -1,100 +1,16 @@
 import { Feature } from 'ol';
 import { createEmpty, extend } from 'ol/extent';
-import { FeatureLike } from 'ol/Feature';
 import { Point } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
-import { transform } from 'ol/proj';
 import Cluster from 'ol/source/Cluster';
 import VectorSource from 'ol/source/Vector';
-import {
-  Circle as CircleStyle,
-  Fill,
-  Icon,
-  Stroke,
-  Style,
-  Text,
-} from 'ol/style';
-import { getInputCRS } from '../shared/utils/crsUtils';
-import { SearchResult } from '../types/searchTypes';
-
-type MarkerIcon = '/location/location_red.svg' | '/location/location_blue.svg';
-
-const LOCATION_RED_SVG: MarkerIcon = '/location/location_red.svg';
-const LOCATION_BLUE_SVG: MarkerIcon = '/location/location_blue.svg';
-
-const createMarkerStyle = (iconSrc: MarkerIcon): Style => {
-  return new Style({
-    image: new Icon({
-      src: iconSrc,
-      anchor: [0.5, 1],
-      scale: 2.0,
-    }),
-  });
-};
-
-const createMarker = (
-  res: SearchResult,
-  iconSrc: MarkerIcon,
-  map: Map,
-): Feature => {
-  const marker = new Feature({
-    geometry: new Point(
-      transform(
-        [res.lon, res.lat],
-        getInputCRS(res),
-        map.getView().getProjection(),
-      ),
-    ),
-  });
-  marker.setProperties({ searchResult: res });
-  marker.setStyle(createMarkerStyle(iconSrc));
-  return marker;
-};
+import { SearchResult } from '../../types/searchTypes';
+import { createClusterStyle } from './cluster';
+import { createMarker, LOCATION_BLUE_SVG, LOCATION_RED_SVG } from './marker';
+import { showClusterPopup } from './popup';
 
 let isClickHandlerAttached = false;
-
-const createClusterStyle = (
-  feature: FeatureLike,
-  hoveredResult: { lon: number; lat: number } | null,
-): Style => {
-  const clusterFeatures = feature.get('features');
-
-  if (clusterFeatures && clusterFeatures.length > 1) {
-    const containsHoveredResult = clusterFeatures.some((f: Feature) => {
-      const res = f.get('searchResult');
-      return (
-        hoveredResult &&
-        res &&
-        res.lon === hoveredResult.lon &&
-        res.lat === hoveredResult.lat
-      );
-    });
-
-    return new Style({
-      image: new CircleStyle({
-        radius: 15,
-        fill: new Fill({
-          color: containsHoveredResult ? '#E54848FF' : '#476ED4B3',
-        }),
-        stroke: new Stroke({ color: '#fff', width: 2 }),
-      }),
-      text: new Text({
-        text: clusterFeatures.length.toString(),
-        fill: new Fill({ color: '#fff' }),
-        font: 'bold 14px Arial',
-      }),
-    });
-  }
-
-  const singleFeature = clusterFeatures?.[0];
-  if (singleFeature) {
-    const style = singleFeature.getStyle?.();
-    if (style) return style;
-  }
-
-  return createMarkerStyle(LOCATION_BLUE_SVG);
-};
 
 const handleMarkerClick = (
   feature: Feature,
@@ -115,7 +31,11 @@ const handleClusterClick = (clusterFeatures: Feature[], map: Map) => {
   const maxZoom = view.getMaxZoom();
 
   if (currentZoom === maxZoom) {
-    console.log('Klikket på cluster på maks zoom:', results);
+    const clusterGeometry = clusterFeatures[0].getGeometry();
+    if (clusterGeometry && clusterGeometry instanceof Point) {
+      const coordinates = clusterGeometry.getCoordinates();
+      showClusterPopup(results, map, coordinates);
+    }
   } else {
     const extent = createEmpty();
     clusterFeatures.forEach((clusterFeature: Feature) => {
@@ -193,9 +113,7 @@ export const addSearchMarkers = (
 
     map.on('singleclick', (evt) => {
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-        const featuresAtPixel = feature.get('features') as
-          | Feature[]
-          | undefined;
+        const featuresAtPixel = feature.get('features') as Feature[];
         if (!featuresAtPixel) return;
 
         if (featuresAtPixel.length === 1) {

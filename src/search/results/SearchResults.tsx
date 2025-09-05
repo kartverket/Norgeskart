@@ -14,7 +14,7 @@ import {
   SearchResult,
 } from '../../types/searchTypes.ts';
 import { InfoBox } from '../infobox/InfoBox.tsx';
-import { addSearchMarkers } from '../searchMarkers.ts';
+import { addSearchMarkers } from '../searchmarkers/searchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
 import { PropertiesResults } from './PropertiesResults.tsx';
