@@ -1,25 +1,35 @@
-import Map from 'ol/Map';
-import { SearchResult } from "../../types/searchTypes";
 import { Overlay } from 'ol';
+import Map from 'ol/Map';
+import { SearchResult } from '../../types/searchTypes';
 
 const popupStyle = {
-  backgroundColor: 'white',
-  padding: '10px',
-  border: '1px solid black',
-  top: '10px',
+  backgroundColor: '#ffffff',
+  padding: '15px',
+  border: '1px solid #ccc',
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+  maxWidth: '300px',
+  fontFamily: 'Arial, sans-serif',
+  fontSize: '14px',
+  color: '#333',
+  position: 'relative',
 };
 
 const closeButtonStyle = {
-  top: '5px',
-  background: 'none',
-  cursor: 'pointer',
-  color: 'black',
-  right: '5px',
   position: 'absolute',
+  top: '5px',
+  right: '10px',
+  background: 'none',
+  border: 'none',
+  cursor: 'pointer',
+  color: '#888',
+  fontSize: '18px',
+  fontWeight: 'bold',
 };
 
 const listContainerStyle = {
-  top: '30px',
+  marginTop: '15px',
+  lineHeight: '1.6',
 };
 
 export const showClusterPopup = (
