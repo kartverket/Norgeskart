@@ -29,6 +29,7 @@ const handleClusterClick = (clusterFeatures: Feature[], map: Map) => {
   const view = map.getView();
   const currentZoom = view.getZoom() || 0;
   const maxZoom = view.getMaxZoom();
+  const minZoom = Math.min(currentZoom + 2, maxZoom);
 
   if (currentZoom === maxZoom) {
     const clusterGeometry = clusterFeatures[0].getGeometry();
@@ -47,6 +48,7 @@ const handleClusterClick = (clusterFeatures: Feature[], map: Map) => {
     view.fit(extent, {
       duration: 500,
       padding: [50, 50, 50, 50],
+      maxZoom: minZoom,
     });
   }
 };
