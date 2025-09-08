@@ -35,7 +35,7 @@ const listContainerStyle = {
 export const showClusterPopup = (
   results: SearchResult[],
   map: Map,
-  coordinate: number[],
+  coordinates: number[],
 ) => {
   const popupElement = document.createElement('div');
   Object.assign(popupElement.style, popupStyle);
@@ -79,5 +79,5 @@ export const showClusterPopup = (
   });
 
   map.addOverlay(popup);
-  popup.setPosition(coordinate);
+  popup.setPosition(coordinates);
 };
