@@ -1,7 +1,7 @@
 import { Overlay } from 'ol';
 import Map from 'ol/Map';
-import { SearchResult } from '../../types/searchTypes';
 import i18n from '../../i18n';
+import { SearchResult } from '../../types/searchTypes';
 
 const popupStyle = {
   backgroundColor: '#ffffff',
@@ -28,8 +28,8 @@ const closeButtonStyle = {
 };
 
 const listContainerStyle = {
-  marginTop: '10px',
-  lineHeight: '1.6',
+  marginTop: '13px',
+  lineHeight: '1.5',
 };
 
 export const showClusterPopup = (
@@ -50,14 +50,20 @@ export const showClusterPopup = (
   const listContainer = document.createElement('div');
   Object.assign(listContainer.style, listContainerStyle);
   results.forEach((res) => {
-    const item = document.createElement('div');
-    item.textContent = res.name;
+    const resultItem = document.createElement('div');
+    resultItem.style.marginBottom = '8px';
+
+    const name = document.createElement('div');
+    name.textContent = res.name;
+
     const type = document.createElement('span');
     type.textContent = ` ${i18n.t(`locationType.${res.type.toLowerCase()}`)}`;
-    type.style.fontStyle = 'italic'
+    type.style.fontStyle = 'italic';
 
-    listContainer.appendChild(item);
-    listContainer.appendChild(type);
+    resultItem.appendChild(name);
+    resultItem.appendChild(type);
+
+    listContainer.appendChild(resultItem);
   });
 
   popupElement.appendChild(closeButton);
