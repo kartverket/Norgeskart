@@ -33,10 +33,16 @@ const listContainerStyle = {
   lineHeight: '1.5',
 };
 
+const resultItemStyle = {
+  marginBottom: '8px',
+  cursor: 'pointer',
+};
+
 export const clusterPopup = (
   results: SearchResult[],
   map: Map,
   coordinates: number[],
+  onResultClick: (res: SearchResult) => void,
 ) => {
   const popupElement = document.createElement('div');
   Object.assign(popupElement.style, popupStyle);
@@ -52,7 +58,14 @@ export const clusterPopup = (
   Object.assign(listContainer.style, listContainerStyle);
   results.forEach((res) => {
     const resultItem = document.createElement('div');
-    resultItem.style.marginBottom = '8px';
+    Object.assign(resultItem.style, resultItemStyle);
+
+    resultItem.onmouseenter = () => {
+      resultItem.style.fontWeight = 'bold';
+    };
+    resultItem.onmouseleave = () => {
+      resultItem.style.fontWeight = '';
+    };
 
     const name = document.createElement('div');
     if (res.type === 'Address') {
@@ -67,6 +80,11 @@ export const clusterPopup = (
 
     resultItem.appendChild(name);
     resultItem.appendChild(type);
+
+    resultItem.onclick = () => {
+      onResultClick(res);
+      map.removeOverlay(popup);
+    };
 
     listContainer.appendChild(resultItem);
   });

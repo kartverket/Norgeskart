@@ -14,15 +14,19 @@ let isClickHandlerAttached = false;
 
 const handleMarkerClick = (
   feature: Feature,
-  onMarkerClick: (res: SearchResult) => void,
+  onResultClick: (res: SearchResult) => void,
 ) => {
   const res = feature.get('searchResult');
   if (res) {
-    onMarkerClick(res);
+    onResultClick(res);
   }
 };
 
-const handleClusterClick = (clusterFeatures: Feature[], map: Map) => {
+const handleClusterClick = (
+  clusterFeatures: Feature[],
+  map: Map,
+  onResultClick: (res: SearchResult) => void,
+) => {
   const results = clusterFeatures.map(
     (f) => f.get('searchResult') as SearchResult,
   );
@@ -35,7 +39,7 @@ const handleClusterClick = (clusterFeatures: Feature[], map: Map) => {
     const clusterGeometry = clusterFeatures[0].getGeometry();
     if (clusterGeometry && clusterGeometry instanceof Point) {
       const coordinates = clusterGeometry.getCoordinates();
-      clusterPopup(results, map, coordinates);
+      clusterPopup(results, map, coordinates, onResultClick);
     }
   } else {
     const extent = createEmpty();
@@ -58,7 +62,7 @@ export const updateSearchMarkers = (
   searchResults: SearchResult[],
   hoveredResult: { lon: number; lat: number } | null,
   selectedResult: SearchResult | null,
-  onMarkerClick: (res: SearchResult) => void,
+  onResultClick: (res: SearchResult) => void,
 ) => {
   const markerLayer = map
     .getLayers()
@@ -117,9 +121,9 @@ export const updateSearchMarkers = (
         if (!featuresAtPixel) return;
 
         if (featuresAtPixel.length === 1) {
-          handleMarkerClick(featuresAtPixel[0], onMarkerClick);
+          handleMarkerClick(featuresAtPixel[0], onResultClick);
         } else {
-          handleClusterClick(featuresAtPixel, map);
+          handleClusterClick(featuresAtPixel, map, onResultClick);
         }
       });
     });
