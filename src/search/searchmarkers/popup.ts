@@ -13,6 +13,7 @@ const popupStyle = {
   fontSize: '14px',
   color: '#333',
   position: 'relative',
+  minWidth: '150px',
 };
 
 const closeButtonStyle = {
@@ -54,7 +55,11 @@ export const clusterPopup = (
     resultItem.style.marginBottom = '8px';
 
     const name = document.createElement('div');
-    name.textContent = res.name;
+    if (res.type === 'Address') {
+      name.textContent = res.address.adressetekst;
+    } else {
+      name.textContent = res.name;
+    }
 
     const type = document.createElement('span');
     type.textContent = ` ${i18n.t(`locationType.${res.type.toLowerCase()}`)}`;
