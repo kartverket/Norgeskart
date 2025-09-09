@@ -6,9 +6,9 @@ import Map from 'ol/Map';
 import Cluster from 'ol/source/Cluster';
 import VectorSource from 'ol/source/Vector';
 import { SearchResult } from '../../types/searchTypes';
-import { createClusterStyle } from './cluster';
+import { clusterStyle } from './cluster';
 import { createMarker, LOCATION_BLUE_SVG, LOCATION_RED_SVG } from './marker';
-import { showClusterPopup } from './popup';
+import { clusterPopup } from './popup';
 
 let isClickHandlerAttached = false;
 
@@ -35,7 +35,7 @@ const handleClusterClick = (clusterFeatures: Feature[], map: Map) => {
     const clusterGeometry = clusterFeatures[0].getGeometry();
     if (clusterGeometry && clusterGeometry instanceof Point) {
       const coordinates = clusterGeometry.getCoordinates();
-      showClusterPopup(results, map, coordinates);
+      clusterPopup(results, map, coordinates);
     }
   } else {
     const extent = createEmpty();
@@ -53,7 +53,7 @@ const handleClusterClick = (clusterFeatures: Feature[], map: Map) => {
   }
 };
 
-export const addSearchMarkers = (
+export const updateSearchMarkers = (
   map: Map,
   searchResults: SearchResult[],
   hoveredResult: { lon: number; lat: number } | null,
@@ -78,9 +78,7 @@ export const addSearchMarkers = (
 
   vectorMarkerLayer.setSource(clusterSource);
 
-  vectorMarkerLayer.setStyle((feature) =>
-    createClusterStyle(feature, hoveredResult),
-  );
+  vectorMarkerLayer.setStyle((feature) => clusterStyle(feature, hoveredResult));
 
   markerSource.clear();
 

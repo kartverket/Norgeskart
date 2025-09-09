@@ -14,7 +14,7 @@ import {
   SearchResult,
 } from '../../types/searchTypes.ts';
 import { InfoBox } from '../infobox/InfoBox.tsx';
-import { addSearchMarkers } from '../searchmarkers/searchMarkers.ts';
+import { updateSearchMarkers } from '../searchmarkers/searchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
 import { PropertiesResults } from './PropertiesResults.tsx';
@@ -64,7 +64,7 @@ export const SearchResults = ({
   const allResults = searchResultsMapper(places, roads, addresses, properties);
 
   useEffect(() => {
-    addSearchMarkers(
+    updateSearchMarkers(
       map,
       allResults,
       hoveredResult,

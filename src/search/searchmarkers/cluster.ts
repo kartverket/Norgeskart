@@ -3,7 +3,7 @@ import { FeatureLike } from 'ol/Feature';
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style';
 import { createMarkerStyle, LOCATION_BLUE_SVG } from './marker';
 
-export const createClusterStyle = (
+export const clusterStyle = (
   feature: FeatureLike,
   hoveredResult: { lon: number; lat: number } | null,
 ): Style => {

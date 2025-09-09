@@ -32,7 +32,7 @@ const listContainerStyle = {
   lineHeight: '1.5',
 };
 
-export const showClusterPopup = (
+export const clusterPopup = (
   results: SearchResult[],
   map: Map,
   coordinates: number[],
