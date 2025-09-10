@@ -10,8 +10,6 @@ import { clusterStyle } from './cluster';
 import { createMarker, LOCATION_BLUE_SVG, LOCATION_RED_SVG } from './marker';
 import { clusterPopup } from './popup';
 
-let isClickHandlerAttached = false;
-
 const handleMarkerClick = (
   feature: Feature,
   onResultClick: (res: SearchResult) => void,
@@ -112,9 +110,8 @@ export const updateSearchMarkers = (
     markerSource.addFeature(marker);
   });
 
-  if (!isClickHandlerAttached) {
-    isClickHandlerAttached = true;
-
+  if (!map.get('markerClickHandler')) {
+    map.set('markerClickHandler', true);
     map.on('singleclick', (evt) => {
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         const featuresAtPixel = feature.get('features') as Feature[];
