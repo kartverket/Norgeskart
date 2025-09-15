@@ -1,6 +1,6 @@
 import { AccordionRoot } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -63,16 +63,6 @@ export const SearchResults = ({
 
   const allResults = searchResultsMapper(places, roads, addresses, properties);
 
-  useEffect(() => {
-    updateSearchMarkers(
-      map,
-      allResults,
-      hoveredResult,
-      selectedResult,
-      handleSearchClick,
-    );
-  }, [map, allResults, hoveredResult, selectedResult]);
-
   const handleHover = (res: SearchResult) => {
     setHoveredResult(res);
   };
@@ -85,11 +75,24 @@ export const SearchResults = ({
     );
   };
 
-  const handleSearchClick = (res: SearchResult) => {
-    const { lon, lat } = res;
-    setSelectedResult(res);
-    setMapLocation([lon, lat], getInputCRS(res), 15);
-  };
+  const handleSearchClick = useCallback(
+    (res: SearchResult) => {
+      const { lon, lat } = res;
+      setSelectedResult(res);
+      setMapLocation([lon, lat], getInputCRS(res), 15);
+    },
+    [setSelectedResult, setMapLocation],
+  );
+
+  useEffect(() => {
+    updateSearchMarkers(
+      map,
+      allResults,
+      hoveredResult,
+      selectedResult,
+      handleSearchClick,
+    );
+  }, [map, allResults, hoveredResult, selectedResult, handleSearchClick]);
 
   const hasResults = allResults.length > 0;
 
