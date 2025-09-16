@@ -147,5 +147,11 @@
     "nameObjectType": "Name object type",
     "loadingPlaceNameInfo": "Loading place name information",
     "errorPlaceNameInfo": "Error fetching place name information"
+  },
+  "locationType": {
+    "property": "Property",
+    "road": "Road",
+    "place": "Placename",
+    "address": "Address"
   }
 }

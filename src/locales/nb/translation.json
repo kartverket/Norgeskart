@@ -147,5 +147,11 @@
     "nameObjectType": "Navneobjekttype",
     "loadingPlaceNameInfo": "Laster stedsnavninformasjon",
     "errorPlaceNameInfo": "Feil ved henting av stedsnavninformasjon"
+  },
+  "locationType": {
+    "property": "Eiendom",
+    "road": "Vei",
+    "place": "Stedsnavn",
+    "address": "Adresse"
   }
 }
