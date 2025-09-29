@@ -2,6 +2,7 @@ import { Box, Flex, useBreakpointValue } from '@kvib/react';
 import React, { useState } from 'react';
 import { Debug } from '../debug/Debug';
 import { MapComponent } from '../map/MapComponent';
+import { MessageBox } from '../messages/MessageBox';
 import { SearchComponent } from '../search/SearchComponent';
 import DesktopSidebar from './DesktopSidebar';
 import MobileSidebar from './MobileSidebar';
@@ -13,6 +14,7 @@ const Layout: React.FC = () => {
 
   return (
     <Flex height="100vh" width="100vw" position="relative">
+      <MessageBox />
       <Debug />
       {isMobile ? (
         <MobileSidebar />
