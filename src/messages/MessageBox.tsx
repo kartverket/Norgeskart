@@ -24,18 +24,7 @@ export const MessageBox = () => {
   const isMobile = useIsMobileScreen();
   const textboxWidth = isMobile ? '90vw' : '400px';
 
-  if (!showMessageBox) {
-    return null;
-  }
-
-  if (isLoading) {
-    null;
-  }
-
-  if (error) {
-    null;
-  }
-  if (!data) {
+  if (!showMessageBox || isLoading || error || !data) {
     return null;
   }
   const dataHash = createHash(data);
