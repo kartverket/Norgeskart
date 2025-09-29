@@ -25,6 +25,7 @@ const getEnvName = (): EnvName => {
   switch (baseUrl) {
     case 'localhost':
       return 'local';
+    case 'norgeskart5.atgcp1-dev.kartverket-intern.cloud':
     case 'norgeskart5.atkv3-dev.kartverket-intern.cloud':
       return 'dev';
     case 'norgeskart5.atkv3-prod.kartverket-intern.cloud':
