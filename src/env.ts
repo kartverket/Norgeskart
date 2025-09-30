@@ -1,5 +1,5 @@
-export type EnvName = 'local' | 'dev' | 'prod';
-export type Env = {
+type EnvName = 'local' | 'dev' | 'test' | 'prod';
+type Env = {
   apiUrl: string;
   envName: EnvName;
 };
@@ -14,37 +14,36 @@ const DEV_ENV: Env = {
   envName: 'dev',
 };
 
+const TEST_ENV: Env = {
+  apiUrl: 'https://testapi.norgeskart.no',
+  envName: 'test',
+};
+
 const PROD_ENV: Env = {
   apiUrl: 'https://testapi.norgeskart.no',
   envName: 'prod',
 };
 
 const getEnvName = (): EnvName => {
-  const baseUrl = document.location.hostname;
-
-  switch (baseUrl) {
-    case 'localhost':
-      return 'local';
-    case 'norgeskart5.atgcp1-dev.kartverket-intern.cloud':
-    case 'norgeskart5.atkv3-dev.kartverket-intern.cloud':
-      return 'dev';
-    case 'norgeskart5.atkv3-prod.kartverket-intern.cloud':
-    case 'norgeskart.no':
-      return 'prod';
-    default:
-      throw new Error('Unknown environment');
-  }
+  return getEnv().envName;
 };
 
 const getEnv = (): Env => {
-  const envName = getEnvName();
-  switch (envName) {
-    case 'local':
+  const domain = document.location.hostname;
+  switch (domain) {
+    case 'localhost':
       return LOCAL_ENV;
-    case 'dev':
+    case 'norgeskart5.atgcp1-dev.kartverket-intern.cloud':
+    case 'norgeskart5.atkv3-dev.kartverket-intern.cloud':
       return DEV_ENV;
-    case 'prod':
+    case 'norgeskart5.atgcp1-prod.kartverket-intern.cloud':
+    case 'test.norgeskart.no':
+      return TEST_ENV;
+    case 'norgeskart5.atkv3-prod.kartverket-intern.cloud':
+    case 'norgeskart.no':
       return PROD_ENV;
+    default:
+      throw new Error('Unknown environment');
   }
 };
 
