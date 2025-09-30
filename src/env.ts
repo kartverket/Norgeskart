@@ -33,13 +33,11 @@ const getEnv = (): Env => {
   switch (domain) {
     case 'localhost':
       return LOCAL_ENV;
-    case 'norgeskart5.atgcp1-dev.kartverket-intern.cloud':
-    case 'norgeskart5.atkv3-dev.kartverket-intern.cloud':
+    case 'norgeskart.atgcp1-dev.kartverket-intern.cloud':
       return DEV_ENV;
-    case 'norgeskart5.atgcp1-prod.kartverket-intern.cloud':
+    case 'norgeskart.atgcp1-prod.kartverket-intern.cloud':
     case 'test.norgeskart.no':
       return TEST_ENV;
-    case 'norgeskart5.atkv3-prod.kartverket-intern.cloud':
     case 'norgeskart.no':
       return PROD_ENV;
     default:
