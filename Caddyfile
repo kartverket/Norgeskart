@@ -16,7 +16,7 @@ route {
                 default-src 'self';
                 script-src 'self';
                 img-src 'self' opencache.statkart.no *.geonorge.no *.norgeskart.no cache.kartverket.no *.googletagmanager.com *.kartverket-intern.cloud cache.atgcp1-prod.kartverket.cloud cache.atkv3-dev.kartverket.cloud;
-                connect-src 'self' *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no cache.kartverket.no cache.atkv3-dev.kartverket.cloud opencache.statkart.no;
+                connect-src 'self' *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no cache.kartverket.no cache.atkv3-dev.kartverket.cloud opencache.statkart.no raw.githubusercontent.com;
                 style-src 'self' 'unsafe-inline';
         "
         header Permissions-Policy "geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), accelerometer=(), camera=()"
