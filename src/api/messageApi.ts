@@ -6,7 +6,7 @@ export const getMessage = async (
   env: string,
   languageCode: string,
 ): Promise<string | null> => {
-  const response = await fetch(`${baseMessageUrl}${env}.${languageCode}`);
+  const response = await fetch(`${baseMessageUrl}${env}.${languageCode}.md`);
   if (response.status === 404) {
     return null;
   }
