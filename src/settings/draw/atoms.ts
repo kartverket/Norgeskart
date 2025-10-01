@@ -10,7 +10,7 @@ export type LineWidth = 2 | 4 | 8;
 
 export type DistanceUnit = 'm' | 'NM';
 
-export type PointStyle = 'circle' | 'square' | 'triangle';
+export type PointStyle = 'circle' | 'square' | 'triangle' | 'heart' | 'star';
 
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
@@ -43,4 +43,4 @@ export const drawEnabledAtom = atom<boolean>(false);
 export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
 
-export const pointStyleAtom = atom<PointStyle>('square');
+export const pointStyleAtom = atom<PointStyle>('circle');

@@ -1,11 +1,8 @@
 import { getDefaultStore } from 'jotai';
-import { Fill, Style } from 'ol/style';
+import { Fill, Icon, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import RegularShape from 'ol/style/RegularShape';
-import {
-  PointStyle,
-  primaryColorAtom,
-} from '../settings/draw/atoms';
+import { PointStyle, primaryColorAtom } from '../settings/draw/atoms';
 
 export const getPointStyle = (style: PointStyle) => {
   const store = getDefaultStore();
@@ -34,6 +31,22 @@ export const getPointStyle = (style: PointStyle) => {
           points: 3,
           radius: 10,
           fill: new Fill({ color: primaryColor }),
+        }),
+      });
+    case 'heart':
+      return new Style({
+        image: new Icon({
+          src: 'icons/heart.svg',
+          scale: 1,
+          color: primaryColor,
+        }),
+      });
+    case 'star':
+      return new Style({
+        image: new Icon({
+          src: 'icons/star.svg',
+          scale: 1,
+          color: primaryColor,
         }),
       });
     default:
