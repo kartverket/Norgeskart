@@ -43,9 +43,9 @@ export const MessageBox = () => {
           borderRadius={8}
         >
           <VStack>
-            <Box maxW={textboxWidth} p={2}>
+            <VStack maxW={textboxWidth} p={2} gap={2} alignItems={'flex-start'}>
               <Markdown>{data}</Markdown>
-            </Box>
+            </VStack>
             <Checkbox
               checked={doNotShowAgain}
               onCheckedChange={(e) => {
