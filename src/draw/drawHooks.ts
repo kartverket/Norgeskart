@@ -22,10 +22,12 @@ import {
   drawEnabledAtom,
   drawStyleReadAtom,
   drawTypeStateAtom,
+  pointStyleAtom,
   showMeasurementsAtom,
 } from '../settings/draw/atoms';
 import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
+import { getPointStyle } from './pointStyle';
 
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
 
@@ -158,7 +160,15 @@ const useDrawSettings = () => {
 
   const drawEnd = (event: BaseEvent | Event, style: Style) => {
     const eventFeature = (event as unknown as DrawEvent).feature;
-    eventFeature.setStyle(style);
+    const store = getDefaultStore();
+    const drawType = store.get(drawTypeStateAtom);
+
+    if (drawType === 'Point') {
+      const pointStyle = store.get(pointStyleAtom);
+      eventFeature.setStyle(getPointStyle(pointStyle));
+    } else {
+      eventFeature.setStyle(style);
+    }
     const featureId = uuidv4();
     eventFeature.setId(featureId);
     addDrawAction({

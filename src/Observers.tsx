@@ -1,14 +1,8 @@
 import { useAtom } from 'jotai';
-import {
-  lineWidthEffect,
-  primaryColorEffect,
-  secondaryColorEffect,
-} from './draw/effects';
+import { drawStyleEffect } from './draw/effects';
 
 export const Observers = () => {
-  useAtom(primaryColorEffect);
-  useAtom(secondaryColorEffect);
-  useAtom(lineWidthEffect);
+  useAtom(drawStyleEffect);
 
   return <></>;
 };

@@ -1,4 +1,3 @@
-import { getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import BaseEvent from 'ol/events/Event';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
@@ -8,10 +7,13 @@ import CircleStyle from 'ol/style/Circle';
 import { mapAtom } from '../map/atoms';
 
 import {
+  drawTypeStateAtom,
   lineWidthAtom,
+  pointStyleAtom,
   primaryColorAtom,
   secondaryColorAtom,
 } from '../settings/draw/atoms';
+import { getPointStyle } from './pointStyle';
 
 const getDrawInteraction = (map: Map) => {
   const drawInteraction = map
@@ -39,69 +41,38 @@ const setNewStyle = (draw: Draw, style: Style) => {
   });
 };
 
-export const primaryColorEffect = atomEffect((get) => {
+export const drawStyleEffect = atomEffect((get) => {
   const primaryColor = get(primaryColorAtom);
-  const map = get(mapAtom);
-  const drawInteraction = getDrawInteraction(map);
-  if (!drawInteraction) {
-    return;
-  }
-  const style = getDrawOverlayStyle(drawInteraction);
-  if (!style) {
-    return;
-  }
-  const newStyle = style.clone() as Style;
-  const store = getDefaultStore();
-  const lineWidth = store.get(lineWidthAtom);
-
-  newStyle.getFill()?.setColor(primaryColor);
-  const circleStyle = new CircleStyle({
-    radius: lineWidth,
-    fill: new Fill({ color: primaryColor }),
-  });
-  newStyle.setImage(circleStyle);
-
-  setNewStyle(drawInteraction, newStyle);
-});
-
-export const secondaryColorEffect = atomEffect((get) => {
   const secondaryColor = get(secondaryColorAtom);
-  const map = get(mapAtom);
-  const drawInteraction = getDrawInteraction(map);
-  if (!drawInteraction) {
-    return;
-  }
-
-  const style = getDrawOverlayStyle(drawInteraction);
-  if (!style) {
-    return;
-  }
-  const newStyle = style.clone() as Style;
-
-  newStyle.getStroke()?.setColor(secondaryColor);
-  setNewStyle(drawInteraction, newStyle);
-});
-
-export const lineWidthEffect = atomEffect((get) => {
   const lineWidth = get(lineWidthAtom);
   const map = get(mapAtom);
+  const drawType = get(drawTypeStateAtom);
   const drawInteraction = getDrawInteraction(map);
   if (!drawInteraction) {
     return;
   }
+
   const style = getDrawOverlayStyle(drawInteraction);
   if (!style) {
     return;
   }
-  const newStyle = style.clone();
-  newStyle.getStroke()?.setWidth(lineWidth);
-  const store = getDefaultStore();
-  const primaryColor = store.get(primaryColorAtom);
 
+  if (drawType === 'Point') {
+    const pointStyle = get(pointStyleAtom);
+    const newStyle = getPointStyle(pointStyle);
+    setNewStyle(drawInteraction, newStyle);
+    return;
+  }
+  const newStyle = style.clone() as Style;
+
+  newStyle.getFill()?.setColor(primaryColor);
+  newStyle.getStroke()?.setColor(secondaryColor);
+  newStyle.getStroke()?.setWidth(lineWidth);
   const circleStyle = new CircleStyle({
     radius: lineWidth,
     fill: new Fill({ color: primaryColor }),
   });
   newStyle.setImage(circleStyle);
+
   setNewStyle(drawInteraction, newStyle);
 });
