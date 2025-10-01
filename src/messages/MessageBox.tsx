@@ -1,15 +1,8 @@
-import {
-  Box,
-  Center,
-  Checkbox,
-  Flex,
-  IconButton,
-  Text,
-  VStack,
-} from '@kvib/react';
+import { Box, Center, Checkbox, Flex, IconButton, VStack } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Markdown from 'react-markdown';
 import { getMessage } from '../api/messageApi';
 import { getEnvName } from '../env';
 import { useIsMobileScreen } from '../shared/hooks';
@@ -46,17 +39,13 @@ export const MessageBox = () => {
           zIndex={'overlay'}
           backgroundColor={'white'}
           p={2}
+          mt={4}
           borderRadius={8}
         >
           <VStack>
-            <Text
-              maxW={textboxWidth}
-              whiteSpace="pre-line"
-              wordBreak={'break-word'}
-              p={2}
-            >
-              {data}
-            </Text>
+            <Box maxW={textboxWidth} p={2}>
+              <Markdown>{data}</Markdown>
+            </Box>
             <Checkbox
               checked={doNotShowAgain}
               onCheckedChange={(e) => {
