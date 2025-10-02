@@ -8,11 +8,10 @@ import { mapAtom } from '../map/atoms';
 import {
   drawTypeStateAtom,
   lineWidthAtom,
-  pointStyleAtom,
+  pointStyleReadAtom,
   primaryColorAtom,
   secondaryColorAtom,
 } from '../settings/draw/atoms';
-import { getPointStyle } from './pointStyle';
 
 const getDrawInteraction = (map: Map) => {
   const drawInteraction = map
@@ -35,7 +34,6 @@ export const drawStyleEffect = atomEffect((get) => {
   const lineWidth = get(lineWidthAtom);
   const map = get(mapAtom);
   const drawType = get(drawTypeStateAtom);
-  const pointStyle = get(pointStyleAtom);
   const drawInteraction = getDrawInteraction(map);
   if (!drawInteraction) {
     return;
@@ -47,7 +45,7 @@ export const drawStyleEffect = atomEffect((get) => {
   }
 
   if (drawType === 'Point') {
-    const newStyle = getPointStyle(pointStyle); //atomize plz
+    const newStyle = get(pointStyleReadAtom);
     drawInteraction.getOverlay().setStyle(newStyle);
     return;
   }
