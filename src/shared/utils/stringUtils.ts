@@ -35,7 +35,7 @@ export const formatArea = (areaInSquareMeters: number, unit?: DistanceUnit) => {
       if (areaInSquareMeters < 10000) {
         return `${areaInSquareMeters.toFixed(2)} m²`;
       } else {
-        return `${(areaInSquareMeters / 10000).toFixed(2)} km²`;
+        return `${(areaInSquareMeters / 1_000_000).toFixed(3)} km²`;
       }
     }
   }
