@@ -144,7 +144,7 @@ const useDrawSettings = () => {
     newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
     newDraw.getOverlay().setStyle(style);
     newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
-      drawEnd(event, style);
+      drawEnd(event);
     });
     map.addInteraction(newDraw);
 
@@ -158,7 +158,7 @@ const useDrawSettings = () => {
       | undefined;
   };
 
-  const drawEnd = (event: BaseEvent | Event, style: Style) => {
+  const drawEnd = (event: BaseEvent | Event) => {
     const eventFeature = (event as unknown as DrawEvent).feature;
     const store = getDefaultStore();
     const drawType = store.get(drawTypeStateAtom);
@@ -167,7 +167,8 @@ const useDrawSettings = () => {
       const pointStyle = store.get(pointStyleAtom);
       eventFeature.setStyle(getPointStyle(pointStyle));
     } else {
-      eventFeature.setStyle(style);
+      const lolStyle = store.get(drawStyleReadAtom);
+      eventFeature.setStyle(lolStyle);
     }
     const featureId = uuidv4();
     eventFeature.setId(featureId);

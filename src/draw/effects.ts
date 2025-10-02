@@ -1,6 +1,5 @@
 import { atomEffect } from 'jotai-effect';
-import BaseEvent from 'ol/events/Event';
-import Draw, { DrawEvent } from 'ol/interaction/Draw';
+import Draw from 'ol/interaction/Draw';
 import Map from 'ol/Map';
 import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -30,23 +29,13 @@ const getDrawOverlayStyle = (draw: Draw) => {
   return style;
 };
 
-const setNewStyle = (draw: Draw, style: Style) => {
-  draw.getOverlay().setStyle(style);
-  draw.getListeners('drawend')?.forEach((listener) => {
-    draw.removeEventListener('drawend', listener);
-  });
-  draw.addEventListener('drawend', (event: Event | BaseEvent) => {
-    const addedFeature = (event as DrawEvent).feature;
-    addedFeature.setStyle(style);
-  });
-};
-
 export const drawStyleEffect = atomEffect((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
   const lineWidth = get(lineWidthAtom);
   const map = get(mapAtom);
   const drawType = get(drawTypeStateAtom);
+  const pointStyle = get(pointStyleAtom);
   const drawInteraction = getDrawInteraction(map);
   if (!drawInteraction) {
     return;
@@ -58,9 +47,8 @@ export const drawStyleEffect = atomEffect((get) => {
   }
 
   if (drawType === 'Point') {
-    const pointStyle = get(pointStyleAtom);
-    const newStyle = getPointStyle(pointStyle);
-    setNewStyle(drawInteraction, newStyle);
+    const newStyle = getPointStyle(pointStyle); //atomize plz
+    drawInteraction.getOverlay().setStyle(newStyle);
     return;
   }
   const newStyle = style.clone() as Style;
@@ -73,6 +61,5 @@ export const drawStyleEffect = atomEffect((get) => {
     fill: new Fill({ color: primaryColor }),
   });
   newStyle.setImage(circleStyle);
-
-  setNewStyle(drawInteraction, newStyle);
+  drawInteraction.getOverlay().setStyle(newStyle);
 });
