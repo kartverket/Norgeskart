@@ -10,7 +10,7 @@ export type LineWidth = 2 | 4 | 8;
 
 export type DistanceUnit = 'm' | 'NM';
 
-export type PointStyle = 'circle' | 'square' | 'triangle' | 'heart' | 'star';
+export type PointStyle = 'circle' | 'square' | 'triangle' | 'diamond' | 'star';
 
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);

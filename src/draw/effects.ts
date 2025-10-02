@@ -31,10 +31,8 @@ const getDrawOverlayStyle = (draw: Draw) => {
 };
 
 const setNewStyle = (draw: Draw, style: Style) => {
-  draw.getOverlay().setStyle(style);
-  draw.getListeners('drawend')?.forEach((listener) => {
-    draw.removeEventListener('drawend', listener);
-  });
+   draw.getOverlay().setStyle(style);
+
   draw.addEventListener('drawend', (event: Event | BaseEvent) => {
     const addedFeature = (event as DrawEvent).feature;
     addedFeature.setStyle(style);
