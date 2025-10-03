@@ -22,14 +22,18 @@ export const ColorControls = () => {
 
   return (
     <>
-      {(drawType == 'Circle' || drawType == 'Polygon') && (
+      {(drawType == 'Circle' ||
+        drawType == 'Polygon' ||
+        drawType === 'Text') && (
         <ColorPicker
           value={parseColor(primaryColor)}
           onValueChange={(value) => {
             setPrimaryColor(value.valueAsString);
           }}
         >
-          <ColorPickerLabel>{t('draw.controls.colorFill')}</ColorPickerLabel>
+          <ColorPickerLabel>
+            {drawType === 'Text' ? 'Tekstfarge' : t('draw.controls.colorFill')}
+          </ColorPickerLabel>
           <ColorPickerControl>
             <ColorPickerInput />
             <ColorPickerTrigger />
@@ -42,14 +46,19 @@ export const ColorControls = () => {
       )}
       {(drawType == 'Circle' ||
         drawType == 'Polygon' ||
-        drawType == 'LineString') && (
+        drawType == 'LineString' ||
+        drawType === 'Text') && (
         <ColorPicker
           value={parseColor(secondaryColor)}
           onValueChange={(value) => {
             setSecondaryColor(value.valueAsString);
           }}
         >
-          <ColorPickerLabel>{t('draw.controls.colorStroke')}</ColorPickerLabel>
+          <ColorPickerLabel>
+            {drawType === 'Text'
+              ? 'Bakgrunnsfarge'
+              : t('draw.controls.colorStroke')}
+          </ColorPickerLabel>
           <ColorPickerControl>
             <ColorPickerInput />
             <ColorPickerTrigger />
@@ -67,7 +76,7 @@ export const ColorControls = () => {
             setSecondaryColor(value.valueAsString);
           }}
         >
-          <ColorPickerLabel>{t('draw.controls.colorPoint')}</ColorPickerLabel>
+          <ColorPickerLabel>{t('draw.controls.colorFill')}</ColorPickerLabel>
           <ColorPickerControl>
             <ColorPickerInput />
             <ColorPickerTrigger />

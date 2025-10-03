@@ -24,6 +24,8 @@ import {
   drawTypeStateAtom,
   pointStyleReadAtom,
   showMeasurementsAtom,
+  textInputAtom,
+  textStyleReadAtom,
 } from '../settings/draw/atoms';
 import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
 import {
@@ -35,7 +37,13 @@ const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
-export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
+export type DrawType =
+  | 'Point'
+  | 'Polygon'
+  | 'LineString'
+  | 'Circle'
+  | 'Move'
+  | 'Text';
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
@@ -141,7 +149,7 @@ const useDrawSettings = () => {
 
     const newDraw = new Draw({
       source: drawLayer.getSource() as VectorSource,
-      type: type,
+      type: type === 'Text' ? 'Point' : type,
       condition: (e) => noModifierKeys(e) && primaryAction(e),
     });
 
@@ -185,6 +193,18 @@ const useDrawSettings = () => {
       const style = store.get(drawStyleReadAtom);
       eventFeature.setStyle(style);
     }
+
+    if (drawType === 'Text') {
+      const text = store.get(textInputAtom);
+      const style = store.get(textStyleReadAtom).clone();
+      const textStyle = style.getText();
+      if (textStyle) {
+        textStyle.setText(text);
+      }
+      eventFeature.set('text', text);
+      eventFeature.setStyle(style);
+    }
+
     const featureId = uuidv4();
     eventFeature.setId(featureId);
     addDrawAction({

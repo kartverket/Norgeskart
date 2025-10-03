@@ -34,6 +34,11 @@ export const DrawToolSelector = () => {
       icon: 'circle',
       tooltip: t('draw.controls.tool.tooltip.circle'),
     },
+    {
+      value: 'Text',
+      icon: 'text_fields',
+      tooltip: 'Text', // no translation yet
+    },
   ];
   return (
     <Flex gap={2}>
