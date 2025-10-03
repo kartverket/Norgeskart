@@ -62,9 +62,9 @@ export const ColorControls = () => {
       )}
       {drawType == 'Point' && (
         <ColorPicker
-          value={parseColor(primaryColor)}
+          value={parseColor(secondaryColor)}
           onValueChange={(value) => {
-            setPrimaryColor(value.valueAsString);
+            setSecondaryColor(value.valueAsString);
           }}
         >
           <ColorPickerLabel>{t('draw.controls.colorPoint')}</ColorPickerLabel>

@@ -47,7 +47,7 @@ export const pointTypeAtom = atom<PointType>('circle');
 
 export const pointStyleReadAtom = atom((get) => {
   const type = get(pointTypeAtom);
-  const primaryColor = get(primaryColorAtom);
+  const secondaryColor = get(secondaryColorAtom);
   const lineWidth = get(lineWidthAtom);
   const pointRadius = lineWidth * 3;
 
@@ -56,7 +56,7 @@ export const pointStyleReadAtom = atom((get) => {
       return new Style({
         image: new CircleStyle({
           radius: pointRadius,
-          fill: new Fill({ color: primaryColor }),
+          fill: new Fill({ color: secondaryColor }),
         }),
       });
     case 'square':
@@ -65,7 +65,7 @@ export const pointStyleReadAtom = atom((get) => {
           points: 4,
           radius: pointRadius,
           angle: Math.PI / 4,
-          fill: new Fill({ color: primaryColor }),
+          fill: new Fill({ color: secondaryColor }),
         }),
       });
     case 'triangle':
@@ -73,7 +73,7 @@ export const pointStyleReadAtom = atom((get) => {
         image: new RegularShape({
           points: 3,
           radius: pointRadius,
-          fill: new Fill({ color: primaryColor }),
+          fill: new Fill({ color: secondaryColor }),
         }),
       });
     case 'diamond':
@@ -83,7 +83,7 @@ export const pointStyleReadAtom = atom((get) => {
           radius: pointRadius,
           angle: 0,
           scale: [1, 1.7],
-          fill: new Fill({ color: primaryColor }),
+          fill: new Fill({ color: secondaryColor }),
         }),
       });
     case 'star':
@@ -92,14 +92,14 @@ export const pointStyleReadAtom = atom((get) => {
           points: 5,
           radius: pointRadius,
           radius2: pointRadius / 2,
-          fill: new Fill({ color: primaryColor }),
+          fill: new Fill({ color: secondaryColor }),
         }),
       });
     default:
       return new Style({
         image: new CircleStyle({
           radius: pointRadius,
-          fill: new Fill({ color: primaryColor }),
+          fill: new Fill({ color: secondaryColor }),
         }),
       });
   }
