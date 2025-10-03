@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { Fill, Icon, Stroke, Style } from 'ol/style';
+import { Fill, RegularShape, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { DrawType } from '../../draw/drawHooks';
 
@@ -9,6 +9,8 @@ export const DEFAULT_SECONDARY_COLOR = '#0e5aa0ff';
 export type LineWidth = 2 | 4 | 8;
 
 export type DistanceUnit = 'm' | 'NM';
+
+export type PointType = 'circle' | 'square' | 'triangle' | 'diamond' | 'star';
 
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
@@ -41,12 +43,64 @@ export const drawEnabledAtom = atom<boolean>(false);
 export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
 
-export const markerStyleAtom = atom<Style>(
-  new Style({
-    image: new Icon({
-      src: '/location.svg',
-      anchor: [0.5, 1],
-      scale: 1.5,
-    }),
-  }),
-);
+export const pointTypeAtom = atom<PointType>('circle');
+
+export const pointStyleReadAtom = atom((get) => {
+  const type = get(pointTypeAtom);
+  const secondaryColor = get(secondaryColorAtom);
+  const lineWidth = get(lineWidthAtom);
+  const pointRadius = lineWidth * 3;
+
+  switch (type) {
+    case 'circle':
+      return new Style({
+        image: new CircleStyle({
+          radius: pointRadius,
+          fill: new Fill({ color: secondaryColor }),
+        }),
+      });
+    case 'square':
+      return new Style({
+        image: new RegularShape({
+          points: 4,
+          radius: pointRadius,
+          angle: Math.PI / 4,
+          fill: new Fill({ color: secondaryColor }),
+        }),
+      });
+    case 'triangle':
+      return new Style({
+        image: new RegularShape({
+          points: 3,
+          radius: pointRadius,
+          fill: new Fill({ color: secondaryColor }),
+        }),
+      });
+    case 'diamond':
+      return new Style({
+        image: new RegularShape({
+          points: 4,
+          radius: pointRadius,
+          angle: 0,
+          scale: [1, 1.7],
+          fill: new Fill({ color: secondaryColor }),
+        }),
+      });
+    case 'star':
+      return new Style({
+        image: new RegularShape({
+          points: 5,
+          radius: pointRadius,
+          radius2: pointRadius / 2,
+          fill: new Fill({ color: secondaryColor }),
+        }),
+      });
+    default:
+      return new Style({
+        image: new CircleStyle({
+          radius: pointRadius,
+          fill: new Fill({ color: secondaryColor }),
+        }),
+      });
+  }
+});

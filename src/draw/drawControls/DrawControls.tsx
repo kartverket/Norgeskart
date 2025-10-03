@@ -7,6 +7,7 @@ import { useDrawSettings } from '../drawHooks.ts';
 import { DrawToolSelector } from '../DrawToolSelector.tsx';
 import { LineWidthControl } from '../LineWidthControl.tsx';
 import { MeasurementControls } from '../MeasurementControls.tsx';
+import { PointStyleSelector } from '../PointStyleSelector.tsx';
 import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts';
 
 export const DrawControls = () => {
@@ -20,6 +21,7 @@ export const DrawControls = () => {
     <VStack alignItems={'flex-start'} width={'100%'}>
       <DrawToolSelector />
       <ColorControls />
+      {drawType === 'Point' && <PointStyleSelector />}
       {isMobile && drawType == 'Move' && (
         <Button onClick={deleteSelected}>{t('draw.deleteSelection')}</Button>
       )}

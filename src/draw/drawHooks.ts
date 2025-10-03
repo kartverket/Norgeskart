@@ -12,7 +12,7 @@ import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { getArea, getLength } from 'ol/sphere';
-import { Fill, Stroke, Style } from 'ol/style';
+import { Fill, RegularShape, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../api/nkApiClient';
@@ -22,6 +22,7 @@ import {
   drawEnabledAtom,
   drawStyleReadAtom,
   drawTypeStateAtom,
+  pointStyleReadAtom,
   showMeasurementsAtom,
 } from '../settings/draw/atoms';
 import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
@@ -142,7 +143,7 @@ const useDrawSettings = () => {
     newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
     newDraw.getOverlay().setStyle(style);
     newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
-      drawEnd(event, style);
+      drawEnd(event);
     });
     map.addInteraction(newDraw);
 
@@ -156,9 +157,18 @@ const useDrawSettings = () => {
       | undefined;
   };
 
-  const drawEnd = (event: BaseEvent | Event, style: Style) => {
+  const drawEnd = (event: BaseEvent | Event) => {
     const eventFeature = (event as unknown as DrawEvent).feature;
-    eventFeature.setStyle(style);
+    const store = getDefaultStore();
+    const drawType = store.get(drawTypeStateAtom);
+
+    if (drawType === 'Point') {
+      const style = store.get(pointStyleReadAtom);
+      eventFeature.setStyle(style);
+    } else {
+      const style = store.get(drawStyleReadAtom);
+      eventFeature.setStyle(style);
+    }
     const featureId = uuidv4();
     eventFeature.setId(featureId);
     addDrawAction({
@@ -194,13 +204,27 @@ const useDrawSettings = () => {
       width: styleFromProps.stroke.width,
     });
 
-    const icon =
-      styleFromProps.icon.radius != null && styleFromProps.icon.color != null
-        ? new CircleStyle({
-            radius: styleFromProps.icon.radius,
-            fill: new Fill({ color: styleFromProps.icon.color }),
-          })
-        : undefined;
+    let icon;
+    if (styleFromProps.icon.points != null) {
+      icon = new RegularShape({
+        points: styleFromProps.icon.points,
+        radius: styleFromProps.icon.radius ?? 10,
+        radius2: styleFromProps.icon.radius2,
+        angle: styleFromProps.icon.angle,
+        scale: styleFromProps.icon.scale,
+        fill: new Fill({ color: styleFromProps.icon.color }),
+      });
+    } else if (
+      styleFromProps.icon.radius != null &&
+      styleFromProps.icon.color != null
+    ) {
+      icon = new CircleStyle({
+        radius: styleFromProps.icon.radius,
+        fill: new Fill({ color: styleFromProps.icon.color }),
+      });
+    } else {
+      icon = undefined;
+    }
 
     const style = new Style({
       fill,
