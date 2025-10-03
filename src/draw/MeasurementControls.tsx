@@ -12,9 +12,7 @@ import {
   SwitchRoot,
 } from '@kvib/react';
 import { t } from 'i18next';
-import { useAtom } from 'jotai';
-import { useEffect } from 'react';
-import { DistanceUnit, distanceUnitAtom } from '../settings/draw/atoms';
+import { DistanceUnit } from '../settings/draw/atoms';
 import { useDrawSettings } from './drawHooks';
 
 const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
@@ -23,16 +21,12 @@ const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
 ];
 
 export const MeasurementControls = () => {
-  const [measurementUnit, setMeasurementUnit] = useAtom(distanceUnitAtom);
-  const { refreshMeasurements, showMeasurements, setShowMeasurements } =
-    useDrawSettings();
-
-  //Look into jotai-effect to have it be reactive globally
-  useEffect(() => {
-    if (showMeasurements) {
-      refreshMeasurements();
-    }
-  }, [measurementUnit, showMeasurements, refreshMeasurements]);
+  const {
+    setDistanceUnit,
+    distanceUnit,
+    showMeasurements,
+    setShowMeasurements,
+  } = useDrawSettings();
   return (
     <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
       <SwitchRoot
@@ -48,7 +42,7 @@ export const MeasurementControls = () => {
       </SwitchRoot>
       {showMeasurements && (
         <SelectRoot
-          value={[measurementUnit]}
+          value={[distanceUnit]}
           collection={createListCollection({
             items: measurementUnitCollection,
           })}
@@ -63,7 +57,7 @@ export const MeasurementControls = () => {
                 key={item.value}
                 item={item.value}
                 onClick={() => {
-                  setMeasurementUnit(item.value);
+                  setDistanceUnit(item.value);
                 }}
               >
                 {item.label}

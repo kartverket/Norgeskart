@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../api/nkApiClient';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import {
+  DistanceUnit,
   distanceUnitAtom,
   drawEnabledAtom,
   drawStyleReadAtom,
@@ -40,7 +41,7 @@ const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
   const [drawType, setDrawTypeState] = useAtom(drawTypeStateAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
-  const distanceUnit = useAtomValue(distanceUnitAtom);
+  const [distanceUnit, setDistanceUnitAtomValue] = useAtom(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
 
@@ -156,6 +157,14 @@ const useDrawSettings = () => {
 
     setShowMeasurements(showMeasurements);
     setDrawTypeState(type);
+  };
+
+  const setDistanceUnit = (unit: DistanceUnit) => {
+    if (showMeasurements) {
+      setDisplayInteractiveMeasurement(true, unit);
+      setDisplayStaticMeasurement(true, unit);
+    }
+    setDistanceUnitAtomValue(unit);
   };
 
   const getDrawnFeatures = () => {
@@ -324,7 +333,10 @@ const useDrawSettings = () => {
     drawSource.addFeatures(featuresToAddWithStyle);
   };
 
-  const setDisplayInteractiveMeasurement = (enable: boolean) => {
+  const setDisplayInteractiveMeasurement = (
+    enable: boolean,
+    distanceUnit: DistanceUnit,
+  ) => {
     const drawInteraction = getDrawInteraction();
     if (!drawInteraction) {
       return;
@@ -409,7 +421,10 @@ const useDrawSettings = () => {
     }
   };
 
-  const setDisplayStaticMeasurement = (enable: boolean) => {
+  const setDisplayStaticMeasurement = (
+    enable: boolean,
+    distanceUnit: DistanceUnit,
+  ) => {
     removeFeatureMeasurementOverlays();
     if (!enable) {
       //To ensure no overlays are duplicated when toggling units between m and NM
@@ -486,14 +501,8 @@ const useDrawSettings = () => {
 
   const setShowMeasurements = (enable: boolean) => {
     setShowMeasurementsAtom(enable);
-    setDisplayInteractiveMeasurement(enable);
-    setDisplayStaticMeasurement(enable);
-  };
-
-  //I hate this
-  const refreshMeasurements = () => {
-    setShowMeasurements(false);
-    setShowMeasurements(true);
+    setDisplayInteractiveMeasurement(enable, distanceUnit);
+    setDisplayStaticMeasurement(enable, distanceUnit);
   };
 
   const undoLast = () => {
@@ -551,14 +560,15 @@ const useDrawSettings = () => {
   return {
     drawEnabled,
     drawType,
+    distanceUnit,
     showMeasurements,
     removeDrawnFeatureById,
     addFeature,
     setDrawLayerFeatures,
     setDrawEnabled,
+    setDistanceUnit,
     setDrawType,
     setShowMeasurements,
-    refreshMeasurements,
     undoLast,
     abortDrawing,
     deleteSelected,
