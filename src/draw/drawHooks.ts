@@ -4,14 +4,13 @@ import { Feature, Overlay } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
-import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
+import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { getArea, getLength } from 'ol/sphere';
 import { Fill, RegularShape, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
@@ -26,7 +25,10 @@ import {
   showMeasurementsAtom,
 } from '../settings/draw/atoms';
 import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
-import { formatArea, formatDistance } from '../shared/utils/stringUtils';
+import {
+  getGeometryPositionForOverlay,
+  getMeasurementText,
+} from './drawControls/drawUtils';
 
 const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
@@ -43,6 +45,7 @@ const useDrawSettings = () => {
     useAtom(showMeasurementsAtom);
 
   const { addDrawAction, resetActions } = useDrawActionsState();
+  const mapProjection = map.getView().getProjection().getCode();
 
   const getDrawInteraction = () => {
     return map
@@ -279,7 +282,6 @@ const useDrawSettings = () => {
       return;
     }
 
-    const mapProjection = map.getView().getProjection().getCode();
     const geojsonReader = new GeoJSON();
 
     const featuresToAddWithStyle: Feature<Geometry>[] = [];
@@ -359,7 +361,11 @@ const useDrawSettings = () => {
         feature.getGeometry()?.on('change', (geomEvent) => {
           const geometry = geomEvent.target;
           const geometryPosition = getGeometryPositionForOverlay(geometry);
-          const tooltipText = getMeasurementText(geometry);
+          const tooltipText = getMeasurementText(
+            geometry,
+            mapProjection,
+            distanceUnit,
+          );
 
           if (geometryPosition && tooltipText) {
             toolTip.setPosition(geometryPosition);
@@ -381,7 +387,11 @@ const useDrawSettings = () => {
         elm.classList.add('hidden');
         addFeatureMeasurementOverlay(
           feature,
-          getMeasurementText(feature.getGeometry()!),
+          getMeasurementText(
+            feature.getGeometry()!,
+            mapProjection,
+            distanceUnit,
+          ),
         );
       });
     } else {
@@ -399,64 +409,42 @@ const useDrawSettings = () => {
     }
   };
 
-  const getMeasurementText = (geometry: Geometry) => {
-    let measurementText = '';
-    const projectionCode = map.getView().getProjection().getCode();
-
-    if (geometry instanceof Polygon) {
-      const area = getArea(geometry, { projection: projectionCode });
-      measurementText = formatArea(area, distanceUnit);
-    }
-    if (geometry instanceof LineString) {
-      const length = getLength(geometry, { projection: projectionCode });
-      measurementText = formatDistance(length, distanceUnit);
-    }
-    if (geometry instanceof Circle) {
-      const radius = geometry.getRadius();
-      measurementText = formatArea(radius * radius * Math.PI, distanceUnit);
-    }
-    return measurementText;
-  };
-
   const setDisplayStaticMeasurement = (enable: boolean) => {
-    if (enable) {
-      const drawLayer = getDrawLayer();
-      const source = drawLayer?.getSource() as VectorSource | undefined;
-      if (!source) {
-        return;
-      }
-      const drawnFeatures = source.getFeatures();
-      if (!drawnFeatures) {
-        return;
-      }
-      if (!enable) {
-        return;
-      }
-      drawnFeatures.forEach((feature) => {
-        const geometry = feature.getGeometry();
-        if (!geometry) {
-          return;
-        }
-        const measurementText = getMeasurementText(geometry);
-
-        addFeatureMeasurementOverlay(feature, measurementText);
-      });
-    } else {
-      removeFeatureMeasurementOverlays();
+    removeFeatureMeasurementOverlays();
+    if (!enable) {
+      //To ensure no overlays are duplicated when toggling units between m and NM
+      return;
     }
+    const drawLayer = getDrawLayer();
+    const source = drawLayer.getSource();
+    if (!source) {
+      return;
+    }
+    const drawnFeatures = source.getFeatures();
+    drawnFeatures.forEach((feature) => {
+      const geometry = feature.getGeometry();
+      if (!geometry) {
+        return;
+      }
+      const measurementText = getMeasurementText(
+        geometry,
+        mapProjection,
+        distanceUnit,
+      );
+
+      addFeatureMeasurementOverlay(feature, measurementText);
+    });
   };
 
-  const getGeometryPositionForOverlay = (geometry: Geometry) => {
-    if (geometry instanceof Polygon) {
-      return geometry.getInteriorPoint().getCoordinates();
-    }
-    if (geometry instanceof LineString) {
-      return geometry.getLastCoordinate();
-    }
-    if (geometry instanceof Circle) {
-      return geometry.getCenter();
-    }
-    return null;
+  const getMeasurementOverlays = () => {
+    const overlays = map.getOverlays().getArray();
+    return overlays.filter((overlay) => {
+      const overlayId = overlay.getId()?.toString();
+      if (!overlayId) {
+        return false;
+      }
+      return overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX);
+    });
   };
 
   const addFeatureMeasurementOverlay = (
@@ -489,25 +477,10 @@ const useDrawSettings = () => {
   };
 
   const removeFeatureMeasurementOverlays = () => {
-    const overlays = map.getOverlays().getArray();
+    const overlays = getMeasurementOverlays();
     overlays.forEach((overlay) => {
-      if (!overlay) {
-        return;
-      }
-      const overlayId = overlay.getId()?.toString();
-      if (!overlayId) {
-        return;
-      }
-
-      if (overlayId.startsWith('measurement-tooltip-')) {
-        map.removeOverlay(overlay);
-      }
-    });
-    const overlayElements = document.querySelectorAll(
-      '[id^="measurement-tooltip-"]',
-    );
-    overlayElements.forEach((element) => {
-      element.remove();
+      overlay.getElement()?.remove();
+      map.removeOverlay(overlay);
     });
   };
 
