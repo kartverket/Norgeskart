@@ -19,7 +19,8 @@
           "linestring": "Line segments",
           "circle": "Circle"
         }
-      }
+      },
+      "pointType": "Point type"
     },
     "end": "Done",
     "save": "Save",

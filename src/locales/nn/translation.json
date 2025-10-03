@@ -19,7 +19,8 @@
           "linestring": "Linjesegmet",
           "circle": "Sirkel"
         }
-      }
+      },
+      "pointType": "Punkttype"
     },
     "end": "Ferdig",
     "save": "Lagre",
