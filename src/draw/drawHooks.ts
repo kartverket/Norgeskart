@@ -28,6 +28,10 @@ import {
 import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
 
+const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
+const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
+const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
+
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
 
 const useDrawSettings = () => {
@@ -324,17 +328,19 @@ const useDrawSettings = () => {
       return;
     }
     const handleMouseOut = () => {
-      document.getElementById('measurement-tooltip')?.classList.add('hidden');
+      document
+        .getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID)
+        ?.classList.add('hidden');
     };
     const handleMouseIn = () => {
       document
-        .getElementById('measurement-tooltip')
+        .getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID)
         ?.classList.remove('hidden');
     };
 
     if (enable) {
       const elm = document.createElement('div');
-      elm.id = 'measurement-tooltip';
+      elm.id = INTERACTIVE_MEASUREMNT_OVERLAY_ID;
       elm.classList.add('hidden');
       elm.classList.add('ol-tooltip');
       elm.classList.add('ol-tooltip-measure');
@@ -343,7 +349,7 @@ const useDrawSettings = () => {
         element: elm,
         offset: [0, -15],
         positioning: 'bottom-center',
-        id: 'measurement-tooltip',
+        id: INTERACTIVE_MEASUREMNT_OVERLAY_ID,
       });
       map.addOverlay(toolTip);
       map.getViewport().addEventListener('mouseout', handleMouseOut);
@@ -386,7 +392,7 @@ const useDrawSettings = () => {
       drawInteraction.getListeners('drawend')?.forEach((listener) => {
         drawInteraction.removeEventListener('drawend', listener);
       });
-      const overlay = map.getOverlayById('measurement-tooltip');
+      const overlay = map.getOverlayById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
       if (overlay) {
         map.removeOverlay(overlay);
       }
@@ -467,7 +473,7 @@ const useDrawSettings = () => {
       return;
     }
     const elm = document.createElement('div');
-    elm.id = 'measurement-tooltip-' + featId;
+    elm.id = MEASUREMNT_ELEMENT_PREFIX + featId;
     elm.classList.add('ol-tooltip', 'ol-tooltip-measure', 'ol-tooltip-static');
     elm.innerHTML = text;
 
@@ -475,7 +481,7 @@ const useDrawSettings = () => {
       element: elm,
       offset: [0, -15],
       positioning: 'bottom-center',
-      id: 'measurement-tooltip-' + featId,
+      id: MEASUREMNT_OVERLAY_PREFIX + featId,
     });
 
     toolTip.setPosition(overlayPosition);
