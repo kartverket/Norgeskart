@@ -29,6 +29,7 @@ export const PointStyleSelector = () => {
             colorPalette="green"
             size="sm"
             variant={pointStyle === style ? 'solid' : 'outline'}
+            iconFill
             icon={icon}
             aria-label={label}
             onClick={() => setPointStyle(style)}

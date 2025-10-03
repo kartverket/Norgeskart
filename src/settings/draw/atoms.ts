@@ -49,7 +49,7 @@ export const pointStyleReadAtom = atom((get) => {
   const type = get(pointTypeAtom);
   const primaryColor = get(primaryColorAtom);
   const lineWidth = get(lineWidthAtom);
-  const pointRadius = lineWidth * 2;
+  const pointRadius = lineWidth * 3;
 
   switch (type) {
     case 'circle':
