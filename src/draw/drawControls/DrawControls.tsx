@@ -8,6 +8,7 @@ import { LineWidthControl } from '../LineWidthControl.tsx';
 import { MeasurementControls } from '../MeasurementControls.tsx';
 import { PointStyleSelector } from '../PointStyleSelector.tsx';
 import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts';
+import { EditControls } from './EditControls.tsx';
 import { useDrawSettings } from './hooks/drawSettings.ts';
 
 export const DrawControls = () => {
@@ -20,6 +21,7 @@ export const DrawControls = () => {
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>
       <DrawToolSelector />
+      <EditControls />
       <ColorControls />
       {drawType === 'Point' && <PointStyleSelector />}
       {isMobile && drawType == 'Move' && (
