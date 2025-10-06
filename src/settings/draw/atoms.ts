@@ -34,6 +34,7 @@ export const drawStyleReadAtom = atom((get) => {
     fill: new Fill({
       color: primaryColor,
     }),
+    zIndex: 0,
   });
 });
 
