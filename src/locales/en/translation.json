@@ -34,7 +34,8 @@
     "size": {
       "label": "Size"
     },
-    "deleteSelection": "Remove selected"
+    "deleteSelection": "Remove selected",
+    "textInputLabel": "Enter text"
   },
   "export": {
     "format": {

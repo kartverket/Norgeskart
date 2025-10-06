@@ -39,7 +39,8 @@
       "tooltip": {
         "text": "Tekst"
       }
-    }
+    },
+    "textInputLabel": "Skriv inn tekst"
   },
   "export": {
     "format": {

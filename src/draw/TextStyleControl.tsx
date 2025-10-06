@@ -1,4 +1,5 @@
 import { HStack, Input, Radio, RadioGroup, Text, VStack } from '@kvib/react';
+import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import {
   TextFontSize,
@@ -15,12 +16,11 @@ const fontSizeCollection = [
 export const TextStyleControl = () => {
   const [textValue, setTextValue] = useAtom(textInputAtom);
   const [fontSize, setFontSize] = useAtom(textFontSizeAtom);
-
   return (
     <VStack alignItems="flex-start" gap={2}>
-      <Text fontSize="sm">Skriv inn text</Text>
+      <Text fontSize="sm">{t('draw.textInputLabel')}</Text>
       <Input value={textValue} onChange={(e) => setTextValue(e.target.value)} />
-      <Text fontSize="sm">Størrelse</Text>
+      <Text fontSize="sm">{t('draw.size.label')}</Text>
       <RadioGroup value={fontSize.toString()}>
         <HStack>
           {fontSizeCollection.map((item) => (
