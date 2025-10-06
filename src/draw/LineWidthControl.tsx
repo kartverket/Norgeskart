@@ -2,7 +2,7 @@ import { HStack, Radio, RadioGroup, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { LineWidth, lineWidthAtom } from '../settings/draw/atoms';
-import { useDrawSettings } from './drawHooks';
+import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 const lineWidthCollection: { value: LineWidth; label: string }[] = [
   { value: 2, label: 'S' },

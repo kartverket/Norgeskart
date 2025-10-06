@@ -15,6 +15,7 @@ import { Actions } from './Actions';
 
 export const Debug = () => {
   const hideDebug = localStorage.getItem('hideDebug') === 'true';
+  const initialTab = localStorage.getItem('openDebugTab') || 'actions';
   const [_, setShowStuff] = useState(true);
   const drawActions = useAtomValue(drawActionsAtom);
   if (hideDebug) {
@@ -43,7 +44,12 @@ export const Debug = () => {
             }}
           />
         </Flex>
-        <Tabs>
+        <Tabs
+          defaultValue={initialTab}
+          onValueChange={(val) => {
+            localStorage.setItem('openDebugTab', val.value);
+          }}
+        >
           <TabsList>
             <TabsTrigger value="actions">
               Draw Actions [{drawActions.length}]

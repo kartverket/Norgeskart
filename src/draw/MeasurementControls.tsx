@@ -13,7 +13,7 @@ import {
 } from '@kvib/react';
 import { t } from 'i18next';
 import { DistanceUnit } from '../settings/draw/atoms';
-import { useDrawSettings } from './drawHooks';
+import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
   { value: 'm', label: `${t('shared.units.meter')} [m]` },

@@ -7,15 +7,14 @@ import GeoJSON from 'ol/format/GeoJSON.js';
 import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
-import Select from 'ol/interaction/Select';
+import Select, { SelectEvent } from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
-import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
-import { StyleForStorage } from '../api/nkApiClient';
-import { mapAtom, ProjectionIdentifier } from '../map/atoms';
+import { StyleForStorage } from '../../../api/nkApiClient';
+import { mapAtom, ProjectionIdentifier } from '../../../map/atoms';
 import {
   DistanceUnit,
   distanceUnitAtom,
@@ -26,12 +25,15 @@ import {
   showMeasurementsAtom,
   textInputAtom,
   textStyleReadAtom,
-} from '../settings/draw/atoms';
-import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
+} from '../../../settings/draw/atoms';
+import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
 import {
   getGeometryPositionForOverlay,
   getMeasurementText,
-} from './drawControls/drawUtils';
+} from '../drawUtils';
+import { useMapInteractions } from './mapInterations';
+import { useMapLayers } from './mapLayers';
+import { useVerticalMove } from './verticalMove';
 
 const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
@@ -45,6 +47,21 @@ export type DrawType =
   | 'Move'
   | 'Text';
 
+const selectCompletedListener = (e: BaseEvent | Event) => {
+  if (e instanceof SelectEvent) {
+    e.deselected.forEach(handleFeatureSetZIndex);
+  }
+};
+
+const handleFeatureSetZIndex = (feature: Feature<Geometry>) => {
+  const style = feature.getStyle();
+  const zIndex = feature.get('zIndex') | 0;
+  if (style && style instanceof Style) {
+    style.setZIndex(zIndex);
+    feature.setStyle(style);
+  }
+};
+
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
   const [drawType, setDrawTypeState] = useAtom(drawTypeStateAtom);
@@ -52,44 +69,14 @@ const useDrawSettings = () => {
   const [distanceUnit, setDistanceUnitAtomValue] = useAtom(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
+  const { getHighestZIndex } = useVerticalMove();
+
+  const { getSelectInteraction, getTranslateInteraction, getDrawInteraction } =
+    useMapInteractions();
+  const { getDrawLayer } = useMapLayers();
 
   const { addDrawAction, resetActions } = useDrawActionsState();
   const mapProjection = map.getView().getProjection().getCode();
-
-  const getDrawInteraction = () => {
-    return map
-      .getInteractions()
-      .getArray()
-      .filter((interaction) => interaction instanceof Draw)[0] as
-      | Draw
-      | undefined;
-  };
-
-  const getDrawLayer = () => {
-    return map
-      .getLayers()
-      .getArray()
-      .filter(
-        (layer) => layer.get('id') === 'drawLayer',
-      )[0] as unknown as VectorLayer;
-  };
-
-  const getSelectInteraction = () => {
-    return map
-      .getInteractions()
-      .getArray()
-      .filter((interaction) => interaction instanceof Select)[0] as
-      | Select
-      | undefined;
-  };
-  const getTranslateInteraction = () => {
-    return map
-      .getInteractions()
-      .getArray()
-      .filter((interaction) => interaction instanceof Translate)[0] as
-      | Translate
-      | undefined;
-  };
 
   const setDrawEnabled = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
@@ -103,7 +90,9 @@ const useDrawSettings = () => {
     }
     if (!enable) {
       if (selectInteraction) {
+        const features = selectInteraction.getFeatures();
         map.removeInteraction(selectInteraction);
+        features.forEach(handleFeatureSetZIndex);
       }
       if (translateInteraction) {
         map.removeInteraction(translateInteraction);
@@ -117,7 +106,9 @@ const useDrawSettings = () => {
     const select = getSelectInteraction();
     const translate = getTranslateInteraction();
     if (select) {
+      const features = select.getFeatures();
       map.removeInteraction(select);
+      features.forEach(handleFeatureSetZIndex);
     }
     if (translate) {
       map.removeInteraction(translate);
@@ -131,6 +122,7 @@ const useDrawSettings = () => {
       const selectInteraction = new Select({
         layers: [drawLayer],
       });
+      selectInteraction.addEventListener('select', selectCompletedListener);
       map.addInteraction(selectInteraction);
 
       const translateInteraction = new Translate({
@@ -185,12 +177,15 @@ const useDrawSettings = () => {
     const eventFeature = (event as unknown as DrawEvent).feature;
     const store = getDefaultStore();
     const drawType = store.get(drawTypeStateAtom);
+    const zIndex = getHighestZIndex() + 1;
 
     if (drawType === 'Point') {
       const style = store.get(pointStyleReadAtom);
+      style.setZIndex(zIndex);
       eventFeature.setStyle(style);
     } else {
       const style = store.get(drawStyleReadAtom);
+      style.setZIndex(zIndex);
       eventFeature.setStyle(style);
     }
 
@@ -207,6 +202,7 @@ const useDrawSettings = () => {
 
     const featureId = uuidv4();
     eventFeature.setId(featureId);
+    eventFeature.set('zIndex', zIndex);
     addDrawAction({
       type: 'CREATE',
       featureId: featureId,

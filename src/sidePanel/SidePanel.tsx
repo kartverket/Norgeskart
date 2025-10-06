@@ -8,7 +8,7 @@ import {
 } from '@kvib/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDrawSettings } from '../draw/drawHooks';
+import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { SearchComponent } from '../search/SearchComponent';
 import { DrawSettings } from '../settings/draw/DrawSettings';

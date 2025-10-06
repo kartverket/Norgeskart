@@ -16,7 +16,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { downloadStringAsFile } from '../shared/utils/fileOperations';
-import { useDrawSettings } from './drawHooks';
+import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 const exportFormats = ['GeoJSON', 'GML'] as const;
 type ExportFormat = (typeof exportFormats)[number];
