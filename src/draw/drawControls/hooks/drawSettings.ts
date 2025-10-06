@@ -9,7 +9,6 @@ import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
-import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -30,6 +29,8 @@ import {
   getGeometryPositionForOverlay,
   getMeasurementText,
 } from '../drawUtils';
+import { useMapInteractions } from './mapInterations';
+import { useMapLayers } from './mapLayers';
 
 const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
@@ -45,43 +46,12 @@ const useDrawSettings = () => {
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
 
+  const { getSelectInteraction, getTranslateInteraction, getDrawInteraction } =
+    useMapInteractions();
+  const { getDrawLayer } = useMapLayers();
+
   const { addDrawAction, resetActions } = useDrawActionsState();
   const mapProjection = map.getView().getProjection().getCode();
-
-  const getDrawInteraction = () => {
-    return map
-      .getInteractions()
-      .getArray()
-      .filter((interaction) => interaction instanceof Draw)[0] as
-      | Draw
-      | undefined;
-  };
-
-  const getDrawLayer = () => {
-    return map
-      .getLayers()
-      .getArray()
-      .filter(
-        (layer) => layer.get('id') === 'drawLayer',
-      )[0] as unknown as VectorLayer;
-  };
-
-  const getSelectInteraction = () => {
-    return map
-      .getInteractions()
-      .getArray()
-      .filter((interaction) => interaction instanceof Select)[0] as
-      | Select
-      | undefined;
-  };
-  const getTranslateInteraction = () => {
-    return map
-      .getInteractions()
-      .getArray()
-      .filter((interaction) => interaction instanceof Translate)[0] as
-      | Translate
-      | undefined;
-  };
 
   const setDrawEnabled = (enable: boolean) => {
     const drawInteraction = getDrawInteraction();
