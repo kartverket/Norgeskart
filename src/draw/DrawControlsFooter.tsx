@@ -22,7 +22,7 @@ import { useMapSettings } from '../map/mapHooks';
 import { canRedoAtom, canUndoAtom } from '../settings/draw/drawActions/atoms';
 import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
-import { useDrawSettings } from './drawHooks';
+import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];

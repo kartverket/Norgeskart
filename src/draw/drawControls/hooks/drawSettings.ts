@@ -14,8 +14,8 @@ import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
-import { StyleForStorage } from '../api/nkApiClient';
-import { mapAtom, ProjectionIdentifier } from '../map/atoms';
+import { StyleForStorage } from '../../../api/nkApiClient';
+import { mapAtom, ProjectionIdentifier } from '../../../map/atoms';
 import {
   DistanceUnit,
   distanceUnitAtom,
@@ -24,12 +24,12 @@ import {
   drawTypeStateAtom,
   pointStyleReadAtom,
   showMeasurementsAtom,
-} from '../settings/draw/atoms';
-import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
+} from '../../../settings/draw/atoms';
+import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
 import {
   getGeometryPositionForOverlay,
   getMeasurementText,
-} from './drawControls/drawUtils';
+} from '../drawUtils';
 
 const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
@@ -542,6 +542,34 @@ const useDrawSettings = () => {
     });
   };
 
+  const moveSelectedUp = () => {
+    const selectInteraction = getSelectInteraction();
+    if (!selectInteraction) {
+      return;
+    }
+    const selectedFeatures = selectInteraction.getFeatures();
+    const featureToMove = selectedFeatures.item(0);
+    if (!featureToMove) {
+      return;
+    }
+
+    const drawnFeatures = getDrawnFeatures();
+    if (drawnFeatures == null) {
+      return;
+    }
+    for (let i = 0; i < drawnFeatures!.length; i++) {
+      if (drawnFeatures[i] === featureToMove && i < drawnFeatures.length - 1) {
+        //Ta den du har ut,
+        // legg til den rett etter
+        // legg tilbake den du tok ut
+        // legg på resten.
+      }
+    }
+  };
+  const moveSelectedDown = () => {};
+  const moveSelectedToTop = () => {};
+  const moveSelectedToBottom = () => {};
+
   const clearDrawing = () => {
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
@@ -572,6 +600,10 @@ const useDrawSettings = () => {
     undoLast,
     abortDrawing,
     deleteSelected,
+    moveSelectedUp,
+    moveSelectedDown,
+    moveSelectedToTop,
+    moveSelectedToBottom,
     clearDrawing,
     getDrawLayer,
     getDrawnFeatures,

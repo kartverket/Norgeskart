@@ -12,7 +12,7 @@ import {
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import { primaryColorAtom, secondaryColorAtom } from '../settings/draw/atoms';
-import { useDrawSettings } from './drawHooks';
+import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 export const ColorControls = () => {
   const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
