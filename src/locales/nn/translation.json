@@ -17,10 +17,13 @@
           "edit": "Endre og flytt",
           "point": "Punkt",
           "linestring": "Linjesegmet",
-          "circle": "Sirkel"
+          "circle": "Sirkel",
+          "text": "Tekst"
         }
       },
-      "pointType": "Punkttype"
+      "pointType": "Punkttype",
+      "textColor": "Tekstfarge",
+      "backgroundColor": "Bakgrunnsfarge"
     },
     "end": "Ferdig",
     "save": "Lagre",
@@ -31,7 +34,12 @@
     "size": {
       "label": "Storleik"
     },
-    "deleteSelection": "Fjern valgte"
+    "deleteSelection": "Fjern valgte",
+    "tool": {
+      "tooltip": {
+        "text": "Tekst"
+      }
+    }
   },
   "export": {
     "format": {

@@ -32,7 +32,9 @@ export const ColorControls = () => {
           }}
         >
           <ColorPickerLabel>
-            {drawType === 'Text' ? 'Tekstfarge' : t('draw.controls.colorFill')}
+            {drawType === 'Text'
+              ? t('draw.controls.textColor')
+              : t('draw.controls.colorFill')}
           </ColorPickerLabel>
           <ColorPickerControl>
             <ColorPickerInput />
@@ -56,7 +58,7 @@ export const ColorControls = () => {
         >
           <ColorPickerLabel>
             {drawType === 'Text'
-              ? 'Bakgrunnsfarge'
+              ? t('draw.controls.backgroundColor')
               : t('draw.controls.colorStroke')}
           </ColorPickerLabel>
           <ColorPickerControl>
