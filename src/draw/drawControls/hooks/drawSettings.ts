@@ -31,6 +31,7 @@ import {
 } from '../drawUtils';
 import { useMapInteractions } from './mapInterations';
 import { useMapLayers } from './mapLayers';
+import { useVerticalMove } from './verticalMove';
 
 const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
@@ -60,6 +61,7 @@ const useDrawSettings = () => {
   const [distanceUnit, setDistanceUnitAtomValue] = useAtom(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
+  const { getHighestZIndex } = useVerticalMove();
 
   const { getSelectInteraction, getTranslateInteraction, getDrawInteraction } =
     useMapInteractions();
@@ -167,16 +169,20 @@ const useDrawSettings = () => {
     const eventFeature = (event as unknown as DrawEvent).feature;
     const store = getDefaultStore();
     const drawType = store.get(drawTypeStateAtom);
+    const zIndex = getHighestZIndex() + 1;
 
     if (drawType === 'Point') {
       const style = store.get(pointStyleReadAtom);
+      style.setZIndex(zIndex);
       eventFeature.setStyle(style);
     } else {
       const style = store.get(drawStyleReadAtom);
+      style.setZIndex(zIndex);
       eventFeature.setStyle(style);
     }
     const featureId = uuidv4();
     eventFeature.setId(featureId);
+    eventFeature.set('zIndex', zIndex);
     addDrawAction({
       type: 'CREATE',
       featureId: featureId,
