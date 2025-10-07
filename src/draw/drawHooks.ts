@@ -11,7 +11,7 @@ import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Fill, RegularShape, Stroke, Style } from 'ol/style';
+import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../api/nkApiClient';
@@ -240,32 +240,42 @@ const useDrawSettings = () => {
       width: styleFromProps.stroke.width,
     });
 
-    let icon;
-    if (styleFromProps.icon.points != null) {
-      icon = new RegularShape({
-        points: styleFromProps.icon.points,
-        radius: styleFromProps.icon.radius ?? 10,
-        radius2: styleFromProps.icon.radius2,
-        angle: styleFromProps.icon.angle,
-        scale: styleFromProps.icon.scale,
-        fill: new Fill({ color: styleFromProps.icon.color }),
-      });
-    } else if (
-      styleFromProps.icon.radius != null &&
-      styleFromProps.icon.color != null
-    ) {
-      icon = new CircleStyle({
-        radius: styleFromProps.icon.radius,
-        fill: new Fill({ color: styleFromProps.icon.color }),
-      });
-    } else {
-      icon = undefined;
-    }
+    const icon =
+      styleFromProps.icon.points != null
+        ? new RegularShape({
+            points: styleFromProps.icon.points,
+            radius: styleFromProps.icon.radius ?? 10,
+            radius2: styleFromProps.icon.radius2,
+            angle: styleFromProps.icon.angle,
+            scale: styleFromProps.icon.scale,
+            fill: new Fill({ color: styleFromProps.icon.color }),
+          })
+        : styleFromProps.icon.radius != null &&
+            styleFromProps.icon.color != null
+          ? new CircleStyle({
+              radius: styleFromProps.icon.radius,
+              fill: new Fill({ color: styleFromProps.icon.color }),
+            })
+          : undefined;
+
+    const text = styleFromProps.text
+      ? new Text({
+          text: styleFromProps.text?.value,
+          font: styleFromProps.text?.font,
+          fill: styleFromProps.text?.fillColor
+            ? new Fill({ color: styleFromProps.text?.fillColor })
+            : undefined,
+          backgroundFill: styleFromProps.text?.backgroundFillColor
+            ? new Fill({ color: styleFromProps.text?.backgroundFillColor })
+            : undefined,
+        })
+      : undefined;
 
     const style = new Style({
       fill,
       stroke,
       image: icon,
+      text,
     });
 
     return style;

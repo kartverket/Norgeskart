@@ -22,6 +22,12 @@ export type StyleForStorage = {
     points?: number | undefined;
     scale?: [number, number] | undefined;
   };
+  text?: {
+    value: string | undefined;
+    font: string | undefined;
+    fillColor: Color | ColorLike | PatternDescriptor | null;
+    backgroundFillColor: Color | ColorLike | PatternDescriptor | null;
+  };
 };
 
 export const getFeatures = async (
@@ -119,6 +125,30 @@ export const getStyleForStorage = (
         scale: regularScale,
       },
     };
+  }
+
+  const textObj = style.getText();
+  if (textObj) {
+    const t = textObj.getText();
+    const textValue = Array.isArray(t) ? t.join('') : t;
+    if (typeof textValue === 'string' && textValue.length > 0) {
+      const font = textObj.getFont();
+      const textFillColor = textObj.getFill()?.getColor() as string;
+      const backgroundFillColor = textObj
+        .getBackgroundFill()
+        ?.getColor() as string;
+      return {
+        fill: { color: fillColor },
+        stroke: { color: strokeColor, width: strokeWidth },
+        icon: { radius: circleRadius, color: imageFillColor },
+        text: {
+          value: textValue,
+          font,
+          fillColor: textFillColor,
+          backgroundFillColor,
+        },
+      };
+    }
   }
 
   return {
