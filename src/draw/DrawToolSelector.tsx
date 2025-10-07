@@ -37,7 +37,7 @@ export const DrawToolSelector = () => {
     {
       value: 'Text',
       icon: 'text_fields',
-      tooltip: 'Text', // no translation yet
+      tooltip: t('draw.controls.tool.tooltip.text'),
     },
   ];
   return (
