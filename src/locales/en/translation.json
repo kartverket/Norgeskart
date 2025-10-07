@@ -17,10 +17,13 @@
           "edit": "Edit and move",
           "point": "Points",
           "linestring": "Line segments",
-          "circle": "Circle"
+          "circle": "Circle",
+          "text": "Text"
         }
       },
-      "pointType": "Point type"
+      "pointType": "Point type",
+      "textColor": "Text color",
+      "backgroundColor": "Background color"
     },
     "end": "Done",
     "save": "Save",
@@ -31,7 +34,8 @@
     "size": {
       "label": "Size"
     },
-    "deleteSelection": "Remove selected"
+    "deleteSelection": "Remove selected",
+    "textInputLabel": "Enter text"
   },
   "export": {
     "format": {

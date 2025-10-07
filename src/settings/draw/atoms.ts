@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { Fill, RegularShape, Stroke, Style } from 'ol/style';
+import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { DrawType } from '../../draw/drawHooks';
 
@@ -11,6 +11,8 @@ export type LineWidth = 2 | 4 | 8;
 export type DistanceUnit = 'm' | 'NM';
 
 export type PointType = 'circle' | 'square' | 'triangle' | 'diamond' | 'star';
+
+export type TextFontSize = 12 | 16 | 24;
 
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
@@ -103,4 +105,22 @@ export const pointStyleReadAtom = atom((get) => {
         }),
       });
   }
+});
+
+export const textInputAtom = atom('');
+
+export const textFontSizeAtom = atom<TextFontSize>(12);
+
+export const textStyleReadAtom = atom((get) => {
+  const textColor = get(primaryColorAtom);
+  const backgroundColor = get(secondaryColorAtom);
+  const fontSize = get(textFontSizeAtom);
+
+  return new Style({
+    text: new Text({
+      font: `${fontSize}px Mulish`,
+      fill: new Fill({ color: textColor }),
+      backgroundFill: new Fill({ color: backgroundColor }),
+    }),
+  });
 });

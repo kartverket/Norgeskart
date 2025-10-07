@@ -11,7 +11,7 @@ import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Fill, RegularShape, Stroke, Style } from 'ol/style';
+import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../api/nkApiClient';
@@ -24,6 +24,8 @@ import {
   drawTypeStateAtom,
   pointStyleReadAtom,
   showMeasurementsAtom,
+  textInputAtom,
+  textStyleReadAtom,
 } from '../settings/draw/atoms';
 import { useDrawActionsState } from '../settings/draw/drawActions/drawActionsHooks';
 import {
@@ -35,7 +37,13 @@ const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
-export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
+export type DrawType =
+  | 'Point'
+  | 'Polygon'
+  | 'LineString'
+  | 'Circle'
+  | 'Move'
+  | 'Text';
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
@@ -141,7 +149,7 @@ const useDrawSettings = () => {
 
     const newDraw = new Draw({
       source: drawLayer.getSource() as VectorSource,
-      type: type,
+      type: type === 'Text' ? 'Point' : type,
       condition: (e) => noModifierKeys(e) && primaryAction(e),
     });
 
@@ -185,6 +193,18 @@ const useDrawSettings = () => {
       const style = store.get(drawStyleReadAtom);
       eventFeature.setStyle(style);
     }
+
+    if (drawType === 'Text') {
+      const text = store.get(textInputAtom);
+      const style = store.get(textStyleReadAtom).clone();
+      const textStyle = style.getText();
+      if (textStyle) {
+        textStyle.setText(text);
+      }
+      eventFeature.set('text', text);
+      eventFeature.setStyle(style);
+    }
+
     const featureId = uuidv4();
     eventFeature.setId(featureId);
     addDrawAction({
@@ -220,32 +240,42 @@ const useDrawSettings = () => {
       width: styleFromProps.stroke.width,
     });
 
-    let icon;
-    if (styleFromProps.icon.points != null) {
-      icon = new RegularShape({
-        points: styleFromProps.icon.points,
-        radius: styleFromProps.icon.radius ?? 10,
-        radius2: styleFromProps.icon.radius2,
-        angle: styleFromProps.icon.angle,
-        scale: styleFromProps.icon.scale,
-        fill: new Fill({ color: styleFromProps.icon.color }),
-      });
-    } else if (
-      styleFromProps.icon.radius != null &&
-      styleFromProps.icon.color != null
-    ) {
-      icon = new CircleStyle({
-        radius: styleFromProps.icon.radius,
-        fill: new Fill({ color: styleFromProps.icon.color }),
-      });
-    } else {
-      icon = undefined;
-    }
+    const icon =
+      styleFromProps.icon.points != null
+        ? new RegularShape({
+            points: styleFromProps.icon.points,
+            radius: styleFromProps.icon.radius ?? 10,
+            radius2: styleFromProps.icon.radius2,
+            angle: styleFromProps.icon.angle,
+            scale: styleFromProps.icon.scale,
+            fill: new Fill({ color: styleFromProps.icon.color }),
+          })
+        : styleFromProps.icon.radius != null &&
+            styleFromProps.icon.color != null
+          ? new CircleStyle({
+              radius: styleFromProps.icon.radius,
+              fill: new Fill({ color: styleFromProps.icon.color }),
+            })
+          : undefined;
+
+    const text = styleFromProps.text
+      ? new Text({
+          text: styleFromProps.text?.value,
+          font: styleFromProps.text?.font,
+          fill: styleFromProps.text?.fillColor
+            ? new Fill({ color: styleFromProps.text?.fillColor })
+            : undefined,
+          backgroundFill: styleFromProps.text?.backgroundFillColor
+            ? new Fill({ color: styleFromProps.text?.backgroundFillColor })
+            : undefined,
+        })
+      : undefined;
 
     const style = new Style({
       fill,
       stroke,
       image: icon,
+      text,
     });
 
     return style;
