@@ -3,7 +3,7 @@ import { useDrawSettings } from './hooks/drawSettings';
 import { useVerticalMove } from './hooks/verticalMove';
 
 export const EditControls = () => {
-  const { moveSelectedUp } = useVerticalMove();
+  const { moveSelectedUp, moveSelectedDown } = useVerticalMove();
   const { drawType } = useDrawSettings();
 
   if (drawType !== 'Move') {
@@ -18,7 +18,13 @@ export const EditControls = () => {
         icon={'move_up'}
         variant="ghost"
       />
-      <IconButton icon={'move_down'} variant="ghost" />
+      <IconButton
+        onClick={() => {
+          moveSelectedDown();
+        }}
+        icon={'move_down'}
+        variant="ghost"
+      />
     </HStack>
   );
 };

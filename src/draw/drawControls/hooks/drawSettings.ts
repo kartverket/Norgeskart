@@ -7,7 +7,7 @@ import GeoJSON from 'ol/format/GeoJSON.js';
 import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
-import Select from 'ol/interaction/Select';
+import Select, { SelectEvent } from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style } from 'ol/style';
@@ -38,6 +38,21 @@ const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
 export type DrawType = 'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move';
 
+const selectCompletedListener = (e: BaseEvent | Event) => {
+  if (e instanceof SelectEvent) {
+    e.deselected.forEach(handleFeatureSetZIndex);
+  }
+};
+
+const handleFeatureSetZIndex = (feature: Feature<Geometry>) => {
+  const style = feature.getStyle();
+  const zIndex = feature.get('zIndex') | 0;
+  if (style && style instanceof Style) {
+    style.setZIndex(zIndex);
+    feature.setStyle(style);
+  }
+};
+
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
   const [drawType, setDrawTypeState] = useAtom(drawTypeStateAtom);
@@ -65,7 +80,9 @@ const useDrawSettings = () => {
     }
     if (!enable) {
       if (selectInteraction) {
+        const features = selectInteraction.getFeatures();
         map.removeInteraction(selectInteraction);
+        features.forEach(handleFeatureSetZIndex);
       }
       if (translateInteraction) {
         map.removeInteraction(translateInteraction);
@@ -79,7 +96,9 @@ const useDrawSettings = () => {
     const select = getSelectInteraction();
     const translate = getTranslateInteraction();
     if (select) {
+      const features = select.getFeatures();
       map.removeInteraction(select);
+      features.forEach(handleFeatureSetZIndex);
     }
     if (translate) {
       map.removeInteraction(translate);
@@ -93,6 +112,7 @@ const useDrawSettings = () => {
       const selectInteraction = new Select({
         layers: [drawLayer],
       });
+      selectInteraction.addEventListener('select', selectCompletedListener);
       map.addInteraction(selectInteraction);
 
       const translateInteraction = new Translate({
@@ -512,34 +532,6 @@ const useDrawSettings = () => {
     });
   };
 
-  const moveSelectedUp = () => {
-    const selectInteraction = getSelectInteraction();
-    if (!selectInteraction) {
-      return;
-    }
-    const selectedFeatures = selectInteraction.getFeatures();
-    const featureToMove = selectedFeatures.item(0);
-    if (!featureToMove) {
-      return;
-    }
-
-    const drawnFeatures = getDrawnFeatures();
-    if (drawnFeatures == null) {
-      return;
-    }
-    for (let i = 0; i < drawnFeatures!.length; i++) {
-      if (drawnFeatures[i] === featureToMove && i < drawnFeatures.length - 1) {
-        //Ta den du har ut,
-        // legg til den rett etter
-        // legg tilbake den du tok ut
-        // legg på resten.
-      }
-    }
-  };
-  const moveSelectedDown = () => {};
-  const moveSelectedToTop = () => {};
-  const moveSelectedToBottom = () => {};
-
   const clearDrawing = () => {
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
@@ -570,10 +562,6 @@ const useDrawSettings = () => {
     undoLast,
     abortDrawing,
     deleteSelected,
-    moveSelectedUp,
-    moveSelectedDown,
-    moveSelectedToTop,
-    moveSelectedToBottom,
     clearDrawing,
     getDrawLayer,
     getDrawnFeatures,
