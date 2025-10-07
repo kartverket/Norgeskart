@@ -127,14 +127,14 @@ export const getStyleForStorage = (
     };
   }
 
-  const textObj = style.getText();
-  if (textObj) {
-    const t = textObj.getText();
+  const text = style.getText();
+  if (text) {
+    const t = text.getText();
     const textValue = Array.isArray(t) ? t.join('') : t;
     if (typeof textValue === 'string' && textValue.length > 0) {
-      const font = textObj.getFont();
-      const textFillColor = textObj.getFill()?.getColor() as string;
-      const backgroundFillColor = textObj
+      const font = text.getFont();
+      const textFillColor = text.getFill()?.getColor() as string;
+      const backgroundFillColor = text
         .getBackgroundFill()
         ?.getColor() as string;
       return {
