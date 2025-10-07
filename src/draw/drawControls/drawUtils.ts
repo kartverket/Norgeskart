@@ -20,7 +20,7 @@ const getMeasurementText = (
   }
   if (geometry instanceof Circle) {
     const radius = geometry.getRadius();
-    measurementText = formatArea(radius * radius * Math.PI, unit);
+    measurementText = formatDistance(radius, unit);
   }
   return measurementText;
 };
