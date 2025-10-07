@@ -118,7 +118,7 @@ export const textStyleReadAtom = atom((get) => {
 
   return new Style({
     text: new Text({
-      font: `${fontSize}px Calibri,sans-serif`,
+      font: `${fontSize}px Mulish`,
       fill: new Fill({ color: textColor }),
       backgroundFill: new Fill({ color: backgroundColor }),
     }),
