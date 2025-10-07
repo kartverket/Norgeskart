@@ -65,6 +65,7 @@ export const useVerticalMove = () => {
     const minOfOtherFeatures = getExtremaOtherFeatures(feature, 'min');
     const newZIndex = existingZIndex - 1;
     if (newZIndex < minOfOtherFeatures - 1) {
+      console.warn("can't move down");
       return;
     }
 
