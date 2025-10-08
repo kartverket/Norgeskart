@@ -16,6 +16,54 @@ export const useDrawActions = () => {
   const { removeDrawnFeatureById, addFeature, getDrawLayer } =
     useDrawSettings();
   const { decrementOffset, incrementOffset } = useDrawActionsState();
+  const undoMove = (action: DrawAction) => {
+    if (action.type !== 'MOVE') {
+      console.warn('Not a move action');
+      return;
+    }
+    action.details.featuresMoved.forEach((moveDetail) => {
+      const drawLayer = getDrawLayer();
+      const drawSource = drawLayer?.getSource();
+      if (!drawSource) {
+        console.warn('No draw source found');
+        return;
+      }
+      const feature = drawSource.getFeatureById(moveDetail.featureId);
+      if (!feature) {
+        console.warn(
+          `Feature with ID ${moveDetail.featureId} not found in draw source`,
+        );
+        return;
+      }
+
+      feature.setGeometry(moveDetail.geometryBeforeMove);
+    });
+  };
+
+  const redoMove = (action: DrawAction) => {
+    if (action.type !== 'MOVE') {
+      console.warn('Not a move action');
+      return;
+    }
+    action.details.featuresMoved.forEach((moveDetail) => {
+      const drawLayer = getDrawLayer();
+      const drawSource = drawLayer?.getSource();
+      if (!drawSource) {
+        console.warn('No draw source found');
+        return;
+      }
+      const feature = drawSource.getFeatureById(moveDetail.featureId);
+      if (!feature) {
+        console.warn(
+          `Feature with ID ${moveDetail.featureId} not found in draw source`,
+        );
+        return;
+      }
+
+      feature.setGeometry(moveDetail.geometryAfterMove);
+    });
+  };
+
   const undoLast = () => {
     if (!canUndo) {
       console.warn('Cannot undo');
@@ -46,23 +94,7 @@ export const useDrawActions = () => {
         });
         break;
       case 'MOVE':
-        actionToUndo.details.featuresMoved.forEach((moveDetail) => {
-          const drawLayer = getDrawLayer();
-          const drawSource = drawLayer?.getSource();
-          if (!drawSource) {
-            console.warn('No draw source found');
-            return;
-          }
-          const feature = drawSource.getFeatureById(moveDetail.featureId);
-          if (!feature) {
-            console.warn(
-              `Feature with ID ${moveDetail.featureId} not found in draw source`,
-            );
-            return;
-          }
-
-          feature.setGeometry(moveDetail.geometryBeforeMove);
-        });
+        undoMove(actionToUndo);
         break;
     }
 
@@ -90,6 +122,9 @@ export const useDrawActions = () => {
         break;
       case 'EDIT_GEOMETRY':
         // Handle update action redo
+        break;
+      case 'MOVE':
+        redoMove(actionToRedo);
         break;
       case 'DELETE':
         actionToRedo.details.features.forEach((feature) => {
