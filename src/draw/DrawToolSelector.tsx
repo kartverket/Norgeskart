@@ -1,6 +1,6 @@
 import { Flex, IconButton, MaterialSymbol, Tooltip } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
-import { DrawType, useDrawSettings } from './drawHooks';
+import { DrawType, useDrawSettings } from './drawControls/hooks/drawSettings';
 
 export const DrawToolSelector = () => {
   const { t } = useTranslation();

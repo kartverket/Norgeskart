@@ -1,5 +1,5 @@
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
-import { useDrawSettings } from '../../../draw/drawHooks';
+import { useDrawSettings } from '../../../draw/drawControls/hooks/drawSettings';
 import {
   actionOffsetAtom,
   canRedoAtom,

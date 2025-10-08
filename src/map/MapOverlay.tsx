@@ -13,7 +13,7 @@ import {
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDrawSettings } from '../draw/drawHooks';
+import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
 import { useIsMobileScreen } from '../shared/hooks';

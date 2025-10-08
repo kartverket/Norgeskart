@@ -49,6 +49,6 @@ folders.forEach((folder) => {
 
     exec('npm run format-specific -- src/locales/**/*.json');
   } else {
-    console.log(`File ${filePath} does not exist.`);
+    console.warn(`File ${filePath} does not exist.`);
   }
 });

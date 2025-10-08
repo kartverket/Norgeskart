@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDrawActions } from '../../settings/draw/drawActions/drawActionsHooks';
-import { useDrawSettings } from '../drawHooks';
+import { useDrawSettings } from './hooks/drawSettings';
 
 export const useDrawControlsKeyboardEffects = () => {
   const { drawEnabled, abortDrawing, deleteSelected } = useDrawSettings();

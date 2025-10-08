@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
-import { DrawType } from '../../draw/drawHooks';
+import { DrawType } from '../../draw/drawControls/hooks/drawSettings';
 
 export const DEFAULT_PRIMARY_COLOR = '#1d823b80';
 export const DEFAULT_SECONDARY_COLOR = '#0e5aa0ff';
@@ -36,6 +36,7 @@ export const drawStyleReadAtom = atom((get) => {
     fill: new Fill({
       color: primaryColor,
     }),
+    zIndex: 0,
   });
 });
 

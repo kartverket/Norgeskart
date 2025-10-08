@@ -4,7 +4,7 @@ import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures } from '../api/nkApiClient.ts';
-import { useDrawSettings } from '../draw/drawHooks.ts';
+import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { getUrlParameter } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';

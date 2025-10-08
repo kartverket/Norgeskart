@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
-import { useDrawSettings } from '../drawHooks.ts';
 import { DrawToolSelector } from '../DrawToolSelector.tsx';
 import { LineWidthControl } from '../LineWidthControl.tsx';
 import { MeasurementControls } from '../MeasurementControls.tsx';
 import { PointStyleSelector } from '../PointStyleSelector.tsx';
 import { TextStyleControl } from '../TextStyleControl.tsx';
 import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts';
+import { EditControls } from './EditControls.tsx';
+import { useDrawSettings } from './hooks/drawSettings.ts';
 
 export const DrawControls = () => {
   const { drawType, deleteSelected } = useDrawSettings();
@@ -22,6 +23,7 @@ export const DrawControls = () => {
     <VStack alignItems={'flex-start'} width={'100%'}>
       <DrawToolSelector />
       {drawType === 'Text' && <TextStyleControl />}
+      <EditControls />
       <ColorControls />
       {drawType === 'Point' && <PointStyleSelector />}
       {isMobile && drawType == 'Move' && (
