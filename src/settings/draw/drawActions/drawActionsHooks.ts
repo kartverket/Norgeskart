@@ -13,7 +13,8 @@ export const useDrawActions = () => {
   const drawActions = useAtomValue(drawActionsAtom);
   const canUndo = useAtomValue(canUndoAtom);
   const canRedo = useAtomValue(canRedoAtom);
-  const { removeDrawnFeatureById, addFeature } = useDrawSettings();
+  const { removeDrawnFeatureById, addFeature, getDrawLayer } =
+    useDrawSettings();
   const { decrementOffset, incrementOffset } = useDrawActionsState();
   const undoLast = () => {
     if (!canUndo) {
@@ -42,6 +43,25 @@ export const useDrawActions = () => {
       case 'DELETE':
         actionToUndo.details.features.forEach((feature) => {
           addFeature(feature);
+        });
+        break;
+      case 'MOVE':
+        actionToUndo.details.featuresMoved.forEach((moveDetail) => {
+          const drawLayer = getDrawLayer();
+          const drawSource = drawLayer?.getSource();
+          if (!drawSource) {
+            console.warn('No draw source found');
+            return;
+          }
+          const feature = drawSource.getFeatureById(moveDetail.featureId);
+          if (!feature) {
+            console.warn(
+              `Feature with ID ${moveDetail.featureId} not found in draw source`,
+            );
+            return;
+          }
+
+          feature.setGeometry(moveDetail.geometryBeforeMove);
         });
         break;
     }

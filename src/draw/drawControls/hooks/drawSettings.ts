@@ -87,8 +87,8 @@ const handleTranslateEnd = (e: BaseEvent | Event) => {
       f.set('extentBeforeMove', undefined);
       return {
         featureId: f.getId(),
-        geometryBeforeMove: geometryBeforeMove as Geometry | undefined,
-        geometryAfterMove: geometryAfterMove as Geometry | undefined,
+        geometryBeforeMove: geometryBeforeMove as Geometry,
+        geometryAfterMove: geometryAfterMove as Geometry,
       } as FeatureMoveDetail;
     });
     const event = new CustomEvent('featureMoved', { detail: moveDetails });

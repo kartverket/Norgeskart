@@ -37,8 +37,8 @@ type MoveFeatureData = {
   details: {
     featuresMoved: {
       featureId: string;
-      oldGeometry: Geometry;
-      newCoordinates: Geometry;
+      geometryBeforeMove: Geometry;
+      geometryAfterMove: Geometry;
     }[];
   };
 };
