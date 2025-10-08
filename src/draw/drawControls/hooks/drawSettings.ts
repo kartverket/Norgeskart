@@ -39,6 +39,12 @@ const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
+export type FeatureMoveDetail = {
+  featureId: string;
+  geometryBeforeMove: Geometry;
+  geometryAfterMove: Geometry;
+};
+
 export type DrawType =
   | 'Point'
   | 'Polygon'
@@ -61,27 +67,32 @@ const handleFeatureSetZIndex = (feature: Feature<Geometry>) => {
     feature.setStyle(style);
   }
 };
-
 const handleTranslateStart = (e: BaseEvent | Event) => {
   if (e instanceof TranslateEvent) {
     e.features.getArray().forEach((f) => {
-      const preExtent = f.getGeometry()?.getExtent();
-      if (preExtent == null) {
+      const preGeo = f.getGeometry()?.clone();
+      if (preGeo == null) {
         return;
       }
-      f.set('extentBeforeMove', [...preExtent]);
+      f.set('geometryPreMove', preGeo);
     });
   }
 };
 
 const handleTranslateEnd = (e: BaseEvent | Event) => {
   if (e instanceof TranslateEvent) {
-    e.features.getArray().forEach((f) => {
-      const extentBeforeMove = f.get('extentBeforeMove');
-      console.log('b:', extentBeforeMove);
-      console.log('a:', f.getGeometry()?.getExtent());
+    const moveDetails = e.features.getArray().map((f) => {
+      const geometryBeforeMove = f.get('geometryPreMove');
+      const geometryAfterMove = f.getGeometry()?.clone();
       f.set('extentBeforeMove', undefined);
+      return {
+        featureId: f.getId(),
+        geometryBeforeMove: geometryBeforeMove as Geometry | undefined,
+        geometryAfterMove: geometryAfterMove as Geometry | undefined,
+      } as FeatureMoveDetail;
     });
+    const event = new CustomEvent('featureMoved', { detail: moveDetails });
+    document.dispatchEvent(event);
   }
 };
 
