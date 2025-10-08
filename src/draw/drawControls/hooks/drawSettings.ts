@@ -8,7 +8,7 @@ import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Select, { SelectEvent } from 'ol/interaction/Select';
-import Translate from 'ol/interaction/Translate';
+import Translate, { TranslateEvent } from 'ol/interaction/Translate';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -59,6 +59,29 @@ const handleFeatureSetZIndex = (feature: Feature<Geometry>) => {
   if (style && style instanceof Style) {
     style.setZIndex(zIndex);
     feature.setStyle(style);
+  }
+};
+
+const handleTranslateStart = (e: BaseEvent | Event) => {
+  if (e instanceof TranslateEvent) {
+    e.features.getArray().forEach((f) => {
+      const preExtent = f.getGeometry()?.getExtent();
+      if (preExtent == null) {
+        return;
+      }
+      f.set('extentBeforeMove', [...preExtent]);
+    });
+  }
+};
+
+const handleTranslateEnd = (e: BaseEvent | Event) => {
+  if (e instanceof TranslateEvent) {
+    e.features.getArray().forEach((f) => {
+      const extentBeforeMove = f.get('extentBeforeMove');
+      console.log('b:', extentBeforeMove);
+      console.log('a:', f.getGeometry()?.getExtent());
+      f.set('extentBeforeMove', undefined);
+    });
   }
 };
 
@@ -128,6 +151,13 @@ const useDrawSettings = () => {
       const translateInteraction = new Translate({
         features: selectInteraction.getFeatures(),
       });
+
+      translateInteraction.addEventListener(
+        'translatestart',
+        handleTranslateStart,
+      );
+      translateInteraction.addEventListener('translateend', handleTranslateEnd);
+
       const modifyInteraction = new Modify({
         features: selectInteraction.getFeatures(),
       });
