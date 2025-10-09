@@ -1,10 +1,11 @@
 import { atomEffect } from 'jotai-effect';
 import Draw from 'ol/interaction/Draw';
 import Map from 'ol/Map';
-import { Fill, Style } from 'ol/style';
+import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { mapAtom } from '../map/atoms';
 
+import Select from 'ol/interaction/Select';
 import {
   drawTypeStateAtom,
   lineWidthAtom,
@@ -23,6 +24,16 @@ const getDrawInteraction = (map: Map) => {
   return drawInteraction;
 };
 
+const getSelectInteraction = (map: Map) => {
+  const selectInteraction = map
+    .getInteractions()
+    .getArray()
+    .filter((interaction) => interaction instanceof Select)[0] as
+    | Select
+    | undefined;
+  return selectInteraction;
+};
+
 const getDrawOverlayStyle = (draw: Draw) => {
   const style = draw.getOverlay()?.getStyle() as Style | null;
   return style;
@@ -35,6 +46,27 @@ export const drawStyleEffect = atomEffect((get) => {
   const map = get(mapAtom);
   const drawType = get(drawTypeStateAtom);
   const drawInteraction = getDrawInteraction(map);
+  const selectInteraction = getSelectInteraction(map);
+  const pointStyle = get(pointStyleReadAtom);
+
+  if (selectInteraction) {
+    selectInteraction.getFeatures().forEach((feature) => {
+      const lol = feature.get('featureStyle') as Style | undefined;
+      if (!lol) {
+        return;
+      }
+      lol.setFill(new Fill({ color: primaryColor }));
+      lol.setStroke(new Stroke({ color: secondaryColor, width: lineWidth }));
+      const circleStyle = new CircleStyle({
+        radius: lineWidth,
+        fill: new Fill({ color: primaryColor }),
+      });
+      lol.setImage(pointStyle.getImage() || circleStyle);
+
+      feature.setStyle(lol);
+      feature.set('changedStyle', lol);
+    });
+  }
   if (!drawInteraction) {
     return;
   }
