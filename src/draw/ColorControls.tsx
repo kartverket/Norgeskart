@@ -22,9 +22,10 @@ export const ColorControls = () => {
 
   return (
     <>
-      {(drawType == 'Circle' ||
-        drawType == 'Polygon' ||
-        drawType === 'Text') && (
+      {(drawType === 'Circle' ||
+        drawType === 'Polygon' ||
+        drawType === 'Text' ||
+        drawType === 'Move') && (
         <ColorPicker
           value={parseColor(primaryColor)}
           onValueChange={(value) => {
@@ -46,9 +47,9 @@ export const ColorControls = () => {
           </ColorPickerContent>
         </ColorPicker>
       )}
-      {(drawType == 'Circle' ||
-        drawType == 'Polygon' ||
-        drawType == 'LineString' ||
+      {(drawType === 'Circle' ||
+        drawType === 'Polygon' ||
+        drawType === 'LineString' ||
         drawType === 'Text') && (
         <ColorPicker
           value={parseColor(secondaryColor)}
@@ -71,7 +72,7 @@ export const ColorControls = () => {
           </ColorPickerContent>
         </ColorPicker>
       )}
-      {drawType == 'Point' && (
+      {(drawType === 'Point' || drawType === 'Move') && (
         <ColorPicker
           value={parseColor(secondaryColor)}
           onValueChange={(value) => {

@@ -7,9 +7,27 @@ import { TranslateEvent } from 'ol/interaction/Translate';
 import { Style } from 'ol/style';
 import { FeatureMoveDetail } from './drawSettings';
 
-const handleSelectCompleted = (e: BaseEvent | Event) => {
+const handleSelect = (e: BaseEvent | Event) => {
+  console.log('handleSelectCompleted');
   if (e instanceof SelectEvent) {
     e.deselected.forEach(handleFeatureSetZIndex);
+    e.deselected.forEach(handleUpdateStyle);
+    e.selected.forEach((f) => {
+      const style = f.getStyle();
+      console.log('style', style);
+      if (style && style instanceof Style) {
+        f.set('featureStyle', style.clone());
+      }
+    });
+  }
+};
+
+const handleUpdateStyle = (feature: Feature<Geometry>) => {
+  const style = feature.get('changedStyle') as Style | undefined;
+  if (style) {
+    feature.setStyle(style);
+    feature.set('changedStyle', undefined);
+    feature.set('featureStyle', undefined);
   }
 };
 
@@ -53,5 +71,5 @@ export {
   handleFeatureSetZIndex,
   handleModifyEnd,
   handleModifyStart,
-  handleSelectCompleted,
+  handleSelect,
 };
