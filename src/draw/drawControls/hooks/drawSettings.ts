@@ -7,8 +7,8 @@ import GeoJSON from 'ol/format/GeoJSON.js';
 import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
-import Select, { SelectEvent } from 'ol/interaction/Select';
-import Translate, { TranslateEvent } from 'ol/interaction/Translate';
+import Select from 'ol/interaction/Select';
+import Translate from 'ol/interaction/Translate';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -31,6 +31,12 @@ import {
   getGeometryPositionForOverlay,
   getMeasurementText,
 } from '../drawUtils';
+import {
+  handleFeatureSetZIndex,
+  handleModifyEnd,
+  handleModifyStart,
+  handleSelectCompleted,
+} from './drawEventHandlers';
 import { useMapInteractions } from './mapInterations';
 import { useMapLayers } from './mapLayers';
 import { useVerticalMove } from './verticalMove';
@@ -52,49 +58,6 @@ export type DrawType =
   | 'Circle'
   | 'Move'
   | 'Text';
-
-const selectCompletedListener = (e: BaseEvent | Event) => {
-  if (e instanceof SelectEvent) {
-    e.deselected.forEach(handleFeatureSetZIndex);
-  }
-};
-
-const handleFeatureSetZIndex = (feature: Feature<Geometry>) => {
-  const style = feature.getStyle();
-  const zIndex = feature.get('zIndex') | 0;
-  if (style && style instanceof Style) {
-    style.setZIndex(zIndex);
-    feature.setStyle(style);
-  }
-};
-const handleTranslateStart = (e: BaseEvent | Event) => {
-  if (e instanceof TranslateEvent) {
-    e.features.getArray().forEach((f) => {
-      const preGeo = f.getGeometry()?.clone();
-      if (preGeo == null) {
-        return;
-      }
-      f.set('geometryPreMove', preGeo);
-    });
-  }
-};
-
-const handleTranslateEnd = (e: BaseEvent | Event) => {
-  if (e instanceof TranslateEvent) {
-    const moveDetails = e.features.getArray().map((f) => {
-      const geometryBeforeMove = f.get('geometryPreMove');
-      const geometryAfterMove = f.getGeometry()?.clone();
-      f.set('extentBeforeMove', undefined);
-      return {
-        featureId: f.getId(),
-        geometryBeforeMove: geometryBeforeMove as Geometry,
-        geometryAfterMove: geometryAfterMove as Geometry,
-      } as FeatureMoveDetail;
-    });
-    const event = new CustomEvent('featureMoved', { detail: moveDetails });
-    document.dispatchEvent(event);
-  }
-};
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
@@ -156,7 +119,7 @@ const useDrawSettings = () => {
       const selectInteraction = new Select({
         layers: [drawLayer],
       });
-      selectInteraction.addEventListener('select', selectCompletedListener);
+      selectInteraction.addEventListener('select', handleSelectCompleted);
       map.addInteraction(selectInteraction);
 
       const translateInteraction = new Translate({
@@ -165,13 +128,16 @@ const useDrawSettings = () => {
 
       translateInteraction.addEventListener(
         'translatestart',
-        handleTranslateStart,
+        handleModifyStart,
       );
-      translateInteraction.addEventListener('translateend', handleTranslateEnd);
+      translateInteraction.addEventListener('translateend', handleModifyEnd);
 
       const modifyInteraction = new Modify({
         features: selectInteraction.getFeatures(),
       });
+
+      modifyInteraction.addEventListener('modifystart', handleModifyStart);
+      modifyInteraction.addEventListener('modifyend', handleModifyEnd);
       map.addInteraction(translateInteraction);
       map.addInteraction(modifyInteraction);
       setDrawTypeState(type);
