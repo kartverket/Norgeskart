@@ -8,7 +8,7 @@ import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Select, { SelectEvent } from 'ol/interaction/Select';
-import Translate from 'ol/interaction/Translate';
+import Translate, { TranslateEvent } from 'ol/interaction/Translate';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -39,6 +39,12 @@ const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
 const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
+export type FeatureMoveDetail = {
+  featureId: string;
+  geometryBeforeMove: Geometry;
+  geometryAfterMove: Geometry;
+};
+
 export type DrawType =
   | 'Point'
   | 'Polygon'
@@ -59,6 +65,34 @@ const handleFeatureSetZIndex = (feature: Feature<Geometry>) => {
   if (style && style instanceof Style) {
     style.setZIndex(zIndex);
     feature.setStyle(style);
+  }
+};
+const handleTranslateStart = (e: BaseEvent | Event) => {
+  if (e instanceof TranslateEvent) {
+    e.features.getArray().forEach((f) => {
+      const preGeo = f.getGeometry()?.clone();
+      if (preGeo == null) {
+        return;
+      }
+      f.set('geometryPreMove', preGeo);
+    });
+  }
+};
+
+const handleTranslateEnd = (e: BaseEvent | Event) => {
+  if (e instanceof TranslateEvent) {
+    const moveDetails = e.features.getArray().map((f) => {
+      const geometryBeforeMove = f.get('geometryPreMove');
+      const geometryAfterMove = f.getGeometry()?.clone();
+      f.set('extentBeforeMove', undefined);
+      return {
+        featureId: f.getId(),
+        geometryBeforeMove: geometryBeforeMove as Geometry,
+        geometryAfterMove: geometryAfterMove as Geometry,
+      } as FeatureMoveDetail;
+    });
+    const event = new CustomEvent('featureMoved', { detail: moveDetails });
+    document.dispatchEvent(event);
   }
 };
 
@@ -128,6 +162,13 @@ const useDrawSettings = () => {
       const translateInteraction = new Translate({
         features: selectInteraction.getFeatures(),
       });
+
+      translateInteraction.addEventListener(
+        'translatestart',
+        handleTranslateStart,
+      );
+      translateInteraction.addEventListener('translateend', handleTranslateEnd);
+
       const modifyInteraction = new Modify({
         features: selectInteraction.getFeatures(),
       });

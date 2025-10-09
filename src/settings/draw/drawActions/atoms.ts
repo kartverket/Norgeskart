@@ -1,15 +1,19 @@
 import { atom } from 'jotai';
 import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 export type DrawActionType =
   | 'CREATE'
   | 'EDIT_GEOMETRY'
+  | 'MOVE'
   | 'DELETE'
   | 'EDIT_STYLE';
+
 export type DrawAction =
   | CreateFeatureData
   | EditGeometryData
   | DeleteFeaturesDetails
+  | MoveFeatureData
   | EditStyleData;
 
 type CreateFeatureData = {
@@ -25,6 +29,17 @@ type EditStyleData = {
   details: {
     oldStroke: string;
     newStroke: string;
+  };
+};
+
+type MoveFeatureData = {
+  type: 'MOVE';
+  details: {
+    featuresMoved: {
+      featureId: string;
+      geometryBeforeMove: Geometry;
+      geometryAfterMove: Geometry;
+    }[];
   };
 };
 
