@@ -36,8 +36,6 @@ import {
   handleModifyEnd,
   handleModifyStart,
   handleSelectCompleted,
-  handleTranslateEnd,
-  handleTranslateStart,
 } from './drawEventHandlers';
 import { useMapInteractions } from './mapInterations';
 import { useMapLayers } from './mapLayers';
@@ -130,9 +128,9 @@ const useDrawSettings = () => {
 
       translateInteraction.addEventListener(
         'translatestart',
-        handleTranslateStart,
+        handleModifyStart,
       );
-      translateInteraction.addEventListener('translateend', handleTranslateEnd);
+      translateInteraction.addEventListener('translateend', handleModifyEnd);
 
       const modifyInteraction = new Modify({
         features: selectInteraction.getFeatures(),

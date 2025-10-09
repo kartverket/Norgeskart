@@ -21,9 +21,8 @@ const handleFeatureSetZIndex = (feature: Feature<Geometry>) => {
     feature.setStyle(style);
   }
 };
-const handleTranslateStart = (e: BaseEvent | Event) => {
-  console.log('sup');
-  if (e instanceof TranslateEvent) {
+const handleModifyStart = (e: BaseEvent | Event) => {
+  if (e instanceof TranslateEvent || e instanceof ModifyEvent) {
     e.features.getArray().forEach((f) => {
       const preGeo = f.getGeometry()?.clone();
       if (preGeo == null) {
@@ -33,8 +32,8 @@ const handleTranslateStart = (e: BaseEvent | Event) => {
     });
   }
 };
-const handleTranslateEnd = (e: BaseEvent | Event) => {
-  if (e instanceof TranslateEvent) {
+const handleModifyEnd = (e: BaseEvent | Event) => {
+  if (e instanceof TranslateEvent || e instanceof ModifyEvent) {
     const moveDetails = e.features.getArray().map((f) => {
       const geometryBeforeMove = f.get('geometryPreMove');
       const geometryAfterMove = f.getGeometry()?.clone();
@@ -50,42 +49,9 @@ const handleTranslateEnd = (e: BaseEvent | Event) => {
   }
 };
 
-const handleModifyStart = (e: BaseEvent | Event) => {
-  if (e instanceof ModifyEvent) {
-    e.features.getArray().forEach((f) => {
-      const preGeo = f.getGeometry()?.clone();
-      if (preGeo == null) {
-        return;
-      }
-      f.set('geometryPreModify', preGeo);
-    });
-  }
-};
-//TODO: Sjekk om de kan slås sammen, modify og translate
-const handleModifyEnd = (e: BaseEvent | Event) => {
-  if (e instanceof ModifyEvent) {
-    const moveDetails = e.features.getArray().map((f) => {
-      const geometryBeforeMove = f.get('geometryPreModify');
-      const geometryAfterMove = f.getGeometry()?.clone();
-      f.set('geometryPreModify', undefined);
-      return {
-        featureId: f.getId(),
-        geometryBeforeMove: geometryBeforeMove as Geometry,
-        geometryAfterMove: geometryAfterMove as Geometry,
-      } as FeatureMoveDetail;
-    });
-    const event = new CustomEvent('featureGeometryModified', {
-      detail: moveDetails,
-    });
-    document.dispatchEvent(event);
-  }
-};
-
 export {
   handleFeatureSetZIndex,
   handleModifyEnd,
   handleModifyStart,
   handleSelectCompleted,
-  handleTranslateEnd,
-  handleTranslateStart,
 };
