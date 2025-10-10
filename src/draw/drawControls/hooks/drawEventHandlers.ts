@@ -49,8 +49,8 @@ const handleUpdateStyle = (features: Feature<Geometry>[]) => {
       }
       featureStyleChangeList.push({
         featureId: featureId,
-        oldStyle: style,
-        newStyle: featureStylePreSelect,
+        oldStyle: featureStylePreSelect,
+        newStyle: style,
       });
     }
 

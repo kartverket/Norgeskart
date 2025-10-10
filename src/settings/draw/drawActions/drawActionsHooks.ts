@@ -64,6 +64,54 @@ export const useDrawActions = () => {
     });
   };
 
+  const undoStyleChange = (action: DrawAction) => {
+    if (action.type !== 'EDIT_STYLE') {
+      console.warn('Not an edit style action');
+      return;
+    }
+    action.details.forEach((styleChange) => {
+      const drawLayer = getDrawLayer();
+      const drawSource = drawLayer?.getSource();
+      if (!drawSource) {
+        console.warn('No draw source found');
+        return;
+      }
+      const feature = drawSource.getFeatureById(styleChange.featureId);
+      if (!feature) {
+        console.warn(
+          `Feature with ID ${styleChange.featureId} not found in draw source`,
+        );
+        return;
+      }
+
+      feature.setStyle(styleChange.oldStyle);
+    });
+  };
+
+  const redoStyleChange = (action: DrawAction) => {
+    if (action.type !== 'EDIT_STYLE') {
+      console.warn('Not an edit style action');
+      return;
+    }
+    action.details.forEach((styleChange) => {
+      const drawLayer = getDrawLayer();
+      const drawSource = drawLayer?.getSource();
+      if (!drawSource) {
+        console.warn('No draw source found');
+        return;
+      }
+      const feature = drawSource.getFeatureById(styleChange.featureId);
+      if (!feature) {
+        console.warn(
+          `Feature with ID ${styleChange.featureId} not found in draw source`,
+        );
+        return;
+      }
+
+      feature.setStyle(styleChange.newStyle);
+    });
+  };
+
   const undoLast = () => {
     if (!canUndo) {
       console.warn('Cannot undo');
@@ -83,7 +131,7 @@ export const useDrawActions = () => {
         // Handle create action undo
         break;
       case 'EDIT_STYLE':
-        // Handle update action undo
+        undoStyleChange(actionToUndo);
         break;
       case 'EDIT_GEOMETRY':
         // Handle update action undo
@@ -118,7 +166,7 @@ export const useDrawActions = () => {
         addFeature(actionToRedo.details.feature);
         break;
       case 'EDIT_STYLE':
-        // Handle update action redo
+        redoStyleChange(actionToRedo);
         break;
       case 'EDIT_GEOMETRY':
         // Handle update action redo
