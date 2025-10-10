@@ -80,7 +80,6 @@ const DrawTypeButton = ({
             return;
           }
           if (type === 'Text') {
-            console.log('hi');
             setPrimaryColor('#000000');
             setSecondaryColor('#ffffffff');
           }
