@@ -3,8 +3,8 @@ import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { DrawType } from '../../draw/drawControls/hooks/drawSettings';
 
-export const DEFAULT_PRIMARY_COLOR = '#1d823b80';
-export const DEFAULT_SECONDARY_COLOR = '#0e5aa0ff';
+export const DEFAULT_PRIMARY_COLOR = '#0e5aa0ff';
+export const DEFAULT_SECONDARY_COLOR = '#1d823b80';
 
 export type LineWidth = 2 | 4 | 8;
 
@@ -26,15 +26,15 @@ export const drawStyleReadAtom = atom((get) => {
     image: new CircleStyle({
       radius: lineWidth,
       fill: new Fill({
-        color: primaryColor,
+        color: secondaryColor,
       }),
     }),
     stroke: new Stroke({
-      color: secondaryColor,
+      color: primaryColor,
       width: lineWidth,
     }),
     fill: new Fill({
-      color: primaryColor,
+      color: secondaryColor,
     }),
     zIndex: 0,
   });

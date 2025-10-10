@@ -55,13 +55,13 @@ export const drawStyleEffect = atomEffect((get) => {
       if (!currentStyle) {
         return;
       }
-      currentStyle.setFill(new Fill({ color: primaryColor }));
+      currentStyle.setFill(new Fill({ color: secondaryColor }));
       currentStyle.setStroke(
-        new Stroke({ color: secondaryColor, width: lineWidth }),
+        new Stroke({ color: primaryColor, width: lineWidth }),
       );
       const circleStyle = new CircleStyle({
         radius: lineWidth,
-        fill: new Fill({ color: primaryColor }),
+        fill: new Fill({ color: secondaryColor }),
       });
       currentStyle.setImage(pointStyle.getImage() || circleStyle);
 
@@ -84,12 +84,12 @@ export const drawStyleEffect = atomEffect((get) => {
   }
   const newStyle = style.clone() as Style;
 
-  newStyle.getFill()?.setColor(primaryColor);
-  newStyle.getStroke()?.setColor(secondaryColor);
+  newStyle.getFill()?.setColor(secondaryColor);
+  newStyle.getStroke()?.setColor(primaryColor);
   newStyle.getStroke()?.setWidth(lineWidth);
   const circleStyle = new CircleStyle({
     radius: lineWidth,
-    fill: new Fill({ color: primaryColor }),
+    fill: new Fill({ color: secondaryColor }),
   });
   newStyle.setImage(circleStyle);
   drawInteraction.getOverlay().setStyle(newStyle);
