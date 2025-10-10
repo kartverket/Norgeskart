@@ -10,28 +10,30 @@ import {
   parseColor,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { primaryColorAtom, secondaryColorAtom } from '../settings/draw/atoms';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 export const ColorControls = () => {
   const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
   const [secondaryColor, setSecondaryColor] = useAtom(secondaryColorAtom);
-
-  const { drawType } = useDrawSettings(); //TODO får hvilke som er synlige bettinget igjen
+  const { primaryLabel, secondaryLabel } = useColorLabels();
 
   return (
     <>
       <SingleColorControl
-        label={'hoved'} //TODO FIx
+        label={primaryLabel}
         color={primaryColor}
         onSetColor={setPrimaryColor}
       />
 
-      <SingleColorControl
-        label={'sekundær'} //TODO FIx
-        color={secondaryColor}
-        onSetColor={setSecondaryColor}
-      />
+      {secondaryLabel && (
+        <SingleColorControl
+          label={secondaryLabel}
+          color={secondaryColor}
+          onSetColor={setSecondaryColor}
+        />
+      )}
     </>
   );
 };
@@ -63,4 +65,44 @@ const SingleColorControl = ({
       </ColorPickerContent>
     </ColorPicker>
   );
+};
+
+const useColorLabels = () => {
+  const { drawType } = useDrawSettings();
+  const { t } = useTranslation();
+  const colorLabelKeyPrefix = 'draw.controls.';
+
+  switch (drawType) {
+    case 'Text':
+      return {
+        primaryLabel: t(colorLabelKeyPrefix + 'colorText'),
+        secondaryLabel: t(colorLabelKeyPrefix + 'colorBackground'),
+      };
+    case 'Point':
+      return {
+        primaryLabel: t(colorLabelKeyPrefix + 'colorPoint'),
+        secondaryLabel: null,
+      };
+    case 'LineString':
+      return {
+        primaryLabel: t(colorLabelKeyPrefix + 'colorStroke'),
+        secondaryLabel: null,
+      };
+    case 'Polygon':
+      return {
+        primaryLabel: t(colorLabelKeyPrefix + 'colorStroke'),
+        secondaryLabel: t(colorLabelKeyPrefix + 'colorFill'),
+      };
+    case 'Circle':
+      return {
+        primaryLabel: t(colorLabelKeyPrefix + 'colorStroke'),
+        secondaryLabel: t(colorLabelKeyPrefix + 'colorFill'),
+      };
+
+    default:
+      return {
+        primaryLabel: 'Primary color',
+        secondaryLabel: 'Secondary color',
+      };
+  }
 };
