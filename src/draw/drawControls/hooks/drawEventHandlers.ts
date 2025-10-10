@@ -7,10 +7,16 @@ import { TranslateEvent } from 'ol/interaction/Translate';
 import { Style } from 'ol/style';
 import { FeatureMoveDetail } from './drawSettings';
 
+export type StyleChangeDetail = {
+  featureId: string | number;
+  oldStyle: Style;
+  newStyle: Style;
+};
+
 const handleSelect = (e: BaseEvent | Event) => {
   if (e instanceof SelectEvent) {
     e.deselected.forEach(handleFeatureSetZIndex);
-    e.deselected.forEach(handleUpdateStyle);
+    handleUpdateStyle(e.deselected);
     e.selected.forEach((f) => {
       const style = f.getStyle();
       if (style && style instanceof Style) {
@@ -25,15 +31,37 @@ const handleSelect = (e: BaseEvent | Event) => {
   }
 };
 
-const handleUpdateStyle = (feature: Feature<Geometry>) => {
-  const style = feature.getStyle();
-  if (style && style instanceof Style) {
-    const styleStroke = style.getStroke();
-    if (styleStroke) {
-      styleStroke.setLineDash([]);
-      style.setStroke(styleStroke);
+const handleUpdateStyle = (features: Feature<Geometry>[]) => {
+  const featureStyleChangeList: StyleChangeDetail[] = [];
+  features.forEach((feature) => {
+    const style = feature.getStyle();
+    if (style && style instanceof Style) {
+      const styleStroke = style.getStroke();
+      if (styleStroke) {
+        styleStroke.setLineDash([]);
+        style.setStroke(styleStroke);
+        feature.setStyle(style);
+      }
+      const featureStylePreSelect = feature.get('stylePreSelect') as Style;
+      const featureId = feature.getId();
+      if (!featureId) {
+        return;
+      }
+      featureStyleChangeList.push({
+        featureId: featureId,
+        oldStyle: style,
+        newStyle: featureStylePreSelect,
+      });
     }
-    feature.setStyle(style);
+
+    feature.set('stylePreSelect', undefined);
+  });
+
+  if (featureStyleChangeList.length > 0) {
+    const event = new CustomEvent('featureStyleChanged', {
+      detail: featureStyleChangeList,
+    });
+    document.dispatchEvent(event);
   }
 };
 
