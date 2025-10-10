@@ -9,7 +9,6 @@ import {
   ColorPickerTrigger,
   parseColor,
 } from '@kvib/react';
-import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import { primaryColorAtom, secondaryColorAtom } from '../settings/draw/atoms';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
@@ -18,78 +17,50 @@ export const ColorControls = () => {
   const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
   const [secondaryColor, setSecondaryColor] = useAtom(secondaryColorAtom);
 
-  const { drawType } = useDrawSettings();
+  const { drawType } = useDrawSettings(); //TODO får hvilke som er synlige bettinget igjen
 
   return (
     <>
-      {(drawType === 'Circle' ||
-        drawType === 'Polygon' ||
-        drawType === 'Text' ||
-        drawType === 'Move') && (
-        <ColorPicker
-          value={parseColor(primaryColor)}
-          onValueChange={(value) => {
-            setPrimaryColor(value.valueAsString);
-          }}
-        >
-          <ColorPickerLabel>
-            {drawType === 'Text'
-              ? t('draw.controls.textColor')
-              : t('draw.controls.colorFill')}
-          </ColorPickerLabel>
-          <ColorPickerControl>
-            <ColorPickerInput />
-            <ColorPickerTrigger />
-          </ColorPickerControl>
-          <ColorPickerContent>
-            <ColorPickerArea />
-            <ColorPickerSliders />
-          </ColorPickerContent>
-        </ColorPicker>
-      )}
-      {(drawType === 'Circle' ||
-        drawType === 'Polygon' ||
-        drawType === 'LineString' ||
-        drawType === 'Text') && (
-        <ColorPicker
-          value={parseColor(secondaryColor)}
-          onValueChange={(value) => {
-            setSecondaryColor(value.valueAsString);
-          }}
-        >
-          <ColorPickerLabel>
-            {drawType === 'Text'
-              ? t('draw.controls.backgroundColor')
-              : t('draw.controls.colorStroke')}
-          </ColorPickerLabel>
-          <ColorPickerControl>
-            <ColorPickerInput />
-            <ColorPickerTrigger />
-          </ColorPickerControl>
-          <ColorPickerContent>
-            <ColorPickerArea />
-            <ColorPickerSliders />
-          </ColorPickerContent>
-        </ColorPicker>
-      )}
-      {(drawType === 'Point' || drawType === 'Move') && (
-        <ColorPicker
-          value={parseColor(secondaryColor)}
-          onValueChange={(value) => {
-            setSecondaryColor(value.valueAsString);
-          }}
-        >
-          <ColorPickerLabel>{t('draw.controls.colorFill')}</ColorPickerLabel>
-          <ColorPickerControl>
-            <ColorPickerInput />
-            <ColorPickerTrigger />
-          </ColorPickerControl>
-          <ColorPickerContent>
-            <ColorPickerArea />
-            <ColorPickerSliders />
-          </ColorPickerContent>
-        </ColorPicker>
-      )}
+      <SingleColorControl
+        label={'hoved'} //TODO FIx
+        color={primaryColor}
+        onSetColor={setPrimaryColor}
+      />
+
+      <SingleColorControl
+        label={'sekundær'} //TODO FIx
+        color={secondaryColor}
+        onSetColor={setSecondaryColor}
+      />
     </>
+  );
+};
+
+const SingleColorControl = ({
+  label,
+  color,
+  onSetColor,
+}: {
+  label: string;
+  color: string;
+  onSetColor: (v: string) => void;
+}) => {
+  return (
+    <ColorPicker
+      value={parseColor(color)}
+      onValueChange={(value) => {
+        onSetColor(value.valueAsString);
+      }}
+    >
+      <ColorPickerLabel>{label}</ColorPickerLabel>
+      <ColorPickerControl>
+        <ColorPickerInput />
+        <ColorPickerTrigger />
+      </ColorPickerControl>
+      <ColorPickerContent>
+        <ColorPickerArea />
+        <ColorPickerSliders />
+      </ColorPickerContent>
+    </ColorPicker>
   );
 };
