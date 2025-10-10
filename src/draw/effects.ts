@@ -51,20 +51,21 @@ export const drawStyleEffect = atomEffect((get) => {
 
   if (selectInteraction) {
     selectInteraction.getFeatures().forEach((feature) => {
-      const lol = feature.get('featureStyle') as Style | undefined;
-      if (!lol) {
+      const currentStyle = feature.getStyle() as Style | undefined;
+      if (!currentStyle) {
         return;
       }
-      lol.setFill(new Fill({ color: primaryColor }));
-      lol.setStroke(new Stroke({ color: secondaryColor, width: lineWidth }));
+      currentStyle.setFill(new Fill({ color: primaryColor }));
+      currentStyle.setStroke(
+        new Stroke({ color: secondaryColor, width: lineWidth }),
+      );
       const circleStyle = new CircleStyle({
         radius: lineWidth,
         fill: new Fill({ color: primaryColor }),
       });
-      lol.setImage(pointStyle.getImage() || circleStyle);
+      currentStyle.setImage(pointStyle.getImage() || circleStyle);
 
-      feature.setStyle(lol);
-      feature.set('changedStyle', lol);
+      feature.setStyle(currentStyle);
     });
   }
   if (!drawInteraction) {

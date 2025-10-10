@@ -8,26 +8,31 @@ import { Style } from 'ol/style';
 import { FeatureMoveDetail } from './drawSettings';
 
 const handleSelect = (e: BaseEvent | Event) => {
-  console.log('handleSelectCompleted');
   if (e instanceof SelectEvent) {
     e.deselected.forEach(handleFeatureSetZIndex);
     e.deselected.forEach(handleUpdateStyle);
     e.selected.forEach((f) => {
       const style = f.getStyle();
-      console.log('style', style);
       if (style && style instanceof Style) {
-        f.set('featureStyle', style.clone());
+        const newStyle = style.clone();
+        const newStroke = newStyle.getStroke();
+        newStroke?.setLineDash([10, 10]);
+        newStyle.setStroke(newStroke);
+        f.setStyle(newStyle);
       }
     });
   }
 };
 
 const handleUpdateStyle = (feature: Feature<Geometry>) => {
-  const style = feature.get('changedStyle') as Style | undefined;
-  if (style) {
+  const style = feature.getStyle();
+  if (style && style instanceof Style) {
+    const styleStroke = style.getStroke();
+    if (styleStroke) {
+      styleStroke.setLineDash([]);
+      style.setStroke(styleStroke);
+    }
     feature.setStyle(style);
-    feature.set('changedStyle', undefined);
-    feature.set('featureStyle', undefined);
   }
 };
 

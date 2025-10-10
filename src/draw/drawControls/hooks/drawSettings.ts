@@ -204,7 +204,6 @@ const useDrawSettings = () => {
       if (textStyle) {
         textStyle.setText(text);
       }
-      eventFeature.set('text', text);
       eventFeature.setStyle(style);
     }
 
