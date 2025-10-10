@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import { StyleChangeDetail } from '../../../draw/drawControls/hooks/drawEventHandlers';
 
 export type DrawActionType =
   | 'CREATE'
@@ -24,12 +25,8 @@ type CreateFeatureData = {
   };
 };
 type EditStyleData = {
-  featureId: string;
   type: 'EDIT_STYLE';
-  details: {
-    oldStroke: string;
-    newStroke: string;
-  };
+  details: StyleChangeDetail[];
 };
 
 type MoveFeatureData = {

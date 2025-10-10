@@ -60,7 +60,7 @@ export const editPrimaryColorEffect = atomEffect((get) => {
 });
 
 export const editSecondaryColorEffect = atomEffect((get) => {
-  const secondaryColor = get(primaryColorAtom);
+  const secondaryColor = get(secondaryColorAtom);
   const map = get(mapAtom);
   const selectInteraction = getSelectInteraction(map);
   if (selectInteraction) {

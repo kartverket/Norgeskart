@@ -2,6 +2,7 @@ import { HStack, IconButton } from '@kvib/react';
 import { useEffect } from 'react';
 import { DrawAction } from '../../settings/draw/drawActions/atoms';
 import { useDrawActionsState } from '../../settings/draw/drawActions/drawActionsHooks';
+import { StyleChangeDetail } from './hooks/drawEventHandlers';
 import { useDrawSettings } from './hooks/drawSettings';
 import { useVerticalMove } from './hooks/verticalMove';
 
@@ -10,7 +11,7 @@ export const EditControls = () => {
   const { drawType } = useDrawSettings();
   const { addDrawAction } = useDrawActionsState();
 
-  const listener = (e: Event) => {
+  const featureMovedListener = (e: Event) => {
     if (e instanceof CustomEvent) {
       const action: DrawAction = {
         type: 'MOVE',
@@ -21,9 +22,31 @@ export const EditControls = () => {
       addDrawAction(action);
     }
   };
+
+  const featureStyleChangedListener = (e: Event) => {
+    if (e instanceof CustomEvent) {
+      const action: DrawAction = {
+        type: 'EDIT_STYLE',
+        details: e.detail as StyleChangeDetail[],
+      };
+      addDrawAction(action);
+    }
+  };
   useEffect(() => {
-    document.addEventListener('featureMoved', listener);
-    return () => document.removeEventListener('featureMoved', listener);
+    document.addEventListener('featureMoved', featureMovedListener);
+    return () =>
+      document.removeEventListener('featureMoved', featureMovedListener);
+  });
+  useEffect(() => {
+    document.addEventListener(
+      'featureStyleChanged',
+      featureStyleChangedListener,
+    );
+    return () =>
+      document.removeEventListener(
+        'featureStyleChanged',
+        featureStyleChangedListener,
+      );
   });
 
   if (drawType !== 'Move') {
