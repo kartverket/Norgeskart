@@ -16,6 +16,7 @@ const handleSelect = (e: BaseEvent | Event) => {
       if (style && style instanceof Style) {
         const newStyle = style.clone();
         const newStroke = newStyle.getStroke();
+        f.set('stylePreSelect', style);
         newStroke?.setLineDash([10, 10]);
         newStyle.setStroke(newStroke);
         f.setStyle(newStyle);

@@ -1,7 +1,7 @@
 import { atomEffect } from 'jotai-effect';
 import Draw from 'ol/interaction/Draw';
 import Map from 'ol/Map';
-import { Fill, Stroke, Style } from 'ol/style';
+import { Fill, RegularShape, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { mapAtom } from '../map/atoms';
 
@@ -39,6 +39,59 @@ const getDrawOverlayStyle = (draw: Draw) => {
   return style;
 };
 
+export const editPrimaryColorEffect = atomEffect((get) => {
+  const primaryColor = get(primaryColorAtom);
+  const map = get(mapAtom);
+  const selectInteraction = getSelectInteraction(map);
+  if (selectInteraction) {
+    selectInteraction.getFeatures().forEach((feature) => {
+      const featureStyle = feature.getStyle() as Style | undefined;
+      if (!featureStyle) {
+        return;
+      }
+      const currentStroke = featureStyle.getStroke();
+      if (currentStroke) {
+        currentStroke.setColor(primaryColor);
+        featureStyle.setStroke(currentStroke);
+      }
+      feature.setStyle(featureStyle);
+    });
+  }
+});
+
+export const editSecondaryColorEffect = atomEffect((get) => {
+  const secondaryColor = get(primaryColorAtom);
+  const map = get(mapAtom);
+  const selectInteraction = getSelectInteraction(map);
+  if (selectInteraction) {
+    selectInteraction.getFeatures().forEach((feature) => {
+      const featureStyle = feature.getStyle() as Style | undefined;
+      if (!featureStyle) {
+        return;
+      }
+      const currentFill = featureStyle.getFill();
+      if (currentFill) {
+        currentFill.setColor(secondaryColor);
+        featureStyle.setFill(currentFill);
+      }
+      const currentImage = featureStyle.getImage();
+      if (currentImage) {
+        if (
+          currentImage instanceof CircleStyle ||
+          currentImage instanceof RegularShape
+        ) {
+          currentImage.getFill()?.setColor(secondaryColor);
+          featureStyle.setImage(currentImage);
+        } else {
+          currentFill?.setColor(secondaryColor);
+          featureStyle.setFill(currentFill);
+        }
+      }
+      feature.setStyle(featureStyle);
+    });
+  }
+});
+
 export const drawStyleEffect = atomEffect((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
@@ -46,34 +99,12 @@ export const drawStyleEffect = atomEffect((get) => {
   const map = get(mapAtom);
   const drawType = get(drawTypeStateAtom);
   const drawInteraction = getDrawInteraction(map);
-  const selectInteraction = getSelectInteraction(map);
-  const pointStyle = get(pointStyleReadAtom);
-
-  if (selectInteraction) {
-    selectInteraction.getFeatures().forEach((feature) => {
-      const currentStyle = feature.getStyle() as Style | undefined;
-      if (!currentStyle) {
-        return;
-      }
-      currentStyle.setFill(new Fill({ color: secondaryColor }));
-      currentStyle.setStroke(
-        new Stroke({ color: primaryColor, width: lineWidth }),
-      );
-      const circleStyle = new CircleStyle({
-        radius: lineWidth,
-        fill: new Fill({ color: secondaryColor }),
-      });
-      currentStyle.setImage(pointStyle.getImage() || circleStyle);
-
-      feature.setStyle(currentStyle);
-    });
-  }
   if (!drawInteraction) {
     return;
   }
 
-  const style = getDrawOverlayStyle(drawInteraction);
-  if (!style) {
+  const overlayDrawStyle = getDrawOverlayStyle(drawInteraction);
+  if (!overlayDrawStyle) {
     return;
   }
 
@@ -82,14 +113,14 @@ export const drawStyleEffect = atomEffect((get) => {
     drawInteraction.getOverlay().setStyle(newStyle);
     return;
   }
-  const newStyle = style.clone() as Style;
+  const newStyle = overlayDrawStyle.clone() as Style;
 
   newStyle.getFill()?.setColor(secondaryColor);
   newStyle.getStroke()?.setColor(primaryColor);
   newStyle.getStroke()?.setWidth(lineWidth);
   const circleStyle = new CircleStyle({
     radius: lineWidth,
-    fill: new Fill({ color: secondaryColor }),
+    fill: new Fill({ color: primaryColor }),
   });
   newStyle.setImage(circleStyle);
   drawInteraction.getOverlay().setStyle(newStyle);
