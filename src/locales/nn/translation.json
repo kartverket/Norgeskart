@@ -2,45 +2,45 @@
   "draw": {
     "begin": "Tekne på kartet",
     "clear": "Fjern teikning",
+    "close": "Lukk",
     "confrimClear": "Er du sikker?",
     "controls": {
+      "colorBackground": "Bakgrunnsfarge",
       "colorFill": "Fyllfarge",
-      "colorStroke": "Omrissfarge",
-      "showMeasurements": "Vis mål",
-      "toolSelect": {
-        "placeholder": "Velg teknemåte"
-      },
       "colorPoint": "Punktfarge",
+      "colorStroke": "Omrissfarge",
+      "colorText": "Tekstfarge",
+      "pointType": "Punkttype",
+      "showMeasurements": "Vis mål",
       "tool": {
         "tooltip": {
-          "polygon": "Polygon",
-          "edit": "Endre og flytt",
-          "point": "Punkt",
-          "linestring": "Linjesegmet",
           "circle": "Sirkel",
+          "edit": "Endre og flytt",
+          "linestring": "Linjesegmet",
+          "point": "Punkt",
+          "polygon": "Polygon",
           "text": "Tekst"
         }
       },
-      "pointType": "Punkttype",
-      "textColor": "Tekstfarge",
-      "backgroundColor": "Bakgrunnsfarge"
+      "toolSelect": {
+        "placeholder": "Velg teknemåte"
+      }
     },
+    "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
     "save": "Lagre",
-    "tabHeading": "Tekne",
-    "tools": "Verktøy",
-    "yesClear": "Ja, fjern",
-    "close": "Lukk",
     "size": {
       "label": "Storleik"
     },
-    "deleteSelection": "Fjern valgte",
+    "tabHeading": "Tekne",
+    "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {
         "text": "Tekst"
       }
     },
-    "textInputLabel": "Skriv inn tekst"
+    "tools": "Verktøy",
+    "yesClear": "Ja, fjern"
   },
   "export": {
     "format": {
@@ -49,6 +49,33 @@
     },
     "heading": "Eksport av tekning"
   },
+  "infoBox": {
+    "address": "Adresse",
+    "cadastralIdentifier": "Gards- og bruksnummer",
+    "coordinateInfo": "Sjå koordinater",
+    "emergencyPoster": "Lag nødplakat",
+    "heightEstimatedByInterpolation": "Høgde (anslått ved interpolering):",
+    "in": "i",
+    "makeMap": "Lag turkart",
+    "metersAboveSeaLevel": "moh",
+    "municipality": "Kommune",
+    "placeInfo": "Sjå fakta om stadnamnet",
+    "propertyInfo": "Sjå eigedomsinformasjon",
+    "roadName": "Vegnamn"
+  },
+  "languageSelector": {
+    "chooseLanguage": "Velg språk",
+    "english": "English",
+    "norwegianBokmaal": "Norsk bokmål",
+    "norwegianNynorsk": "Norsk nynorsk",
+    "tabHeading": "Språk"
+  },
+  "locationType": {
+    "address": "Adresse",
+    "place": "Stadnamn",
+    "property": "Eigedom",
+    "road": "Veg"
+  },
   "map": {
     "errorMessage": "Noko gikk galt med kartet",
     "overlay": {
@@ -56,112 +83,85 @@
       "myPosition": "Vis min posisjon"
     },
     "settings": {
-      "layers": {
-        "projection": {
-          "label": "Vel projeksjon",
-          "placeholder": "Vel"
-        },
-        "background": {
-          "placeholder": "Vel",
-          "label": "Vel bakgrunnskart"
-        },
-        "mapNames": {
-          "topo": "Topo",
-          "topo_2025": "Topo 2025",
-          "Nibcache_web_mercator_v2": "Flyfoto",
-          "topoProd": "Topografisk",
-          "topograatone": "Topografisk, gråtone",
-          "sjokartraster": "Sjøkart",
-          "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
-          "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
-          "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)"
-        }
-      },
       "compass": {
         "enabled": "Vis kompass",
         "magneticNorth": "Bruk magnetisk nord"
+      },
+      "layers": {
+        "background": {
+          "label": "Vel bakgrunnskart",
+          "placeholder": "Vel"
+        },
+        "mapNames": {
+          "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
+          "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
+          "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
+          "Nibcache_web_mercator_v2": "Flyfoto",
+          "sjokartraster": "Sjøkart",
+          "topo": "Topo",
+          "topo_2025": "Topo 2025",
+          "topograatone": "Topografisk, gråtone",
+          "topoProd": "Topografisk"
+        },
+        "projection": {
+          "label": "Vel projeksjon",
+          "placeholder": "Vel"
+        }
       }
     }
   },
   "mapLayers": {
+    "close": "Lukk kartlaginstillinger",
     "label": "Kartlag",
-    "open": "Åpne kartlaginnstillinger",
-    "close": "Lukk kartlaginstillinger"
+    "open": "Åpne kartlaginnstillinger"
+  },
+  "placeInfo": {
+    "errorPlaceNameInfo": "Feil ved henting av stadnamninformasjon",
+    "loadingPlaceNameInfo": "Lastar stadnamninformasjon",
+    "locationNumber": "Stadnummer",
+    "nameObjectType": "Namnobjekttype"
+  },
+  "privacyAndContact": {
+    "contactUs": "Kontakt",
+    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
+    "privacyPolicy": "Personvernerklæring ",
+    "sendEmail": "Send e-post"
+  },
+  "propertyInfo": {
+    "holdingNr": "Gardsnr.",
+    "leaseNr": "Festenr.",
+    "moreInformation": "Vis meir informasjon",
+    "multipleAddressesText": "Eigedomen har fleire adresser",
+    "municipalityNr": "Kommunenr.",
+    "sectionNr": "Seksjonsnr.",
+    "subholdingNr": "Bruksnr."
   },
   "search": {
-    "placeholder": "Søk i Norgeskart",
-    "tabHeading": "Søk",
-    "placeName": "Stadnamn",
-    "roads": "Vegar",
-    "properties": "Eigedomar",
-    "addresses": "Adresser",
-    "houseNumber": "Husnr",
     "actions": {
       "print": {
         "tooltip": "Skriv ut"
       },
       "shareMap": {
-        "tooltip": "Del kartet",
-        "success": "Lenka er kopiert til utklippstavla"
+        "success": "Lenka er kopiert til utklippstavla",
+        "tooltip": "Del kartet"
       }
-    }
+    },
+    "addresses": "Adresser",
+    "houseNumber": "Husnr",
+    "placeholder": "Søk i Norgeskart",
+    "placeName": "Stadnamn",
+    "properties": "Eigedomar",
+    "roads": "Vegar",
+    "tabHeading": "Søk"
   },
   "shared": {
     "actions": {
       "download": "Last ned "
     },
-    "yes": "Ja",
     "units": {
       "meter": "Meter",
       "nauticalMile": "Nautisk mil"
-    }
-  },
-  "languageSelector": {
-    "tabHeading": "Språk",
-    "english": "English",
-    "norwegianBokmaal": "Norsk bokmål",
-    "norwegianNynorsk": "Norsk nynorsk",
-    "chooseLanguage": "Velg språk"
-  },
-  "privacyAndContact": {
-    "contactUs": "Kontakt",
-    "privacyPolicy": "Personvernerklæring ",
-    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
-    "sendEmail": "Send e-post"
-  },
-  "infoBox": {
-    "roadName": "Vegnamn",
-    "municipality": "Kommune",
-    "cadastralIdentifier": "Gards- og bruksnummer",
-    "address": "Adresse",
-    "in": "i",
-    "heightEstimatedByInterpolation": "Høgde (anslått ved interpolering):",
-    "metersAboveSeaLevel": "moh",
-    "propertyInfo": "Sjå eigedomsinformasjon",
-    "coordinateInfo": "Sjå koordinater",
-    "placeInfo": "Sjå fakta om stadnamnet",
-    "makeMap": "Lag turkart",
-    "emergencyPoster": "Lag nødplakat"
-  },
-  "propertyInfo": {
-    "municipalityNr": "Kommunenr.",
-    "holdingNr": "Gardsnr.",
-    "subholdingNr": "Bruksnr.",
-    "leaseNr": "Festenr.",
-    "sectionNr": "Seksjonsnr.",
-    "multipleAddressesText": "Eigedomen har fleire adresser",
-    "moreInformation": "Vis meir informasjon"
-  },
-  "placeInfo": {
-    "locationNumber": "Stadnummer",
-    "nameObjectType": "Namnobjekttype",
-    "loadingPlaceNameInfo": "Lastar stadnamninformasjon",
-    "errorPlaceNameInfo": "Feil ved henting av stadnamninformasjon"
-  },
-  "locationType": {
-    "property": "Eigedom",
-    "road": "Veg",
-    "place": "Stadnamn",
-    "address": "Adresse"
+    },
+    "yes": "Ja"
   }
 }

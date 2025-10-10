@@ -7,9 +7,61 @@ import { TranslateEvent } from 'ol/interaction/Translate';
 import { Style } from 'ol/style';
 import { FeatureMoveDetail } from './drawSettings';
 
-const handleSelectCompleted = (e: BaseEvent | Event) => {
+export type StyleChangeDetail = {
+  featureId: string | number;
+  oldStyle: Style;
+  newStyle: Style;
+};
+
+const handleSelect = (e: BaseEvent | Event) => {
   if (e instanceof SelectEvent) {
     e.deselected.forEach(handleFeatureSetZIndex);
+    handleUpdateStyle(e.deselected);
+    e.selected.forEach((f) => {
+      const style = f.getStyle();
+      if (style && style instanceof Style) {
+        const newStyle = style.clone();
+        const newStroke = newStyle.getStroke();
+        f.set('stylePreSelect', style);
+        newStroke?.setLineDash([10, 10]);
+        newStyle.setStroke(newStroke);
+        f.setStyle(newStyle);
+      }
+    });
+  }
+};
+
+const handleUpdateStyle = (features: Feature<Geometry>[]) => {
+  const featureStyleChangeList: StyleChangeDetail[] = [];
+  features.forEach((feature) => {
+    const style = feature.getStyle();
+    if (style && style instanceof Style) {
+      const styleStroke = style.getStroke();
+      if (styleStroke) {
+        styleStroke.setLineDash([]);
+        style.setStroke(styleStroke);
+        feature.setStyle(style);
+      }
+      const featureStylePreSelect = feature.get('stylePreSelect') as Style;
+      const featureId = feature.getId();
+      if (!featureId) {
+        return;
+      }
+      featureStyleChangeList.push({
+        featureId: featureId,
+        oldStyle: featureStylePreSelect,
+        newStyle: style,
+      });
+    }
+
+    feature.set('stylePreSelect', undefined);
+  });
+
+  if (featureStyleChangeList.length > 0) {
+    const event = new CustomEvent('featureStyleChanged', {
+      detail: featureStyleChangeList,
+    });
+    document.dispatchEvent(event);
   }
 };
 
@@ -53,5 +105,5 @@ export {
   handleFeatureSetZIndex,
   handleModifyEnd,
   handleModifyStart,
-  handleSelectCompleted,
+  handleSelect,
 };
