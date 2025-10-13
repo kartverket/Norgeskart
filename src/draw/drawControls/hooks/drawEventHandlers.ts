@@ -4,13 +4,42 @@ import { Geometry } from 'ol/geom';
 import { ModifyEvent } from 'ol/interaction/Modify';
 import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
-import { Style } from 'ol/style';
+import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { FeatureMoveDetail } from './drawSettings';
 
 export type StyleChangeDetail = {
   featureId: string | number;
   oldStyle: Style;
   newStyle: Style;
+};
+
+//To signal which features are selected. Points are outlined, other things are given a dashed line
+const addSelectedOutlineToStyle = (style: Style) => {
+  const newStroke = style.getStroke();
+  const image = style.getImage();
+  if (image) {
+    if (image instanceof Circle || image instanceof RegularShape) {
+      const newImage = image.clone();
+      newImage.setStroke(new Stroke({ color: 'black', width: 2 }));
+      style.setImage(newImage);
+    }
+  }
+  newStroke?.setLineDash([10, 10]);
+  style.setStroke(newStroke);
+};
+
+const removeSelectedOutlineToStyle = (style: Style) => {
+  const newStroke = style.getStroke();
+  const image = style.getImage();
+  if (image) {
+    if (image instanceof Circle || image instanceof RegularShape) {
+      const newImage = image.clone();
+      newImage.setStroke(null);
+      style.setImage(newImage);
+    }
+  }
+  newStroke?.setLineDash([]);
+  style.setStroke(newStroke);
 };
 
 const handleSelect = (e: BaseEvent | Event) => {
@@ -20,11 +49,9 @@ const handleSelect = (e: BaseEvent | Event) => {
     e.selected.forEach((f) => {
       const style = f.getStyle();
       if (style && style instanceof Style) {
-        const newStyle = style.clone();
-        const newStroke = newStyle.getStroke();
         f.set('stylePreSelect', style);
-        newStroke?.setLineDash([10, 10]);
-        newStyle.setStroke(newStroke);
+        const newStyle = style.clone();
+        addSelectedOutlineToStyle(newStyle);
         f.setStyle(newStyle);
       }
     });
@@ -36,6 +63,7 @@ const handleUpdateStyle = (features: Feature<Geometry>[]) => {
   features.forEach((feature) => {
     const style = feature.getStyle();
     if (style && style instanceof Style) {
+      removeSelectedOutlineToStyle(style);
       const styleStroke = style.getStroke();
       if (styleStroke) {
         styleStroke.setLineDash([]);
