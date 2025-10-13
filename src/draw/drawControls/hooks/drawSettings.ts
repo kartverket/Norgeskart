@@ -35,7 +35,7 @@ import {
   handleFeatureSetZIndex,
   handleModifyEnd,
   handleModifyStart,
-  handleSelectCompleted,
+  handleSelect,
 } from './drawEventHandlers';
 import { useMapInteractions } from './mapInterations';
 import { useMapLayers } from './mapLayers';
@@ -118,8 +118,9 @@ const useDrawSettings = () => {
       const drawLayer = getDrawLayer();
       const selectInteraction = new Select({
         layers: [drawLayer],
+        style: null,
       });
-      selectInteraction.addEventListener('select', handleSelectCompleted);
+      selectInteraction.addEventListener('select', handleSelect);
       map.addInteraction(selectInteraction);
 
       const translateInteraction = new Translate({
@@ -203,7 +204,6 @@ const useDrawSettings = () => {
       if (textStyle) {
         textStyle.setText(text);
       }
-      eventFeature.set('text', text);
       eventFeature.setStyle(style);
     }
 

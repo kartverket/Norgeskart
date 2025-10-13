@@ -3,8 +3,8 @@ import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { DrawType } from '../../draw/drawControls/hooks/drawSettings';
 
-export const DEFAULT_PRIMARY_COLOR = '#1d823b80';
-export const DEFAULT_SECONDARY_COLOR = '#0e5aa0ff';
+export const DEFAULT_PRIMARY_COLOR = '#0e5aa0ff';
+export const DEFAULT_SECONDARY_COLOR = '#1d823b80';
 
 export type LineWidth = 2 | 4 | 8;
 
@@ -26,15 +26,15 @@ export const drawStyleReadAtom = atom((get) => {
     image: new CircleStyle({
       radius: lineWidth,
       fill: new Fill({
-        color: primaryColor,
+        color: secondaryColor,
       }),
     }),
     stroke: new Stroke({
-      color: secondaryColor,
+      color: primaryColor,
       width: lineWidth,
     }),
     fill: new Fill({
-      color: primaryColor,
+      color: secondaryColor,
     }),
     zIndex: 0,
   });
@@ -50,7 +50,7 @@ export const pointTypeAtom = atom<PointType>('circle');
 
 export const pointStyleReadAtom = atom((get) => {
   const type = get(pointTypeAtom);
-  const secondaryColor = get(secondaryColorAtom);
+  const color = get(primaryColorAtom);
   const lineWidth = get(lineWidthAtom);
   const pointRadius = lineWidth * 3;
 
@@ -59,7 +59,7 @@ export const pointStyleReadAtom = atom((get) => {
       return new Style({
         image: new CircleStyle({
           radius: pointRadius,
-          fill: new Fill({ color: secondaryColor }),
+          fill: new Fill({ color: color }),
         }),
       });
     case 'square':
@@ -68,7 +68,7 @@ export const pointStyleReadAtom = atom((get) => {
           points: 4,
           radius: pointRadius,
           angle: Math.PI / 4,
-          fill: new Fill({ color: secondaryColor }),
+          fill: new Fill({ color: color }),
         }),
       });
     case 'triangle':
@@ -76,7 +76,7 @@ export const pointStyleReadAtom = atom((get) => {
         image: new RegularShape({
           points: 3,
           radius: pointRadius,
-          fill: new Fill({ color: secondaryColor }),
+          fill: new Fill({ color: color }),
         }),
       });
     case 'diamond':
@@ -86,7 +86,7 @@ export const pointStyleReadAtom = atom((get) => {
           radius: pointRadius,
           angle: 0,
           scale: [1, 1.7],
-          fill: new Fill({ color: secondaryColor }),
+          fill: new Fill({ color: color }),
         }),
       });
     case 'star':
@@ -95,14 +95,14 @@ export const pointStyleReadAtom = atom((get) => {
           points: 5,
           radius: pointRadius,
           radius2: pointRadius / 2,
-          fill: new Fill({ color: secondaryColor }),
+          fill: new Fill({ color: color }),
         }),
       });
     default:
       return new Style({
         image: new CircleStyle({
           radius: pointRadius,
-          fill: new Fill({ color: secondaryColor }),
+          fill: new Fill({ color: color }),
         }),
       });
   }

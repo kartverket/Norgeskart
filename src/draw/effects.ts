@@ -1,10 +1,11 @@
 import { atomEffect } from 'jotai-effect';
 import Draw from 'ol/interaction/Draw';
 import Map from 'ol/Map';
-import { Fill, Style } from 'ol/style';
+import { Fill, RegularShape, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { mapAtom } from '../map/atoms';
 
+import Select from 'ol/interaction/Select';
 import {
   drawTypeStateAtom,
   lineWidthAtom,
@@ -23,10 +24,73 @@ const getDrawInteraction = (map: Map) => {
   return drawInteraction;
 };
 
+const getSelectInteraction = (map: Map) => {
+  const selectInteraction = map
+    .getInteractions()
+    .getArray()
+    .filter((interaction) => interaction instanceof Select)[0] as
+    | Select
+    | undefined;
+  return selectInteraction;
+};
+
 const getDrawOverlayStyle = (draw: Draw) => {
   const style = draw.getOverlay()?.getStyle() as Style | null;
   return style;
 };
+
+export const editPrimaryColorEffect = atomEffect((get) => {
+  const primaryColor = get(primaryColorAtom);
+  const map = get(mapAtom);
+  const selectInteraction = getSelectInteraction(map);
+  if (selectInteraction) {
+    selectInteraction.getFeatures().forEach((feature) => {
+      const featureStyle = feature.getStyle() as Style | undefined;
+      if (!featureStyle) {
+        return;
+      }
+      const currentStroke = featureStyle.getStroke();
+      if (currentStroke) {
+        currentStroke.setColor(primaryColor);
+        featureStyle.setStroke(currentStroke);
+      }
+      feature.setStyle(featureStyle);
+    });
+  }
+});
+
+export const editSecondaryColorEffect = atomEffect((get) => {
+  const secondaryColor = get(secondaryColorAtom);
+  const map = get(mapAtom);
+  const selectInteraction = getSelectInteraction(map);
+  if (selectInteraction) {
+    selectInteraction.getFeatures().forEach((feature) => {
+      const featureStyle = feature.getStyle() as Style | undefined;
+      if (!featureStyle) {
+        return;
+      }
+      const currentFill = featureStyle.getFill();
+      if (currentFill) {
+        currentFill.setColor(secondaryColor);
+        featureStyle.setFill(currentFill);
+      }
+      const currentImage = featureStyle.getImage();
+      if (currentImage) {
+        if (
+          currentImage instanceof CircleStyle ||
+          currentImage instanceof RegularShape
+        ) {
+          currentImage.getFill()?.setColor(secondaryColor);
+          featureStyle.setImage(currentImage);
+        } else {
+          currentFill?.setColor(secondaryColor);
+          featureStyle.setFill(currentFill);
+        }
+      }
+      feature.setStyle(featureStyle);
+    });
+  }
+});
 
 export const drawStyleEffect = atomEffect((get) => {
   const primaryColor = get(primaryColorAtom);
@@ -39,8 +103,8 @@ export const drawStyleEffect = atomEffect((get) => {
     return;
   }
 
-  const style = getDrawOverlayStyle(drawInteraction);
-  if (!style) {
+  const overlayDrawStyle = getDrawOverlayStyle(drawInteraction);
+  if (!overlayDrawStyle) {
     return;
   }
 
@@ -49,10 +113,10 @@ export const drawStyleEffect = atomEffect((get) => {
     drawInteraction.getOverlay().setStyle(newStyle);
     return;
   }
-  const newStyle = style.clone() as Style;
+  const newStyle = overlayDrawStyle.clone() as Style;
 
-  newStyle.getFill()?.setColor(primaryColor);
-  newStyle.getStroke()?.setColor(secondaryColor);
+  newStyle.getFill()?.setColor(secondaryColor);
+  newStyle.getStroke()?.setColor(primaryColor);
   newStyle.getStroke()?.setWidth(lineWidth);
   const circleStyle = new CircleStyle({
     radius: lineWidth,

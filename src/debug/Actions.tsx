@@ -48,7 +48,8 @@ const ActionBody = ({ action }: { action: DrawAction }) => {
 
     case 'MOVE':
       return <>MOVE - {action.details.featuresMoved.length}</>;
-
+    case 'EDIT_STYLE':
+      return <>EDIT STYLE - {action.details.length} - </>;
     default:
       return null;
   }

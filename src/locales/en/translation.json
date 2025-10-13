@@ -2,40 +2,40 @@
   "draw": {
     "begin": "Draw on map",
     "clear": "Clear drawing",
+    "close": "Close",
     "confrimClear": "Are you sure?",
     "controls": {
+      "colorBackground": "Background color",
       "colorFill": "Fill color",
-      "colorStroke": "Stroke color",
-      "showMeasurements": "Show measurments",
-      "toolSelect": {
-        "placeholder": "Select draw tool"
-      },
       "colorPoint": "Point color",
+      "colorStroke": "Stroke color",
+      "colorText": "Text color",
+      "pointType": "Point type",
+      "showMeasurements": "Show measurments",
       "tool": {
         "tooltip": {
-          "polygon": "Polygon",
-          "edit": "Edit and move",
-          "point": "Points",
-          "linestring": "Line segments",
           "circle": "Circle",
+          "edit": "Edit and move",
+          "linestring": "Line segments",
+          "point": "Points",
+          "polygon": "Polygon",
           "text": "Text"
         }
       },
-      "pointType": "Point type",
-      "textColor": "Text color",
-      "backgroundColor": "Background color"
+      "toolSelect": {
+        "placeholder": "Select draw tool"
+      }
     },
+    "deleteSelection": "Remove selected",
     "end": "Done",
     "save": "Save",
-    "tabHeading": "Draw",
-    "tools": "Tools",
-    "yesClear": "Yes clear",
-    "close": "Close",
     "size": {
       "label": "Size"
     },
-    "deleteSelection": "Remove selected",
-    "textInputLabel": "Enter text"
+    "tabHeading": "Draw",
+    "textInputLabel": "Enter text",
+    "tools": "Tools",
+    "yesClear": "Yes clear"
   },
   "export": {
     "format": {
@@ -44,6 +44,33 @@
     },
     "heading": "Export drawing"
   },
+  "infoBox": {
+    "address": "Address",
+    "cadastralIdentifier": "Cadastral identifier",
+    "coordinateInfo": "See coordinates",
+    "emergencyPoster": "Make emergency poster",
+    "heightEstimatedByInterpolation": "Height (estimated by interpolation):",
+    "in": "in",
+    "makeMap": "Make map",
+    "metersAboveSeaLevel": "m.a.s.l.",
+    "municipality": "Municipality",
+    "placeinfo": "See facts about placename",
+    "propertyInfo": "See property information",
+    "roadName": "Road name"
+  },
+  "languageSelector": {
+    "chooseLanguage": "Select language",
+    "english": "English",
+    "norwegianBokmaal": "Norwegian bokmål",
+    "norwegianNynorsk": "Norwegian nynorsk",
+    "tabHeading": "Language"
+  },
+  "locationType": {
+    "address": "Address",
+    "place": "Placename",
+    "property": "Property",
+    "road": "Road"
+  },
   "map": {
     "errorMessage": "Something went very wrong with the map",
     "overlay": {
@@ -51,112 +78,85 @@
       "myPosition": "Show my location"
     },
     "settings": {
-      "layers": {
-        "projection": {
-          "label": "Chose map projection",
-          "placeholder": "Chose"
-        },
-        "background": {
-          "placeholder": "Chose",
-          "label": "Chose background map"
-        },
-        "mapNames": {
-          "topo": "Topographic map",
-          "topo_2025": "Topo 2025",
-          "Nibcache_web_mercator_v2": "Aerial photos",
-          "topoProd": "Topographic",
-          "topograatone": "Topografic, grayscale",
-          "sjokartraster": "Oceanic",
-          "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
-          "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
-          "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)"
-        }
-      },
       "compass": {
         "enabled": "Show compass",
         "magneticNorth": "Use magnetic north"
+      },
+      "layers": {
+        "background": {
+          "label": "Chose background map",
+          "placeholder": "Chose"
+        },
+        "mapNames": {
+          "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
+          "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
+          "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
+          "Nibcache_web_mercator_v2": "Aerial photos",
+          "sjokartraster": "Oceanic",
+          "topo": "Topographic map",
+          "topo_2025": "Topo 2025",
+          "topograatone": "Topografic, grayscale",
+          "topoProd": "Topographic"
+        },
+        "projection": {
+          "label": "Chose map projection",
+          "placeholder": "Chose"
+        }
       }
     }
   },
   "mapLayers": {
+    "close": "Close map layer settings",
     "label": "Maplayers",
-    "open": "Open map layer settings",
-    "close": "Close map layer settings"
+    "open": "Open map layer settings"
+  },
+  "placeInfo": {
+    "errorPlaceNameInfo": "Error fetching place name information",
+    "loadingPlaceNameInfo": "Loading place name information",
+    "locationNumber": "Location number",
+    "nameObjectType": "Name object type"
+  },
+  "privacyAndContact": {
+    "contactUs": "Contact us",
+    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
+    "privacyPolicy": "Privacy policy ",
+    "sendEmail": "Send e-mail"
+  },
+  "propertyInfo": {
+    "holdingNr": "Holding nr.",
+    "leaseNr": "Lease nr.",
+    "moreInformation": "Show more information",
+    "multipleAddressesText": "The property has several addresses",
+    "municipalityNr": "Municipality nr.",
+    "sectionNr": "Section nr.",
+    "subholdingNr": "Subholding nr."
   },
   "search": {
-    "placeholder": "Search Norgeskart",
-    "tabHeading": "Search",
-    "placeName": "Placenames",
-    "roads": "Roads",
-    "properties": "Properties",
-    "addresses": "Addresses",
-    "houseNumber": "House nr.",
     "actions": {
       "print": {
         "tooltip": "Print"
       },
       "shareMap": {
-        "tooltip": "Share map",
-        "success": "Url copied to clipboard"
+        "success": "Url copied to clipboard",
+        "tooltip": "Share map"
       }
-    }
+    },
+    "addresses": "Addresses",
+    "houseNumber": "House nr.",
+    "placeholder": "Search Norgeskart",
+    "placeName": "Placenames",
+    "properties": "Properties",
+    "roads": "Roads",
+    "tabHeading": "Search"
   },
   "shared": {
     "actions": {
       "download": "Download"
     },
-    "yes": "Yes",
     "units": {
       "meter": "Metre",
       "nauticalMile": "Nautical mile"
-    }
-  },
-  "languageSelector": {
-    "tabHeading": "Language",
-    "english": "English",
-    "norwegianBokmaal": "Norwegian bokmål",
-    "norwegianNynorsk": "Norwegian nynorsk",
-    "chooseLanguage": "Select language"
-  },
-  "privacyAndContact": {
-    "contactUs": "Contact us",
-    "privacyPolicy": "Privacy policy ",
-    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
-    "sendEmail": "Send e-mail"
-  },
-  "infoBox": {
-    "roadName": "Road name",
-    "municipality": "Municipality",
-    "cadastralIdentifier": "Cadastral identifier",
-    "address": "Address",
-    "in": "in",
-    "heightEstimatedByInterpolation": "Height (estimated by interpolation):",
-    "metersAboveSeaLevel": "m.a.s.l.",
-    "propertyInfo": "See property information",
-    "coordinateInfo": "See coordinates",
-    "placeinfo": "See facts about placename",
-    "makeMap": "Make map",
-    "emergencyPoster": "Make emergency poster"
-  },
-  "propertyInfo": {
-    "municipalityNr": "Municipality nr.",
-    "holdingNr": "Holding nr.",
-    "subholdingNr": "Subholding nr.",
-    "leaseNr": "Lease nr.",
-    "sectionNr": "Section nr.",
-    "multipleAddressesText": "The property has several addresses",
-    "moreInformation": "Show more information"
-  },
-  "placeInfo": {
-    "locationNumber": "Location number",
-    "nameObjectType": "Name object type",
-    "loadingPlaceNameInfo": "Loading place name information",
-    "errorPlaceNameInfo": "Error fetching place name information"
-  },
-  "locationType": {
-    "property": "Property",
-    "road": "Road",
-    "place": "Placename",
-    "address": "Address"
+    },
+    "yes": "Yes"
   }
 }
