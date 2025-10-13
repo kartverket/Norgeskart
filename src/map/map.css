@@ -43,13 +43,13 @@
   }
 }
 
-.ol-scale-line {
+.ol-scale-bar {
   position: absolute;
-  left: 50%;
+  left: 40%;
   bottom: 24px;
 }
 
-.ol-scale-line-inner {
+.ol-scale-line-bar {
   font-size: 16px;
 }
 

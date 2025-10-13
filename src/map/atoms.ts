@@ -104,7 +104,9 @@ export const mapAtom = atom<Map>(() => {
   const intialView = getInitialMapView();
 
   map.setView(intialView);
-  map.addControl(new ScaleLine({ units: 'metric' }));
+  map.addControl(
+    new ScaleLine({ minWidth: 160, bar: true, text: true, units: 'metric' }),
+  );
   map.addControl(getMousePositionControl(intialView.getProjection().getCode()));
   map.on('moveend', (e) => {
     const view = e.map.getView();
