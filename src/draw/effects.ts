@@ -54,6 +54,17 @@ export const editPrimaryColorEffect = atomEffect((get) => {
         currentStroke.setColor(primaryColor);
         featureStyle.setStroke(currentStroke);
       }
+
+      const currentImage = featureStyle.getImage();
+      if (currentImage) {
+        if (
+          currentImage instanceof CircleStyle ||
+          currentImage instanceof RegularShape
+        ) {
+          currentImage.getFill()?.setColor(primaryColor);
+          featureStyle.setImage(currentImage);
+        }
+      }
       feature.setStyle(featureStyle);
     });
   }
@@ -73,19 +84,6 @@ export const editSecondaryColorEffect = atomEffect((get) => {
       if (currentFill) {
         currentFill.setColor(secondaryColor);
         featureStyle.setFill(currentFill);
-      }
-      const currentImage = featureStyle.getImage();
-      if (currentImage) {
-        if (
-          currentImage instanceof CircleStyle ||
-          currentImage instanceof RegularShape
-        ) {
-          currentImage.getFill()?.setColor(secondaryColor);
-          featureStyle.setImage(currentImage);
-        } else {
-          currentFill?.setColor(secondaryColor);
-          featureStyle.setFill(currentFill);
-        }
       }
       feature.setStyle(featureStyle);
     });
