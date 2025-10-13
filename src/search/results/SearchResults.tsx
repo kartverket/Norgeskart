@@ -31,6 +31,10 @@ interface SearchResultsProps {
   placesMetadata?: Metadata;
   onPlacesPageChange: (_page: number) => void;
   searchQuery: string;
+  selectedResult: SearchResult | null;
+  setSelectedResult: (result: SearchResult | null) => void;
+  hoveredResult: SearchResult | null;
+  setHoveredResult: (result: SearchResult | null) => void;
 }
 
 export const SearchResults = ({
@@ -40,7 +44,10 @@ export const SearchResults = ({
   addresses,
   placesMetadata,
   onPlacesPageChange,
-  searchQuery,
+  setSelectedResult,
+  selectedResult,
+  hoveredResult,
+  setHoveredResult,
 }: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
   const isMobileScreen = useIsMobileScreen();
@@ -51,16 +58,6 @@ export const SearchResults = ({
     'properties',
     'addresses',
   ]);
-  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
-    null,
-  );
-  const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
-
-  useEffect(() => {
-    setSelectedResult(null);
-    setHoveredResult(null);
-  }, [searchQuery]);
-
   const allResults = searchResultsMapper(places, roads, addresses, properties);
 
   const handleHover = (res: SearchResult) => {

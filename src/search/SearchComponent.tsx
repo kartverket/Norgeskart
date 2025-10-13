@@ -1,6 +1,7 @@
 import { Box, Flex, Icon, Search } from '@kvib/react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SearchResult } from '../types/searchTypes.ts';
 import { SearchResults } from './results/SearchResults.tsx';
 import {
   useAddresses,
@@ -12,6 +13,10 @@ import {
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [placesPage, setPlacesPage] = useState(1);
+  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
+    null,
+  );
+  const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
 
   const { placeNameData } = usePlaceNames(searchQuery, placesPage);
@@ -21,6 +26,8 @@ export const SearchComponent = () => {
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setSelectedResult(null);
+    setHoveredResult(null);
   }, []);
 
   return (
@@ -60,6 +67,10 @@ export const SearchComponent = () => {
           setPlacesPage(page);
         }}
         searchQuery={searchQuery}
+        selectedResult={selectedResult}
+        setSelectedResult={setSelectedResult}
+        hoveredResult={hoveredResult}
+        setHoveredResult={setHoveredResult}
       />
     </Flex>
   );
