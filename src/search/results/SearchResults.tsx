@@ -1,6 +1,6 @@
 import { AccordionRoot } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -31,6 +31,10 @@ interface SearchResultsProps {
   placesMetadata?: Metadata;
   onPlacesPageChange: (_page: number) => void;
   searchQuery: string;
+  selectedResult: SearchResult | null;
+  setSelectedResult: (result: SearchResult | null) => void;
+  hoveredResult: SearchResult | null;
+  setHoveredResult: (result: SearchResult | null) => void;
 }
 
 export const SearchResults = ({
@@ -40,7 +44,10 @@ export const SearchResults = ({
   addresses,
   placesMetadata,
   onPlacesPageChange,
-  searchQuery,
+  setSelectedResult,
+  selectedResult,
+  hoveredResult,
+  setHoveredResult,
 }: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
   const isMobileScreen = useIsMobileScreen();
@@ -51,21 +58,6 @@ export const SearchResults = ({
     'properties',
     'addresses',
   ]);
-  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
-    null,
-  );
-  const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
-
-  const prevSearchQuery = useRef<string>(searchQuery);
-
-  useEffect(() => {
-    if (prevSearchQuery.current !== searchQuery) {
-      setSelectedResult(null);
-      setHoveredResult(null);
-      prevSearchQuery.current = searchQuery;
-    }
-  }, [searchQuery]);
-
   const allResults = searchResultsMapper(places, roads, addresses, properties);
 
   const handleHover = (res: SearchResult) => {
