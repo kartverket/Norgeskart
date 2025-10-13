@@ -25,7 +25,7 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
   const inputCRS = getInputCRS(result);
   const [x, y] = transform([result.lon, result.lat], inputCRS, 'EPSG:25833');
 
-  const { data: elevationData } = useQuery({
+  const { data, error } = useQuery({
     queryKey: ['elevation', x, y],
     queryFn: () => getElevation(x, y),
     enabled: x != null && y != null,
@@ -39,7 +39,9 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
         overflowY="auto"
         overflowX="hidden"
       >
-        <InfoBoxContent result={result} elevationData={elevationData} />
+        {error != null && (
+          <InfoBoxContent result={result} elevationData={data} />
+        )}
         <AccordionRoot collapsible mr={2} mt={5}>
           <AccordionItem value="propertyInfo">
             <AccordionItemTrigger pl={0}>
