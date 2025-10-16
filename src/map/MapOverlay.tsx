@@ -17,6 +17,7 @@ import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings';
 import { DrawSettings } from '../settings/draw/DrawSettings';
 import { MapSettings } from '../settings/map/MapSettings';
 import { useIsMobileScreen } from '../shared/hooks';
+import ShareOrPrintMap from '../sidePanel/ShareOrPrintMap';
 import {
   displayCompassOverlayAtom,
   magneticDeclinationAtom,
@@ -179,6 +180,7 @@ export const MapOverlay = () => {
                   icon={showMapSettings ? 'close' : 'layers'}
                 />
               </Tooltip>
+              <ShareOrPrintMap />
             </Stack>
 
             {/* Tegneverktøy-panelet, vises under knappene */}
