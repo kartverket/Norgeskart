@@ -29,6 +29,9 @@ const ShareOrPrintMap = () => {
             icon="print"
             size="md"
             variant="ghost"
+            onClick={() => {
+              window.print();
+            }}
           />
         </Tooltip>
       </Flex>
