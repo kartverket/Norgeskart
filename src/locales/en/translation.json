@@ -96,7 +96,8 @@
           "topo": "Topographic map",
           "topo_2025": "Topo 2025",
           "topograatone": "Topografic, grayscale",
-          "topoProd": "Topographic"
+          "topoProd": "Topographic",
+          "toporaster": "Paper map"
         },
         "projection": {
           "label": "Chose map projection",

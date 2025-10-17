@@ -20,9 +20,9 @@ import { getUrlParameter } from '../../shared/utils/urlUtils';
 
 const layerPriorityMap = new Map<WMTSLayerName, number>([
   ['topo', 1],
-  ['topoProd', 1],
   ['topograatone', 2],
-  ['sjokartraster', 3],
+  ['toporaster', 3],
+  ['sjokartraster', 4],
   ['Nibcache_web_mercator_v2', 6],
   ['Nibcache_UTM32_EUREF89_v2', 7],
   ['Nibcache_UTM33_EUREF89_v2', 8],
