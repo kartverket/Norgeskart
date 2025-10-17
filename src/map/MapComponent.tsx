@@ -8,19 +8,20 @@ import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { getUrlParameter } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
+import { WMSLayerName } from './layers/backgroundWMS.ts';
 import {
   DEFAULT_BACKGROUND_LAYER,
   loadableWMTS,
   WMTSLayerName,
   WMTSProviderId,
-} from './layers/backgroundProviders.ts';
+} from './layers/backgroundWMTSProviders.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import { MapOverlay } from './MapOverlay.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const WMTSloadable = useAtomValue(loadableWMTS);
-  const { setBackgroundLayer } = useMapSettings();
+  const { setBackgroundLayer, setBackgroundWMSLayer } = useMapSettings();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures, drawEnabled, undoLast, drawType } =
@@ -52,20 +53,15 @@ export const MapComponent = () => {
     if (hasBackgroundLayer) {
       return;
     }
-    const [providerId, layerName] = (
+    const [part1, part2] = (
       getUrlParameter('backgroundLayer') || DEFAULT_BACKGROUND_LAYER
     ).split('.');
-
-    const wmtsLayer = WMTSloadable.data;
-    if (wmtsLayer) {
-      setBackgroundLayer(
-        providerId as WMTSProviderId,
-        layerName as WMTSLayerName,
-      );
+    if (part2 == null) {
+      setBackgroundWMSLayer(part1 as WMSLayerName);
     } else {
-      console.error(t('map.errorMessage'));
+      setBackgroundLayer(part1 as WMTSProviderId, part2 as WMTSLayerName);
     }
-  }, [setBackgroundLayer, t, WMTSloadable, map]);
+  }, [setBackgroundWMSLayer, setBackgroundLayer, WMTSloadable, map]);
 
   useEffect(() => {
     const asyncEffect = async () => {

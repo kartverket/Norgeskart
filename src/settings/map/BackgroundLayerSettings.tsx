@@ -14,7 +14,7 @@ import {
   loadableWMTS,
   WMTSLayerName,
   WMTSProviderId,
-} from '../../map/layers/backgroundProviders';
+} from '../../map/layers/backgroundWMTSProviders';
 import { useMapSettings } from '../../map/mapHooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
 
