@@ -21,7 +21,7 @@ import { MapOverlay } from './MapOverlay.tsx';
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const WMTSloadable = useAtomValue(loadableWMTS);
-  const { setBackgroundLayer, setBackgroundWMSLayer } = useMapSettings();
+  const { setBackgroundWMTSLayer, setBackgroundWMSLayer } = useMapSettings();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures, drawEnabled, undoLast, drawType } =
@@ -59,9 +59,9 @@ export const MapComponent = () => {
     if (part2 == null) {
       setBackgroundWMSLayer(part1 as WMSLayerName);
     } else {
-      setBackgroundLayer(part1 as WMTSProviderId, part2 as WMTSLayerName);
+      setBackgroundWMTSLayer(part1 as WMTSProviderId, part2 as WMTSLayerName);
     }
-  }, [setBackgroundWMSLayer, setBackgroundLayer, WMTSloadable, map]);
+  }, [setBackgroundWMSLayer, setBackgroundWMTSLayer, WMTSloadable, map]);
 
   useEffect(() => {
     const asyncEffect = async () => {

@@ -102,7 +102,7 @@ const useMapSettings = () => {
     return getMapProjection().getCode() as ProjectionIdentifier;
   };
 
-  const setBackgroundLayer = (
+  const setBackgroundWMTSLayer = (
     WTMSProvider: WMTSProviderId,
     layerName: WMTSLayerName,
   ) => {
@@ -382,7 +382,7 @@ const useMapSettings = () => {
     setMapFullScreen,
     setMapLocation,
     setProjection,
-    setBackgroundLayer,
+    setBackgroundWMTSLayer,
     setBackgroundWMSLayer,
   };
 };

@@ -9,6 +9,7 @@ import {
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
   DEFAULT_BACKGROUND_LAYER,
   loadableWMTS,
@@ -30,8 +31,14 @@ const layerPriorityMap = new Map<WMTSLayerName, number>([
 ]);
 
 const layerPrioritySort = (
-  a: { value: `$${WMTSProviderId}.${WMTSLayerName}`; label: string },
-  b: { value: `$${WMTSProviderId}.${WMTSLayerName}`; label: string },
+  a: {
+    value: `$${WMTSProviderId}.${WMTSLayerName}` | WMSLayerName;
+    label: string;
+  },
+  b: {
+    value: `$${WMTSProviderId}.${WMTSLayerName}` | WMSLayerName;
+    label: string;
+  },
 ) => {
   const priorityA =
     layerPriorityMap.get(a.value.split('.')[1] as WMTSLayerName) || 0;
@@ -43,8 +50,11 @@ const layerPrioritySort = (
 
 export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
-  const { setBackgroundLayer: setWMTSBackgroundLayer, getMapProjectionCode } =
-    useMapSettings();
+  const {
+    setBackgroundWMSLayer,
+    setBackgroundWMTSLayer,
+    getMapProjectionCode,
+  } = useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
 
   if (WMTSProviders.state !== 'hasData') {
@@ -55,7 +65,7 @@ export const BackgroundLayerSettings = () => {
   const providers = WMTSProviders.data.keys();
 
   const avaiableLayers: {
-    value: `$${WMTSProviderId}.${WMTSLayerName}`;
+    value: `$${WMTSProviderId}.${WMTSLayerName}` | WMSLayerName;
     label: string;
   }[] = [];
 
@@ -76,6 +86,11 @@ export const BackgroundLayerSettings = () => {
 
     avaiableLayers.push(...avaialbeLayersForPriovider);
   }
+
+  avaiableLayers.push({
+    value: 'oceanicelectronic' as WMSLayerName,
+    label: t(`map.settings.layers.mapNames.oceanicelectronic`),
+  });
 
   const listCollection = createListCollection({
     items: avaiableLayers.sort(layerPrioritySort),
@@ -99,10 +114,15 @@ export const BackgroundLayerSettings = () => {
             key={item.value}
             item={item}
             onClick={() => {
-              setWMTSBackgroundLayer(
-                item.value.split('.')[0] as WMTSProviderId,
-                item.value.split('.')[1] as WMTSLayerName,
-              );
+              const [part1, part2] = item.value.split('.');
+              if (part2 == null) {
+                setBackgroundWMSLayer(part1 as WMSLayerName);
+              } else {
+                setBackgroundWMTSLayer(
+                  part1 as WMTSProviderId,
+                  part2 as WMTSLayerName,
+                );
+              }
             }}
           >
             {item.label}
