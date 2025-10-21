@@ -4,7 +4,7 @@ import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import { AvailableProjections, ProjectionIdentifier } from '../atoms';
 
-export const DEFAULT_BACKGROUND_LAYER = 'kartverketCache.topo';
+export const DEFAULT_BACKGROUND_LAYER = 'topo';
 
 export type WMTSLayerName =
   | 'topo'

@@ -3,7 +3,7 @@ import { TileWMS } from 'ol/source';
 
 export type WMSLayerName = 'oceanicelectronic';
 
-export const getWMTSLayer = (
+export const getWMSLayer = (
   layerName: WMSLayerName,
   projection: string,
 ): TileLayer | null => {

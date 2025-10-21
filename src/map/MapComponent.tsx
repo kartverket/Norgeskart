@@ -8,20 +8,14 @@ import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { getUrlParameter } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
-import { WMSLayerName } from './layers/backgroundWMS.ts';
-import {
-  DEFAULT_BACKGROUND_LAYER,
-  loadableWMTS,
-  WMTSLayerName,
-  WMTSProviderId,
-} from './layers/backgroundWMTSProviders.ts';
+import { BackgroundLayerName } from './layers/backgroundLayers.ts';
+import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import { MapOverlay } from './MapOverlay.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const WMTSloadable = useAtomValue(loadableWMTS);
-  const { setBackgroundWMTSLayer, setBackgroundWMSLayer } = useMapSettings();
+  const { setBackgroundLayer } = useMapSettings();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures, drawEnabled, undoLast, drawType } =
@@ -39,9 +33,6 @@ export const MapComponent = () => {
   }, [setTargetElement, mapRef]);
 
   useEffect(() => {
-    if (WMTSloadable.state !== 'hasData') {
-      return;
-    }
     if (!map) {
       return;
     }
@@ -53,15 +44,11 @@ export const MapComponent = () => {
     if (hasBackgroundLayer) {
       return;
     }
-    const [part1, part2] = (
-      getUrlParameter('backgroundLayer') || DEFAULT_BACKGROUND_LAYER
-    ).split('.');
-    if (part2 == null) {
-      setBackgroundWMSLayer(part1 as WMSLayerName);
-    } else {
-      setBackgroundWMTSLayer(part1 as WMTSProviderId, part2 as WMTSLayerName);
-    }
-  }, [setBackgroundWMSLayer, setBackgroundWMTSLayer, WMTSloadable, map]);
+    const layerNameFromUrl = (getUrlParameter('backgroundLayer') ||
+      DEFAULT_BACKGROUND_LAYER) as BackgroundLayerName;
+
+    setBackgroundLayer(layerNameFromUrl);
+  }, [setBackgroundLayer, map]);
 
   useEffect(() => {
     const asyncEffect = async () => {

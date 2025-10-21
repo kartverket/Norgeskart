@@ -9,21 +9,21 @@ import {
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
   DEFAULT_BACKGROUND_LAYER,
   loadableWMTS,
-  WMTSLayerName,
-  WMTSProviderId,
 } from '../../map/layers/backgroundWMTSProviders';
 import { useMapSettings } from '../../map/mapHooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
 
-const layerPriorityMap = new Map<WMTSLayerName, number>([
+const layerPriorityMap = new Map<BackgroundLayerName, number>([
   ['topo', 1],
   ['topograatone', 2],
   ['toporaster', 3],
   ['sjokartraster', 4],
+  ['oceanicelectronic', 5],
   ['Nibcache_web_mercator_v2', 6],
   ['Nibcache_UTM32_EUREF89_v2', 7],
   ['Nibcache_UTM33_EUREF89_v2', 8],
@@ -32,29 +32,23 @@ const layerPriorityMap = new Map<WMTSLayerName, number>([
 
 const layerPrioritySort = (
   a: {
-    value: `$${WMTSProviderId}.${WMTSLayerName}` | WMSLayerName;
+    value: BackgroundLayerName;
     label: string;
   },
   b: {
-    value: `$${WMTSProviderId}.${WMTSLayerName}` | WMSLayerName;
+    value: BackgroundLayerName;
     label: string;
   },
 ) => {
-  const priorityA =
-    layerPriorityMap.get(a.value.split('.')[1] as WMTSLayerName) || 0;
-  const priorityB =
-    layerPriorityMap.get(b.value.split('.')[1] as WMTSLayerName) || 0;
+  const priorityA = layerPriorityMap.get(a.value) || 0;
+  const priorityB = layerPriorityMap.get(b.value) || 0;
 
   return priorityA - priorityB;
 };
 
 export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
-  const {
-    setBackgroundWMSLayer,
-    setBackgroundWMTSLayer,
-    getMapProjectionCode,
-  } = useMapSettings();
+  const { setBackgroundLayer, getMapProjectionCode } = useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
 
   if (WMTSProviders.state !== 'hasData') {
@@ -65,7 +59,7 @@ export const BackgroundLayerSettings = () => {
   const providers = WMTSProviders.data.keys();
 
   const avaiableLayers: {
-    value: `$${WMTSProviderId}.${WMTSLayerName}` | WMSLayerName;
+    value: BackgroundLayerName;
     label: string;
   }[] = [];
 
@@ -78,8 +72,7 @@ export const BackgroundLayerSettings = () => {
 
     const avaialbeLayersForPriovider = projectionLayerNames.map((layerName) => {
       return {
-        value:
-          `${providerId}.${layerName}` as `$${WMTSProviderId}.${WMTSLayerName}`,
+        value: layerName,
         label: t(`map.settings.layers.mapNames.${layerName}`),
       };
     });
@@ -114,15 +107,7 @@ export const BackgroundLayerSettings = () => {
             key={item.value}
             item={item}
             onClick={() => {
-              const [part1, part2] = item.value.split('.');
-              if (part2 == null) {
-                setBackgroundWMSLayer(part1 as WMSLayerName);
-              } else {
-                setBackgroundWMTSLayer(
-                  part1 as WMTSProviderId,
-                  part2 as WMTSLayerName,
-                );
-              }
+              setBackgroundLayer(item.value);
             }}
           >
             {item.label}

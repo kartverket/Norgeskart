@@ -2,7 +2,6 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
 import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
-import TileLayer from 'ol/layer/Tile';
 import { get as getProjection, transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
@@ -15,12 +14,13 @@ import {
   ProjectionIdentifier,
 } from './atoms';
 import { isMapLayerBackground } from './layers';
-import { getWMTSLayer, WMSLayerName } from './layers/backgroundWMS';
+import {
+  BackgroundLayerName,
+  useBackgoundLayers,
+} from './layers/backgroundLayers';
 import {
   DEFAULT_BACKGROUND_LAYER,
   loadableWMTS,
-  WMTSLayerName,
-  WMTSProviderId,
 } from './layers/backgroundWMTSProviders';
 import { getMousePositionControl } from './mapControls';
 
@@ -74,20 +74,7 @@ const useMap = () => {
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
   const WMTSloadable = useAtomValue(loadableWMTS);
-
-  const getNibProviderKeyForProjections = (
-    projection: ProjectionIdentifier,
-  ) => {
-    if (WMTSloadable.state !== 'hasData') {
-      console.warn('WMTS data is not loaded yet');
-      return null;
-    }
-    const nibKeys = Array.from(WMTSloadable.data.keys()).filter((key) => {
-      const provider = WMTSloadable.data.get(key);
-      return provider && provider.has(projection);
-    });
-    return nibKeys.length > 0 ? (nibKeys[0] as WMTSProviderId) : null;
-  };
+  const { backgroundLayerState, getBackgroundLayer } = useBackgoundLayers();
 
   const getMapViewCenter = () => {
     const view = map.getView();
@@ -102,60 +89,25 @@ const useMapSettings = () => {
     return getMapProjection().getCode() as ProjectionIdentifier;
   };
 
-  const setBackgroundWMTSLayer = (
-    WTMSProvider: WMTSProviderId,
-    layerName: WMTSLayerName,
-  ) => {
-    if (WMTSloadable.state !== 'hasData') {
-      console.warn('WMTS data is not loaded yet');
+  const setBackgroundLayer = (backgroundLayerName: BackgroundLayerName) => {
+    if (backgroundLayerState !== 'hasData') {
+      console.warn('Background layers are not loaded yet');
       return;
     }
-    const currentProjectionCode = map
-      .getView()
-      .getProjection()
-      .getCode() as ProjectionIdentifier;
 
-    const layerToAdd = WMTSloadable.data
-      .get(WTMSProvider)
-      ?.get(currentProjectionCode)
-      ?.get(layerName);
-
+    const layerToAdd = getBackgroundLayer(backgroundLayerName);
     if (layerToAdd == null) {
-      console.warn(`WMTS layer ${layerName} is not available`);
+      console.warn(`Background layer ${backgroundLayerName} is not available`);
       return;
     }
+
     const WTMSLayers = map.getLayers().getArray().filter(isMapLayerBackground);
     WTMSLayers.forEach((layer) => {
       map.removeLayer(layer);
     });
 
-    setUrlParameter('backgroundLayer', `${WTMSProvider}.${layerName}`);
-
-    map.addLayer(
-      new TileLayer({
-        source: layerToAdd,
-        properties: { id: `bg.${WTMSProvider}.${layerName}` },
-      }),
-    );
-  };
-
-  const setBackgroundWMSLayer = (layerName: WMSLayerName) => {
-    const projection = map.getView().getProjection().getCode();
-    const layerToAdd = getWMTSLayer(layerName, projection);
-    if (layerToAdd == null) {
-      console.warn(`WMS layer ${layerName} is not available`);
-      return;
-    }
-    const backgroundLayers = map
-      .getLayers()
-      .getArray()
-      .filter(isMapLayerBackground);
-    backgroundLayers.forEach((layer) => {
-      map.removeLayer(layer);
-    });
-
-    setUrlParameter('backgroundLayer', `${layerName}`);
     map.addLayer(layerToAdd);
+    setUrlParameter('backgroundLayer', backgroundLayerName);
   };
 
   const setProjection = (projectionId: ProjectionIdentifier) => {
@@ -170,59 +122,17 @@ const useMapSettings = () => {
     const oldCenter = oldView.getCenter();
     const oldProjection = oldView.getProjection();
 
-    //Find the old background and check if it is available, otherwise use topo
-    let providerId = null;
-    let layerName = null;
-    let layerId = null;
+    const backgroundLayerUrlParam: BackgroundLayerName =
+      (getUrlParameter('backgroundLayer') as BackgroundLayerName) ||
+      DEFAULT_BACKGROUND_LAYER;
 
-    const backgroundLayerUrlParam = getUrlParameter('backgroundLayer');
-    const [part1, part2] = (
-      backgroundLayerUrlParam || DEFAULT_BACKGROUND_LAYER
-    ).split('.');
-
-    let layerToAdd = null;
-    if (part2 == null) {
-      layerName = part1 as WMSLayerName;
-      layerToAdd = getWMTSLayer(layerName, projectionId);
-      if (!layerToAdd) {
-        console.warn(
-          `WMS layer ${layerName} is not available in projection ${projectionId}.`,
-        );
-        return;
-      }
-      layerId = layerName;
-    } else {
-      [providerId, layerName] = [part1, part2];
-      const layerSource = WMTSloadable.data
-        .get(providerId as WMTSProviderId)
-        ?.get(projectionId)
-        ?.get(layerName as WMTSLayerName);
-      if (!layerToAdd && providerId.startsWith('norgeibilder_')) {
-        const nibKey = getNibProviderKeyForProjections(projectionId);
-        if (nibKey) {
-          layerToAdd = WMTSloadable.data
-            .get(nibKey as WMTSProviderId)
-            ?.get(projectionId)
-            ?.entries()
-            .next().value?.[1];
-        }
-      }
-
-      layerId = `${providerId}.${layerName}`;
-      layerToAdd = new TileLayer({
-        source: layerSource!,
-        properties: { id: `bg.${layerId}}` },
-      });
-
-      if (!layerToAdd) {
-        console.warn(
-          `WMTS layer ${layerName} for provider ${providerId} is not available in projection ${projectionId} and no fallback was found.`,
-        );
-        return;
-      }
-    }
-    if (!layerToAdd) {
-      console.error('No layer to add found');
+    const backgroundLayer = getBackgroundLayer(
+      backgroundLayerUrlParam as BackgroundLayerName,
+    );
+    if (!backgroundLayer) {
+      console.warn(
+        `Background layer ${backgroundLayerUrlParam} is not available`,
+      );
       return;
     }
 
@@ -233,14 +143,6 @@ const useMapSettings = () => {
       // Transform center to new projection
       newCenter = transform(oldCenter, oldProjection, projection);
     }
-    const currentBackgoundLayers = map
-      .getLayers()
-      .getArray()
-      .filter((l) => isMapLayerBackground(l));
-
-    currentBackgoundLayers.forEach((layer) => {
-      map.removeLayer(layer);
-    });
 
     let newZoom = oldView.getZoom() || DEFAULT_ZOOM_LEVEL;
     if (
@@ -274,7 +176,7 @@ const useMapSettings = () => {
     });
 
     map.setView(newView);
-    map.addLayer(layerToAdd);
+    setBackgroundLayer(backgroundLayerUrlParam);
 
     const mousePositionInteraction = map
       .getControls()
@@ -285,7 +187,6 @@ const useMapSettings = () => {
     map.removeControl(mousePositionInteraction);
     map.addControl(getMousePositionControl(projectionId));
     setUrlParameter('projection', projectionId);
-    setUrlParameter('backgroundLayer', layerId);
   };
 
   const setMapFullScreen = (shouldBeFullscreen: boolean) => {
@@ -382,8 +283,7 @@ const useMapSettings = () => {
     setMapFullScreen,
     setMapLocation,
     setProjection,
-    setBackgroundWMTSLayer,
-    setBackgroundWMSLayer,
+    setBackgroundLayer,
   };
 };
 
