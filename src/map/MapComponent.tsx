@@ -8,18 +8,13 @@ import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { getUrlParameter } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
-import {
-  DEFAULT_BACKGROUND_LAYER,
-  loadableWMTS,
-  WMTSLayerName,
-  WMTSProviderId,
-} from './layers/backgroundProviders.ts';
+import { BackgroundLayerName } from './layers/backgroundLayers.ts';
+import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import { MapOverlay } from './MapOverlay.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const WMTSloadable = useAtomValue(loadableWMTS);
   const { setBackgroundLayer } = useMapSettings();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
@@ -38,9 +33,6 @@ export const MapComponent = () => {
   }, [setTargetElement, mapRef]);
 
   useEffect(() => {
-    if (WMTSloadable.state !== 'hasData') {
-      return;
-    }
     if (!map) {
       return;
     }
@@ -52,20 +44,11 @@ export const MapComponent = () => {
     if (hasBackgroundLayer) {
       return;
     }
-    const [providerId, layerName] = (
-      getUrlParameter('backgroundLayer') || DEFAULT_BACKGROUND_LAYER
-    ).split('.');
+    const layerNameFromUrl = (getUrlParameter('backgroundLayer') ||
+      DEFAULT_BACKGROUND_LAYER) as BackgroundLayerName;
 
-    const wmtsLayer = WMTSloadable.data;
-    if (wmtsLayer) {
-      setBackgroundLayer(
-        providerId as WMTSProviderId,
-        layerName as WMTSLayerName,
-      );
-    } else {
-      console.error(t('map.errorMessage'));
-    }
-  }, [setBackgroundLayer, t, WMTSloadable, map]);
+    setBackgroundLayer(layerNameFromUrl);
+  }, [setBackgroundLayer, map]);
 
   useEffect(() => {
     const asyncEffect = async () => {

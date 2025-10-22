@@ -4,11 +4,12 @@ import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import { AvailableProjections, ProjectionIdentifier } from '../atoms';
 
-export const DEFAULT_BACKGROUND_LAYER = 'kartverketCache.topo';
+export const DEFAULT_BACKGROUND_LAYER = 'topo';
 
 export type WMTSLayerName =
   | 'topo'
   | 'topograatone'
+  | 'toporaster'
   | 'sjokartraster'
   | 'topoProd'
   | 'Nibcache_web_mercator_v2'
@@ -18,7 +19,6 @@ export type WMTSLayerName =
 
 export type WMTSProviderId =
   | 'kartverketCache'
-  | 'kartverketATKV3dev'
   | 'norgeibilder_webmercator'
   | 'norgeibilder_utm32'
   | 'norgeibilder_utm33'
@@ -40,14 +40,7 @@ const providers: WMTSProviders = {
     endpoints: {
       getCapabilities: '/v1/service?Request=GetCapabilities&Service=WMTS',
     },
-    layers: ['topo', 'topograatone', 'sjokartraster'],
-  },
-  kartverketATKV3dev: {
-    baseUrl: 'https://cache.atkv3-dev.kartverket.cloud',
-    endpoints: {
-      getCapabilities: '/v1/service?Request=GetCapabilities&Service=WMTS',
-    },
-    layers: ['topo'],
+    layers: ['topo', 'topograatone', 'toporaster', 'sjokartraster'],
   },
   norgeibilder_webmercator: {
     baseUrl: 'https://opencache.statkart.no',

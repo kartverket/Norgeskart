@@ -4,8 +4,8 @@ import VectorSource from 'ol/source/Vector';
 
 type LayerFunction = () => BaseLayer;
 
-export const isMapLayerBackground = (layer: BaseLayer) => {
-  return layer.get('id')?.startsWith('bg.');
+export const isMapLayerBackground = (layer: BaseLayer): boolean => {
+  return layer.get('id')?.startsWith('bg.') === true;
 };
 
 export type MapLayer = {

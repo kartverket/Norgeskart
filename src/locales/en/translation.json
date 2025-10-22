@@ -92,11 +92,13 @@
           "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
           "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.Nibcache_web_mercator_v2)",
           "Nibcache_web_mercator_v2": "Aerial photos",
-          "sjokartraster": "Oceanic",
+          "oceanicelectronic": "Electronic seamap",
+          "sjokartraster": "Oceanic paper map",
           "topo": "Topographic map",
           "topo_2025": "Topo 2025",
           "topograatone": "Topografic, grayscale",
-          "topoProd": "Topographic"
+          "topoProd": "Topographic",
+          "toporaster": "Paper map"
         },
         "projection": {
           "label": "Chose map projection",
