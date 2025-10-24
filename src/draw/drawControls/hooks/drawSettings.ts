@@ -41,8 +41,8 @@ import { useMapInteractions } from './mapInterations';
 import { useMapLayers } from './mapLayers';
 import { useVerticalMove } from './verticalMove';
 
+export const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
-const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
 export type FeatureMoveDetail = {
