@@ -129,9 +129,18 @@ const handleModifyEnd = (e: BaseEvent | Event) => {
   }
 };
 
+const handleFeatureSelectDone = (f: Feature) => {
+  handleFeatureSetZIndex(f);
+  const featureStyle = f.getStyle();
+  if (featureStyle instanceof Style) {
+    removeSelectedOutlineToStyle(featureStyle);
+  }
+};
+
 export {
-  handleFeatureSetZIndex,
+  handleFeatureSelectDone,
   handleModifyEnd,
   handleModifyStart,
   handleSelect,
+  removeSelectedOutlineToStyle,
 };

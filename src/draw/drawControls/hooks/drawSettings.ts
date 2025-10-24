@@ -32,7 +32,7 @@ import {
   getMeasurementText,
 } from '../drawUtils';
 import {
-  handleFeatureSetZIndex,
+  handleFeatureSelectDone,
   handleModifyEnd,
   handleModifyStart,
   handleSelect,
@@ -89,7 +89,7 @@ const useDrawSettings = () => {
       if (selectInteraction) {
         const features = selectInteraction.getFeatures();
         map.removeInteraction(selectInteraction);
-        features.forEach(handleFeatureSetZIndex);
+        features.forEach(handleFeatureSelectDone);
       }
       if (translateInteraction) {
         map.removeInteraction(translateInteraction);
@@ -105,7 +105,7 @@ const useDrawSettings = () => {
     if (select) {
       const features = select.getFeatures();
       map.removeInteraction(select);
-      features.forEach(handleFeatureSetZIndex);
+      features.forEach(handleFeatureSelectDone);
     }
     if (translate) {
       map.removeInteraction(translate);
