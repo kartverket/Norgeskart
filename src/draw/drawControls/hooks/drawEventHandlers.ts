@@ -7,6 +7,7 @@ import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../../map/atoms';
+import { enableFeatureMeasurmentOverlay } from '../drawUtils';
 import { FeatureMoveDetail, MEASUREMNT_OVERLAY_PREFIX } from './drawSettings';
 
 export type StyleChangeDetail = {
@@ -120,7 +121,6 @@ const handleModifyStart = (e: BaseEvent | Event) => {
         }
       }
       f.set('geometryPreMove', preGeo);
-      // Fjern overlay som viser mål
     });
   }
 };
@@ -135,9 +135,9 @@ const handleModifyEnd = (e: BaseEvent | Event) => {
         geometryBeforeMove: geometryBeforeMove as Geometry,
         geometryAfterMove: geometryAfterMove as Geometry,
       } as FeatureMoveDetail;
-
-      // Legg på overlay igjen
     });
+    e.features.getArray().forEach(enableFeatureMeasurmentOverlay);
+
     const event = new CustomEvent('featureMoved', { detail: moveDetails });
     document.dispatchEvent(event);
   }

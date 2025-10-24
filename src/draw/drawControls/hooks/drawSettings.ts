@@ -28,6 +28,7 @@ import {
 } from '../../../settings/draw/atoms';
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
 import {
+  enableFeatureMeasurmentOverlay,
   getGeometryPositionForOverlay,
   getMeasurementText,
 } from '../drawUtils';
@@ -42,8 +43,9 @@ import { useMapLayers } from './mapLayers';
 import { useVerticalMove } from './verticalMove';
 
 export const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
-const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
-const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
+export const INTERACTIVE_MEASUREMNT_OVERLAY_ID =
+  'interactive-measurement-tooltip';
+export const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
 export type FeatureMoveDetail = {
   featureId: string;
@@ -469,19 +471,7 @@ const useDrawSettings = () => {
       return;
     }
     const drawnFeatures = source.getFeatures();
-    drawnFeatures.forEach((feature) => {
-      const geometry = feature.getGeometry();
-      if (!geometry) {
-        return;
-      }
-      const measurementText = getMeasurementText(
-        geometry,
-        mapProjection,
-        distanceUnit,
-      );
-
-      addFeatureMeasurementOverlay(feature, measurementText);
-    });
+    drawnFeatures.forEach(enableFeatureMeasurmentOverlay);
   };
 
   const getMeasurementOverlays = () => {

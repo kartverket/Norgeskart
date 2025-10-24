@@ -1,7 +1,18 @@
+import { getDefaultStore } from 'jotai';
+import { Feature, Overlay } from 'ol';
 import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
 import { getArea, getLength } from 'ol/sphere';
-import { DistanceUnit } from '../../settings/draw/atoms';
+import { mapAtom } from '../../map/atoms';
+import {
+  DistanceUnit,
+  distanceUnitAtom,
+  showMeasurementsAtom,
+} from '../../settings/draw/atoms';
 import { formatArea, formatDistance } from '../../shared/utils/stringUtils';
+import {
+  MEASUREMNT_ELEMENT_PREFIX,
+  MEASUREMNT_OVERLAY_PREFIX,
+} from './hooks/drawSettings';
 
 const getMeasurementText = (
   geometry: Geometry,
@@ -38,4 +49,57 @@ const getGeometryPositionForOverlay = (geometry: Geometry) => {
   return null;
 };
 
-export { getGeometryPositionForOverlay, getMeasurementText };
+const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const unit = store.get(distanceUnitAtom);
+  const shouldShow = store.get(showMeasurementsAtom);
+  if (!shouldShow) {
+    return;
+  }
+
+  const featId = feature.getId();
+  if (!featId) {
+    return;
+  }
+
+  const existingOverlay = map.getOverlayById(
+    MEASUREMNT_OVERLAY_PREFIX + featId,
+  );
+  if (existingOverlay) {
+    map.removeOverlay(existingOverlay);
+  }
+
+  const geometry = feature.getGeometry();
+  if (!geometry) {
+    return;
+  }
+
+  const projection = map.getView().getProjection().getCode();
+  const measurementText = getMeasurementText(geometry, projection, unit);
+
+  const overlayPosition = getGeometryPositionForOverlay(geometry);
+  if (!overlayPosition) {
+    return;
+  }
+  const elm = document.createElement('div');
+  elm.id = MEASUREMNT_ELEMENT_PREFIX + featId;
+  elm.classList.add('ol-tooltip', 'ol-tooltip-measure', 'ol-tooltip-static');
+  elm.innerHTML = measurementText;
+
+  const toolTip = new Overlay({
+    element: elm,
+    offset: [0, -15],
+    positioning: 'bottom-center',
+    id: MEASUREMNT_OVERLAY_PREFIX + featId,
+  });
+
+  toolTip.setPosition(overlayPosition);
+  map.addOverlay(toolTip);
+};
+
+export {
+  enableFeatureMeasurmentOverlay,
+  getGeometryPositionForOverlay,
+  getMeasurementText,
+};
