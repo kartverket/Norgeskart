@@ -10,32 +10,36 @@ export const formatDistance = (
   switch (unit) {
     case 'NM': {
       const distanceInNauticalMiles = distanceInMeters / 1852;
-      return `${distanceInNauticalMiles.toFixed(2)} NM`;
+      return `${formatNumberWithThousandSeparators(distanceInNauticalMiles)} NM`;
     }
     case undefined: // Default to meters if no unit is specified
     case 'm': {
       if (distanceInMeters < 1000) {
-        return `${distanceInMeters.toFixed(2)} m`;
+        return `${formatNumberWithThousandSeparators(distanceInMeters)} m`;
       } else {
-        return `${(distanceInMeters / 1000).toFixed(2)} km`;
+        return `${formatNumberWithThousandSeparators(distanceInMeters / 1000)} km`;
       }
     }
   }
+};
+
+const formatNumberWithThousandSeparators = (num: number) => {
+  return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
 
 export const formatArea = (areaInSquareMeters: number, unit?: DistanceUnit) => {
   switch (unit) {
     case 'NM': {
       const areaInSquareNauticalMiles = areaInSquareMeters / (1852 * 1852);
-      return `${areaInSquareNauticalMiles.toFixed(2)} NM²`;
+      return `${formatNumberWithThousandSeparators(areaInSquareNauticalMiles)} NM²`;
     }
 
     case undefined: // Default to square meters if no unit is specified
     case 'm': {
       if (areaInSquareMeters < 10000) {
-        return `${areaInSquareMeters.toFixed(2)} m²`;
+        return `${formatNumberWithThousandSeparators(areaInSquareMeters)} m²`;
       } else {
-        return `${(areaInSquareMeters / 1_000_000).toFixed(3)} km²`;
+        return `${formatNumberWithThousandSeparators(areaInSquareMeters / 1_000_000)} km²`;
       }
     }
   }
