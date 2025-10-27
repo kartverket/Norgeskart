@@ -11,7 +11,7 @@ import { mapAtom } from './atoms.ts';
 import { BackgroundLayerName } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
-import { MapOverlay } from './MapOverlay.tsx';
+import { MapOverlay } from './overlay/MapOverlay.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
