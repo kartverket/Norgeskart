@@ -17,6 +17,8 @@
           "circle": "Circle",
           "edit": "Edit and move",
           "linestring": "Line segments",
+          "movedown": "Move down",
+          "moveup": "Move up",
           "point": "Points",
           "polygon": "Polygon",
           "text": "Text"

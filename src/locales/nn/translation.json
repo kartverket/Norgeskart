@@ -17,6 +17,8 @@
           "circle": "Sirkel",
           "edit": "Endre og flytt",
           "linestring": "Linjesegmet",
+          "movedown": "Flytt ned",
+          "moveup": "Flytt ned",
           "point": "Punkt",
           "polygon": "Polygon",
           "text": "Tekst"
