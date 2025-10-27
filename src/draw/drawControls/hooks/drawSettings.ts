@@ -172,7 +172,7 @@ const useDrawSettings = () => {
   const setDistanceUnit = (unit: DistanceUnit) => {
     if (showMeasurements) {
       setDisplayInteractiveMeasurement(true, unit);
-      setDisplayStaticMeasurement(true, unit);
+      setDisplayStaticMeasurement(true);
     }
     setDistanceUnitAtomValue(unit);
   };
@@ -456,10 +456,7 @@ const useDrawSettings = () => {
     }
   };
 
-  const setDisplayStaticMeasurement = (
-    enable: boolean,
-    distanceUnit: DistanceUnit,
-  ) => {
+  const setDisplayStaticMeasurement = (enable: boolean) => {
     removeFeatureMeasurementOverlays();
     if (!enable) {
       //To ensure no overlays are duplicated when toggling units between m and NM
@@ -525,7 +522,7 @@ const useDrawSettings = () => {
   const setShowMeasurements = (enable: boolean) => {
     setShowMeasurementsAtom(enable);
     setDisplayInteractiveMeasurement(enable, distanceUnit);
-    setDisplayStaticMeasurement(enable, distanceUnit);
+    setDisplayStaticMeasurement(enable);
   };
 
   const undoLast = () => {

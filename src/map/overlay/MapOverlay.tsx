@@ -27,7 +27,7 @@ export const MapOverlay = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const compassFileName = useCompassFileName();
   const isMobile = useIsMobileScreen();
-  const { setDrawEnabled } = useDrawSettings();
+  const { drawEnabled, setDrawEnabled } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useState<MapTool>(null);
 
   const compassOrientation =
@@ -65,11 +65,16 @@ export const MapOverlay = () => {
     };
   }, []);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    if (currentMapTool !== 'draw') {
+    if (currentMapTool !== 'draw' && drawEnabled) {
       setDrawEnabled(false);
     }
+    if (currentMapTool === 'draw' && !drawEnabled) {
+      setDrawEnabled(true);
+    }
   }, [currentMapTool, setDrawEnabled]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <>

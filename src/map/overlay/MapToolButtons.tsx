@@ -61,9 +61,7 @@ export const MapToolButtons = ({
 
       <MapButton
         onClick={() => {
-          currentMapTool === 'draw'
-            ? setCurrentMapTool(null)
-            : setCurrentMapTool('draw');
+          setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={currentMapTool == 'draw' ? 'close' : 'edit'}
         tooltip={
@@ -72,9 +70,7 @@ export const MapToolButtons = ({
       />
       <MapButton
         onClick={() => {
-          currentMapTool === 'layers'
-            ? setCurrentMapTool(null)
-            : setCurrentMapTool('layers');
+          setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
         }}
         icon={currentMapTool == 'layers' ? 'close' : 'layers'}
         tooltip={
