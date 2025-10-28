@@ -1,4 +1,3 @@
-import { getDefaultStore } from 'jotai';
 import { Feature } from 'ol';
 import BaseEvent from 'ol/events/Event';
 import { Geometry } from 'ol/geom';
@@ -6,13 +5,13 @@ import { ModifyEvent } from 'ol/interaction/Modify';
 import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
-import { mapAtom } from '../../../map/atoms';
 import {
   addInteractiveMesurementOverlayToFeature,
   enableFeatureMeasurmentOverlay,
+  removeFeatureMeasurementOverlay,
   removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
-import { FeatureMoveDetail, MEASUREMNT_OVERLAY_PREFIX } from './drawSettings';
+import { FeatureMoveDetail } from './drawSettings';
 
 export type StyleChangeDetail = {
   featureId: string | number;
@@ -115,15 +114,7 @@ const handleModifyStart = (e: BaseEvent | Event) => {
       if (preGeo == null) {
         return;
       }
-      const featId = f.getId();
-      if (featId != null) {
-        const store = getDefaultStore();
-        const map = store.get(mapAtom);
-        const overlay = map.getOverlayById(MEASUREMNT_OVERLAY_PREFIX + featId);
-        if (overlay) {
-          map.removeOverlay(overlay);
-        }
-      }
+      removeFeatureMeasurementOverlay(f);
       f.set('geometryPreMove', preGeo);
       addInteractiveMesurementOverlayToFeature(f);
     });
