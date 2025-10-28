@@ -12,7 +12,8 @@ import {
   SwitchRoot,
 } from '@kvib/react';
 import { t } from 'i18next';
-import { DistanceUnit } from '../settings/draw/atoms';
+import { useAtom } from 'jotai';
+import { DistanceUnit, distanceUnitAtom } from '../settings/draw/atoms';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
@@ -21,12 +22,9 @@ const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
 ];
 
 export const MeasurementControls = () => {
-  const {
-    setDistanceUnit,
-    distanceUnit,
-    showMeasurements,
-    setShowMeasurements,
-  } = useDrawSettings();
+  const [distanceUnit, setDistanceUnit] = useAtom(distanceUnitAtom);
+
+  const { showMeasurements, setShowMeasurements } = useDrawSettings();
   return (
     <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
       <SwitchRoot

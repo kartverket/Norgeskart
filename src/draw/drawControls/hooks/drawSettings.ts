@@ -16,8 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../../../api/nkApiClient';
 import { mapAtom, ProjectionIdentifier } from '../../../map/atoms';
 import {
-  DistanceUnit,
-  distanceUnitAtom,
   drawEnabledAtom,
   drawStyleReadAtom,
   drawTypeStateAtom,
@@ -67,7 +65,6 @@ const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
   const [drawType, setDrawTypeState] = useAtom(drawTypeStateAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
-  const [distanceUnit, setDistanceUnitAtomValue] = useAtom(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
   const { getHighestZIndex } = useVerticalMove();
@@ -169,13 +166,6 @@ const useDrawSettings = () => {
 
     setShowMeasurements(showMeasurements);
     setDrawTypeState(type);
-  };
-
-  const setDistanceUnit = (unit: DistanceUnit) => {
-    if (showMeasurements) {
-      setDisplayStaticMeasurement(true);
-    }
-    setDistanceUnitAtomValue(unit);
   };
 
   const getDrawnFeatures = () => {
@@ -495,13 +485,11 @@ const useDrawSettings = () => {
   return {
     drawEnabled,
     drawType,
-    distanceUnit,
     showMeasurements,
     removeDrawnFeatureById,
     addFeature,
     setDrawLayerFeatures,
     setDrawEnabled,
-    setDistanceUnit,
     setDrawType,
     setShowMeasurements,
     undoLast,
