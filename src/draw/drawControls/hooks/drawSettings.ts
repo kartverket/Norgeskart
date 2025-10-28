@@ -29,6 +29,7 @@ import {
   addInteractiveMesurementOverlayToFeature,
   enableFeatureMeasurmentOverlay,
   removeFeaturelessInteractiveMeasurementOverlay,
+  removeFeatureMeasurementOverlay,
   removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
 import {
@@ -286,6 +287,7 @@ const useDrawSettings = () => {
     }
     const feature = drawSource.getFeatureById(featureId);
     if (feature) {
+      removeFeatureMeasurementOverlay(feature);
       drawSource.removeFeature(feature);
     }
   };
@@ -298,6 +300,9 @@ const useDrawSettings = () => {
       return;
     }
     drawSource.addFeature(feature);
+    if (showMeasurements) {
+      enableFeatureMeasurmentOverlay(feature);
+    }
   };
 
   const setDrawLayerFeatures = (
@@ -367,7 +372,6 @@ const useDrawSettings = () => {
       return;
     }
     const drawStartMesurmentListener = (event: BaseEvent | Event) => {
-      console.log('draw start measurement listener');
       const eventFeature = (event as unknown as DrawEvent).feature;
       addInteractiveMesurementOverlayToFeature(eventFeature);
     };
@@ -390,7 +394,6 @@ const useDrawSettings = () => {
   const setDisplayStaticMeasurement = (enable: boolean) => {
     removeFeatureMeasurementOverlays();
     if (!enable) {
-      //To ensure no overlays are duplicated when toggling units between m and NM
       return;
     }
     const drawLayer = getDrawLayer();

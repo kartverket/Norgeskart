@@ -100,6 +100,24 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
   map.addOverlay(toolTip);
 };
 
+const removeFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const featId = feature.getId();
+  if (!featId) {
+    console.warn('feature has no id');
+    return;
+  }
+  const overlay = map.getOverlayById(MEASUREMNT_OVERLAY_PREFIX + featId);
+  if (overlay) {
+    map.removeOverlay(overlay);
+  }
+  const elm = document.getElementById(MEASUREMNT_ELEMENT_PREFIX + featId);
+  if (elm) {
+    elm.remove();
+  }
+};
+
 const addInteractiveMesurementOverlayToFeature = (
   feature: Feature<Geometry>,
 ) => {
@@ -181,5 +199,6 @@ export {
   getGeometryPositionForOverlay,
   getMeasurementText,
   removeFeaturelessInteractiveMeasurementOverlay,
+  removeFeatureMeasurementOverlay,
   removeInteractiveMesurementOverlayFromFeature,
 };
