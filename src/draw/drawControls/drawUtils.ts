@@ -10,6 +10,8 @@ import {
 } from '../../settings/draw/atoms';
 import { formatArea, formatDistance } from '../../shared/utils/stringUtils';
 import {
+  INTERACTIVE_MEASUREMNT_OVERLAY_ID,
+  INTERACTIVE_OVERLAY_PREFIX,
   MEASUREMNT_ELEMENT_PREFIX,
   MEASUREMNT_OVERLAY_PREFIX,
 } from './hooks/drawSettings';
@@ -98,8 +100,86 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
   map.addOverlay(toolTip);
 };
 
+const addInteractiveMesurementOverlayToFeature = (
+  feature: Feature<Geometry>,
+) => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const distanceUnit = store.get(distanceUnitAtom);
+  const mapProjection = map.getView().getProjection().getCode();
+  const featureId = feature.getId();
+
+  const elmementAndOverlayId = featureId
+    ? INTERACTIVE_OVERLAY_PREFIX + featureId
+    : INTERACTIVE_MEASUREMNT_OVERLAY_ID;
+  const elm = document.createElement('div');
+  elm.id = elmementAndOverlayId;
+  elm.classList.add('ol-tooltip');
+  elm.classList.add('ol-tooltip-measure');
+  document.body.appendChild(elm);
+  const toolTip = new Overlay({
+    element: elm,
+    offset: [0, -15],
+    positioning: 'bottom-center',
+    id: elmementAndOverlayId,
+  });
+  map.addOverlay(toolTip);
+  feature.on('change', (geomEvent) => {
+    const geometry = geomEvent.target.getGeometry();
+    const geometryPosition = getGeometryPositionForOverlay(geometry);
+    if (geometryPosition == null) {
+      return;
+    }
+    const tooltipText = getMeasurementText(
+      geometry,
+      mapProjection,
+      distanceUnit,
+    );
+
+    elm.classList.remove('hidden');
+    toolTip.setPosition(geometryPosition);
+    elm.innerHTML = tooltipText;
+  });
+};
+
+const removeInteractiveMesurementOverlayFromFeature = (
+  feature: Feature<Geometry>,
+) => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const featureId = feature.getId();
+  if (featureId == null) {
+    console.warn('feature has no id');
+    return;
+  }
+  const elmementAndOverlayId = INTERACTIVE_OVERLAY_PREFIX + featureId;
+  const overlay = map.getOverlayById(elmementAndOverlayId);
+  if (overlay) {
+    map.removeOverlay(overlay);
+  }
+  const elm = document.getElementById(elmementAndOverlayId);
+  if (elm) {
+    elm.remove();
+  }
+};
+const removeFeaturelessInteractiveMeasurementOverlay = () => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const overlay = map.getOverlayById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
+  if (overlay) {
+    map.removeOverlay(overlay);
+  }
+  const elm = document.getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
+  if (elm) {
+    elm.remove();
+  }
+};
+
 export {
+  addInteractiveMesurementOverlayToFeature,
   enableFeatureMeasurmentOverlay,
   getGeometryPositionForOverlay,
   getMeasurementText,
+  removeFeaturelessInteractiveMeasurementOverlay,
+  removeInteractiveMesurementOverlayFromFeature,
 };

@@ -7,7 +7,11 @@ import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../../map/atoms';
-import { enableFeatureMeasurmentOverlay } from '../drawUtils';
+import {
+  addInteractiveMesurementOverlayToFeature,
+  enableFeatureMeasurmentOverlay,
+  removeInteractiveMesurementOverlayFromFeature,
+} from '../drawUtils';
 import { FeatureMoveDetail, MEASUREMNT_OVERLAY_PREFIX } from './drawSettings';
 
 export type StyleChangeDetail = {
@@ -121,6 +125,7 @@ const handleModifyStart = (e: BaseEvent | Event) => {
         }
       }
       f.set('geometryPreMove', preGeo);
+      addInteractiveMesurementOverlayToFeature(f);
     });
   }
 };
@@ -136,7 +141,10 @@ const handleModifyEnd = (e: BaseEvent | Event) => {
         geometryAfterMove: geometryAfterMove as Geometry,
       } as FeatureMoveDetail;
     });
-    e.features.getArray().forEach(enableFeatureMeasurmentOverlay);
+    e.features.getArray().forEach((f) => {
+      removeInteractiveMesurementOverlayFromFeature(f);
+      enableFeatureMeasurmentOverlay(f);
+    });
 
     const event = new CustomEvent('featureMoved', { detail: moveDetails });
     document.dispatchEvent(event);

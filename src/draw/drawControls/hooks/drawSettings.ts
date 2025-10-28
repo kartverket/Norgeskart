@@ -1,6 +1,6 @@
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
-import { Feature, Overlay } from 'ol';
+import { Feature } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
@@ -28,9 +28,10 @@ import {
 } from '../../../settings/draw/atoms';
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
 import {
+  addInteractiveMesurementOverlayToFeature,
   enableFeatureMeasurmentOverlay,
-  getGeometryPositionForOverlay,
-  getMeasurementText,
+  removeFeaturelessInteractiveMeasurementOverlay,
+  removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
 import {
   handleFeatureSelectDone,
@@ -366,73 +367,6 @@ const useDrawSettings = () => {
     });
     drawSource.clear();
     drawSource.addFeatures(featuresToAddWithStyle);
-  };
-
-  const addInteractiveMesurementOverlayToFeature = (
-    feature: Feature<Geometry>,
-  ) => {
-    const featureId = feature.getId();
-
-    const elmementAndOverlayId = featureId
-      ? INTERACTIVE_OVERLAY_PREFIX + featureId
-      : INTERACTIVE_MEASUREMNT_OVERLAY_ID;
-    const elm = document.createElement('div');
-    elm.id = elmementAndOverlayId;
-    elm.classList.add('ol-tooltip');
-    elm.classList.add('ol-tooltip-measure');
-    document.body.appendChild(elm);
-    const toolTip = new Overlay({
-      element: elm,
-      offset: [0, -15],
-      positioning: 'bottom-center',
-      id: elmementAndOverlayId,
-    });
-    map.addOverlay(toolTip);
-    feature.on('change', (geomEvent) => {
-      const geometry = geomEvent.target.getGeometry();
-      const geometryPosition = getGeometryPositionForOverlay(geometry);
-      if (geometryPosition == null) {
-        return;
-      }
-      const tooltipText = getMeasurementText(
-        geometry,
-        mapProjection,
-        distanceUnit,
-      );
-
-      elm.classList.remove('hidden');
-      toolTip.setPosition(geometryPosition);
-      elm.innerHTML = tooltipText;
-    });
-  };
-
-  const removeInteractiveMesurementOverlayFromFeature = (
-    feature: Feature<Geometry>,
-  ) => {
-    const featureId = feature.getId();
-    if (featureId == null) {
-      console.warn('feature has no id');
-      return;
-    }
-    const elmementAndOverlayId = INTERACTIVE_OVERLAY_PREFIX + featureId;
-    const overlay = map.getOverlayById(elmementAndOverlayId);
-    if (overlay) {
-      map.removeOverlay(overlay);
-    }
-    const elm = document.getElementById(elmementAndOverlayId);
-    if (elm) {
-      elm.remove();
-    }
-  };
-  const removeFeaturelessInteractiveMeasurementOverlay = () => {
-    const overlay = map.getOverlayById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
-    if (overlay) {
-      map.removeOverlay(overlay);
-    }
-    const elm = document.getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
-    if (elm) {
-      elm.remove();
-    }
   };
 
   const setDisplayInteractiveMeasurementForDrawInteraction = (
