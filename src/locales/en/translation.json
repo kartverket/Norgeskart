@@ -157,6 +157,8 @@
     "actions": {
       "download": "Download"
     },
+    "close": "Close",
+    "open": "Open",
     "units": {
       "meter": "Metre",
       "nauticalMile": "Nautical mile"
