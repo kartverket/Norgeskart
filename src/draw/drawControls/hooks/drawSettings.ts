@@ -1,6 +1,6 @@
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
-import { Feature, Overlay } from 'ol';
+import { Feature } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
@@ -16,8 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../../../api/nkApiClient';
 import { mapAtom, ProjectionIdentifier } from '../../../map/atoms';
 import {
-  DistanceUnit,
-  distanceUnitAtom,
   drawEnabledAtom,
   drawStyleReadAtom,
   drawTypeStateAtom,
@@ -28,11 +26,13 @@ import {
 } from '../../../settings/draw/atoms';
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
 import {
-  getGeometryPositionForOverlay,
-  getMeasurementText,
+  addInteractiveMesurementOverlayToFeature,
+  enableFeatureMeasurmentOverlay,
+  removeFeaturelessInteractiveMeasurementOverlay,
+  removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
 import {
-  handleFeatureSetZIndex,
+  handleFeatureSelectDone,
   handleModifyEnd,
   handleModifyStart,
   handleSelect,
@@ -41,9 +41,11 @@ import { useMapInteractions } from './mapInterations';
 import { useMapLayers } from './mapLayers';
 import { useVerticalMove } from './verticalMove';
 
-const INTERACTIVE_MEASUREMNT_OVERLAY_ID = 'interactive-measurement-tooltip';
-const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
-const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
+export const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
+export const INTERACTIVE_OVERLAY_PREFIX = 'interactive-overlay-';
+export const INTERACTIVE_MEASUREMNT_OVERLAY_ID =
+  'interactive-measurement-tooltip';
+export const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
 export type FeatureMoveDetail = {
   featureId: string;
@@ -63,7 +65,6 @@ const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
   const [drawType, setDrawTypeState] = useAtom(drawTypeStateAtom);
   const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
-  const [distanceUnit, setDistanceUnitAtomValue] = useAtom(distanceUnitAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
   const { getHighestZIndex } = useVerticalMove();
@@ -89,7 +90,7 @@ const useDrawSettings = () => {
       if (selectInteraction) {
         const features = selectInteraction.getFeatures();
         map.removeInteraction(selectInteraction);
-        features.forEach(handleFeatureSetZIndex);
+        features.forEach(handleFeatureSelectDone);
       }
       if (translateInteraction) {
         map.removeInteraction(translateInteraction);
@@ -105,7 +106,7 @@ const useDrawSettings = () => {
     if (select) {
       const features = select.getFeatures();
       map.removeInteraction(select);
-      features.forEach(handleFeatureSetZIndex);
+      features.forEach(handleFeatureSelectDone);
     }
     if (translate) {
       map.removeInteraction(translate);
@@ -165,14 +166,6 @@ const useDrawSettings = () => {
 
     setShowMeasurements(showMeasurements);
     setDrawTypeState(type);
-  };
-
-  const setDistanceUnit = (unit: DistanceUnit) => {
-    if (showMeasurements) {
-      setDisplayInteractiveMeasurement(true, unit);
-      setDisplayStaticMeasurement(true, unit);
-    }
-    setDistanceUnitAtomValue(unit);
   };
 
   const getDrawnFeatures = () => {
@@ -366,98 +359,35 @@ const useDrawSettings = () => {
     drawSource.addFeatures(featuresToAddWithStyle);
   };
 
-  const setDisplayInteractiveMeasurement = (
+  const setDisplayInteractiveMeasurementForDrawInteraction = (
     enable: boolean,
-    distanceUnit: DistanceUnit,
   ) => {
     const drawInteraction = getDrawInteraction();
     if (!drawInteraction) {
       return;
     }
-    const handleMouseOut = () => {
-      document
-        .getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID)
-        ?.classList.add('hidden');
+    const drawStartMesurmentListener = (event: BaseEvent | Event) => {
+      console.log('draw start measurement listener');
+      const eventFeature = (event as unknown as DrawEvent).feature;
+      addInteractiveMesurementOverlayToFeature(eventFeature);
     };
-    const handleMouseIn = () => {
-      document
-        .getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID)
-        ?.classList.remove('hidden');
+    const drawEndMesurmentListener = (event: BaseEvent | Event) => {
+      const eventFeature = (event as unknown as DrawEvent).feature;
+      removeInteractiveMesurementOverlayFromFeature(eventFeature);
+      enableFeatureMeasurmentOverlay(eventFeature);
+      removeFeaturelessInteractiveMeasurementOverlay();
     };
 
     if (enable) {
-      const elm = document.createElement('div');
-      elm.id = INTERACTIVE_MEASUREMNT_OVERLAY_ID;
-      elm.classList.add('hidden');
-      elm.classList.add('ol-tooltip');
-      elm.classList.add('ol-tooltip-measure');
-
-      const toolTip = new Overlay({
-        element: elm,
-        offset: [0, -15],
-        positioning: 'bottom-center',
-        id: INTERACTIVE_MEASUREMNT_OVERLAY_ID,
-      });
-      map.addOverlay(toolTip);
-      map.getViewport().addEventListener('mouseout', handleMouseOut);
-      map.getViewport().addEventListener('mouseover', handleMouseIn);
-      drawInteraction.on('drawstart', (event: DrawEvent) => {
-        const feature = event.feature;
-        feature.getGeometry()?.on('change', (geomEvent) => {
-          const geometry = geomEvent.target;
-          const geometryPosition = getGeometryPositionForOverlay(geometry);
-          const tooltipText = getMeasurementText(
-            geometry,
-            mapProjection,
-            distanceUnit,
-          );
-
-          if (geometryPosition && tooltipText) {
-            toolTip.setPosition(geometryPosition);
-            elm.innerHTML = tooltipText;
-            elm.classList.remove('hidden');
-          }
-        });
-      });
-
-      drawInteraction.on('drawend', (event: DrawEvent) => {
-        const feature = event.feature;
-        feature
-          .getGeometry()
-          ?.getListeners('change')
-          ?.forEach((listener) => {
-            feature.getGeometry()?.removeEventListener('change', listener);
-          });
-        toolTip.setPosition(undefined);
-        elm.classList.add('hidden');
-        addFeatureMeasurementOverlay(
-          feature,
-          getMeasurementText(
-            feature.getGeometry()!,
-            mapProjection,
-            distanceUnit,
-          ),
-        );
-      });
+      drawInteraction.on('drawstart', drawStartMesurmentListener);
+      drawInteraction.on('drawend', drawEndMesurmentListener);
     } else {
-      map.getViewport().removeEventListener('mouseout', handleMouseOut);
-      drawInteraction.getListeners('drawstart')?.forEach((listener) => {
-        drawInteraction.removeEventListener('drawstart', listener);
-      });
-      drawInteraction.getListeners('drawend')?.forEach((listener) => {
-        drawInteraction.removeEventListener('drawend', listener);
-      });
-      const overlay = map.getOverlayById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
-      if (overlay) {
-        map.removeOverlay(overlay);
-      }
+      drawInteraction.un('drawstart', drawStartMesurmentListener);
+      drawInteraction.un('drawend', drawEndMesurmentListener);
     }
   };
 
-  const setDisplayStaticMeasurement = (
-    enable: boolean,
-    distanceUnit: DistanceUnit,
-  ) => {
+  const setDisplayStaticMeasurement = (enable: boolean) => {
     removeFeatureMeasurementOverlays();
     if (!enable) {
       //To ensure no overlays are duplicated when toggling units between m and NM
@@ -469,19 +399,7 @@ const useDrawSettings = () => {
       return;
     }
     const drawnFeatures = source.getFeatures();
-    drawnFeatures.forEach((feature) => {
-      const geometry = feature.getGeometry();
-      if (!geometry) {
-        return;
-      }
-      const measurementText = getMeasurementText(
-        geometry,
-        mapProjection,
-        distanceUnit,
-      );
-
-      addFeatureMeasurementOverlay(feature, measurementText);
-    });
+    drawnFeatures.forEach(enableFeatureMeasurmentOverlay);
   };
 
   const getMeasurementOverlays = () => {
@@ -491,37 +409,11 @@ const useDrawSettings = () => {
       if (!overlayId) {
         return false;
       }
-      return overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX);
+      return (
+        overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX) ||
+        overlayId.startsWith(INTERACTIVE_OVERLAY_PREFIX)
+      );
     });
-  };
-
-  const addFeatureMeasurementOverlay = (
-    feature: Feature<Geometry>,
-    text: string,
-  ) => {
-    const featId = feature.getId();
-    const geometry = feature.getGeometry();
-    if (!geometry) {
-      return;
-    }
-    const overlayPosition = getGeometryPositionForOverlay(geometry);
-    if (!overlayPosition) {
-      return;
-    }
-    const elm = document.createElement('div');
-    elm.id = MEASUREMNT_ELEMENT_PREFIX + featId;
-    elm.classList.add('ol-tooltip', 'ol-tooltip-measure', 'ol-tooltip-static');
-    elm.innerHTML = text;
-
-    const toolTip = new Overlay({
-      element: elm,
-      offset: [0, -15],
-      positioning: 'bottom-center',
-      id: MEASUREMNT_OVERLAY_PREFIX + featId,
-    });
-
-    toolTip.setPosition(overlayPosition);
-    map.addOverlay(toolTip);
   };
 
   const removeFeatureMeasurementOverlays = () => {
@@ -534,8 +426,8 @@ const useDrawSettings = () => {
 
   const setShowMeasurements = (enable: boolean) => {
     setShowMeasurementsAtom(enable);
-    setDisplayInteractiveMeasurement(enable, distanceUnit);
-    setDisplayStaticMeasurement(enable, distanceUnit);
+    setDisplayStaticMeasurement(enable);
+    setDisplayInteractiveMeasurementForDrawInteraction(enable);
   };
 
   const undoLast = () => {
@@ -593,13 +485,11 @@ const useDrawSettings = () => {
   return {
     drawEnabled,
     drawType,
-    distanceUnit,
     showMeasurements,
     removeDrawnFeatureById,
     addFeature,
     setDrawLayerFeatures,
     setDrawEnabled,
-    setDistanceUnit,
     setDrawType,
     setShowMeasurements,
     undoLast,

@@ -1,5 +1,6 @@
-import { HStack, IconButton } from '@kvib/react';
+import { HStack, IconButton, Tooltip } from '@kvib/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DrawAction } from '../../settings/draw/drawActions/atoms';
 import { useDrawActionsState } from '../../settings/draw/drawActions/drawActionsHooks';
 import { StyleChangeDetail } from './hooks/drawEventHandlers';
@@ -10,6 +11,7 @@ export const EditControls = () => {
   const { moveSelectedUp, moveSelectedDown } = useVerticalMove();
   const { drawType } = useDrawSettings();
   const { addDrawAction } = useDrawActionsState();
+  const { t } = useTranslation();
 
   const featureMovedListener = (e: Event) => {
     if (e instanceof CustomEvent) {
@@ -54,20 +56,24 @@ export const EditControls = () => {
   }
   return (
     <HStack>
-      <IconButton
-        onClick={() => {
-          moveSelectedUp();
-        }}
-        icon={'move_up'}
-        variant="ghost"
-      />
-      <IconButton
-        onClick={() => {
-          moveSelectedDown();
-        }}
-        icon={'move_down'}
-        variant="ghost"
-      />
+      <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
+        <IconButton
+          onClick={() => {
+            moveSelectedUp();
+          }}
+          icon={'move_up'}
+          variant="ghost"
+        />
+      </Tooltip>
+      <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
+        <IconButton
+          onClick={() => {
+            moveSelectedDown();
+          }}
+          icon={'move_down'}
+          variant="ghost"
+        />
+      </Tooltip>
     </HStack>
   );
 };
