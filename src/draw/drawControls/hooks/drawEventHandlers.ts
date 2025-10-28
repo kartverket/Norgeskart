@@ -19,6 +19,71 @@ export type StyleChangeDetail = {
   newStyle: Style;
 };
 
+//Create a function to compare two styles
+const stylesAreEqual = (style1: Style, style2: Style): boolean => {
+  if (style1 === style2) {
+    return true;
+  }
+  // Compare stroke
+  const stroke1 = style1.getStroke();
+  const stroke2 = style2.getStroke();
+  if (stroke1 && stroke2) {
+    if (
+      stroke1.getColor() !== stroke2.getColor() ||
+      stroke1.getWidth() !== stroke2.getWidth()
+    ) {
+      return false;
+    }
+  } else if (stroke1 || stroke2) {
+    return false;
+  }
+
+  // Compare fill
+  const fill1 = style1.getFill();
+  const fill2 = style2.getFill();
+  if (fill1 && fill2) {
+    if (fill1.getColor() !== fill2.getColor()) {
+      return false;
+    }
+  } else if (fill1 || fill2) {
+    return false;
+  }
+
+  // Compare image
+  const image1 = style1.getImage();
+  const image2 = style2.getImage();
+  if (image1 && image2) {
+    if (image1 instanceof Circle && image2 instanceof Circle) {
+      if (
+        image1.getRadius() !== image2.getRadius() ||
+        image1.getFill()?.getColor() !== image2.getFill()?.getColor() ||
+        image1.getStroke()?.getColor() !== image2.getStroke()?.getColor() ||
+        image1.getStroke()?.getWidth() !== image2.getStroke()?.getWidth()
+      ) {
+        return false;
+      }
+    } else if (
+      image1 instanceof RegularShape &&
+      image2 instanceof RegularShape
+    ) {
+      if (
+        image1.getPoints() !== image2.getPoints() ||
+        image1.getRadius() !== image2.getRadius() ||
+        image1.getRadius2() !== image2.getRadius2() ||
+        image1.getAngle() !== image2.getAngle()
+      ) {
+        return false;
+      }
+    } else {
+      return false; // Different types of images
+    }
+  } else if (image1 || image2) {
+    return false;
+  }
+
+  return true;
+};
+
 //To signal which features are selected. Points are outlined, other things are given a dashed line
 const addSelectedOutlineToStyle = (style: Style) => {
   const newStroke = style.getStroke();
@@ -66,6 +131,7 @@ const handleSelect = (e: BaseEvent | Event) => {
 
 const handleUpdateStyle = (features: Feature<Geometry>[]) => {
   const featureStyleChangeList: StyleChangeDetail[] = [];
+  let anyStyleChanged = false;
   features.forEach((feature) => {
     const style = feature.getStyle();
     if (style && style instanceof Style) {
@@ -86,12 +152,16 @@ const handleUpdateStyle = (features: Feature<Geometry>[]) => {
         oldStyle: featureStylePreSelect,
         newStyle: style,
       });
+
+      if (!stylesAreEqual(style, featureStylePreSelect)) {
+        anyStyleChanged = true;
+      }
     }
 
     feature.set('stylePreSelect', undefined);
   });
 
-  if (featureStyleChangeList.length > 0) {
+  if (anyStyleChanged && featureStyleChangeList.length > 0) {
     const event = new CustomEvent('featureStyleChanged', {
       detail: featureStyleChangeList,
     });
