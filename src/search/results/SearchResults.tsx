@@ -108,6 +108,7 @@ export const SearchResults = ({
       value={accordionTabsOpen}
       backgroundColor="white"
       mt="5px"
+      borderRadius={10}
       overflowY="auto"
       height={
         hasResults ? (isMobileScreen ? '10vh' : 'calc(100vh - 130px)') : 'auto'

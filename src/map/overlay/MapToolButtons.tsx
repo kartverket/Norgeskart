@@ -1,7 +1,7 @@
 import {
+  HStack,
   IconButton,
   MaterialSymbol,
-  Stack,
   toaster,
   Tooltip,
 } from '@kvib/react';
@@ -44,7 +44,7 @@ export const MapToolButtons = ({
   };
 
   return (
-    <Stack align="flex-end">
+    <HStack align="flex-end">
       {document.fullscreenEnabled && (
         <MapButton
           onClick={() => setMapFullScreen(true)}
@@ -91,7 +91,7 @@ export const MapToolButtons = ({
         icon={'print'}
         tooltip={t('search.actions.print')}
       />
-    </Stack>
+    </HStack>
   );
 };
 
