@@ -43,6 +43,7 @@ import { useMapLayers } from './mapLayers';
 import { useVerticalMove } from './verticalMove';
 
 export const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
+export const INTERACTIVE_OVERLAY_PREFIX = 'interactive-overlay-';
 export const INTERACTIVE_MEASUREMNT_OVERLAY_ID =
   'interactive-measurement-tooltip';
 export const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
@@ -171,7 +172,6 @@ const useDrawSettings = () => {
 
   const setDistanceUnit = (unit: DistanceUnit) => {
     if (showMeasurements) {
-      setDisplayInteractiveMeasurement(true, unit);
       setDisplayStaticMeasurement(true);
     }
     setDistanceUnitAtomValue(unit);
@@ -368,91 +368,98 @@ const useDrawSettings = () => {
     drawSource.addFeatures(featuresToAddWithStyle);
   };
 
-  const setDisplayInteractiveMeasurement = (
+  const addInteractiveMesurementOverlayToFeature = (
+    feature: Feature<Geometry>,
+  ) => {
+    const featureId = feature.getId();
+
+    const elmementAndOverlayId = featureId
+      ? INTERACTIVE_OVERLAY_PREFIX + featureId
+      : INTERACTIVE_MEASUREMNT_OVERLAY_ID;
+    const elm = document.createElement('div');
+    elm.id = elmementAndOverlayId;
+    elm.classList.add('ol-tooltip');
+    elm.classList.add('ol-tooltip-measure');
+    document.body.appendChild(elm);
+    const toolTip = new Overlay({
+      element: elm,
+      offset: [0, -15],
+      positioning: 'bottom-center',
+      id: elmementAndOverlayId,
+    });
+    map.addOverlay(toolTip);
+    feature.on('change', (geomEvent) => {
+      const geometry = geomEvent.target.getGeometry();
+      const geometryPosition = getGeometryPositionForOverlay(geometry);
+      if (geometryPosition == null) {
+        return;
+      }
+      const tooltipText = getMeasurementText(
+        geometry,
+        mapProjection,
+        distanceUnit,
+      );
+
+      elm.classList.remove('hidden');
+      toolTip.setPosition(geometryPosition);
+      elm.innerHTML = tooltipText;
+    });
+  };
+
+  const removeInteractiveMesurementOverlayFromFeature = (
+    feature: Feature<Geometry>,
+  ) => {
+    const featureId = feature.getId();
+    if (featureId == null) {
+      console.warn('feature has no id');
+      return;
+    }
+    const elmementAndOverlayId = INTERACTIVE_OVERLAY_PREFIX + featureId;
+    const overlay = map.getOverlayById(elmementAndOverlayId);
+    if (overlay) {
+      map.removeOverlay(overlay);
+    }
+    const elm = document.getElementById(elmementAndOverlayId);
+    if (elm) {
+      elm.remove();
+    }
+  };
+  const removeFeaturelessInteractiveMeasurementOverlay = () => {
+    const overlay = map.getOverlayById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
+    if (overlay) {
+      map.removeOverlay(overlay);
+    }
+    const elm = document.getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
+    if (elm) {
+      elm.remove();
+    }
+  };
+
+  const setDisplayInteractiveMeasurementForDrawInteraction = (
     enable: boolean,
-    distanceUnit: DistanceUnit,
   ) => {
     const drawInteraction = getDrawInteraction();
     if (!drawInteraction) {
       return;
     }
-    const handleMouseOut = () => {
-      document
-        .getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID)
-        ?.classList.add('hidden');
+    const drawStartMesurmentListener = (event: BaseEvent | Event) => {
+      console.log('draw start measurement listener');
+      const eventFeature = (event as unknown as DrawEvent).feature;
+      addInteractiveMesurementOverlayToFeature(eventFeature);
     };
-    const handleMouseIn = () => {
-      document
-        .getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID)
-        ?.classList.remove('hidden');
+    const drawEndMesurmentListener = (event: BaseEvent | Event) => {
+      const eventFeature = (event as unknown as DrawEvent).feature;
+      removeInteractiveMesurementOverlayFromFeature(eventFeature);
+      enableFeatureMeasurmentOverlay(eventFeature);
+      removeFeaturelessInteractiveMeasurementOverlay();
     };
 
     if (enable) {
-      const elm = document.createElement('div');
-      elm.id = INTERACTIVE_MEASUREMNT_OVERLAY_ID;
-      elm.classList.add('hidden');
-      elm.classList.add('ol-tooltip');
-      elm.classList.add('ol-tooltip-measure');
-
-      const toolTip = new Overlay({
-        element: elm,
-        offset: [0, -15],
-        positioning: 'bottom-center',
-        id: INTERACTIVE_MEASUREMNT_OVERLAY_ID,
-      });
-      map.addOverlay(toolTip);
-      map.getViewport().addEventListener('mouseout', handleMouseOut);
-      map.getViewport().addEventListener('mouseover', handleMouseIn);
-      drawInteraction.on('drawstart', (event: DrawEvent) => {
-        const feature = event.feature;
-        feature.getGeometry()?.on('change', (geomEvent) => {
-          const geometry = geomEvent.target;
-          const geometryPosition = getGeometryPositionForOverlay(geometry);
-          const tooltipText = getMeasurementText(
-            geometry,
-            mapProjection,
-            distanceUnit,
-          );
-
-          if (geometryPosition && tooltipText) {
-            toolTip.setPosition(geometryPosition);
-            elm.innerHTML = tooltipText;
-            elm.classList.remove('hidden');
-          }
-        });
-      });
-
-      drawInteraction.on('drawend', (event: DrawEvent) => {
-        const feature = event.feature;
-        feature
-          .getGeometry()
-          ?.getListeners('change')
-          ?.forEach((listener) => {
-            feature.getGeometry()?.removeEventListener('change', listener);
-          });
-        toolTip.setPosition(undefined);
-        elm.classList.add('hidden');
-        addFeatureMeasurementOverlay(
-          feature,
-          getMeasurementText(
-            feature.getGeometry()!,
-            mapProjection,
-            distanceUnit,
-          ),
-        );
-      });
+      drawInteraction.on('drawstart', drawStartMesurmentListener);
+      drawInteraction.on('drawend', drawEndMesurmentListener);
     } else {
-      map.getViewport().removeEventListener('mouseout', handleMouseOut);
-      drawInteraction.getListeners('drawstart')?.forEach((listener) => {
-        drawInteraction.removeEventListener('drawstart', listener);
-      });
-      drawInteraction.getListeners('drawend')?.forEach((listener) => {
-        drawInteraction.removeEventListener('drawend', listener);
-      });
-      const overlay = map.getOverlayById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
-      if (overlay) {
-        map.removeOverlay(overlay);
-      }
+      drawInteraction.un('drawstart', drawStartMesurmentListener);
+      drawInteraction.un('drawend', drawEndMesurmentListener);
     }
   };
 
@@ -478,37 +485,11 @@ const useDrawSettings = () => {
       if (!overlayId) {
         return false;
       }
-      return overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX);
+      return (
+        overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX) ||
+        overlayId.startsWith(INTERACTIVE_OVERLAY_PREFIX)
+      );
     });
-  };
-
-  const addFeatureMeasurementOverlay = (
-    feature: Feature<Geometry>,
-    text: string,
-  ) => {
-    const featId = feature.getId();
-    const geometry = feature.getGeometry();
-    if (!geometry) {
-      return;
-    }
-    const overlayPosition = getGeometryPositionForOverlay(geometry);
-    if (!overlayPosition) {
-      return;
-    }
-    const elm = document.createElement('div');
-    elm.id = MEASUREMNT_ELEMENT_PREFIX + featId;
-    elm.classList.add('ol-tooltip', 'ol-tooltip-measure', 'ol-tooltip-static');
-    elm.innerHTML = text;
-
-    const toolTip = new Overlay({
-      element: elm,
-      offset: [0, -15],
-      positioning: 'bottom-center',
-      id: MEASUREMNT_OVERLAY_PREFIX + featId,
-    });
-
-    toolTip.setPosition(overlayPosition);
-    map.addOverlay(toolTip);
   };
 
   const removeFeatureMeasurementOverlays = () => {
@@ -521,8 +502,8 @@ const useDrawSettings = () => {
 
   const setShowMeasurements = (enable: boolean) => {
     setShowMeasurementsAtom(enable);
-    setDisplayInteractiveMeasurement(enable, distanceUnit);
     setDisplayStaticMeasurement(enable);
+    setDisplayInteractiveMeasurementForDrawInteraction(enable);
   };
 
   const undoLast = () => {
