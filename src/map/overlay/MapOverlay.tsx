@@ -12,8 +12,9 @@ import {
 import { useCompassFileName, useMapSettings } from '../mapHooks';
 import { MapToolButtons } from './MapToolButtons';
 import { MapToolCards } from './MapToolCards';
+import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
 
-export type MapTool = 'layers' | 'draw' | null;
+export type MapTool = 'layers' | 'draw' | 'settings' | null;
 
 export const MapOverlay = () => {
   const { setMapAngle, rotateSnappy } = useMapSettings();

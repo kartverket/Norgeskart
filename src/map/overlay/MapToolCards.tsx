@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapSettings } from '../../settings/map/MapSettings';
 import { MapTool } from './MapOverlay';
+import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
 
 export const MapToolCards = ({
   currentMapTool,
@@ -25,6 +26,13 @@ export const MapToolCards = ({
         <MapSettings />
       </MapToolCard>
     );
+  }
+  if (currentMapTool === 'settings'){
+    return (
+      <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
+        <SettingsDrawer />
+      </MapToolCard>
+    )
   }
 };
 
