@@ -1,9 +1,11 @@
 import { Button, VStack } from '@kvib/react';
+import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
 import { DrawToolSelector } from '../DrawToolSelector.tsx';
+import { distanceUnitAtomEffect } from '../effects.ts';
 import { LineWidthControl } from '../LineWidthControl.tsx';
 import { MeasurementControls } from '../MeasurementControls.tsx';
 import { PointStyleSelector } from '../PointStyleSelector.tsx';
@@ -18,6 +20,7 @@ export const DrawControls = () => {
   const { t } = useTranslation();
 
   useDrawControlsKeyboardEffects();
+  useAtom(distanceUnitAtomEffect);
 
   return (
     <VStack alignItems={'flex-start'} width={'100%'}>

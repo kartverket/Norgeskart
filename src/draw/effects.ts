@@ -5,14 +5,23 @@ import { Fill, RegularShape, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { mapAtom } from '../map/atoms';
 
+import { getDefaultStore } from 'jotai';
 import Select from 'ol/interaction/Select';
+import VectorLayer from 'ol/layer/Vector';
 import {
+  distanceUnitAtom,
   drawTypeStateAtom,
   lineWidthAtom,
   pointStyleReadAtom,
   primaryColorAtom,
   secondaryColorAtom,
+  showMeasurementsAtom,
 } from '../settings/draw/atoms';
+import { enableFeatureMeasurmentOverlay } from './drawControls/drawUtils';
+import {
+  INTERACTIVE_OVERLAY_PREFIX,
+  MEASUREMNT_OVERLAY_PREFIX,
+} from './drawControls/hooks/drawSettings';
 
 const getDrawInteraction = (map: Map) => {
   const drawInteraction = map
@@ -122,4 +131,50 @@ export const drawStyleEffect = atomEffect((get) => {
   });
   newStyle.setImage(circleStyle);
   drawInteraction.getOverlay().setStyle(newStyle);
+});
+
+export const distanceUnitAtomEffect = atomEffect((get) => {
+  get(distanceUnitAtom);
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const showMeasurements = store.get(showMeasurementsAtom);
+  if (!showMeasurements) {
+    return;
+  }
+  const drawLayer = map
+    .getLayers()
+    .getArray()
+    .filter(
+      (layer) => layer.get('id') === 'drawLayer',
+    )[0] as unknown as VectorLayer;
+
+  if (drawLayer == null) {
+    return;
+  }
+
+  map
+    .getOverlays()
+    .getArray()
+    .filter((overlay) => {
+      const overlayId = overlay.getId();
+      if (overlayId == null) {
+        return false;
+      }
+      if (overlayId.toString().startsWith(MEASUREMNT_OVERLAY_PREFIX)) {
+        return true;
+      }
+      if (overlayId.toString().startsWith(INTERACTIVE_OVERLAY_PREFIX)) {
+        return true;
+      }
+    })
+    .forEach((overlay) => {
+      map.removeOverlay(overlay);
+    });
+
+  drawLayer
+    .getSource()
+    ?.getFeatures()
+    .forEach((feature) => {
+      enableFeatureMeasurmentOverlay(feature);
+    });
 });
