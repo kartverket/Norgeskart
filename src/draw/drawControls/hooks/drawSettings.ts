@@ -300,6 +300,9 @@ const useDrawSettings = () => {
       return;
     }
     drawSource.addFeature(feature);
+    if (showMeasurements) {
+      enableFeatureMeasurmentOverlay(feature);
+    }
   };
 
   const setDrawLayerFeatures = (
