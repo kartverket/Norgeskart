@@ -1,4 +1,8 @@
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
+import {
+  enableFeatureMeasurmentOverlay,
+  removeFeatureMeasurementOverlay,
+} from '../../../draw/drawControls/drawUtils';
 import { useDrawSettings } from '../../../draw/drawControls/hooks/drawSettings';
 import {
   actionOffsetAtom,
@@ -35,8 +39,9 @@ export const useDrawActions = () => {
         );
         return;
       }
-
+      removeFeatureMeasurementOverlay(feature);
       feature.setGeometry(moveDetail.geometryBeforeMove);
+      enableFeatureMeasurmentOverlay(feature);
     });
   };
 
@@ -59,8 +64,9 @@ export const useDrawActions = () => {
         );
         return;
       }
-
+      removeFeatureMeasurementOverlay(feature);
       feature.setGeometry(moveDetail.geometryAfterMove);
+      enableFeatureMeasurmentOverlay(feature);
     });
   };
 
