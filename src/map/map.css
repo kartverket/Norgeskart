@@ -3,7 +3,7 @@
   position: absolute;
   top: unset;
   right: 1rem;
-  bottom:5rem;
+  bottom: 5rem;
   left: unset;
   display: flex;
   flex-direction: column;
@@ -16,7 +16,7 @@
 /* Zoom-knappene (+ / -) */
 .ol-zoom button {
   background-color: #156630; /* Kartverket grønn */
-  border-radius: 0.75rem!important;
+  border-radius: 0.75rem !important;
   color: #fff;
   font-size: 1.5rem;
   height: 2.25rem;

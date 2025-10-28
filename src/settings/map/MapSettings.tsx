@@ -11,6 +11,5 @@ export const MapSettings = () => {
       <ProjectionSettings />
       <CompassSettings />
     </SimpleGrid>
-    
   );
 };

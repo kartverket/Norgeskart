@@ -12,7 +12,6 @@ import {
 import { useCompassFileName, useMapSettings } from '../mapHooks';
 import { MapToolButtons } from './MapToolButtons';
 import { MapToolCards } from './MapToolCards';
-import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
 
 export type MapTool = 'layers' | 'draw' | 'settings' | null;
 
@@ -109,7 +108,8 @@ export const MapOverlay = () => {
           </Box>
 
           {/* Her er hovedboksen for knappene i senter */}
-          <Box position="absolute"
+          <Box
+            position="absolute"
             bottom="6%"
             left="50%"
             transform="translateX(-50%)"
@@ -119,13 +119,18 @@ export const MapOverlay = () => {
             borderRadius="lg"
             px={4}
             py={2}
-            boxShadow="lg">
+            boxShadow="lg"
+          >
             <MapToolButtons
               currentMapTool={currentMapTool}
               setCurrentMapTool={setCurrentMapTool}
             />
           </Box>
-            <MapToolCards currentMapTool={currentMapTool} onClose={() => {setCurrentMapTool(null)}}
+          <MapToolCards
+            currentMapTool={currentMapTool}
+            onClose={() => {
+              setCurrentMapTool(null);
+            }}
           />
         </Portal>
       )}

@@ -2,15 +2,15 @@ import { Box, Flex, Heading, IconButton } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapSettings } from '../../settings/map/MapSettings';
-import { MapTool } from './MapOverlay';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
+import { MapTool } from './MapOverlay';
 
 export const MapToolCards = ({
   currentMapTool,
-  onClose
+  onClose,
 }: {
   currentMapTool: MapTool;
-  onClose:()=>void
+  onClose: () => void;
 }) => {
   const { t } = useTranslation();
   if (currentMapTool === 'draw') {
@@ -27,51 +27,54 @@ export const MapToolCards = ({
       </MapToolCard>
     );
   }
-  if (currentMapTool === 'settings'){
+  if (currentMapTool === 'settings') {
     return (
       <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
         <SettingsDrawer />
       </MapToolCard>
-    )
+    );
   }
 };
 
 interface MapToolCardProps {
   label: string;
   children: React.ReactNode | React.ReactNode[] | undefined;
-  onClose:()=>void
+  onClose: () => void;
 }
 const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
     <Box
       position="fixed"
-              top={0}
-              left={0}
-              width="350px"
-              height="100vh" // tar hele høyden
-              zIndex={2000}
-              pointerEvents="auto"
-              bg="white"
-              shadow="lg"
-              overflowY="auto" // scroll hvis innholdet blir for høyt
-              display="flex"
-              flexDirection="column"
-              borderRight="1px solid rgba(0,0,0,0.1)"
-              px={4}
-              py={4}
+      top={0}
+      left={0}
+      width="350px"
+      height="100vh" // tar hele høyden
+      zIndex={2000}
+      pointerEvents="auto"
+      bg="white"
+      shadow="lg"
+      overflowY="auto" // scroll hvis innholdet blir for høyt
+      display="flex"
+      flexDirection="column"
+      borderRight="1px solid rgba(0,0,0,0.1)"
+      px={4}
+      py={4}
     >
-        <Flex justify="space-between">
-        <Heading fontWeight="bold" mb="2rem">{label}</Heading>
-         <IconButton
-                  icon="close"
-                  aria-label="Lukk"
-                  colorPalette="red"
-                  onClick={() =>{onClose()}}
-                  size="sm"
-                />
-        </Flex>
-        <Box>{children}</Box>
-    
+      <Flex justify="space-between">
+        <Heading fontWeight="bold" mb="2rem">
+          {label}
+        </Heading>
+        <IconButton
+          icon="close"
+          aria-label="Lukk"
+          colorPalette="red"
+          onClick={() => {
+            onClose();
+          }}
+          size="sm"
+        />
+      </Flex>
+      <Box>{children}</Box>
     </Box>
   );
 };

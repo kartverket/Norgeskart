@@ -79,17 +79,14 @@ export const MapToolButtons = ({
             : t('mapLayers.open')
         }
       />
-      <MapButton 
+      <MapButton
         onClick={() => {
-          setCurrentMapTool(currentMapTool === 'settings' ? null: 'settings');
+          setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
         }}
         icon={currentMapTool === 'settings' ? 'close' : 'settings'}
         tooltip={
-          currentMapTool == 'settings'
-           ? t('shared.close')
-            : t('shared.open') 
+          currentMapTool == 'settings' ? t('shared.close') : t('shared.open')
         }
-        
       />
 
       <MapButton
