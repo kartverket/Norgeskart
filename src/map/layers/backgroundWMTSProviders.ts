@@ -102,6 +102,7 @@ const nibTileLoadFunction: LoadFunction = (imageTile: Tile, src: string) => {
   }
 };
 
+
 // To allow the strange matrix set identifiers in NorgeIBilder
 const parseMatrixSetString = (identifier: string) => {
   const parsed = identifier.replace('::', ':').split('crs:')[1];
@@ -160,6 +161,8 @@ const WMTSAtom = atom(async () => {
                     tileLoadFunction: nibTileLoadFunction,
                   })
                 : new WMTS({ ...options });
+              // ✅ Allow cross-origin tile loading for map export
+              options.crossOrigin = 'anonymous';
               layersForProjection.set(layer, wmts);
             }
           });
@@ -178,4 +181,5 @@ const WMTSAtom = atom(async () => {
 
   return providerLayerMap;
 });
+
 export const loadableWMTS = loadable(WMTSAtom);
