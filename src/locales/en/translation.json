@@ -107,6 +107,14 @@
           "placeholder": "Chose"
         }
       }
+    },
+    "contextmenu": {
+      "items": {
+        "rettikartet": {
+          "label": "Report error",
+          "tooltip": "Navigate to RettIKartet.no"
+        }
+      }
     }
   },
   "mapLayers": {

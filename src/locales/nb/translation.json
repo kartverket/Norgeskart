@@ -112,6 +112,14 @@
           "placeholder": "Velg"
         }
       }
+    },
+    "contextmenu": {
+      "items": {
+        "rettikartet": {
+          "label": "Meld om feil",
+          "tooltip": "Gå til RettIKartet.no"
+        }
+      }
     }
   },
   "mapLayers": {
