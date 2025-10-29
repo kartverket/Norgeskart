@@ -9,7 +9,13 @@ const Layout: React.FC = () => {
     <Flex height="100vh" width="100vw" position="relative">
       <MessageBox />
       <Debug />
-      <Box position="absolute" width="100%" maxWidth="400px" zIndex="overlay">
+      <Box
+        position="absolute"
+        width="100%"
+        maxWidth="400px"
+        zIndex="overlay"
+        right="0"
+      >
         <SearchComponent />
       </Box>
       <Box flex="1" height="100%" bg="gray.200">

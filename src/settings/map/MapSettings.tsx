@@ -1,4 +1,4 @@
-import { VStack } from '@kvib/react';
+import { SimpleGrid } from '@kvib/react';
 import { BackgroundLayerSettings } from './BackgroundLayerSettings';
 
 import { CompassSettings } from './CompassSettings';
@@ -6,10 +6,10 @@ import { ProjectionSettings } from './ProjectionSettings';
 
 export const MapSettings = () => {
   return (
-    <VStack>
-      <ProjectionSettings />
+    <SimpleGrid columns={1} gap="7">
       <BackgroundLayerSettings />
+      <ProjectionSettings />
       <CompassSettings />
-    </VStack>
+    </SimpleGrid>
   );
 };

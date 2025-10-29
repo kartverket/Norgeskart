@@ -1,7 +1,7 @@
 import {
+  HStack,
   IconButton,
   MaterialSymbol,
-  Stack,
   toaster,
   Tooltip,
 } from '@kvib/react';
@@ -44,7 +44,7 @@ export const MapToolButtons = ({
   };
 
   return (
-    <Stack align="flex-end">
+    <HStack align="flex-end">
       {document.fullscreenEnabled && (
         <MapButton
           onClick={() => setMapFullScreen(true)}
@@ -79,6 +79,15 @@ export const MapToolButtons = ({
             : t('mapLayers.open')
         }
       />
+      <MapButton
+        onClick={() => {
+          setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
+        }}
+        icon={currentMapTool === 'settings' ? 'close' : 'settings'}
+        tooltip={
+          currentMapTool == 'settings' ? t('shared.close') : t('shared.open')
+        }
+      />
 
       <MapButton
         onClick={handleShareMapClick}
@@ -91,7 +100,7 @@ export const MapToolButtons = ({
         icon={'print'}
         tooltip={t('search.actions.print')}
       />
-    </Stack>
+    </HStack>
   );
 };
 

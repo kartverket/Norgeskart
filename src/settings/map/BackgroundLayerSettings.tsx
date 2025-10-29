@@ -1,12 +1,4 @@
-import {
-  createListCollection,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from '@kvib/react';
+import { Box, Image, SimpleGrid, Text } from '@chakra-ui/react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
@@ -18,6 +10,7 @@ import {
 import { useMapSettings } from '../../map/mapHooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
 
+// Prioritetskart for sortering
 const layerPriorityMap = new Map<BackgroundLayerName, number>([
   ['topo', 1],
   ['topograatone', 2],
@@ -31,21 +24,87 @@ const layerPriorityMap = new Map<BackgroundLayerName, number>([
 ]);
 
 const layerPrioritySort = (
-  a: {
-    value: BackgroundLayerName;
-    label: string;
-  },
-  b: {
-    value: BackgroundLayerName;
-    label: string;
-  },
+  a: { value: BackgroundLayerName; label: string },
+  b: { value: BackgroundLayerName; label: string },
 ) => {
   const priorityA = layerPriorityMap.get(a.value) || 0;
   const priorityB = layerPriorityMap.get(b.value) || 0;
-
   return priorityA - priorityB;
 };
 
+// Komponent for hvert lagkort
+interface LayerCardProps {
+  label: string;
+  thumbnailUrl: string;
+  isActive?: boolean;
+  onClick: () => void;
+}
+
+const LayerCard = ({
+  label,
+  thumbnailUrl,
+  isActive,
+  onClick,
+}: LayerCardProps) => (
+  <Box
+    cursor="pointer"
+    borderWidth={isActive ? 2 : 1}
+    borderColor={isActive ? 'blue.500' : 'gray.200'}
+    borderRadius="md"
+    overflow="hidden"
+    position="relative"
+    onClick={onClick}
+    _hover={{ borderColor: 'blue.400' }}
+  >
+    <Image
+      src={thumbnailUrl}
+      alt={label}
+      width="150px"
+      height="100px"
+      objectFit="cover"
+    />
+    <Box
+      position="absolute"
+      bottom={0}
+      width="100%"
+      bg="rgba(0,0,0,0.5)"
+      color="white"
+      textAlign="center"
+      fontSize="sm"
+      py={1}
+      opacity={0}
+      _hover={{ opacity: 1 }}
+      transition="opacity 0.2s"
+    >
+      {label}
+    </Box>
+  </Box>
+);
+
+// Grid for alle lagene
+const BackgroundLayerGrid = ({
+  layers,
+  currentLayer,
+  setLayer,
+}: {
+  layers: { value: BackgroundLayerName; label: string }[];
+  currentLayer: BackgroundLayerName;
+  setLayer: (layer: BackgroundLayerName) => void;
+}) => (
+  <SimpleGrid columns={3} gap={2}>
+    {layers.map((layer) => (
+      <LayerCard
+        key={layer.value}
+        label={layer.label}
+        thumbnailUrl={`/backgroundlayerImages/${layer.value}.png`}
+        isActive={currentLayer === layer.value}
+        onClick={() => setLayer(layer.value)}
+      />
+    ))}
+  </SimpleGrid>
+);
+
+// Hovedkomponent
 export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
   const { setBackgroundLayer, getMapProjectionCode } = useMapSettings();
@@ -58,10 +117,7 @@ export const BackgroundLayerSettings = () => {
   const projectionCode = getMapProjectionCode();
   const providers = WMTSProviders.data.keys();
 
-  const avaiableLayers: {
-    value: BackgroundLayerName;
-    label: string;
-  }[] = [];
+  const avaiableLayers: { value: BackgroundLayerName; label: string }[] = [];
 
   for (const providerId of providers) {
     const projectionLayersIterator = WMTSProviders.data
@@ -70,50 +126,36 @@ export const BackgroundLayerSettings = () => {
       ?.keys();
     const projectionLayerNames = Array.from(projectionLayersIterator || []);
 
-    const avaialbeLayersForPriovider = projectionLayerNames.map((layerName) => {
-      return {
-        value: layerName,
-        label: t(`map.settings.layers.mapNames.${layerName}`),
-      };
-    });
+    const avaialbeLayersForProvider = projectionLayerNames.map((layerName) => ({
+      value: layerName,
+      label: t(`map.settings.layers.mapNames.${layerName}`),
+    }));
 
-    avaiableLayers.push(...avaialbeLayersForPriovider);
+    avaiableLayers.push(...avaialbeLayersForProvider);
   }
 
+  // Legg til WMS-laget "oceanicelectronic"
   avaiableLayers.push({
     value: 'oceanicelectronic' as WMSLayerName,
     label: t(`map.settings.layers.mapNames.oceanicelectronic`),
   });
 
-  const listCollection = createListCollection({
-    items: avaiableLayers.sort(layerPrioritySort),
-  });
-  const layerFromUrl = getUrlParameter('backgroundLayer');
+  const sortedLayers = avaiableLayers.sort(layerPrioritySort);
+  const layerFromUrl = getUrlParameter(
+    'backgroundLayer',
+  ) as BackgroundLayerName;
+  const currentLayer = layerFromUrl || DEFAULT_BACKGROUND_LAYER;
 
   return (
-    <SelectRoot
-      collection={listCollection}
-      defaultValue={layerFromUrl ? [layerFromUrl] : [DEFAULT_BACKGROUND_LAYER]}
-    >
-      <SelectLabel>{t('map.settings.layers.background.label')}</SelectLabel>
-      <SelectTrigger>
-        <SelectValueText
-          placeholder={t('map.settings.layers.background.placeholder')}
-        />
-      </SelectTrigger>
-      <SelectContent>
-        {listCollection.items.map((item) => (
-          <SelectItem
-            key={item.value}
-            item={item}
-            onClick={() => {
-              setBackgroundLayer(item.value);
-            }}
-          >
-            {item.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </SelectRoot>
+    <Box>
+      <Text fontWeight="bold" mb={2}>
+        {t('map.settings.layers.background.label')}
+      </Text>
+      <BackgroundLayerGrid
+        layers={sortedLayers}
+        currentLayer={currentLayer}
+        setLayer={setBackgroundLayer}
+      />
+    </Box>
   );
 };

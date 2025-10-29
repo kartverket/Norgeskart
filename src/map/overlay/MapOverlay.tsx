@@ -13,7 +13,7 @@ import { useCompassFileName, useMapSettings } from '../mapHooks';
 import { MapToolButtons } from './MapToolButtons';
 import { MapToolCards } from './MapToolCards';
 
-export type MapTool = 'layers' | 'draw' | null;
+export type MapTool = 'layers' | 'draw' | 'settings' | null;
 
 export const MapOverlay = () => {
   const { setMapAngle, rotateSnappy } = useMapSettings();
@@ -107,14 +107,31 @@ export const MapOverlay = () => {
             </a>
           </Box>
 
-          {/* Her er hovedboksen for knappene øverst til høyre */}
-          <Box position="absolute" top="16px" right="16px">
+          {/* Her er hovedboksen for knappene i senter */}
+          <Box
+            position="absolute"
+            bottom="6%"
+            left="50%"
+            transform="translateX(-50%)"
+            zIndex={10}
+            bg="rgba(0,0,0,0.2)"
+            backdropFilter="blur(6px)"
+            borderRadius="lg"
+            px={4}
+            py={2}
+            boxShadow="lg"
+          >
             <MapToolButtons
               currentMapTool={currentMapTool}
               setCurrentMapTool={setCurrentMapTool}
             />
-            <MapToolCards currentMapTool={currentMapTool} />
           </Box>
+          <MapToolCards
+            currentMapTool={currentMapTool}
+            onClose={() => {
+              setCurrentMapTool(null);
+            }}
+          />
         </Portal>
       )}
 

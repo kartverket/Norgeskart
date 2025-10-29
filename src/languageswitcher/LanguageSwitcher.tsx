@@ -1,8 +1,7 @@
 import {
-  Box,
+  Heading,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -28,28 +27,23 @@ const LanguageSwitcher = () => {
   });
 
   return (
-    <Box p={{ base: 0, md: 3 }} py={3}>
-      <SelectRoot
-        collection={languageOptionCollection}
-        value={[currentLanguage]}
-      >
-        <SelectLabel>{t('languageSelector.chooseLanguage')}</SelectLabel>
-        <SelectTrigger>
-          <SelectValueText placeholder={t('languageSelector.chooseLanguage')} />
-        </SelectTrigger>
-        <SelectContent>
-          {languageOptions.map((lang) => (
-            <SelectItem
-              key={lang.value}
-              item={lang.value}
-              onClick={() => i18n.changeLanguage(lang.value)}
-            >
-              {lang.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </SelectRoot>
-    </Box>
+    <SelectRoot collection={languageOptionCollection} value={[currentLanguage]}>
+      <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
+      <SelectTrigger>
+        <SelectValueText placeholder={t('languageSelector.chooseLanguage')} />
+      </SelectTrigger>
+      <SelectContent style={{ zIndex: 9999 }}>
+        {languageOptions.map((lang) => (
+          <SelectItem
+            key={lang.value}
+            item={lang.value}
+            onClick={() => i18n.changeLanguage(lang.value)}
+          >
+            {lang.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </SelectRoot>
   );
 };
 

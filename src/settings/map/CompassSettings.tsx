@@ -1,5 +1,5 @@
 import {
-  Flex,
+  SimpleGrid,
   SwitchControl,
   SwitchHiddenInput,
   SwitchLabel,
@@ -19,7 +19,7 @@ export const CompassSettings = () => {
   );
   const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
   return (
-    <Flex justifyContent={'space-between'} w={'100%'}>
+    <SimpleGrid columns={2} gap="5">
       <SwitchRoot
         checked={displayCompassOverlay}
         onCheckedChange={(e) => setDisplayCompassOverlay(e.checked)}
@@ -37,6 +37,6 @@ export const CompassSettings = () => {
         <SwitchLabel>{t('map.settings.compass.magneticNorth')}</SwitchLabel>
         <SwitchControl />
       </SwitchRoot>
-    </Flex>
+    </SimpleGrid>
   );
 };

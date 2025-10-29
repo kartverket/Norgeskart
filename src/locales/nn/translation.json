@@ -162,6 +162,8 @@
     "actions": {
       "download": "Last ned "
     },
+    "close": "Lukk",
+    "open": "Åpne",
     "units": {
       "meter": "Meter",
       "nauticalMile": "Nautisk mil"
