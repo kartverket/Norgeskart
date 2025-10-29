@@ -82,6 +82,7 @@ const providers: WMTSProviders = {
     layers: ['Nibcache_UTM35_EUREF89_v2'],
   },
 };
+
 // To allow the strange matrix set identifiers in NorgeIBilder
 const parseMatrixSetString = (identifier: string) => {
   const parsed = identifier.replace('::', ':').split('crs:')[1];
@@ -134,6 +135,8 @@ const WMTSAtom = atom(async () => {
               projection: prId,
             });
             if (options != null) {
+              // ✅ Allow cross-origin tile loading for map export
+              options.crossOrigin = 'anonymous';
               layersForProjection.set(layer, new WMTS(options));
             }
           });
@@ -152,4 +155,5 @@ const WMTSAtom = atom(async () => {
 
   return providerLayerMap;
 });
+
 export const loadableWMTS = loadable(WMTSAtom);

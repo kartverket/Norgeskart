@@ -1,200 +1,115 @@
-import { useTranslation } from "react-i18next";
-import { FC } from "react";
+import { Box, Button, Flex, Heading, Text, toaster } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
+import { useAtomValue } from 'jotai';
+import { mapAtom } from '../map/atoms';
 
 interface PrintWindowProps {
   onClose: () => void;
 }
 
-const INTERACTIVE_MEASUREMNT_OVERLAY_ID = "map"; 
-
-const PrintWindow: FC<PrintWindowProps> = ({ onClose }) => {
+const PrintWindow = ({ onClose }: PrintWindowProps) => {
   const { t } = useTranslation();
+  const map = useAtomValue(mapAtom);
+
+  const handlePrint = () => {
+    if (!map) return;
+
+    map.renderSync();
+    const mapCanvas = map.getViewport().querySelector('canvas') as HTMLCanvasElement | null;
+    if (!mapCanvas) {
+      console.error('Map canvas not found!');
+      return;
+    }
+
+    try {
+      const dataUrl = mapCanvas.toDataURL('image/png');
+      const logoUrl = 'https://www.kartverket.no/images/logo.svg';
+
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.border = '0';
+      document.body.appendChild(iframe);
+
+      const doc = iframe.contentWindow?.document;
+      if (!doc) return;
+
+      doc.open();
+      doc.write(`
+        <html>
+          <head>
+            <title>Print Map</title>
+            <style>
+              @page { size: A4 landscape; margin: 1cm; }
+              body { font-family: Arial; text-align: center; margin:0; padding:0; }
+              header { display:flex; justify-content:center; align-items:center; margin-bottom:10px; }
+              header img { height:40px; margin-right:10px; }
+              header h1 { margin:0; font-size:20px; }
+              .map-container { display:flex; justify-content:center; align-items:center; height:80vh; }
+              .map-container img { max-width:95%; max-height:100%; border:1px solid #ccc; }
+              footer { font-size:10px; color:#555; margin-top:10px; }
+            </style>
+          </head>
+          <body>
+            <header>
+              <img src="${logoUrl}" alt="Kartverket logo"/>
+              <h1>Printing Features Test</h1>
+            </header>
+            <div class="map-container">
+              <img src="${dataUrl}" alt="Map"/>
+            </div>
+            <footer>
+              © Kartverket data | Printed on ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
+            </footer>
+          </body>
+        </html>
+      `);
+      doc.close();
+
+      // Print immediately
+      iframe.contentWindow?.focus();
+      iframe.contentWindow?.print();
+      setTimeout(() => document.body.removeChild(iframe), 1000);
+
+    } catch (err) {
+      console.error('Failed to export map', err);
+      toaster.create({ title: 'Failed to export map', type: 'error' });
+    }
+  };
+
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: "40px",
-        left: 0,
-        width: "400px",
-        height: "calc(100vh - 40px)",
-        background: "#fff",
-        border: "1px solid #e67c30",
-        padding: "0",
-        borderRadius: "8px 0 0 8px",
-        boxShadow: "0 0 10px rgba(0,0,0,0.2)",
-        zIndex: 1000,
-        fontFamily: "Arial, sans-serif",
-        overflowY: "auto",
-      }}
+    <Box
+      position="absolute"
+      top="50%"
+      left="50%"
+      transform="translate(-50%, -50%)"
+      background="white"
+      border="1px solid #ddd"
+      borderRadius="8px"
+      boxShadow="0 2px 10px rgba(0,0,0,0.15)"
+      p={6}
+      zIndex={1000}
+      width={{ base: '90%', md: '400px' }}
     >
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          background: "#e5e5e5",
-          padding: "12px 20px",
-          borderTopLeftRadius: "8px",
-          borderTopRightRadius: "8px",
-          borderBottom: "1px solid #ddd",
-        }}
-      >
-        <span style={{ marginRight: "10px", fontSize: "22px" }}>🖨️</span>
-        <span style={{ fontWeight: "bold", fontSize: "22px", flex: 1 }}>
-          {t("SKRIV UT")}
-        </span>
-      </div>
+      <Heading as="h3" size="md" mb={3}>
+        {t('Print map') || 'Print map'}
+      </Heading>
 
-      {/* Tabs */}
-      <div style={{ display: "flex", borderBottom: "1px solid #e67c30" }}>
-        <div
-          style={{
-            background: "#e67c30",
-            color: "#fff",
-            padding: "12px 32px",
-            borderTopLeftRadius: "8px",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          {t("Skriv ut")}
-        </div>
-      </div>
+      <Text fontSize="sm" mb={4}>
+        {t('Click the button below to print the visible map.')}
+      </Text>
 
-      {/* Content */}
-      <div
-        style={{
-          padding: "32px 16px 16px 16px",
-          border: "1px solid #e67c30",
-          borderTop: "none",
-          borderBottomLeftRadius: "8px",
-          borderBottomRightRadius: "8px",
-        }}
-      >
-        {/* Maltype */}
-        <div style={{ marginBottom: "24px" }}>
-          <label
-            style={{
-              fontWeight: "bold",
-              fontSize: "18px",
-              display: "block",
-              marginBottom: "8px",
-            }}
-          >
-            {t("Maltype")}
-          </label>
-          <select
-            style={{
-              width: "100%",
-              padding: "10px",
-              fontSize: "16px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-            defaultValue="A4 stående"
-          >
-            <option value="A4 stående">{t("A4 stående")}</option>
-            <option value="A4 liggende">{t("A4 liggende")}</option>
-            <option value="A3 stående">{t("A3 stående")}</option>
-            <option value="A3 liggende">{t("A3 liggende")}</option>
-          </select>
-        </div>
-
-        {/* Målestokk */}
-        <div style={{ marginBottom: "32px" }}>
-          <label
-            style={{
-              fontWeight: "bold",
-              fontSize: "18px",
-              display: "block",
-              marginBottom: "8px",
-            }}
-          >
-            {t("Målestokk")}
-          </label>
-          <select
-            style={{
-              width: "100%",
-              padding: "10px",
-              fontSize: "16px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-            defaultValue="1 : 25000"
-          >
-            <option value="1 : 25000">1 : 25000</option>
-            <option value="1 : 50000">1 : 50000</option>
-            <option value="1 : 100000">1 : 100000</option>
-          </select>
-        </div>
-
-        {/* Buttons */}
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
-          <button
-            style={{
-              background: "#7da4c7",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              padding: "12px 24px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
-          onClick={() => {
-              const printContent = document.getElementById(INTERACTIVE_MEASUREMNT_OVERLAY_ID);
-              if (printContent) {
-                const printWindow = window.open("", "PRINT", "height=600,width=800");
-                  if (printWindow) {
-                      printWindow.document.write(`
-                      <html>
-                        <head>
-                          <title>${t("Utskrift fra Norgeskart")}</title>
-                          <style>
-                            body {
-                              margin: 0;
-                              padding: 0;
-                            }
-                            img { 
-                              max-width: 100%;
-                              height: auto;
-                            }
-                          </style>
-                        </head>
-                        <body>  
-                          ${printContent.innerHTML}
-                        </body>
-                      </html>
-                      `);
-                      printWindow.document.close();
-                      printWindow.focus();
-                      printWindow.print();
-                      window.print();
-                  }
-              }
-          }}
-          >
-            {t("GENERERE UTSKRIFT")}
-          </button>
-
-          <button
-            style={{
-              background: "#bfc2c4",
-              color: "#444",
-              border: "none",
-              borderRadius: "6px",
-              padding: "12px 24px",
-              fontSize: "16px",
-              cursor: "pointer",
-            }}
-            onClick={onClose}
-          >
-            {t("AVBRYT")}
-          </button>
-        </div>
-      </div>
-    </div>
+      <Flex justifyContent="flex-end" gap={3}>
+        <Button onClick={onClose} variant="ghost" colorPalette="gray">
+          {t('Cancel') || 'Cancel'}
+        </Button>
+        <Button onClick={handlePrint} colorPalette="green">
+          {t('Print or Save as PDF') || 'Print or Save as PDF'}
+        </Button>
+      </Flex>
+    </Box>
   );
 };
 
