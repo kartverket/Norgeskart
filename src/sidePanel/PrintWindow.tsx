@@ -1,83 +1,114 @@
-import { Box, Button, Flex, Heading, Text, toaster } from '@kvib/react';
+import { Box, Button, Flex, Heading, Text, Spinner, toaster } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 import { mapAtom } from '../map/atoms';
+import { useState } from 'react';
 
 interface PrintWindowProps {
   onClose: () => void;
 }
-
 const PrintWindow = ({ onClose }: PrintWindowProps) => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
+  const [loading, setLoading] = useState(false);
+
+  // Keep reference to iframe and timeout
+  let printIframe: HTMLIFrameElement | null = null;
+  let cleanupTimeout: NodeJS.Timeout | null = null;
 
   const handlePrint = () => {
     if (!map) return;
 
-    map.renderSync();
-    const mapCanvas = map.getViewport().querySelector('canvas') as HTMLCanvasElement | null;
-    if (!mapCanvas) {
-      console.error('Map canvas not found!');
-      return;
-    }
+    setLoading(true);
 
-    try {
+    map.once('rendercomplete', () => {
+      const mapCanvas = map.getViewport().querySelector('canvas') as HTMLCanvasElement | null;
+      if (!mapCanvas) {
+        console.error('Map canvas not found!');
+        setLoading(false);
+        return;
+      }
+
       const dataUrl = mapCanvas.toDataURL('image/png');
       const logoUrl = 'https://www.kartverket.no/images/logo.svg';
 
-      const iframe = document.createElement('iframe');
-      iframe.style.position = 'fixed';
-      iframe.style.width = '0';
-      iframe.style.height = '0';
-      iframe.style.border = '0';
-      document.body.appendChild(iframe);
+      const img = new Image();
+      img.src = dataUrl;
 
-      const doc = iframe.contentWindow?.document;
-      if (!doc) return;
+      img.onload = () => {
+        printIframe = document.createElement('iframe');
+        printIframe.style.position = 'fixed';
+        printIframe.style.width = '0';
+        printIframe.style.height = '0';
+        printIframe.style.border = '0';
+        document.body.appendChild(printIframe);
 
-      doc.open();
-      doc.write(`
-        <html>
-          <head>
-            <title>Print Map</title>
-            <style>
-              @page { size: A4 landscape; margin: 1cm; }
-              body { font-family: Arial; text-align: center; margin:0; padding:0; }
-              header { display:flex; justify-content:center; align-items:center; margin-bottom:10px; }
-              header img { height:40px; margin-right:10px; }
-              header h1 { margin:0; font-size:20px; }
-              .map-container { display:flex; justify-content:center; align-items:center; height:80vh; }
-              .map-container img { max-width:95%; max-height:100%; border:1px solid #ccc; }
-              footer { font-size:10px; color:#555; margin-top:10px; }
-            </style>
-          </head>
-          <body>
-            <header>
-              <img src="${logoUrl}" alt="Kartverket logo"/>
-              <h1>Printing Features Test</h1>
-            </header>
-            <div class="map-container">
-              <img src="${dataUrl}" alt="Map"/>
-            </div>
-            <footer>
-              © Kartverket data | Printed on ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
-            </footer>
-          </body>
-        </html>
-      `);
-      doc.close();
+        const doc = printIframe.contentWindow?.document;
+        if (!doc) return;
 
-      // Print immediately
-      iframe.contentWindow?.focus();
-      iframe.contentWindow?.print();
-      setTimeout(() => document.body.removeChild(iframe), 1000);
+        doc.open();
+        doc.write(`
+          <html>
+            <head>
+              <title>Print Map</title>
+              <style>
+                @page { size: A4 landscape; margin: 1cm; }
+                body { font-family: Arial; text-align: center; margin:0; padding:0; }
+                header { display:flex; justify-content:center; align-items:center; margin-bottom:10px; }
+                header img { height:40px; margin-right:10px; }
+                header h1 { margin:0; font-size:20px; }
+                .map-container { display:flex; justify-content:center; align-items:center; height:80vh; }
+                .map-container img { max-width:95%; max-height:100%; border:1px solid #ccc; }
+                footer { font-size:10px; color:#555; margin-top:10px; }
+              </style>
+            </head>
+            <body>
+              <header>
+                <img src="${logoUrl}" alt="Kartverket logo"/>
+                <h1>Printing Features Test</h1>
+              </header>
+              <div class="map-container">
+                <img src="${dataUrl}" alt="Map"/>
+              </div>
+              <footer>
+                © Kartverket data | Printed on ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
+              </footer>
+            </body>
+          </html>
+        `);
+        doc.close();
 
-    } catch (err) {
-      console.error('Failed to export map', err);
-      toaster.create({ title: 'Failed to export map', type: 'error' });
-    }
+        printIframe.contentWindow?.focus();
+        printIframe.contentWindow?.print();
+
+        // Cleanup iframe after 1s
+        cleanupTimeout = setTimeout(() => {
+          if (printIframe) document.body.removeChild(printIframe);
+          printIframe = null;
+          setLoading(false);
+        }, 1000);
+      };
+
+      img.onerror = () => {
+        console.error('Failed to load map image for printing');
+        toaster.create({ title: 'Failed to generate map image', type: 'error' });
+        setLoading(false);
+      };
+    });
+
+    map.renderSync();
   };
 
+  const handleClose = () => {
+    // Cancel any pending iframe cleanup
+    if (cleanupTimeout) clearTimeout(cleanupTimeout);
+    if (printIframe) {
+      document.body.removeChild(printIframe);
+      printIframe = null;
+    }
+    setLoading(false);
+    onClose();
+  };
 
   return (
     <Box
@@ -101,11 +132,18 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
         {t('Click the button below to print the visible map.')}
       </Text>
 
+      {loading && (
+        <Flex justifyContent="center" alignItems="center" mb={3} gap={2}>
+          <Spinner />
+          <Text>Loading map tiles...</Text>
+        </Flex>
+      )}
+
       <Flex justifyContent="flex-end" gap={3}>
-        <Button onClick={onClose} variant="ghost" colorPalette="gray">
+        <Button onClick={handleClose} variant="ghost" colorPalette="gray" disabled={loading}>
           {t('Cancel') || 'Cancel'}
         </Button>
-        <Button onClick={handlePrint} colorPalette="green">
+        <Button onClick={handlePrint} colorPalette="green" disabled={loading}>
           {t('Print or Save as PDF') || 'Print or Save as PDF'}
         </Button>
       </Flex>
