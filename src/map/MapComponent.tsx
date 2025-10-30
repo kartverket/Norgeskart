@@ -1,5 +1,5 @@
 import { Box, Text } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,12 @@ import { mapAtom } from './atoms.ts';
 import { BackgroundLayerName } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
+import {
+  mapContextIsOpenAtom,
+  mapContextXPosAtom,
+  mapContextYPosAtom,
+} from './menu/atoms.ts';
+import { MapContextMenu } from './menu/MapContextMenu.tsx';
 import { MapOverlay } from './overlay/MapOverlay.tsx';
 
 export const MapComponent = () => {
@@ -18,8 +24,10 @@ export const MapComponent = () => {
   const { setBackgroundLayer } = useMapSettings();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
-  const { setDrawLayerFeatures, drawEnabled, undoLast, drawType } =
-    useDrawSettings();
+  const { setDrawLayerFeatures } = useDrawSettings();
+  const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
+  const setXPos = useSetAtom(mapContextXPosAtom);
+  const setYPos = useSetAtom(mapContextYPosAtom);
 
   const { setTargetElement } = useMap();
 
@@ -61,32 +69,26 @@ export const MapComponent = () => {
     asyncEffect();
   }, [map, setDrawLayerFeatures]);
 
-  useEffect(() => {
-    const handleUndo = () => {
-      if (
-        drawEnabled &&
-        (drawType === 'Polygon' || drawType === 'LineString')
-      ) {
-        undoLast();
-      }
-    };
-    const mapElement = document.getElementById('map');
-    if (!mapElement) return;
-    mapElement.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      handleUndo();
-    });
-    return () => {
-      window.removeEventListener('contextmenu', handleUndo);
-    };
-  }, [drawType, drawEnabled, undoLast]);
-
   return (
     <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>
       <Box position={'relative'} width="100%" height="100%">
-        <Box ref={mapRef} id="map" style={{ width: '100%', height: '100vh' }} />
+        <Box
+          ref={mapRef}
+          id="map"
+          style={{ width: '100%', height: '100vh' }}
+          onContextMenu={(e) => {
+            setXPos(e.clientX);
+            setYPos(e.clientY);
+            setIsMenuOpen(true);
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+          onClick={() => {
+            setIsMenuOpen(false);
+          }}
+        />
         <MapOverlay />
+        <MapContextMenu />
       </Box>
     </ErrorBoundary>
   );

@@ -30,9 +30,6 @@ export type ProjectionIdentifier =
   | 'EPSG:25832' // utm32n
   | 'EPSG:25833' // utm33n
   | 'EPSG:25835'; // utm35n
-
-export const baseLayerIdAtom = atom<string | null>(null);
-export const backgroundLayerIdAtom = atom<string | null>(null);
 export const mapOrientationAtom = atom<number>(0);
 export const mapOrientationDegreesAtom = atom<number>((get) => {
   const radians = get(mapOrientationAtom);
