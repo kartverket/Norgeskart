@@ -198,5 +198,8 @@
   },
   "settings": {
     "label": "Innstillinger for Norgeskart"
+  },
+  "tipsandtricks": {
+    "heading": "Tips og triks"
   }
 }
