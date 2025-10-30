@@ -120,7 +120,7 @@ export const DrawControlFooter = () => {
           onOpenChange={(e) => setClearPopoverOpen(e.open)}
         >
           <PopoverTrigger asChild>
-            <Button colorPalette={'red'}>{t('draw.clear')}</Button>
+            <Button size="sm" colorPalette={'red'}>{t('draw.clear')}</Button>
           </PopoverTrigger>
           <PopoverContent>
             <PopoverArrow />
@@ -141,8 +141,8 @@ export const DrawControlFooter = () => {
             </PopoverBody>
           </PopoverContent>
         </PopoverRoot>
-        <Button onClick={onSaveFeatures}>{t('draw.save')}</Button>
-        <Button onClick={undoLast}>Undo</Button>
+        <Button size="sm" onClick={onSaveFeatures}>{t('draw.save')}</Button>
+        <Button size="sm" onClick={undoLast}>Undo</Button>
       </ButtonGroup>
     </>
   );

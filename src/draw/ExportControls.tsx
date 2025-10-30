@@ -99,6 +99,7 @@ export const ExportControls = () => {
             items: exportFormatsCollection,
           })}
           value={[exportFormat]}
+          size="sm"
         >
           <SelectLabel>{t('export.format.label')}:</SelectLabel>
           <SelectTrigger>
@@ -116,7 +117,7 @@ export const ExportControls = () => {
             ))}
           </SelectContent>
         </SelectRoot>
-        <Button onClick={handleExport}>{t('shared.actions.download')}</Button>
+        <Button size="sm" onClick={handleExport}>{t('shared.actions.download')}</Button>
       </HStack>
     </VStack>
   );

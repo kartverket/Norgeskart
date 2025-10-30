@@ -75,6 +75,7 @@ const DrawTypeButton = ({
       <IconButton
         variant={isCurrentTool ? 'primary' : 'secondary'}
         icon={icon}
+        size="sm"
         onClick={() => {
           if (isCurrentTool) {
             return;
