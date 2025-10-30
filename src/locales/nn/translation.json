@@ -153,7 +153,8 @@
     "contactUs": "Kontakt",
     "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
     "privacyPolicy": "Personvernerklæring ",
-    "sendEmail": "Send e-post"
+    "sendEmail": "Send e-post",
+    "infoText": "Les korleis vi tek vare på personopplysningar i Kartverket si"
   },
   "propertyInfo": {
     "holdingNr": "Gardsnr.",
@@ -194,5 +195,11 @@
       "nauticalMile": "Nautisk mil"
     },
     "yes": "Ja"
+  },
+  "settings": {
+    "label": "Innstillingar for Norgeskart"
+  },
+  "tipsandtricks": {
+    "heading": "Tips og triks"
   }
 }

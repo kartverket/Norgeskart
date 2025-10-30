@@ -1,0 +1,93 @@
+[
+  {
+    "title": "Tip 1: Search for properties",
+    "content": [
+      {
+        "type": "text",
+        "text": "You can search for properties using cadastral numbers, addresses, or place names."
+      }
+    ]
+  },
+  {
+    "title": "Tip 2: Use map layers for more information",
+    "content": [
+      {
+        "type": "text",
+        "text": "Kartverket provides several map layers that you can toggle on and off to display different types of information:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Property boundaries and cadastral numbers",
+          "Buildings and addresses",
+          "Place names",
+          "Aerial photos",
+          "Elevation data"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Tip 3: Measure distances and areas",
+    "content": [
+      {
+        "type": "text",
+        "text": "Use the measurement tool to calculate distances or areas directly on the map."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Click the ruler icon in the toolbar.",
+          "Choose between distance or area measurement.",
+          "Click on the map to start measuring."
+        ]
+      },
+      {
+        "type": "text",
+        "text": "The result will appear at the bottom of the map, and you can clear the measurement when finished."
+      }
+    ]
+  },
+  {
+    "title": "Tip 4: Share map views",
+    "content": [
+      {
+        "type": "text",
+        "text": "When you find an interesting area on the map, you can easily share it with others:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Use the “Share” button at the top of the map view.",
+          "Copy the generated link.",
+          "Paste it into an email or message."
+        ]
+      },
+      {
+        "type": "text",
+        "text": "The recipient will see the same map area and active layers as you."
+      }
+    ]
+  },
+  {
+    "title": "Tip 5: Download data from Kartverket",
+    "content": [
+      {
+        "type": "text",
+        "text": "Kartverket provides many open datasets that you can download for free from Geonorge."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Go to geonorge.no",
+          "Search for the dataset you are interested in",
+          "Select the file format that best suits your needs (for example GML, GeoJSON, or Shapefile)"
+        ]
+      },
+      {
+        "type": "text",
+        "text": "Remember to read the license terms for any data you use in your own projects."
+      }
+    ]
+  }
+]

@@ -112,7 +112,7 @@ interface MapButtonProps {
 const MapButton = ({ onClick, icon, tooltip }: MapButtonProps) => {
   return (
     <Tooltip content={tooltip}>
-      <IconButton onClick={onClick} variant="solid" icon={icon} />
+      <IconButton onClick={onClick} variant="solid" icon={icon} size="sm" />
     </Tooltip>
   );
 };

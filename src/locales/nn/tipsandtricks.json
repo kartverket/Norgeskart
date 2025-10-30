@@ -1,0 +1,93 @@
+[
+  {
+    "title": "Tips 1: Søk etter eigedommar",
+    "content": [
+      {
+        "type": "text",
+        "text": "Du kan søkje etter eigedommar ved å bruke gards- og bruksnummer, adresse eller stadnamn."
+      }
+    ]
+  },
+  {
+    "title": "Tips 2: Bruk kartlag for meir informasjon",
+    "content": [
+      {
+        "type": "text",
+        "text": "Kartverket tilbyr fleire kartlag du kan slå av og på for å vise ulike typar informasjon:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Eigedomsgrenser og matrikkelnummer",
+          "Bygningar og adresser",
+          "Stadnamn",
+          "Flyfoto",
+          "Høgdedata"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Tips 3: Mål avstandar og areal",
+    "content": [
+      {
+        "type": "text",
+        "text": "Bruk måleverktøyet for å berekne avstandar eller areal direkte i kartet."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Klikk på linjalikonet i verktøylinja.",
+          "Vel mellom avstand eller areal.",
+          "Klikk i kartet for å måle."
+        ]
+      },
+      {
+        "type": "text",
+        "text": "Resultatet blir vist nedst i kartet, og du kan slette målinga når du er ferdig."
+      }
+    ]
+  },
+  {
+    "title": "Tips 4: Del kartutsnitt",
+    "content": [
+      {
+        "type": "text",
+        "text": "Når du har funne eit interessant område i kartet, kan du enkelt dele det med andre:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Bruk «Del»-knappen øvst i kartvisinga.",
+          "Kopier lenka som blir generert.",
+          "Lim ho inn i e-post eller melding."
+        ]
+      },
+      {
+        "type": "text",
+        "text": "Mottakaren vil sjå det same utsnittet og dei same kartlaga som du har valt."
+      }
+    ]
+  },
+  {
+    "title": "Tips 5: Last ned data frå Kartverket",
+    "content": [
+      {
+        "type": "text",
+        "text": "Kartverket tilbyr mange opne datasett som du kan laste ned gratis frå Geonorge."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Gå til geonorge.no",
+          "Søk etter datasettet du er interessert i",
+          "Vel filformatet som passar best (til dømes GML, GeoJSON eller shapefile)"
+        ]
+      },
+      {
+        "type": "text",
+        "text": "Hugs å lese lisensvilkåra for data du brukar i eigne prosjekt."
+      }
+    ]
+  }
+]
