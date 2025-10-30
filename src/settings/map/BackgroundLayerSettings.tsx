@@ -1,4 +1,4 @@
-import { Box, Image, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Heading, Image, SimpleGrid } from '@chakra-ui/react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
@@ -148,9 +148,9 @@ export const BackgroundLayerSettings = () => {
 
   return (
     <Box>
-      <Text fontWeight="bold" mb={2}>
+      <Heading size="lg" mb={2}>
         {t('map.settings.layers.background.label')}
-      </Text>
+      </Heading>
       <BackgroundLayerGrid
         layers={sortedLayers}
         currentLayer={currentLayer}

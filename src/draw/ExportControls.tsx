@@ -117,7 +117,9 @@ export const ExportControls = () => {
             ))}
           </SelectContent>
         </SelectRoot>
-        <Button size="sm" onClick={handleExport}>{t('shared.actions.download')}</Button>
+        <Button size="sm" onClick={handleExport}>
+          {t('shared.actions.download')}
+        </Button>
       </HStack>
     </VStack>
   );
