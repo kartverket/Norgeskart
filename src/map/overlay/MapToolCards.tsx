@@ -29,7 +29,7 @@ export const MapToolCards = ({
   }
   if (currentMapTool === 'settings') {
     return (
-      <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
+      <MapToolCard label={t('settings.label')} onClose={onClose}>
         <SettingsDrawer />
       </MapToolCard>
     );
@@ -47,11 +47,11 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       position="fixed"
       top={0}
       left={0}
-      width="350px"
+      width="20vw"
       height="100vh" // tar hele høyden
       zIndex={2000}
       pointerEvents="auto"
-      bg="white"
+      bg="#f5f2f2"
       shadow="lg"
       overflowY="auto" // scroll hvis innholdet blir for høyt
       display="flex"
@@ -65,6 +65,7 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
           {label}
         </Heading>
         <IconButton
+          variant="ghost"
           icon="close"
           aria-label="Lukk"
           colorPalette="red"

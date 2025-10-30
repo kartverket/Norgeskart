@@ -194,5 +194,8 @@
       "nauticalMile": "Nautisk mil"
     },
     "yes": "Ja"
+  },
+  "settings": {
+    "label": "Innstillinger for Norgeskart"
   }
 }
