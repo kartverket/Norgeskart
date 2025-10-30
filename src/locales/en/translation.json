@@ -112,7 +112,23 @@
       "items": {
         "rettikartet": {
           "label": "Report error",
-          "tooltip": "Navigate to RettIKartet.no"
+          "tooltip": "Navigate to RettIKartet.no",
+          "modal": {
+            "title": "Report an error",
+            "description": "Report something wrong with a map in rettikartet.no. Use the dropdown to select a category.",
+            "rettikartetcategories": {
+              "n50kartdata": "N50 maps",
+              "sjo": "Oceanic",
+              "veger": "Roads and adresses",
+              "turruter": "Hiking trails"
+            },
+            "category": {
+              "label": "Select map category"
+            },
+            "link": {
+              "label": "Open rettikartet.no in a new tab"
+            }
+          }
         }
       }
     }
@@ -163,7 +179,8 @@
   },
   "shared": {
     "actions": {
-      "download": "Download"
+      "download": "Download",
+      "select": "Select"
     },
     "close": "Close",
     "open": "Open",
