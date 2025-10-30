@@ -9,11 +9,8 @@ import {
   Switch,
   Text,
 } from '@kvib/react';
-import { useTranslation } from 'react-i18next';
 
 export const MapThemes = () => {
-  const { t } = useTranslation();
-
   return (
     <>
       <Heading size="lg">Velg temakart </Heading>

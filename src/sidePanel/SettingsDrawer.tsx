@@ -15,12 +15,12 @@ import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import PrivacyPolicy from './PrivacyPolicyAndContact';
 
-type TextBlock = { type: 'text'; text: string };
-type ListBlock = { type: 'list'; items: string[] };
-type LinkBlock = { type: 'link'; text: string; href: string };
-type ContentBlock = TextBlock | ListBlock | LinkBlock;
-type Tip = { title: string; content: ContentBlock[] };
+// ✅ importer typer og utils fra tips.ts
+import { Tip, unwrapJsonModule } from '../types/tips';
 
+// --------------------
+// JSON-loaders
+// --------------------
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   nb: () =>
     import('../locales/nb/tipsandtricks.json', { assert: { type: 'json' } }),
@@ -30,6 +30,9 @@ const loaders: Record<string, () => Promise<{ default: unknown }>> = {
     import('../locales/en/tipsandtricks.json', { assert: { type: 'json' } }),
 };
 
+// --------------------
+// COMPONENT
+// --------------------
 export const SettingsDrawer = () => {
   const { i18n, t } = useTranslation();
   const [tipsData, setTipsData] = useState<Tip[]>([]);
@@ -43,10 +46,9 @@ export const SettingsDrawer = () => {
       .then((m) => {
         if (cancelled) return;
 
-        // Støtter begge typer JSON-import (m eller m.default)
-        const data = (m as any).default ?? m;
-
-        setTipsData(data as Tip[]);
+        // ✅ typesikker håndtering av ESM-JSON
+        const data = unwrapJsonModule<Tip[]>(m);
+        setTipsData(data);
       })
       .catch((err) => {
         console.error('Feil ved lasting av tips:', err);
@@ -60,7 +62,7 @@ export const SettingsDrawer = () => {
 
   return (
     <SimpleGrid columns={1} gap="7">
-      <Heading size="md">{t(`tipsandtricks.heading`)}</Heading>
+      <Heading size="md">{t('tipsandtricks.heading')}</Heading>
 
       <Accordion collapsible multiple size="md" variant="outline">
         {tipsData.map((tip, index) => (
@@ -68,38 +70,41 @@ export const SettingsDrawer = () => {
             <AccordionItemTrigger>{tip.title}</AccordionItemTrigger>
             <AccordionItemContent>
               {tip.content.map((block, i) => {
-                if (block.type === 'text') {
-                  return (
-                    <Text key={i} mb="2">
-                      {block.text}
-                    </Text>
-                  );
-                }
-                if (block.type === 'list') {
-                  return (
-                    <List key={i} listStyleType="disc" mb="2" ml="4">
-                      {block.items.map((item, j) => (
-                        <ListItem key={j}>{item}</ListItem>
-                      ))}
-                    </List>
-                  );
-                }
-                if (block.type === 'link') {
-                  return (
-                    <Text key={i} mb="2">
-                      <Link
-                        colorPalette="green"
-                        href={block.href}
-                        size="md"
-                        variant="underline"
-                        external
-                      >
+                switch (block.type) {
+                  case 'text':
+                    return (
+                      <Text key={i} mb="2">
                         {block.text}
-                      </Link>
-                    </Text>
-                  );
+                      </Text>
+                    );
+
+                  case 'list':
+                    return (
+                      <List key={i} listStyleType="disc" mb="2" ml="4">
+                        {block.items.map((item, j) => (
+                          <ListItem key={j}>{item}</ListItem>
+                        ))}
+                      </List>
+                    );
+
+                  case 'link':
+                    return (
+                      <Text key={i} mb="2">
+                        <Link
+                          colorPalette="green"
+                          href={block.href}
+                          size="md"
+                          variant="underline"
+                          external
+                        >
+                          {block.text}
+                        </Link>
+                      </Text>
+                    );
+
+                  default:
+                    return null;
                 }
-                return null;
               })}
             </AccordionItemContent>
           </AccordionItem>
