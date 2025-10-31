@@ -80,7 +80,7 @@ const getInitialMapView = () => {
 
   return new View({
     center: initialCenter,
-    minZoom: 3,
+    minZoom: 4,
     maxZoom: 20,
     zoom: initialZoom,
     rotation: initialRotation,
@@ -91,7 +91,7 @@ const getInitialMapView = () => {
 
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
-    controls: defaultControls().extend([new ControlPortal()]),
+    controls: defaultControls({ zoom: false }).extend([new ControlPortal()]),
   });
 
   map.addLayer(mapLayers.markerLayer.getLayer());
