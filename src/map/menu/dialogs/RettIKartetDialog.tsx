@@ -13,10 +13,11 @@ import {
   Text,
   VStack,
 } from '@kvib/react';
-import { getDefaultStore } from 'jotai';
+import { getDefaultStore, useAtom } from 'jotai';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../atoms';
+import { isRettIKartetDialogOpenAtom } from './atoms';
 
 const TRANSLATION_BASE_KEY = 'map.contextmenu.items.rettikartet.dialog';
 
@@ -48,14 +49,9 @@ const rettIKartetCategory = [
 ] as const;
 type RettIKartetCategory = (typeof rettIKartetCategory)[number];
 
-export const RettIKartetDialog = ({
-  isOpen,
-  setIsOpen,
-}: {
-  isOpen: boolean;
-  setIsOpen: (o: boolean) => void;
-}) => {
+export const RettIKartetDialog = () => {
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useAtom(isRettIKartetDialogOpenAtom);
 
   return (
     <Dialog onOpenChange={(e) => setIsOpen(e.open)} open={isOpen} size={'lg'}>
