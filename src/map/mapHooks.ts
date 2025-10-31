@@ -5,7 +5,11 @@ import { Listener } from 'ol/events';
 import { get as getProjection, transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
-import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
+import {
+  getListUrlParameter,
+  getUrlParameter,
+  setUrlParameter,
+} from '../shared/utils/urlUtils';
 import {
   DEFAULT_ZOOM_LEVEL,
   magneticDeclinationAtom,
@@ -22,6 +26,8 @@ import {
   DEFAULT_BACKGROUND_LAYER,
   loadableWMTS,
 } from './layers/backgroundWMTSProviders';
+import { useThemeLayers } from './layers/themeLayers';
+import { ThemeLayerName } from './layers/themeWMS';
 import { getMousePositionControl } from './mapControls';
 
 const ROTATION_ANIMATION_DURATION = 500;
@@ -75,6 +81,7 @@ const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
   const WMTSloadable = useAtomValue(loadableWMTS);
   const { backgroundLayerState, getBackgroundLayer } = useBackgoundLayers();
+  const { removeThemeLayerFromMap, addThemeLayerToMap } = useThemeLayers();
 
   const getMapViewCenter = () => {
     const view = map.getView();
@@ -201,6 +208,13 @@ const useMapSettings = () => {
 
     map.setView(newView);
     setBackgroundLayer(backgroundLayerUrlParam);
+    const themeLayerNames = getListUrlParameter('themeLayers');
+    if (themeLayerNames) {
+      themeLayerNames.forEach((layerName) => {
+        removeThemeLayerFromMap(layerName as ThemeLayerName);
+        addThemeLayerToMap(layerName as ThemeLayerName);
+      });
+    }
 
     const mousePositionInteraction = map
       .getControls()

@@ -3,75 +3,113 @@ import {
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
-  Box,
   Flex,
   Heading,
   Switch,
   Text,
 } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
+import { useThemeLayers } from '../../map/layers/themeLayers';
+import { ThemeLayerName } from '../../map/layers/themeWMS';
+import { getListUrlParameter } from '../../shared/utils/urlUtils';
 
+const BASE_THEME_MAP_KEY = 'map.settings.layers.mapNames.themeMaps';
+
+type Theme = {
+  name: string;
+  heading: string;
+  subThemes: SubTheme[];
+};
+
+type SubTheme = {
+  name: string;
+  heading: string;
+  layers: {
+    name: ThemeLayerName;
+    label: string;
+  }[];
+};
 export const MapThemes = () => {
+  const { addThemeLayerToMap, removeThemeLayerFromMap } = useThemeLayers();
+  const { t } = useTranslation();
+  const createTheme = (
+    themeName: string,
+    subCategories: { name: string; layerNames: string[] }[],
+  ): Theme => {
+    return {
+      name: themeName,
+      heading: t(`${BASE_THEME_MAP_KEY}.${themeName}.themeName`),
+      subThemes: subCategories.map((subTheme) => ({
+        name: subTheme.name,
+        heading: t(
+          `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.heading`,
+        ),
+        layers: subTheme.layerNames.map((layerName) => ({
+          name: layerName as ThemeLayerName,
+          label: t(
+            `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.layers.${layerName}`,
+          ),
+        })),
+      })),
+    };
+  };
+
+  const themeLayers = [
+    createTheme('property', [
+      {
+        name: 'matrikkeldata',
+        layerNames: ['adresses', 'buildings', 'parcels'],
+      },
+    ]),
+  ];
+
+  const isLayerChecked = (layerName: ThemeLayerName): boolean => {
+    const urlLayers = getListUrlParameter('themeLayers');
+    return urlLayers != null && urlLayers.includes(layerName);
+  };
+
   return (
     <>
       <Heading size="lg">Velg temakart </Heading>
       <Accordion collapsible multiple size="sm" variant="outline">
-        <AccordionItem value="item1">
-          <AccordionItemTrigger>
-            <Heading size="lg">Eiendom</Heading>
-          </AccordionItemTrigger>
-          <AccordionItemContent>
-            <Heading size="md">Velg matrikkeldata</Heading>
-            <Flex justifyContent="space-between" paddingTop={2}>
-              <Text>Adresser</Text>
-              <Switch colorPalette="green" size="sm" variant="raised" />
-            </Flex>
-            <Flex justifyContent="space-between" paddingTop={2}>
-              <Text>Bygninger</Text>
-              <Switch colorPalette="green" size="sm" variant="raised" />
-            </Flex>
-            <Flex justifyContent="space-between" paddingTop={2}>
-              <Text>Teiger og grenser</Text>
-              <Switch colorPalette="green" size="sm" variant="raised" />
-            </Flex>
-          </AccordionItemContent>
-        </AccordionItem>
-        <AccordionItem value="item2">
-          <AccordionItemTrigger>
-            <Heading size="lg">Friluftsliv</Heading>
-          </AccordionItemTrigger>
-          <AccordionItemContent>
-            <Box paddingBottom={4}>
-              <Heading size="md">Fakta</Heading>
-              <Flex justifyContent="space-between" paddingTop={2}>
-                <Text>Markagrensa</Text>
-                <Switch colorPalette="green" size="sm" variant="raised" />
-              </Flex>
-            </Box>
-            <Box paddingBottom={4}>
-              <Heading size="md">Tur- og friluftsruter</Heading>
-              <Flex justifyContent="space-between" paddingTop={2}>
-                <Text>Fotruter</Text>
-                <Switch colorPalette="green" size="sm" variant="raised" />
-              </Flex>
-              <Flex justifyContent="space-between" paddingTop={2}>
-                <Text>Ruteinfopunkt</Text>
-                <Switch colorPalette="green" size="sm" variant="raised" />
-              </Flex>
-              <Flex justifyContent="space-between" paddingTop={2}>
-                <Text>Skiløyper</Text>
-                <Switch colorPalette="green" size="sm" variant="raised" />
-              </Flex>
-              <Flex justifyContent="space-between" paddingTop={2}>
-                <Text>Sykkelruter</Text>
-                <Switch colorPalette="green" size="sm" variant="raised" />
-              </Flex>
-              <Flex justifyContent="space-between" paddingTop={2}>
-                <Text>Annenruter</Text>
-                <Switch colorPalette="green" size="sm" variant="raised" />
-              </Flex>
-            </Box>
-          </AccordionItemContent>
-        </AccordionItem>
+        {themeLayers.map((theme) => {
+          return (
+            <AccordionItem value={theme.name}>
+              <AccordionItemTrigger>
+                <Heading size="lg">{theme.heading}</Heading>
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                {theme.subThemes.map((subTheme) => (
+                  <>
+                    <Heading size="md">{subTheme.heading}</Heading>
+                    {subTheme.layers.map((layer) => (
+                      <Flex
+                        key={layer.name}
+                        justifyContent="space-between"
+                        paddingTop={2}
+                      >
+                        <Text>{layer.label}</Text>
+                        <Switch
+                          colorPalette="green"
+                          size="sm"
+                          variant="raised"
+                          defaultChecked={isLayerChecked(layer.name)}
+                          onCheckedChange={(e) => {
+                            if (e.checked) {
+                              addThemeLayerToMap(layer.name);
+                            } else {
+                              removeThemeLayerFromMap(layer.name);
+                            }
+                          }}
+                        />
+                      </Flex>
+                    ))}
+                  </>
+                ))}
+              </AccordionItemContent>
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </>
   );

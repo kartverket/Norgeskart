@@ -16,7 +16,7 @@ export const getWMSLayer = (
           projection: projection,
         }),
         properties: {
-          id: 'bg.wms.oceanicelectronic',
+          id: 'bg.oceanicelectronic',
         },
       });
     default:

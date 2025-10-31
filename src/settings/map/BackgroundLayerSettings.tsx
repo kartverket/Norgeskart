@@ -128,7 +128,7 @@ export const BackgroundLayerSettings = () => {
 
     const avaialbeLayersForProvider = projectionLayerNames.map((layerName) => ({
       value: layerName,
-      label: t(`map.settings.layers.mapNames.${layerName}`),
+      label: t(`map.settings.layers.mapNames.backgroundMaps${layerName}`),
     }));
 
     avaiableLayers.push(...avaialbeLayersForProvider);
@@ -137,7 +137,7 @@ export const BackgroundLayerSettings = () => {
   // Legg til WMS-laget "oceanicelectronic"
   avaiableLayers.push({
     value: 'oceanicelectronic' as WMSLayerName,
-    label: t(`map.settings.layers.mapNames.oceanicelectronic`),
+    label: t(`map.settings.layers.mapNames.backgroundMaps.oceanicelectronic`),
   });
 
   const sortedLayers = avaiableLayers.sort(layerPrioritySort);
