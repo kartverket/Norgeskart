@@ -75,7 +75,7 @@ export const MapComponent = () => {
     themeLayers.forEach((layerName) => {
       addThemeLayerToMap(layerName as ThemeLayerName);
     });
-  }, [map]);
+  }, [map, addThemeLayerToMap]);
 
   useEffect(() => {
     const asyncEffect = async () => {
