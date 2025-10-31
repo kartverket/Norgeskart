@@ -110,12 +110,16 @@
           },
           "themeMaps": {
             "property": {
-              "categoryName": "Eigedom",
-              "heading": "Vel matrikkedata",
-              "layers": {
-                "adresses": "Adressar",
-                "buildings": "Bygg",
-                "parcels": "Teigar og grensar"
+              "themeName": "Eigedom",
+              "subThemes": {
+                "matrikkeldata": {
+                  "heading": "Vel matrikkedata",
+                  "layers": {
+                    "adresses": "Adressar",
+                    "buildings": "Bygg",
+                    "parcels": "Teigar og grensar"
+                  }
+                }
               }
             }
           }

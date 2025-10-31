@@ -12,73 +12,92 @@ import { useTranslation } from 'react-i18next';
 import { useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
 
-type ThemeCategory = {
+const BASE_THEME_MAP_KEY = 'map.settings.layers.mapNames.themeMaps';
+
+type Theme = {
   name: string;
   heading: string;
-  subHeading: string;
+  subThemes: SubTheme[];
+};
+
+type SubTheme = {
+  name: string;
+  heading: string;
   layers: {
     name: ThemeLayerName;
     label: string;
   }[];
 };
-
 export const MapThemes = () => {
   const { addThemeLayersToMap, removeThemeLayerFromMap } = useThemeLayers();
   const { t } = useTranslation();
-  const createThemeCategory = (themeName: string, layers: ThemeLayerName[]) => {
+  const createTheme = (
+    themeName: string,
+    subCategories: { name: string; layerNames: string[] }[],
+  ): Theme => {
     return {
       name: themeName,
-      heading: t(
-        `map.settings.layers.mapNames.themeMaps.${themeName}.categoryName`,
-      ),
-      subHeading: t(
-        `map.settings.layers.mapNames.themeMaps.${themeName}.heading`,
-      ),
-      layers: layers.map((layer) => ({
-        name: layer,
-        label: t(
-          `map.settings.layers.mapNames.themeMaps.${themeName}.layers.${layer}`,
+      heading: t(`${BASE_THEME_MAP_KEY}.${themeName}.themeName`),
+      subThemes: subCategories.map((subTheme) => ({
+        name: subTheme.name,
+        heading: t(
+          `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.heading`,
         ),
+        layers: subTheme.layerNames.map((layerName) => ({
+          name: layerName as ThemeLayerName,
+          label: t(
+            `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.layers.${layerName}`,
+          ),
+        })),
       })),
     };
   };
-  const themeLayers: ThemeCategory[] = [
-    createThemeCategory('property', ['adresses', 'buildings', 'parcels']),
-    //createThemeCategory('outdoors', ['adresses', 'buildings', 'parcels']), Legge til senere
+
+  const themeLayers = [
+    createTheme('property', [
+      {
+        name: 'matrikkeldata',
+        layerNames: ['adresses', 'buildings', 'parcels'],
+      },
+    ]),
   ];
 
   return (
     <>
       <Heading size="lg">Velg temakart </Heading>
       <Accordion collapsible multiple size="sm" variant="outline">
-        {themeLayers.map((category) => {
+        {themeLayers.map((theme) => {
           return (
-            <AccordionItem value={category.name}>
+            <AccordionItem value={theme.name}>
               <AccordionItemTrigger>
-                <Heading size="lg">{category.heading}</Heading>
+                <Heading size="lg">{theme.heading}</Heading>
               </AccordionItemTrigger>
               <AccordionItemContent>
-                <Heading size="md">{category.subHeading}</Heading>
-                {category.layers.map((layer) => (
-                  <Flex
-                    key={layer.name}
-                    justifyContent="space-between"
-                    paddingTop={2}
-                  >
-                    <Text>{layer.label}</Text>
-                    <Switch
-                      colorPalette="green"
-                      size="sm"
-                      variant="raised"
-                      onCheckedChange={(e) => {
-                        if (e.checked) {
-                          addThemeLayersToMap(layer.name);
-                        } else {
-                          removeThemeLayerFromMap(layer.name);
-                        }
-                      }}
-                    />
-                  </Flex>
+                {theme.subThemes.map((subTheme) => (
+                  <>
+                    <Heading size="md">{subTheme.heading}</Heading>
+                    {subTheme.layers.map((layer) => (
+                      <Flex
+                        key={layer.name}
+                        justifyContent="space-between"
+                        paddingTop={2}
+                      >
+                        <Text>{layer.label}</Text>
+                        <Switch
+                          colorPalette="green"
+                          size="sm"
+                          variant="raised"
+                          onCheckedChange={(e) => {
+                            if (e.checked) {
+                              addThemeLayersToMap(layer.name);
+                            } else {
+                              removeThemeLayerFromMap(layer.name);
+                            }
+                          }}
+                        />
+                      </Flex>
+                    ))}
+                  </>
                 ))}
               </AccordionItemContent>
             </AccordionItem>

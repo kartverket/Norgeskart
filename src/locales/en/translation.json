@@ -105,12 +105,16 @@
           },
           "themeMaps": {
             "property": {
-              "categoryName": "Properties",
-              "heading": "Select cadastral data",
-              "layers": {
-                "adresses": "Adresses",
-                "buildings": "Buildings",
-                "parcels": "Plots and parcels"
+              "themeName": "Properties",
+              "subThemes": {
+                "matrikkeldata": {
+                  "heading": "Select cadastral data",
+                  "layers": {
+                    "adresses": "Adresses",
+                    "buildings": "Buildings",
+                    "parcels": "Plots and parcels"
+                  }
+                }
               }
             }
           }

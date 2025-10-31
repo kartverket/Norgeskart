@@ -110,12 +110,16 @@
           },
           "themeMaps": {
             "property": {
-              "categoryName": "Eiendom",
-              "heading": "Velg matrikkeldata",
-              "layers": {
-                "adresses": "Adresser",
-                "buildings": "Bygninger",
-                "parcels": "Teiger og grenser"
+              "themeName": "Eiendom",
+              "subThemes": {
+                "matrikkeldata": {
+                  "heading": "Velg matrikkeldata",
+                  "layers": {
+                    "adresses": "Adresser",
+                    "buildings": "Bygninger",
+                    "parcels": "Teiger og grenser"
+                  }
+                }
               }
             }
           }
