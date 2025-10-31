@@ -18,6 +18,8 @@ import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../atoms';
 
+const TRANSLATION_BASE_KEY = 'map.contextmenu.items.rettikartet.dialog';
+
 const getRettIKartetUrl = (category: RettIKartetCategory) => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
@@ -46,7 +48,7 @@ const rettIKartetCategory = [
 ] as const;
 type RettIKartetCategory = (typeof rettIKartetCategory)[number];
 
-export const RettIKartetLayerSelectionModal = ({
+export const RettIKartetDialog = ({
   isOpen,
   setIsOpen,
 }: {
@@ -59,15 +61,11 @@ export const RettIKartetLayerSelectionModal = ({
     <Dialog onOpenChange={(e) => setIsOpen(e.open)} open={isOpen} size={'lg'}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {t('map.contextmenu.items.rettikartet.modal.title')}
-          </DialogTitle>
+          <DialogTitle>{t(`${TRANSLATION_BASE_KEY}.title`)}</DialogTitle>
         </DialogHeader>
         <DialogBody mb={'8px'}>
           <Stack>
-            <Text>
-              {t('map.contextmenu.items.rettikartet.modal.description')}
-            </Text>
+            <Text>{t(`${TRANSLATION_BASE_KEY}.description`)}</Text>
             <HStack>
               {rettIKartetCategory.map((category) => (
                 <Link
@@ -78,7 +76,7 @@ export const RettIKartetLayerSelectionModal = ({
                   <VStack>
                     <Heading size="sm">
                       {t(
-                        `map.contextmenu.items.rettikartet.modal.rettikartetcategories.${category}`,
+                        `${TRANSLATION_BASE_KEY}.rettikartetcategories.${category}`,
                       )}
                       <Image src={`/rettikartetCategories/${category}.jpg`} />
                     </Heading>

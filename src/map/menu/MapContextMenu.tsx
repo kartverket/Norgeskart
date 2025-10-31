@@ -7,7 +7,7 @@ import {
   mapContextXPosAtom,
   mapContextYPosAtom,
 } from './atoms';
-import { RettIKartetLayerSelectionModal } from './modals/RettIKartetLayerSelectionModal';
+import { RettIKartetDialog } from './dialogs/RettIKartetDialog';
 
 export const MapContextMenu = () => {
   const [isOpen, setIsOpen] = useAtom(mapContextIsOpenAtom);
@@ -44,10 +44,7 @@ export const MapContextMenu = () => {
         </Box>
       )}
 
-      <RettIKartetLayerSelectionModal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-      />
+      <RettIKartetDialog isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </>
   );
 };

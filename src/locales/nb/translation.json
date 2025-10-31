@@ -135,7 +135,7 @@
         "rettikartet": {
           "label": "Meld om feil",
           "tooltip": "Gå til RettIKartet.no",
-          "modal": {
+          "dialog": {
             "title": "Meld om en feil",
             "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under.",
             "rettikartetcategories": {

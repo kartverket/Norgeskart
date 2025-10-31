@@ -130,7 +130,7 @@
         "rettikartet": {
           "label": "Report error",
           "tooltip": "Navigate to RettIKartet.no",
-          "modal": {
+          "dialog": {
             "title": "Report an error",
             "description": "Report something wrong with a map in rettikartet.no. Select a category below.",
             "rettikartetcategories": {
