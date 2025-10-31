@@ -42,16 +42,15 @@ export const MapControlButtons = () => {
       zIndex={10}
       bg="#156630"
       borderRadius="xl"
-      px={3}
-      py={3}
+      padding={1}
       display="flex"
       flexDirection="column"
       alignItems="center"
-      gap={2}
     >
       {/* Zoom */}
       <IconButton
         variant="ghost"
+        color="#FFFF"
         size="sm"
         icon="add"
         aria-label="Zoom inn"
@@ -59,7 +58,7 @@ export const MapControlButtons = () => {
       />
       <IconButton
         variant="ghost"
-        color="white"
+        color="#FFFF"
         size="sm"
         icon="remove"
         aria-label="Zoom ut"
@@ -74,7 +73,7 @@ export const MapControlButtons = () => {
         <>
           <IconButton
             variant="ghost"
-            color="white"
+            color="#FFFF"
             size="sm"
             icon="rotate_left"
             aria-label="Roter venstre"
@@ -82,7 +81,7 @@ export const MapControlButtons = () => {
           />
           <IconButton
             variant="ghost"
-            color="white"
+            color="#FFFF"
             size="sm"
             icon="navigation"
             aria-label="Nullstill rotasjon"
@@ -91,7 +90,7 @@ export const MapControlButtons = () => {
           />
           <IconButton
             variant="ghost"
-            color="white"
+            color="#FFFF"
             size="sm"
             icon="rotate_right"
             aria-label="Roter høyre"
@@ -104,7 +103,7 @@ export const MapControlButtons = () => {
       {/* Andre handlinger */}
       <IconButton
         variant="ghost"
-        color="white"
+        color="#FFFF"
         size="sm"
         icon="my_location"
         aria-label="Min posisjon"
@@ -112,7 +111,7 @@ export const MapControlButtons = () => {
       />
       <IconButton
         variant="ghost"
-        color="white"
+        color="#FFFF"
         size="sm"
         icon="fullscreen"
         aria-label="Fullskjerm"
