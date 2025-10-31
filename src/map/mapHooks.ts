@@ -110,6 +110,30 @@ const useMapSettings = () => {
     setUrlParameter('backgroundLayer', backgroundLayerName);
   };
 
+  const zoomIn = () => {
+    const view = map.getView();
+    const currZoom = view.getZoom();
+    if (currZoom == null || currZoom === view.getMaxZoom()) {
+      return;
+    }
+    view.animate({
+      zoom: Math.round(currZoom + 1),
+      duration: 200,
+    });
+  };
+
+  const zoomOut = () => {
+    const view = map.getView();
+    const currZoom = view.getZoom();
+    if (currZoom == null || currZoom === view.getMinZoom()) {
+      return;
+    }
+    view.animate({
+      zoom: Math.round(currZoom - 1),
+      duration: 200,
+    });
+  };
+
   const setProjection = (projectionId: ProjectionIdentifier) => {
     const projection = getProjection(projectionId)!;
     if (WMTSloadable.state !== 'hasData') {
@@ -191,16 +215,13 @@ const useMapSettings = () => {
 
   const setMapFullScreen = (shouldBeFullscreen: boolean) => {
     if (!document.fullscreenEnabled) {
-      console.log('lol1');
       return;
     }
     const mapElement = map.getTarget() as HTMLElement | undefined;
     if (!mapElement) {
-      console.log('lol2');
       return;
     }
     if (shouldBeFullscreen) {
-      console.log('lol3');
       mapElement
         .requestFullscreen()
         .catch((err) =>
@@ -208,7 +229,6 @@ const useMapSettings = () => {
         );
     } else {
       document.exitFullscreen();
-      console.log('lol4');
     }
   };
 
@@ -288,6 +308,8 @@ const useMapSettings = () => {
     setMapLocation,
     setProjection,
     setBackgroundLayer,
+    zoomIn,
+    zoomOut,
   };
 };
 

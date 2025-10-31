@@ -16,7 +16,6 @@ import { MapToolCards } from './MapToolCards';
 export type MapTool = 'layers' | 'draw' | 'settings' | null;
 
 export const MapOverlay = () => {
-  //const { setMapAngle, rotateSnappy } = useMapSettings();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const magneticDeclination = useAtomValue(magneticDeclinationAtom);
   const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
@@ -26,7 +25,6 @@ export const MapOverlay = () => {
   const zoomRef = useRef<HTMLElement>(null);
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const compassFileName = useCompassFileName();
-  //const isMobile = useIsMobileScreen();
   const { drawEnabled, setDrawEnabled } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useState<MapTool>(null);
 

@@ -7,8 +7,14 @@ import { useMapSettings } from './mapHooks';
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
-  const { rotateSnappy, setMapAngle, setMapLocation, setMapFullScreen } =
-    useMapSettings();
+  const {
+    rotateSnappy,
+    setMapAngle,
+    setMapLocation,
+    setMapFullScreen,
+    zoomIn,
+    zoomOut,
+  } = useMapSettings();
 
   const handleMapLocationClick = () => {
     if (!navigator.geolocation) return;
@@ -49,12 +55,7 @@ export const MapControlButtons = () => {
         size="sm"
         icon="add"
         aria-label="Zoom inn"
-        onClick={() => {
-          const zoomInBtn = document.querySelector(
-            '.ol-zoom-in',
-          ) as HTMLElement;
-          zoomInBtn?.click();
-        }}
+        onClick={zoomIn}
       />
       <IconButton
         variant="ghost"
@@ -62,12 +63,7 @@ export const MapControlButtons = () => {
         size="sm"
         icon="remove"
         aria-label="Zoom ut"
-        onClick={() => {
-          const zoomOutBtn = document.querySelector(
-            '.ol-zoom-out',
-          ) as HTMLElement;
-          zoomOutBtn?.click();
-        }}
+        onClick={zoomOut}
       />
 
       {/* Separator */}
