@@ -40,9 +40,10 @@ export const MapControlButtons = () => {
       bottom="6%"
       right="16px"
       zIndex={10}
-      bg="#156630"
+      bg="#FFFF"
       borderRadius="xl"
-      padding={1}
+      px={3}
+      py={2}
       display="flex"
       flexDirection="column"
       alignItems="center"
@@ -50,16 +51,16 @@ export const MapControlButtons = () => {
       {/* Zoom */}
       <IconButton
         variant="ghost"
-        color="#FFFF"
-        size="sm"
+        colorPalette="green"
+        size="lg"
         icon="add"
         aria-label="Zoom inn"
         onClick={zoomIn}
       />
       <IconButton
         variant="ghost"
-        color="#FFFF"
-        size="sm"
+        colorPalette="green"
+        size="lg"
         icon="remove"
         aria-label="Zoom ut"
         onClick={zoomOut}
@@ -73,16 +74,16 @@ export const MapControlButtons = () => {
         <>
           <IconButton
             variant="ghost"
-            color="#FFFF"
-            size="sm"
+            colorPalette="green"
+            size="lg"
             icon="rotate_left"
             aria-label="Roter venstre"
             onClick={() => rotateSnappy('left')}
           />
           <IconButton
             variant="ghost"
-            color="#FFFF"
-            size="sm"
+            colorPalette="green"
+            size="lg"
             icon="navigation"
             aria-label="Nullstill rotasjon"
             onClick={() => setMapAngle(0)}
@@ -90,8 +91,8 @@ export const MapControlButtons = () => {
           />
           <IconButton
             variant="ghost"
-            color="#FFFF"
-            size="sm"
+            colorPalette="green"
+            size="lg"
             icon="rotate_right"
             aria-label="Roter høyre"
             onClick={() => rotateSnappy('right')}
@@ -103,16 +104,16 @@ export const MapControlButtons = () => {
       {/* Andre handlinger */}
       <IconButton
         variant="ghost"
-        color="#FFFF"
-        size="sm"
+        colorPalette="green"
+        size="lg"
         icon="my_location"
         aria-label="Min posisjon"
         onClick={handleMapLocationClick}
       />
       <IconButton
         variant="ghost"
-        color="#FFFF"
-        size="sm"
+        colorPalette="green"
+        size="lg"
         icon="fullscreen"
         aria-label="Fullskjerm"
         onClick={handleFullScreenClick}

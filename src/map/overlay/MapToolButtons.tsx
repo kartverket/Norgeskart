@@ -1,9 +1,11 @@
 import {
+  Button,
   HStack,
-  IconButton,
+  Icon,
   MaterialSymbol,
+  Text,
   toaster,
-  Tooltip,
+  VStack,
 } from '@kvib/react';
 import { t } from 'i18next';
 import { MapTool } from './MapOverlay';
@@ -37,7 +39,7 @@ export const MapToolButtons = ({
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={currentMapTool == 'draw' ? 'close' : 'edit'}
-        tooltip={
+        label={
           currentMapTool == 'draw' ? t('draw.close') : t('draw.tabHeading')
         }
       />
@@ -46,10 +48,10 @@ export const MapToolButtons = ({
           setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
         }}
         icon={currentMapTool == 'layers' ? 'close' : 'layers'}
-        tooltip={
+        label={
           currentMapTool == 'layers'
-            ? t('mapLayers.close')
-            : t('mapLayers.open')
+            ? t('draw.close')
+            : t('controller.maplayers.openText')
         }
       />
       <MapButton
@@ -57,21 +59,23 @@ export const MapToolButtons = ({
           setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
         }}
         icon={currentMapTool === 'settings' ? 'close' : 'settings'}
-        tooltip={
-          currentMapTool == 'settings' ? t('shared.close') : t('shared.open')
+        label={
+          currentMapTool == 'settings'
+            ? t('shared.close')
+            : t('controller.settings.text')
         }
       />
 
       <MapButton
         onClick={handleShareMapClick}
         icon={'share'}
-        tooltip={t('search.actions.shareMap.tooltip')}
+        label={t('search.actions.shareMap.tooltip')}
       />
 
       <MapButton
         onClick={handlePrintMapClick}
         icon={'print'}
-        tooltip={t('search.actions.print')}
+        label={t('controller.print.text')}
       />
     </HStack>
   );
@@ -80,12 +84,17 @@ export const MapToolButtons = ({
 interface MapButtonProps {
   onClick: () => void;
   icon: MaterialSymbol;
-  tooltip: string;
+  label: string;
 }
-const MapButton = ({ onClick, icon, tooltip }: MapButtonProps) => {
+const MapButton = ({ onClick, icon, label }: MapButtonProps) => {
   return (
-    <Tooltip content={tooltip}>
-      <IconButton onClick={onClick} variant="solid" icon={icon} size="sm" />
-    </Tooltip>
+    <Button onClick={onClick} variant="ghost" colorPalette="green" p={8}>
+      <VStack>
+        <Icon icon={icon} boxSize={6} />
+        <Text fontSize="sm" fontWeight="medium">
+          {label}
+        </Text>
+      </VStack>
+    </Button>
   );
 };

@@ -112,11 +112,9 @@ export const MapOverlay = () => {
             left="50%"
             transform="translateX(-50%)"
             zIndex={10}
-            bg="rgba(0,0,0,0.2)"
-            backdropFilter="blur(6px)"
+            bg="#FFFF"
             borderRadius="lg"
-            px={4}
-            py={2}
+            p={2}
             boxShadow="lg"
           >
             <MapToolButtons

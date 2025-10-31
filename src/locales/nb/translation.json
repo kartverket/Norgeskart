@@ -218,5 +218,16 @@
   },
   "tipsandtricks": {
     "heading": "Tips og triks"
+  },
+  "controller": {
+    "maplayers": {
+      "openText": "Kartlag"
+    },
+    "print": {
+      "text": "Print"
+    },
+    "settings": {
+      "text": "Innstillinger"
+    }
   }
 }

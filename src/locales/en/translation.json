@@ -213,5 +213,16 @@
   },
   "tipsandtricks": {
     "heading": "Tips and tricks"
+  },
+  "controller": {
+    "maplayers": {
+      "openText": "Maplayers"
+    },
+    "print": {
+      "text": "Print"
+    },
+    "settings": {
+      "text": "Settings"
+    }
   }
 }
