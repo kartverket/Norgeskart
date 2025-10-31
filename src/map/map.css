@@ -13,20 +13,23 @@
   z-index: 1000;
 }
 
-/* Zoom-knappene (+ / -) */
-.ol-zoom button {
-  background-color: #156630; /* Kartverket grønn */
-  border-radius: 0.75rem !important;
-  color: #fff;
-  font-size: 1.5rem;
-  height: 2.25rem;
-  width: 2.25rem;
-  margin: 0.2rem 0;
-  cursor: pointer;
+/* Unngå at OL-zoom-styling treffer våre egne knapper */
+.ol-zoom .custom-controls button {
+  all: unset; /* fjern alt arv */
+  cursor: pointer; /* behold pekeren */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 
-.ol-zoom button:hover {
-  background-color: #176e32; /* mørkere grønn */
+.ol-zoom .custom-controls button:hover {
+  opacity: 0.8;
+}
+
+.ol-zoom-in,
+.ol-zoom-out {
+  display: none !important;
 }
 
 .ol-zoom button:active {

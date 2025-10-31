@@ -6,7 +6,6 @@ import {
   Tooltip,
 } from '@kvib/react';
 import { t } from 'i18next';
-import { useMapSettings } from '../mapHooks';
 import { MapTool } from './MapOverlay';
 
 interface MapToolButtonsProps {
@@ -17,18 +16,6 @@ export const MapToolButtons = ({
   currentMapTool,
   setCurrentMapTool,
 }: MapToolButtonsProps) => {
-  const { setMapFullScreen, setMapLocation } = useMapSettings();
-
-  const handleMapLocationClick = () => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      setMapLocation(
-        [pos.coords.longitude, pos.coords.latitude],
-        'EPSG:4326',
-        15,
-      );
-    });
-  };
-
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -45,20 +32,6 @@ export const MapToolButtons = ({
 
   return (
     <HStack align="flex-end">
-      {document.fullscreenEnabled && (
-        <MapButton
-          onClick={() => setMapFullScreen(true)}
-          icon="fullscreen"
-          tooltip={t('map.overlay.fullscreen')}
-        />
-      )}
-
-      <MapButton
-        onClick={handleMapLocationClick}
-        icon="my_location"
-        tooltip={t('map.overlay.myPosition')}
-      />
-
       <MapButton
         onClick={() => {
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');

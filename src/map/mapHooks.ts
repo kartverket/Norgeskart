@@ -191,13 +191,16 @@ const useMapSettings = () => {
 
   const setMapFullScreen = (shouldBeFullscreen: boolean) => {
     if (!document.fullscreenEnabled) {
+      console.log('lol1');
       return;
     }
     const mapElement = map.getTarget() as HTMLElement | undefined;
     if (!mapElement) {
+      console.log('lol2');
       return;
     }
     if (shouldBeFullscreen) {
+      console.log('lol3');
       mapElement
         .requestFullscreen()
         .catch((err) =>
@@ -205,6 +208,7 @@ const useMapSettings = () => {
         );
     } else {
       document.exitFullscreen();
+      console.log('lol4');
     }
   };
 

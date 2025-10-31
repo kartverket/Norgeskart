@@ -1,22 +1,22 @@
-import { Box, HStack, IconButton, Image, Portal } from '@kvib/react';
+import { Box, Image, Portal } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
-import { useIsMobileScreen } from '../../shared/hooks';
 import {
   displayCompassOverlayAtom,
   magneticDeclinationAtom,
   mapOrientationDegreesAtom,
   useMagneticNorthAtom,
 } from '../atoms';
-import { useCompassFileName, useMapSettings } from '../mapHooks';
+import { MapControlButtons } from '../MapControlButtons';
+import { useCompassFileName } from '../mapHooks';
 import { MapToolButtons } from './MapToolButtons';
 import { MapToolCards } from './MapToolCards';
 
 export type MapTool = 'layers' | 'draw' | 'settings' | null;
 
 export const MapOverlay = () => {
-  const { setMapAngle, rotateSnappy } = useMapSettings();
+  //const { setMapAngle, rotateSnappy } = useMapSettings();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const magneticDeclination = useAtomValue(magneticDeclinationAtom);
   const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
@@ -26,7 +26,7 @@ export const MapOverlay = () => {
   const zoomRef = useRef<HTMLElement>(null);
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const compassFileName = useCompassFileName();
-  const isMobile = useIsMobileScreen();
+  //const isMobile = useIsMobileScreen();
   const { drawEnabled, setDrawEnabled } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useState<MapTool>(null);
 
@@ -137,42 +137,7 @@ export const MapOverlay = () => {
 
       {zoomControlFound && (
         <Portal container={zoomRef}>
-          <Box zIndex={10}>
-            <HStack gap={0}>
-              {!isMobile && (
-                <IconButton
-                  icon="switch_access_shortcut"
-                  variant="ghost"
-                  _hover={{ bg: 'transparent' }}
-                  m={0}
-                  p={0}
-                  onClick={() => rotateSnappy('right')}
-                  mr={-3}
-                />
-              )}
-              <IconButton
-                icon="navigation"
-                variant="ghost"
-                _hover={{ bg: 'transparent' }}
-                onClick={() => setMapAngle(0)}
-                m={0}
-                p={0}
-                rotate={mapOrientation + 'deg'}
-                mr={-3}
-              />
-              {!isMobile && (
-                <IconButton
-                  icon="switch_access_shortcut"
-                  variant="ghost"
-                  _hover={{ bg: 'transparent' }}
-                  transform="scale(-1,1)"
-                  m={0}
-                  p={0}
-                  onClick={() => rotateSnappy('left')}
-                />
-              )}
-            </HStack>
-          </Box>
+          <MapControlButtons />
         </Portal>
       )}
     </>
