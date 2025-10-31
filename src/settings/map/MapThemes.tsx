@@ -11,6 +11,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
+import { getListUrlParameter } from '../../shared/utils/urlUtils';
 
 const BASE_THEME_MAP_KEY = 'map.settings.layers.mapNames.themeMaps';
 
@@ -62,6 +63,11 @@ export const MapThemes = () => {
     ]),
   ];
 
+  const isLayerChecked = (layerName: ThemeLayerName): boolean => {
+    const urlLayers = getListUrlParameter('themeLayers');
+    return urlLayers != null && urlLayers.includes(layerName);
+  };
+
   return (
     <>
       <Heading size="lg">Velg temakart </Heading>
@@ -87,6 +93,7 @@ export const MapThemes = () => {
                           colorPalette="green"
                           size="sm"
                           variant="raised"
+                          defaultChecked={isLayerChecked(layer.name)}
                           onCheckedChange={(e) => {
                             if (e.checked) {
                               addThemeLayerToMap(layer.name);
