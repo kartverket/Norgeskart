@@ -41,12 +41,7 @@ const getRettIKartetUrl = (category: RettIKartetCategory) => {
   return url;
 };
 
-const rettIKartetCategory = [
-  'n50kartdata',
-  'sjo',
-  'veger',
-  'turruter',
-] as const;
+const rettIKartetCategory = ['n50kartdata', 'sjo', 'veger'] as const;
 type RettIKartetCategory = (typeof rettIKartetCategory)[number];
 
 export const RettIKartetDialog = () => {
