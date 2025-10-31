@@ -136,7 +136,7 @@ export const BackgroundLayerSettings = () => {
 
   // Legg til WMS-laget "oceanicelectronic"
   avaiableLayers.push({
-    value: 'adresses' as WMSLayerName,
+    value: 'oceanicelectronic' as WMSLayerName,
     label: t(`map.settings.layers.mapNames.backgroundMaps.oceanicelectronic`),
   });
 

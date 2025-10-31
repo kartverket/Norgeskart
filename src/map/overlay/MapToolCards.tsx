@@ -48,6 +48,7 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       top={0}
       left={0}
       width="20vw"
+      minWidth="350px"
       height="100vh" // tar hele høyden
       zIndex={2000}
       pointerEvents="auto"
