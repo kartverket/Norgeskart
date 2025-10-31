@@ -6,10 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { getFeatures } from '../api/nkApiClient.ts';
 import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
-import { getUrlParameter } from '../shared/utils/urlUtils.ts';
+import {
+  getListUrlParameter,
+  getUrlParameter,
+} from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
 import { BackgroundLayerName } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
+import { useThemeLayers } from './layers/themeLayers.ts';
+import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import {
   mapContextIsOpenAtom,
@@ -22,6 +27,7 @@ import { MapOverlay } from './overlay/MapOverlay.tsx';
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { setBackgroundLayer } = useMapSettings();
+  const { addThemeLayerToMap } = useThemeLayers();
   const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures } = useDrawSettings();
@@ -57,6 +63,19 @@ export const MapComponent = () => {
 
     setBackgroundLayer(layerNameFromUrl);
   }, [setBackgroundLayer, map]);
+
+  useEffect(() => {
+    if (!map) {
+      return;
+    }
+    const themeLayers = getListUrlParameter('themeLayers');
+    if (!themeLayers) {
+      return;
+    }
+    themeLayers.forEach((layerName) => {
+      addThemeLayerToMap(layerName as ThemeLayerName);
+    });
+  }, [map]);
 
   useEffect(() => {
     const asyncEffect = async () => {

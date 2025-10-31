@@ -29,7 +29,7 @@ type SubTheme = {
   }[];
 };
 export const MapThemes = () => {
-  const { addThemeLayersToMap, removeThemeLayerFromMap } = useThemeLayers();
+  const { addThemeLayerToMap, removeThemeLayerFromMap } = useThemeLayers();
   const { t } = useTranslation();
   const createTheme = (
     themeName: string,
@@ -89,7 +89,7 @@ export const MapThemes = () => {
                           variant="raised"
                           onCheckedChange={(e) => {
                             if (e.checked) {
-                              addThemeLayersToMap(layer.name);
+                              addThemeLayerToMap(layer.name);
                             } else {
                               removeThemeLayerFromMap(layer.name);
                             }

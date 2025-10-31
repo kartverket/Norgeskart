@@ -10,7 +10,7 @@ export const useThemeLayers = () => {
   const map = useAtomValue(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
 
-  const addThemeLayersToMap = (layerName: ThemeLayerName) => {
+  const addThemeLayerToMap = (layerName: ThemeLayerName) => {
     const layerExists = map
       .getLayers()
       .getArray()
@@ -26,6 +26,7 @@ export const useThemeLayers = () => {
       );
       return;
     }
+    layerToAdd.setZIndex(10);
     map.addLayer(layerToAdd);
     addToUrlListParameter('themeLayers', layerName);
   };
@@ -42,7 +43,7 @@ export const useThemeLayers = () => {
   };
 
   return {
-    addThemeLayersToMap,
+    addThemeLayerToMap,
     removeThemeLayerFromMap,
   };
 };
