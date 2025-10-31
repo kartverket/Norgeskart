@@ -8,6 +8,8 @@ import {
   VStack,
 } from '@kvib/react';
 import { t } from 'i18next';
+import { useSetAtom } from 'jotai';
+import { isRettIKartetDialogOpenAtom } from '../menu/dialogs/atoms';
 import { MapTool } from './MapOverlay';
 
 interface MapToolButtonsProps {
@@ -18,6 +20,7 @@ export const MapToolButtons = ({
   currentMapTool,
   setCurrentMapTool,
 }: MapToolButtonsProps) => {
+  const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -76,6 +79,11 @@ export const MapToolButtons = ({
         onClick={handlePrintMapClick}
         icon={'print'}
         label={t('controller.print.text')}
+      />
+      <MapButton
+        onClick={() => setRettIKartetDialogOpen(true)}
+        icon={'edit_road'}
+        label={t('map.contextmenu.items.rettikartet.label')}
       />
     </HStack>
   );

@@ -1,17 +1,16 @@
 import { Box, Button, Show, Stack, Tooltip } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
-import { useState } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
   mapContextIsOpenAtom,
   mapContextXPosAtom,
   mapContextYPosAtom,
 } from './atoms';
-import { RettIKartetLayerSelectionModal } from './modals/RettIKartetLayerSelectionModal';
+import { isRettIKartetDialogOpenAtom } from './dialogs/atoms';
 
 export const MapContextMenu = () => {
   const [isOpen, setIsOpen] = useAtom(mapContextIsOpenAtom);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const setIsModalOpen = useSetAtom(isRettIKartetDialogOpenAtom);
   const x = useAtomValue(mapContextXPosAtom);
   const y = useAtomValue(mapContextYPosAtom);
   const { t } = useTranslation();
@@ -43,11 +42,6 @@ export const MapContextMenu = () => {
           </Stack>
         </Box>
       )}
-
-      <RettIKartetLayerSelectionModal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-      />
     </>
   );
 };
