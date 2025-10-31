@@ -1,24 +1,20 @@
 import {
-  createListCollection,
   Dialog,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  Heading,
+  HStack,
+  Image,
   Link,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
+  Stack,
   Text,
+  VStack,
 } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
 import { transform } from 'ol/proj';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../atoms';
 
@@ -58,64 +54,40 @@ export const RettIKartetLayerSelectionModal = ({
   setIsOpen: (o: boolean) => void;
 }) => {
   const { t } = useTranslation();
-  const [selectedRettIKartetCategory, setSelectedRettIKartetCategory] =
-    useState<RettIKartetCategory>('n50kartdata');
-
-  const rettIKartetUrl = getRettIKartetUrl(selectedRettIKartetCategory);
-  const rettIKartetCategories = rettIKartetCategory.map((category) => ({
-    value: category as RettIKartetCategory,
-    label: t(
-      `map.contextmenu.items.rettikartet.modal.rettikartetcategories.${category}`,
-    ),
-  }));
 
   return (
-    <Dialog onOpenChange={(e) => setIsOpen(e.open)} open={isOpen}>
+    <Dialog onOpenChange={(e) => setIsOpen(e.open)} open={isOpen} size={'lg'}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
             {t('map.contextmenu.items.rettikartet.modal.title')}
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          <Text>
-            {t('map.contextmenu.items.rettikartet.modal.description')}
-          </Text>
-
-          <SelectRoot
-            collection={createListCollection({
-              items: rettIKartetCategories,
-            })}
-            value={[selectedRettIKartetCategory]}
-          >
-            <SelectLabel>
-              {t('map.contextmenu.items.rettikartet.modal.category.label')}:
-            </SelectLabel>
-            <SelectTrigger>
-              <SelectValueText placeholder={t('shared.actions.select')} />
-            </SelectTrigger>
-            <SelectContent portalled={false}>
-              {rettIKartetCategories.map((item) => (
-                <SelectItem
-                  key={item.value}
-                  item={item.value}
-                  onClick={() =>
-                    setSelectedRettIKartetCategory(
-                      item.value as RettIKartetCategory,
-                    )
-                  }
+        <DialogBody mb={'8px'}>
+          <Stack>
+            <Text>
+              {t('map.contextmenu.items.rettikartet.modal.description')}
+            </Text>
+            <HStack>
+              {rettIKartetCategory.map((category) => (
+                <Link
+                  href={getRettIKartetUrl(category)}
+                  key={category}
+                  target="_blank"
                 >
-                  {item.label}
-                </SelectItem>
+                  <VStack>
+                    <Heading size="sm">
+                      {t(
+                        `map.contextmenu.items.rettikartet.modal.rettikartetcategories.${category}`,
+                      )}
+                      <Image src={`/rettikartetCategories/${category}.jpg`} />
+                    </Heading>
+                  </VStack>
+                </Link>
               ))}
-            </SelectContent>
-          </SelectRoot>
+            </HStack>
+          </Stack>
         </DialogBody>
-        <DialogFooter justifyContent="space-between">
-          <Link href={rettIKartetUrl} external target="_blank">
-            {t('map.contextmenu.items.rettikartet.modal.link.label')}
-          </Link>
-        </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>
     </Dialog>

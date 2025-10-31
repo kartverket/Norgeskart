@@ -132,7 +132,7 @@
           "tooltip": "Navigate to RettIKartet.no",
           "modal": {
             "title": "Report an error",
-            "description": "Report something wrong with a map in rettikartet.no. Use the dropdown to select a category.",
+            "description": "Report something wrong with a map in rettikartet.no. Select a category below.",
             "rettikartetcategories": {
               "n50kartdata": "N50 maps",
               "sjo": "Oceanic",

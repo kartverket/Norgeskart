@@ -137,7 +137,7 @@
           "tooltip": "Gå til RettIKartet.no",
           "modal": {
             "title": "Meld om en feil",
-            "description": "Meld om feil i kart på rettikartet.no. Bruk nedtrekksmenyen for å velge kategori.",
+            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under.",
             "rettikartetcategories": {
               "n50kartdata": "N50 kart",
               "sjo": "Sjøkart",
