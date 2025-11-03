@@ -13,5 +13,14 @@ export const useMapLayers = () => {
       )[0] as unknown as VectorLayer;
   };
 
-  return { getDrawLayer };
+  const getPropertyGeometryLayer = () => {
+    return map
+      .getLayers()
+      .getArray()
+      .filter(
+        (layer) => layer.get('id') === 'propertyGeometryLayer',
+      )[0] as unknown as VectorLayer;
+  };
+
+  return { getDrawLayer, getPropertyGeometryLayer };
 };

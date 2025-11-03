@@ -175,7 +175,10 @@
     "multipleAddressesText": "The property has several addresses",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",
-    "subholdingNr": "Subholding nr."
+    "subholdingNr": "Subholding nr.",
+    "markProperty": {
+      "label": "Show property on map"
+    }
   },
   "search": {
     "actions": {

@@ -2,7 +2,6 @@ import { atom } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls } from 'ol/control/defaults.js';
 import ScaleLine from 'ol/control/ScaleLine.js';
-import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 
@@ -95,8 +94,7 @@ export const mapAtom = atom<Map>(() => {
   });
 
   map.addLayer(mapLayers.markerLayer.getLayer());
-  const drawLayer = mapLayers.drawLayer.getLayer() as VectorLayer;
-  map.addLayer(drawLayer);
+  map.addLayer(mapLayers.drawLayer.getLayer());
 
   const intialView = getInitialMapView();
 
