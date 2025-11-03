@@ -78,15 +78,14 @@ export const saveFeatures = async (
   }
 };
 
-//TODO: Finn ut av hva disse numrene faktisk heter på engelsk
 export const getPropertyGeometry = async (
   municipalityNumber: string, //kommunenummer
-  farmNumber: string, //gårdsnummer
-  useNumber: string, //bruksnummer
-  fastNumber: string, //festenummer
+  holdingNumber: string, //gårdsnummer
+  subHoldingNumber: string, //bruksnummer
+  leaseNumber: string, //festenummer
   sectionNumber: string, //seksjonsnummer
 ) => {
-  const id = `${municipalityNumber}-${farmNumber}-${useNumber}-${fastNumber}-${sectionNumber}`;
+  const id = `${municipalityNumber}-${holdingNumber}-${subHoldingNumber}-${leaseNumber}-${sectionNumber}`;
   const response = await fetch(`${BASE_API_URL}/v1/teiger/${id}/`);
   if (!response.ok) {
     console.error(
