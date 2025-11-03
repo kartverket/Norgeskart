@@ -20,7 +20,9 @@ export const AvailableProjections: ProjectionIdentifier[] = [
   'EPSG:3857', // webmercator
   'EPSG:25832', // utm32n
   'EPSG:25833', // utm33n
+  'EPSG:25834', // utm34n
   'EPSG:25835', // utm35n
+  'EPSG:25836', // utm36n
 ];
 
 export type ProjectionIdentifier =
@@ -28,7 +30,9 @@ export type ProjectionIdentifier =
   | 'EPSG:3857' // webmercator
   | 'EPSG:25832' // utm32n
   | 'EPSG:25833' // utm33n
-  | 'EPSG:25835'; // utm35n
+  | 'EPSG:25834' // utm34n
+  | 'EPSG:25835' // utm35n
+  | 'EPSG:25836'; // utm36n
 export const mapOrientationAtom = atom<number>(0);
 export const mapOrientationDegreesAtom = atom<number>((get) => {
   const radians = get(mapOrientationAtom);

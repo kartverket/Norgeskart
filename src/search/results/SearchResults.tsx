@@ -5,6 +5,7 @@ import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
+import { ParsedCoordinate } from '../../shared/utils/coordinateParser.ts';
 import {
   Address,
   Metadata,
@@ -16,18 +17,20 @@ import {
 import { InfoBox } from '../infobox/InfoBox.tsx';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
+import { CoordinateResults } from './CoordinateResults.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
 import { PropertiesResults } from './PropertiesResults.tsx';
 import { RoadsResults } from './RoadsResults.tsx';
 import { searchResultsMapper } from './searchresultsMapper.ts';
 
-type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
+type AccordionTab = 'coordinates' | 'places' | 'roads' | 'properties' | 'addresses';
 
 interface SearchResultsProps {
   properties: Property[];
   roads: Road[];
   places: PlaceName[];
   addresses: Address[];
+  coordinate: ParsedCoordinate | null;
   placesMetadata?: Metadata;
   onPlacesPageChange: (_page: number) => void;
   searchQuery: string;
@@ -42,6 +45,7 @@ export const SearchResults = ({
   roads,
   places,
   addresses,
+  coordinate,
   placesMetadata,
   onPlacesPageChange,
   setSelectedResult,
@@ -53,12 +57,34 @@ export const SearchResults = ({
   const isMobileScreen = useIsMobileScreen();
   const { setMapLocation } = useMapSettings();
   const [accordionTabsOpen, setAccordionTabsOpen] = useState<AccordionTab[]>([
+    'coordinates',
     'places',
     'roads',
     'properties',
     'addresses',
   ]);
-  const allResults = searchResultsMapper(places, roads, addresses, properties);
+  
+  // Add coordinate to results if present
+  const coordinateResults: SearchResult[] = coordinate
+    ? [
+        {
+          type: 'Coordinate',
+          name: coordinate.formattedString,
+          lat: coordinate.lat,
+          lon: coordinate.lon,
+          coordinate: {
+            formattedString: coordinate.formattedString,
+            projection: coordinate.projection,
+            inputFormat: coordinate.inputFormat,
+          },
+        },
+      ]
+    : [];
+  
+  const allResults = [
+    ...coordinateResults,
+    ...searchResultsMapper(places, roads, addresses, properties),
+  ];
 
   const handleHover = (res: SearchResult) => {
     setHoveredResult(res);
@@ -117,6 +143,13 @@ export const SearchResults = ({
         hasResults ? (isMobileScreen ? '10vh' : 'calc(100vh - 130px)') : 'none'
       }
     >
+      <CoordinateResults
+        coordinate={coordinate}
+        handleSearchClick={handleSearchClick}
+        handleHover={handleHover}
+        setHoveredResult={setHoveredResult}
+        onTabClick={() => handleAccordionTabClick('coordinates')}
+      />
       <PlacesResult
         places={places}
         placesMetadata={placesMetadata}

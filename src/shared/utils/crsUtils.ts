@@ -10,6 +10,8 @@ export const getInputCRS = (selectedResult: SearchResult) => {
       return 'EPSG:4258';
     case 'Address':
       return 'EPSG:4258';
+    case 'Coordinate':
+      return selectedResult.coordinate.projection;
     default:
       return 'EPSG:4258';
   }

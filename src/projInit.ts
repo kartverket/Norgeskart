@@ -21,12 +21,30 @@ export const projInit = () => {
   );
 
   proj4.defs(
+    'EPSG:25834',
+    '+proj=utm +zone=34 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +type=crs',
+  );
+  proj4.defs(
+    'http://www.opengis.net/def/crs/EPSG/0/25834',
+    proj4.defs('EPSG:25834'),
+  );
+
+  proj4.defs(
     'EPSG:25835',
     '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +type=crs',
   );
   proj4.defs(
     'http://www.opengis.net/def/crs/EPSG/0/25835',
     proj4.defs('EPSG:25835'),
+  );
+
+  proj4.defs(
+    'EPSG:25836',
+    '+proj=utm +zone=36 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +type=crs',
+  );
+  proj4.defs(
+    'http://www.opengis.net/def/crs/EPSG/0/25836',
+    proj4.defs('EPSG:25836'),
   );
 
   proj4.defs('EPSG:4258', '+proj=longlat +ellps=GRS80');
@@ -41,7 +59,13 @@ export const projInit = () => {
   getProjection('EPSG:25833')?.setExtent([
     -4450512.62, 680451.78, 2665647.82, 9493779.8,
   ]);
+  getProjection('EPSG:25834')?.setExtent([
+    -4450512.62, 680451.78, 2665647.82, 9493779.8,
+  ]);
   getProjection('EPSG:25835')?.setExtent([
+    -5646007.42, 680723.36, 2528001.15, 9567789.69,
+  ]);
+  getProjection('EPSG:25836')?.setExtent([
     -5646007.42, 680723.36, 2528001.15, 9567789.69,
   ]);
 };

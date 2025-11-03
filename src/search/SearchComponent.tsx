@@ -1,7 +1,8 @@
 import { Box, Flex, Icon, Search } from '@kvib/react';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../types/searchTypes.ts';
+import { parseCoordinateInput, ParsedCoordinate } from '../shared/utils/coordinateParser.ts';
 import { SearchResults } from './results/SearchResults.tsx';
 import {
   useAddresses,
@@ -23,6 +24,11 @@ export const SearchComponent = () => {
   const { roadsData } = useRoads(searchQuery);
   const { propertiesData } = useProperties(searchQuery);
   const { addressData } = useAddresses(searchQuery);
+
+  // Detect if search query is a coordinate
+  const coordinateResult = useMemo<ParsedCoordinate | null>(() => {
+    return parseCoordinateInput(searchQuery);
+  }, [searchQuery]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -61,6 +67,7 @@ export const SearchComponent = () => {
         roads={roadsData ? roadsData : []}
         places={placeNameData ? placeNameData.navn : []}
         addresses={addressData ? addressData.adresser : []}
+        coordinate={coordinateResult}
         placesMetadata={placeNameData?.metadata}
         onPlacesPageChange={(page: number) => {
           setPlacesPage(page);

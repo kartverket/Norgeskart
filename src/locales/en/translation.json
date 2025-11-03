@@ -50,6 +50,8 @@
     "address": "Address",
     "cadastralIdentifier": "Cadastral identifier",
     "coordinateInfo": "See coordinates",
+    "coordinateSystem": "Coordinate system",
+    "decimalDegrees": "Decimal degrees",
     "emergencyPoster": "Make emergency poster",
     "heightEstimatedByInterpolation": "Height (estimated by interpolation):",
     "in": "in",
@@ -58,7 +60,8 @@
     "municipality": "Municipality",
     "placeinfo": "See facts about placename",
     "propertyInfo": "See property information",
-    "roadName": "Road name"
+    "roadName": "Road name",
+    "utmCoordinates": "UTM coordinates"
   },
   "languageSelector": {
     "chooseLanguage": "Select language",
@@ -69,6 +72,7 @@
   },
   "locationType": {
     "address": "Address",
+    "coordinate": "Coordinate",
     "place": "Placename",
     "property": "Property",
     "road": "Road"
@@ -191,6 +195,7 @@
       }
     },
     "addresses": "Addresses",
+    "coordinates": "Coordinates",
     "houseNumber": "House nr.",
     "placeholder": "Search Norgeskart",
     "placeName": "Placenames",
