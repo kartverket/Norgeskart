@@ -128,7 +128,7 @@ export const BackgroundLayerSettings = () => {
 
     const avaialbeLayersForProvider = projectionLayerNames.map((layerName) => ({
       value: layerName,
-      label: t(`map.settings.layers.mapNames.backgroundMaps${layerName}`),
+      label: t(`map.settings.layers.mapNames.backgroundMaps.${layerName}`),
     }));
 
     avaiableLayers.push(...avaialbeLayersForProvider);
