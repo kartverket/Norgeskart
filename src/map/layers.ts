@@ -10,7 +10,6 @@ export const isMapLayerBackground = (layer: BaseLayer): boolean => {
 
 export type MapLayer = {
   getLayer: LayerFunction;
-  id: string;
   maxZoom?: number;
 };
 
@@ -18,11 +17,11 @@ export type MapLayers = {
   drawLayer: MapLayer;
   markerLayer: MapLayer;
   clusterLayer: MapLayer;
+  propertyGeometryLayer: MapLayer;
 };
 
 const mapLayers: MapLayers = {
   drawLayer: {
-    id: 'drawLayer',
     getLayer: () => {
       return new VectorLayer({
         zIndex: 2,
@@ -33,7 +32,6 @@ const mapLayers: MapLayers = {
   },
 
   markerLayer: {
-    id: 'markerLayer',
     getLayer: () => {
       return new VectorLayer({
         zIndex: 3,
@@ -44,12 +42,20 @@ const mapLayers: MapLayers = {
   },
 
   clusterLayer: {
-    id: 'clusterLayer',
     getLayer: () => {
       return new VectorLayer({
         zIndex: 4,
         source: new VectorSource({ wrapX: false }),
         properties: { id: 'clusterLayer' },
+      });
+    },
+  },
+  propertyGeometryLayer: {
+    getLayer: () => {
+      return new VectorLayer({
+        zIndex: 5,
+        source: new VectorSource({ wrapX: false }),
+        properties: { id: 'propertyGeometryLayer' },
       });
     },
   },

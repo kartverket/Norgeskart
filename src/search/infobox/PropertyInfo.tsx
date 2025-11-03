@@ -1,15 +1,21 @@
 import {
   Box,
   Button,
-  Checkbox,
-  CheckboxRoot,
   Flex,
   Stack,
+  Switch,
+  SwitchLabel,
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
+import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getPropertyGeometry } from '../../api/nkApiClient';
+import { mapAtom } from '../../map/atoms';
+import { mapLayers } from '../../map/layers';
 import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import { Property } from '../../types/searchTypes';
 import {
@@ -47,6 +53,18 @@ const fetchPropertyDetailsByCoordinates = async (
 export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   const { t } = useTranslation();
   const [lon4326, lat4326] = transform([lon, lat], inputCRS, 'EPSG:4326');
+  const map = useAtomValue(mapAtom);
+  useEffect(() => {
+    return () => {
+      const existingLayer = map
+        .getLayers()
+        .getArray()
+        .find((layer) => layer.get('id') === 'propertyGeometryLayer');
+      if (existingLayer) {
+        map.removeLayer(existingLayer);
+      }
+    };
+  }, [map]);
 
   const {
     data: propertyDetails,
@@ -82,6 +100,32 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
 
   const propertyRegisterUrl = `https://eiendomsregisteret.kartverket.no/eiendom/${property.KOMMUNENR}/${property.GARDSNR}/${property.BRUKSNR}/${property.FESTENR}/${property.SEKSJONSNR}`;
 
+  const handleSwitchChange = async (checked: boolean) => {
+    const existingLayer = map
+      .getLayers()
+      .getArray()
+      .find((layer) => layer.get('id') === 'propertyGeometryLayer');
+    if (existingLayer) {
+      map.removeLayer(existingLayer);
+    }
+    if (checked) {
+      const layerToAdd =
+        mapLayers.propertyGeometryLayer.getLayer() as VectorLayer;
+      const features = await getPropertyGeometry(
+        property.KOMMUNENR,
+        property.GARDSNR,
+        property.BRUKSNR,
+        property.FESTENR,
+        property.SEKSJONSNR,
+      );
+
+      if (features) {
+        layerToAdd.getSource()?.addFeatures(features);
+        map.addLayer(layerToAdd);
+      }
+    }
+  };
+
   return (
     <Box>
       <Stack gap={0}>
@@ -103,9 +147,13 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
         ))}
       </Stack>
       <Flex justify="space-between" align="center">
-        <CheckboxRoot>
-          <Checkbox>Marker</Checkbox>
-        </CheckboxRoot>
+        <Switch
+          onCheckedChange={(e) => {
+            handleSwitchChange(e.checked);
+          }}
+        >
+          <SwitchLabel>{t('propertyInfo.markProperty.label')}</SwitchLabel>
+        </Switch>
         <Button
           mt={4}
           size="xs"

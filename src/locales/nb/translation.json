@@ -180,7 +180,10 @@
     "multipleAddressesText": "Eiendommen har flere adresser",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",
-    "subholdingNr": "Bruksnr."
+    "subholdingNr": "Bruksnr.",
+    "markProperty": {
+      "label": "Vis eiendom på kartet"
+    }
   },
   "search": {
     "actions": {

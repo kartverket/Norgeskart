@@ -1,10 +1,15 @@
 import { FeatureCollection } from 'geojson';
+import { getDefaultStore } from 'jotai';
+import { Feature } from 'ol';
 import { Color } from 'ol/color';
 import { ColorLike, PatternDescriptor } from 'ol/colorlike';
-import { Style } from 'ol/style';
+import { GML } from 'ol/format';
+import { Polygon } from 'ol/geom';
+import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import RegularShape from 'ol/style/RegularShape';
 import { getEnv } from '../env';
+import { mapAtom } from '../map/atoms';
 
 const BASE_API_URL = getEnv().apiUrl;
 
@@ -71,6 +76,52 @@ export const saveFeatures = async (
     console.error('Error saving features:', e);
     return null;
   }
+};
+
+export const getPropertyGeometry = async (
+  municipalityNumber: string, //kommunenummer
+  holdingNumber: string, //gårdsnummer
+  subHoldingNumber: string, //bruksnummer
+  leaseNumber: string, //festenummer
+  sectionNumber: string, //seksjonsnummer
+) => {
+  const id = `${municipalityNumber}-${holdingNumber}-${subHoldingNumber}-${leaseNumber}-${sectionNumber}`;
+  const response = await fetch(`${BASE_API_URL}/v1/teiger/${id}/`);
+  if (!response.ok) {
+    console.error(
+      `Failed to fetch property geometry for id ${id}: ${response.statusText}`,
+    );
+    return null;
+  }
+  const text = await response.text();
+
+  const store = getDefaultStore();
+  const projection = store.get(mapAtom).getView().getProjection().getCode();
+
+  const gmlFormat = new GML({
+    featureNS: 'http://www.statkart.no/matrikkel',
+    featureType: 'TEIGWFS',
+    srsName: 'EPSG:4326',
+  });
+  const features = gmlFormat.readFeatures(text, {
+    featureProjection: projection,
+  });
+
+  const style = new Style({
+    stroke: new Stroke({ color: 'blue', width: 2 }),
+    fill: new Fill({ color: 'rgba(255, 255, 0, 0.25)' }),
+  });
+
+  return features
+    .map((feature) => {
+      return feature.get('FLATE') as Polygon;
+    })
+    .filter((geom) => geom != null)
+    .map((geom) => {
+      const feature = new Feature({ geometry: geom });
+      feature.setStyle(style);
+      return feature;
+    });
 };
 
 export const getStyleForStorage = (
