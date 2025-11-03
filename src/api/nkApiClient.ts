@@ -5,7 +5,7 @@ import { Color } from 'ol/color';
 import { ColorLike, PatternDescriptor } from 'ol/colorlike';
 import { GML } from 'ol/format';
 import { Polygon } from 'ol/geom';
-import { Style } from 'ol/style';
+import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import RegularShape from 'ol/style/RegularShape';
 import { getEnv } from '../env';
@@ -108,12 +108,21 @@ export const getPropertyGeometry = async (
     featureProjection: projection,
   });
 
+  const style = new Style({
+    stroke: new Stroke({ color: 'blue', width: 2 }),
+    fill: new Fill({ color: 'rgba(255, 255, 0, 0.25)' }),
+  });
+
   return features
     .map((feature) => {
       return feature.get('FLATE') as Polygon;
     })
     .filter((geom) => geom != null)
-    .map((geom) => new Feature({ geometry: geom }));
+    .map((geom) => {
+      const feature = new Feature({ geometry: geom });
+      feature.setStyle(style);
+      return feature;
+    });
 };
 
 export const getStyleForStorage = (

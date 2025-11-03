@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getPropertyGeometry } from '../../api/nkApiClient';
 import { mapAtom } from '../../map/atoms';
@@ -53,6 +54,17 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   const { t } = useTranslation();
   const [lon4326, lat4326] = transform([lon, lat], inputCRS, 'EPSG:4326');
   const map = useAtomValue(mapAtom);
+  useEffect(() => {
+    return () => {
+      const existingLayer = map
+        .getLayers()
+        .getArray()
+        .find((layer) => layer.get('id') === 'propertyGeometryLayer');
+      if (existingLayer) {
+        map.removeLayer(existingLayer);
+      }
+    };
+  }, [map]);
 
   const {
     data: propertyDetails,
@@ -106,10 +118,6 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
         property.FESTENR,
         property.SEKSJONSNR,
       );
-
-      features?.forEach((feature) => {
-        console.log('feature', feature);
-      });
 
       if (features) {
         layerToAdd.getSource()?.addFeatures(features);
