@@ -77,11 +77,11 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   }
 
   const epsgCode = parseInt(epsgMatch[1], 10);
-  
+
   // Map EPSG code to ProjectionIdentifier
   let projection: ProjectionIdentifier;
   let formatName: string;
-  
+
   switch (epsgCode) {
     case 4326:
       projection = 'EPSG:4326';
@@ -123,7 +123,10 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   // Parse coordinates
   const coordsCleaned = coordsPart
     .toLowerCase()
-    .replace(/\b(lat|latitude|nord|north|n|x|east|easting|øst|ost|e)[\s:=]*/gi, '')
+    .replace(
+      /\b(lat|latitude|nord|north|n|x|east|easting|øst|ost|e)[\s:=]*/gi,
+      '',
+    )
     .replace(/\b(lon|lng|longitude|y|north|northing|n)[\s:=]*/gi, '')
     .trim();
 
@@ -169,7 +172,7 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
  */
 const parseDecimalDegrees = (input: string): ParsedCoordinate | null => {
   // Remove common prefixes
-  let cleaned = input
+  const cleaned = input
     .toLowerCase()
     .replace(/\b(lat|latitude|nord|north|n)[\s:=]*/gi, '')
     .replace(/\b(lon|lng|longitude|øst|ost|east|e)[\s:=]*/gi, '')
@@ -223,18 +226,16 @@ const parseDecimalDegrees = (input: string): ParsedCoordinate | null => {
  */
 const parseDMS = (input: string): ParsedCoordinate | null => {
   // First try to match DMS format (with seconds)
-  const dmsPattern =
-    /(\d+)[°\s]+(\d+)['\s]+(\d+(?:\.\d+)?)["\s]*([NSEW])/gi;
+  const dmsPattern = /(\d+)[°\s]+(\d+)['\s]+(\d+(?:\.\d+)?)["\s]*([NSEW])/gi;
   let matches = Array.from(input.matchAll(dmsPattern));
 
-  let hasDMS = matches.length === 2;
-  
+  const hasDMS = matches.length === 2;
+
   // If DMS didn't match, try decimal minutes format (without seconds)
   if (!hasDMS) {
-    const dmPattern =
-      /(\d+)[°\s]+(\d+(?:\.\d+)?)['\s]*([NSEW])/gi;
+    const dmPattern = /(\d+)[°\s]+(\d+(?:\.\d+)?)['\s]*([NSEW])/gi;
     matches = Array.from(input.matchAll(dmPattern));
-    
+
     if (matches.length !== 2) {
       return null;
     }
@@ -247,17 +248,17 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     const degrees = parseInt(match[1], 10);
     const minutesOrSeconds = parseFloat(match[2]);
     const secondsOrDirection = match[3];
-    
+
     let minutes: number;
     let seconds: number;
     let direction: string;
-    
+
     if (hasDMS) {
       // DMS format: degrees, minutes, seconds, direction
       minutes = Math.floor(minutesOrSeconds);
       seconds = parseFloat(secondsOrDirection);
       direction = match[4].toUpperCase();
-      
+
       if (
         isNaN(degrees) ||
         isNaN(minutes) ||
@@ -272,12 +273,8 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
       minutes = minutesOrSeconds;
       seconds = 0;
       direction = secondsOrDirection.toUpperCase();
-      
-      if (
-        isNaN(degrees) ||
-        isNaN(minutes) ||
-        minutes >= 60
-      ) {
+
+      if (isNaN(degrees) || isNaN(minutes) || minutes >= 60) {
         return null;
       }
     }
@@ -301,13 +298,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     const degrees = Math.floor(abs);
     const minutes = Math.floor((abs - degrees) * 60);
     const seconds = ((abs - degrees - minutes / 60) * 3600).toFixed(1);
-    const direction = isLat
-      ? value >= 0
-        ? 'N'
-        : 'S'
-      : value >= 0
-        ? 'E'
-        : 'W';
+    const direction = isLat ? (value >= 0 ? 'N' : 'S') : value >= 0 ? 'E' : 'W';
     return `${degrees}°${minutes}'${seconds}"${direction}`;
   };
 
@@ -327,7 +318,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
  */
 const parseUTM = (input: string): ParsedCoordinate | null => {
   // Remove common prefixes
-  let cleaned = input
+  const cleaned = input
     .toLowerCase()
     .replace(/\b(east|easting|øst|ost|e)[\s:=]*/gi, '')
     .replace(/\b(north|northing|nord|n)[\s:=]*/gi, '')
@@ -363,12 +354,7 @@ const parseUTM = (input: string): ParsedCoordinate | null => {
   // Validate UTM ranges (rough check for Norway)
   // Easting: typically 0-1000000
   // Northing: typically 6000000-8000000 for Norway
-  if (
-    east < -100000 ||
-    east > 1200000 ||
-    north < 5000000 ||
-    north > 9000000
-  ) {
+  if (east < -100000 || east > 1200000 || north < 5000000 || north > 9000000) {
     return null;
   }
 

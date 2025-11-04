@@ -1,8 +1,11 @@
 import { Box, Flex, Icon, Search } from '@kvib/react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  parseCoordinateInput,
+  ParsedCoordinate,
+} from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
-import { parseCoordinateInput, ParsedCoordinate } from '../shared/utils/coordinateParser.ts';
 import { SearchResults } from './results/SearchResults.tsx';
 import {
   useAddresses,

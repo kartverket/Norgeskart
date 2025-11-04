@@ -5,8 +5,8 @@ import {
   List,
 } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
-import { SearchResult } from '../../types/searchTypes';
 import { ParsedCoordinate } from '../../shared/utils/coordinateParser';
+import { SearchResult } from '../../types/searchTypes';
 import { SearchResultLine } from './SearchResultLine';
 
 interface CoordinateResultsProps {
@@ -52,7 +52,9 @@ export const CoordinateResults = ({
           <SearchResultLine
             key="coordinate-result"
             heading={coordinate.formattedString}
-            locationType={t('infoBox.coordinateSystem') + ': ' + coordinate.projection}
+            locationType={
+              t('infoBox.coordinateSystem') + ': ' + coordinate.projection
+            }
             onClick={() => handleSearchClick(searchResult)}
             onMouseEnter={() => handleHover(searchResult)}
             onMouseLeave={() => setHoveredResult(null)}

@@ -1,11 +1,11 @@
 import { AccordionRoot } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
-import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import { ParsedCoordinate } from '../../shared/utils/coordinateParser.ts';
+import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import {
   Address,
   Metadata,
@@ -23,7 +23,12 @@ import { PropertiesResults } from './PropertiesResults.tsx';
 import { RoadsResults } from './RoadsResults.tsx';
 import { searchResultsMapper } from './searchresultsMapper.ts';
 
-type AccordionTab = 'coordinates' | 'places' | 'roads' | 'properties' | 'addresses';
+type AccordionTab =
+  | 'coordinates'
+  | 'places'
+  | 'roads'
+  | 'properties'
+  | 'addresses';
 
 interface SearchResultsProps {
   properties: Property[];
@@ -63,28 +68,33 @@ export const SearchResults = ({
     'properties',
     'addresses',
   ]);
-  
-  // Add coordinate to results if present
-  const coordinateResults: SearchResult[] = coordinate
-    ? [
-        {
-          type: 'Coordinate',
-          name: coordinate.formattedString,
-          lat: coordinate.lat,
-          lon: coordinate.lon,
-          coordinate: {
-            formattedString: coordinate.formattedString,
-            projection: coordinate.projection,
-            inputFormat: coordinate.inputFormat,
+
+  // Add coordinate to results if present and memoize results so they are stable
+  const coordinateResults = useMemo<SearchResult[]>(() => {
+    return coordinate
+      ? [
+          {
+            type: 'Coordinate',
+            name: coordinate.formattedString,
+            lat: coordinate.lat,
+            lon: coordinate.lon,
+            coordinate: {
+              formattedString: coordinate.formattedString,
+              projection: coordinate.projection,
+              inputFormat: coordinate.inputFormat,
+            },
           },
-        },
-      ]
-    : [];
-  
-  const allResults = [
-    ...coordinateResults,
-    ...searchResultsMapper(places, roads, addresses, properties),
-  ];
+        ]
+      : [];
+  }, [coordinate]);
+
+  const allResults = useMemo<SearchResult[]>(
+    () => [
+      ...coordinateResults,
+      ...searchResultsMapper(places, roads, addresses, properties),
+    ],
+    [coordinateResults, places, roads, addresses, properties],
+  );
 
   const handleHover = (res: SearchResult) => {
     setHoveredResult(res);
