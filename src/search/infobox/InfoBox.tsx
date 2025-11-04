@@ -4,6 +4,8 @@ import {
   AccordionItemTrigger,
   AccordionRoot,
   Box,
+  Flex,
+  Heading,
   IconButton,
   Stack,
 } from '@kvib/react';
@@ -44,15 +46,18 @@ export const InfoBox = ({ result, onClose }: InfoBoxProps) => {
       borderRadius={'16px'}
       bg="white"
     >
-      <IconButton
-        onClick={onClose}
-        icon={'close'}
-        variant="ghost"
-        alignSelf={'flex-end'}
-      />
+      <Flex justifyContent={'space-between'} alignItems="center">
+        <Heading size={'md'}>{result.name}</Heading>
+        <IconButton
+          onClick={onClose}
+          icon={'close'}
+          variant="ghost"
+          alignSelf={'flex-end'}
+        />
+      </Flex>
       {error != null && <InfoBoxContent result={result} elevationData={data} />}
       <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
-        <AccordionRoot collapsible mr={2} defaultValue={['propertyInfo']}>
+        <AccordionRoot collapsible defaultValue={['propertyInfo']}>
           <AccordionItem value="propertyInfo">
             <AccordionItemTrigger pl={0}>
               {t('infoBox.propertyInfo')}
