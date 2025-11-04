@@ -58,7 +58,18 @@
     "municipality": "Municipality",
     "placeinfo": "See facts about placename",
     "propertyInfo": "See property information",
-    "roadName": "Road name"
+    "roadName": "Road name",
+    "coordinateSection": {
+      "east": "East",
+      "north": "North",
+      "copy": {
+        "label": "Copy coordinates",
+        "toast": {
+          "title": "Coordinates copied to clipboard"
+        }
+      },
+      "differentCrs": "Change coordinate system"
+    }
   },
   "languageSelector": {
     "chooseLanguage": "Select language",
