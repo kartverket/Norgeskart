@@ -22,8 +22,12 @@ const getNiBLayerNameForProjection = (
       return 'Nibcache_UTM32_EUREF89_v2';
     case 'EPSG:25833':
       return 'Nibcache_UTM33_EUREF89_v2';
+    case 'EPSG:25834':
+      return null; // Not available as WMTS layer
     case 'EPSG:25835':
       return 'Nibcache_UTM35_EUREF89_v2';
+    case 'EPSG:25836':
+      return null; // Not available as WMTS layer
   }
 };
 
