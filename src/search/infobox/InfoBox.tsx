@@ -3,8 +3,9 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   AccordionRoot,
-  Card,
-  CardBody,
+  Box,
+  IconButton,
+  Stack,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
@@ -20,9 +21,10 @@ import { PropertyInfo } from './PropertyInfo';
 
 interface InfoBoxProps {
   result: SearchResult;
+  onClose: () => void;
 }
 
-export const InfoBox = ({ result }: InfoBoxProps) => {
+export const InfoBox = ({ result, onClose }: InfoBoxProps) => {
   const { t } = useTranslation();
   const inputCRS = getInputCRS(result);
   const [x, y] = transform([result.lon, result.lat], inputCRS, 'EPSG:25833');
@@ -34,17 +36,23 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
   });
 
   return (
-    <Card>
-      <CardBody
-        pb={2}
-        maxHeight="calc(100vh - 130px)"
-        overflowY="auto"
-        overflowX="hidden"
-      >
-        {error != null && (
-          <InfoBoxContent result={result} elevationData={data} />
-        )}
-        <AccordionRoot collapsible mr={2} mt={5}>
+    <Stack
+      position={'fixed'}
+      right={'16px'}
+      w={'400px'}
+      p={4}
+      borderRadius={'16px'}
+      bg="white"
+    >
+      <IconButton
+        onClick={onClose}
+        icon={'close'}
+        variant="ghost"
+        alignSelf={'flex-end'}
+      />
+      {error != null && <InfoBoxContent result={result} elevationData={data} />}
+      <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
+        <AccordionRoot collapsible mr={2} defaultValue={['propertyInfo']}>
           <AccordionItem value="propertyInfo">
             <AccordionItemTrigger pl={0}>
               {t('infoBox.propertyInfo')}
@@ -82,7 +90,7 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
             </AccordionItemContent>
           </AccordionItem>
         </AccordionRoot>
-      </CardBody>
-    </Card>
+      </Box>
+    </Stack>
   );
 };

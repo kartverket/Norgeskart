@@ -8,19 +8,18 @@ import {
   VStack,
 } from '@kvib/react';
 import { t } from 'i18next';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { isRettIKartetDialogOpenAtom } from '../menu/dialogs/atoms';
 import { MapTool } from './MapOverlay';
+import { mapToolAtom } from './atoms';
 
 interface MapToolButtonsProps {
   currentMapTool: MapTool;
   setCurrentMapTool: (tool: MapTool) => void;
 }
-export const MapToolButtons = ({
-  currentMapTool,
-  setCurrentMapTool,
-}: MapToolButtonsProps) => {
+export const MapToolButtons = ({}: MapToolButtonsProps) => {
   const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
+  const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {

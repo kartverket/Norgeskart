@@ -1,5 +1,5 @@
 import { Box, Image, Portal } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../atoms';
 import { MapControlButtons } from '../MapControlButtons';
 import { useCompassFileName } from '../mapHooks';
+import { mapToolAtom } from './atoms';
 import { MapToolButtons } from './MapToolButtons';
 import { MapToolCards } from './MapToolCards';
 
@@ -26,7 +27,7 @@ export const MapOverlay = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const compassFileName = useCompassFileName();
   const { drawEnabled, setDrawEnabled } = useDrawSettings();
-  const [currentMapTool, setCurrentMapTool] = useState<MapTool>(null);
+  const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
 
   const compassOrientation =
     mapOrientation + (useMagneticNorth ? magneticDeclination : 0);

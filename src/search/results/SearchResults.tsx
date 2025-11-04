@@ -13,7 +13,6 @@ import {
   Road,
   SearchResult,
 } from '../../types/searchTypes.ts';
-import { InfoBox } from '../infobox/InfoBox.tsx';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
@@ -101,10 +100,6 @@ export const SearchResults = ({
     return null;
   }
 
-  if (selectedResult) {
-    return <InfoBox result={selectedResult} />;
-  }
-
   return (
     <AccordionRoot
       collapsible
@@ -114,9 +109,7 @@ export const SearchResults = ({
       mt="5px"
       borderRadius={10}
       overflowY="auto"
-      height={
-        hasResults ? (isMobileScreen ? '10vh' : 'calc(100vh - 130px)') : 'auto'
-      }
+      height={hasResults ? (isMobileScreen ? '10vh' : 'fit-content') : 'auto'}
       maxHeight={
         hasResults ? (isMobileScreen ? '10vh' : 'calc(100vh - 130px)') : 'none'
       }

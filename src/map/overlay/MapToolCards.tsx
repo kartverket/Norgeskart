@@ -45,11 +45,11 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
     <Box
       position="fixed"
-      top={0}
-      left={0}
+      top={'16px'}
+      left={'16px'}
       width="20vw"
       minWidth="350px"
-      height="100vh" // tar hele høyden
+      height="80vh" // tar hele høyden
       zIndex={2000}
       pointerEvents="auto"
       bg="#f5f2f2"
@@ -60,6 +60,7 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       borderRight="1px solid rgba(0,0,0,0.1)"
       px={4}
       py={4}
+      borderRadius={'16px'}
     >
       <Flex justify="space-between">
         <Heading fontWeight="bold" mb="2rem">
