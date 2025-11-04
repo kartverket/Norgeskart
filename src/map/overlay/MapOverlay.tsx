@@ -118,10 +118,7 @@ export const MapOverlay = () => {
             p={2}
             boxShadow="lg"
           >
-            <MapToolButtons
-              currentMapTool={currentMapTool}
-              setCurrentMapTool={setCurrentMapTool}
-            />
+            <MapToolButtons />
           </Box>
           <MapToolCards
             currentMapTool={currentMapTool}

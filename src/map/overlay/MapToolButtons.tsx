@@ -11,14 +11,9 @@ import { t } from 'i18next';
 import { useAtom, useSetAtom } from 'jotai';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { isRettIKartetDialogOpenAtom } from '../menu/dialogs/atoms';
-import { MapTool } from './MapOverlay';
 import { mapToolAtom } from './atoms';
 
-interface MapToolButtonsProps {
-  currentMapTool: MapTool;
-  setCurrentMapTool: (tool: MapTool) => void;
-}
-export const MapToolButtons = ({}: MapToolButtonsProps) => {
+export const MapToolButtons = () => {
   const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const isMobileScreen = useIsMobileScreen();
