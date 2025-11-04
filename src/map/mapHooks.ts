@@ -102,10 +102,21 @@ const useMapSettings = () => {
       return;
     }
 
-    const layerToAdd = getBackgroundLayer(backgroundLayerName);
+    let layerToAdd = getBackgroundLayer(backgroundLayerName);
+    let actualLayerName = backgroundLayerName;
+
+    // If requested layer is not available, fall back to default
     if (layerToAdd == null) {
-      console.warn(`Background layer ${backgroundLayerName} is not available`);
-      return;
+      console.warn(
+        `Background layer ${backgroundLayerName} is not available for current projection, falling back to ${DEFAULT_BACKGROUND_LAYER}`,
+      );
+      layerToAdd = getBackgroundLayer(DEFAULT_BACKGROUND_LAYER);
+      actualLayerName = DEFAULT_BACKGROUND_LAYER;
+
+      if (layerToAdd == null) {
+        console.error('Default background layer is also not available');
+        return;
+      }
     }
 
     const WTMSLayers = map.getLayers().getArray().filter(isMapLayerBackground);
@@ -114,7 +125,7 @@ const useMapSettings = () => {
     });
 
     map.addLayer(layerToAdd);
-    setUrlParameter('backgroundLayer', backgroundLayerName);
+    setUrlParameter('backgroundLayer', actualLayerName);
   };
 
   const zoomIn = () => {
@@ -156,16 +167,6 @@ const useMapSettings = () => {
     const backgroundLayerUrlParam: BackgroundLayerName =
       (getUrlParameter('backgroundLayer') as BackgroundLayerName) ||
       DEFAULT_BACKGROUND_LAYER;
-
-    const backgroundLayer = getBackgroundLayer(
-      backgroundLayerUrlParam as BackgroundLayerName,
-    );
-    if (!backgroundLayer) {
-      console.warn(
-        `Background layer ${backgroundLayerUrlParam} is not available`,
-      );
-      return;
-    }
 
     let newCenter = undefined;
     if (oldProjection.getCode() === projection.getCode()) {

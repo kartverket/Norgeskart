@@ -11,6 +11,15 @@ import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
 import { ControlPortal, getMousePositionControl } from './mapControls';
 
+export type ProjectionIdentifier =
+  | 'EPSG:4326' // wgs84
+  | 'EPSG:3857' // webmercator
+  | 'EPSG:25832' // utm32n
+  | 'EPSG:25833' // utm33n
+  | 'EPSG:25834' // utm34n
+  | 'EPSG:25835' // utm35n
+  | 'EPSG:25836'; // utm36n
+
 const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
 export const DEFAULT_ZOOM_LEVEL = 5;
 export const DEFAULT_CENTER = [1900000, 9500000]; // Center in EPSG:3857
@@ -20,19 +29,8 @@ export const AvailableProjections: ProjectionIdentifier[] = [
   'EPSG:3857', // webmercator
   'EPSG:25832', // utm32n
   'EPSG:25833', // utm33n
-  'EPSG:25834', // utm34n
   'EPSG:25835', // utm35n
-  'EPSG:25836', // utm36n
 ];
-
-export type ProjectionIdentifier =
-  | 'EPSG:4326' // wgs84
-  | 'EPSG:3857' // webmercator
-  | 'EPSG:25832' // utm32n
-  | 'EPSG:25833' // utm33n
-  | 'EPSG:25834' // utm34n
-  | 'EPSG:25835' // utm35n
-  | 'EPSG:25836'; // utm36n
 export const mapOrientationAtom = atom<number>(0);
 export const mapOrientationDegreesAtom = atom<number>((get) => {
   const radians = get(mapOrientationAtom);
