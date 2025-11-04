@@ -63,7 +63,18 @@
     "municipality": "Kommune",
     "placeInfo": "Sjå fakta om stadnamnet",
     "propertyInfo": "Sjå eigedomsinformasjon",
-    "roadName": "Vegnamn"
+    "roadName": "Vegnamn",
+    "coordinateSection": {
+      "east": "Øst",
+      "north": "Nord",
+      "copy": {
+        "label": "Kopier koordinatar",
+        "toast": {
+          "title": "Koordinatar kopiert til utklipstavla"
+        }
+      },
+      "differentCrs": "Endre koordinatsystem"
+    }
   },
   "languageSelector": {
     "chooseLanguage": "Velg språk",
