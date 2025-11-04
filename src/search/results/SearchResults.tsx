@@ -1,9 +1,8 @@
-import { AccordionRoot } from '@kvib/react';
+import { AccordionRoot, Box, Stack } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
-import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import {
   Address,
@@ -49,7 +48,6 @@ export const SearchResults = ({
   setHoveredResult,
 }: SearchResultsProps) => {
   const map = useAtomValue(mapAtom);
-  const isMobileScreen = useIsMobileScreen();
   const { setMapLocation } = useMapSettings();
   const [accordionTabsOpen, setAccordionTabsOpen] = useState<AccordionTab[]>([
     'places',
@@ -94,56 +92,53 @@ export const SearchResults = ({
     );
   }, [map, allResults, hoveredResult, selectedResult, handleSearchClick]);
 
-  const hasResults = allResults.length > 0;
-
   if (!placesMetadata) {
     return null;
   }
 
   return (
-    <AccordionRoot
-      collapsible
-      multiple
-      value={accordionTabsOpen}
-      backgroundColor="white"
-      mt="5px"
-      borderRadius={10}
-      overflowY="auto"
-      height={hasResults ? (isMobileScreen ? '10vh' : 'fit-content') : 'auto'}
-      maxHeight={
-        hasResults ? (isMobileScreen ? '10vh' : 'calc(100vh - 130px)') : 'none'
-      }
-    >
-      <PlacesResult
-        places={places}
-        placesMetadata={placesMetadata}
-        onPlacesPageChange={onPlacesPageChange}
-        handleSearchClick={handleSearchClick}
-        handleHover={handleHover}
-        setHoveredResult={setHoveredResult}
-        onTabClick={() => handleAccordionTabClick('places')}
-      />
-      <RoadsResults
-        roads={roads}
-        handleSearchClick={handleSearchClick}
-        handleHover={handleHover}
-        setHoveredResult={setHoveredResult}
-        onTabClick={() => handleAccordionTabClick('roads')}
-      />
-      <PropertiesResults
-        properties={properties}
-        handleSearchClick={handleSearchClick}
-        handleHover={handleHover}
-        setHoveredResult={setHoveredResult}
-        onTabClick={() => handleAccordionTabClick('properties')}
-      />
-      <AddressesResults
-        addresses={addresses}
-        handleSearchClick={handleSearchClick}
-        handleHover={handleHover}
-        setHoveredResult={setHoveredResult}
-        onTabClick={() => handleAccordionTabClick('addresses')}
-      />
-    </AccordionRoot>
+    <Stack p={4} borderRadius={'16px'} bg="white">
+      <Box overflowY="auto" overflowX="hidden" maxHeight="60vh">
+        <AccordionRoot
+          collapsible
+          multiple
+          value={accordionTabsOpen}
+          backgroundColor="white"
+          mt="5px"
+          borderRadius={10}
+        >
+          <PlacesResult
+            places={places}
+            placesMetadata={placesMetadata}
+            onPlacesPageChange={onPlacesPageChange}
+            handleSearchClick={handleSearchClick}
+            handleHover={handleHover}
+            setHoveredResult={setHoveredResult}
+            onTabClick={() => handleAccordionTabClick('places')}
+          />
+          <RoadsResults
+            roads={roads}
+            handleSearchClick={handleSearchClick}
+            handleHover={handleHover}
+            setHoveredResult={setHoveredResult}
+            onTabClick={() => handleAccordionTabClick('roads')}
+          />
+          <PropertiesResults
+            properties={properties}
+            handleSearchClick={handleSearchClick}
+            handleHover={handleHover}
+            setHoveredResult={setHoveredResult}
+            onTabClick={() => handleAccordionTabClick('properties')}
+          />
+          <AddressesResults
+            addresses={addresses}
+            handleSearchClick={handleSearchClick}
+            handleHover={handleHover}
+            setHoveredResult={setHoveredResult}
+            onTabClick={() => handleAccordionTabClick('addresses')}
+          />
+        </AccordionRoot>
+      </Box>
+    </Stack>
   );
 };
