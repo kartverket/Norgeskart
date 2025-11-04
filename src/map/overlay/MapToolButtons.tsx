@@ -99,9 +99,15 @@ interface MapButtonProps {
 }
 const MapButton = ({ onClick, icon, label }: MapButtonProps) => {
   return (
-    <Button onClick={onClick} variant="ghost" colorPalette="green" p={8}>
+    <Button
+      onClick={onClick}
+      variant="ghost"
+      colorPalette="green"
+      pt={8}
+      pb={8}
+    >
       <VStack>
-        <Icon icon={icon} boxSize={6} />
+        <Icon icon={icon} />
         <Text fontSize="sm" fontWeight="medium">
           {label}
         </Text>
