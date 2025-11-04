@@ -49,12 +49,11 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       left={'16px'}
       width="20vw"
       minWidth="350px"
-      height="80vh" // tar hele høyden
+      height="80vh"
       zIndex={2000}
       pointerEvents="auto"
       bg="#f5f2f2"
       shadow="lg"
-      overflowY="auto" // scroll hvis innholdet blir for høyt
       display="flex"
       flexDirection="column"
       borderRight="1px solid rgba(0,0,0,0.1)"
@@ -77,7 +76,9 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
           size="sm"
         />
       </Flex>
-      <Box>{children}</Box>
+      <Box overflowY="auto" height={'100%'}>
+        {children}
+      </Box>
     </Box>
   );
 };
