@@ -9,9 +9,11 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
+import { ProjectionIdentifier } from '../../map/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
 import { getElevation } from '../searchApi';
+import { CoordinateInfo } from './CoordinateSection';
 import { InfoBoxContent } from './InfoBoxContent';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
@@ -71,19 +73,13 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
             <AccordionItemTrigger pl={0}>
               {t('infoBox.coordinateInfo')}
             </AccordionItemTrigger>
-            <AccordionItemContent>{/* Info kommer her */}</AccordionItemContent>
-          </AccordionItem>
-          <AccordionItem value="makeMap">
-            <AccordionItemTrigger pl={0}>
-              {t('infoBox.makeMap')}
-            </AccordionItemTrigger>
-            <AccordionItemContent>{/* Info kommer her */}</AccordionItemContent>
-          </AccordionItem>
-          <AccordionItem value="emergencyPoster">
-            <AccordionItemTrigger pl={0}>
-              {t('infoBox.emergencyPoster')}
-            </AccordionItemTrigger>
-            <AccordionItemContent>{/* Info kommer her*/}</AccordionItemContent>
+            <AccordionItemContent>
+              <CoordinateInfo
+                lon={result.lon}
+                lat={result.lat}
+                inputCRS={inputCRS as ProjectionIdentifier}
+              />
+            </AccordionItemContent>
           </AccordionItem>
         </AccordionRoot>
       </CardBody>

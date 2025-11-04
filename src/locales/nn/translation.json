@@ -66,7 +66,18 @@
     "placeInfo": "Sjå fakta om stadnamnet",
     "propertyInfo": "Sjå eigedomsinformasjon",
     "roadName": "Vegnamn",
-    "utmCoordinates": "UTM-koordinatar"
+    "utmCoordinates": "UTM-koordinatar",
+    "coordinateSection": {
+      "east": "Øst",
+      "north": "Nord",
+      "copy": {
+        "label": "Kopier koordinatar",
+        "toast": {
+          "title": "Koordinatar kopiert til utklipstavla"
+        }
+      },
+      "differentCrs": "Endre koordinatsystem"
+    }
   },
   "languageSelector": {
     "chooseLanguage": "Velg språk",
