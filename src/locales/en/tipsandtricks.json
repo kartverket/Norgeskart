@@ -89,5 +89,28 @@
         "text": "Remember to read the license terms for any data you use in your own projects."
       }
     ]
+  },
+  {
+    "title": "Tip 6: Search by coordinates",
+    "content": [
+      {
+        "type": "text",
+        "text": "You can search directly for coordinates in the search field. Supported formats include:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Geographic coordinates (WGS84): 59.91273, 10.74609 or 59°54'45.8\"N 10°44'45.9\"E",
+          "UTM coordinates: 598515, 6643994 or 33 598515 6643994",
+          "With EPSG code: 598515 6643994@25833 or (25833) in parentheses",
+          "Wikipedia format: 59°54′48″N 10°44′20″E (copy directly from Wikipedia)",
+          "Norwegian directional letters: 6653873 N, 227047 Ø"
+        ]
+      },
+      {
+        "type": "text",
+        "text": "The search engine automatically recognizes the coordinate format and displays the location on the map."
+      }
+    ]
   }
 ]

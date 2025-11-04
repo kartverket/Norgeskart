@@ -1,66 +1,101 @@
-import {
-  AccordionItem,
-  AccordionItemContent,
-  AccordionItemTrigger,
-  List,
-} from '@kvib/react';
+import { List } from '@kvib/react';
+import { useAtomValue } from 'jotai';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { mapAtom } from '../../map/atoms';
+import { useMapSettings } from '../../map/mapHooks';
 import { ParsedCoordinate } from '../../shared/utils/coordinateParser';
+import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
+import { InfoBox } from '../infobox/InfoBox';
+import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers';
 import { SearchResultLine } from './SearchResultLine';
 
 interface CoordinateResultsProps {
   coordinate: ParsedCoordinate | null;
-  handleSearchClick: (res: SearchResult) => void;
-  handleHover: (res: SearchResult) => void;
-  setHoveredResult: (res: SearchResult | null) => void;
-  onTabClick: () => void;
+  selectedResult: SearchResult | null;
+  setSelectedResult: (result: SearchResult | null) => void;
+  hoveredResult: SearchResult | null;
+  setHoveredResult: (result: SearchResult | null) => void;
 }
 
 export const CoordinateResults = ({
   coordinate,
-  handleSearchClick,
-  handleHover,
+  selectedResult,
+  setSelectedResult,
+  hoveredResult,
   setHoveredResult,
-  onTabClick,
 }: CoordinateResultsProps) => {
   const { t } = useTranslation();
+  const map = useAtomValue(mapAtom);
+  const { setMapLocation } = useMapSettings();
 
-  if (!coordinate) {
+  const searchResult: SearchResult | null = useMemo(
+    () =>
+      coordinate
+        ? {
+            type: 'Coordinate',
+            name: coordinate.formattedString,
+            lat: coordinate.lat,
+            lon: coordinate.lon,
+            coordinate: {
+              formattedString: coordinate.formattedString,
+              projection: coordinate.projection,
+              inputFormat: coordinate.inputFormat,
+            },
+          }
+        : null,
+    [coordinate],
+  );
+
+  const allResults = useMemo<SearchResult[]>(
+    () => (searchResult ? [searchResult] : []),
+    [searchResult],
+  );
+
+  const handleHover = (res: SearchResult) => {
+    setHoveredResult(res);
+  };
+
+  const handleSearchClick = useCallback(
+    (res: SearchResult) => {
+      const { lon, lat } = res;
+      setSelectedResult(res);
+      setMapLocation([lon, lat], getInputCRS(res), 15);
+    },
+    [setSelectedResult, setMapLocation],
+  );
+
+  useEffect(() => {
+    updateSearchMarkers(
+      map,
+      allResults,
+      hoveredResult,
+      selectedResult,
+      handleSearchClick,
+    );
+  }, [map, allResults, hoveredResult, selectedResult, handleSearchClick]);
+
+  if (!coordinate || !searchResult) {
     return null;
   }
 
-  const searchResult: SearchResult = {
-    type: 'Coordinate',
-    name: coordinate.formattedString,
-    lat: coordinate.lat,
-    lon: coordinate.lon,
-    coordinate: {
-      formattedString: coordinate.formattedString,
-      projection: coordinate.projection,
-      inputFormat: coordinate.inputFormat,
-    },
-  };
+  if (selectedResult) {
+    return <InfoBox result={selectedResult} />;
+  }
 
   return (
-    <AccordionItem value="coordinates">
-      <AccordionItemTrigger onClick={onTabClick}>
-        {t('search.coordinates')} (1)
-      </AccordionItemTrigger>
-      <AccordionItemContent>
-        <List>
-          <SearchResultLine
-            key="coordinate-result"
-            heading={coordinate.formattedString}
-            locationType={
-              t('infoBox.coordinateSystem') + ': ' + coordinate.projection
-            }
-            onClick={() => handleSearchClick(searchResult)}
-            onMouseEnter={() => handleHover(searchResult)}
-            onMouseLeave={() => setHoveredResult(null)}
-          />
-        </List>
-      </AccordionItemContent>
-    </AccordionItem>
+    <List backgroundColor="white" mt="5px" borderRadius={10} padding={2}>
+      <SearchResultLine
+        key="coordinate-result"
+        heading={coordinate.formattedString}
+        locationType={
+          t('infoBox.coordinateSystem') + ': ' + coordinate.projection
+        }
+        onClick={() => handleSearchClick(searchResult)}
+        onMouseEnter={() => handleHover(searchResult)}
+        onMouseLeave={() => setHoveredResult(null)}
+      />
+    </List>
   );
 };
