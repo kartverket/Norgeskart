@@ -81,18 +81,6 @@ export const InfoBox = ({ result }: InfoBoxProps) => {
               />
             </AccordionItemContent>
           </AccordionItem>
-          <AccordionItem value="makeMap">
-            <AccordionItemTrigger pl={0}>
-              {t('infoBox.makeMap')}
-            </AccordionItemTrigger>
-            <AccordionItemContent>{/* Info kommer her */}</AccordionItemContent>
-          </AccordionItem>
-          <AccordionItem value="emergencyPoster">
-            <AccordionItemTrigger pl={0}>
-              {t('infoBox.emergencyPoster')}
-            </AccordionItemTrigger>
-            <AccordionItemContent>{/* Info kommer her*/}</AccordionItemContent>
-          </AccordionItem>
         </AccordionRoot>
       </CardBody>
     </Card>
