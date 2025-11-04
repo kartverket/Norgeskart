@@ -9,6 +9,7 @@ import {
 } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom, useSetAtom } from 'jotai';
+import { useIsMobileScreen } from '../../shared/hooks';
 import { isRettIKartetDialogOpenAtom } from '../menu/dialogs/atoms';
 import { MapTool } from './MapOverlay';
 import { mapToolAtom } from './atoms';
@@ -20,6 +21,7 @@ interface MapToolButtonsProps {
 export const MapToolButtons = ({}: MapToolButtonsProps) => {
   const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
+  const isMobileScreen = useIsMobileScreen();
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -74,11 +76,13 @@ export const MapToolButtons = ({}: MapToolButtonsProps) => {
         label={t('search.actions.shareMap.tooltip')}
       />
 
-      <MapButton
-        onClick={handlePrintMapClick}
-        icon={'print'}
-        label={t('controller.print.text')}
-      />
+      {!isMobileScreen && (
+        <MapButton
+          onClick={handlePrintMapClick}
+          icon={'print'}
+          label={t('controller.print.text')}
+        />
+      )}
       <MapButton
         onClick={() => setRettIKartetDialogOpen(true)}
         icon={'edit_road'}
