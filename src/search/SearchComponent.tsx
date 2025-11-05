@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Search } from '@kvib/react';
+import { Box, Flex, Icon, IconButton, Search } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import {
   ParsedCoordinate,
 } from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
+import { InfoBox } from './infobox/InfoBox.tsx';
 import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
 import {
@@ -52,7 +53,6 @@ export const SearchComponent = () => {
     <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>
       <Box position="relative" width="100%">
         <Box position="relative" width="100%">
-          {/* Logo som absolutt posisjonert inni Search-feltet */}
           <Search
             width="100%"
             placeholder={t('search.placeholder')}
@@ -67,9 +67,18 @@ export const SearchComponent = () => {
             right="10px"
             top="50%"
             transform="translateY(-50%)"
-            pointerEvents="none"
           >
-            <Icon icon="search" size={24} weight={500} color="green" />
+            {searchQuery === '' ? (
+              <Icon icon="search" size={24} weight={500} color="gray" />
+            ) : (
+              <IconButton
+                icon="close"
+                variant="ghost"
+                color={'gray'}
+                size={24}
+                onClick={() => setSearchQuery('')}
+              />
+            )}
           </Box>
         </Box>
       </Box>
@@ -97,6 +106,12 @@ export const SearchComponent = () => {
           setSelectedResult={setSelectedResult}
           hoveredResult={hoveredResult}
           setHoveredResult={setHoveredResult}
+        />
+      )}
+      {selectedResult && (
+        <InfoBox
+          result={selectedResult}
+          onClose={() => setSelectedResult(null)}
         />
       )}
     </Flex>

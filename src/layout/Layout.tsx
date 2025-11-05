@@ -1,11 +1,14 @@
 import { Box, Flex } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { Debug } from '../debug/Debug';
 import { MapComponent } from '../map/MapComponent';
 import { RettIKartetDialog } from '../map/menu/dialogs/RettIKartetDialog';
+import { showSearchComponentAtom } from '../map/overlay/atoms';
 import { MessageBox } from '../messages/MessageBox';
 import { SearchComponent } from '../search/SearchComponent';
 
 const Layout: React.FC = () => {
+  const showSearchComponent = useAtomValue(showSearchComponentAtom);
   return (
     <Flex height="100vh" width="100vw" position="relative">
       <MessageBox />
@@ -16,9 +19,9 @@ const Layout: React.FC = () => {
         width="100%"
         maxWidth="400px"
         zIndex="overlay"
-        right="0"
+        left="0"
       >
-        <SearchComponent />
+        {showSearchComponent && <SearchComponent />}
       </Box>
       <Box flex="1" height="100%" bg="gray.200">
         <MapComponent />

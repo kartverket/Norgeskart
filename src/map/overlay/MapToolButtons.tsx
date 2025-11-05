@@ -8,19 +8,15 @@ import {
   VStack,
 } from '@kvib/react';
 import { t } from 'i18next';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
+import { useIsMobileScreen } from '../../shared/hooks';
 import { isRettIKartetDialogOpenAtom } from '../menu/dialogs/atoms';
-import { MapTool } from './MapOverlay';
+import { mapToolAtom } from './atoms';
 
-interface MapToolButtonsProps {
-  currentMapTool: MapTool;
-  setCurrentMapTool: (tool: MapTool) => void;
-}
-export const MapToolButtons = ({
-  currentMapTool,
-  setCurrentMapTool,
-}: MapToolButtonsProps) => {
+export const MapToolButtons = () => {
   const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
+  const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
+  const isMobileScreen = useIsMobileScreen();
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -75,11 +71,13 @@ export const MapToolButtons = ({
         label={t('search.actions.shareMap.tooltip')}
       />
 
-      <MapButton
-        onClick={handlePrintMapClick}
-        icon={'print'}
-        label={t('controller.print.text')}
-      />
+      {!isMobileScreen && (
+        <MapButton
+          onClick={handlePrintMapClick}
+          icon={'print'}
+          label={t('controller.print.text')}
+        />
+      )}
       <MapButton
         onClick={() => setRettIKartetDialogOpen(true)}
         icon={'edit_road'}
@@ -96,9 +94,15 @@ interface MapButtonProps {
 }
 const MapButton = ({ onClick, icon, label }: MapButtonProps) => {
   return (
-    <Button onClick={onClick} variant="ghost" colorPalette="green" p={8}>
+    <Button
+      onClick={onClick}
+      variant="ghost"
+      colorPalette="green"
+      pt={8}
+      pb={8}
+    >
       <VStack>
-        <Icon icon={icon} boxSize={6} />
+        <Icon icon={icon} />
         <Text fontSize="sm" fontWeight="medium">
           {label}
         </Text>

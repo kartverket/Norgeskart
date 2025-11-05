@@ -7,7 +7,6 @@ import { useMapSettings } from '../../map/mapHooks';
 import { ParsedCoordinate } from '../../shared/utils/coordinateParser';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
-import { InfoBox } from '../infobox/InfoBox';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers';
 import { SearchResultLine } from './SearchResultLine';
 
@@ -78,10 +77,6 @@ export const CoordinateResults = ({
 
   if (!coordinate || !searchResult) {
     return null;
-  }
-
-  if (selectedResult) {
-    return <InfoBox result={selectedResult} />;
   }
 
   return (

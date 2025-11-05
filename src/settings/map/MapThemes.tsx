@@ -3,6 +3,7 @@ import {
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
+  Box,
   Flex,
   Heading,
   Switch,
@@ -74,13 +75,13 @@ export const MapThemes = () => {
       <Accordion collapsible multiple size="sm" variant="outline">
         {themeLayers.map((theme) => {
           return (
-            <AccordionItem value={theme.name}>
+            <AccordionItem key={theme.name} value={theme.name}>
               <AccordionItemTrigger>
                 <Heading size="lg">{theme.heading}</Heading>
               </AccordionItemTrigger>
               <AccordionItemContent>
                 {theme.subThemes.map((subTheme) => (
-                  <>
+                  <Box key={subTheme.name}>
                     <Heading size="md">{subTheme.heading}</Heading>
                     {subTheme.layers.map((layer) => (
                       <Flex
@@ -104,7 +105,7 @@ export const MapThemes = () => {
                         />
                       </Flex>
                     ))}
-                  </>
+                  </Box>
                 ))}
               </AccordionItemContent>
             </AccordionItem>
