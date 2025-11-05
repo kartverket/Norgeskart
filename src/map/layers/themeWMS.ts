@@ -1,7 +1,15 @@
 import TileLayer from 'ol/layer/Tile';
 import { TileWMS } from 'ol/source';
 
-export type ThemeLayerName = 'adresses' | 'buildings' | 'parcels';
+type PropertyLayerName = 'adresses' | 'buildings' | 'parcels';
+type OutdoorsLifeLayerName =
+  | 'hikingTrails'
+  | 'skiingTrails'
+  | 'routeInfoPoints'
+  | 'bikeTrails'
+  | 'waterTrails';
+
+export type ThemeLayerName = PropertyLayerName | OutdoorsLifeLayerName;
 
 export const getThemeWMSLayer = (
   layerName: ThemeLayerName,
@@ -57,7 +65,56 @@ export const getThemeWMSLayer = (
           id: `theme.${layerName}`,
         },
       });
+
+    //Shared handling for outdoors life layers
+    case 'hikingTrails':
+    case 'routeInfoPoints':
+    case 'skiingTrails':
+    case 'bikeTrails':
+    case 'waterTrails':
+      return getOutdoorsLifeWMSLayer(layerName, projection);
+
     default:
       return null;
   }
+};
+
+const getOutdoorsLifeWMSLayer = (
+  layerName: OutdoorsLifeLayerName,
+  projection: string,
+): TileLayer | null => {
+  let wmsLayerName: string;
+  switch (layerName) {
+    case 'hikingTrails':
+      wmsLayerName = 'Fotruter';
+      break;
+    case 'skiingTrails':
+      wmsLayerName = 'SkiRuter';
+      break;
+    case 'routeInfoPoints':
+      wmsLayerName = 'Ruteinfopunkt';
+      break;
+    case 'bikeTrails':
+      wmsLayerName = 'Sykkelrute';
+      break;
+    case 'waterTrails':
+      wmsLayerName = 'AnnenRute';
+      break;
+  }
+
+  return new TileLayer({
+    source: new TileWMS({
+      url: 'https://wms.geonorge.no/skwms1/wms.friluftsruter2',
+      params: {
+        LAYERS: wmsLayerName,
+        TILED: true,
+        TRANSPARENT: true,
+        SRS: projection,
+      },
+      projection: projection,
+    }),
+    properties: {
+      id: `theme.${layerName}`,
+    },
+  });
 };
