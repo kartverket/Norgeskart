@@ -18,12 +18,12 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
   const dpi = window.devicePixelRatio * 96; // 96 DPI standard
   const mmToPx = (mm: number) => (mm / 25.4) * dpi;
   const a4WidthPx = mmToPx(210);
-  const a4HeightPx = mmToPx(297);
+  const a4HeightPx = mmToPx(297+8); // Extra 8mm for footer
 
   // Overlay size on screen smaller than full A4 for easier dragging:
   // Let's say 80% of A4 size visually on screen
-  const overlayWidth = a4WidthPx * 0.45;
-  const overlayHeight = a4HeightPx * 0.45;
+  const overlayWidth = a4WidthPx * 0.40;
+  const overlayHeight = a4HeightPx * 0.40;
 
   // Center overlay initially (will position in map container pixels)
   const [overlayPosition, setOverlayPosition] = useState({ x: 100, y: 100 }); // Default starting pos
@@ -162,7 +162,7 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
 
       const printCanvas = document.createElement('canvas');
       printCanvas.width = a4WidthPx;
-      printCanvas.height = a4HeightPx;
+      printCanvas.height = a4HeightPx + 3; // Leave space for footer
       const ctx = printCanvas.getContext('2d');
       if (!ctx) return;
 
@@ -180,12 +180,50 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
         const sh = overlayRect.height * scaleY;
 
         // Draw cropped image scaled to full A4 print canvas size
-        ctx.drawImage(mapCanvas, sx, sy, sw, sh, 0, 0, printCanvas.width, printCanvas.height);
+        ctx.drawImage(mapCanvas, sx, sy, sw, sh, 0, 0, printCanvas.width, printCanvas.height - 42);
       }
 
       // Footer text
       ctx.fillStyle = 'black';
       ctx.font = '12px Arial';
+
+      const scaleText = document.querySelector('.ol-scale-line-inner')?.textContent || '';
+
+      const paddingX = 8;
+      const paddingY = 4;
+      const textWidth = ctx.measureText(scaleText).width;
+      const boxWidth = textWidth + paddingX * 2;
+      const boxHeight = 12 + paddingY * 2;
+
+      const x = (printCanvas.width - boxWidth) / 2; // center horizontally
+      const y = a4HeightPx - 25; // vertical position above footer
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.fillRect(x, y, boxWidth, boxHeight);
+
+      ctx.strokeStyle = '#666'; // approximate subtle foreground
+      ctx.beginPath();
+
+      // Left border
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, y + boxHeight);
+
+      // Right border
+      ctx.moveTo(x + boxWidth, y);
+      ctx.lineTo(x + boxWidth, y + boxHeight);
+
+      // Bottom border
+      ctx.moveTo(x, y + boxHeight);
+      ctx.lineTo(x + boxWidth, y + boxHeight-1);
+
+      ctx.stroke();
+
+      ctx.fillStyle = '#000'; // foreground color
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(scaleText, x + boxWidth / 2, y + boxHeight / 2);
+
+
       ctx.fillText(`Senterposisjon: ${lon}, ${lat}`, 6, a4HeightPx - 25);
       ctx.fillText(`Koordinatsystem: ${projection}`, 6, a4HeightPx - 13);
       const date = new Date().toLocaleDateString('no-NO');
@@ -200,7 +238,7 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
         ctx.drawImage(logo, a4WidthPx - logoWidth - 20, a4HeightPx - logoHeight - 1, logoWidth, logoHeight);
 
         // Open print window
-        const printWindow = window.open('', '_blank', 'width=800,height=600');
+        const printWindow = window.open('', '_blank', 'width=800,height=1000');
         if (!printWindow) return;
         const img = printCanvas.toDataURL('image/png');
         printWindow.document.body.style.margin = '0';
