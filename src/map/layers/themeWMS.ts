@@ -86,10 +86,10 @@ const getOutdoorsLifeWMSLayer = (
   let wmsLayerName: string;
   switch (layerName) {
     case 'hikingTrails':
-      wmsLayerName = 'Fotruter';
+      wmsLayerName = 'Fotrute';
       break;
     case 'skiingTrails':
-      wmsLayerName = 'SkiRuter';
+      wmsLayerName = 'Skiloype';
       break;
     case 'routeInfoPoints':
       wmsLayerName = 'Ruteinfopunkt';
