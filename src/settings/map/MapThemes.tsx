@@ -62,6 +62,18 @@ export const MapThemes = () => {
         layerNames: ['adresses', 'buildings', 'parcels'],
       },
     ]),
+    createTheme('outdoorsLife', [
+      {
+        name: 'trails',
+        layerNames: [
+          'hikingTrails',
+          'skiingTrails',
+          'routeInfoPoints',
+          'bikeTrails',
+          'waterTrails',
+        ],
+      },
+    ]),
   ];
 
   const isLayerChecked = (layerName: ThemeLayerName): boolean => {

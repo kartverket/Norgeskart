@@ -131,6 +131,21 @@
                   }
                 }
               }
+            },
+            "outdoorsLife": {
+              "themeName": "Outdoor recreation",
+              "subThemes": {
+                "trails": {
+                  "heading": "Trails",
+                  "layers": {
+                    "hikingTrails": "Hiking trails",
+                    "skiingTrails": "Skiing trails",
+                    "routeInfoPoints": "Route info points",
+                    "bikeTrails": "Bike trails",
+                    "waterTrails": "Paddle routes"
+                  }
+                }
+              }
             }
           }
         },
