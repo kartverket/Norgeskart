@@ -142,7 +142,18 @@ export type SearchResultBase = {
   lon: number;
 };
 
-export type SearchResultType = 'Property' | 'Road' | 'Place' | 'Address';
+export type SearchResultType =
+  | 'Property'
+  | 'Road'
+  | 'Place'
+  | 'Address'
+  | 'Coordinate';
+
+export type CoordinateSearchResult = {
+  formattedString: string;
+  projection: string;
+  inputFormat: 'decimal' | 'dms' | 'utm';
+};
 
 export type SearchResult = SearchResultBase &
   (
@@ -161,5 +172,9 @@ export type SearchResult = SearchResultBase &
     | {
         type: 'Address';
         address: Address;
+      }
+    | {
+        type: 'Coordinate';
+        coordinate: CoordinateSearchResult;
       }
   );

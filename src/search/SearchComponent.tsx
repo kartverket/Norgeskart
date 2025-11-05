@@ -1,7 +1,14 @@
 import { Box, Flex, Icon, Search } from '@kvib/react';
-import { useCallback, useState } from 'react';
+import { useAtomValue } from 'jotai';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { mapAtom, ProjectionIdentifier } from '../map/atoms';
+import {
+  parseCoordinateInput,
+  ParsedCoordinate,
+} from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
+import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
 import {
   useAddresses,
@@ -18,11 +25,22 @@ export const SearchComponent = () => {
   );
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
+  const map = useAtomValue(mapAtom);
 
   const { placeNameData } = usePlaceNames(searchQuery, placesPage);
   const { roadsData } = useRoads(searchQuery);
   const { propertiesData } = useProperties(searchQuery);
   const { addressData } = useAddresses(searchQuery);
+
+  // Get current projection from map
+  const currentProjection = useMemo<ProjectionIdentifier>(() => {
+    return map.getView().getProjection().getCode() as ProjectionIdentifier;
+  }, [map]);
+
+  // Detect if search query is a coordinate, using current projection as fallback
+  const coordinateResult = useMemo<ParsedCoordinate | null>(() => {
+    return parseCoordinateInput(searchQuery, currentProjection);
+  }, [searchQuery, currentProjection]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -56,21 +74,31 @@ export const SearchComponent = () => {
         </Box>
       </Box>
 
-      <SearchResults
-        properties={propertiesData ? propertiesData : []}
-        roads={roadsData ? roadsData : []}
-        places={placeNameData ? placeNameData.navn : []}
-        addresses={addressData ? addressData.adresser : []}
-        placesMetadata={placeNameData?.metadata}
-        onPlacesPageChange={(page: number) => {
-          setPlacesPage(page);
-        }}
-        searchQuery={searchQuery}
-        selectedResult={selectedResult}
-        setSelectedResult={setSelectedResult}
-        hoveredResult={hoveredResult}
-        setHoveredResult={setHoveredResult}
-      />
+      {coordinateResult ? (
+        <CoordinateResults
+          coordinate={coordinateResult}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+          hoveredResult={hoveredResult}
+          setHoveredResult={setHoveredResult}
+        />
+      ) : (
+        <SearchResults
+          properties={propertiesData ? propertiesData : []}
+          roads={roadsData ? roadsData : []}
+          places={placeNameData ? placeNameData.navn : []}
+          addresses={addressData ? addressData.adresser : []}
+          placesMetadata={placeNameData?.metadata}
+          onPlacesPageChange={(page: number) => {
+            setPlacesPage(page);
+          }}
+          searchQuery={searchQuery}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+          hoveredResult={hoveredResult}
+          setHoveredResult={setHoveredResult}
+        />
+      )}
     </Flex>
   );
 };

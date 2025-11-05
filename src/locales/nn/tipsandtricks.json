@@ -89,5 +89,28 @@
         "text": "Hugs å lese lisensvilkåra for data du brukar i eigne prosjekt."
       }
     ]
+  },
+  {
+    "title": "Tips 6: Søk etter koordinatar",
+    "content": [
+      {
+        "type": "text",
+        "text": "Du kan søkje direkte på koordinatar i søkefeltet. Støtta format inkluderer:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Geografiske koordinatar (WGS84): 59.91273, 10.74609 eller 59°54'45.8\"N 10°44'45.9\"E",
+          "UTM-koordinatar: 598515, 6643994 eller 33 598515 6643994",
+          "Med EPSG-kode: 598515 6643994@25833 eller (25833) i parentes",
+          "Wikipedia-format: 59°54′48″N 10°44′20″E (kopier direkte frå Wikipedia)",
+          "Norske retningsbokstavar: 6653873 N, 227047 Ø"
+        ]
+      },
+      {
+        "type": "text",
+        "text": "Søkemotoren kjenner automatisk att koordinatformatet og viser staden på kartet."
+      }
+    ]
   }
 ]

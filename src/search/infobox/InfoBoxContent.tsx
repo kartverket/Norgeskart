@@ -27,6 +27,9 @@ export const InfoBoxContent = ({
     case 'Address':
       content = `${t('infoBox.address')} ${t('infoBox.in')} ${result.address.kommunenavn} ${t('infoBox.municipality').toLowerCase()}`;
       break;
+    case 'Coordinate':
+      content = `${t('infoBox.coordinateSystem')}: ${result.coordinate.projection}`;
+      break;
   }
 
   return (

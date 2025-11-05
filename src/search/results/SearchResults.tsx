@@ -1,6 +1,6 @@
 import { AccordionRoot } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -58,7 +58,11 @@ export const SearchResults = ({
     'properties',
     'addresses',
   ]);
-  const allResults = searchResultsMapper(places, roads, addresses, properties);
+
+  const allResults = useMemo<SearchResult[]>(
+    () => searchResultsMapper(places, roads, addresses, properties),
+    [places, roads, addresses, properties],
+  );
 
   const handleHover = (res: SearchResult) => {
     setHoveredResult(res);

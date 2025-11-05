@@ -55,6 +55,8 @@
     "address": "Adresse",
     "cadastralIdentifier": "Gards- og bruksnummer",
     "coordinateInfo": "Sjå koordinater",
+    "coordinateSystem": "Koordinatsystem",
+    "decimalDegrees": "Desimalgradar",
     "emergencyPoster": "Lag nødplakat",
     "heightEstimatedByInterpolation": "Høgde (anslått ved interpolering):",
     "in": "i",
@@ -64,6 +66,7 @@
     "placeInfo": "Sjå fakta om stadnamnet",
     "propertyInfo": "Sjå eigedomsinformasjon",
     "roadName": "Vegnamn",
+    "utmCoordinates": "UTM-koordinatar",
     "coordinateSection": {
       "east": "Øst",
       "north": "Nord",
@@ -85,6 +88,7 @@
   },
   "locationType": {
     "address": "Adresse",
+    "coordinate": "Koordinat",
     "place": "Stadnamn",
     "property": "Eigedom",
     "road": "Veg"
@@ -207,6 +211,7 @@
       }
     },
     "addresses": "Adresser",
+    "coordinates": "Koordinatar",
     "houseNumber": "Husnr",
     "placeholder": "Søk i Norgeskart",
     "placeName": "Stadnamn",

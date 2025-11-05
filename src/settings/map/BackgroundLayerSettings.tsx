@@ -1,6 +1,7 @@
 import { Box, Heading, Image, SimpleGrid } from '@chakra-ui/react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { mapAtom } from '../../map/atoms';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
@@ -109,6 +110,7 @@ export const BackgroundLayerSettings = () => {
   const { t } = useTranslation();
   const { setBackgroundLayer, getMapProjectionCode } = useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
+  const map = useAtomValue(mapAtom);
 
   if (WMTSProviders.state !== 'hasData') {
     return null;
@@ -116,6 +118,25 @@ export const BackgroundLayerSettings = () => {
 
   const projectionCode = getMapProjectionCode();
   const providers = WMTSProviders.data.keys();
+
+  // Get current background layer from map
+  const currentBackgroundLayer = map
+    .getAllLayers()
+    .find((l) => l.get('id')?.startsWith('bg.'));
+
+  const currentLayerId = currentBackgroundLayer?.get('id');
+  let currentLayer: BackgroundLayerName = DEFAULT_BACKGROUND_LAYER;
+
+  if (currentLayerId) {
+    // Extract layer name from id (format is "bg.layername")
+    currentLayer = currentLayerId.substring(3) as BackgroundLayerName;
+  } else {
+    // Fallback to URL parameter if no layer on map yet
+    const layerFromUrl = getUrlParameter(
+      'backgroundLayer',
+    ) as BackgroundLayerName;
+    currentLayer = layerFromUrl || DEFAULT_BACKGROUND_LAYER;
+  }
 
   const avaiableLayers: { value: BackgroundLayerName; label: string }[] = [];
 
@@ -141,10 +162,6 @@ export const BackgroundLayerSettings = () => {
   });
 
   const sortedLayers = avaiableLayers.sort(layerPrioritySort);
-  const layerFromUrl = getUrlParameter(
-    'backgroundLayer',
-  ) as BackgroundLayerName;
-  const currentLayer = layerFromUrl || DEFAULT_BACKGROUND_LAYER;
 
   return (
     <Box>
