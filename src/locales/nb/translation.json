@@ -136,6 +136,21 @@
                   }
                 }
               }
+            },
+            "outdoorsLife": {
+              "themeName": "Friluftsliv",
+              "subThemes": {
+                "trails": {
+                  "heading": "Ruter",
+                  "layers": {
+                    "hikingTrails": "Fotruter",
+                    "skiingTrails": "Skiruter",
+                    "routeInfoPoints": "Ruteinfopunkt",
+                    "bikeTrails": "Sykkelruter",
+                    "waterTrails": "Padleruter"
+                  }
+                }
+              }
             }
           }
         },
