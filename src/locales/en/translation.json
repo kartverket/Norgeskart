@@ -158,6 +158,9 @@
         "projection": {
           "label": "Chose map projection",
           "placeholder": "Chose"
+        },
+        "theme": {
+          "label": "Chose theme layers"
         }
       }
     },

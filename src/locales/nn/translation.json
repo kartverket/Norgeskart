@@ -163,6 +163,9 @@
         "projection": {
           "label": "Vel projeksjon",
           "placeholder": "Vel"
+        },
+        "theme": {
+          "label": "Vel temakart"
         }
       }
     },
