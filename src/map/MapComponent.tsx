@@ -22,7 +22,6 @@ import {
   mapContextYPosAtom,
 } from './menu/atoms.ts';
 import { MapContextMenu } from './menu/MapContextMenu.tsx';
-import { MapOverlay } from './overlay/MapOverlay.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -89,8 +88,8 @@ export const MapComponent = () => {
   }, [map, setDrawLayerFeatures]);
 
   return (
-    <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>
-      <Box position={'relative'} width="100%" height="100%">
+    <Box position={'relative'} width="100%" height="100%">
+      <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>
         <Box
           ref={mapRef}
           id="map"
@@ -106,9 +105,9 @@ export const MapComponent = () => {
             setIsMenuOpen(false);
           }}
         />
-        <MapOverlay />
-        <MapContextMenu />
-      </Box>
-    </ErrorBoundary>
+      </ErrorBoundary>
+
+      <MapContextMenu />
+    </Box>
   );
 };

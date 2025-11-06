@@ -2,6 +2,7 @@ import { Box, Image, Portal } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
+import { SearchComponent } from '../../search/SearchComponent';
 import {
   displayCompassOverlayAtom,
   magneticDeclinationAtom,
@@ -10,7 +11,7 @@ import {
 } from '../atoms';
 import { MapControlButtons } from '../MapControlButtons';
 import { useCompassFileName } from '../mapHooks';
-import { mapToolAtom } from './atoms';
+import { mapToolAtom, showSearchComponentAtom } from './atoms';
 import { MapToolButtons } from './MapToolButtons';
 import { MapToolCards } from './MapToolCards';
 
@@ -28,6 +29,7 @@ export const MapOverlay = () => {
   const compassFileName = useCompassFileName();
   const { drawEnabled, setDrawEnabled } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
+  const showSearchComponent = useAtomValue(showSearchComponentAtom);
 
   const compassOrientation =
     mapOrientation + (useMagneticNorth ? magneticDeclination : 0);
@@ -79,6 +81,15 @@ export const MapOverlay = () => {
     <>
       {portalTargetFound && (
         <Portal container={portalRef}>
+          <Box
+            position="absolute"
+            width="100%"
+            maxWidth="400px"
+            zIndex="overlay"
+            left="0"
+          >
+            {showSearchComponent && <SearchComponent />}
+          </Box>
           {displayCompassOverlay && (
             <Image
               rotate={compassOrientation + 'deg'}
