@@ -3,6 +3,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { SearchComponent } from '../../search/SearchComponent';
+import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { displayCompassOverlayAtom } from '../atoms';
 import { MapControlButtons } from '../MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './atoms';
@@ -48,7 +49,12 @@ export const MapOverlay = () => {
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
-    <>
+    <ErrorBoundary
+      fallback={undefined}
+      onError={() => {
+        console.error('Error in MapOverlay');
+      }}
+    >
       {portalTargetFound && (
         <Portal container={portalRef}>
           <Box
@@ -100,6 +106,6 @@ export const MapOverlay = () => {
           <MapControlButtons />
         </Portal>
       )}
-    </>
+    </ErrorBoundary>
   );
 };

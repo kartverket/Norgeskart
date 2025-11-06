@@ -3,6 +3,7 @@ import * as React from 'react';
 interface ErrorBoundaryProps {
   fallback: React.ReactNode;
   children: React.ReactNode | React.ReactNode[];
+  onError?: () => void;
 }
 
 interface ErrorBoundaryState {
@@ -23,6 +24,9 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo): void {
+    if (this.props.onError) {
+      this.props.onError();
+    }
     console.error(
       'Error caught in ErrorBoundary:',
       error,
