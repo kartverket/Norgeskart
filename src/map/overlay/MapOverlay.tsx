@@ -1,4 +1,4 @@
-import { Box, Image, Portal } from '@kvib/react';
+import { Box, Image, Link, Portal } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
@@ -23,8 +23,6 @@ export const MapOverlay = () => {
   const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
   const [portalTargetFound, setPortalTargetFound] = useState<boolean>(false);
   const portalRef = useRef<HTMLElement>(null);
-  const [zoomControlFound, setZoomControlFound] = useState<boolean>(false);
-  const zoomRef = useRef<HTMLElement>(null);
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const compassFileName = useCompassFileName();
   const { drawEnabled, setDrawEnabled } = useDrawSettings();
@@ -47,22 +45,6 @@ export const MapOverlay = () => {
     return () => {
       portalRef.current = null;
       setPortalTargetFound(false);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!zoomRef.current) {
-      setTimeout(() => {
-        const olZoomControlElement = document.getElementsByClassName(
-          'ol-zoom',
-        )[0] as HTMLElement;
-        zoomRef.current = olZoomControlElement;
-        setZoomControlFound(true);
-      }, 10);
-    }
-    return () => {
-      zoomRef.current = null;
-      setZoomControlFound(false);
     };
   }, []);
 
@@ -104,17 +86,18 @@ export const MapOverlay = () => {
           )}
 
           <Box position="absolute" bottom="16px" left="16px" zIndex={10}>
-            <a
+            <Link
               href="https://www.kartverket.no"
               target="_blank"
               rel="noopener noreferrer"
+              outline="none"
             >
-              <img
+              <Image
                 src="/logos/KV_logo_staa.svg"
                 alt="Logo"
                 style={{ height: 64 }}
               />
-            </a>
+            </Link>
           </Box>
 
           {/* Her er hovedboksen for knappene i senter */}
@@ -137,11 +120,6 @@ export const MapOverlay = () => {
               setCurrentMapTool(null);
             }}
           />
-        </Portal>
-      )}
-
-      {zoomControlFound && (
-        <Portal container={zoomRef}>
           <MapControlButtons />
         </Portal>
       )}
