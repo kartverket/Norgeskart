@@ -18,8 +18,8 @@
 .ol-mouse-position {
   position: absolute;
   font-size: 16px;
-  top: 96%;
-  right: 2%;
+  top: calc(100vh - 50px);
+  right: 120px;
   padding: 5px 8px;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 4px;
