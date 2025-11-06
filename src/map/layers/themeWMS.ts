@@ -1,5 +1,6 @@
 import TileLayer from 'ol/layer/Tile';
 import { TileWMS } from 'ol/source';
+import { getEnv } from '../../env';
 
 type PropertyLayerName = 'adresses' | 'buildings' | 'parcels';
 type OutdoorsLifeLayerName =
@@ -15,6 +16,8 @@ export type ThemeLayerName =
   | OutdoorsLifeLayerName
   | FactsLayerName;
 
+const ENV = getEnv();
+
 export const getThemeWMSLayer = (
   layerName: ThemeLayerName,
   projection: string,
@@ -23,7 +26,7 @@ export const getThemeWMSLayer = (
     case 'adresses':
       return new TileLayer({
         source: new TileWMS({
-          url: 'https://api.norgeskart.no/v1/matrikkel/wms',
+          url: `${ENV.apiUrl}/v1/matrikkel/wms`,
           params: {
             LAYERS: 'matrikkel:MATRIKKELADRESSEWFS,matrikkel:VEGADRESSEWFS',
             TILED: true,
@@ -39,7 +42,7 @@ export const getThemeWMSLayer = (
     case 'buildings':
       return new TileLayer({
         source: new TileWMS({
-          url: 'https://api.norgeskart.no/v1/matrikkel/wms',
+          url: `${ENV.apiUrl}/v1/matrikkel/wms`,
           params: {
             LAYERS: 'matrikkel:BYGNINGWFS',
             TILED: true,
@@ -55,7 +58,7 @@ export const getThemeWMSLayer = (
     case 'parcels':
       return new TileLayer({
         source: new TileWMS({
-          url: 'https://api.norgeskart.no/v1/matrikkel/wms',
+          url: `${ENV.apiUrl}/v1/matrikkel/wms`,
           params: {
             LAYERS: 'matrikkel:TEIGGRENSEWFS,matrikkel:TEIGWFS',
             TILED: true,
@@ -95,21 +98,12 @@ const getNorwayFactsWMSLayer = (
       break;
   }
 
-  return new TileLayer({
-    source: new TileWMS({
-      url: 'https://wms.geonorge.no/skwms1/wms.markagrensen',
-      params: {
-        LAYERS: wmsLayerName,
-        TILED: true,
-        TRANSPARENT: true,
-        SRS: projection,
-      },
-      projection: projection,
-    }),
-    properties: {
-      id: `theme.${layerName}`,
-    },
-  });
+  return getGeoNorgeWMSLayer(
+    'markagrensen',
+    projection,
+    wmsLayerName,
+    layerName,
+  );
 };
 
 const getOutdoorsLifeWMSLayer = (
@@ -135,11 +129,25 @@ const getOutdoorsLifeWMSLayer = (
       break;
   }
 
+  return getGeoNorgeWMSLayer(
+    'friluftsruter2',
+    projection,
+    wmsLayerName,
+    layerName,
+  );
+};
+
+const getGeoNorgeWMSLayer = (
+  wmsName: string,
+  projection: string,
+  layerNames: string,
+  layerId: string,
+): TileLayer => {
   return new TileLayer({
     source: new TileWMS({
-      url: 'https://wms.geonorge.no/skwms1/wms.friluftsruter2',
+      url: `${ENV.geoNorgeWMSUrl}.${wmsName}`,
       params: {
-        LAYERS: wmsLayerName,
+        LAYERS: layerNames,
         TILED: true,
         TRANSPARENT: true,
         SRS: projection,
@@ -147,7 +155,7 @@ const getOutdoorsLifeWMSLayer = (
       projection: projection,
     }),
     properties: {
-      id: `theme.${layerName}`,
+      id: `theme.${layerId}`,
     },
   });
 };
