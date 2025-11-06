@@ -63,6 +63,7 @@ export const MapThemes = () => {
       },
     ]),
     createTheme('outdoorsLife', [
+      { name: 'norwayFacts', layerNames: ['osloMarkaBorder'] },
       {
         name: 'trails',
         layerNames: [
@@ -83,7 +84,7 @@ export const MapThemes = () => {
 
   return (
     <>
-      <Heading size="lg">Velg temakart </Heading>
+      <Heading size="lg">{t('map.settings.layers.theme.label')} </Heading>
       <Accordion collapsible multiple size="sm" variant="outline">
         {themeLayers.map((theme) => {
           return (
@@ -93,7 +94,7 @@ export const MapThemes = () => {
               </AccordionItemTrigger>
               <AccordionItemContent>
                 {theme.subThemes.map((subTheme) => (
-                  <Box key={subTheme.name}>
+                  <Box key={subTheme.name} marginBottom={4}>
                     <Heading size="md">{subTheme.heading}</Heading>
                     {subTheme.layers.map((layer) => (
                       <Flex

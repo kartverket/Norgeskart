@@ -1,4 +1,15 @@
 {
+  "controller": {
+    "maplayers": {
+      "openText": "Maplayers"
+    },
+    "print": {
+      "text": "Print"
+    },
+    "settings": {
+      "text": "Settings"
+    }
+  },
   "draw": {
     "begin": "Draw on map",
     "clear": "Clear drawing",
@@ -50,6 +61,17 @@
     "address": "Address",
     "cadastralIdentifier": "Cadastral identifier",
     "coordinateInfo": "See coordinates",
+    "coordinateSection": {
+      "copy": {
+        "label": "Copy coordinates",
+        "toast": {
+          "title": "Coordinates copied to clipboard"
+        }
+      },
+      "differentCrs": "Change coordinate system",
+      "east": "East",
+      "north": "North"
+    },
     "coordinateSystem": "Coordinate system",
     "decimalDegrees": "Decimal degrees",
     "emergencyPoster": "Make emergency poster",
@@ -61,18 +83,7 @@
     "placeinfo": "See facts about placename",
     "propertyInfo": "See property information",
     "roadName": "Road name",
-    "utmCoordinates": "UTM coordinates",
-    "coordinateSection": {
-      "east": "East",
-      "north": "North",
-      "copy": {
-        "label": "Copy coordinates",
-        "toast": {
-          "title": "Coordinates copied to clipboard"
-        }
-      },
-      "differentCrs": "Change coordinate system"
-    }
+    "utmCoordinates": "UTM coordinates"
   },
   "languageSelector": {
     "chooseLanguage": "Select language",
@@ -89,6 +100,30 @@
     "road": "Road"
   },
   "map": {
+    "contextmenu": {
+      "items": {
+        "rettikartet": {
+          "dialog": {
+            "category": {
+              "label": "Select map category"
+            },
+            "description": "Report something wrong with a map in rettikartet.no. Select a category below.",
+            "link": {
+              "label": "Open rettikartet.no in a new tab"
+            },
+            "rettikartetcategories": {
+              "n50kartdata": "N50 maps",
+              "sjo": "Oceanic",
+              "turruter": "Hiking trails",
+              "veger": "Roads and adresses"
+            },
+            "title": "Report an error"
+          },
+          "label": "Report error",
+          "tooltip": "Navigate to RettIKartet.no"
+        }
+      }
+    },
     "errorMessage": "Something went very wrong with the map",
     "overlay": {
       "fullscreen": "Toggle fullscreen",
@@ -119,8 +154,28 @@
             "toporaster": "Paper map"
           },
           "themeMaps": {
+            "outdoorsLife": {
+              "subThemes": {
+                "norwayFacts": {
+                  "heading": "Facts about Norway",
+                  "layers": {
+                    "osloMarkaBorder": "Oslomarka border"
+                  }
+                },
+                "trails": {
+                  "heading": "Trails",
+                  "layers": {
+                    "bikeTrails": "Bike trails",
+                    "hikingTrails": "Hiking trails",
+                    "routeInfoPoints": "Route info points",
+                    "skiingTrails": "Skiing trails",
+                    "waterTrails": "Paddle routes"
+                  }
+                }
+              },
+              "themeName": "Outdoor recreation"
+            },
             "property": {
-              "themeName": "Properties",
               "subThemes": {
                 "matrikkeldata": {
                   "heading": "Select cadastral data",
@@ -130,52 +185,17 @@
                     "parcels": "Plots and parcels"
                   }
                 }
-              }
-            },
-            "outdoorsLife": {
-              "themeName": "Outdoor recreation",
-              "subThemes": {
-                "trails": {
-                  "heading": "Trails",
-                  "layers": {
-                    "hikingTrails": "Hiking trails",
-                    "skiingTrails": "Skiing trails",
-                    "routeInfoPoints": "Route info points",
-                    "bikeTrails": "Bike trails",
-                    "waterTrails": "Paddle routes"
-                  }
-                }
-              }
+              },
+              "themeName": "Properties"
             }
           }
         },
         "projection": {
           "label": "Chose map projection",
           "placeholder": "Chose"
-        }
-      }
-    },
-    "contextmenu": {
-      "items": {
-        "rettikartet": {
-          "label": "Report error",
-          "tooltip": "Navigate to RettIKartet.no",
-          "dialog": {
-            "title": "Report an error",
-            "description": "Report something wrong with a map in rettikartet.no. Select a category below.",
-            "rettikartetcategories": {
-              "n50kartdata": "N50 maps",
-              "sjo": "Oceanic",
-              "veger": "Roads and adresses",
-              "turruter": "Hiking trails"
-            },
-            "category": {
-              "label": "Select map category"
-            },
-            "link": {
-              "label": "Open rettikartet.no in a new tab"
-            }
-          }
+        },
+        "theme": {
+          "label": "Chose theme layers"
         }
       }
     }
@@ -194,21 +214,21 @@
   "privacyAndContact": {
     "contactUs": "Contact us",
     "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
+    "infoText": "Read how we protect personal data in the Norwegian Mapping Authority's",
     "privacyPolicy": "Privacy policy ",
-    "sendEmail": "Send e-mail",
-    "infoText": "Read how we protect personal data in the Norwegian Mapping Authority's"
+    "sendEmail": "Send e-mail"
   },
   "propertyInfo": {
     "holdingNr": "Holding nr.",
     "leaseNr": "Lease nr.",
+    "markProperty": {
+      "label": "Show property on map"
+    },
     "moreInformation": "Show more information",
     "multipleAddressesText": "The property has several addresses",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",
-    "subholdingNr": "Subholding nr.",
-    "markProperty": {
-      "label": "Show property on map"
-    }
+    "subholdingNr": "Subholding nr."
   },
   "search": {
     "actions": {
@@ -229,6 +249,9 @@
     "roads": "Roads",
     "tabHeading": "Search"
   },
+  "settings": {
+    "label": "Settings for Norgeskart"
+  },
   "shared": {
     "actions": {
       "download": "Download",
@@ -242,21 +265,7 @@
     },
     "yes": "Yes"
   },
-  "settings": {
-    "label": "Settings for Norgeskart"
-  },
   "tipsandtricks": {
     "heading": "Tips and tricks"
-  },
-  "controller": {
-    "maplayers": {
-      "openText": "Maplayers"
-    },
-    "print": {
-      "text": "Print"
-    },
-    "settings": {
-      "text": "Settings"
-    }
   }
 }
