@@ -37,7 +37,7 @@ export const MapControlButtons = () => {
     <Box
       className="custom-controls"
       position="absolute"
-      bottom="6%"
+      bottom="16px"
       right="16px"
       zIndex={10}
       bg="#FFFF"
