@@ -149,6 +149,12 @@
                     "bikeTrails": "Sykkelruter",
                     "waterTrails": "Padleruter"
                   }
+                },
+                "norwayFacts": {
+                  "heading": "Fakta om Noreg",
+                  "layers": {
+                    "osloMarkaBorder": "Oslomarkagrense"
+                  }
                 }
               }
             }

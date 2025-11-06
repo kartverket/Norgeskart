@@ -8,8 +8,12 @@ type OutdoorsLifeLayerName =
   | 'routeInfoPoints'
   | 'bikeTrails'
   | 'waterTrails';
+type FactsLayerName = 'osloMarkaBorder';
 
-export type ThemeLayerName = PropertyLayerName | OutdoorsLifeLayerName;
+export type ThemeLayerName =
+  | PropertyLayerName
+  | OutdoorsLifeLayerName
+  | FactsLayerName;
 
 export const getThemeWMSLayer = (
   layerName: ThemeLayerName,
@@ -73,10 +77,39 @@ export const getThemeWMSLayer = (
     case 'bikeTrails':
     case 'waterTrails':
       return getOutdoorsLifeWMSLayer(layerName, projection);
-
+    case 'osloMarkaBorder':
+      return getNorwayFactsWMSLayer(layerName, projection);
     default:
       return null;
   }
+};
+
+const getNorwayFactsWMSLayer = (
+  layerName: FactsLayerName,
+  projection: string,
+): TileLayer | null => {
+  let wmsLayerName: string;
+  switch (layerName) {
+    case 'osloMarkaBorder':
+      wmsLayerName = 'Markagrensen';
+      break;
+  }
+
+  return new TileLayer({
+    source: new TileWMS({
+      url: 'https://wms.geonorge.no/skwms1/wms.markagrensen',
+      params: {
+        LAYERS: wmsLayerName,
+        TILED: true,
+        TRANSPARENT: true,
+        SRS: projection,
+      },
+      projection: projection,
+    }),
+    properties: {
+      id: `theme.${layerName}`,
+    },
+  });
 };
 
 const getOutdoorsLifeWMSLayer = (

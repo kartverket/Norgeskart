@@ -144,6 +144,12 @@
                     "bikeTrails": "Bike trails",
                     "waterTrails": "Paddle routes"
                   }
+                },
+                "norwayFacts": {
+                  "heading": "Facts about Norway",
+                  "layers": {
+                    "osloMarkaBorder": "Oslomarka border"
+                  }
                 }
               }
             }

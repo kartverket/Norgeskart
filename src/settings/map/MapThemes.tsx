@@ -63,6 +63,7 @@ export const MapThemes = () => {
       },
     ]),
     createTheme('outdoorsLife', [
+      { name: 'norwayFacts', layerNames: ['osloMarkaBorder'] },
       {
         name: 'trails',
         layerNames: [
