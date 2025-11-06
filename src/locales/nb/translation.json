@@ -1,4 +1,15 @@
 {
+  "controller": {
+    "maplayers": {
+      "openText": "Kartlag"
+    },
+    "print": {
+      "text": "Print"
+    },
+    "settings": {
+      "text": "Innstillinger"
+    }
+  },
   "draw": {
     "begin": "Tegn på kartet",
     "clear": "Fjern tegning",
@@ -55,6 +66,17 @@
     "address": "Adresse",
     "cadastralIdentifier": "Gårds- og bruksnummer",
     "coordinateInfo": "Se koordinater",
+    "coordinateSection": {
+      "copy": {
+        "label": "Kopier koordinater",
+        "toast": {
+          "title": "Koordinater kopier til utklipstavlen"
+        }
+      },
+      "differentCrs": "Endre koordinatsystem",
+      "east": "Øst",
+      "north": "Nord"
+    },
     "coordinateSystem": "Koordinatsystem",
     "decimalDegrees": "Desimalgrader",
     "emergencyPoster": "Lag nødplakat",
@@ -66,18 +88,7 @@
     "placeinfo": "Se fakta om stedsnavnet",
     "propertyInfo": "Se eiendomsinformasjon",
     "roadName": "Veinavn",
-    "utmCoordinates": "UTM-koordinater",
-    "coordinateSection": {
-      "east": "Øst",
-      "north": "Nord",
-      "copy": {
-        "label": "Kopier koordinater",
-        "toast": {
-          "title": "Koordinater kopier til utklipstavlen"
-        }
-      },
-      "differentCrs": "Endre koordinatsystem"
-    }
+    "utmCoordinates": "UTM-koordinater"
   },
   "languageSelector": {
     "chooseLanguage": "Velg språk",
@@ -94,6 +105,30 @@
     "road": "Vei"
   },
   "map": {
+    "contextmenu": {
+      "items": {
+        "rettikartet": {
+          "dialog": {
+            "category": {
+              "label": "Velg kartkategori"
+            },
+            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under.",
+            "link": {
+              "label": "Åpne rettikartet.no i en ny fane"
+            },
+            "rettikartetcategories": {
+              "n50kartdata": "N50 kart",
+              "sjo": "Sjøkart",
+              "turruter": "Turruter",
+              "veger": "Veier og adresser"
+            },
+            "title": "Meld om en feil"
+          },
+          "label": "Meld om feil",
+          "tooltip": "Gå til RettIKartet.no"
+        }
+      }
+    },
     "errorMessage": "Noe gikk veldig galt med kartet",
     "overlay": {
       "fullscreen": "Fullskjerm",
@@ -124,8 +159,28 @@
             "toporaster": "Papirkart"
           },
           "themeMaps": {
+            "outdoorsLife": {
+              "subThemes": {
+                "norwayFacts": {
+                  "heading": "Fakta om Norge",
+                  "layers": {
+                    "osloMarkaBorder": "Oslomarkagrense"
+                  }
+                },
+                "trails": {
+                  "heading": "Ruter",
+                  "layers": {
+                    "bikeTrails": "Sykkelruter",
+                    "hikingTrails": "Fotruter",
+                    "routeInfoPoints": "Ruteinfopunkt",
+                    "skiingTrails": "Skiruter",
+                    "waterTrails": "Padleruter"
+                  }
+                }
+              },
+              "themeName": "Friluftsliv"
+            },
             "property": {
-              "themeName": "Eiendom",
               "subThemes": {
                 "matrikkeldata": {
                   "heading": "Velg matrikkeldata",
@@ -135,28 +190,8 @@
                     "parcels": "Teiger og grenser"
                   }
                 }
-              }
-            },
-            "outdoorsLife": {
-              "themeName": "Friluftsliv",
-              "subThemes": {
-                "trails": {
-                  "heading": "Ruter",
-                  "layers": {
-                    "hikingTrails": "Fotruter",
-                    "skiingTrails": "Skiruter",
-                    "routeInfoPoints": "Ruteinfopunkt",
-                    "bikeTrails": "Sykkelruter",
-                    "waterTrails": "Padleruter"
-                  }
-                },
-                "norwayFacts": {
-                  "heading": "Fakta om Norge",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarkagrense"
-                  }
-                }
-              }
+              },
+              "themeName": "Eiendom"
             }
           }
         },
@@ -166,30 +201,6 @@
         },
         "theme": {
           "label": "Velg temakart"
-        }
-      }
-    },
-    "contextmenu": {
-      "items": {
-        "rettikartet": {
-          "label": "Meld om feil",
-          "tooltip": "Gå til RettIKartet.no",
-          "dialog": {
-            "title": "Meld om en feil",
-            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under.",
-            "rettikartetcategories": {
-              "n50kartdata": "N50 kart",
-              "sjo": "Sjøkart",
-              "veger": "Veier og adresser",
-              "turruter": "Turruter"
-            },
-            "category": {
-              "label": "Velg kartkategori"
-            },
-            "link": {
-              "label": "Åpne rettikartet.no i en ny fane"
-            }
-          }
         }
       }
     }
@@ -208,21 +219,21 @@
   "privacyAndContact": {
     "contactUs": "Kontakt",
     "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
+    "infoText": "Les hvordan vi tar vare på personopplysninger i Kartverkets",
     "privacyPolicy": "Personvernerklæring ",
-    "sendEmail": "Send e-post",
-    "infoText": "Les hvordan vi tar vare på personopplysninger i Kartverkets"
+    "sendEmail": "Send e-post"
   },
   "propertyInfo": {
     "holdingNr": "Gårdsnr.",
     "leaseNr": "Festenr.",
+    "markProperty": {
+      "label": "Vis eiendom på kartet"
+    },
     "moreInformation": "Vis mer informasjon",
     "multipleAddressesText": "Eiendommen har flere adresser",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",
-    "subholdingNr": "Bruksnr.",
-    "markProperty": {
-      "label": "Vis eiendom på kartet"
-    }
+    "subholdingNr": "Bruksnr."
   },
   "search": {
     "actions": {
@@ -243,6 +254,9 @@
     "roads": "Veger",
     "tabHeading": "Søk"
   },
+  "settings": {
+    "label": "Innstillinger for Norgeskart"
+  },
   "shared": {
     "actions": {
       "download": "Last ned",
@@ -256,21 +270,7 @@
     },
     "yes": "Ja"
   },
-  "settings": {
-    "label": "Innstillinger for Norgeskart"
-  },
   "tipsandtricks": {
     "heading": "Tips og triks"
-  },
-  "controller": {
-    "maplayers": {
-      "openText": "Kartlag"
-    },
-    "print": {
-      "text": "Print"
-    },
-    "settings": {
-      "text": "Innstillinger"
-    }
   }
 }
