@@ -8,6 +8,144 @@ interface PrintWindowProps {
   onClose: () => void;
 }
 
+//----------------------------testing api----------------------------
+
+
+const generateMapPdf = async () => {
+  console.log("📤 Starting PDF generation...");
+
+    // URL params for footer
+  const urlParams = new URLSearchParams(window.location.search);
+  const lon = parseFloat(urlParams.get('lon') || '');
+  const lat = parseFloat(urlParams.get('lat') || '');
+  const pos = `${lon.toFixed(2)}, ${lat.toFixed(2)}`;
+
+  const payload = {
+    attributes: {
+      map: {
+        center: [lon, lat],
+        dpi: 128,
+        layers: [
+          {
+            baseURL: "https://api.norgeskart.no/v1/matrikkel/wms",
+            customParams: {
+              TRANSPARENT: "true",
+              CQL_FILTER: "BYGNINGSTATUS<9 OR BYGNINGSTATUS=13"
+            },
+            imageFormat: "image/png",
+            layers: ["matrikkel:BYGNINGWFS"],
+            opacity: 1,
+            type: "WMS"
+          },
+          {
+            baseURL: "https://api.norgeskart.no/v1/matrikkel/wms",
+            customParams: {
+              TRANSPARENT: "true"
+            },
+            imageFormat: "image/png",
+            layers: ["matrikkel:MATRIKKELADRESSEWFS,matrikkel:VEGADRESSEWFS"],
+            opacity: 1,
+            type: "WMS"
+          },
+          {
+            baseURL: "https://cache.kartverket.no/v1/service",
+            customParams: {
+              TRANSPARENT: "true"
+            },
+            style: "default",
+            imageFormat: "image/png",
+            layer: "topo",
+            opacity: 1,
+            type: "WMTS",
+            dimensions: null,
+            requestEncoding: "KVP",
+            dimensionParams: {},
+            matrixSet: "utm33n",
+            matrices: [
+              { identifier: "0", scaleDenominator: 77371428.57142858, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [1, 1] },
+              { identifier: "1", scaleDenominator: 38685714.28571429, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [2, 2] },
+              { identifier: "2", scaleDenominator: 19342857.142857146, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [4, 4] },
+              { identifier: "3", scaleDenominator: 9671428.571428573, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [8, 8] },
+              { identifier: "4", scaleDenominator: 4835714.285714286, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [16, 16] },
+              { identifier: "5", scaleDenominator: 2417857.142857143, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [32, 32] },
+              { identifier: "6", scaleDenominator: 1208928.5714285716, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [64, 64] },
+              { identifier: "7", scaleDenominator: 604464.2857142858, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [128, 128] },
+              { identifier: "8", scaleDenominator: 302232.1428571429, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [256, 256] },
+              { identifier: "9", scaleDenominator: 151116.07142857145, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [512, 512] },
+              { identifier: "10", scaleDenominator: 75558.03571428572, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [1024, 1024] },
+              { identifier: "11", scaleDenominator: 37779.01785714286, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [2048, 2048] },
+              { identifier: "12", scaleDenominator: 18889.50892857143, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [4096, 4096] },
+              { identifier: "13", scaleDenominator: 9444.754464285716, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [8192, 8192] },
+              { identifier: "14", scaleDenominator: 4722.377232142858, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [16384, 16384] },
+              { identifier: "15", scaleDenominator: 2361.188616071429, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [32768, 32768] },
+              { identifier: "16", scaleDenominator: 1180.5943080357144, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [65536, 65536] },
+              { identifier: "17", scaleDenominator: 590.2971540178572, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [131072, 131072] },
+              { identifier: "18", scaleDenominator: 295.1485770089286, topLeftCorner: [-2500000, 9045984], tileSize: [256, 256], matrixSize: [262144, 262144] }
+            ]
+          }
+        ],
+        rotation: 0,
+        projection: "EPSG:25833",
+        scale: 10000
+      },
+      pos: pos,
+      scale_string: "1:25000",
+      title: ""
+    },
+    layout: "1_A4_portrait",
+    outputFormat: "pdf",
+    outputFilename: "norgeskart-utskrift"
+  };
+
+  console.log("📦 Payload ready:", payload);
+
+  try {
+    const response = await fetch("https://ws.geonorge.no/print/kv/report.pdf", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+    console.log("✅ Initial response:", result);
+
+    if (!result.statusURL) {
+      console.error("❌ No status URL returned.");
+      return;
+    }
+
+    const statusUrl = `https://ws.geonorge.no${result.statusURL}`;
+    console.log("📡 Polling status at:", statusUrl);
+
+    // Poll every 2 seconds until done
+    const pollStatus = async () => {
+      const statusResponse = await fetch(statusUrl);
+      const statusResult = await statusResponse.json();
+      console.log("📊 Status check:", statusResult);
+
+      if (
+        statusResult.done === true &&
+        statusResult.status === "finished"
+      ) {
+        const finalUrl = `https://ws.geonorge.no${statusResult.downloadURL}`;
+        console.log("✅ PDF ready at:", finalUrl);
+        window.open(finalUrl, "_blank");
+      } else {
+        console.log("⏳ Still processing...");
+        setTimeout(pollStatus, 2000);
+      }
+    };
+
+    pollStatus();
+  } catch (error) {
+    console.error("❌ Failed to generate or poll PDF:", error);
+  }
+};
+
+<button onClick={generateMapPdf}>Generate Map PDF</button>
+
+// ----------------------------testing api----------------------------
+
 export function getDpiMetrics() {
   const dpi = window.devicePixelRatio * 96; // 96 DPI standard
   const mmToPx = (mm: number) => (mm / 25.4) * dpi;
@@ -54,8 +192,8 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
 
   // URL params for footer
   const urlParams = new URLSearchParams(window.location.search);
-  const lon = urlParams.get('lon') || '';
-  const lat = urlParams.get('lat') || '';
+  const lon = parseFloat(urlParams.get('lon') || '').toFixed(2);
+  const lat = parseFloat(urlParams.get('lat') || '').toFixed(2);
   // const projection = urlParams.get('projection') || '';
   const projection = map.getView().getProjection().getCode();
 
@@ -250,10 +388,13 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
       
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(`Senterposisjon: ${lon}, ${lat}`, 6, a4HeightPx - 24);
-      ctx.fillText(`Koordinatsystem: ${projection}`, 6, a4HeightPx - 12);
+      ctx.fillText(`Senterposisjon:`, 0, a4HeightPx - 24);
+      ctx.fillText(`${lon}, ${lat}`, 100, a4HeightPx - 24);
+      ctx.fillText(`Koordinatsystem: `, 0, a4HeightPx - 12);
+      ctx.fillText(`${projection}`, 100, a4HeightPx - 12);
       const date = new Date().toLocaleDateString('no-NO');
-      ctx.fillText(`Utskriftsdato: ${date}`, 6, a4HeightPx);
+      ctx.fillText(`Utskriftsdato:`, 0, a4HeightPx);
+      ctx.fillText(`${date}`, 100, a4HeightPx);
 
       // Footer logo (bottom right)
       const logo = new Image();
@@ -261,7 +402,7 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
       logo.onload = () => {
         const logoHeight = 35;
         const logoWidth = (logo.width / logo.height) * logoHeight;
-        ctx.drawImage(logo, a4WidthPx - logoWidth - 6, a4HeightPx - logoHeight - 1, logoWidth, logoHeight);
+        ctx.drawImage(logo, a4WidthPx - logoWidth, a4HeightPx - logoHeight - 1, logoWidth, logoHeight);
 
         // Open print window
         const printWindow = window.open('', '_blank', 'width=800,height=1000');
@@ -330,6 +471,9 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
         </Button>
         <Button onClick={printMap} colorPalette="green" disabled={loading}>
           {t('Print or Save as PDF')}
+        </Button>
+        <Button onClick={generateMapPdf} colorPalette="green" disabled={loading}>
+          {t('Generate Map PDF')}
         </Button>
       </Flex>
 
