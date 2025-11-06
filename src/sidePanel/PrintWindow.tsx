@@ -4,7 +4,6 @@ import { useAtomValue } from 'jotai';
 import { mapAtom } from '../map/atoms';
 import { useState } from 'react';
 
-// ✅ NEW CODE START
 import Draw from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
@@ -15,7 +14,6 @@ import { PrintRequestBody } from './PrintRequestBody';
 let drawInteraction: Draw | null = null;
 let drawSource: VectorSource | null = null;
 let drawLayer: VectorLayer<VectorSource> | null = null;
-// ✅ NEW CODE END
 
 interface PrintWindowProps {
   onClose: () => void;
@@ -64,17 +62,11 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
   const map = useAtomValue(mapAtom);
   const [loading, setLoading] = useState(false);
 
-  // ✅ NEW CODE START
   const [hasSelection, setHasSelection] = useState(false);
-  // ✅ NEW CODE END
 
-  // Keep reference to iframe and timeout
   let printIframe: HTMLIFrameElement | null = null;
   let cleanupTimeout: number | null = null;
 
-  // -------------------------
-  // ✅ NEW CODE START: Print selected area only
-  // -------------------------
   const handlePrintArea = (extent: number[]) => {
     if (!map) return;
     setLoading(true);
@@ -83,12 +75,9 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
     const originalCenter = view.getCenter();
     const originalZoom = view.getZoom();
 
-    // Fit view to selected rectangle
     view.fit(extent, { size: map.getSize(), padding: [0, 0, 0, 0] });
 
-    // Wait until map finishes rendering
     map.once('rendercomplete', () => {
-      // Small delay to ensure tiles are loaded
       setTimeout(() => {
         const mapCanvas = map.getViewport().querySelector('canvas') as HTMLCanvasElement | null;
         if (!mapCanvas) {
@@ -146,7 +135,6 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
           printIframe.contentWindow?.focus();
           printIframe.contentWindow?.print();
 
-          // Restore original view after printing
           setTimeout(() => {
             if (originalCenter && originalZoom) {
               view.setCenter(originalCenter);
@@ -160,19 +148,15 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
           toaster.create({ title: 'Failed to capture map image', type: 'error' });
           setLoading(false);
         }
-      }, 500); // delay to ensure tiles loaded
+      }, 500);
     });
 
     map.renderSync();
   };
 
-  // -------------------------
-  // ✅ NEW CODE START: Print button handles selected area if exists
-  // -------------------------
   const handlePrint = () => {
     if (!map) return;
 
-    // If a rectangle exists, print that area
     if (drawSource && drawSource.getFeatures().length > 0) {
       const feature = drawSource.getFeatures()[0];
       const extent = feature.getGeometry()?.getExtent();
@@ -182,7 +166,6 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
       }
     }
 
-    // Otherwise, fallback: print entire map (old behavior)
     setLoading(true);
     map.once('rendercomplete', () => {
       const mapCanvas = map.getViewport().querySelector('canvas') as HTMLCanvasElement | null;
@@ -248,13 +231,7 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
 
     map.renderSync();
   };
-  // -------------------------
-  // ✅ NEW CODE END
-  // ------
 
-  // -------------------------
-  // ✅ NEW CODE START: Rectangle selection and clear
-  // -------------------------
   const handleSelectPrintArea = () => {
     if (!map) return;
 
@@ -298,7 +275,6 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
 
       setHasSelection(true);
 
-      // ✅ Call your getMap() function here
       GetMap();
     });
   };
@@ -312,12 +288,8 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
     setHasSelection(false);
     toaster.create({ title: t('Selection cleared') || 'Selection cleared', type: 'info' });
   };
-  // -------------------------
-  // ✅ NEW CODE END
-  // -------------------------
 
   const handleClose = () => {
-    // Cancel any pending iframe cleanup
     if (cleanupTimeout) clearTimeout(cleanupTimeout);
     if (printIframe) {
       document.body.removeChild(printIframe);
@@ -361,19 +333,15 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
           {t('Cancel') || 'Cancel'}
         </Button>
 
-        {/* ✅ NEW CODE START - New button */}
         <Button onClick={handleSelectPrintArea} colorPalette="blue" disabled={loading}>
           {t('Select print area') || 'Select print area'}
         </Button>
-        {/* ✅ NEW CODE END */}
 
-        {/* ✅ NEW CODE START - cancel rectangle UI */}
         {hasSelection && (
           <Button onClick={handleClearSelection} colorPalette="red" variant="outline">
             {t('Cancel selection') || 'Cancel selection'}
           </Button>
         )}
-        {/* ✅ NEW CODE END */}
 
         <Button onClick={handlePrint} colorPalette="green" disabled={loading}>
           {t('Print or Save as PDF') || 'Print or Save as PDF'}
