@@ -8,6 +8,33 @@ interface PrintWindowProps {
   onClose: () => void;
 }
 
+export function getDpiMetrics() {
+  const dpi = window.devicePixelRatio * 96; // 96 DPI standard
+  const mmToPx = (mm: number) => (mm / 25.4) * dpi;
+
+  const a4WidthPx = mmToPx(210); // Always portrait width
+  const a4HeightPx = mmToPx(297 + 8); // Always portrait height + footer
+
+  // Overlay size: scale down for screen preview, but keep aspect ratio
+  const scaleFactor = Math.min(
+    window.innerWidth / a4WidthPx,
+    window.innerHeight / a4HeightPx,
+    0.8 // max 80% of screen
+  );
+
+  const overlayWidth = a4WidthPx * scaleFactor;
+  const overlayHeight = a4HeightPx * scaleFactor;
+
+  return {
+    dpi,
+    mmToPx,
+    a4WidthPx,
+    a4HeightPx,
+    overlayWidth,
+    overlayHeight,
+  };
+}
+
 const PrintWindow = ({ onClose }: PrintWindowProps) => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
@@ -15,15 +42,12 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   // DPI and size conversions
-  const dpi = window.devicePixelRatio * 96; // 96 DPI standard
-  const mmToPx = (mm: number) => (mm / 25.4) * dpi;
-  const a4WidthPx = mmToPx(210);
-  const a4HeightPx = mmToPx(297+8); // Extra 8mm for footer
-
-  // Overlay size on screen smaller than full A4 for easier dragging:
-  // Let's say 80% of A4 size visually on screen
-  const overlayWidth = a4WidthPx * 0.40;
-  const overlayHeight = a4HeightPx * 0.40;
+  const {
+    a4WidthPx,
+    a4HeightPx,
+    overlayWidth,
+    overlayHeight,
+  } = getDpiMetrics();
 
   // Center overlay initially (will position in map container pixels)
   const [overlayPosition, setOverlayPosition] = useState({ x: 100, y: 100 }); // Default starting pos
@@ -32,7 +56,8 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
   const urlParams = new URLSearchParams(window.location.search);
   const lon = urlParams.get('lon') || '';
   const lat = urlParams.get('lat') || '';
-  const projection = urlParams.get('projection') || '';
+  // const projection = urlParams.get('projection') || '';
+  const projection = map.getView().getProjection().getCode();
 
   // Center the overlay on the map viewport when map is ready
   useEffect(() => {
@@ -162,7 +187,7 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
 
       const printCanvas = document.createElement('canvas');
       printCanvas.width = a4WidthPx;
-      printCanvas.height = a4HeightPx + 3; // Leave space for footer
+      printCanvas.height = a4HeightPx + 2; // Leave space for footer
       const ctx = printCanvas.getContext('2d');
       if (!ctx) return;
 
@@ -222,12 +247,13 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(scaleText, x + boxWidth / 2, y + boxHeight / 2);
-
-
-      ctx.fillText(`Senterposisjon: ${lon}, ${lat}`, 6, a4HeightPx - 25);
-      ctx.fillText(`Koordinatsystem: ${projection}`, 6, a4HeightPx - 13);
+      
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`Senterposisjon: ${lon}, ${lat}`, 6, a4HeightPx - 24);
+      ctx.fillText(`Koordinatsystem: ${projection}`, 6, a4HeightPx - 12);
       const date = new Date().toLocaleDateString('no-NO');
-      ctx.fillText(`Utskriftsdato: ${date}`, 6, a4HeightPx - 1);
+      ctx.fillText(`Utskriftsdato: ${date}`, 6, a4HeightPx);
 
       // Footer logo (bottom right)
       const logo = new Image();
@@ -235,7 +261,7 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
       logo.onload = () => {
         const logoHeight = 35;
         const logoWidth = (logo.width / logo.height) * logoHeight;
-        ctx.drawImage(logo, a4WidthPx - logoWidth - 20, a4HeightPx - logoHeight - 1, logoWidth, logoHeight);
+        ctx.drawImage(logo, a4WidthPx - logoWidth - 6, a4HeightPx - logoHeight - 1, logoWidth, logoHeight);
 
         // Open print window
         const printWindow = window.open('', '_blank', 'width=800,height=1000');
