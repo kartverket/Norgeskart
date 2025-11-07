@@ -187,6 +187,18 @@
                 }
               },
               "themeName": "Properties"
+            },
+            "locations": {
+              "themeName": "Location names",
+              "subThemes": {
+                "historicalMaps": {
+                  "heading": "Historical maps",
+                  "layers": {
+                    "economicMapFirstEdition": "Economic Mapping Authoroty 1. edition",
+                    "amtMap": "Amt maps"
+                  }
+                }
+              }
             }
           }
         },

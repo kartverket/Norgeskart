@@ -192,6 +192,18 @@
                 }
               },
               "themeName": "Eigedom"
+            },
+            "locations": {
+              "themeName": "Stadnamn",
+              "subThemes": {
+                "historicalMaps": {
+                  "heading": "Historiske kart",
+                  "layers": {
+                    "economicMapFirstEdition": "Økonomisk Kartverk 1. utg",
+                    "amtMap": "Amtskart"
+                  }
+                }
+              }
             }
           }
         },
