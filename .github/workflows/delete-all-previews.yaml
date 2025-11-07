@@ -1,7 +1,6 @@
 name: Delete all preview environments
 
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 
 env:
   image_registry: ghcr.io
@@ -14,7 +13,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: build
     permissions:
       contents: read
       id-token: write
