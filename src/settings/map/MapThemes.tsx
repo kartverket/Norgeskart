@@ -75,6 +75,12 @@ export const MapThemes = () => {
         ],
       },
     ]),
+    createTheme('locations', [
+      {
+        name: 'historicalMaps',
+        layerNames: ['economicMapFirstEdition', 'amtMap'],
+      },
+    ]),
   ];
 
   const isLayerChecked = (layerName: ThemeLayerName): boolean => {

@@ -2,6 +2,8 @@ import TileLayer from 'ol/layer/Tile';
 import { TileWMS } from 'ol/source';
 import { getEnv } from '../../env';
 
+type LocationNameLayerName = 'economicMapFirstEdition' | 'amtMap';
+
 type PropertyLayerName = 'adresses' | 'buildings' | 'parcels';
 type OutdoorsLifeLayerName =
   | 'hikingTrails'
@@ -14,7 +16,8 @@ type FactsLayerName = 'osloMarkaBorder';
 export type ThemeLayerName =
   | PropertyLayerName
   | OutdoorsLifeLayerName
-  | FactsLayerName;
+  | FactsLayerName
+  | LocationNameLayerName;
 
 const ENV = getEnv();
 
@@ -82,6 +85,20 @@ export const getThemeWMSLayer = (
       return getOutdoorsLifeWMSLayer(layerName, projection);
     case 'osloMarkaBorder':
       return getNorwayFactsWMSLayer(layerName, projection);
+    case 'economicMapFirstEdition':
+      return getGeoNorgeWMSLayer(
+        'n5raster2',
+        projection,
+        'n5raster_foerstegang_metadata,n5raster_foerstegang',
+        layerName,
+      );
+    case 'amtMap':
+      return getGeoNorgeWMSLayer(
+        'historiskekart',
+        projection,
+        'amt1',
+        layerName,
+      );
     default:
       return null;
   }
