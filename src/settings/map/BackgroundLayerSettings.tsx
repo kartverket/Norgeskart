@@ -82,6 +82,20 @@ const LayerCard = ({
   </Box>
 );
 
+const getBackgroundLayerImageName = (
+  layerName: BackgroundLayerName,
+): string => {
+  switch (layerName) {
+    case 'Nibcache_web_mercator_v2':
+    case 'Nibcache_UTM32_EUREF89_v2':
+    case 'Nibcache_UTM33_EUREF89_v2':
+    case 'Nibcache_UTM35_EUREF89_v2':
+      return 'Nibcache_web_mercator_v2';
+    default:
+      return layerName;
+  }
+};
+
 // Grid for alle lagene
 const BackgroundLayerGrid = ({
   layers,
@@ -97,7 +111,7 @@ const BackgroundLayerGrid = ({
       <LayerCard
         key={layer.value}
         label={layer.label}
-        thumbnailUrl={`/backgroundlayerImages/${layer.value}.png`}
+        thumbnailUrl={`/backgroundlayerImages/${getBackgroundLayerImageName(layer.value)}.png`}
         isActive={currentLayer === layer.value}
         onClick={() => setLayer(layer.value)}
       />
