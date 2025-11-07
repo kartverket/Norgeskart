@@ -1,19 +1,7 @@
-name: Build and deploy
+name: Delete all preview environments
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
-    inputs:
-      bypassValidation:
-        description: 'Bypass validation checks'
-        required: false
-        default: 'false'
-        type: boolean
-  pull_request:
-    branches:
-      - main
 
 env:
   image_registry: ghcr.io
@@ -24,18 +12,12 @@ permissions:
   packages: write
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yaml
-    with:
-      bypassValidation: ${{ github.event.inputs.bypassValidation }}
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
     permissions:
       contents: read
       id-token: write
-    if: github.event_name != 'pull_request'
     steps:
       - uses: octo-sts/action@d6c70ad3b9ac85df6da6b9749014d7283987cfec
         id: octo-sts
@@ -55,12 +37,11 @@ jobs:
           git config --global user.email "tnt-nk@kartverket.no"
           git config --global user.name "tnt-nk CI"
 
-      - name: Update deployment
+      - name: Delete previews
         env:
-          COMMIT_MESSAGE: Update norgeskart5 image to ${{ needs.build.outputs.docker_tag }}
+          COMMIT_MESSAGE: Delete all preview environments
         run: |
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atgcp1-dev/norgeskart-main/norgeskart-version
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atgcp1-prod/norgeskart-main/norgeskart-version
+          rm -rf env/atgcp1-dev/norgeskart-preview-*
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
