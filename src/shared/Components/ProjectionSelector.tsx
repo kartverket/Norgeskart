@@ -1,4 +1,5 @@
 import {
+  Box,
   createListCollection,
   SelectContent,
   SelectItem,
@@ -26,31 +27,37 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   }));
 
   return (
-    <SelectRoot
-      collection={createListCollection({ items: projectionCollection })}
-      defaultValue={[defaultProjection]}
-    >
-      <SelectLabel>
-        {props.label ? props.label : t('map.settings.layers.projection.label')}
-      </SelectLabel>
-      <SelectTrigger>
-        <SelectValueText
-          placeholder={t('map.settings.layers.projection.placeholder')}
-        />
-      </SelectTrigger>
-      <SelectContent portalled={false}>
-        {projectionCollection.map((item) => (
-          <SelectItem
-            key={item.value}
-            item={item.value}
-            onClick={() =>
-              props.onProjectionChange(item.value as ProjectionIdentifier)
-            }
-          >
-            {item.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </SelectRoot>
+    <>
+      <Box width="300px">
+        <SelectRoot
+          collection={createListCollection({ items: projectionCollection })}
+          defaultValue={[defaultProjection]}
+        >
+          <SelectLabel>
+            {props.label
+              ? props.label
+              : t('map.settings.layers.projection.label')}
+          </SelectLabel>
+          <SelectTrigger width="100%">
+            <SelectValueText
+              placeholder={t('map.settings.layers.projection.placeholder')}
+            />
+          </SelectTrigger>
+          <SelectContent portalled={false}>
+            {projectionCollection.map((item) => (
+              <SelectItem
+                key={item.value}
+                item={item.value}
+                onClick={() =>
+                  props.onProjectionChange(item.value as ProjectionIdentifier)
+                }
+              >
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </Box>
+    </>
   );
 };

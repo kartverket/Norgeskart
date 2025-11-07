@@ -1,11 +1,10 @@
-import { Box, Image, Link, Portal } from '@kvib/react';
+import { Box, Link, Portal } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { displayCompassOverlayAtom } from '../atoms';
-import { MapControlButtons } from '../MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './atoms';
 import { Compass } from './Compass';
 import { MapToolButtons } from './MapToolButtons';
@@ -74,25 +73,18 @@ export const MapOverlay = () => {
               target="_blank"
               rel="noopener noreferrer"
               outline="none"
-            >
-              <Image
-                src="/logos/KV_logo_staa.svg"
-                alt="Logo"
-                style={{ height: 64 }}
-              />
-            </Link>
+            ></Link>
           </Box>
 
-          {/* Her er hovedboksen for knappene i senter */}
+          {/* Her er hovedboken for knappene i senter */}
           <Box
             position="absolute"
-            bottom="16px"
+            bottom="0"
             left="50%"
             transform="translateX(-50%)"
             zIndex={10}
             bg="#FFFF"
-            borderRadius="lg"
-            p={2}
+            borderTopRadius="lg"
             boxShadow="lg"
           >
             <MapToolButtons />
@@ -103,7 +95,7 @@ export const MapOverlay = () => {
               setCurrentMapTool(null);
             }}
           />
-          <MapControlButtons />
+          {/*<MapControlButtons />*/}
         </Portal>
       )}
     </ErrorBoundary>

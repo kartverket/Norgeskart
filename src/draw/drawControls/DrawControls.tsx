@@ -1,4 +1,4 @@
-import { Button, VStack } from '@kvib/react';
+import { Button, Flex } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -23,7 +23,7 @@ export const DrawControls = () => {
   useAtom(distanceUnitAtomEffect);
 
   return (
-    <VStack alignItems={'flex-start'} width={'100%'}>
+    <Flex flexDirection="column">
       <DrawToolSelector />
       {drawType === 'Text' && <TextStyleControl />}
       <EditControls />
@@ -35,6 +35,6 @@ export const DrawControls = () => {
       <LineWidthControl />
       <MeasurementControls />
       <DrawControlFooter />
-    </VStack>
+    </Flex>
   );
 };

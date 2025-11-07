@@ -45,26 +45,22 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
     <Box
       position="fixed"
-      top={'16px'}
-      left={'16px'}
-      width="20vw"
-      minWidth="350px"
-      height="80vh"
+      width="auto"
+      bottom="0"
+      left="50%"
+      transform="translate(-50%)"
       zIndex={2000}
       pointerEvents="auto"
-      bg="#f5f2f2"
+      bg="#ffff"
       shadow="lg"
       display="flex"
       flexDirection="column"
       borderRight="1px solid rgba(0,0,0,0.1)"
-      px={4}
-      py={4}
-      borderRadius={'16px'}
+      p={5}
+      borderTopRadius={10}
     >
-      <Flex justify="space-between">
-        <Heading fontWeight="bold" mb="2rem">
-          {label}
-        </Heading>
+      <Flex justifyContent="space-between" pb={3}>
+        <Heading>{label}</Heading>
         <IconButton
           variant="ghost"
           icon="close"
@@ -73,7 +69,8 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
           onClick={() => {
             onClose();
           }}
-          size="sm"
+          size="md"
+          p={0}
         />
       </Flex>
       <Box overflowY="auto" height={'100%'}>

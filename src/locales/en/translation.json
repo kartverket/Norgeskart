@@ -262,7 +262,10 @@
     "tabHeading": "Search"
   },
   "settings": {
-    "label": "Settings for Norgeskart"
+    "label": "Settings for Norgeskart",
+    "drawer": {
+      "label": "Select map settings"
+    }
   },
   "shared": {
     "actions": {

@@ -84,7 +84,7 @@ export const ExportControls = () => {
     }
   };
   return (
-    <VStack alignItems="flex-start" w={'100%'}>
+    <VStack alignItems="flex-start" w="300px">
       <Heading size={'lg'} as="h3">
         {t('export.heading')}
       </Heading>

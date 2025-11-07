@@ -267,7 +267,10 @@
     "tabHeading": "Søk"
   },
   "settings": {
-    "label": "Innstillingar for Norgeskart"
+    "label": "Innstillingar for Norgeskart",
+    "drawer": {
+      "label": "Vel kartinnstillingar"
+    }
   },
   "shared": {
     "actions": {

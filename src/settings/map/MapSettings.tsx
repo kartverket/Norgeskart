@@ -1,16 +1,20 @@
-import { SimpleGrid } from '@kvib/react';
+import { Grid, GridItem } from '@kvib/react';
 import { BackgroundLayerSettings } from './BackgroundLayerSettings';
-import { CompassSettings } from './CompassSettings';
 import { MapThemes } from './MapThemes';
 import { ProjectionSettings } from './ProjectionSettings';
 
-export const MapSettings = () => {
-  return (
-    <SimpleGrid columns={1} gap="7">
-      <BackgroundLayerSettings />
-      <MapThemes />
-      <ProjectionSettings />
-      <CompassSettings />
-    </SimpleGrid>
-  );
-};
+export const MapSettings = () => (
+  <>
+    <Grid templateColumns={{ md: 'repeat(3, 1fr)' }} gap={20}>
+      <GridItem colSpan={1}>
+        <BackgroundLayerSettings />
+        <ProjectionSettings />
+      </GridItem>
+      <GridItem colSpan={2}>
+        <MapThemes />
+      </GridItem>
+
+      {/*<CompassSettings />*/}
+    </Grid>
+  </>
+);

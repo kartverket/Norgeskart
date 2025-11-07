@@ -154,7 +154,7 @@
             "sjokartraster": "Sjøkart papir",
             "topo": "Topo",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografisk, gråtone",
+            "topograatone": "Topo, gråtone",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
           },
@@ -267,7 +267,10 @@
     "tabHeading": "Søk"
   },
   "settings": {
-    "label": "Innstillinger for Norgeskart"
+    "label": "Innstillinger for Norgeskart",
+    "drawer": {
+      "label": "Velg kartinnstillinger"
+    }
   },
   "shared": {
     "actions": {
