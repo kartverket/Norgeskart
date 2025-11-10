@@ -1,5 +1,5 @@
 import { Box, Flex, Icon, IconButton, Search } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
@@ -8,6 +8,7 @@ import {
   ParsedCoordinate,
 } from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
+import { selectedResultAtom } from './atoms.ts';
 import { InfoBox } from './infobox/InfoBox.tsx';
 import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
@@ -21,9 +22,7 @@ import {
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [placesPage, setPlacesPage] = useState(1);
-  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
-    null,
-  );
+  const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
@@ -97,8 +96,6 @@ export const SearchComponent = () => {
             setPlacesPage(page);
           }}
           searchQuery={searchQuery}
-          selectedResult={selectedResult}
-          setSelectedResult={setSelectedResult}
           hoveredResult={hoveredResult}
           setHoveredResult={setHoveredResult}
         />

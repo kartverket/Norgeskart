@@ -1,5 +1,5 @@
 import { AccordionRoot, Box, Stack } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
@@ -12,6 +12,7 @@ import {
   propertyResultsAtom,
   roadResultsAtom,
   searchResultsAtom,
+  selectedResultAtom,
 } from '../atoms.ts';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
@@ -24,16 +25,13 @@ type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 interface SearchResultsProps {
   onPlacesPageChange: (_page: number) => void;
   searchQuery: string;
-  selectedResult: SearchResult | null;
-  setSelectedResult: (result: SearchResult | null) => void;
+
   hoveredResult: SearchResult | null;
   setHoveredResult: (result: SearchResult | null) => void;
 }
 
 export const SearchResults = ({
   onPlacesPageChange,
-  setSelectedResult,
-  selectedResult,
   hoveredResult,
   setHoveredResult,
 }: SearchResultsProps) => {
@@ -52,6 +50,8 @@ export const SearchResults = ({
   const placesMetadata = useAtomValue(placeNameMetedataAtom);
   const addresses = useAtomValue(addressResultsAtom);
   const allResults = useAtomValue(searchResultsAtom);
+
+  const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
 
   const handleHover = (res: SearchResult) => {
     setHoveredResult(res);

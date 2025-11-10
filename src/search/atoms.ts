@@ -23,3 +23,5 @@ export const allSearchResultsAtom = atom((get) => {
 
   return searchResultsMapper(placeNames, roads, addresses, properties);
 });
+
+export const selectedResultAtom = atom<SearchResult | null>(null);
