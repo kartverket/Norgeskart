@@ -1,32 +1,27 @@
 import { AccordionRoot, Box, Stack } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
+import { SearchResult } from '../../types/searchTypes.ts';
 import {
-  Address,
-  Metadata,
-  PlaceName,
-  Property,
-  Road,
-  SearchResult,
-} from '../../types/searchTypes.ts';
+  addressResultsAtom,
+  placeNameMetedataAtom,
+  placeNameResultsAtom,
+  propertyResultsAtom,
+  roadResultsAtom,
+  searchResultsAtom,
+} from '../atoms.ts';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
 import { PropertiesResults } from './PropertiesResults.tsx';
 import { RoadsResults } from './RoadsResults.tsx';
-import { searchResultsMapper } from './searchresultsMapper.ts';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
 interface SearchResultsProps {
-  properties: Property[];
-  roads: Road[];
-  places: PlaceName[];
-  addresses: Address[];
-  placesMetadata?: Metadata;
   onPlacesPageChange: (_page: number) => void;
   searchQuery: string;
   selectedResult: SearchResult | null;
@@ -36,11 +31,6 @@ interface SearchResultsProps {
 }
 
 export const SearchResults = ({
-  properties,
-  roads,
-  places,
-  addresses,
-  placesMetadata,
   onPlacesPageChange,
   setSelectedResult,
   selectedResult,
@@ -56,10 +46,12 @@ export const SearchResults = ({
     'addresses',
   ]);
 
-  const allResults = useMemo<SearchResult[]>(
-    () => searchResultsMapper(places, roads, addresses, properties),
-    [places, roads, addresses, properties],
-  );
+  const properties = useAtomValue(propertyResultsAtom);
+  const roads = useAtomValue(roadResultsAtom);
+  const places = useAtomValue(placeNameResultsAtom);
+  const placesMetadata = useAtomValue(placeNameMetedataAtom);
+  const addresses = useAtomValue(addressResultsAtom);
+  const allResults = useAtomValue(searchResultsAtom);
 
   const handleHover = (res: SearchResult) => {
     setHoveredResult(res);

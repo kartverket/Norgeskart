@@ -28,10 +28,10 @@ export const SearchComponent = () => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
 
-  const { placeNameData } = usePlaceNames(searchQuery, placesPage);
-  const { roadsData } = useRoads(searchQuery);
-  const { propertiesData } = useProperties(searchQuery);
-  const { addressData } = useAddresses(searchQuery);
+  usePlaceNames(searchQuery, placesPage);
+  useRoads(searchQuery);
+  useProperties(searchQuery);
+  useAddresses(searchQuery);
 
   // Get current projection from map
   const currentProjection = useMemo<ProjectionIdentifier>(() => {
@@ -93,11 +93,6 @@ export const SearchComponent = () => {
         />
       ) : (
         <SearchResults
-          properties={propertiesData ? propertiesData : []}
-          roads={roadsData ? roadsData : []}
-          places={placeNameData ? placeNameData.navn : []}
-          addresses={addressData ? addressData.adresser : []}
-          placesMetadata={placeNameData?.metadata}
           onPlacesPageChange={(page: number) => {
             setPlacesPage(page);
           }}
