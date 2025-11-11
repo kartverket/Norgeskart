@@ -8,14 +8,17 @@ import {
   PaginationNextTrigger,
   PaginationPrevTrigger,
 } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
-import { placeNameMetedataAtom, placeNameResultsAtom } from '../atoms';
+import {
+  placeNameMetedataAtom,
+  placeNamePageAtom,
+  placeNameResultsAtom,
+} from '../atoms';
 import { SearchResultLine } from './SearchResultLine';
 
 interface PlacesResultProps {
-  onPlacesPageChange: (_page: number) => void;
   handleSearchClick: (res: SearchResult) => void;
   handleHover: (res: SearchResult) => void;
   setHoveredResult: (res: SearchResult | null) => void;
@@ -23,7 +26,6 @@ interface PlacesResultProps {
 }
 
 export const PlacesResult = ({
-  onPlacesPageChange,
   handleSearchClick,
   handleHover,
   setHoveredResult,
@@ -31,6 +33,7 @@ export const PlacesResult = ({
 }: PlacesResultProps) => {
   const places = useAtomValue(placeNameResultsAtom);
   const placesMetadata = useAtomValue(placeNameMetedataAtom);
+  const [placesPage, setPlacesPage] = useAtom(placeNamePageAtom);
 
   const { t } = useTranslation();
   if (placesMetadata === null) {
@@ -86,9 +89,9 @@ export const PlacesResult = ({
             siblingCount={4}
             size="sm"
             count={placesMetadata.totaltAntallTreff}
-            page={placesMetadata.side}
+            page={placesPage}
             pageSize={placesMetadata.treffPerSide}
-            onPageChange={(e: { page: number }) => onPlacesPageChange(e.page)}
+            onPageChange={(e: { page: number }) => setPlacesPage(e.page)}
           >
             <PaginationPrevTrigger />
             <PaginationItems />

@@ -7,6 +7,7 @@ import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import { SearchResult } from '../../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
+  placeNamePageEffet,
   searchQueryEffect,
   selectedResultAtom,
 } from '../atoms.ts';
@@ -19,15 +20,11 @@ import { RoadsResults } from './RoadsResults.tsx';
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
 interface SearchResultsProps {
-  onPlacesPageChange: (_page: number) => void;
-  searchQuery: string;
-
   hoveredResult: SearchResult | null;
   setHoveredResult: (result: SearchResult | null) => void;
 }
 
 export const SearchResults = ({
-  onPlacesPageChange,
   hoveredResult,
   setHoveredResult,
 }: SearchResultsProps) => {
@@ -42,6 +39,7 @@ export const SearchResults = ({
 
   const allResults = useAtomValue(allSearchResultsAtom);
   useAtom(searchQueryEffect);
+  useAtom(placeNamePageEffet);
 
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
 
@@ -91,7 +89,6 @@ export const SearchResults = ({
           borderRadius={10}
         >
           <PlacesResult
-            onPlacesPageChange={onPlacesPageChange}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}

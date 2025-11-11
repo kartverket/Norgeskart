@@ -15,7 +15,6 @@ import { SearchResults } from './results/SearchResults.tsx';
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
-  const [_, setPlacesPage] = useState(1);
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
@@ -79,10 +78,6 @@ export const SearchComponent = () => {
         />
       ) : (
         <SearchResults
-          onPlacesPageChange={(page: number) => {
-            setPlacesPage(page);
-          }}
-          searchQuery={searchQuery}
           hoveredResult={hoveredResult}
           setHoveredResult={setHoveredResult}
         />

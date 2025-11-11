@@ -17,10 +17,10 @@ import {
 } from './searchApi';
 
 export const searchQueryAtom = atom<string>('');
+export const placeNamePageAtom = atom<number>(1);
 
 export const searchQueryEffect = atomEffect((get, set) => {
   const searchQuery = get(searchQueryAtom);
-  const placeMetadata = getDefaultStore().get(placeNameMetedataAtom); // To avoid triggering the effect after setting it
   if (searchQuery === '') {
     set(addressResultsAtom, []);
     set(placeNameResultsAtom, []);
@@ -33,7 +33,7 @@ export const searchQueryEffect = atomEffect((get, set) => {
   const fetchData = async () => {
     return await Promise.all([
       getAddresses(searchQuery),
-      getPlaceNames(searchQuery, placeMetadata?.side ? placeMetadata.side : 1),
+      getPlaceNames(searchQuery, 1),
       getRoads(searchQuery),
       getProperties(searchQuery),
     ]);
@@ -52,6 +52,22 @@ export const searchQueryEffect = atomEffect((get, set) => {
     }
     if (propertiesResult) {
       set(propertyResultsAtom, propertiesResult);
+    }
+  });
+});
+
+export const placeNamePageEffet = atomEffect((get, set) => {
+  const page = get(placeNamePageAtom);
+  const searchQuery = getDefaultStore().get(searchQueryAtom);
+
+  const fetchPlaceNames = async () => {
+    return await getPlaceNames(searchQuery, page);
+  };
+
+  fetchPlaceNames().then((placeResult) => {
+    if (placeResult.navn) {
+      set(placeNameResultsAtom, placeResult.navn);
+      set(placeNameMetedataAtom, placeResult.metadata);
     }
   });
 });
