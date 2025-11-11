@@ -32,8 +32,6 @@ export const RoadsResults = ({
 
   const [openRoads, setOpenRoads] = useState<string[]>([]);
 
-  console.log(roads);
-
   const toggleRoad = (roadId: string) => {
     setOpenRoads((prev) =>
       prev.includes(roadId)
@@ -64,6 +62,10 @@ export const RoadsResults = ({
       console.error('Failed to fetch address', e);
     }
   };
+
+  if (roads.length === 0) {
+    return null;
+  }
 
   return (
     <AccordionItem value="roads">

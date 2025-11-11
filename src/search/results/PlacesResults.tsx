@@ -39,6 +39,9 @@ export const PlacesResult = ({
   if (placesMetadata === null) {
     return null;
   }
+  if (places.length === 0) {
+    return null;
+  }
 
   return (
     <AccordionItem value="places">

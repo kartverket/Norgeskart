@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, IconButton, Search } from '@kvib/react';
+import { Box, Flex, Icon, IconButton, Search, Spinner } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,10 +8,34 @@ import {
   ParsedCoordinate,
 } from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
-import { searchQueryAtom, selectedResultAtom } from './atoms.ts';
+import {
+  searchPendingAtom,
+  searchQueryAtom,
+  selectedResultAtom,
+} from './atoms.ts';
 import { InfoBox } from './infobox/InfoBox.tsx';
 import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
+
+const SearchIcon = () => {
+  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
+  const isSearchPending = useAtomValue(searchPendingAtom);
+  if (searchQuery === '') {
+    return <Icon icon="search" size={24} weight={500} color="gray" />;
+  }
+  if (isSearchPending) {
+    return <Spinner />;
+  }
+  return (
+    <IconButton
+      icon="close"
+      variant="ghost"
+      color={'gray'}
+      size={24}
+      onClick={() => setSearchQuery('')}
+    />
+  );
+};
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
@@ -53,17 +77,7 @@ export const SearchComponent = () => {
             top="50%"
             transform="translateY(-50%)"
           >
-            {searchQuery === '' ? (
-              <Icon icon="search" size={24} weight={500} color="gray" />
-            ) : (
-              <IconButton
-                icon="close"
-                variant="ghost"
-                color={'gray'}
-                size={24}
-                onClick={() => setSearchQuery('')}
-              />
-            )}
+            <SearchIcon />
           </Box>
         </Box>
       </Box>

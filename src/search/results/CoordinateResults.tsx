@@ -1,8 +1,6 @@
 import { List } from '@kvib/react';
-import { useAtomValue } from 'jotai';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { ParsedCoordinate } from '../../shared/utils/coordinateParser';
 import { getInputCRS } from '../../shared/utils/crsUtils';
@@ -26,7 +24,6 @@ export const CoordinateResults = ({
   setHoveredResult,
 }: CoordinateResultsProps) => {
   const { t } = useTranslation();
-  const map = useAtomValue(mapAtom);
   const { setMapLocation } = useMapSettings();
 
   const searchResult: SearchResult | null = useMemo(
@@ -67,13 +64,12 @@ export const CoordinateResults = ({
 
   useEffect(() => {
     updateSearchMarkers(
-      map,
       allResults,
       hoveredResult,
       selectedResult,
       handleSearchClick,
     );
-  }, [map, allResults, hoveredResult, selectedResult, handleSearchClick]);
+  }, [allResults, hoveredResult, selectedResult, handleSearchClick]);
 
   if (!coordinate || !searchResult) {
     return null;

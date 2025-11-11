@@ -1,13 +1,13 @@
 import { AccordionRoot, Box, Stack } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
-import { mapAtom } from '../../map/atoms.ts';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import { SearchResult } from '../../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
   placeNamePageEffet,
+  searchQueryAtom,
   searchQueryEffect,
   selectedResultAtom,
 } from '../atoms.ts';
@@ -28,8 +28,8 @@ export const SearchResults = ({
   hoveredResult,
   setHoveredResult,
 }: SearchResultsProps) => {
-  const map = useAtomValue(mapAtom);
   const { setMapLocation } = useMapSettings();
+  const searchQuery = useAtomValue(searchQueryAtom);
   const [accordionTabsOpen, setAccordionTabsOpen] = useState<AccordionTab[]>([
     'places',
     'roads',
@@ -66,19 +66,25 @@ export const SearchResults = ({
 
   useEffect(() => {
     updateSearchMarkers(
-      map,
       allResults,
       hoveredResult,
       selectedResult,
       handleSearchClick,
     );
-  }, [map, allResults, hoveredResult, selectedResult, handleSearchClick]);
-  if (allResults.length === 0) {
+  }, [allResults, hoveredResult, selectedResult, handleSearchClick]);
+  if (searchQuery === '') {
     return null;
+  }
+  if (allResults.length === 0 && searchQuery !== '') {
+    return (
+      <Box p={4} bg="white" borderRadius={'16px'}>
+        {'Ingen treff'}
+      </Box>
+    );
   }
 
   return (
-    <Stack p={4} borderRadius={'16px'} bg="white">
+    <Stack p={4} bg="white" borderRadius={'16px'}>
       <Box overflowY="auto" overflowX="hidden" maxHeight="60vh">
         <AccordionRoot
           collapsible

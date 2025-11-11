@@ -17,6 +17,7 @@ import {
 } from './searchApi';
 
 export const searchQueryAtom = atom<string>('');
+export const searchPendingAtom = atom<boolean>(false);
 export const placeNamePageAtom = atom<number>(1);
 
 export const searchQueryEffect = atomEffect((get, set) => {
@@ -29,6 +30,7 @@ export const searchQueryEffect = atomEffect((get, set) => {
     set(placeNameMetedataAtom, null);
     return;
   }
+  set(searchPendingAtom, true);
 
   const fetchData = async () => {
     return await Promise.all([
@@ -53,6 +55,7 @@ export const searchQueryEffect = atomEffect((get, set) => {
     if (propertiesResult) {
       set(propertyResultsAtom, propertiesResult);
     }
+    set(searchPendingAtom, false);
   });
 });
 

@@ -26,6 +26,10 @@ export const PropertiesResults = ({
   const { t } = useTranslation();
   const properties = useAtomValue(propertyResultsAtom);
 
+  if (properties.length === 0) {
+    return null;
+  }
+
   return (
     <AccordionItem value="properties">
       <AccordionItemTrigger onClick={onTabClick}>

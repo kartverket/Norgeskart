@@ -1,3 +1,4 @@
+import { getDefaultStore } from 'jotai';
 import { Feature } from 'ol';
 import { createEmpty, extend } from 'ol/extent';
 import { Point } from 'ol/geom';
@@ -5,6 +6,7 @@ import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import Cluster from 'ol/source/Cluster';
 import VectorSource from 'ol/source/Vector';
+import { mapAtom } from '../../map/atoms';
 import { SearchResult } from '../../types/searchTypes';
 import { clusterStyle } from './cluster';
 import { createMarker, LOCATION_BLUE_SVG, LOCATION_RED_SVG } from './marker';
@@ -56,12 +58,12 @@ const handleClusterClick = (
 };
 
 export const updateSearchMarkers = (
-  map: Map,
   searchResults: SearchResult[],
   hoveredResult: { lon: number; lat: number } | null,
   selectedResult: SearchResult | null,
   onResultClick: (res: SearchResult) => void,
 ) => {
+  const map = getDefaultStore().get(mapAtom);
   const markerLayer = map
     .getLayers()
     .getArray()
