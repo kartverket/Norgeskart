@@ -76,6 +76,48 @@ export type PlaceNameDetails = {
   stedsnavnnummer: number;
 };
 
+export class Place {
+  counties: County[];
+  municipalities: Municipality[];
+  placeType: string;
+  name: string;
+  location: RepresentasjonsPunktNorsk;
+
+  constructor(
+    counties: County[],
+    municipalities: Municipality[],
+    placeType: string,
+    name: string,
+    representationPoint: RepresentasjonsPunktNorsk,
+  ) {
+    this.counties = counties;
+    this.municipalities = municipalities;
+    this.placeType = placeType;
+    this.name = name;
+    this.location = representationPoint;
+  }
+
+  static fromPlaceName(placeName: PlaceName): Place {
+    return new Place(
+      placeName.fylker,
+      placeName.kommuner,
+      placeName.navneobjekttype,
+      placeName.skrivemåte,
+      placeName.representasjonspunkt,
+    );
+  }
+  static fromPlaceNamePoint(placeNamePoint: PlaceNamePoint): Place {
+    const firstName = placeNamePoint.stedsnavn[0];
+    return new Place(
+      [],
+      [],
+      placeNamePoint.navneobjekttype,
+      firstName.skrivemåte,
+      placeNamePoint.representasjonspunkt,
+    );
+  }
+}
+
 export type Metadata = {
   side: number;
   sokeStreng: string;
@@ -167,7 +209,7 @@ export type SearchResult = SearchResultBase &
       }
     | {
         type: 'Place';
-        place: PlaceName;
+        place: Place;
       }
     | {
         type: 'Address';

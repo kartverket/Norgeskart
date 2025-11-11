@@ -4,7 +4,7 @@ import { ProjectionIdentifier } from '../map/atoms';
 import {
   Address,
   Metadata,
-  PlaceName,
+  Place,
   Property,
   Road,
   SearchResult,
@@ -80,7 +80,7 @@ const searchQueryEffect = atomEffect((get, set) => {
       set(addressResultsAtom, addresResult.adresser);
     }
     if (placeResult.navn) {
-      set(placeNameResultsAtom, placeResult.navn);
+      set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
       set(placeNameMetedataAtom, placeResult.metadata);
     }
     if (roadsResult) {
@@ -106,14 +106,14 @@ const placeNamePageEffet = atomEffect((get, set) => {
 
   fetchPlaceNames().then((placeResult) => {
     if (placeResult.navn) {
-      set(placeNameResultsAtom, placeResult.navn);
+      set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
       set(placeNameMetedataAtom, placeResult.metadata);
     }
   });
 });
 
 export const addressResultsAtom = atom<Address[]>([]);
-export const placeNameResultsAtom = atom<PlaceName[]>([]);
+export const placeNameResultsAtom = atom<Place[]>([]);
 export const placeNameMetedataAtom = atom<Metadata | null>(null);
 export const roadResultsAtom = atom<Road[]>([]);
 export const propertyResultsAtom = atom<Property[]>([]);

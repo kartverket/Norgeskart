@@ -52,36 +52,36 @@ export const PlacesResult = ({
         <List>
           {places.map((place, i) => {
             const municipalityNames =
-              place.kommuner && place.kommuner.length > 0
-                ? place.kommuner.map((k) => k.kommunenavn).join(', ')
+              place.municipalities && place.municipalities.length > 0
+                ? place.municipalities.map((k) => k.kommunenavn).join(', ')
                 : '';
             return (
               <SearchResultLine
                 key={`place-${i}`}
-                heading={place.skrivemåte}
+                heading={place.name}
                 onClick={() => {
                   handleSearchClick({
                     type: 'Place',
-                    name: place.skrivemåte,
-                    lat: place.representasjonspunkt.nord,
-                    lon: place.representasjonspunkt.øst,
+                    name: place.name,
+                    lat: place.location.nord,
+                    lon: place.location.øst,
                     place,
                   });
                 }}
                 onMouseEnter={() =>
                   handleHover({
                     type: 'Place',
-                    name: place.skrivemåte,
-                    lat: place.representasjonspunkt.nord,
-                    lon: place.representasjonspunkt.øst,
+                    name: place.name,
+                    lat: place.location.nord,
+                    lon: place.location.øst,
                     place,
                   })
                 }
                 onMouseLeave={() => setHoveredResult(null)}
                 locationType={
                   municipalityNames
-                    ? `${place.navneobjekttype} i ${municipalityNames}`
-                    : place.navneobjekttype
+                    ? `${place.placeType} i ${municipalityNames}`
+                    : place.placeType
                 }
               />
             );
