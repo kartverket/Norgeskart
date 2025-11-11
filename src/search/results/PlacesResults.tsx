@@ -89,7 +89,7 @@ export const PlacesResult = ({
         </List>
         {placesMetadata.totaltAntallTreff > placesMetadata.treffPerSide && (
           <Pagination
-            siblingCount={4}
+            siblingCount={1}
             size="sm"
             count={placesMetadata.totaltAntallTreff}
             page={placesPage}

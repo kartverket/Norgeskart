@@ -1,5 +1,6 @@
-import { atom, getDefaultStore } from 'jotai';
+import { atom, getDefaultStore, useAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import { ProjectionIdentifier } from '../map/atoms';
 import {
   Address,
   Metadata,
@@ -12,15 +13,48 @@ import { searchResultsMapper } from './results/searchresultsMapper';
 import {
   getAddresses,
   getPlaceNames,
+  getPlaceNamesByLocation,
   getProperties,
   getRoads,
 } from './searchApi';
 
+type CoordinateWithProjection = {
+  x: number;
+  y: number;
+  projection: string;
+};
+
+export const searchCoordinatesAtom = atom<CoordinateWithProjection | null>(
+  null,
+);
 export const searchQueryAtom = atom<string>('');
 export const searchPendingAtom = atom<boolean>(false);
 export const placeNamePageAtom = atom<number>(1);
 
-export const searchQueryEffect = atomEffect((get, set) => {
+const searchCoordinatesEffect = atomEffect((get, set) => {
+  const coords = get(searchCoordinatesAtom);
+  if (coords === null) {
+    return;
+  }
+
+  const fetchData = async () => {
+    return await Promise.all([
+      getPlaceNamesByLocation(
+        coords.x,
+        coords.y,
+        coords.projection as ProjectionIdentifier,
+      ),
+    ]);
+  };
+  fetchData().then((res) => {
+    const [placeResult] = res;
+    if (placeResult.navn) {
+      //set(placeNameResultsAtom, placeResult.navn);
+      //set(placeNameMetedataAtom, placeResult.metadata);
+    }
+  });
+});
+const searchQueryEffect = atomEffect((get, set) => {
   const searchQuery = get(searchQueryAtom);
   if (searchQuery === '') {
     set(addressResultsAtom, []);
@@ -59,7 +93,7 @@ export const searchQueryEffect = atomEffect((get, set) => {
   });
 });
 
-export const placeNamePageEffet = atomEffect((get, set) => {
+const placeNamePageEffet = atomEffect((get, set) => {
   const page = get(placeNamePageAtom);
   const searchQuery = getDefaultStore().get(searchQueryAtom);
   if (searchQuery === '') {
@@ -94,3 +128,9 @@ export const allSearchResultsAtom = atom((get) => {
 });
 
 export const selectedResultAtom = atom<SearchResult | null>(null);
+
+export const useSearchEffects = () => {
+  useAtom(searchCoordinatesEffect);
+  useAtom(searchQueryEffect);
+  useAtom(placeNamePageEffet);
+};

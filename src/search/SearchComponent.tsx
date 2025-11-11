@@ -1,6 +1,8 @@
 import { Box, Flex, Icon, IconButton, Search, Spinner } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
-import { useMemo, useState } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { MapBrowserEvent } from 'ol';
+import BaseEvent from 'ol/events/Event';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import {
@@ -9,6 +11,7 @@ import {
 } from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
 import {
+  searchCoordinatesAtom,
   searchPendingAtom,
   searchQueryAtom,
   selectedResultAtom,
@@ -40,6 +43,7 @@ const SearchIcon = () => {
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
+  const setSearchCoordinates = useSetAtom(searchCoordinatesAtom);
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
@@ -57,6 +61,24 @@ export const SearchComponent = () => {
     setSelectedResult(null);
     setHoveredResult(null);
   };
+
+  const mapClickHandler = (e: Event | BaseEvent) => {
+    if (e instanceof MapBrowserEvent) {
+      const coordinate = e.coordinate;
+      const projection = map.getView().getProjection().getCode();
+      setSearchCoordinates({
+        x: coordinate[0],
+        y: coordinate[1],
+        projection: projection as ProjectionIdentifier,
+      });
+    }
+  };
+  useEffect(() => {
+    map.on('click', mapClickHandler);
+    return () => {
+      map.un('click', mapClickHandler);
+    };
+  }, [mapClickHandler, map]);
 
   return (
     <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>

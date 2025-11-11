@@ -6,10 +6,9 @@ import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import { SearchResult } from '../../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
-  placeNamePageEffet,
   searchQueryAtom,
-  searchQueryEffect,
   selectedResultAtom,
+  useSearchEffects,
 } from '../atoms.ts';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
@@ -38,8 +37,7 @@ export const SearchResults = ({
   ]);
 
   const allResults = useAtomValue(allSearchResultsAtom);
-  useAtom(searchQueryEffect);
-  useAtom(placeNamePageEffet);
+  useSearchEffects();
 
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
 
@@ -72,15 +70,16 @@ export const SearchResults = ({
       handleSearchClick,
     );
   }, [allResults, hoveredResult, selectedResult, handleSearchClick]);
-  if (searchQuery === '') {
-    return null;
-  }
+
   if (allResults.length === 0 && searchQuery !== '') {
     return (
       <Box p={4} bg="white" borderRadius={'16px'}>
         {'Ingen treff'}
       </Box>
     );
+  }
+  if (allResults.length === 0) {
+    return null;
   }
 
   return (

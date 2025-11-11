@@ -1,4 +1,5 @@
 import { getEnv } from '../env.ts';
+import { ProjectionIdentifier } from '../map/atoms.ts';
 import {
   AddressApiResponse,
   PlaceNameApiResponse,
@@ -25,6 +26,19 @@ export const getPlaceNames = async (
 ): Promise<PlaceNameApiResponse> => {
   const res = await fetch(
     `https://ws.geonorge.no/stedsnavn/v1/navn?sok=${query}*&treffPerSide=15&side=${page}`,
+  );
+  if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
+  return res.json();
+};
+
+export const getPlaceNamesByLocation = async (
+  x: number,
+  y: number,
+  projection: ProjectionIdentifier,
+): Promise<PlaceNamePointApiResponse> => {
+  const projectionEPSGNumber = projection.split(':')[1];
+  const res = await fetch(
+    `https://ws.geonorge.no/stedsnavn/v1/punkt?nord=${y}&ost=${x}&treffPerSide=35&koordsys=${projectionEPSGNumber}&radius=150&side=1`,
   );
   if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
   return res.json();
