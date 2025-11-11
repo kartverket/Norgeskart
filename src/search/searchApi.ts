@@ -1,3 +1,4 @@
+import { getEnv } from '../env.ts';
 import {
   AddressApiResponse,
   PlaceNameApiResponse,
@@ -5,6 +6,8 @@ import {
   Property,
   Road,
 } from '../types/searchTypes.ts';
+
+const env = getEnv();
 
 export const getAddresses = async (
   query: string,
@@ -28,17 +31,13 @@ export const getPlaceNames = async (
 };
 
 export const getRoads = async (query: string): Promise<Road[]> => {
-  const res = await fetch(
-    `https://testapi.norgeskart.no/v1/matrikkel/veg/${query}`,
-  );
+  const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${query}`);
   if (!res.ok) throw new Error('Feil ved henting av veg');
   return res.json();
 };
 
 export const getProperties = async (query: string): Promise<Property[]> => {
-  const res = await fetch(
-    `https://testapi.norgeskart.no/v1/matrikkel/eie/${query}`,
-  );
+  const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${query}`);
   if (!res.ok) throw new Error('Feil ved henting av eiendom');
   return res.json();
 };
@@ -78,7 +77,7 @@ export const getPropertyDetailsByMatrikkelId = async (
     throw new Error('Alle parametere må være numeriske verdier.');
   }
 
-  let url = `https://testapi.norgeskart.no/v1/matrikkel/eiendom/`;
+  let url = `${env.apiUrl}/v1/matrikkel/eiendom/`;
   if (festenr !== '0') {
     if (seksjonsnr === '0') {
       url += `${kommunenr}-${gardsnr}/${bruksnr}/${festenr}`;
