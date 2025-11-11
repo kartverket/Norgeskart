@@ -62,6 +62,9 @@ export const searchQueryEffect = atomEffect((get, set) => {
 export const placeNamePageEffet = atomEffect((get, set) => {
   const page = get(placeNamePageAtom);
   const searchQuery = getDefaultStore().get(searchQueryAtom);
+  if (searchQuery === '') {
+    return;
+  }
 
   const fetchPlaceNames = async () => {
     return await getPlaceNames(searchQuery, page);
