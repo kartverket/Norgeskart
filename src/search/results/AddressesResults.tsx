@@ -4,12 +4,13 @@ import {
   AccordionItemTrigger,
   List,
 } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { Address, SearchResult } from '../../types/searchTypes';
+import { SearchResult } from '../../types/searchTypes';
+import { addressResultsAtom } from '../atoms';
 import { SearchResultLine } from './SearchResultLine';
 
 interface AddressesResultsProps {
-  addresses: Address[];
   handleSearchClick: (res: SearchResult) => void;
   handleHover: (res: SearchResult) => void;
   setHoveredResult: (res: SearchResult | null) => void;
@@ -17,13 +18,13 @@ interface AddressesResultsProps {
 }
 
 export const AddressesResults = ({
-  addresses,
   handleSearchClick,
   handleHover,
   setHoveredResult,
   onTabClick,
 }: AddressesResultsProps) => {
   const { t } = useTranslation();
+  const addresses = useAtomValue(addressResultsAtom);
 
   return (
     <AccordionItem value="addresses">

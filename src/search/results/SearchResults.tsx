@@ -6,12 +6,8 @@ import { useMapSettings } from '../../map/mapHooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import { SearchResult } from '../../types/searchTypes.ts';
 import {
-  addressResultsAtom,
-  placeNameMetedataAtom,
-  placeNameResultsAtom,
-  propertyResultsAtom,
-  roadResultsAtom,
-  searchResultsAtom,
+  allSearchResultsAtom,
+  searchQueryEffect,
   selectedResultAtom,
 } from '../atoms.ts';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
@@ -44,12 +40,8 @@ export const SearchResults = ({
     'addresses',
   ]);
 
-  const properties = useAtomValue(propertyResultsAtom);
-  const roads = useAtomValue(roadResultsAtom);
-  const places = useAtomValue(placeNameResultsAtom);
-  const placesMetadata = useAtomValue(placeNameMetedataAtom);
-  const addresses = useAtomValue(addressResultsAtom);
-  const allResults = useAtomValue(searchResultsAtom);
+  const allResults = useAtomValue(allSearchResultsAtom);
+  useAtom(searchQueryEffect);
 
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
 
@@ -83,8 +75,7 @@ export const SearchResults = ({
       handleSearchClick,
     );
   }, [map, allResults, hoveredResult, selectedResult, handleSearchClick]);
-
-  if (!placesMetadata) {
+  if (allResults.length === 0) {
     return null;
   }
 
@@ -100,8 +91,6 @@ export const SearchResults = ({
           borderRadius={10}
         >
           <PlacesResult
-            places={places}
-            placesMetadata={placesMetadata}
             onPlacesPageChange={onPlacesPageChange}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
@@ -109,21 +98,18 @@ export const SearchResults = ({
             onTabClick={() => handleAccordionTabClick('places')}
           />
           <RoadsResults
-            roads={roads}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}
             onTabClick={() => handleAccordionTabClick('roads')}
           />
           <PropertiesResults
-            properties={properties}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}
             onTabClick={() => handleAccordionTabClick('properties')}
           />
           <AddressesResults
-            addresses={addresses}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}

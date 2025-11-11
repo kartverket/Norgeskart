@@ -1,6 +1,6 @@
 import { Box, Flex, Icon, IconButton, Search } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import {
@@ -8,31 +8,18 @@ import {
   ParsedCoordinate,
 } from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
-import { selectedResultAtom } from './atoms.ts';
+import { searchQueryAtom, selectedResultAtom } from './atoms.ts';
 import { InfoBox } from './infobox/InfoBox.tsx';
 import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
-import {
-  useAddresses,
-  usePlaceNames,
-  useProperties,
-  useRoads,
-} from './useSearchQueries.ts';
 
 export const SearchComponent = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [placesPage, setPlacesPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
+  const [_, setPlacesPage] = useState(1);
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
-
-  usePlaceNames(searchQuery, placesPage);
-  useRoads(searchQuery);
-  useProperties(searchQuery);
-  useAddresses(searchQuery);
-
-  // Get current projection from map
   const currentProjection = useMemo<ProjectionIdentifier>(() => {
     return map.getView().getProjection().getCode() as ProjectionIdentifier;
   }, [map]);
@@ -42,11 +29,11 @@ export const SearchComponent = () => {
     return parseCoordinateInput(searchQuery, currentProjection);
   }, [searchQuery, currentProjection]);
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setSelectedResult(null);
     setHoveredResult(null);
-  }, []);
+  };
 
   return (
     <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>

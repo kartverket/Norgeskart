@@ -8,13 +8,13 @@ import {
   PaginationNextTrigger,
   PaginationPrevTrigger,
 } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { Metadata, PlaceName, SearchResult } from '../../types/searchTypes';
+import { SearchResult } from '../../types/searchTypes';
+import { placeNameMetedataAtom, placeNameResultsAtom } from '../atoms';
 import { SearchResultLine } from './SearchResultLine';
 
 interface PlacesResultProps {
-  places: PlaceName[];
-  placesMetadata: Metadata;
   onPlacesPageChange: (_page: number) => void;
   handleSearchClick: (res: SearchResult) => void;
   handleHover: (res: SearchResult) => void;
@@ -23,15 +23,19 @@ interface PlacesResultProps {
 }
 
 export const PlacesResult = ({
-  places,
-  placesMetadata,
   onPlacesPageChange,
   handleSearchClick,
   handleHover,
   setHoveredResult,
   onTabClick,
 }: PlacesResultProps) => {
+  const places = useAtomValue(placeNameResultsAtom);
+  const placesMetadata = useAtomValue(placeNameMetedataAtom);
+
   const { t } = useTranslation();
+  if (placesMetadata === null) {
+    return null;
+  }
 
   return (
     <AccordionItem value="places">
