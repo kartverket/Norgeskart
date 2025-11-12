@@ -1,4 +1,4 @@
-import { atom, getDefaultStore, useAtom } from 'jotai';
+import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { ProjectionIdentifier } from '../map/atoms';
 import {
@@ -137,6 +137,24 @@ export const allSearchResultsAtom = atom((get) => {
 });
 
 export const selectedResultAtom = atom<SearchResult | null>(null);
+
+export const useResetSearchResults = () => {
+  const setAddressResults = useSetAtom(addressResultsAtom);
+  const setPlaceNameResults = useSetAtom(placeNameResultsAtom);
+  const setRoadResults = useSetAtom(roadResultsAtom);
+  const setPropertyResults = useSetAtom(propertyResultsAtom);
+  const setPlaceNameMetadata = useSetAtom(placeNameMetedataAtom);
+  const setSearchQuery = useSetAtom(searchQueryAtom);
+
+  return () => {
+    setAddressResults([]);
+    setPlaceNameResults([]);
+    setRoadResults([]);
+    setPropertyResults([]);
+    setPlaceNameMetadata(null);
+    setSearchQuery('');
+  };
+};
 
 export const useSearchEffects = () => {
   useAtom(searchCoordinatesEffect);

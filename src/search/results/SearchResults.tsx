@@ -1,4 +1,4 @@
-import { AccordionRoot, Box, Stack } from '@kvib/react';
+import { AccordionRoot, Box, IconButton, Stack } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { useMapSettings } from '../../map/mapHooks.ts';
@@ -8,6 +8,7 @@ import {
   allSearchResultsAtom,
   searchQueryAtom,
   selectedResultAtom,
+  useResetSearchResults,
   useSearchEffects,
 } from '../atoms.ts';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
@@ -29,6 +30,7 @@ export const SearchResults = ({
 }: SearchResultsProps) => {
   const { setMapLocation } = useMapSettings();
   const searchQuery = useAtomValue(searchQueryAtom);
+  const resetSearchResults = useResetSearchResults();
   const [accordionTabsOpen, setAccordionTabsOpen] = useState<AccordionTab[]>([
     'places',
     'roads',
@@ -81,9 +83,20 @@ export const SearchResults = ({
   if (allResults.length === 0) {
     return null;
   }
+  const displayCloseButton = searchQuery === '';
 
   return (
-    <Stack p={4} bg="white" borderRadius={'16px'}>
+    <Stack gap={0} p={4} bg="white" borderRadius={'16px'}>
+      {displayCloseButton && (
+        <IconButton
+          size={'sm'}
+          icon={'close'}
+          variant="tertiary"
+          alignSelf={'flex-end'}
+          pr={3.5}
+          onClick={resetSearchResults}
+        />
+      )}
       <Box overflowY="auto" overflowX="hidden" maxHeight="60vh">
         <AccordionRoot
           collapsible
