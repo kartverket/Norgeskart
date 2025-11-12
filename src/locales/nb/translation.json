@@ -264,7 +264,8 @@
     "placeName": "Stedsnavn",
     "properties": "Eiendommer",
     "roads": "Veger",
-    "tabHeading": "Søk"
+    "tabHeading": "Søk",
+    "noResults": "Ingen treff"
   },
   "settings": {
     "label": "Innstillinger for Norgeskart"

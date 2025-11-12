@@ -264,7 +264,8 @@
     "placeName": "Stadnamn",
     "properties": "Eigedomar",
     "roads": "Vegar",
-    "tabHeading": "Søk"
+    "tabHeading": "Søk",
+    "noResults": "Inge treff"
   },
   "settings": {
     "label": "Innstillingar for Norgeskart"

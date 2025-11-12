@@ -1,6 +1,7 @@
 import { AccordionRoot, Box, IconButton, Stack } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import { SearchResult } from '../../types/searchTypes.ts';
@@ -30,6 +31,7 @@ export const SearchResults = ({
 }: SearchResultsProps) => {
   const { setMapLocation } = useMapSettings();
   const searchQuery = useAtomValue(searchQueryAtom);
+  const { t } = useTranslation();
   const resetSearchResults = useResetSearchResults();
   const [accordionTabsOpen, setAccordionTabsOpen] = useState<AccordionTab[]>([
     'places',
@@ -76,7 +78,7 @@ export const SearchResults = ({
   if (allResults.length === 0 && searchQuery !== '') {
     return (
       <Box p={4} bg="white" borderRadius={'16px'}>
-        {'Ingen treff'}
+        {t('search.noResults')}
       </Box>
     );
   }
