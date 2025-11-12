@@ -92,6 +92,7 @@ export const SearchResults = ({
           backgroundColor="white"
           mt="5px"
           borderRadius={10}
+          variant={'plain'}
         >
           <PlacesResult
             handleSearchClick={handleSearchClick}
