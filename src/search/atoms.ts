@@ -12,6 +12,7 @@ import {
 import { searchResultsMapper } from './results/searchresultsMapper';
 import {
   getAddresses,
+  getAdressesByLocation,
   getPlaceNames,
   getPlaceNamesByLocation,
   getProperties,
@@ -44,13 +45,21 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
         coords.y,
         coords.projection as ProjectionIdentifier,
       ),
+      getAdressesByLocation(
+        coords.x,
+        coords.y,
+        coords.projection as ProjectionIdentifier,
+      ),
     ]);
   };
   fetchData().then((res) => {
-    const [placeResult] = res;
+    const [placeResult, addressResult] = res;
     if (placeResult.navn) {
       set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
       set(placeNameMetedataAtom, placeResult.metadata);
+    }
+    if (addressResult.adresser) {
+      set(addressResultsAtom, addressResult.adresser);
     }
   });
 });
