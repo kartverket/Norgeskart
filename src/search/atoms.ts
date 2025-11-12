@@ -49,8 +49,8 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
   fetchData().then((res) => {
     const [placeResult] = res;
     if (placeResult.navn) {
-      //set(placeNameResultsAtom, placeResult.navn);
-      //set(placeNameMetedataAtom, placeResult.metadata);
+      set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
+      set(placeNameMetedataAtom, placeResult.metadata);
     }
   });
 });
