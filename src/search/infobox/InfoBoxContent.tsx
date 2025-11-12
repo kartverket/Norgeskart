@@ -1,22 +1,28 @@
 import { Box, Heading, Text } from '@kvib/react';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
+import { getElevation } from '../searchApi';
 
 interface InfoBoxContentProps {
   result: SearchResult;
-  elevationData?: { value: number };
+  x: number;
+  y: number;
 }
 
-export const InfoBoxContent = ({
-  result,
-  elevationData,
-}: InfoBoxContentProps) => {
+export const InfoBoxContent = ({ result, x, y }: InfoBoxContentProps) => {
   const { t } = useTranslation();
+
+  const { data: elevationData, status } = useQuery({
+    queryKey: ['elevation', x, y],
+    queryFn: () => getElevation(x, y),
+    enabled: x != null && y != null,
+  });
   let content;
 
   switch (result.type) {
     case 'Place':
-      content = `${t('search.placeName')} ${t('infoBox.in')} ${result.place.kommuner.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`;
+      content = `${t('search.placeName')} ${t('infoBox.in')} ${result.place.municipalities.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`;
       break;
     case 'Road':
       content = `${t('infoBox.roadName')} ${t('infoBox.in')} ${result.road.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`;
@@ -38,9 +44,13 @@ export const InfoBoxContent = ({
         {result.name}
       </Heading>
       <Text>{content}</Text>
-      {t('infoBox.heightEstimatedByInterpolation')}{' '}
-      {Number(elevationData?.value).toFixed(1)}{' '}
-      {t('infoBox.metersAboveSeaLevel')}
+      {status === 'success' && elevationData && (
+        <>
+          {t('infoBox.heightEstimatedByInterpolation')}{' '}
+          {Number(elevationData?.value).toFixed(1)}{' '}
+          {t('infoBox.metersAboveSeaLevel')}
+        </>
+      )}
     </Box>
   );
 };

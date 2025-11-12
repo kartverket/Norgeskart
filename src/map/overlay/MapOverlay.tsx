@@ -2,6 +2,7 @@ import { Box, Image, Link, Portal } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
+import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { displayCompassOverlayAtom } from '../atoms';
@@ -103,6 +104,8 @@ export const MapOverlay = () => {
               setCurrentMapTool(null);
             }}
           />
+
+          <InfoBox />
           <MapControlButtons />
         </Portal>
       )}

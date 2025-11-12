@@ -9,33 +9,30 @@ import {
   IconButton,
   Stack,
 } from '@kvib/react';
-import { useQuery } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
-import { SearchResult } from '../../types/searchTypes';
-import { getElevation } from '../searchApi';
+import { selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './CoordinateSection';
 import { InfoBoxContent } from './InfoBoxContent';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
 
-interface InfoBoxProps {
-  result: SearchResult;
-  onClose: () => void;
-}
-
-export const InfoBox = ({ result, onClose }: InfoBoxProps) => {
+export const InfoBox = () => {
+  const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const { t } = useTranslation();
-  const inputCRS = getInputCRS(result);
-  const [x, y] = transform([result.lon, result.lat], inputCRS, 'EPSG:25833');
 
-  const { data, error } = useQuery({
-    queryKey: ['elevation', x, y],
-    queryFn: () => getElevation(x, y),
-    enabled: x != null && y != null,
-  });
+  if (selectedResult === null) {
+    return null;
+  }
+  const inputCRS = getInputCRS(selectedResult);
+  const [x, y] = transform(
+    [selectedResult.lon, selectedResult.lat],
+    inputCRS,
+    'EPSG:25833',
+  );
 
   return (
     <Stack
@@ -47,15 +44,15 @@ export const InfoBox = ({ result, onClose }: InfoBoxProps) => {
       bg="white"
     >
       <Flex justifyContent={'space-between'} alignItems="center">
-        <Heading size={'md'}>{result.name}</Heading>
+        <Heading size={'md'}>{selectedResult.name}</Heading>
         <IconButton
-          onClick={onClose}
+          onClick={() => setSelectedResult(null)}
           icon={'close'}
           variant="ghost"
           alignSelf={'flex-end'}
         />
       </Flex>
-      {error != null && <InfoBoxContent result={result} elevationData={data} />}
+      <InfoBoxContent result={selectedResult} x={x} y={y} />
       <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
         <AccordionRoot collapsible defaultValue={['propertyInfo']}>
           <AccordionItem value="propertyInfo">
@@ -64,8 +61,8 @@ export const InfoBox = ({ result, onClose }: InfoBoxProps) => {
             </AccordionItemTrigger>
             <AccordionItemContent>
               <PropertyInfo
-                lon={result.lon}
-                lat={result.lat}
+                lon={selectedResult.lon}
+                lat={selectedResult.lat}
                 inputCRS={inputCRS}
               />
             </AccordionItemContent>
@@ -76,8 +73,8 @@ export const InfoBox = ({ result, onClose }: InfoBoxProps) => {
             </AccordionItemTrigger>
             <AccordionItemContent>
               <PlaceInfo
-                lon={result.lon}
-                lat={result.lat}
+                lon={selectedResult.lon}
+                lat={selectedResult.lat}
                 inputCRS={inputCRS}
               />
             </AccordionItemContent>
@@ -88,8 +85,8 @@ export const InfoBox = ({ result, onClose }: InfoBoxProps) => {
             </AccordionItemTrigger>
             <AccordionItemContent>
               <CoordinateInfo
-                lon={result.lon}
-                lat={result.lat}
+                lon={selectedResult.lon}
+                lat={selectedResult.lat}
                 inputCRS={inputCRS as ProjectionIdentifier}
               />
             </AccordionItemContent>

@@ -2,7 +2,7 @@ import { Box, Flex, Icon, IconButton, Search, Spinner } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import {
@@ -16,7 +16,6 @@ import {
   searchQueryAtom,
   selectedResultAtom,
 } from './atoms.ts';
-import { InfoBox } from './infobox/InfoBox.tsx';
 import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
 
@@ -62,17 +61,20 @@ export const SearchComponent = () => {
     setHoveredResult(null);
   };
 
-  const mapClickHandler = (e: Event | BaseEvent) => {
-    if (e instanceof MapBrowserEvent) {
-      const coordinate = e.coordinate;
-      const projection = map.getView().getProjection().getCode();
-      setSearchCoordinates({
-        x: coordinate[0],
-        y: coordinate[1],
-        projection: projection as ProjectionIdentifier,
-      });
-    }
-  };
+  const mapClickHandler = useCallback(
+    (e: Event | BaseEvent) => {
+      if (e instanceof MapBrowserEvent) {
+        const coordinate = e.coordinate;
+        const projection = map.getView().getProjection().getCode();
+        setSearchCoordinates({
+          x: coordinate[0],
+          y: coordinate[1],
+          projection: projection as ProjectionIdentifier,
+        });
+      }
+    },
+    [map, setSearchCoordinates],
+  );
   useEffect(() => {
     map.on('click', mapClickHandler);
     return () => {
@@ -116,12 +118,6 @@ export const SearchComponent = () => {
         <SearchResults
           hoveredResult={hoveredResult}
           setHoveredResult={setHoveredResult}
-        />
-      )}
-      {selectedResult && (
-        <InfoBox
-          result={selectedResult}
-          onClose={() => setSelectedResult(null)}
         />
       )}
     </Flex>
