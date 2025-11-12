@@ -38,6 +38,7 @@ export const InfoBox = () => {
     <Stack
       position={'fixed'}
       right={'16px'}
+      top={'16px'}
       w={'400px'}
       p={4}
       borderRadius={'16px'}

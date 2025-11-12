@@ -76,7 +76,7 @@ const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
 
 export const InfoBoxContent = ({ result, x, y }: InfoBoxContentProps) => {
   return (
-    <Box>
+    <Box userSelect={'text'}>
       <InfoBoxTextContent result={result} />
       <InfoBoxElevationContent x={x} y={y} />{' '}
     </Box>
