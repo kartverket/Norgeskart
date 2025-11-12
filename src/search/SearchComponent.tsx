@@ -12,32 +12,38 @@ import {
 } from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
 import {
+  allSearchResultsAtom,
   searchCoordinatesAtom,
   searchPendingAtom,
   searchQueryAtom,
   selectedResultAtom,
+  useResetSearchResults,
 } from './atoms.ts';
 import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
 
 const SearchIcon = () => {
-  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
+  const searchQuery = useAtomValue(searchQueryAtom);
   const isSearchPending = useAtomValue(searchPendingAtom);
-  if (searchQuery === '') {
-    return <Icon icon="search" size={24} weight={500} color="gray" />;
-  }
+  const resetSearchResults = useResetSearchResults();
+  const allResults = useAtomValue(allSearchResultsAtom);
   if (isSearchPending) {
     return <Spinner />;
   }
-  return (
-    <IconButton
-      icon="close"
-      variant="ghost"
-      color={'gray'}
-      size={24}
-      onClick={() => setSearchQuery('')}
-    />
-  );
+  if (allResults.length > 0 || searchQuery !== '') {
+    return (
+      <IconButton
+        icon="close"
+        variant="ghost"
+        color={'gray'}
+        size={24}
+        onClick={resetSearchResults}
+      />
+    );
+  }
+  if (searchQuery === '') {
+    return <Icon icon="search" size={24} weight={500} color="gray" />;
+  }
 };
 
 export const SearchComponent = () => {
