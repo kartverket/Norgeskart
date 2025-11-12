@@ -1,26 +1,135 @@
-import { Button } from "@kvib/react";
+import { Box, Heading, Text, Flex, Spinner, Button } from "@kvib/react";
 import { useGenerateMapPdf } from "../shared/utils/useGenerateMapPdf";
 import { useTranslation } from "react-i18next";
 import { useAtomValue } from "jotai";
 import { mapAtom } from "../map/atoms";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useDraggableOverlay } from "../shared/utils/useDraggableOverlay";
+import { getDpiMetrics } from "../shared/utils/getDpiMetrics";
+import { printMap } from "../shared/utils/printMap";
 
-export default function PrintWindow() {
+interface PrintWindowProps {
+  onClose: () => void;
+}
+
+export default function PrintWindow({ onClose }: PrintWindowProps) {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const { generate, loading } = useGenerateMapPdf();
 
+  const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
+  const { a4WidthPx, a4HeightPx, overlayWidth, overlayHeight } = getDpiMetrics();
+
+  // Create and append overlay to map viewport
+  useEffect(() => {
+    if (!map) return;
+
+    const mapContainer = map.getViewport();
+    const overlay = document.createElement('div');
+    overlayRef.current = overlay;
+
+    // Style the overlay
+    overlay.style.position = 'absolute';
+    overlay.style.width = `${overlayWidth}px`;
+    overlay.style.height = `${overlayHeight}px`;
+    overlay.style.border = '2px dashed rgba(0,0,0,0.5)';
+    overlay.style.backgroundColor = 'rgba(255,255,255,0.1)';
+    overlay.style.cursor = 'move';
+    overlay.style.zIndex = '999';
+    overlay.style.pointerEvents = 'auto';
+    overlay.style.userSelect = 'none';
+
+    // Center overlay initially
+    const mapRect = mapContainer.getBoundingClientRect();
+    setOverlayPosition({
+      x: mapRect.width / 2 - overlayWidth / 2,
+      y: mapRect.height / 2 - overlayHeight / 2,
+    });
+
+    mapContainer.appendChild(overlay);
+
+    return () => {
+      if (overlay.parentElement === mapContainer) {
+        mapContainer.removeChild(overlay);
+      }
+    };
+  }, [map, overlayWidth, overlayHeight]);
+
+  // Update overlay position when it changes
+  useEffect(() => {
+    if (overlayRef.current) {
+      overlayRef.current.style.top = `${overlayPosition.y}px`;
+      overlayRef.current.style.left = `${overlayPosition.x}px`;
+    }
+  }, [overlayPosition]);
+
+  // Make the overlay draggable over the map
+  useDraggableOverlay({
+    map,
+    overlayRef,
+    overlayWidth,
+    overlayHeight,
+    setOverlayPosition,
+  });
+
+  const handleQuickPrint = () => {
+    if (!map || !overlayRef.current) return;
+    printMap({
+      map,
+      overlayRef,
+      a4WidthPx,
+      a4HeightPx,
+      projection: map.getView().getProjection().getCode(),
+      setLoading: () => {},
+    });
+  };
+
+  const handleClose = () => {
+    overlayRef.current?.remove();
+    onClose();
+  };
+
   return (
-    <>
-      <Button
-        onClick={() => generate(map, overlayRef)}
-        disabled={loading}
-        colorPalette="green"
-      >
-        {loading ? t("Loading...") : t("Download PDF")}
-      </Button>
-      <div ref={overlayRef} />
-    </>
+    <Box
+      position="absolute"
+      top="50%"
+      left={{ base: "50%", md: "0px" }}
+      transform="translateY(-50%)"
+      background="white"
+      border="1px solid #ddd"
+      borderRadius="8px"
+      boxShadow="0 2px 10px rgba(0,0,0,0.15)"
+      p={6}
+      zIndex={1001}
+      width={{ base: "100%", md: "400px" }}
+    >
+      <Heading as="h3" size="md" mb={3}>
+        {t("Print map")}
+      </Heading>
+
+      <Text fontSize="sm" mb={4}>
+        {t("Drag the A4 box over the map to select the area to print.")}
+      </Text>
+
+      {loading && (
+        <Flex justifyContent="center" alignItems="center" mb={3} gap={2}>
+          <Spinner />
+          <Text>{t("Loading map tiles...")}</Text>
+        </Flex>
+      )}
+
+      <Flex justifyContent="flex-end" gap={3}>
+        <Button onClick={handleClose} variant="ghost" colorPalette="gray" disabled={loading}>
+          {t("Cancel")}
+        </Button>
+        <Button onClick={handleQuickPrint} colorPalette="green" disabled={loading}>
+          {t("Quick Print")}
+        </Button>
+        <Button onClick={() => generate(map, overlayRef)} colorPalette="green" disabled={loading}>
+          {t("Download PDF")}
+        </Button>
+      </Flex>
+    </Box>
   );
 }
