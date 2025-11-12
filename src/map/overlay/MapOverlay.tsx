@@ -5,6 +5,7 @@ import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
+import { Toolbar } from '../../toolbar/Toolbar';
 import { displayCompassOverlayAtom } from '../atoms';
 import { MapControlButtons } from '../MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './atoms';
@@ -69,7 +70,7 @@ export const MapOverlay = () => {
           </Box>
           {displayCompassOverlay && <Compass />}
 
-          <Box position="absolute" bottom="16px" left="16px">
+          <Box position="absolute" bottom="30px" left="16px">
             <Link
               href="https://www.kartverket.no"
               target="_blank"
@@ -87,7 +88,7 @@ export const MapOverlay = () => {
           {/* Her er hovedboksen for knappene i senter */}
           <Box
             position="absolute"
-            bottom="16px"
+            bottom="30px"
             left="50%"
             transform="translateX(-50%)"
             zIndex={10}
@@ -107,6 +108,7 @@ export const MapOverlay = () => {
 
           <InfoBox />
           <MapControlButtons />
+          <Toolbar />
         </Portal>
       )}
     </ErrorBoundary>
