@@ -1,3 +1,5 @@
+import { ParsedCoordinate } from '../shared/utils/coordinateParser';
+
 export type RepresentasjonsPunkt = {
   epsg: string;
   lon: number;
@@ -191,12 +193,6 @@ export type SearchResultType =
   | 'Address'
   | 'Coordinate';
 
-export type CoordinateSearchResult = {
-  formattedString: string;
-  projection: string;
-  inputFormat: 'decimal' | 'dms' | 'utm';
-};
-
 export type SearchResult = SearchResultBase &
   (
     | {
@@ -217,6 +213,6 @@ export type SearchResult = SearchResultBase &
       }
     | {
         type: 'Coordinate';
-        coordinate: CoordinateSearchResult;
+        coordinate: ParsedCoordinate;
       }
   );

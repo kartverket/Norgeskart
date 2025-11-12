@@ -2,23 +2,20 @@ import { List } from '@kvib/react';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMapSettings } from '../../map/mapHooks';
-import { ParsedCoordinate } from '../../shared/utils/coordinateParser';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers';
 import { SearchResultLine } from './SearchResultLine';
 
 interface CoordinateResultsProps {
-  coordinate: ParsedCoordinate | null;
-  selectedResult: SearchResult | null;
+  coordinateResult: SearchResult | null;
   setSelectedResult: (result: SearchResult | null) => void;
   hoveredResult: SearchResult | null;
   setHoveredResult: (result: SearchResult | null) => void;
 }
 
 export const CoordinateResults = ({
-  coordinate,
-  selectedResult,
+  coordinateResult,
   setSelectedResult,
   hoveredResult,
   setHoveredResult,
@@ -26,27 +23,9 @@ export const CoordinateResults = ({
   const { t } = useTranslation();
   const { setMapLocation } = useMapSettings();
 
-  const searchResult: SearchResult | null = useMemo(
-    () =>
-      coordinate
-        ? {
-            type: 'Coordinate',
-            name: coordinate.formattedString,
-            lat: coordinate.lat,
-            lon: coordinate.lon,
-            coordinate: {
-              formattedString: coordinate.formattedString,
-              projection: coordinate.projection,
-              inputFormat: coordinate.inputFormat,
-            },
-          }
-        : null,
-    [coordinate],
-  );
-
   const allResults = useMemo<SearchResult[]>(
-    () => (searchResult ? [searchResult] : []),
-    [searchResult],
+    () => (coordinateResult ? [coordinateResult] : []),
+    [coordinateResult],
   );
 
   const handleHover = (res: SearchResult) => {
@@ -66,12 +45,12 @@ export const CoordinateResults = ({
     updateSearchMarkers(
       allResults,
       hoveredResult,
-      selectedResult,
+      coordinateResult,
       handleSearchClick,
     );
-  }, [allResults, hoveredResult, selectedResult, handleSearchClick]);
+  }, [allResults, hoveredResult, coordinateResult, handleSearchClick]);
 
-  if (!coordinate || !searchResult) {
+  if (!coordinateResult || coordinateResult.type !== 'Coordinate') {
     return null;
   }
 
@@ -79,12 +58,14 @@ export const CoordinateResults = ({
     <List backgroundColor="white" mt="5px" borderRadius={10} padding={2}>
       <SearchResultLine
         key="coordinate-result"
-        heading={coordinate.formattedString}
+        heading={coordinateResult.coordinate.formattedString}
         locationType={
-          t('infoBox.coordinateSystem') + ': ' + coordinate.projection
+          t('infoBox.coordinateSystem') +
+          ': ' +
+          coordinateResult.coordinate.projection
         }
-        onClick={() => handleSearchClick(searchResult)}
-        onMouseEnter={() => handleHover(searchResult)}
+        onClick={() => handleSearchClick(coordinateResult)}
+        onMouseEnter={() => handleHover(coordinateResult)}
         onMouseLeave={() => setHoveredResult(null)}
       />
     </List>
