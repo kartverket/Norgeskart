@@ -2,7 +2,6 @@ import {
   createListCollection,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -27,14 +26,13 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
 
   return (
     <SelectRoot
+      width="140px"
       collection={createListCollection({ items: projectionCollection })}
       defaultValue={[defaultProjection]}
     >
-      <SelectLabel>
-        {props.label ? props.label : t('map.settings.layers.projection.label')}
-      </SelectLabel>
-      <SelectTrigger>
+      <SelectTrigger color="white">
         <SelectValueText
+          color="white"
           placeholder={t('map.settings.layers.projection.placeholder')}
         />
       </SelectTrigger>

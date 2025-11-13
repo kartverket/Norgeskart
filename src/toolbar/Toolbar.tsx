@@ -1,6 +1,7 @@
 import {
   Flex,
   IconButton,
+  PopoverBody,
   PopoverContent,
   PopoverRoot,
   PopoverTrigger,
@@ -13,6 +14,7 @@ import {
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { displayCompassOverlayAtom, useMagneticNorthAtom } from '../map/atoms';
+import { ProjectionSettings } from '../settings/map/ProjectionSettings';
 
 export const Toolbar = () => {
   const { t } = useTranslation();
@@ -40,24 +42,29 @@ export const Toolbar = () => {
         ></IconButton>
       </Tooltip>
       <PopoverRoot>
-        <PopoverTrigger>
+        <PopoverTrigger asChild>
           <IconButton
             icon="arrow_drop_down"
             size="XS"
             color="#D9D9D9"
           ></IconButton>
         </PopoverTrigger>
-        <PopoverContent>
-          <SwitchRoot
-            checked={useMagneticNorth}
-            onCheckedChange={(e) => setUseMagneticNorth(e.checked)}
-          >
-            <SwitchHiddenInput />
-            <SwitchLabel>{t('map.settings.compass.magneticNorth')}</SwitchLabel>
-            <SwitchControl />
-          </SwitchRoot>
+        <PopoverContent width="230px">
+          <PopoverBody>
+            <SwitchRoot
+              checked={useMagneticNorth}
+              onCheckedChange={(e) => setUseMagneticNorth(e.checked)}
+            >
+              <SwitchHiddenInput />
+              <SwitchLabel>
+                {t('map.settings.compass.magneticNorth')}
+              </SwitchLabel>
+              <SwitchControl />
+            </SwitchRoot>
+          </PopoverBody>
         </PopoverContent>
       </PopoverRoot>
+      <ProjectionSettings />
     </Flex>
   );
 };

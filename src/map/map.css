@@ -2,8 +2,9 @@
 .ol-scale-bar {
   position: absolute;
   left: 120px;
-  bottom: 14px;
+  bottom: 35px;
 }
+
 .ol-scale-line-bar {
   font-size: 24px;
 }
@@ -11,6 +12,7 @@
 .ol-scale-text {
   font-size: 14px;
 }
+
 .ol-scale-step-text {
   font-size: 12px;
 }
