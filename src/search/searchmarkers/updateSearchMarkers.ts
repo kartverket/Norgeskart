@@ -95,7 +95,9 @@ export const updateSearchMarkers = (
       );
       markerSource.addFeature(selectedMarker);
     }
-    return;
+    if (selectedResult.type !== 'Coordinate') {
+      return;
+    }
   }
 
   searchResults.forEach((res) => {
