@@ -55,13 +55,13 @@ export const printMap = async ({
 
       const scaleText = document.querySelector(".ol-scale-line-inner")?.textContent || "";
       ctx.textAlign = "center";
-      ctx.fillText(scaleText, printCanvas.width / 2, printCanvas.height - 36);
+      ctx.fillText(scaleText, printCanvas.width / 2, printCanvas.height - 24);
 
       const center = map.getView().getCenter();
       ctx.textAlign = "left";
-      ctx.fillText(`Senterposisjon: ${center?.map((v: number) => v.toFixed(2)).join(", ")}`, 10, printCanvas.height - 24);
-      ctx.fillText(`Koordinatsystem: ${projection}`, 10, printCanvas.height - 12);
-      ctx.fillText(`Utskriftsdato: ${new Date().toLocaleDateString("no-NO")}`, 10, printCanvas.height);
+      ctx.fillText(`Senterposisjon: ${center?.map((v: number) => v.toFixed(2)).join(", ")}`, 0, printCanvas.height - 24);
+      ctx.fillText(`Koordinatsystem: ${projection}`, 0, printCanvas.height - 12);
+      ctx.fillText(`Utskriftsdato: ${new Date().toLocaleDateString("no-NO")}`, 0, printCanvas.height);
 
       // Draw logo
       const logo = new Image();
