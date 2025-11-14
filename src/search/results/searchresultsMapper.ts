@@ -1,13 +1,13 @@
 import {
   Address,
-  PlaceName,
+  Place,
   Property,
   Road,
   SearchResult,
 } from '../../types/searchTypes';
 
 export const searchResultsMapper = (
-  places: PlaceName[],
+  places: Place[],
   roads: Road[],
   addresses: Address[],
   properties: Property[],
@@ -15,9 +15,9 @@ export const searchResultsMapper = (
   ...places.map(
     (place): SearchResult => ({
       type: 'Place',
-      name: place.skrivemåte,
-      lat: place.representasjonspunkt.nord,
-      lon: place.representasjonspunkt.øst,
+      name: place.name,
+      lat: place.location.nord,
+      lon: place.location.øst,
       place,
     }),
   ),

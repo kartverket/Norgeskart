@@ -2,30 +2,35 @@ type EnvName = 'local' | 'dev' | 'test' | 'prod';
 type Env = {
   apiUrl: string;
   geoNorgeWMSUrl: string;
+  geoNorgeApiBaseUrl: string;
   envName: EnvName;
 };
 
 const LOCAL_ENV: Env = {
   apiUrl: 'https://testapi.norgeskart.no',
   geoNorgeWMSUrl: 'https://wms.geonorge.no/skwms1/wms',
+  geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   envName: 'local',
 };
 
 const DEV_ENV: Env = {
   apiUrl: 'https://testapi.norgeskart.no',
   geoNorgeWMSUrl: 'https://wms.geonorge.no/skwms1/wms',
+  geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   envName: 'dev',
 };
 
 const TEST_ENV: Env = {
   apiUrl: 'https://testapi.norgeskart.no',
   geoNorgeWMSUrl: 'https://wms.geonorge.no/skwms1/wms',
+  geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   envName: 'test',
 };
 
 const PROD_ENV: Env = {
   apiUrl: 'https://testapi.norgeskart.no',
   geoNorgeWMSUrl: 'https://wms.geonorge.no/skwms1/wms',
+  geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   envName: 'prod',
 };
 

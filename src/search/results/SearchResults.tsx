@@ -1,54 +1,36 @@
 import { AccordionRoot, Box, Stack } from '@kvib/react';
-import { useAtomValue } from 'jotai';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { mapAtom } from '../../map/atoms.ts';
+import { useAtom, useAtomValue } from 'jotai';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
+import { SearchResult } from '../../types/searchTypes.ts';
 import {
-  Address,
-  Metadata,
-  PlaceName,
-  Property,
-  Road,
-  SearchResult,
-} from '../../types/searchTypes.ts';
+  allSearchResultsAtom,
+  searchQueryAtom,
+  selectedResultAtom,
+  useSearchEffects,
+} from '../atoms.ts';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
 import { PropertiesResults } from './PropertiesResults.tsx';
 import { RoadsResults } from './RoadsResults.tsx';
-import { searchResultsMapper } from './searchresultsMapper.ts';
 
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
 interface SearchResultsProps {
-  properties: Property[];
-  roads: Road[];
-  places: PlaceName[];
-  addresses: Address[];
-  placesMetadata?: Metadata;
-  onPlacesPageChange: (_page: number) => void;
-  searchQuery: string;
-  selectedResult: SearchResult | null;
-  setSelectedResult: (result: SearchResult | null) => void;
   hoveredResult: SearchResult | null;
   setHoveredResult: (result: SearchResult | null) => void;
 }
 
 export const SearchResults = ({
-  properties,
-  roads,
-  places,
-  addresses,
-  placesMetadata,
-  onPlacesPageChange,
-  setSelectedResult,
-  selectedResult,
   hoveredResult,
   setHoveredResult,
 }: SearchResultsProps) => {
-  const map = useAtomValue(mapAtom);
   const { setMapLocation } = useMapSettings();
+  const searchQuery = useAtomValue(searchQueryAtom);
+  const { t } = useTranslation();
   const [accordionTabsOpen, setAccordionTabsOpen] = useState<AccordionTab[]>([
     'places',
     'roads',
@@ -56,10 +38,10 @@ export const SearchResults = ({
     'addresses',
   ]);
 
-  const allResults = useMemo<SearchResult[]>(
-    () => searchResultsMapper(places, roads, addresses, properties),
-    [places, roads, addresses, properties],
-  );
+  const allResults = useAtomValue(allSearchResultsAtom);
+  useSearchEffects();
+
+  const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
 
   const handleHover = (res: SearchResult) => {
     setHoveredResult(res);
@@ -84,20 +66,26 @@ export const SearchResults = ({
 
   useEffect(() => {
     updateSearchMarkers(
-      map,
       allResults,
       hoveredResult,
       selectedResult,
       handleSearchClick,
     );
-  }, [map, allResults, hoveredResult, selectedResult, handleSearchClick]);
+  }, [allResults, hoveredResult, selectedResult, handleSearchClick]);
 
-  if (!placesMetadata) {
+  if (allResults.length === 0 && searchQuery !== '') {
+    return (
+      <Box p={4} bg="white" borderRadius={'16px'}>
+        {t('search.noResults')}
+      </Box>
+    );
+  }
+  if (allResults.length === 0) {
     return null;
   }
 
   return (
-    <Stack p={4} borderRadius={'16px'} bg="white">
+    <Stack gap={0} p={4} bg="white" borderRadius={'16px'}>
       <Box overflowY="auto" overflowX="hidden" maxHeight="60vh">
         <AccordionRoot
           collapsible
@@ -106,32 +94,27 @@ export const SearchResults = ({
           backgroundColor="white"
           mt="5px"
           borderRadius={10}
+          variant={'plain'}
         >
           <PlacesResult
-            places={places}
-            placesMetadata={placesMetadata}
-            onPlacesPageChange={onPlacesPageChange}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}
             onTabClick={() => handleAccordionTabClick('places')}
           />
           <RoadsResults
-            roads={roads}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}
             onTabClick={() => handleAccordionTabClick('roads')}
           />
           <PropertiesResults
-            properties={properties}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}
             onTabClick={() => handleAccordionTabClick('properties')}
           />
           <AddressesResults
-            addresses={addresses}
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}

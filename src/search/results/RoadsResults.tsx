@@ -6,14 +6,15 @@ import {
   List,
   ListItem,
 } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Road, SearchResult } from '../../types/searchTypes';
+import { SearchResult } from '../../types/searchTypes';
+import { roadResultsAtom } from '../atoms';
 import { getAddresses } from '../searchApi';
 import { SearchResultLine } from './SearchResultLine';
 
 interface RoadsResultsProps {
-  roads: Road[];
   handleSearchClick: (res: SearchResult) => void;
   handleHover: (res: SearchResult) => void;
   setHoveredResult: (res: SearchResult | null) => void;
@@ -21,13 +22,14 @@ interface RoadsResultsProps {
 }
 
 export const RoadsResults = ({
-  roads,
   handleSearchClick,
   handleHover,
   setHoveredResult,
   onTabClick,
 }: RoadsResultsProps) => {
   const { t } = useTranslation();
+  const roads = useAtomValue(roadResultsAtom);
+
   const [openRoads, setOpenRoads] = useState<string[]>([]);
 
   const toggleRoad = (roadId: string) => {
@@ -60,6 +62,10 @@ export const RoadsResults = ({
       console.error('Failed to fetch address', e);
     }
   };
+
+  if (roads.length === 0) {
+    return null;
+  }
 
   return (
     <AccordionItem value="roads">

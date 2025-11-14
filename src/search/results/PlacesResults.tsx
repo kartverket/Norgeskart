@@ -8,14 +8,17 @@ import {
   PaginationNextTrigger,
   PaginationPrevTrigger,
 } from '@kvib/react';
+import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { Metadata, PlaceName, SearchResult } from '../../types/searchTypes';
+import { SearchResult } from '../../types/searchTypes';
+import {
+  placeNameMetedataAtom,
+  placeNamePageAtom,
+  placeNameResultsAtom,
+} from '../atoms';
 import { SearchResultLine } from './SearchResultLine';
 
 interface PlacesResultProps {
-  places: PlaceName[];
-  placesMetadata: Metadata;
-  onPlacesPageChange: (_page: number) => void;
   handleSearchClick: (res: SearchResult) => void;
   handleHover: (res: SearchResult) => void;
   setHoveredResult: (res: SearchResult | null) => void;
@@ -23,15 +26,22 @@ interface PlacesResultProps {
 }
 
 export const PlacesResult = ({
-  places,
-  placesMetadata,
-  onPlacesPageChange,
   handleSearchClick,
   handleHover,
   setHoveredResult,
   onTabClick,
 }: PlacesResultProps) => {
+  const places = useAtomValue(placeNameResultsAtom);
+  const placesMetadata = useAtomValue(placeNameMetedataAtom);
+  const [placesPage, setPlacesPage] = useAtom(placeNamePageAtom);
+
   const { t } = useTranslation();
+  if (placesMetadata === null) {
+    return null;
+  }
+  if (places.length === 0) {
+    return null;
+  }
 
   return (
     <AccordionItem value="places">
@@ -42,36 +52,36 @@ export const PlacesResult = ({
         <List>
           {places.map((place, i) => {
             const municipalityNames =
-              place.kommuner && place.kommuner.length > 0
-                ? place.kommuner.map((k) => k.kommunenavn).join(', ')
+              place.municipalities && place.municipalities.length > 0
+                ? place.municipalities.map((k) => k.kommunenavn).join(', ')
                 : '';
             return (
               <SearchResultLine
                 key={`place-${i}`}
-                heading={place.skrivemåte}
+                heading={place.name}
                 onClick={() => {
                   handleSearchClick({
                     type: 'Place',
-                    name: place.skrivemåte,
-                    lat: place.representasjonspunkt.nord,
-                    lon: place.representasjonspunkt.øst,
+                    name: place.name,
+                    lat: place.location.nord,
+                    lon: place.location.øst,
                     place,
                   });
                 }}
                 onMouseEnter={() =>
                   handleHover({
                     type: 'Place',
-                    name: place.skrivemåte,
-                    lat: place.representasjonspunkt.nord,
-                    lon: place.representasjonspunkt.øst,
+                    name: place.name,
+                    lat: place.location.nord,
+                    lon: place.location.øst,
                     place,
                   })
                 }
                 onMouseLeave={() => setHoveredResult(null)}
                 locationType={
                   municipalityNames
-                    ? `${place.navneobjekttype} i ${municipalityNames}`
-                    : place.navneobjekttype
+                    ? `${place.placeType} i ${municipalityNames}`
+                    : place.placeType
                 }
               />
             );
@@ -79,12 +89,12 @@ export const PlacesResult = ({
         </List>
         {placesMetadata.totaltAntallTreff > placesMetadata.treffPerSide && (
           <Pagination
-            siblingCount={4}
+            siblingCount={1}
             size="sm"
             count={placesMetadata.totaltAntallTreff}
-            page={placesMetadata.side}
+            page={placesPage}
             pageSize={placesMetadata.treffPerSide}
-            onPageChange={(e: { page: number }) => onPlacesPageChange(e.page)}
+            onPageChange={(e: { page: number }) => setPlacesPage(e.page)}
           >
             <PaginationPrevTrigger />
             <PaginationItems />

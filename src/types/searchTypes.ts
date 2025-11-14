@@ -1,3 +1,5 @@
+import { ParsedCoordinate } from '../shared/utils/coordinateParser';
+
 export type RepresentasjonsPunkt = {
   epsg: string;
   lon: number;
@@ -76,6 +78,53 @@ export type PlaceNameDetails = {
   stedsnavnnummer: number;
 };
 
+export class Place {
+  counties: County[];
+  municipalities: Municipality[];
+  placeType: string;
+  placeNumber: number;
+  name: string;
+  location: RepresentasjonsPunktNorsk;
+
+  constructor(
+    counties: County[],
+    municipalities: Municipality[],
+    placeType: string,
+    placeNumber: number,
+    name: string,
+    representationPoint: RepresentasjonsPunktNorsk,
+  ) {
+    this.counties = counties;
+    this.municipalities = municipalities;
+    this.placeType = placeType;
+    this.placeNumber = placeNumber;
+    this.name = name;
+    this.location = representationPoint;
+  }
+
+  static fromPlaceName(placeName: PlaceName): Place {
+    return new Place(
+      placeName.fylker,
+      placeName.kommuner,
+      placeName.navneobjekttype,
+      placeName.stedsnummer,
+      placeName.skrivemåte,
+      placeName.representasjonspunkt,
+    );
+  }
+  static fromPlaceNamePoint(placeNamePoint: PlaceNamePoint): Place {
+    const firstName = placeNamePoint.stedsnavn[0];
+    return new Place(
+      [],
+      [],
+      placeNamePoint.navneobjekttype,
+      placeNamePoint.stedsnummer,
+      firstName.skrivemåte,
+      placeNamePoint.representasjonspunkt,
+    );
+  }
+}
+
 export type Metadata = {
   side: number;
   sokeStreng: string;
@@ -149,12 +198,6 @@ export type SearchResultType =
   | 'Address'
   | 'Coordinate';
 
-export type CoordinateSearchResult = {
-  formattedString: string;
-  projection: string;
-  inputFormat: 'decimal' | 'dms' | 'utm';
-};
-
 export type SearchResult = SearchResultBase &
   (
     | {
@@ -167,7 +210,7 @@ export type SearchResult = SearchResultBase &
       }
     | {
         type: 'Place';
-        place: PlaceName;
+        place: Place;
       }
     | {
         type: 'Address';
@@ -175,6 +218,6 @@ export type SearchResult = SearchResultBase &
       }
     | {
         type: 'Coordinate';
-        coordinate: CoordinateSearchResult;
+        coordinate: ParsedCoordinate;
       }
   );

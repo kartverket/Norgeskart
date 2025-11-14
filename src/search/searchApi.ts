@@ -1,3 +1,6 @@
+import { transform } from 'ol/proj';
+import { getEnv } from '../env.ts';
+import { ProjectionIdentifier } from '../map/atoms.ts';
 import {
   AddressApiResponse,
   PlaceNameApiResponse,
@@ -6,11 +9,26 @@ import {
   Road,
 } from '../types/searchTypes.ts';
 
+const env = getEnv();
+
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
   const res = await fetch(
-    `https://ws.geonorge.no/adresser/v1/sok?sok=${query}&treffPerSide=10`,
+    `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${query}&treffPerSide=10`,
+  );
+  if (!res.ok) throw new Error('Feil ved henting av adresser');
+  return res.json();
+};
+
+export const getAdressesByLocation = async (
+  x: number,
+  y: number,
+  projection: ProjectionIdentifier,
+): Promise<AddressApiResponse> => {
+  const transformedCoord = transform([x, y], projection, 'EPSG:4326');
+  const res = await fetch(
+    `${env.geoNorgeApiBaseUrl}/adresser/v1/punktsok?radius=50&lat=${transformedCoord[1]}&lon=${transformedCoord[0]}&treffPerSide=10`,
   );
   if (!res.ok) throw new Error('Feil ved henting av adresser');
   return res.json();
@@ -21,24 +39,34 @@ export const getPlaceNames = async (
   page: number,
 ): Promise<PlaceNameApiResponse> => {
   const res = await fetch(
-    `https://ws.geonorge.no/stedsnavn/v1/navn?sok=${query}*&treffPerSide=15&side=${page}`,
+    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${query}*&treffPerSide=15&side=${page}`,
+  );
+  if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
+  return res.json();
+};
+
+export const getPlaceNamesByLocation = async (
+  x: number,
+  y: number,
+  radius: number,
+  projection: ProjectionIdentifier,
+): Promise<PlaceNamePointApiResponse> => {
+  const projectionEPSGNumber = projection.split(':')[1];
+  const res = await fetch(
+    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/punkt?nord=${y}&ost=${x}&treffPerSide=20&koordsys=${projectionEPSGNumber}&radius=${radius}&side=1`,
   );
   if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
   return res.json();
 };
 
 export const getRoads = async (query: string): Promise<Road[]> => {
-  const res = await fetch(
-    `https://testapi.norgeskart.no/v1/matrikkel/veg/${query}`,
-  );
+  const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${query}`);
   if (!res.ok) throw new Error('Feil ved henting av veg');
   return res.json();
 };
 
 export const getProperties = async (query: string): Promise<Property[]> => {
-  const res = await fetch(
-    `https://testapi.norgeskart.no/v1/matrikkel/eie/${query}`,
-  );
+  const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${query}`);
   if (!res.ok) throw new Error('Feil ved henting av eiendom');
   return res.json();
 };
@@ -53,7 +81,7 @@ export const getElevation = async (x: number, y: number) => {
 
 export const getPropetyInfoByCoordinates = async (lat: number, lon: number) => {
   const res = await fetch(
-    `https://ws.geonorge.no/eiendom/v1/punkt/omrader?radius=1&nord=${lat}&ost=${lon}&koordsys=4258`,
+    `${env.geoNorgeApiBaseUrl}/eiendom/v1/punkt/omrader?radius=1&nord=${lat}&ost=${lon}&koordsys=4258`,
   );
   if (!res.ok) throw new Error('Feil ved henting av eiendomsinformasjon');
   return res.json();
@@ -78,7 +106,7 @@ export const getPropertyDetailsByMatrikkelId = async (
     throw new Error('Alle parametere må være numeriske verdier.');
   }
 
-  let url = `https://testapi.norgeskart.no/v1/matrikkel/eiendom/`;
+  let url = `${env.apiUrl}/v1/matrikkel/eiendom/`;
   if (festenr !== '0') {
     if (seksjonsnr === '0') {
       url += `${kommunenr}-${gardsnr}/${bruksnr}/${festenr}`;
@@ -99,7 +127,7 @@ export const getPlaceNamesByCoordinates = async (
   east: number,
 ): Promise<PlaceNamePointApiResponse> => {
   const res = await fetch(
-    `https://ws.geonorge.no/stedsnavn/v1/punkt?nord=${north}&ost=${east}&treffPerSide=35&koordsys=25833&radius=150&side=1`,
+    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/punkt?nord=${north}&ost=${east}&treffPerSide=35&koordsys=25833&radius=150&side=1`,
   );
   if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
   return res.json();

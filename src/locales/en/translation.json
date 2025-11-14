@@ -259,7 +259,8 @@
     "placeName": "Placenames",
     "properties": "Properties",
     "roads": "Roads",
-    "tabHeading": "Search"
+    "tabHeading": "Search",
+    "noResults": "No results found"
   },
   "settings": {
     "label": "Settings for Norgeskart"

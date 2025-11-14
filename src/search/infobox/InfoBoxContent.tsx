@@ -1,46 +1,84 @@
-import { Box, Heading, Text } from '@kvib/react';
+import { Box, Text } from '@kvib/react';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
+import { getElevation } from '../searchApi';
 
 interface InfoBoxContentProps {
   result: SearchResult;
-  elevationData?: { value: number };
+  x: number;
+  y: number;
 }
 
-export const InfoBoxContent = ({
-  result,
-  elevationData,
-}: InfoBoxContentProps) => {
+const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
   const { t } = useTranslation();
-  let content;
-
   switch (result.type) {
     case 'Place':
-      content = `${t('search.placeName')} ${t('infoBox.in')} ${result.place.kommuner.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`;
-      break;
-    case 'Road':
-      content = `${t('infoBox.roadName')} ${t('infoBox.in')} ${result.road.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`;
-      break;
-    case 'Property':
-      content = `${t('infoBox.cadastralIdentifier')} ${t('infoBox.in')} ${result.property.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`;
-      break;
-    case 'Address':
-      content = `${t('infoBox.address')} ${t('infoBox.in')} ${result.address.kommunenavn} ${t('infoBox.municipality').toLowerCase()}`;
-      break;
-    case 'Coordinate':
-      content = `${t('infoBox.coordinateSystem')}: ${result.coordinate.projection}`;
-      break;
-  }
+      return (
+        <Text>
+          {`${t('search.placeName')} ${t('infoBox.in')} ${result.place.municipalities.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`}
+        </Text>
+      );
 
+    case 'Road':
+      return (
+        <Text>
+          {`${t('infoBox.roadName')} ${t('infoBox.in')} ${result.road.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`}
+        </Text>
+      );
+
+    case 'Property':
+      return (
+        <Text>
+          {`${t('infoBox.cadastralIdentifier')} ${t('infoBox.in')} ${result.property.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`}
+        </Text>
+      );
+
+    case 'Address':
+      return (
+        <Text>
+          {`${t('infoBox.address')} ${t('infoBox.in')} ${result.address.kommunenavn} ${t('infoBox.municipality').toLowerCase()}`}
+        </Text>
+      );
+
+    case 'Coordinate':
+      return (
+        <>
+          <Text>
+            {`${t('infoBox.coordinateSystem')}: ${result.coordinate.projection}`}
+            ;
+          </Text>
+          <Text>{result.coordinate.formattedString}</Text>
+        </>
+      );
+  }
+};
+const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
+  const { t } = useTranslation();
+
+  const { data: elevationData, status } = useQuery({
+    queryKey: ['elevation', x, y],
+    queryFn: () => getElevation(x, y),
+    enabled: x != null && y != null,
+  });
+
+  if (status === 'success' && elevationData) {
+    return (
+      <Text>
+        {t('infoBox.heightEstimatedByInterpolation')}{' '}
+        {Number(elevationData?.value).toFixed(1)}{' '}
+        {t('infoBox.metersAboveSeaLevel')}
+      </Text>
+    );
+  }
+  return null;
+};
+
+export const InfoBoxContent = ({ result, x, y }: InfoBoxContentProps) => {
   return (
-    <Box>
-      <Heading as="h3" fontSize="xl" mb={2}>
-        {result.name}
-      </Heading>
-      <Text>{content}</Text>
-      {t('infoBox.heightEstimatedByInterpolation')}{' '}
-      {Number(elevationData?.value).toFixed(1)}{' '}
-      {t('infoBox.metersAboveSeaLevel')}
+    <Box userSelect={'text'}>
+      <InfoBoxTextContent result={result} />
+      <InfoBoxElevationContent x={x} y={y} />{' '}
     </Box>
   );
 };

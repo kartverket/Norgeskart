@@ -16,7 +16,7 @@ export const useThemeLayers = () => {
       .getArray()
       .some((layer) => layer.get('id') === `theme.${layerName}`);
     if (layerExists) {
-      console.log('Layer already exists on map');
+      console.warn('Layer already exists on map');
       return;
     }
     const layerToAdd = getThemeWMSLayer(layerName, mapProjection);

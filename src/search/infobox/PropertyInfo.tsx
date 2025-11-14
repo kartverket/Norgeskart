@@ -1,4 +1,7 @@
 import {
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
   Box,
   Button,
   Flex,
@@ -76,8 +79,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     enabled: lat4326 != null && lon4326 != null,
   });
 
-  if (isLoading) return <>Laster eiendomsinformasjon...</>;
-  if (error) return <>Feil ved henting av eiendomsinformasjon.</>;
+  if (isLoading || error || propertyDetails == null) return null;
 
   const property = Array.isArray(propertyDetails)
     ? propertyDetails[0]
@@ -127,43 +129,54 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   };
 
   return (
-    <Box>
-      <Stack gap={0}>
-        {hasMultipleAddresses && (
-          <Text mb={4} fontSize="sm">
-            {t('propertyInfo.multipleAddressesText')}
-          </Text>
-        )}
-        {rows.map(([label, value], index) => (
-          <Flex
-            key={label}
-            justify="space-between"
-            bg={index % 2 === 0 ? 'gray.50' : 'white'}
-            p={2}
-          >
-            <Text fontSize="sm">{label}</Text>
-            <Text fontSize="sm">{value}</Text>
+    <AccordionItem value="propertyInfo">
+      <AccordionItemTrigger pl={0}>
+        {t('infoBox.propertyInfo')}
+      </AccordionItemTrigger>
+      <AccordionItemContent>
+        <Box>
+          <Stack gap={0}>
+            {hasMultipleAddresses && (
+              <Text mb={4} fontSize="sm">
+                {t('propertyInfo.multipleAddressesText')}
+              </Text>
+            )}
+            {rows.map(([label, value], index) => (
+              <Flex
+                key={label}
+                justify="space-between"
+                bg={index % 2 === 0 ? 'gray.50' : 'white'}
+                p={2}
+              >
+                <Text fontSize="sm">{label}</Text>
+                <Text fontSize="sm">{value}</Text>
+              </Flex>
+            ))}
+          </Stack>
+          <Flex justify="space-between" align="center">
+            <Switch
+              onCheckedChange={(e) => {
+                handleSwitchChange(e.checked);
+              }}
+            >
+              <SwitchLabel>{t('propertyInfo.markProperty.label')}</SwitchLabel>
+            </Switch>
+            <Button
+              mt={4}
+              size="xs"
+              onClick={() =>
+                window.open(
+                  propertyRegisterUrl,
+                  '_blank',
+                  'noopener,noreferrer',
+                )
+              }
+            >
+              {t('propertyInfo.moreInformation')}
+            </Button>
           </Flex>
-        ))}
-      </Stack>
-      <Flex justify="space-between" align="center">
-        <Switch
-          onCheckedChange={(e) => {
-            handleSwitchChange(e.checked);
-          }}
-        >
-          <SwitchLabel>{t('propertyInfo.markProperty.label')}</SwitchLabel>
-        </Switch>
-        <Button
-          mt={4}
-          size="xs"
-          onClick={() =>
-            window.open(propertyRegisterUrl, '_blank', 'noopener,noreferrer')
-          }
-        >
-          {t('propertyInfo.moreInformation')}
-        </Button>
-      </Flex>
-    </Box>
+        </Box>
+      </AccordionItemContent>
+    </AccordionItem>
   );
 };

@@ -65,7 +65,7 @@
   "infoBox": {
     "address": "Adresse",
     "cadastralIdentifier": "Gårds- og bruksnummer",
-    "coordinateInfo": "Se koordinater",
+    "coordinateInfo": "Koordinater",
     "coordinateSection": {
       "copy": {
         "label": "Kopier koordinater",
@@ -85,8 +85,8 @@
     "makeMap": "Lag turkart",
     "metersAboveSeaLevel": "moh",
     "municipality": "Kommune",
-    "placeinfo": "Se fakta om stedsnavnet",
-    "propertyInfo": "Se eiendomsinformasjon",
+    "placeinfo": "Stedsnavnfakta",
+    "propertyInfo": "Eiendomsinformasjon",
     "roadName": "Veinavn",
     "utmCoordinates": "UTM-koordinater"
   },
@@ -264,7 +264,8 @@
     "placeName": "Stedsnavn",
     "properties": "Eiendommer",
     "roads": "Veger",
-    "tabHeading": "Søk"
+    "tabHeading": "Søk",
+    "noResults": "Ingen treff"
   },
   "settings": {
     "label": "Innstillinger for Norgeskart"

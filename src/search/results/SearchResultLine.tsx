@@ -29,8 +29,8 @@ export const SearchResultLine = ({
       onMouseLeave={onMouseLeave}
       as={'ul'}
       pr={2}
-      pl={2}
-      mb={2}
+      pl={1}
+      mb={1}
     >
       <Flex
         direction="row"

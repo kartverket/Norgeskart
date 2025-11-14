@@ -1,53 +1,127 @@
-import { Box, Flex, Icon, IconButton, Search } from '@kvib/react';
-import { useAtomValue } from 'jotai';
-import { useCallback, useMemo, useState } from 'react';
+import { Box, Flex, Icon, IconButton, Search, Spinner } from '@kvib/react';
+import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { MapBrowserEvent } from 'ol';
+import BaseEvent from 'ol/events/Event';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
+import { mapContextIsOpenAtom } from '../map/menu/atoms.ts';
 import {
   parseCoordinateInput,
   ParsedCoordinate,
 } from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
-import { InfoBox } from './infobox/InfoBox.tsx';
+import {
+  allSearchResultsAtom,
+  searchCoordinatesAtom,
+  searchPendingAtom,
+  searchQueryAtom,
+  selectedResultAtom,
+  useResetSearchResults,
+} from './atoms.ts';
 import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
-import {
-  useAddresses,
-  usePlaceNames,
-  useProperties,
-  useRoads,
-} from './useSearchQueries.ts';
+
+const SearchIcon = () => {
+  const searchQuery = useAtomValue(searchQueryAtom);
+  const isSearchPending = useAtomValue(searchPendingAtom);
+  const resetSearchResults = useResetSearchResults();
+  const allResults = useAtomValue(allSearchResultsAtom);
+  if (isSearchPending) {
+    return <Spinner />;
+  }
+  if (allResults.length > 0 || searchQuery !== '') {
+    return (
+      <IconButton
+        icon="close"
+        variant="ghost"
+        color={'gray'}
+        size={24}
+        onClick={resetSearchResults}
+      />
+    );
+  }
+  if (searchQuery === '') {
+    return <Icon icon="search" size={24} weight={500} color="gray" />;
+  }
+};
 
 export const SearchComponent = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [placesPage, setPlacesPage] = useState(1);
-  const [selectedResult, setSelectedResult] = useState<SearchResult | null>(
-    null,
-  );
+  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
+  const setSelectedResult = useSetAtom(selectedResultAtom);
+  const setSearchCoordinates = useSetAtom(searchCoordinatesAtom);
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
-
-  const { placeNameData } = usePlaceNames(searchQuery, placesPage);
-  const { roadsData } = useRoads(searchQuery);
-  const { propertiesData } = useProperties(searchQuery);
-  const { addressData } = useAddresses(searchQuery);
-
-  // Get current projection from map
   const currentProjection = useMemo<ProjectionIdentifier>(() => {
     return map.getView().getProjection().getCode() as ProjectionIdentifier;
   }, [map]);
 
   // Detect if search query is a coordinate, using current projection as fallback
-  const coordinateResult = useMemo<ParsedCoordinate | null>(() => {
-    return parseCoordinateInput(searchQuery, currentProjection);
+  const coordinateResult = useMemo<SearchResult | null>(() => {
+    const parsedCoordinate = parseCoordinateInput(
+      searchQuery,
+      currentProjection,
+    );
+    if (parsedCoordinate == null) {
+      return null;
+    }
+
+    return {
+      lon: parsedCoordinate.lon,
+      lat: parsedCoordinate.lat,
+      name: parsedCoordinate.formattedString,
+      type: 'Coordinate',
+      coordinate: parsedCoordinate,
+    };
   }, [searchQuery, currentProjection]);
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setSelectedResult(null);
     setHoveredResult(null);
-  }, []);
+  };
+
+  const mapClickHandler = useCallback(
+    (e: Event | BaseEvent) => {
+      const isContextMenuOpen = getDefaultStore().get(mapContextIsOpenAtom);
+      if (isContextMenuOpen) {
+        return;
+      }
+      if (e instanceof MapBrowserEvent) {
+        const coordinate = e.coordinate;
+        const projection = map.getView().getProjection().getCode();
+        setSearchCoordinates({
+          x: coordinate[0],
+          y: coordinate[1],
+          projection: projection as ProjectionIdentifier,
+        });
+
+        const parsedCoordinate: ParsedCoordinate = {
+          lat: coordinate[0],
+          lon: coordinate[1],
+          projection: projection as ProjectionIdentifier,
+          formattedString: `${coordinate[0].toFixed(2)}, ${coordinate[1].toFixed(2)} @ ${projection.split(':')[1]}`,
+          inputFormat: 'utm',
+        };
+
+        setSelectedResult({
+          lon: coordinate[0],
+          lat: coordinate[1],
+          name: parsedCoordinate.formattedString,
+          type: 'Coordinate',
+          coordinate: parsedCoordinate,
+        });
+      }
+    },
+    [map, setSearchCoordinates, setSelectedResult],
+  );
+  useEffect(() => {
+    map.on('click', mapClickHandler);
+    return () => {
+      map.un('click', mapClickHandler);
+    };
+  }, [mapClickHandler, map]);
 
   return (
     <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>
@@ -68,50 +142,22 @@ export const SearchComponent = () => {
             top="50%"
             transform="translateY(-50%)"
           >
-            {searchQuery === '' ? (
-              <Icon icon="search" size={24} weight={500} color="gray" />
-            ) : (
-              <IconButton
-                icon="close"
-                variant="ghost"
-                color={'gray'}
-                size={24}
-                onClick={() => setSearchQuery('')}
-              />
-            )}
+            <SearchIcon />
           </Box>
         </Box>
       </Box>
 
       {coordinateResult ? (
         <CoordinateResults
-          coordinate={coordinateResult}
-          selectedResult={selectedResult}
+          coordinateResult={coordinateResult}
           setSelectedResult={setSelectedResult}
           hoveredResult={hoveredResult}
           setHoveredResult={setHoveredResult}
         />
       ) : (
         <SearchResults
-          properties={propertiesData ? propertiesData : []}
-          roads={roadsData ? roadsData : []}
-          places={placeNameData ? placeNameData.navn : []}
-          addresses={addressData ? addressData.adresser : []}
-          placesMetadata={placeNameData?.metadata}
-          onPlacesPageChange={(page: number) => {
-            setPlacesPage(page);
-          }}
-          searchQuery={searchQuery}
-          selectedResult={selectedResult}
-          setSelectedResult={setSelectedResult}
           hoveredResult={hoveredResult}
           setHoveredResult={setHoveredResult}
-        />
-      )}
-      {selectedResult && (
-        <InfoBox
-          result={selectedResult}
-          onClose={() => setSelectedResult(null)}
         />
       )}
     </Flex>
