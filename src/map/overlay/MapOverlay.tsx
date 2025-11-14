@@ -69,7 +69,7 @@ export const MapOverlay = () => {
           </Box>
           {displayCompassOverlay && <Compass />}
 
-          <Box position="absolute" bottom="16px" left="16px">
+          <Box position="absolute" bottom="32px" left="16px">
             <Link
               href="https://www.kartverket.no"
               target="_blank"
@@ -77,7 +77,7 @@ export const MapOverlay = () => {
               outline="none"
             >
               <Image
-                src="/logos/KV_logo_staa.svg"
+                src="/logos/KV_logo_staa_color.svg"
                 alt="Logo"
                 style={{ height: 64 }}
               />
