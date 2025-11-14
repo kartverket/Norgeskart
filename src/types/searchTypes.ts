@@ -82,6 +82,7 @@ export class Place {
   counties: County[];
   municipalities: Municipality[];
   placeType: string;
+  placeNumber: number;
   name: string;
   location: RepresentasjonsPunktNorsk;
 
@@ -89,12 +90,14 @@ export class Place {
     counties: County[],
     municipalities: Municipality[],
     placeType: string,
+    placeNumber: number,
     name: string,
     representationPoint: RepresentasjonsPunktNorsk,
   ) {
     this.counties = counties;
     this.municipalities = municipalities;
     this.placeType = placeType;
+    this.placeNumber = placeNumber;
     this.name = name;
     this.location = representationPoint;
   }
@@ -104,6 +107,7 @@ export class Place {
       placeName.fylker,
       placeName.kommuner,
       placeName.navneobjekttype,
+      placeName.stedsnummer,
       placeName.skrivemåte,
       placeName.representasjonspunkt,
     );
@@ -114,6 +118,7 @@ export class Place {
       [],
       [],
       placeNamePoint.navneobjekttype,
+      placeNamePoint.stedsnummer,
       firstName.skrivemåte,
       placeNamePoint.representasjonspunkt,
     );

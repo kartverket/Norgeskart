@@ -1,6 +1,6 @@
 import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
-import { ProjectionIdentifier } from '../map/atoms';
+import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import {
   Address,
   Metadata,
@@ -12,7 +12,6 @@ import {
 import { searchResultsMapper } from './results/searchresultsMapper';
 import {
   getAddresses,
-  getAdressesByLocation,
   getPlaceNames,
   getPlaceNamesByLocation,
   getProperties,
@@ -23,6 +22,17 @@ type CoordinateWithProjection = {
   x: number;
   y: number;
   projection: string;
+};
+
+const getPlaceNameRadius = () => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const view = map.getView();
+  view.getZoom();
+  const zoom = view.getZoom() || 0;
+  if (zoom < 10) return 1000;
+  if (zoom < 15) return 500;
+  return 150;
 };
 
 export const searchCoordinatesAtom = atom<CoordinateWithProjection | null>(
@@ -43,23 +53,16 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
       getPlaceNamesByLocation(
         coords.x,
         coords.y,
-        coords.projection as ProjectionIdentifier,
-      ),
-      getAdressesByLocation(
-        coords.x,
-        coords.y,
+        getPlaceNameRadius(),
         coords.projection as ProjectionIdentifier,
       ),
     ]);
   };
   fetchData().then((res) => {
-    const [placeResult, addressResult] = res;
+    const [placeResult] = res;
     if (placeResult.navn) {
       set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
       set(placeNameMetedataAtom, placeResult.metadata);
-    }
-    if (addressResult.adresser) {
-      set(addressResultsAtom, addressResult.adresser);
     }
   });
 });

@@ -48,11 +48,12 @@ export const getPlaceNames = async (
 export const getPlaceNamesByLocation = async (
   x: number,
   y: number,
+  radius: number,
   projection: ProjectionIdentifier,
 ): Promise<PlaceNamePointApiResponse> => {
   const projectionEPSGNumber = projection.split(':')[1];
   const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/punkt?nord=${y}&ost=${x}&treffPerSide=35&koordsys=${projectionEPSGNumber}&radius=150&side=1`,
+    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/punkt?nord=${y}&ost=${x}&treffPerSide=20&koordsys=${projectionEPSGNumber}&radius=${radius}&side=1`,
   );
   if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
   return res.json();
