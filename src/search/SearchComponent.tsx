@@ -114,7 +114,7 @@ export const SearchComponent = () => {
         });
       }
     },
-    [map, setSearchCoordinates],
+    [map, setSearchCoordinates, setSelectedResult],
   );
   useEffect(() => {
     map.on('click', mapClickHandler);

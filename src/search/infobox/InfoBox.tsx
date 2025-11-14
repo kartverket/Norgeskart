@@ -56,20 +56,14 @@ export const InfoBox = () => {
       <InfoBoxContent result={selectedResult} x={x} y={y} />
       <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
         <AccordionRoot collapsible defaultValue={['propertyInfo', 'placeInfo']}>
-          {selectedResult.type === 'Property' && (
-            <AccordionItem value="propertyInfo">
-              <AccordionItemTrigger pl={0}>
-                {t('infoBox.propertyInfo')}
-              </AccordionItemTrigger>
-              <AccordionItemContent>
-                <PropertyInfo
-                  lon={selectedResult.lon}
-                  lat={selectedResult.lat}
-                  inputCRS={inputCRS}
-                />
-              </AccordionItemContent>
-            </AccordionItem>
-          )}
+          {selectedResult.type === 'Property' ||
+            (selectedResult.type === 'Coordinate' && (
+              <PropertyInfo
+                lon={selectedResult.lon}
+                lat={selectedResult.lat}
+                inputCRS={inputCRS}
+              />
+            ))}
           {selectedResult.type === 'Place' && (
             <AccordionItem value="placeInfo">
               <AccordionItemTrigger pl={0}>
