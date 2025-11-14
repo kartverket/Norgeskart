@@ -1,0 +1,45 @@
+name: Delete all preview environments
+
+on: workflow_dispatch
+
+env:
+  image_registry: ghcr.io
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: octo-sts/action@d6c70ad3b9ac85df6da6b9749014d7283987cfec
+        id: octo-sts
+        with:
+          scope: kartverket/tnt-apps
+          identity: norgeskart5
+
+      - name: Checkout apps repository
+        uses: actions/checkout@v5
+        with:
+          repository: kartverket/tnt-apps
+          ref: main
+          token: ${{ steps.octo-sts.outputs.token }}
+
+      - name: Git setup for deploy
+        run: |
+          git config --global user.email "tnt-nk@kartverket.no"
+          git config --global user.name "tnt-nk CI"
+
+      - name: Delete previews
+        env:
+          COMMIT_MESSAGE: Delete all preview environments
+        run: |
+          rm -rf env/atgcp1-dev/norgeskart-preview-*
+          git add .
+          git commit -m "$COMMIT_MESSAGE"
+          git push
