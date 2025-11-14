@@ -111,6 +111,7 @@ jobs:
         run: |
           cp env/atgcp1-dev/norgeskart-main env/atgcp1-dev/norgeskart-preview-${{ github.sha }} -r
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atgcp1-dev/norgeskart-preview-${{ github.sha }}/norgeskart-version
+          echo "['norgeskart-preview-${{ github.sha }}.atgcp1-dev.kartverket-intern.cloud']" > env/atgcp1-dev/norgeskart-preview-${{ github.sha }}/norgeskart-ingress
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
