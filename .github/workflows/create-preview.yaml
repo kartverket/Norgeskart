@@ -8,6 +8,11 @@ on:
         required: false
         default: false
         type: boolean
+      targetBranch:
+        description: 'Branch name to create preview from'
+        required: true
+        default: 'main'
+        type: string
                 
 env:
   image_registry: ghcr.io
@@ -22,9 +27,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docker_tag: ${{ steps.meta.outputs.tags }}
+      target_branch_sha: ${{ steps.get_sha.outputs.sha }}
     steps:
       - name: 'Checkout code'
         uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.targetBranch }}
+      - name: Get target branch SHA
+        id: get_sha
+        run: echo "::set-output name=sha::$(git rev-parse HEAD | cut -c1-6 )"
 
       - name: 'Setup node.js'
         uses: actions/setup-node@v6
@@ -100,11 +111,11 @@ jobs:
 
       - name: Update deployment
         env:
-          COMMIT_MESSAGE: Create preview for commit ${{ github.sha }}
+          COMMIT_MESSAGE: Create preview for commit ${{ needs.build.outputs.target_branch_sha }}
         run: |
-          cp env/atgcp1-dev/norgeskart-main env/atgcp1-dev/norgeskart-preview-${{ github.sha }} -r
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atgcp1-dev/norgeskart-preview-${{ github.sha }}/norgeskart-version
-          echo "['norgeskart-preview-${{ github.sha }}.atgcp1-dev.kartverket-intern.cloud']" > env/atgcp1-dev/norgeskart-preview-${{ github.sha }}/norgeskart-ingress
+          cp env/atgcp1-dev/norgeskart-main env/atgcp1-dev/norgeskart-preview-${{ needs.build.outputs.target_branch_sha }} -r
+          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atgcp1-dev/norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}/norgeskart-version
+          echo "['norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud']" > env/atgcp1-dev/norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}/norgeskart-ingress
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
