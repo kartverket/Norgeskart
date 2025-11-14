@@ -73,7 +73,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=sha, prefix=commit-
+            type=raw,value=${{ steps.get_sha.outputs.sha }},prefix=preview-
 
       - name: Build and push Docker image
         id: docker
