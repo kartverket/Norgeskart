@@ -8,12 +8,7 @@ on:
         required: false
         default: false
         type: boolean
-      target_branch:
-        description: 'The branch to run the workflow against'
-        required: true
-        type: string
-        default: 'main' # You can set a default branch here
-
+                
 env:
   image_registry: ghcr.io
 
@@ -30,8 +25,6 @@ jobs:
     steps:
       - name: 'Checkout code'
         uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.inputs.target_branch }}
 
       - name: 'Setup node.js'
         uses: actions/setup-node@v6
