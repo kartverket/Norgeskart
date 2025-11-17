@@ -1,6 +1,5 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
-import MousePosition from 'ol/control/MousePosition';
 import { Listener } from 'ol/events';
 import { get as getProjection, transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +27,6 @@ import {
 } from './layers/backgroundWMTSProviders';
 import { useThemeLayers } from './layers/themeLayers';
 import { ThemeLayerName } from './layers/themeWMS';
-import { getMousePositionControl } from './mapControls';
 
 const ROTATION_ANIMATION_DURATION = 500;
 
@@ -216,15 +214,6 @@ const useMapSettings = () => {
         addThemeLayerToMap(layerName as ThemeLayerName);
       });
     }
-
-    const mousePositionInteraction = map
-      .getControls()
-      .getArray()
-      .filter((control) => {
-        return control instanceof MousePosition;
-      })[0];
-    map.removeControl(mousePositionInteraction);
-    map.addControl(getMousePositionControl(projectionId));
     setUrlParameter('projection', projectionId);
   };
 
