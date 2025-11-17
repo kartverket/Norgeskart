@@ -1,14 +1,10 @@
 import {
+  Box,
   Button,
   Flex,
   IconButton,
-  PopoverBody,
-  PopoverContent,
-  PopoverRoot,
-  PopoverTrigger,
   SwitchControl,
   SwitchHiddenInput,
-  SwitchLabel,
   SwitchRoot,
   Text,
   Tooltip,
@@ -47,29 +43,21 @@ export const Toolbar = () => {
             onClick={() => setDisplayCompassOverlay(!displayCompassOverlay)}
           ></IconButton>
         </Tooltip>
-        <PopoverRoot>
-          <PopoverTrigger asChild>
-            <IconButton
-              icon="arrow_drop_down"
-              variant="tertiary"
-              color="white"
-            ></IconButton>
-          </PopoverTrigger>
-          <PopoverContent width="230px">
-            <PopoverBody>
-              <SwitchRoot
-                checked={useMagneticNorth}
-                onCheckedChange={(e) => setUseMagneticNorth(e.checked)}
-              >
-                <SwitchHiddenInput />
-                <SwitchLabel>
-                  {t('map.settings.compass.magneticNorth')}
-                </SwitchLabel>
-                <SwitchControl />
-              </SwitchRoot>
-            </PopoverBody>
-          </PopoverContent>
-        </PopoverRoot>
+
+        <Tooltip content="Bruk magnetisk nord">
+          <Box pr={2}>
+            <SwitchRoot
+              checked={useMagneticNorth}
+              size="xs"
+              colorPalette="gray"
+              onCheckedChange={(e) => setUseMagneticNorth(e.checked)}
+            >
+              <SwitchHiddenInput />
+              <SwitchControl />
+            </SwitchRoot>
+          </Box>
+        </Tooltip>
+
         <ProjectionSettings />
       </Flex>
       <Flex justify="center" alignItems="center" gap={2} color="white">
