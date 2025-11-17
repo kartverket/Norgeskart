@@ -2,8 +2,9 @@
 .ol-scale-bar {
   position: absolute;
   left: 120px;
-  bottom: 14px;
+  bottom: 35px;
 }
+
 .ol-scale-line-bar {
   font-size: 24px;
 }
@@ -11,6 +12,7 @@
 .ol-scale-text {
   font-size: 14px;
 }
+
 .ol-scale-step-text {
   font-size: 12px;
 }
@@ -18,7 +20,7 @@
 .ol-mouse-position {
   position: absolute;
   font-size: 16px;
-  top: calc(100vh - 50px);
+  top: calc(100vh - 70px);
   right: 120px;
   padding: 5px 8px;
   background-color: rgba(255, 255, 255, 0.7);
