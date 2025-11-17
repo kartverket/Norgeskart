@@ -51,6 +51,7 @@ export const Toolbar = () => {
               size="xs"
               colorPalette="gray"
               onCheckedChange={(e) => setUseMagneticNorth(e.checked)}
+              disabled={!displayCompassOverlay}
             >
               <SwitchHiddenInput />
               <SwitchControl />
