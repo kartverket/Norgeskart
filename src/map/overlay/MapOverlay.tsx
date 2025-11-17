@@ -88,7 +88,7 @@ export const MapOverlay = () => {
           {/* Her er hovedboksen for knappene i senter */}
           <Box
             position="absolute"
-            bottom="35px"
+            bottom="40px"
             left="50%"
             transform="translateX(-50%)"
             zIndex={10}

@@ -285,5 +285,8 @@
   },
   "tipsandtricks": {
     "heading": "Tips og triks"
+  },
+  "toolbar": {
+    "reportError": "Feil i kartet?"
   }
 }

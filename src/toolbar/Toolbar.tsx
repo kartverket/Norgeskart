@@ -107,7 +107,7 @@ export const Toolbar = () => {
           size="sm"
           onClick={() => setRettIKartetDialogOpen(true)}
         >
-          Feil i kartet?
+          {t('toolbar.reportError')}
         </Button>
       </Flex>
     </Flex>

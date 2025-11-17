@@ -28,7 +28,6 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
     <SelectRoot
       width="140px"
       size="sm"
-      mt="5px"
       collection={createListCollection({ items: projectionCollection })}
       defaultValue={[defaultProjection]}
     >
