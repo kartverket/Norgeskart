@@ -42,6 +42,8 @@ export const Toolbar = () => {
   >(null);
   const map = useAtomValue(mapAtom);
 
+  const crsCode = map.getView().getProjection().getCode();
+
   useEffect(() => {
     if (!map) return;
     const handler = (evt: MapBrowserEvent) => {
@@ -55,18 +57,15 @@ export const Toolbar = () => {
     };
   }, [map]);
 
-  const crsCode = map.getView().getProjection().getCode();
-
   return (
     <Flex
       width="100%"
-      height="25px"
+      height="28px"
       bg="#156630"
       bottom="0"
       position="absolute"
       p={2}
       gap={3}
-      alignItems="center"
     >
       <Flex alignItems="center" flex="1">
         <Tooltip content="Vis kompassrose">
@@ -77,7 +76,6 @@ export const Toolbar = () => {
             onClick={() => setDisplayCompassOverlay(!displayCompassOverlay)}
           ></IconButton>
         </Tooltip>
-
         <Tooltip content="Bruk magnetisk nord">
           <Box pr={2}>
             <SwitchRoot
@@ -95,17 +93,18 @@ export const Toolbar = () => {
         <ProjectionSettings />
       </Flex>
       <Flex justify="center" alignItems="center" gap={4} color="white">
-        <Text>
+        <Text fontSize="sm">
           {mousePositionCoords
             ? formatCoords(mousePositionCoords, crsCode)
             : ''}
         </Text>
-        <Text>Målestokk her</Text>
+        <Text fontSize="sm">Målestokk her</Text>
       </Flex>
       <Flex flex="1" justify="flex-end" alignItems="center">
         <Button
           variant="plain"
           color="white"
+          size="sm"
           onClick={() => setRettIKartetDialogOpen(true)}
         >
           Feil i kartet?
