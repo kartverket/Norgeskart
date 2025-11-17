@@ -68,7 +68,7 @@ export const Toolbar = () => {
       gap={3}
     >
       <Flex alignItems="center" flex="1">
-        <Tooltip content="Vis kompassrose">
+        <Tooltip content={t('map.settings.compass.enabled')}>
           <IconButton
             icon="explore"
             variant="tertiary"
@@ -76,7 +76,7 @@ export const Toolbar = () => {
             onClick={() => setDisplayCompassOverlay(!displayCompassOverlay)}
           ></IconButton>
         </Tooltip>
-        <Tooltip content="Bruk magnetisk nord">
+        <Tooltip content={t('map.settings.compass.magneticNorth')}>
           <Box pr={2}>
             <SwitchRoot
               checked={useMagneticNorth}
