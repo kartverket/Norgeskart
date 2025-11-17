@@ -9,11 +9,26 @@ import {
   Text,
   Tooltip,
 } from '@kvib/react';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { MapBrowserEvent } from 'ol';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { displayCompassOverlayAtom, useMagneticNorthAtom } from '../map/atoms';
+import {
+  displayCompassOverlayAtom,
+  mapAtom,
+  useMagneticNorthAtom,
+} from '../map/atoms';
 import { isRettIKartetDialogOpenAtom } from '../map/menu/dialogs/atoms';
 import { ProjectionSettings } from '../settings/map/ProjectionSettings';
+
+const formatCoords = (coord: [number, number] | null, crsCode: string) => {
+  if (!coord) return '';
+  if (crsCode === 'EPSG:3857') {
+    return `${coord[0].toFixed(2)}, ${coord[1].toFixed(2)}`;
+  } else {
+    return `N: ${coord[1].toFixed(2)}, Ø: ${coord[0].toFixed(2)}`;
+  }
+};
 
 export const Toolbar = () => {
   const { t } = useTranslation();
@@ -22,6 +37,25 @@ export const Toolbar = () => {
     displayCompassOverlayAtom,
   );
   const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
+  const [mousePositionCoords, setMousePositionCoords] = useState<
+    [number, number] | null
+  >(null);
+  const map = useAtomValue(mapAtom);
+
+  useEffect(() => {
+    if (!map) return;
+    const handler = (evt: MapBrowserEvent) => {
+      if (evt.coordinate) {
+        setMousePositionCoords([evt.coordinate[0], evt.coordinate[1]]);
+      }
+    };
+    map.on('pointermove', handler);
+    return () => {
+      map.un('pointermove', handler);
+    };
+  }, [map]);
+
+  const crsCode = map.getView().getProjection().getCode();
 
   return (
     <Flex
@@ -58,11 +92,14 @@ export const Toolbar = () => {
             </SwitchRoot>
           </Box>
         </Tooltip>
-
         <ProjectionSettings />
       </Flex>
-      <Flex justify="center" alignItems="center" gap={2} color="white">
-        <Text>Koordinater her</Text>
+      <Flex justify="center" alignItems="center" gap={4} color="white">
+        <Text>
+          {mousePositionCoords
+            ? formatCoords(mousePositionCoords, crsCode)
+            : ''}
+        </Text>
         <Text>Målestokk her</Text>
       </Flex>
       <Flex flex="1" justify="flex-end" alignItems="center">

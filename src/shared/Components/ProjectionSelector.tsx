@@ -30,7 +30,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       collection={createListCollection({ items: projectionCollection })}
       defaultValue={[defaultProjection]}
     >
-      <SelectTrigger color="white">
+      <SelectTrigger>
         <SelectValueText
           color="white"
           placeholder={t('map.settings.layers.projection.placeholder')}
