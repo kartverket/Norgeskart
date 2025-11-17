@@ -8,13 +8,11 @@ import {
   VStack,
 } from '@kvib/react';
 import { t } from 'i18next';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { useIsMobileScreen } from '../../shared/hooks';
-import { isRettIKartetDialogOpenAtom } from '../menu/dialogs/atoms';
 import { mapToolAtom } from './atoms';
 
 export const MapToolButtons = () => {
-  const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const isMobileScreen = useIsMobileScreen();
   const handleShareMapClick = () => {
@@ -78,11 +76,6 @@ export const MapToolButtons = () => {
           label={t('controller.print.text')}
         />
       )}
-      <MapButton
-        onClick={() => setRettIKartetDialogOpen(true)}
-        icon={'edit_road'}
-        label={t('map.contextmenu.items.rettikartet.label')}
-      />
     </HStack>
   );
 };

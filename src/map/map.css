@@ -20,7 +20,7 @@
 .ol-mouse-position {
   position: absolute;
   font-size: 16px;
-  top: calc(100vh - 50px);
+  top: calc(100vh - 70px);
   right: 120px;
   padding: 5px 8px;
   background-color: rgba(255, 255, 255, 0.7);
