@@ -112,12 +112,13 @@ jobs:
       - name: Update deployment
         env:
           COMMIT_MESSAGE: Create preview for commit ${{ needs.build.outputs.target_branch_sha }}
+          NEW_FILE_PATH: env/atgcp1-dev/norgeskart-preview/norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.jsonnet
         run: |
           mkdir -p env/atgcp1-dev/norgeskart-preview
-          cp applications/partials/norgeskart-preview-partial.jsonnet env/atgcp1-dev/norgeskart-preview/norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.jsonnet             
-          sed -i '1ilocal name = norgeskart-preview-${{ needs.build.outputs.target_branch_sha }};'
-          sed -i '1ilocal image = "${{ needs.build.outputs.docker_tag }}";'
-          sed -i '1ilocal ingress = ["norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud"];'
+          cp applications/partials/norgeskart-preview-partial.jsonnet $NEW_FILE_PATH
+          sed -i '1ilocal name = norgeskart-preview-${{ needs.build.outputs.target_branch_sha }};' $NEW_FILE_PATH
+          sed -i '1ilocal image = "${{ needs.build.outputs.docker_tag }}";' $NEW_FILE_PATH
+          sed -i '1ilocal ingress = ["norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud"];' $NEW_FILE_PATH
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
