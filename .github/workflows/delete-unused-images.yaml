@@ -1,0 +1,58 @@
+name: Delete unused Docker images
+
+on:
+  workflow_dispatch
+
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+
+jobs:
+  get-used-images:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        id-token: write
+    steps:
+      - uses: octo-sts/action@d6c70ad3b9ac85df6da6b9749014d7283987cfec
+        name: Octo auth
+        id: octo-sts
+        with:
+            scope: kartverket/tnt-apps
+            identity: norgeskart5
+
+      - name: Checkout apps repository        
+        uses: actions/checkout@v5
+        with:
+            repository: kartverket/tnt-apps
+            ref: main
+            token: ${{ steps.octo-sts.outputs.token }}
+
+      - name: Get used images
+        id: used-images
+        run: |
+            {
+            echo "used_images<<EOF"
+            find -name norgeskart-version | xargs sed -e 's/"//g' -e 's|ghcr\.io/kartverket/norgeskart:||g ' | paste -sd "," -
+            echo "EOF"
+            } >> $GITHUB_OUTPUT
+
+      - name: Checkout norgeskart repository        
+        uses: actions/checkout@v5
+        with:
+            repository: kartverket/norgeskart
+            ref: main
+
+      - name: Remove images
+        uses: actions/delete-package-versions@v5
+        with:
+            package-type: container
+            package-name: norgeskart
+            min-versions-to-keep: 5
+            ignore-versions: ${{ steps.used-images.outputs.used_images }}
+            
+                
+
