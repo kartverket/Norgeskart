@@ -113,10 +113,11 @@ jobs:
         env:
           COMMIT_MESSAGE: Create preview for commit ${{ needs.build.outputs.target_branch_sha }}
         run: |
-          mkdir -p env/atgcp1-dev/norgeskart-preview            
-          cp env/atgcp1-dev/norgeskart-main env/atgcp1-dev/norgeskart-preview/${{ needs.build.outputs.target_branch_sha }} -r
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atgcp1-dev/norgeskart-preview/${{ needs.build.outputs.target_branch_sha }}/norgeskart-version
-          echo "['norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud']" > env/atgcp1-dev/norgeskart-preview/${{ needs.build.outputs.target_branch_sha }}/norgeskart-ingress
+          mkdir -p env/atgcp1-dev/norgeskart-preview
+          cp applications/partials/norgeskart-preview-partial.jsonnet env/atgcp1-dev/norgeskart-preview/norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.jsonnet             
+          sed -i '1ilocal name = norgeskart-preview-${{ needs.build.outputs.target_branch_sha }};'
+          sed -i '1ilocal image = "${{ needs.build.outputs.docker_tag }}";'
+          sed -i '1ilocal ingress = ["norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud"];'
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
