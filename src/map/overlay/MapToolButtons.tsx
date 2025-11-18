@@ -7,6 +7,7 @@ import {
   toaster,
   VStack,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import { useIsMobileScreen } from '../../shared/hooks';
@@ -15,6 +16,7 @@ import { mapToolAtom } from './atoms';
 export const MapToolButtons = () => {
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const isMobileScreen = useIsMobileScreen();
+  const posthog = usePostHog();
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -33,6 +35,7 @@ export const MapToolButtons = () => {
     <HStack align="flex-end">
       <MapButton
         onClick={() => {
+          posthog.capture('map_draw_button_clicked');
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={currentMapTool == 'draw' ? 'close' : 'edit'}
