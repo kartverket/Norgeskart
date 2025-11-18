@@ -78,7 +78,7 @@ export const MapOverlay = () => {
               outline="none"
             >
               <Image
-                src="/logos/KV_logo_staa.svg"
+                src="/logos/KV_logo_staa_color.svg"
                 alt="Logo"
                 style={{ height: 64 }}
               />
