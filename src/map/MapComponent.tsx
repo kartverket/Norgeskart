@@ -31,6 +31,21 @@ import {
 } from './menu/atoms.ts';
 import { MapContextMenu } from './menu/MapContextMenu.tsx';
 
+const getScaleFromResolution = (
+  resolution: number,
+  units: string,
+  round = true,
+) => {
+  const INCHES_PER_UNIT: Record<string, number> = {
+    m: 39.37,
+    degrees: 4374754,
+  };
+  const DOTS_PER_INCH = 96;
+  let scale = INCHES_PER_UNIT[units] * DOTS_PER_INCH * resolution;
+  if (round) scale = Math.round(scale);
+  return scale;
+};
+
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { setBackgroundLayer } = useMapSettings();
@@ -198,6 +213,11 @@ export const MapComponent = () => {
     };
     asyncEffect();
   }, [setDrawLayerFeatures]);
+
+  useEffect(() => {
+    if (!map) return;
+    //set resolution based on chosen scale from user
+  });
 
   return (
     <Box position={'relative'} width="100%" height="100%">
