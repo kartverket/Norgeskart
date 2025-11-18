@@ -5,7 +5,7 @@ on:
 
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
   packages: write
 
@@ -13,9 +13,6 @@ permissions:
 jobs:
   get-used-images:
     runs-on: ubuntu-latest
-    permissions:
-        contents: read
-        id-token: write
     steps:
       - uses: octo-sts/action@d6c70ad3b9ac85df6da6b9749014d7283987cfec
         name: Octo auth
