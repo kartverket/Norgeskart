@@ -39,7 +39,7 @@ jobs:
         env:
           COMMIT_MESSAGE: Delete all preview environments
         run: |
-          rm -rf env/atgcp1-dev/norgeskart-preview-*
+          rm -rf env/atgcp1-dev/norgeskart-preview/*
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
