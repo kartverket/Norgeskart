@@ -116,7 +116,7 @@ jobs:
         run: |
           mkdir -p env/atgcp1-dev/norgeskart-preview
           cp applications/partials/norgeskart-preview-partial.jsonnet $NEW_FILE_PATH
-          sed -i '1ilocal name = norgeskart-preview-${{ needs.build.outputs.target_branch_sha }};' $NEW_FILE_PATH
+          sed -i '1ilocal name = "norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}";' $NEW_FILE_PATH
           sed -i '1ilocal image = "${{ needs.build.outputs.docker_tag }}";' $NEW_FILE_PATH
           sed -i '1ilocal ingress = ["norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud"];' $NEW_FILE_PATH
           git add .
