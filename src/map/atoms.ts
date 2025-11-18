@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
-import { ControlPortal, getMousePositionControl } from './mapControls';
+import { ControlPortal } from './mapControls';
 
 export type ProjectionIdentifier =
   | 'EPSG:4326' // wgs84
@@ -104,7 +104,6 @@ export const mapAtom = atom<Map>(() => {
   map.addControl(
     new ScaleLine({ minWidth: 160, bar: true, text: true, units: 'metric' }),
   );
-  map.addControl(getMousePositionControl(intialView.getProjection().getCode()));
   map.on('moveend', (e) => {
     const view = e.map.getView();
     const center = view.getCenter();
