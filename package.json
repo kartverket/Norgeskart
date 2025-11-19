@@ -13,7 +13,9 @@
     "format-secific": "prettier --write ",
     "preview": "vite preview",
     "aword": "node scripts/addWord.js",
-    "rword": "node scripts/removeWord.js"
+    "rword": "node scripts/removeWord.js",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@kvib/react": "^6.1.1",
