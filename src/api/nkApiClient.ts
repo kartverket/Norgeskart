@@ -100,7 +100,7 @@ export const getPropertyGeometry = async (
 
   const gmlFormat = new GML({
     featureNS: 'http://www.statkart.no/matrikkel',
-    featureType: 'TEIGWFS',
+    featureType: ['TEIGWFS', 'ANLEGGSPFLATEWFS'],
     srsName: 'EPSG:4326',
   });
   const features = gmlFormat.readFeatures(text, {
