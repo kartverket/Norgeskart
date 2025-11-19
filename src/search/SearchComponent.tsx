@@ -1,4 +1,12 @@
-import { Box, Flex, Icon, IconButton, Search, Spinner } from '@kvib/react';
+import {
+  Box,
+  Flex,
+  Icon,
+  IconButton,
+  Image,
+  Search,
+  Spinner,
+} from '@kvib/react';
 import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
@@ -6,6 +14,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms.ts';
+import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import {
   parseCoordinateInput,
   ParsedCoordinate,
@@ -51,6 +60,7 @@ export const SearchComponent = () => {
   const setSelectedResult = useSetAtom(selectedResultAtom);
   const setSearchCoordinates = useSetAtom(searchCoordinatesAtom);
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
+  const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
   const currentProjection = useMemo<ProjectionIdentifier>(() => {
@@ -78,6 +88,13 @@ export const SearchComponent = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setSelectedResult(null);
+    setHoveredResult(null);
+    setShowBackgroundSettings(false);
+  };
+
+  const toggleBackgroundSettings = () => {
+    setShowBackgroundSettings((prev) => !prev);
     setSelectedResult(null);
     setHoveredResult(null);
   };
@@ -124,30 +141,55 @@ export const SearchComponent = () => {
   }, [mapClickHandler, map]);
 
   return (
-    <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>
-      <Box position="relative" width="100%">
-        <Box position="relative" width="100%">
-          <Search
-            width="100%"
-            placeholder={t('search.placeholder')}
-            value={searchQuery}
-            onChange={handleChange}
-            height="45px"
-            fontSize="1.1rem"
-            bg="white"
-          />
+    <Flex flexDir="column" alignItems="stretch" gap={2} p={1} m={2}>
+      {/* TOPP: kart-flis + søkefelt */}
+      <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
+        <Flex alignItems="center" gap={2}>
+          {/* Kart-flis til venstre */}
           <Box
-            position="absolute"
-            right="10px"
-            top="50%"
-            transform="translateY(-50%)"
+            width="45px"
+            height="45px"
+            borderRadius={10}
+            overflow="hidden"
+            cursor="pointer"
+            onClick={toggleBackgroundSettings}
+            boxShadow="md"
           >
-            <SearchIcon />
+            <Image
+              src="public\backgroundlayerImages\topo.png"
+              alt="Velg bakgrunnskart"
+              width="100%"
+              height="100%"
+              objectFit="cover"
+            />
           </Box>
-        </Box>
-      </Box>
 
-      {coordinateResult ? (
+          <Box position="relative" width="100%">
+            <Search
+              width="100%"
+              placeholder={t('search.placeholder')}
+              value={searchQuery}
+              onChange={handleChange}
+              height="45px"
+              fontSize="1.1rem"
+              bg="white"
+            />
+            <Box
+              position="absolute"
+              right="10px"
+              top="50%"
+              transform="translateY(-50%)"
+            >
+              <SearchIcon />
+            </Box>
+          </Box>
+        </Flex>
+      </Box>
+      {showBackgroundSettings ? (
+        <Box bg="white" borderRadius="md" boxShadow="md" width="100%">
+          <BackgroundLayerSettings />
+        </Box>
+      ) : coordinateResult ? (
         <CoordinateResults
           coordinateResult={coordinateResult}
           setSelectedResult={setSelectedResult}
