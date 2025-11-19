@@ -42,10 +42,11 @@ export const CookieConsentDialog = () => {
   return (
     <Box
       position={'absolute'}
-      bottom={'10%'}
-      left={'32px'}
+      bottom={{ base: '15%', lg: '10%' }}
+      left={{ base: '50%', md: '32px' }}
+      transform={{ base: 'translateX(-50%)', md: 'none' }}
       bg={'white'}
-      maxW={'360px'}
+      maxW={'300px'}
       padding={4}
       boxShadow={'md'}
       borderRadius={'md'}
