@@ -1,5 +1,5 @@
 import { Box, Text } from '@kvib/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +30,7 @@ import {
   mapContextYPosAtom,
 } from './menu/atoms.ts';
 import { MapContextMenu } from './menu/MapContextMenu.tsx';
-import { getResolutionFromScale, getScaleFromResolution } from './scaleResolution.ts';
+import { getScaleFromResolution } from './scaleResolution.ts';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -47,7 +47,6 @@ export const MapComponent = () => {
   const hasProcessedUrlRef = useRef(false);
   const hasLoadedThemeLayersRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
-  const [scale, setScale] = useAtom(scaleAtom);
 
   const { setTargetElement } = useMap();
 
