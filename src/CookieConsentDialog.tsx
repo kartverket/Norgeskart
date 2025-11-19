@@ -53,7 +53,7 @@ export const CookieConsentDialog = () => {
     >
       <Stack>
         <Heading as="h4" size="md">
-          {t('cookieDialog.heading')} {consentStatus}
+          {t('cookieDialog.heading')}
         </Heading>
         <Text>{t('cookieDialog.body')}</Text>
         <HStack justifyContent={'space-between'}>
