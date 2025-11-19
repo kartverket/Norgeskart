@@ -61,8 +61,8 @@ export const MapOverlay = () => {
         <Portal container={portalRef}>
           <Box
             position="absolute"
-            width="100%"
-            maxWidth="400px"
+            width={{ base: "100%", md: "400px" }}  
+            maxWidth={{ base: "100%", md: "400px" }}
             zIndex="overlay"
             left="0"
           >
