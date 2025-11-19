@@ -147,9 +147,9 @@ export const SearchComponent = () => {
         <Flex alignItems="center" gap={2}>
           {/* Kart-flis til venstre */}
           <Box
-            width="45px"
-            height="45px"
-            borderRadius={10}
+            width="46px"
+            height="44px"
+            borderRadius={8}
             overflow="hidden"
             cursor="pointer"
             onClick={toggleBackgroundSettings}
