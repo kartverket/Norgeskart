@@ -283,5 +283,13 @@
   },
   "toolbar": {
     "reportError": "Error in the map?"
+  },
+  "cookieDialog": {
+    "heading": "We're using cookies ",
+    "body": "We do this to give you a better experience. By pressing 'OK' you accept the use of cookies.",
+    "buttons": {
+      "accept": "OK",
+      "reject": "Deny"
+    }
   }
 }
