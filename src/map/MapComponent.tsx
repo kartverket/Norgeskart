@@ -14,7 +14,7 @@ import {
   setUrlParameter,
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
-import { availableScales, mapAtom, scaleAtom } from './atoms.ts';
+import { currentScaleAtom, mapAtom, selectedScaleAtom } from './atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
@@ -30,7 +30,10 @@ import {
   mapContextYPosAtom,
 } from './menu/atoms.ts';
 import { MapContextMenu } from './menu/MapContextMenu.tsx';
-import { getScaleFromResolution } from './scaleResolution.ts';
+import {
+  getScaleFromResolution,
+  scaleToResolution,
+} from './scaleResolution.ts';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -47,6 +50,8 @@ export const MapComponent = () => {
   const hasProcessedUrlRef = useRef(false);
   const hasLoadedThemeLayersRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
+  const setCurrentScale = useSetAtom(currentScaleAtom);
+  const selectedScale = useAtomValue(selectedScaleAtom);
 
   const { setTargetElement } = useMap();
 
@@ -198,29 +203,32 @@ export const MapComponent = () => {
       }
     };
     asyncEffect();
-  }, [setDrawLayerFeatures]);
+  }, [map, setDrawLayerFeatures]);
 
   useEffect(() => {
-    if (!map) return;
-    const view = map.getView();
-    const units = view.getProjection().getUnits();
-    const handler = () => {
-      const resolution = view.getResolution();
-      if (!resolution) return;
-      const scale = getScaleFromResolution(resolution, units);
+    if (map) {
+      const view = map.getView();
+      const updateScale = () => {
+        const resolution = view.getResolution();
+        const units = view.getProjection().getUnits();
+        if (resolution && units) {
+          setCurrentScale(getScaleFromResolution(resolution, units, true));
+        }
+      };
+      updateScale();
+      map.on('moveend', updateScale);
+      return () => {
+        map.un('moveend', updateScale);
+      };
+    }
+  }, [map, setCurrentScale]);
 
-      const closestScale = availableScales.reduce((prev, curr) =>
-        Math.abs(curr - scale) < Math.abs(prev - scale) ? curr : prev
-      );
-      setScale(closestScale);
-    };
-
-    map.on('moveend', handler);
-    return () => {
-      map.un('moveend', handler);
-    };
-
-  }, [map, setScale]);
+  useEffect(() => {
+    if (selectedScale && map) {
+      const resolution = scaleToResolution(selectedScale, map);
+      map.getView().setResolution(resolution);
+    }
+  }, [selectedScale, map]);
 
   return (
     <Box position={'relative'} width="100%" height="100%">
