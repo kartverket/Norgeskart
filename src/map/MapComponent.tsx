@@ -1,5 +1,5 @@
 import { Box, Text } from '@kvib/react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,7 @@ import {
   getListUrlParameter,
   getUrlParameter,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom } from './atoms.ts';
+import { availableScales, mapAtom, scaleAtom } from './atoms.ts';
 import { BackgroundLayerName } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { useThemeLayers } from './layers/themeLayers.ts';
@@ -22,21 +22,7 @@ import {
   mapContextYPosAtom,
 } from './menu/atoms.ts';
 import { MapContextMenu } from './menu/MapContextMenu.tsx';
-
-const getScaleFromResolution = (
-  resolution: number,
-  units: string,
-  round = true,
-) => {
-  const INCHES_PER_UNIT: Record<string, number> = {
-    m: 39.37,
-    degrees: 4374754,
-  };
-  const DOTS_PER_INCH = 96;
-  let scale = INCHES_PER_UNIT[units] * DOTS_PER_INCH * resolution;
-  if (round) scale = Math.round(scale);
-  return scale;
-};
+import { getResolutionFromScale, getScaleFromResolution } from './scaleResolution.ts';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -48,6 +34,7 @@ export const MapComponent = () => {
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
+  const [scale, setScale] = useAtom(scaleAtom);
 
   const { setTargetElement } = useMap();
 
@@ -104,8 +91,25 @@ export const MapComponent = () => {
 
   useEffect(() => {
     if (!map) return;
-    //set resolution based on chosen scale from user
-  });
+    const view = map.getView();
+    const units = view.getProjection().getUnits();
+    const handler = () => {
+      const resolution = view.getResolution();
+      if (!resolution) return;
+      const scale = getScaleFromResolution(resolution, units);
+
+      const closestScale = availableScales.reduce((prev, curr) =>
+        Math.abs(curr - scale) < Math.abs(prev - scale) ? curr : prev
+      );
+      setScale(closestScale);
+    };
+
+    map.on('moveend', handler);
+    return () => {
+      map.un('moveend', handler);
+    };
+
+  }, [map, setScale]);
 
   return (
     <Box position={'relative'} width="100%" height="100%">
