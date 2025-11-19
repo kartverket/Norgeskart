@@ -8,10 +8,14 @@ import {
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtomValue } from 'jotai';
-import { useState } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom } from '../../map/atoms';
+import {
+  activeBackgroundLayerAtom,
+  getBackgroundLayerImageName,
+  mapAtom,
+} from '../../map/atoms';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
@@ -81,20 +85,6 @@ const LayerCard = ({
   </Button>
 );
 
-const getBackgroundLayerImageName = (
-  layerName: BackgroundLayerName,
-): string => {
-  switch (layerName) {
-    case 'Nibcache_web_mercator_v2':
-    case 'Nibcache_UTM32_EUREF89_v2':
-    case 'Nibcache_UTM33_EUREF89_v2':
-    case 'Nibcache_UTM35_EUREF89_v2':
-      return 'Nibcache_web_mercator_v2';
-    default:
-      return layerName;
-  }
-};
-
 const BackgroundLayerGrid = ({
   layers,
   currentLayer,
@@ -123,6 +113,7 @@ export const BackgroundLayerSettings = () => {
   const WMTSProviders = useAtomValue(loadableWMTS);
   const map = useAtomValue(mapAtom);
   const posthog = usePostHog();
+  const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
 
   const initialLayer: BackgroundLayerName = (() => {
     const currentBackgroundLayer = map
@@ -143,6 +134,9 @@ export const BackgroundLayerSettings = () => {
 
   const [currentLayer, setCurrentLayer] =
     useState<BackgroundLayerName>(initialLayer);
+  useEffect(() => {
+    setActiveBackgroundLayer(initialLayer);
+  }, [initialLayer, setActiveBackgroundLayer]);
 
   if (WMTSProviders.state !== 'hasData') {
     return null;
@@ -180,6 +174,7 @@ export const BackgroundLayerSettings = () => {
     posthog.capture('map_background_layer_changed', { layerName: layer });
     setBackgroundLayer(layer);
     setCurrentLayer(layer);
+    setActiveBackgroundLayer(layer);
   };
 
   return (
