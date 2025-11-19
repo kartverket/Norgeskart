@@ -1,6 +1,7 @@
 import { toaster } from "@kvib/react";
 import { requestPdfGeneration, pollPdfStatus } from "../../api/printApi";
 import proj4 from 'proj4';
+import { Map } from "ol";
 
 interface GenerateMapPdfProps {
   map: any;
@@ -146,6 +147,40 @@ const convertToEPSG25833 = (lon: number, lat: number, sourceProjection: string):
   }
 };
 
+const AVAILABLE_SCALES = [
+  250, 500, 1000, 2500, 5000, 10000,
+  25000, 50000, 100000, 250000,
+  500000, 1000000, 2500000,
+];
+
+/**
+ * Returns the nearest scale from AVAILABLE_SCALES
+ * based on the current map view.
+ */
+export function getNearestScale(map: Map): number | null {
+  const view = map.getView();
+  
+  const resolution = view.getResolution();
+  if (!resolution) return null;
+
+  const projection = view.getProjection();
+  const mpu = projection.getMetersPerUnit()!;
+  console.log("Map projection:", projection.getCode(), "MPU:", mpu, "Resolution:", resolution);
+
+  const dpi = 25.4 / 0.28; // ≈ 90.714
+  const inchesPerMeter = 39.37;
+
+  // Compute current map scale
+  const currentScale = resolution * mpu * inchesPerMeter * dpi;
+
+  // Find nearest scale
+  const nearest = AVAILABLE_SCALES.reduce((prev, curr) =>
+    curr <= currentScale && (prev > currentScale || curr > prev) ? curr : prev
+  );
+
+  return nearest;
+}
+
 export const generateMapPdf = async ({
   map,
   overlayRef,
@@ -184,14 +219,20 @@ export const generateMapPdf = async ({
       backgroundLayer 
     });
 
+    const rotation = map.getView().getRotation() || 0;
+    const rotationDegrees = (rotation * 180) / Math.PI;
+
+    const scale = getNearestScale(map);
+
+
     const payload = {
       attributes: {
         map: {
           center: [convertedLon, convertedLat],
           projection : sourceProjection,
           dpi: 128,
-          rotation: 0,
-          scale: 25000,
+          rotation: rotationDegrees,
+          scale: scale,
           layers: [
             {
               baseURL: "https://api.norgeskart.no/v1/matrikkel/wms",
