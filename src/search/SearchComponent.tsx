@@ -12,7 +12,12 @@ import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom, ProjectionIdentifier } from '../map/atoms';
+import {
+  activeBackgroundLayerAtom,
+  getBackgroundLayerImageName,
+  mapAtom,
+  ProjectionIdentifier,
+} from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms.ts';
 import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import {
@@ -63,6 +68,11 @@ export const SearchComponent = () => {
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
+  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const backgroundImageName = getBackgroundLayerImageName(
+    activeBackgroundLayer,
+  );
+  const backgroundImageUrl = `/backgroundlayerImages/${backgroundImageName}.png`;
   const currentProjection = useMemo<ProjectionIdentifier>(() => {
     return map.getView().getProjection().getCode() as ProjectionIdentifier;
   }, [map]);
@@ -156,7 +166,7 @@ export const SearchComponent = () => {
             boxShadow="md"
           >
             <Image
-              src="public\backgroundlayerImages\topo.png"
+              src={backgroundImageUrl}
               alt="Velg bakgrunnskart"
               width="100%"
               height="100%"

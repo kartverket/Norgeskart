@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
+import { BackgroundLayerName } from './layers/backgroundLayers';
+import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders';
 import { ControlPortal } from './mapControls';
 
 export type ProjectionIdentifier =
@@ -39,6 +41,24 @@ export const mapOrientationDegreesAtom = atom<number>((get) => {
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
 export const magneticDeclinationAtom = atom<number>(0);
+
+export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
+  DEFAULT_BACKGROUND_LAYER,
+);
+
+export const getBackgroundLayerImageName = (
+  layerName: BackgroundLayerName,
+): string => {
+  switch (layerName) {
+    case 'Nibcache_web_mercator_v2':
+    case 'Nibcache_UTM32_EUREF89_v2':
+    case 'Nibcache_UTM33_EUREF89_v2':
+    case 'Nibcache_UTM35_EUREF89_v2':
+      return 'Nibcache_web_mercator_v2';
+    default:
+      return layerName;
+  }
+};
 
 const getInitialMapView = () => {
   const projectionIdFromUrl = validateProjectionIdString(
