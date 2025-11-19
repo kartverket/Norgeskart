@@ -10,7 +10,7 @@ import {
   getListUrlParameter,
   getUrlParameter,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom } from './atoms.ts';
+import { currentScaleAtom, mapAtom, selectedScaleAtom } from './atoms.ts';
 import { BackgroundLayerName } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { useThemeLayers } from './layers/themeLayers.ts';
@@ -22,6 +22,10 @@ import {
   mapContextYPosAtom,
 } from './menu/atoms.ts';
 import { MapContextMenu } from './menu/MapContextMenu.tsx';
+import {
+  getScaleFromResolution,
+  scaleToResolution,
+} from './scaleResolution.ts';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -33,6 +37,8 @@ export const MapComponent = () => {
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
+  const setCurrentScale = useSetAtom(currentScaleAtom);
+  const selectedScale = useAtomValue(selectedScaleAtom);
 
   const { setTargetElement } = useMap();
 
@@ -86,6 +92,31 @@ export const MapComponent = () => {
     };
     asyncEffect();
   }, [map, setDrawLayerFeatures]);
+
+  useEffect(() => {
+    if (map) {
+      const view = map.getView();
+      const updateScale = () => {
+        const resolution = view.getResolution();
+        const units = view.getProjection().getUnits();
+        if (resolution && units) {
+          setCurrentScale(getScaleFromResolution(resolution, units, true));
+        }
+      };
+      updateScale();
+      map.on('moveend', updateScale);
+      return () => {
+        map.un('moveend', updateScale);
+      };
+    }
+  }, [map, setCurrentScale]);
+
+  useEffect(() => {
+    if (selectedScale && map) {
+      const resolution = scaleToResolution(selectedScale, map);
+      map.getView().setResolution(resolution);
+    }
+  }, [selectedScale, map]);
 
   return (
     <Box position={'relative'} width="100%" height="100%">
