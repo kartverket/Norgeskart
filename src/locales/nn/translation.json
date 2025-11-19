@@ -288,5 +288,13 @@
   },
   "toolbar": {
     "reportError": "Feil i kartet?"
+  },
+  "cookieDialog": {
+    "heading": "Vi nytter informasjonskapsler",
+    "body": "Vi gjør det for å gi deg ei betre oppleving. Ved å trykke 'OK' godtar du nyttinga av cookies.",
+    "buttons": {
+      "accept": "OK",
+      "reject": "Avslå"
+    }
   }
 }
