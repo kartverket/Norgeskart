@@ -8,12 +8,14 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,json}\" --list-different",
+    "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,json}\" --list-different",
     "format-check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,json}\"",
     "format-secific": "prettier --write ",
     "preview": "vite preview",
     "aword": "node scripts/addWord.js",
-    "rword": "node scripts/removeWord.js"
+    "rword": "node scripts/removeWord.js",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@kvib/react": "^6.1.1",
@@ -39,6 +41,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@vitejs/plugin-react": "^5.1.1",
+    "cypress": "^15.6.0",
     "eslint": "^9.39.1",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react-hooks": "^7.0.1",
