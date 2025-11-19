@@ -1,7 +1,7 @@
 import {
   Box,
   Button,
-  Heading,
+  Flex,
   Image,
   SimpleGrid,
   Text,
@@ -65,18 +65,12 @@ const LayerCard = ({
     borderRadius="lg"
     display="flex"
     alignItems="center"
-    width="120px"
-    height="auto"
-    minHeight="120px"
+    width="150px"
+    justifyContent="center"
+    height="115px"
   >
     <VStack>
-      <Box
-        width="72px"
-        height="72px"
-        borderRadius="md"
-        overflow="hidden"
-        borderColor="gray.100"
-      >
+      <Box width="120px" height="80px" borderRadius="md" overflow="hidden">
         <Image src={thumbnailUrl} alt={label} width="100%" objectFit="cover" />
       </Box>
       <Text fontSize="xs" textAlign="center" lineHeight="short">
@@ -109,7 +103,7 @@ const BackgroundLayerGrid = ({
   currentLayer: BackgroundLayerName;
   setLayer: (layer: BackgroundLayerName) => void;
 }) => (
-  <SimpleGrid columns={3} gap={1}>
+  <SimpleGrid columns={2} justifyItems="center" gap={3} p={2}>
     {layers.map((layer) => (
       <LayerCard
         key={layer.value}
@@ -188,15 +182,19 @@ export const BackgroundLayerSettings = () => {
   };
 
   return (
-    <Box>
-      <Heading size="lg" mb={2}>
-        {t('map.settings.layers.background.label')}
-      </Heading>
-      <BackgroundLayerGrid
-        layers={sortedLayers}
-        currentLayer={currentLayer}
-        setLayer={handleSetLayer}
-      />
-    </Box>
+    <Flex flexDir="column" gap={3} p={4}>
+      <Box
+        position="relative"
+        width="100%"
+        backgroundColor="#FFFF"
+        borderRadius={10}
+      >
+        <BackgroundLayerGrid
+          layers={sortedLayers}
+          currentLayer={currentLayer}
+          setLayer={handleSetLayer}
+        />
+      </Box>
+    </Flex>
   );
 };
