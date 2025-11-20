@@ -66,6 +66,7 @@ export const useBackgoundLayers = () => {
         layersForProjection.forEach((source, layerName) => {
           const layer = new TileLayer({
             source: source,
+            preload: Infinity,
             properties: {
               id: `bg.${layerName}`,
             },
