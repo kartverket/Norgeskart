@@ -173,13 +173,36 @@ export function getNearestScale(map: Map): number | null {
   // Compute current map scale
   const currentScale = resolution * mpu * inchesPerMeter * dpi;
 
+  // Clamp to min/max available scales since it has issue with go to the 1st and last scale.
+  const MIN = AVAILABLE_SCALES[0];
+  const MAX = AVAILABLE_SCALES[AVAILABLE_SCALES.length - 1];
+
+  if (currentScale <= MIN) return MIN;
+  if (currentScale >= MAX) return MAX;
+
   // Find nearest scale
-  const nearest = AVAILABLE_SCALES.reduce((prev, curr) =>
-    curr <= currentScale && (prev > currentScale || curr > prev) ? curr : prev
-  );
+  let nearest: number;
+
+  if (projection.getCode() === 'EPSG:3857') {
+    //  NEAREST SMALLER SCALE (for EPSG:3857)
+    nearest = AVAILABLE_SCALES.reduce((prev, curr) =>
+      curr <= currentScale && (prev > currentScale || curr > prev)
+        ? curr
+        : prev
+    );
+
+  } else {
+    //  NEAREST BIGGER SCALE (for other projections)
+    nearest = AVAILABLE_SCALES.reduce((prev, curr) =>
+      curr >= currentScale && (prev < currentScale || curr < prev)
+        ? curr
+        : prev
+    );
+  }
 
   return nearest;
 }
+
 
 export const generateMapPdf = async ({
   map,
@@ -235,27 +258,6 @@ export const generateMapPdf = async ({
           scale: scale,
           layers: [
             {
-              baseURL: "https://api.norgeskart.no/v1/matrikkel/wms",
-              customParams: {
-                TRANSPARENT: "true",
-                CQL_FILTER: "BYGNINGSTATUS<9 OR BYGNINGSTATUS=13",
-              },
-              imageFormat: "image/png",
-              layers: ["matrikkel:BYGNINGWFS"],
-              opacity: 1,
-              type: "WMS",
-            },
-            {
-              baseURL: "https://api.norgeskart.no/v1/matrikkel/wms",
-              customParams: { TRANSPARENT: "true" },
-              imageFormat: "image/png",
-              layers: [
-                "matrikkel:MATRIKKELADRESSEWFS,matrikkel:VEGADRESSEWFS",
-              ],
-              opacity: 1,
-              type: "WMS",
-            },
-            {
               baseURL: layerInfo.baseURL,
               customParams: { TRANSPARENT: "true" },
               style: "default",
@@ -292,10 +294,10 @@ export const generateMapPdf = async ({
           ],
         },
         pos: `${convertedLon.toFixed(2)}, ${convertedLat.toFixed(2)}`,
-        scale_string: "1:25000",
-        title: "",
+        scale_string: `1: ${scale}` || "1:25000",
+        //title: "Test Title.",
       },
-      layout: "1_A4_portrait",
+      layout: "2_A4_landscape",
       outputFormat: "pdf",
       outputFilename: "norgeskart-utskrift",
     };
@@ -306,21 +308,21 @@ export const generateMapPdf = async ({
     if (downloadURL) {
       window.open(downloadURL, "_blank");
       toaster.create({
-        title: t("PDF ready") || "PDF ready",
+        title: t('printMap.printSuccess') || "PDF ready",
         description: t("Your map has been downloaded successfully.") || "Your map is ready to download.",
         type: "success",
       });
     } else {
       toaster.create({
-        title: t("Failed to generate PDF.") || "Failed to generate PDF.",
+        title: t("printMap.printError") || "Failed to generate PDF.",
         description: t("PDF generation timed out after multiple attempts.") || "The PDF generation took too long.",
         type: "error",
       });
     }
   } catch (err: any) {
-    console.error("PDF generation failed:", err);
+    console.error("printMap.printError", err);
     toaster.create({
-      title: t("Failed to generate PDF.") || "Failed to generate PDF",
+      title: t("printMap.printError") || "Failed to generate PDF",
       description: err.message || String(err),
       type: "error",
     });

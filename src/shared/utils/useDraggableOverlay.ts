@@ -5,7 +5,9 @@ interface UseDraggableOverlayProps {
   overlayRef?: React.RefObject<HTMLDivElement | null>;
   overlayWidth: number;
   overlayHeight: number;
-  setOverlayPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
+  setOverlayPosition: React.Dispatch<
+    React.SetStateAction<{ x: number; y: number }>
+  >;
 }
 
 export const useDraggableOverlay = ({
@@ -23,6 +25,7 @@ export const useDraggableOverlay = ({
     let offsetY = 0;
     let isDragging = false;
 
+    // Enable/disable map panning while dragging
     const interactions = map.getInteractions();
     const toggleDragPan = (enable: boolean) => {
       interactions.forEach((i: any) => {
@@ -30,28 +33,36 @@ export const useDraggableOverlay = ({
       });
     };
 
+    // Keep overlay inside viewport based on updated width/height
     const constrainPosition = (x: number, y: number) => {
       const rect = map.getViewport().getBoundingClientRect();
-      const constrainedX = Math.max(0, Math.min(x, rect.width - overlayWidth));
-      const constrainedY = Math.max(0, Math.min(y, rect.height - overlayHeight));
-      return { x: constrainedX, y: constrainedY };
+
+      return {
+        x: Math.max(0, Math.min(x, rect.width - overlayWidth)),
+        y: Math.max(0, Math.min(y, rect.height - overlayHeight)),
+      };
     };
 
     const onMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return;
       isDragging = true;
-      offsetX = e.clientX - overlay.offsetLeft;
-      offsetY = e.clientY - overlay.offsetTop;
+
+      const rect = overlay.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
       toggleDragPan(false);
       e.preventDefault();
     };
 
     const onMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
+
       let x = e.clientX - offsetX;
       let y = e.clientY - offsetY;
-      const { x: constrainedX, y: constrainedY } = constrainPosition(x, y);
-      setOverlayPosition({ x: constrainedX, y: constrainedY });
+
+      const { x: cx, y: cy } = constrainPosition(x, y);
+      setOverlayPosition({ x: cx, y: cy });
     };
 
     const onMouseUp = () => {
@@ -63,19 +74,20 @@ export const useDraggableOverlay = ({
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
 
-    // Reposition overlay if map viewport changes (optional, e.g., window resize)
+    // Handle map resize or layout change
     const resizeObserver = new ResizeObserver(() => {
-      if (!overlay) return;
       setOverlayPosition(prev => constrainPosition(prev.x, prev.y));
     });
 
-    if (map.getViewport()) resizeObserver.observe(map.getViewport());
+    const viewport = map.getViewport();
+    if (viewport) resizeObserver.observe(viewport);
 
+    // Cleanup
     return () => {
       overlay.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
       resizeObserver.disconnect();
     };
-  }, [map, overlayWidth, overlayHeight, setOverlayPosition, overlayRef]);
+  }, [map, overlayRef, overlayWidth, overlayHeight, setOverlayPosition]);
 };
