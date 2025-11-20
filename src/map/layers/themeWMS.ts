@@ -104,6 +104,14 @@ export const getThemeWMSLayer = (
   }
 };
 
+export const getThemeWMSLayerStyleUrl = (
+  layerName: ThemeLayerName,
+): string | undefined => {
+  if (layerName === 'osloMarkaBorder') {
+    return 'https://wms.geonorge.no/skwms1/wms.markagrensen?Service=wms&Request=GetStyles&Version=1.0.0&Format=application/json&Width=20&Height=20&Layers=Markagrensen';
+  }
+};
+
 const getNorwayFactsWMSLayer = (
   layerName: FactsLayerName,
   projection: string,

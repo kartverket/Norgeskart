@@ -48,6 +48,12 @@ export const addToUrlListParameter = (
   }
 };
 
+export const clearUrlParameter = (key: NKUrlParameter): void => {
+  const url = new URL(window.location.href);
+  url.searchParams.delete(key);
+  window.history.replaceState({}, '', url.toString());
+};
+
 export const removeFromUrlListParameter = (
   key: NKUrlParameter,
   value: string | number | boolean,

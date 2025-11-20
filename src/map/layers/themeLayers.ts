@@ -1,14 +1,13 @@
-import { useAtomValue } from 'jotai';
-import {
-  addToUrlListParameter,
-  removeFromUrlListParameter,
-} from '../../shared/utils/urlUtils';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { mapAtom } from '../atoms';
+import { themeLayersAtom, themLayersAtomEffect } from './atoms';
 import { getThemeWMSLayer, ThemeLayerName } from './themeWMS';
 
 export const useThemeLayers = () => {
   const map = useAtomValue(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
+  const setThemeLayers = useSetAtom(themeLayersAtom);
+  useAtom(themLayersAtomEffect);
 
   const addThemeLayerToMap = (layerName: ThemeLayerName) => {
     const layerExists = map
@@ -28,7 +27,7 @@ export const useThemeLayers = () => {
     }
     layerToAdd.setZIndex(10);
     map.addLayer(layerToAdd);
-    addToUrlListParameter('themeLayers', layerName);
+    setThemeLayers((prev) => [...new Set([...prev, layerName])]);
   };
 
   const removeThemeLayerFromMap = (layerName: ThemeLayerName) => {
@@ -39,7 +38,7 @@ export const useThemeLayers = () => {
     if (layer) {
       map.removeLayer(layer);
     }
-    removeFromUrlListParameter('themeLayers', layerName);
+    setThemeLayers((prev) => prev.filter((name) => name !== layerName));
   };
 
   return {
