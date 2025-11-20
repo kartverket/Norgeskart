@@ -2,14 +2,14 @@ import { Box, Button, Flex, Heading, Text, Spinner, toaster } from '@kvib/react'
 import { useTranslation } from 'react-i18next';
 import { useAtomValue } from 'jotai';
 import { mapAtom } from '../map/atoms';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Draw from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import { createBox } from 'ol/interaction/Draw';
 import { Style, Stroke, Fill } from 'ol/style';
-import { PrintRequestBody } from './PrintRequestBody';
+import {generateMapPdf} from './GeneratePrintPdf'
 
 let drawInteraction: Draw | null = null;
 let drawSource: VectorSource | null = null;
@@ -19,217 +19,75 @@ interface PrintWindowProps {
   onClose: () => void;
 }
 
-const GetMap = async () => {
-  const baseUrl = "https://ws.geonorge.no"
-  try {
-    const printRequestBody = PrintRequestBody.fromJSON(data).toJSON()
-    const response = await fetch("https://ws.geonorge.no/print/kv/report.pdf", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: 
-    })
-    const data = await response.json();
-    console.log("Response JSON:", data);
-    
-    while (true) {
-      const res = await fetch(baseUrl + data.downloadURL)
-
-      if (res.ok && res.headers.get("content-type")?.includes("application/pdf")) {
-        const blob = await res.blob();
-        const pdfUrl = URL.createObjectURL(blob);
-        window.open(pdfUrl, "_blank");
-
-        const link = document.createElement("a");
-        link.href = pdfUrl;
-        link.download = "map.pdf";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        console.log("Pdf opened and downloaded");
-        break; // stop polling
-      }
-    } 
-  } catch (err) {
-    console.warn("Waiting for Pdf...", err);
-  }
-};
-
 const PrintWindow = ({ onClose }: PrintWindowProps) => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
   const [loading, setLoading] = useState(false);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
 
   const [hasSelection, setHasSelection] = useState(false);
 
   let printIframe: HTMLIFrameElement | null = null;
   let cleanupTimeout: number | null = null;
 
-  const handlePrintArea = (extent: number[]) => {
-    if (!map) return;
-    setLoading(true);
+   useEffect(() => {
+    if (!map || !overlayRef.current) return;
 
-    const view = map.getView();
-    const originalCenter = view.getCenter();
-    const originalZoom = view.getZoom();
+    const mapContainer = map.getViewport().parentElement;
 
-    view.fit(extent, { size: map.getSize(), padding: [0, 0, 0, 0] });
-
-    map.once('rendercomplete', () => {
-      setTimeout(() => {
-        const mapCanvas = map.getViewport().querySelector('canvas') as HTMLCanvasElement | null;
-        if (!mapCanvas) {
-          toaster.create({ title: 'Failed to find map canvas', type: 'error' });
-          setLoading(false);
-          return;
-        }
-
-        try {
-          const dataUrl = mapCanvas.toDataURL('image/png');
-          const logoUrl = 'https://www.kartverket.no/images/logo.svg';
-
-          const printIframe = document.createElement('iframe');
-          printIframe.style.position = 'fixed';
-          printIframe.style.width = '0';
-          printIframe.style.height = '0';
-          printIframe.style.border = '0';
-          document.body.appendChild(printIframe);
-
-          const doc = printIframe.contentWindow?.document;
-          if (!doc) return;
-
-          doc.open();
-          doc.write(`
-            <html>
-              <head>
-                <title>Print Selected Map Area</title>
-                <style>
-                  @page { size: A4 landscape; margin: 1cm; }
-                  body { font-family: Arial; text-align: center; margin:0; padding:0; }
-                  header { display:flex; justify-content:center; align-items:center; margin-bottom:10px; }
-                  header img { height:40px; margin-right:10px; }
-                  header h1 { margin:0; font-size:20px; }
-                  .map-container { display:flex; justify-content:center; align-items:center; height:80vh; }
-                  .map-container img { max-width:95%; max-height:100%; border:1px solid #ccc; }
-                  footer { font-size:10px; color:#555; margin-top:10px; }
-                </style>
-              </head>
-              <body>
-                <header>
-                  <img src="${logoUrl}" alt="Kartverket logo"/>
-                  <h1>Selected Map Area</h1>
-                </header>
-                <div class="map-container">
-                  <img src="${dataUrl}" alt="Selected Area"/>
-                </div>
-                <footer>
-                  © Kartverket data | Printed on ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
-                </footer>
-              </body>
-            </html>
-          `);
-          doc.close();
-
-          printIframe.contentWindow?.focus();
-          printIframe.contentWindow?.print();
-
-          setTimeout(() => {
-            if (originalCenter && originalZoom) {
-              view.setCenter(originalCenter);
-              view.setZoom(originalZoom);
-            }
-            document.body.removeChild(printIframe);
-            setLoading(false);
-          }, 1500);
-        } catch (err) {
-          console.error('Failed to capture map image:', err);
-          toaster.create({ title: 'Failed to capture map image', type: 'error' });
-          setLoading(false);
-        }
-      }, 500);
-    });
-
-    map.renderSync();
-  };
-
-  const handlePrint = () => {
-    if (!map) return;
-
-    if (drawSource && drawSource.getFeatures().length > 0) {
-      const feature = drawSource.getFeatures()[0];
-      const extent = feature.getGeometry()?.getExtent();
-      if (extent) {
-        handlePrintArea(extent);
-        return;
-      }
+    if (mapContainer && overlayRef.current.parentElement !== mapContainer) {
+      mapContainer.appendChild(overlayRef.current);
     }
 
-    setLoading(true);
-    map.once('rendercomplete', () => {
-      const mapCanvas = map.getViewport().querySelector('canvas') as HTMLCanvasElement | null;
-      if (!mapCanvas) {
-        console.error('Map canvas not found!');
-        setLoading(false);
-        return;
+    return () => {
+      if (
+        mapContainer &&
+        overlayRef.current &&
+        overlayRef.current.parentElement === mapContainer
+      ) {
+      mapContainer.removeChild(overlayRef.current);
       }
+    };
+  }, [map]);
 
-      const dataUrl = mapCanvas.toDataURL('image/png');
-      const logoUrl = 'https://www.kartverket.no/images/logo.svg';
+  const handlePrintArea = async (extent: number[]) => {
+    if (!map || !overlayRef.current) return;
+    setLoading(true);
 
-      const printIframe = document.createElement('iframe');
-      printIframe.style.position = 'fixed';
-      printIframe.style.width = '0';
-      printIframe.style.height = '0';
-      printIframe.style.border = '0';
-      document.body.appendChild(printIframe);
+    // Get overlay div position relative to map viewport
+    const overlayRect = overlayRef.current.getBoundingClientRect();
+    const mapRect = map.getViewport().getBoundingClientRect();
 
-      const doc = printIframe.contentWindow?.document;
-      if (!doc) return;
+    // Compute pixel coordinates relative to the map viewport
+    const left = overlayRect.left - mapRect.left;
+    const top = overlayRect.top - mapRect.top;
+    const width = overlayRect.width;
+    const height = overlayRect.height;
 
-      doc.open();
-      doc.write(`
-        <html>
-          <head>
-            <title>Print Map</title>
-            <style>
-              @page { size: A4 landscape; margin: 1cm; }
-              body { font-family: Arial; text-align: center; margin:0; padding:0; }
-              header { display:flex; justify-content:center; align-items:center; margin-bottom:10px; }
-              header img { height:40px; margin-right:10px; }
-              header h1 { margin:0; font-size:20px; }
-              .map-container { display:flex; justify-content:center; align-items:center; height:80vh; }
-              .map-container img { max-width:95%; max-height:100%; border:1px solid #ccc; }
-              footer { font-size:10px; color:#555; margin-top:10px; }
-            </style>
-          </head>
-          <body>
-            <header>
-              <img src="${logoUrl}" alt="Kartverket logo"/>
-              <h1>Full Map View</h1>
-            </header>
-            <div class="map-container">
-              <img src="${dataUrl}" alt="Map"/>
-            </div>
-            <footer>
-              © Kartverket data | Printed on ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
-            </footer>
-          </body>
-        </html>
-      `);
-      doc.close();
+    // Convert pixel coordinates to map coordinates
+    const topLeftCoord = map.getCoordinateFromPixel([left, top]);
+    const bottomRightCoord = map.getCoordinateFromPixel([left + width, top + height]);
 
-      printIframe.contentWindow?.focus();
-      printIframe.contentWindow?.print();
-
-      setTimeout(() => {
-        document.body.removeChild(printIframe);
-        setLoading(false);
-      }, 1500);
+    // Now pass this bbox to generateMapPdf (instead of center + scale)
+    await generateMapPdf({
+      map,
+      overlayRef,
+      setLoading,
+      t
     });
+  };
 
-    map.renderSync();
+  const handlePrint = async () => {
+    if (!map) return;
+
+    setLoading(true);
+
+    await generateMapPdf({
+      map,
+      overlayRef: { current: map.getViewport() as HTMLElement },
+      setLoading,
+      t,
+    });
   };
 
   const handleSelectPrintArea = () => {
@@ -256,10 +114,9 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
       type: 'Circle',
       geometryFunction: createBox(),
     });
-
     map.addInteraction(drawInteraction);
 
-    drawInteraction.once('drawend', (event) => {
+    drawInteraction.once('drawend', async (event) => {
       const geometry = event.feature?.getGeometry();
       if (!geometry) {
         toaster.create({ title: 'Could not determine selected area', type: 'error' });
@@ -267,15 +124,15 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
       }
 
       const extent = geometry.getExtent();
+      setHasSelection(true);
 
       if (drawInteraction) {
         map.removeInteraction(drawInteraction);
         drawInteraction = null;
       }
 
-      setHasSelection(true);
-
-      GetMap();
+      // Call PDF generator automatically after selecting
+      await handlePrintArea(extent);
     });
   };
 
@@ -300,6 +157,7 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
   };
 
   return (
+    <>
     <Box
       position="absolute"
       top="50%"
@@ -348,6 +206,18 @@ const PrintWindow = ({ onClose }: PrintWindowProps) => {
         </Button>
       </Flex>
     </Box>
+    <div
+      ref={overlayRef}
+      style={{
+        position: "absolute",
+        border: "2px dashed #007bff",
+        background: "rgba(0, 123, 255, 0.1)",
+        display: "none",
+        pointerEvents: "none",
+        zIndex: 9999,
+      }}
+    ></div>
+    </>
   );
 };
 
