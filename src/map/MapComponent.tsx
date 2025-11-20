@@ -1,5 +1,5 @@
 import { Box, Text } from '@kvib/react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,7 @@ import {
   getListUrlParameter,
   getUrlParameter,
 } from '../shared/utils/urlUtils.ts';
-import { currentScaleAtom, mapAtom, selectedScaleAtom } from './atoms.ts';
+import { mapAtom, scaleAtom } from './atoms.ts';
 import { BackgroundLayerName } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { useThemeLayers } from './layers/themeLayers.ts';
@@ -37,8 +37,7 @@ export const MapComponent = () => {
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
-  const setCurrentScale = useSetAtom(currentScaleAtom);
-  const selectedScale = useAtomValue(selectedScaleAtom);
+  const [scale, setScale] = useAtom(scaleAtom);
 
   const { setTargetElement } = useMap();
 
@@ -100,7 +99,7 @@ export const MapComponent = () => {
         const resolution = view.getResolution();
         const units = view.getProjection().getUnits();
         if (resolution && units) {
-          setCurrentScale(getScaleFromResolution(resolution, units, true));
+          setScale(getScaleFromResolution(resolution, units, true));
         }
       };
       updateScale();
@@ -109,14 +108,14 @@ export const MapComponent = () => {
         map.un('moveend', updateScale);
       };
     }
-  }, [map, setCurrentScale]);
+  }, [map, setScale]);
 
   useEffect(() => {
-    if (selectedScale && map) {
-      const resolution = scaleToResolution(selectedScale, map);
+    if (scale && map) {
+      const resolution = scaleToResolution(scale, map);
       map.getView().setResolution(resolution);
     }
-  }, [selectedScale, map]);
+  }, [scale, map]);
 
   return (
     <Box position={'relative'} width="100%" height="100%">

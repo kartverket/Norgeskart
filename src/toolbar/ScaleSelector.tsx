@@ -7,10 +7,10 @@ import {
   SelectValueText,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
-import { availableScales, selectedScaleAtom } from '../map/atoms';
+import { availableScales, scaleAtom } from '../map/atoms';
 
 export const ScaleSelector = () => {
-  const [selectedScale, setSelectedScale] = useAtom(selectedScaleAtom);
+  const [scale, setScale] = useAtom(scaleAtom);
 
   const scaleCollection = availableScales.map((s) => ({
     value: String(s),
@@ -18,15 +18,18 @@ export const ScaleSelector = () => {
   }));
   return (
     <SelectRoot
-      width="200px"
+      width="230px"
       size="sm"
-      value={[String(selectedScale)]}
       collection={createListCollection({ items: scaleCollection })}
-      defaultValue={[String(selectedScale)]}
     >
       <SelectTrigger>
         <SelectValueText
-          placeholder={`Målestokk 1 : ${selectedScale}`}
+          color="white"
+          placeholder={
+            scale
+              ? `Målestokk 1 : ${scale.toLocaleString('no-NO')}`
+              : 'Velg målestokk'
+          }
         ></SelectValueText>
       </SelectTrigger>
       <SelectContent>
@@ -34,7 +37,7 @@ export const ScaleSelector = () => {
           <SelectItem
             key={item.value}
             item={item.value}
-            onClick={() => setSelectedScale(Number(item.value))}
+            onClick={() => setScale(Number(item.value))}
           >
             {item.label}
           </SelectItem>
