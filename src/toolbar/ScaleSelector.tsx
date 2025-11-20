@@ -7,8 +7,8 @@ import {
   SelectValueText,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
-import { availableScales, scaleAtom } from '../map/atoms';
 import { useTranslation } from 'react-i18next';
+import { availableScales, scaleAtom } from '../map/atoms';
 
 export const ScaleSelector = () => {
   const { t } = useTranslation();
@@ -27,7 +27,11 @@ export const ScaleSelector = () => {
       <SelectTrigger>
         <SelectValueText
           color="white"
-          placeholder={scale ? `${t('toolbar.scale')} 1 : ${scale.toLocaleString('no-NO')}` : ''}
+          placeholder={
+            scale
+              ? `${t('toolbar.scale')} 1 : ${scale.toLocaleString('no-NO')}`
+              : ''
+          }
         ></SelectValueText>
       </SelectTrigger>
       <SelectContent>
