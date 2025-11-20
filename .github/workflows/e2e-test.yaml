@@ -1,7 +1,10 @@
 name: Run e2e tests using cypress
 
 on: 
-  - workflow_dispatch
+  workflow_dispatch:
+  pull_request:
+      branches:
+        - main
 
 permissions:
   contents: read
@@ -9,10 +12,23 @@ permissions:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox, edge, webkit]
     steps:
         - name: Checkout code
           uses: actions/checkout@v5
+        - name: Setup Node.js
+          uses: actions/setup-node@v6
+          with:
+            node-version: '22'
+        - name: Install webkit dependencies
+          if: matrix.browser == 'webkit'
+          run: |
+            npx playwright install-deps
         - name: Cypress run
           uses: cypress-io/github-action@v6
           with:
             start: npm run dev
+            browser: ${{ matrix.browser }}
