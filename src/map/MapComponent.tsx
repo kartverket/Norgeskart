@@ -33,7 +33,7 @@ import { MapContextMenu } from './menu/MapContextMenu.tsx';
 import {
   getScaleFromResolution,
   scaleToResolution,
-} from './scaleResolution.ts';
+} from './mapScale.ts';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);

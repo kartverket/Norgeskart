@@ -8,29 +8,26 @@ import {
 } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { availableScales, scaleAtom } from '../map/atoms';
+import { useTranslation } from 'react-i18next';
 
 export const ScaleSelector = () => {
+  const { t } = useTranslation();
   const [scale, setScale] = useAtom(scaleAtom);
 
   const scaleCollection = availableScales.map((s) => ({
     value: String(s),
-    label: `Målestokk 1 : ${s.toLocaleString('no-NO')}`,
+    label: `${t('toolbar.scale')} 1 : ${s.toLocaleString('no-NO')}`,
   }));
   return (
     <SelectRoot
       width="230px"
       size="sm"
       collection={createListCollection({ items: scaleCollection })}
-      value={[]}
     >
       <SelectTrigger>
         <SelectValueText
           color="white"
-          placeholder={
-            scale
-              ? `Målestokk 1 : ${scale.toLocaleString('no-NO')}`
-              : 'Velg målestokk'
-          }
+          placeholder={scale ? `${t('toolbar.scale')} 1 : ${scale.toLocaleString('no-NO')}` : ''}
         ></SelectValueText>
       </SelectTrigger>
       <SelectContent>

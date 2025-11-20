@@ -314,7 +314,8 @@
     "heading": "Tips and tricks"
   },
   "toolbar": {
-    "reportError": "Error in the map?"
+    "reportError": "Error in the map?",
+    "scale": "Scale"
   },
   "cookieDialog": {
     "heading": "We're using cookies ",

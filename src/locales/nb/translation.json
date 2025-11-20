@@ -380,7 +380,8 @@
     "heading": "Tips og triks"
   },
   "toolbar": {
-    "reportError": "Feil i kartet?"
+    "reportError": "Feil i kartet?",
+    "scale": "Målestokk"
   },
   "cookieDialog": {
     "heading": "Vi bruker informasjonskapsler",
