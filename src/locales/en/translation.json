@@ -158,5 +158,9 @@
     "road": "Road",
     "place": "Placename",
     "address": "Address"
+  },
+    "printMap": {
+      "printSuccess": "Successful.",
+      "printError": "Error."
   }
 }

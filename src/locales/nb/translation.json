@@ -163,5 +163,9 @@
     "road": "Vei",
     "place": "Stedsnavn",
     "address": "Adresse"
+  },
+  "printMap": {
+    "printSuccess": "Vellykket.",
+    "printError": "Feil."
   }
 }
