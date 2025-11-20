@@ -291,5 +291,9 @@
       "accept": "OK",
       "reject": "Deny"
     }
+  },
+    "printMap": {
+      "printSuccess": "Successful.",
+      "printError": "Error."
   }
 }

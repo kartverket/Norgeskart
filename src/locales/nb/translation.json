@@ -296,5 +296,9 @@
       "accept": "OK",
       "reject": "Avslå"
     }
+  },
+  "printMap": {
+    "printSuccess": "Vellykket.",
+    "printError": "Feil."
   }
 }
