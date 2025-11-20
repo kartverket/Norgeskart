@@ -21,6 +21,7 @@ export const ScaleSelector = () => {
       width="230px"
       size="sm"
       collection={createListCollection({ items: scaleCollection })}
+      value={[]}
     >
       <SelectTrigger>
         <SelectValueText
