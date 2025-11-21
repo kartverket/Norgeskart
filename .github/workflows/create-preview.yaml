@@ -35,7 +35,7 @@ jobs:
           ref: ${{ github.event.inputs.targetBranch }}
       - name: Get target branch SHA
         id: get_sha
-        run: echo "::set-output name=sha::$(git rev-parse HEAD | cut -c1-6 )"
+        run: echo " name=sha::$(git rev-parse HEAD | cut -c1-6 )" >> $GITHUB_OUTPUT
 
       - name: 'Setup node.js'
         uses: actions/setup-node@v6
