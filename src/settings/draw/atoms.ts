@@ -1,3 +1,4 @@
+import { MaterialSymbol } from '@kvib/react';
 import { atom } from 'jotai';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -47,6 +48,7 @@ export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
 
 export const pointTypeAtom = atom<PointType>('circle');
+export const pointIconAtom = atom<MaterialSymbol | null>(null);
 
 export const pointStyleReadAtom = atom((get) => {
   const type = get(pointTypeAtom);

@@ -1,10 +1,10 @@
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
-import { Feature } from 'ol';
+import { Feature, Overlay } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
-import { Geometry } from 'ol/geom';
+import { Geometry, Point } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select';
@@ -19,7 +19,10 @@ import {
   drawEnabledAtom,
   drawStyleReadAtom,
   drawTypeStateAtom,
+  lineWidthAtom,
+  pointIconAtom,
   pointStyleReadAtom,
+  primaryColorAtom,
   showMeasurementsAtom,
   textInputAtom,
   textStyleReadAtom,
@@ -176,19 +179,45 @@ const useDrawSettings = () => {
   };
 
   const drawEnd = (event: BaseEvent | Event) => {
-    const eventFeature = (event as unknown as DrawEvent).feature;
+    const drawEvent = event as DrawEvent;
+    const eventFeature = drawEvent.feature;
     const store = getDefaultStore();
     const drawType = store.get(drawTypeStateAtom);
     const zIndex = getHighestZIndex() + 1;
 
     if (drawType === 'Point') {
-      const style = store.get(pointStyleReadAtom);
-      style.setZIndex(zIndex);
-      eventFeature.setStyle(style);
-    } else {
-      const style = store.get(drawStyleReadAtom);
-      style.setZIndex(zIndex);
-      eventFeature.setStyle(style);
+      const icon = store.get(pointIconAtom);
+      if (icon) {
+        const featureGeometry = eventFeature.getGeometry();
+        if (featureGeometry && featureGeometry instanceof Point) {
+          const color = store.get(primaryColorAtom);
+          const size = store.get(lineWidthAtom);
+          const pointPoordinates = featureGeometry.getCoordinates();
+          const elm = document.createElement('i');
+          elm.classList.add('material-symbols-rounded');
+          elm.style.color = color;
+          elm.style.fontSize = `${size * 6}px`;
+          elm.style.pointerEvents = 'none';
+          elm.textContent = icon;
+
+          const overlay = new Overlay({
+            element: elm,
+            id: INTERACTIVE_MEASUREMNT_OVERLAY_ID,
+            position: pointPoordinates,
+            positioning: 'center-center',
+          });
+          map.addOverlay(overlay);
+          eventFeature.setStyle(new Style({}));
+        } else {
+          const style = store.get(pointStyleReadAtom);
+          style.setZIndex(zIndex);
+          eventFeature.setStyle(style);
+        }
+      } else {
+        const style = store.get(drawStyleReadAtom);
+        style.setZIndex(zIndex);
+        eventFeature.setStyle(style);
+      }
     }
 
     if (drawType === 'Text') {
