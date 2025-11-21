@@ -1,5 +1,5 @@
 import { Box, Text } from '@kvib/react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { getDefaultStore, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,6 @@ export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { setBackgroundLayer } = useMapSettings();
   const { addThemeLayerToMap } = useThemeLayers();
-  const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures } = useDrawSettings();
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
@@ -45,7 +44,12 @@ export const MapComponent = () => {
     };
   }, [setTargetElement, mapRef]);
 
+  //Disse use effectene trigges for ofte. Det bør bare trigges en gang ved initiering av kartet.
+  //Flytte flere ting til jotai, og sette initial verdi der og ha en effect? Så de ikke kjører når kartet endrer seg
+
   useEffect(() => {
+    const store = getDefaultStore();
+    const map = store.get(mapAtom);
     if (!map) {
       return;
     }
@@ -61,9 +65,11 @@ export const MapComponent = () => {
       DEFAULT_BACKGROUND_LAYER) as BackgroundLayerName;
 
     setBackgroundLayer(layerNameFromUrl);
-  }, [setBackgroundLayer, map]);
+  }, [setBackgroundLayer]);
 
   useEffect(() => {
+    const store = getDefaultStore();
+    const map = store.get(mapAtom);
     if (!map) {
       return;
     }
@@ -74,7 +80,7 @@ export const MapComponent = () => {
     themeLayers.forEach((layerName) => {
       addThemeLayerToMap(layerName as ThemeLayerName);
     });
-  }, [map, addThemeLayerToMap]);
+  }, []);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -85,7 +91,7 @@ export const MapComponent = () => {
       }
     };
     asyncEffect();
-  }, [map, setDrawLayerFeatures]);
+  }, []);
 
   return (
     <Box position={'relative'} width="100%" height="100%">
