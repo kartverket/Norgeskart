@@ -17,7 +17,8 @@ export interface ProjectionSelectorProps {
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
 
-  const defaultProjection = props.default != null ? props.default : 'EPSG:25833';
+  const defaultProjection =
+    props.default != null ? props.default : 'EPSG:25833';
 
   const projectionCollection = AvailableProjections.map((projection) => ({
     value: projection,
