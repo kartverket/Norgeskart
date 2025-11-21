@@ -13,12 +13,14 @@ import { themeLayersAtom, themeLayerStyles } from '../../map/layers/atoms';
 import {
   FeatureTypeStyle,
   LineSymbolizer,
+  NamedLayer,
   PointSymbolizer,
   PolygonSymbolizer,
   Rule,
   TextSymbolizer,
   UserStyle,
 } from '../../map/types/StyledLayerDescriptor';
+import { ErrorBoundary } from '../../shared/ErrorBoundary';
 
 const PointSymbolizerPart = ({
   symbolizer,
@@ -29,9 +31,17 @@ const PointSymbolizerPart = ({
   return <Box>Point Symbolizer</Box>;
 };
 const LineSymbolizerPart = ({ symbolizer }: { symbolizer: LineSymbolizer }) => {
-  const color = symbolizer.Stroke.CssParameter[0];
-  //const opacity = symbolizer.Stroke.CssParameter[1];
-  const width = symbolizer.Stroke.CssParameter[2];
+  let color;
+  let width;
+  const svgParams = symbolizer.Stroke?.SvgParameter;
+  const cssParams = symbolizer.Stroke?.CssParameter;
+  if (svgParams) {
+    color = svgParams[0];
+    width = svgParams[1];
+  } else if (cssParams) {
+    color = cssParams[0];
+    width = cssParams[2];
+  }
   return (
     <HStack>
       <Box>Line</Box>
@@ -50,8 +60,18 @@ const PolygonSymbolizerPart = ({
 }: {
   symbolizer: PolygonSymbolizer;
 }) => {
-  const color = symbolizer.Fill?.CssParameter[0];
-  const opacity = symbolizer.Fill?.CssParameter[1];
+  let color;
+  let opacity;
+  const svgParams = symbolizer.Fill?.SvgParameter;
+  const cssParams = symbolizer.Fill?.CssParameter;
+  if (svgParams) {
+    color = svgParams[0];
+    opacity = svgParams[1];
+  } else if (cssParams) {
+    color = cssParams[0];
+    opacity = cssParams[1];
+  }
+
   return (
     <HStack>
       <Box>Polygon</Box>
@@ -119,6 +139,19 @@ const UserStylePart = ({ style }: { style: UserStyle }) => {
   );
 };
 
+const NamedLayerPart = ({ nameLayer }: { nameLayer: NamedLayer }) => {
+  return (
+    <HStack key={nameLayer.Name} justifyContent={'space-between'}>
+      <Box>{nameLayer.Name} </Box>
+      {Array.isArray(nameLayer.UserStyle) ? (
+        nameLayer.UserStyle.map((s) => <UserStylePart style={s} />)
+      ) : (
+        <UserStylePart style={nameLayer.UserStyle} />
+      )}
+    </HStack>
+  );
+};
+
 export const Symbolology = () => {
   const activeThemeLayers = useAtomValue(themeLayersAtom);
   const themesLoadable = useAtomValue(themeLayerStyles);
@@ -136,36 +169,35 @@ export const Symbolology = () => {
         Tegnforklaring
       </Heading>
       <Accordion collapsible>
-        {activeThemeLayers.map((layerName) => {
-          const themeStyle = themes.get(layerName);
-          if (!themeStyle) {
-            return null;
-          }
-          return (
-            <AccordionItem key={layerName} value={layerName}>
-              <AccordionItemTrigger>
-                <Heading size="md">{layerName}</Heading>
-              </AccordionItemTrigger>
-              <AccordionItemContent>
-                {themeStyle.StyledLayerDescriptor.NamedLayer.map((l) => {
-                  return (
-                    <HStack
-                      key={layerName + l.Name}
-                      justifyContent={'space-between'}
-                    >
-                      <Box>{l.Name} </Box>
-                      {Array.isArray(l.UserStyle) ? (
-                        l.UserStyle.map((s) => <UserStylePart style={s} />)
-                      ) : (
-                        <UserStylePart style={l.UserStyle} />
-                      )}
-                    </HStack>
-                  );
-                })}
-              </AccordionItemContent>
-            </AccordionItem>
-          );
-        })}
+        <ErrorBoundary fallback={'Det gikk veldig dårlig'}>
+          {activeThemeLayers.map((layerName) => {
+            const themeStyle = themes.get(layerName);
+            if (!themeStyle) {
+              return null;
+            }
+            console.log(themeStyle);
+            return (
+              <AccordionItem key={layerName} value={layerName}>
+                <AccordionItemTrigger>
+                  <Heading size="md">{layerName}</Heading>
+                </AccordionItemTrigger>
+                <AccordionItemContent>
+                  {Array.isArray(
+                    themeStyle.StyledLayerDescriptor.NamedLayer,
+                  ) ? (
+                    themeStyle.StyledLayerDescriptor.NamedLayer.map((l) => (
+                      <NamedLayerPart key={layerName + l.Name} nameLayer={l} />
+                    ))
+                  ) : (
+                    <NamedLayerPart
+                      nameLayer={themeStyle.StyledLayerDescriptor.NamedLayer}
+                    />
+                  )}
+                </AccordionItemContent>
+              </AccordionItem>
+            );
+          })}
+        </ErrorBoundary>
       </Accordion>
     </VStack>
   );

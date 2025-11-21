@@ -9,7 +9,7 @@ import {
 import { StyledLayerDescriptor } from '../types/StyledLayerDescriptor';
 import { getThemeWMSLayerStyleUrl, ThemeLayerName } from './themeWMS';
 
-const parser = new XMLParser();
+const parser = new XMLParser({ removeNSPrefix: true });
 
 export const themeLayersAtom = atom<ThemeLayerName[]>([]);
 const themeLayersSymbolologyAtom = atom(async (get) => {

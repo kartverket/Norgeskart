@@ -2,7 +2,7 @@
 export interface StyledLayerDescriptor {
   Version: string; // e.g., "1.0.0" or "1.1.0"
   Name?: string;
-  NamedLayer: NamedLayer[];
+  NamedLayer: NamedLayer[] | NamedLayer;
 }
 
 // Named layer
@@ -81,11 +81,13 @@ export interface ExternalGraphic {
 }
 
 export interface Stroke {
-  CssParameter: string[];
+  CssParameter?: string[];
+  SvgParameter?: string[];
 }
 
 export interface Fill {
-  CssParameter: string[];
+  CssParameter?: string[];
+  SvgParameter?: string[];
 }
 
 export interface Font {

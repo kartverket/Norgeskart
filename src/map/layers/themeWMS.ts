@@ -108,7 +108,16 @@ export const getThemeWMSLayerStyleUrl = (
   layerName: ThemeLayerName,
 ): string | undefined => {
   if (layerName === 'osloMarkaBorder') {
-    return 'https://wms.geonorge.no/skwms1/wms.markagrensen?Service=wms&Request=GetStyles&Version=1.0.0&Format=application/json&Width=20&Height=20&Layers=Markagrensen';
+    return (
+      ENV.geoNorgeWMSUrl +
+      '.markagrensen?Service=wms&Request=GetStyles&Version=1.0.0&&Layers=Markagrensen'
+    );
+  }
+  if (layerName === 'hikingTrails') {
+    return (
+      ENV.geoNorgeWMSUrl +
+      '.friluftsruter2?REQUEST=GetStyles&SERVICE=WMS&VERSION=1.3.0&LAYERS=Fotrute'
+    );
   }
 };
 
