@@ -1,3 +1,4 @@
+import { MaterialSymbol } from '@kvib/react';
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
@@ -21,7 +22,6 @@ import {
   drawTypeStateAtom,
   lineWidthAtom,
   pointIconAtom,
-  pointStyleReadAtom,
   primaryColorAtom,
   showMeasurementsAtom,
   textInputAtom,
@@ -101,6 +101,39 @@ const useDrawSettings = () => {
       }
     }
     setDrawAtomEnabled(enable);
+  };
+
+  const addIconOverlayToPointFeature = (
+    feature: Feature,
+    icon: MaterialSymbol,
+  ) => {
+    const point = feature.getGeometry();
+    if (!point || !(point instanceof Point)) {
+      return;
+    }
+
+    const store = getDefaultStore();
+
+    const color = store.get(primaryColorAtom);
+    const size = store.get(lineWidthAtom);
+    const pointCoordinates = point.getCoordinates();
+    const elm = document.createElement('i');
+    elm.classList.add('material-symbols-rounded');
+    elm.style.color = color;
+    elm.style.fontSize = `${size * 6}px`;
+    elm.style.pointerEvents = 'none';
+    elm.textContent = icon;
+
+    const overlay = new Overlay({
+      element: elm,
+      position: pointCoordinates,
+      positioning: 'center-center',
+    });
+    map.addOverlay(overlay);
+    point.setProperties({
+      overlayIcon: icon,
+    });
+    feature.setStyle(new Style({}));
   };
 
   const setDrawType = (type: DrawType) => {
@@ -188,31 +221,7 @@ const useDrawSettings = () => {
     if (drawType === 'Point') {
       const icon = store.get(pointIconAtom);
       if (icon) {
-        const featureGeometry = eventFeature.getGeometry();
-        if (featureGeometry && featureGeometry instanceof Point) {
-          const color = store.get(primaryColorAtom);
-          const size = store.get(lineWidthAtom);
-          const pointPoordinates = featureGeometry.getCoordinates();
-          const elm = document.createElement('i');
-          elm.classList.add('material-symbols-rounded');
-          elm.style.color = color;
-          elm.style.fontSize = `${size * 6}px`;
-          elm.style.pointerEvents = 'none';
-          elm.textContent = icon;
-
-          const overlay = new Overlay({
-            element: elm,
-            id: INTERACTIVE_MEASUREMNT_OVERLAY_ID,
-            position: pointPoordinates,
-            positioning: 'center-center',
-          });
-          map.addOverlay(overlay);
-          eventFeature.setStyle(new Style({}));
-        } else {
-          const style = store.get(pointStyleReadAtom);
-          style.setZIndex(zIndex);
-          eventFeature.setStyle(style);
-        }
+        addIconOverlayToPointFeature(eventFeature, icon);
       } else {
         const style = store.get(drawStyleReadAtom);
         style.setZIndex(zIndex);
@@ -391,6 +400,9 @@ const useDrawSettings = () => {
     });
     drawSource.clear();
     drawSource.addFeatures(featuresToAddWithStyle);
+    featuresToAddWithStyle.filter(
+      (f) => f.getProperties()['overlayIcon'] != null,
+    ).forEach;
   };
 
   const setDisplayInteractiveMeasurementForDrawInteraction = (

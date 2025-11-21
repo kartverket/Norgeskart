@@ -71,6 +71,7 @@ export const DrawControlFooter = () => {
           mapProjection,
         );
         const featureStyle = feature.getStyle() as Style | null;
+        const icon = feature.get('overlayIcon') || null;
         const styleForStorage = getStyleForStorage(featureStyle);
         return {
           type: 'Feature',
@@ -80,6 +81,7 @@ export const DrawControlFooter = () => {
           },
           properties: {
             style: styleForStorage,
+            overlayIcon: icon,
           },
         } as Feature;
       })
