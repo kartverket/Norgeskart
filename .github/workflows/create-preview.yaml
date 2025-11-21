@@ -35,7 +35,7 @@ jobs:
           ref: ${{ github.event.inputs.targetBranch }}
       - name: Get target branch SHA
         id: get_sha
-        run: echo " name=sha::$(git rev-parse HEAD | cut -c1-6 )" >> $GITHUB_OUTPUT
+        run: echo "sha=$(git rev-parse HEAD | cut -c1-6)" >> $GITHUB_OUTPUT
 
       - name: 'Setup node.js'
         uses: actions/setup-node@v6
@@ -124,4 +124,4 @@ jobs:
           git push
       - name: Add url to  output
         run:  |
-          echo "Trykk her snart™ https://noreskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud" >> $GITHUB_OUTPUT
+          echo "Trykk her snart https://noreskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud" >> $GITHUB_OUTPUT
