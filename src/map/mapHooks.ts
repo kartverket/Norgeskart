@@ -189,13 +189,16 @@ const useMapSettings = () => {
       newZoom -= 1;
     }
 
+    // Round zoom to integer to ensure it aligns with tile matrix
+    newZoom = Math.round(newZoom);
+
     const newView = new View({
       center: newCenter,
       zoom: newZoom,
       minZoom: oldView.getMinZoom(),
       maxZoom: oldView.getMaxZoom(),
       projection: projection,
-
+      constrainResolution: true,
       extent: projection.getExtent(),
     });
     oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {

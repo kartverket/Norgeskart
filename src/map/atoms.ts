@@ -20,9 +20,9 @@ export type ProjectionIdentifier =
   | 'EPSG:25835' // utm35n
   | 'EPSG:25836'; // utm36n
 
-const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:3857';
-export const DEFAULT_ZOOM_LEVEL = 5;
-export const DEFAULT_CENTER = [1900000, 9500000]; // Center in EPSG:3857
+const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
+export const DEFAULT_ZOOM_LEVEL = 3;
+export const DEFAULT_CENTER = [396722, 7197860]; // Center in EPSG:25833
 export const DEFAULT_ROTATION = 0;
 
 export const AvailableProjections: ProjectionIdentifier[] = [
@@ -81,7 +81,7 @@ const getInitialMapView = () => {
 
   return new View({
     center: initialCenter,
-    minZoom: 4,
+    minZoom: 3,
     maxZoom: 20,
     zoom: initialZoom,
     rotation: initialRotation,
