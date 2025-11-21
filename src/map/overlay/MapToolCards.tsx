@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, IconButton } from '@kvib/react';
+import { Box, Flex, Heading, IconButton, VStack } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapSettings } from '../../settings/map/MapSettings';
@@ -43,25 +43,21 @@ interface MapToolCardProps {
 }
 const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
-    <Box
+    <VStack
       position="fixed"
       top={'16px'}
       left={'16px'}
-      width="20vw"
-      minWidth="350px"
+      minWidth="380px"
       height="80vh"
       zIndex={2000}
       pointerEvents="auto"
       bg="#f5f2f2"
       shadow="lg"
-      display="flex"
-      flexDirection="column"
       borderRight="1px solid rgba(0,0,0,0.1)"
-      px={4}
-      py={4}
+      p={4}
       borderRadius={'16px'}
     >
-      <Flex justify="space-between">
+      <Flex justify="space-between" width="100%">
         <Heading fontWeight="bold" mb="2rem">
           {label}
         </Heading>
@@ -79,6 +75,6 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       <Box overflowY="auto" height={'100%'}>
         {children}
       </Box>
-    </Box>
+    </VStack>
   );
 };
