@@ -30,7 +30,7 @@ jobs:
       target_branch_sha: ${{ steps.get_sha.outputs.sha }}
     steps:
       - name: 'Checkout code'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.targetBranch }}
       - name: Get target branch SHA
@@ -98,7 +98,7 @@ jobs:
           identity: norgeskart5
 
       - name: Checkout apps repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: kartverket/tnt-apps
           ref: main
