@@ -67,7 +67,7 @@ export const MapComponent = () => {
     const legacyLayerParam = getUrlParameter('layers');
 
     if (!layerNameFromUrl && legacyLayerParam) {
-      layerNameFromUrl = legacyLayerParam;
+      layerNameFromUrl = legacyLayerParam.split(',')[0]; // Take only the first one as the background layer, @TODO: fix later theme layers
     }
 
     // Support legacy numeric IDs from old norgeskart.no
