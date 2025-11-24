@@ -2,6 +2,11 @@ import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import {
+  getUrlParameter,
+  removeUrlParameter,
+  setUrlParameter,
+} from '../shared/utils/urlUtils';
+import {
   Address,
   Metadata,
   Place,
@@ -38,7 +43,8 @@ const getPlaceNameRadius = () => {
 export const searchCoordinatesAtom = atom<CoordinateWithProjection | null>(
   null,
 );
-export const searchQueryAtom = atom<string>('');
+const initialSearchQuery = getUrlParameter('sok') || '';
+export const searchQueryAtom = atom<string>(initialSearchQuery);
 export const searchPendingAtom = atom<boolean>(false);
 export const placeNamePageAtom = atom<number>(1);
 
@@ -68,6 +74,13 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
 });
 const searchQueryEffect = atomEffect((get, set) => {
   const searchQuery = get(searchQueryAtom);
+
+  if (searchQuery) {
+    setUrlParameter('sok', searchQuery);
+  } else {
+    removeUrlParameter('sok');
+  }
+
   if (searchQuery === '') {
     set(addressResultsAtom, []);
     set(placeNameResultsAtom, []);
