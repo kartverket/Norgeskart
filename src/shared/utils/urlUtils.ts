@@ -53,7 +53,7 @@ export const addToUrlListParameter = (
 ): void => {
   const url = new URL(window.location.href);
   url.hash = '';
-  const param = url.searchParams.get(key);
+  const param = getSearchParams().get(key);
   let values: string[] = [];
   if (param) {
     values = param.split(',');
@@ -72,7 +72,7 @@ export const removeFromUrlListParameter = (
 ): void => {
   const url = new URL(window.location.href);
   url.hash = '';
-  const param = url.searchParams.get(key);
+  const param = getSearchParams().get(key);
   if (param) {
     let values = param.split(',');
     const stringValue = String(value);
