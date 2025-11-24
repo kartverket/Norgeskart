@@ -84,4 +84,5 @@ export type NKUrlParameter =
   | 'lon'
   | 'zoom'
   | 'drawing'
-  | 'layers'; // Legacy parameter from old norgeskart.no
+  | 'layers' // Legacy parameter from old norgeskart.no
+  | 'sok';
