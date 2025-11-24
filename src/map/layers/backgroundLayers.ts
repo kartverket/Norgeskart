@@ -6,7 +6,11 @@ import { loadableWMTS, WMTSLayerName } from './backgroundWMTSProviders';
 
 export type BackgroundLayerName = WMTSLayerName | WMSLayerName;
 
-// Map old numeric IDs from old norgeskart.no to new layer names
+/**
+ * Maps legacy numeric layer IDs from old norgeskart.no to current layer names.
+ * @param layerId - The legacy numeric ID (e.g., '1001' for topo layer)
+ * @returns The corresponding BackgroundLayerName, or null if the ID is not recognized
+ */
 export const mapLegacyBackgroundLayerId = (
   layerId: string,
 ): BackgroundLayerName | null => {
