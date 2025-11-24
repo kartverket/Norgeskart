@@ -6,6 +6,26 @@ import { loadableWMTS, WMTSLayerName } from './backgroundWMTSProviders';
 
 export type BackgroundLayerName = WMTSLayerName | WMSLayerName;
 
+/**
+ * Maps legacy numeric layer IDs from old norgeskart.no to current layer names.
+ * @param layerId - The legacy numeric ID (e.g., '1001' for topo layer)
+ * @returns The corresponding BackgroundLayerName, or null if the ID is not recognized
+ */
+export const mapLegacyBackgroundLayerId = (
+  layerId: string,
+): BackgroundLayerName | null => {
+  const legacyIdMap: Record<string, BackgroundLayerName> = {
+    '1001': 'topo',
+    '1003': 'topograatone',
+    '1004': 'toporaster',
+    '1002': 'Nibcache_UTM33_EUREF89_v2',
+    '1009': 'oceanicelectronic',
+    '10088': 'sjokartraster',
+  };
+
+  return legacyIdMap[layerId] || null;
+};
+
 const isLayerNiBLayer = (layerName: BackgroundLayerName) => {
   return layerName.startsWith('Nibcache_');
 };
