@@ -9,9 +9,11 @@ import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import {
   getListUrlParameter,
   getUrlParameter,
+  removeUrlParameter,
+  setUrlParameter,
 } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
-import { BackgroundLayerName } from './layers/backgroundLayers.ts';
+import { BackgroundLayerName, mapLegacyBackgroundLayerId } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { useThemeLayers } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
@@ -57,10 +59,31 @@ export const MapComponent = () => {
     if (hasBackgroundLayer) {
       return;
     }
-    const layerNameFromUrl = (getUrlParameter('backgroundLayer') ||
-      DEFAULT_BACKGROUND_LAYER) as BackgroundLayerName;
+    // Check both new 'backgroundLayer' and legacy 'layers' parameter
+    let layerNameFromUrl = getUrlParameter('backgroundLayer');
+    const legacyLayerParam = getUrlParameter('layers');
+    
+    if (!layerNameFromUrl && legacyLayerParam) {
+      layerNameFromUrl = legacyLayerParam;
+    }
+    
+    // Support legacy numeric IDs from old norgeskart.no
+    if (layerNameFromUrl) {
+      const legacyLayerName = mapLegacyBackgroundLayerId(layerNameFromUrl);
+      if (legacyLayerName) {
+        layerNameFromUrl = legacyLayerName;
+      }
+    }
+    
+    const finalLayerName = (layerNameFromUrl || DEFAULT_BACKGROUND_LAYER) as BackgroundLayerName;
 
-    setBackgroundLayer(layerNameFromUrl);
+    // If we used the legacy 'layers' parameter, remove it and set the new 'backgroundLayer' parameter
+    if (legacyLayerParam) {
+      removeUrlParameter('layers');
+      setUrlParameter('backgroundLayer', finalLayerName);
+    }
+
+    setBackgroundLayer(finalLayerName);
   }, [setBackgroundLayer, map]);
 
   useEffect(() => {

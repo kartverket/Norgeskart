@@ -7,6 +7,12 @@ export const setUrlParameter = (
   window.history.replaceState({}, '', url.toString());
 };
 
+export const removeUrlParameter = (key: NKUrlParameter): void => {
+  const url = new URL(window.location.href);
+  url.searchParams.delete(key);
+  window.history.replaceState({}, '', url.toString());
+};
+
 export const getUrlParameter = (key: NKUrlParameter): string | null => {
   const url = new URL(window.location.href);
   return url.searchParams.get(key);
@@ -77,4 +83,5 @@ export type NKUrlParameter =
   | 'lat'
   | 'lon'
   | 'zoom'
-  | 'drawing';
+  | 'drawing'
+  | 'layers'; // Legacy parameter from old norgeskart.no
