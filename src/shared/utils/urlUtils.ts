@@ -1,21 +1,32 @@
+const getSearchParams = (): URLSearchParams => {
+  // Helper to parse URL parameters from both modern (?param=value) and legacy (#!?param=value) formats
+  const url = new URL(window.location.href);
+  if (url.hash.startsWith('#!?')) {
+    const hashParams = url.hash.substring(3);
+    return new URLSearchParams(hashParams);
+  }
+  return url.searchParams;
+};
+
 export const setUrlParameter = (
   key: NKUrlParameter,
   value: string | number | boolean,
 ): void => {
   const url = new URL(window.location.href);
+  url.hash = '';
   url.searchParams.set(key, String(value));
   window.history.replaceState({}, '', url.toString());
 };
 
 export const removeUrlParameter = (key: NKUrlParameter): void => {
   const url = new URL(window.location.href);
+  url.hash = '';
   url.searchParams.delete(key);
   window.history.replaceState({}, '', url.toString());
 };
 
 export const getUrlParameter = (key: NKUrlParameter): string | null => {
-  const url = new URL(window.location.href);
-  return url.searchParams.get(key);
+  return getSearchParams().get(key);
 };
 
 export const setListUrlParameter = (
@@ -23,13 +34,13 @@ export const setListUrlParameter = (
   values: (string | number | boolean)[],
 ): void => {
   const url = new URL(window.location.href);
+  url.hash = '';
   url.searchParams.set(key, values.map(String).join(','));
   window.history.replaceState({}, '', url.toString());
 };
 
 export const getListUrlParameter = (key: NKUrlParameter): string[] | null => {
-  const url = new URL(window.location.href);
-  const param = url.searchParams.get(key);
+  const param = getSearchParams().get(key);
   if (param) {
     return param.split(',');
   }
@@ -41,6 +52,7 @@ export const addToUrlListParameter = (
   value: string | number | boolean,
 ): void => {
   const url = new URL(window.location.href);
+  url.hash = '';
   const param = url.searchParams.get(key);
   let values: string[] = [];
   if (param) {
@@ -59,6 +71,7 @@ export const removeFromUrlListParameter = (
   value: string | number | boolean,
 ): void => {
   const url = new URL(window.location.href);
+  url.hash = '';
   const param = url.searchParams.get(key);
   if (param) {
     let values = param.split(',');
