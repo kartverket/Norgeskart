@@ -74,4 +74,5 @@
 }
 
 .ol-viewport {
+  user-select: auto;
 }
