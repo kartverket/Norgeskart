@@ -72,3 +72,10 @@
 .hidden {
   display: none;
 }
+
+.ol-viewport {
+  -webkit-touch-callout: auto;
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  user-select: auto;
+}
