@@ -8,9 +8,23 @@ export interface ParsedCoordinate {
   inputFormat: 'decimal' | 'dms' | 'utm';
 }
 
-/**
- * Normalize directional text in multiple languages to standard abbreviations
- */
+const formatDMS = (value: number, isLat: boolean): string => {
+  const abs = Math.abs(value);
+  const degrees = Math.floor(abs);
+  const minutes = Math.floor((abs - degrees) * 60);
+  const seconds = ((abs - degrees - minutes / 60) * 3600).toFixed(1);
+  const direction = isLat ? (value >= 0 ? 'N' : 'S') : value >= 0 ? 'E' : 'W';
+  return `${degrees}°${minutes}'${seconds}"${direction}`;
+};
+
+const createDMSResult = (lat: number, lon: number): ParsedCoordinate => ({
+  lat,
+  lon,
+  projection: 'EPSG:4326',
+  formattedString: `${formatDMS(lat, true)} ${formatDMS(lon, false)}`,
+  inputFormat: 'dms',
+});
+
 const normalizeDirections = (input: string): string => {
   return input
     .replace(/Nord|NORD|North|NORTH/g, 'N')
@@ -39,29 +53,24 @@ export const parseCoordinateInput = (
     return null;
   }
 
-  // Normalize directional words to standard abbreviations
   const normalizedInput = normalizeDirections(input.trim());
   const trimmedInput = normalizedInput;
 
-  // Try parsing with EPSG code specified (format: "coords@epsg")
   const epsgResult = parseWithEPSG(trimmedInput);
   if (epsgResult) {
     return epsgResult;
   }
 
-  // Try parsing decimal degrees
   const decimalResult = parseDecimalDegrees(trimmedInput);
   if (decimalResult) {
     return decimalResult;
   }
 
-  // Try parsing DMS
   const dmsResult = parseDMS(trimmedInput);
   if (dmsResult) {
     return dmsResult;
   }
 
-  // Try parsing UTM (with fallback projection hint)
   const utmResult = parseUTM(trimmedInput, fallbackProjection);
   if (utmResult) {
     return utmResult;
@@ -75,7 +84,6 @@ export const parseCoordinateInput = (
  * Examples: "425917 7730314@25833", "59.91273, 10.74609@4326", "598515 6643994@25832"
  */
 const parseWithEPSG = (input: string): ParsedCoordinate | null => {
-  // Check if input contains @ symbol
   if (!input.includes('@')) {
     return null;
   }
@@ -88,7 +96,6 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   const coordsPart = parts[0].trim();
   const epsgPart = parts[1].trim();
 
-  // Parse EPSG code
   const epsgMatch = epsgPart.match(/^(\d{4,5})$/);
   if (!epsgMatch) {
     return null;
@@ -96,7 +103,6 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
 
   const epsgCode = parseInt(epsgMatch[1], 10);
 
-  // Map EPSG code to ProjectionIdentifier
   let projection: ProjectionIdentifier;
   let formatName: string;
 
@@ -134,7 +140,6 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
       formatName = 'Web Mercator';
       break;
     default:
-      // Unsupported EPSG code
       return null;
   }
 
@@ -292,59 +297,57 @@ const parseDecimalDegrees = (input: string): ParsedCoordinate | null => {
  * Also supports: "60°10'10,10°10'10" (no direction, no quotes on seconds)
  */
 const parseDMS = (input: string): ParsedCoordinate | null => {
-  // Try multiple patterns to support various formats
+  const applyDirection = (value: number, dir: string): number => {
+    return dir === 'S' || dir === 'W' ? -value : value;
+  };
+
+  const assignLatLon = (
+    val1: number,
+    dir1: string,
+    val2: number,
+    dir2: string,
+  ): { lat: number; lon: number } => {
+    if (dir1 === 'N' || dir1 === 'S') {
+      return {
+        lat: applyDirection(val1, dir1),
+        lon: applyDirection(val2, dir2),
+      };
+    }
+    return {
+      lon: applyDirection(val1, dir1),
+      lat: applyDirection(val2, dir2),
+    };
+  };
+
+  const validateAndReturn = (
+    lat: number,
+    lon: number,
+  ): ParsedCoordinate | null => {
+    if (Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
+      return createDMSResult(lat, lon);
+    }
+    return null;
+  };
 
   // Pattern 1: Direction BEFORE coordinates (e.g., "N 60° 5' 38'', E 10° 50' 10''")
-  // Using '' or " for seconds
   const dirBeforePattern =
     /([NSEW])\s*(\d+)\s*°\s*(\d+)\s*['\u2032]\s*(\d+(?:\.\d+)?)\s*["\u2033']{0,2}\s*[,;\s]*([NSEW])\s*(\d+)\s*°\s*(\d+)\s*['\u2032]\s*(\d+(?:\.\d+)?)\s*["\u2033']{0,2}/i;
   const dirBeforeMatch = input.match(dirBeforePattern);
 
   if (dirBeforeMatch) {
-    const dir1 = dirBeforeMatch[1].toUpperCase();
-    const deg1 = parseInt(dirBeforeMatch[2], 10);
-    const min1 = parseInt(dirBeforeMatch[3], 10);
-    const sec1 = parseFloat(dirBeforeMatch[4]);
-    const dir2 = dirBeforeMatch[5].toUpperCase();
-    const deg2 = parseInt(dirBeforeMatch[6], 10);
-    const min2 = parseInt(dirBeforeMatch[7], 10);
-    const sec2 = parseFloat(dirBeforeMatch[8]);
+    const [, d1, deg1, min1, sec1, d2, deg2, min2, sec2] = dirBeforeMatch;
+    const dir1 = d1.toUpperCase();
+    const dir2 = d2.toUpperCase();
+    const m1 = parseInt(min1, 10);
+    const s1 = parseFloat(sec1);
+    const m2 = parseInt(min2, 10);
+    const s2 = parseFloat(sec2);
 
-    if (min1 < 60 && sec1 < 60 && min2 < 60 && sec2 < 60) {
-      const val1 = deg1 + min1 / 60 + sec1 / 3600;
-      const val2 = deg2 + min2 / 60 + sec2 / 3600;
-
-      let lat: number, lon: number;
-      if (dir1 === 'N' || dir1 === 'S') {
-        lat = dir1 === 'S' ? -val1 : val1;
-        lon = dir2 === 'W' ? -val2 : val2;
-      } else {
-        lon = dir1 === 'W' ? -val1 : val1;
-        lat = dir2 === 'S' ? -val2 : val2;
-      }
-
-      const formatDMS = (value: number, isLat: boolean): string => {
-        const abs = Math.abs(value);
-        const degrees = Math.floor(abs);
-        const minutes = Math.floor((abs - degrees) * 60);
-        const seconds = ((abs - degrees - minutes / 60) * 3600).toFixed(1);
-        const direction = isLat
-          ? value >= 0
-            ? 'N'
-            : 'S'
-          : value >= 0
-            ? 'E'
-            : 'W';
-        return `${degrees}°${minutes}'${seconds}"${direction}`;
-      };
-
-      return {
-        lat,
-        lon,
-        projection: 'EPSG:4326',
-        formattedString: `${formatDMS(lat, true)} ${formatDMS(lon, false)}`,
-        inputFormat: 'dms',
-      };
+    if (m1 < 60 && s1 < 60 && m2 < 60 && s2 < 60) {
+      const val1 = parseInt(deg1, 10) + m1 / 60 + s1 / 3600;
+      const val2 = parseInt(deg2, 10) + m2 / 60 + s2 / 3600;
+      const { lat, lon } = assignLatLon(val1, dir1, val2, dir2);
+      return validateAndReturn(lat, lon);
     }
   }
 
@@ -354,94 +357,68 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const dmsNoQuotesMatch = input.match(dmsNoQuotesPattern);
 
   if (dmsNoQuotesMatch) {
-    const deg1 = parseInt(dmsNoQuotesMatch[1], 10);
-    const min1 = parseInt(dmsNoQuotesMatch[2], 10);
-    const sec1 = parseFloat(dmsNoQuotesMatch[3]);
-    const deg2 = parseInt(dmsNoQuotesMatch[4], 10);
-    const min2 = parseInt(dmsNoQuotesMatch[5], 10);
-    const sec2 = parseFloat(dmsNoQuotesMatch[6]);
+    const [, deg1, min1, sec1, deg2, min2, sec2] = dmsNoQuotesMatch;
+    const m1 = parseInt(min1, 10);
+    const s1 = parseFloat(sec1);
+    const m2 = parseInt(min2, 10);
+    const s2 = parseFloat(sec2);
 
-    if (min1 < 60 && sec1 < 60 && min2 < 60 && sec2 < 60) {
-      const lat = deg1 + min1 / 60 + sec1 / 3600;
-      const lon = deg2 + min2 / 60 + sec2 / 3600;
-
-      // Validate ranges
-      if (Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
-        const formatDMS = (value: number, isLat: boolean): string => {
-          const abs = Math.abs(value);
-          const degrees = Math.floor(abs);
-          const minutes = Math.floor((abs - degrees) * 60);
-          const seconds = ((abs - degrees - minutes / 60) * 3600).toFixed(1);
-          const direction = isLat
-            ? value >= 0
-              ? 'N'
-              : 'S'
-            : value >= 0
-              ? 'E'
-              : 'W';
-          return `${degrees}°${minutes}'${seconds}"${direction}`;
-        };
-
-        return {
-          lat,
-          lon,
-          projection: 'EPSG:4326',
-          formattedString: `${formatDMS(lat, true)} ${formatDMS(lon, false)}`,
-          inputFormat: 'dms',
-        };
-      }
+    if (m1 < 60 && s1 < 60 && m2 < 60 && s2 < 60) {
+      const lat = parseInt(deg1, 10) + m1 / 60 + s1 / 3600;
+      const lon = parseInt(deg2, 10) + m2 / 60 + s2 / 3600;
+      return validateAndReturn(lat, lon);
     }
   }
 
-  // Pattern 3: Degrees and minutes only, no direction (e.g., "60°10',10°10'")
+  // Pattern 3: Degrees and decimal minutes only, no direction (e.g., "60°10.5',10°10.5'")
   const dmNoDirectionPattern =
     /(\d+)\s*°\s*(\d+(?:\.\d+)?)\s*['\u2032]\s*[,;\s]+(\d+)\s*°\s*(\d+(?:\.\d+)?)\s*['\u2032]/;
   const dmNoDirectionMatch = input.match(dmNoDirectionPattern);
 
   if (dmNoDirectionMatch) {
-    const deg1 = parseInt(dmNoDirectionMatch[1], 10);
-    const min1 = parseFloat(dmNoDirectionMatch[2]);
-    const deg2 = parseInt(dmNoDirectionMatch[3], 10);
-    const min2 = parseFloat(dmNoDirectionMatch[4]);
+    const [, deg1, min1, deg2, min2] = dmNoDirectionMatch;
+    const m1 = parseFloat(min1);
+    const m2 = parseFloat(min2);
 
-    if (min1 < 60 && min2 < 60) {
-      const lat = deg1 + min1 / 60;
-      const lon = deg2 + min2 / 60;
-
-      // Validate ranges
-      if (Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
-        const formatDMS = (value: number, isLat: boolean): string => {
-          const abs = Math.abs(value);
-          const degrees = Math.floor(abs);
-          const minutes = Math.floor((abs - degrees) * 60);
-          const seconds = ((abs - degrees - minutes / 60) * 3600).toFixed(1);
-          const direction = isLat
-            ? value >= 0
-              ? 'N'
-              : 'S'
-            : value >= 0
-              ? 'E'
-              : 'W';
-          return `${degrees}°${minutes}'${seconds}"${direction}`;
-        };
-
-        return {
-          lat,
-          lon,
-          projection: 'EPSG:4326',
-          formattedString: `${formatDMS(lat, true)} ${formatDMS(lon, false)}`,
-          inputFormat: 'dms',
-        };
-      }
+    if (m1 < 60 && m2 < 60) {
+      const lat = parseInt(deg1, 10) + m1 / 60;
+      const lon = parseInt(deg2, 10) + m2 / 60;
+      return validateAndReturn(lat, lon);
     }
   }
 
-  // Pattern 4: Standard DMS format with direction after (with quotes)
-  // Support multiple quote styles: ' " (ASCII), ′ ″ (Unicode prime), ' " (curly quotes)
-  const dmsPattern =
-    /(\d+)[°\s]+(\d+)['\u2032'\s]+(\d+(?:\.\d+)?)["\u2033"\s]*([NSEW])/gi;
-  let matches = Array.from(input.matchAll(dmsPattern));
+  // Pattern 4: Decimal minutes with only first direction (e.g., "58° 09.83' N, 06° 48.76'")
+  const dmPartialDirectionPattern =
+    /(\d+)\s*°\s*(\d+(?:\.\d+)?)\s*['\u2032]\s*([NSEW])\s*[,;\s]+(\d+)\s*°\s*(\d+(?:\.\d+)?)\s*['\u2032]?\s*$/i;
+  const dmPartialDirectionMatch = input.match(dmPartialDirectionPattern);
 
+  if (dmPartialDirectionMatch) {
+    const [, deg1, min1, d1, deg2, min2] = dmPartialDirectionMatch;
+    const dir1 = d1.toUpperCase();
+    const m1 = parseFloat(min1);
+    const m2 = parseFloat(min2);
+
+    if (m1 < 60 && m2 < 60) {
+      const val1 = parseInt(deg1, 10) + m1 / 60;
+      const val2 = parseInt(deg2, 10) + m2 / 60;
+
+      let lat: number, lon: number;
+      if (dir1 === 'N' || dir1 === 'S') {
+        lat = applyDirection(val1, dir1);
+        lon = val2; // Assume positive (E)
+      } else {
+        lon = applyDirection(val1, dir1);
+        lat = val2; // Assume positive (N)
+      }
+      return validateAndReturn(lat, lon);
+    }
+  }
+
+  // Pattern 5: Standard DMS format with direction after (with quotes)
+  // Support multiple quote styles: ' " (ASCII), ′ ″ (Unicode prime), '' (two single quotes)
+  const dmsPattern =
+    /(\d+)[°\s]+(\d+)['\u2032'\s]+(\d+(?:\.\d+)?)["\u2033"']{0,2}\s*([NSEW])/gi;
+  let matches = Array.from(input.matchAll(dmsPattern));
   const hasDMS = matches.length === 2;
 
   // If DMS didn't match, try decimal minutes format (without seconds)
@@ -459,45 +436,37 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
 
   for (const match of matches) {
     const degrees = parseInt(match[1], 10);
-    const minutesOrSeconds = parseFloat(match[2]);
-    const secondsOrDirection = match[3];
+    const minutesValue = parseFloat(match[2]);
 
-    let minutes: number;
-    let seconds: number;
+    let decimal: number;
     let direction: string;
 
     if (hasDMS) {
-      // DMS format: degrees, minutes, seconds, direction
-      minutes = Math.floor(minutesOrSeconds);
-      seconds = parseFloat(secondsOrDirection);
+      const minutes = Math.floor(minutesValue);
+      const seconds = parseFloat(match[3]);
       direction = match[4].toUpperCase();
 
-      if (
-        isNaN(degrees) ||
-        isNaN(minutes) ||
-        isNaN(seconds) ||
-        minutes >= 60 ||
-        seconds >= 60
-      ) {
+      if (isNaN(minutes) || isNaN(seconds) || minutes >= 60 || seconds >= 60) {
         return null;
       }
+      decimal = degrees + minutes / 60 + seconds / 3600;
     } else {
-      // DM format: degrees, decimal minutes, direction
-      minutes = minutesOrSeconds;
-      seconds = 0;
-      direction = secondsOrDirection.toUpperCase();
+      direction = match[3].toUpperCase();
 
-      if (isNaN(degrees) || isNaN(minutes) || minutes >= 60) {
+      if (isNaN(minutesValue) || minutesValue >= 60) {
         return null;
       }
+      decimal = degrees + minutesValue / 60;
     }
 
-    const decimal = degrees + minutes / 60 + seconds / 3600;
+    if (isNaN(degrees)) {
+      return null;
+    }
 
     if (direction === 'N' || direction === 'S') {
-      lat = direction === 'S' ? -decimal : decimal;
+      lat = applyDirection(decimal, direction);
     } else if (direction === 'E' || direction === 'W') {
-      lon = direction === 'W' ? -decimal : decimal;
+      lon = applyDirection(decimal, direction);
     }
   }
 
@@ -505,23 +474,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     return null;
   }
 
-  // Format back to DMS for display
-  const formatDMS = (value: number, isLat: boolean): string => {
-    const abs = Math.abs(value);
-    const degrees = Math.floor(abs);
-    const minutes = Math.floor((abs - degrees) * 60);
-    const seconds = ((abs - degrees - minutes / 60) * 3600).toFixed(1);
-    const direction = isLat ? (value >= 0 ? 'N' : 'S') : value >= 0 ? 'E' : 'W';
-    return `${degrees}°${minutes}'${seconds}"${direction}`;
-  };
-
-  return {
-    lat,
-    lon,
-    projection: 'EPSG:4326',
-    formattedString: `${formatDMS(lat, true)} ${formatDMS(lon, false)}`,
-    inputFormat: 'dms',
-  };
+  return createDMSResult(lat, lon);
 };
 
 /**
