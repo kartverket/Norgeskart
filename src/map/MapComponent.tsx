@@ -24,13 +24,16 @@ import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { mapLegacyThemeLayerId, useThemeLayers } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
-import { getScaleFromResolution, scaleToResolution } from './mapScale.ts';
 import {
   mapContextIsOpenAtom,
   mapContextXPosAtom,
   mapContextYPosAtom,
 } from './menu/atoms.ts';
 import { MapContextMenu } from './menu/MapContextMenu.tsx';
+import {
+  getScaleFromResolution,
+  scaleToResolution,
+} from './mapScale.ts'
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -208,7 +211,7 @@ export const MapComponent = () => {
         const resolution = view.getResolution();
         const units = view.getProjection().getUnits();
         if (resolution && units) {
-          setScale(getScaleFromResolution(resolution, map));
+          setScale(getScaleFromResolution(resolution, map, true));
         }
       };
       updateScale();
