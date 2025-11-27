@@ -47,7 +47,7 @@ const providers: WMTSProviders = {
     baseUrl: ENV.layerProviderParameters.norgeIBilder.baseUrl,
     endpoints: {
       getCapabilities:
-        '/gatekeeper/gk/gk.open_nib_web_mercator_wmts_v2?Request=GetCapabilities&Service=WMTS?token=' +
+        '/arcgis/rest/services/Nibcache_web_mercator_v2/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?token=' +
         ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_web_mercator_v2'],
@@ -56,7 +56,7 @@ const providers: WMTSProviders = {
     baseUrl: ENV.layerProviderParameters.norgeIBilder.baseUrl,
     endpoints: {
       getCapabilities:
-        '/gatekeeper/gk/gk.open_nib_utm32_wmts_v2?Request=GetCapabilities&Service=WMTS?token=' +
+        '/arcgis/rest/services/Nibcache_UTM32_EUREF89_v2/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?token=' +
         ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_UTM32_EUREF89_v2'],
@@ -65,7 +65,7 @@ const providers: WMTSProviders = {
     baseUrl: ENV.layerProviderParameters.norgeIBilder.baseUrl,
     endpoints: {
       getCapabilities:
-        '/gatekeeper/gk/gk.open_nib_utm33_wmts_v2?Request=GetCapabilities&Service=WMTS?token=' +
+        '/arcgis/rest/services/Nibcache_UTM33_EUREF89_v2/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?token=' +
         ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_UTM33_EUREF89_v2'],
@@ -74,7 +74,7 @@ const providers: WMTSProviders = {
     baseUrl: ENV.layerProviderParameters.norgeIBilder.baseUrl,
     endpoints: {
       getCapabilities:
-        '/gatekeeper/gk/gk.open_nib_utm35_wmts_v2?Request=GetCapabilities&Service=WMTS?token=' +
+        '/arcgis/rest/services/Nibcache_UTM35_EUREF89_v2/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?token=' +
         ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_UTM35_EUREF89_v2'],

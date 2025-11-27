@@ -24,7 +24,7 @@ const LOCAL_ENV: Env = {
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   layerProviderParameters: {
     norgeIBilder: {
-      baseUrl: 'https://opencache.statkart.no',
+      baseUrl: 'https://tilecache.norgeibilder.no',
       apiKey:
         'QtFmMDmnsoVno-q57lJceiJZECE2vsxbc5o9M3U3NQZBfyjWzpmpwzuyTFS-9dgt',
     },
@@ -43,7 +43,7 @@ const DEV_ENV: Env = {
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   layerProviderParameters: {
     norgeIBilder: {
-      baseUrl: 'https://opencache.statkart.no',
+      baseUrl: 'https://tilecache.norgeibilder.no',
       apiKey:
         'QtFmMDmnsoVno-q57lJcemfvn7mqMQwgmV0iOBRmE7r4BOMdUgOHUm2KhICHF7zmr45l-P4-Lzoazyp9kxDTXA..',
     },
@@ -62,7 +62,7 @@ const PROD_ENV: Env = {
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   layerProviderParameters: {
     norgeIBilder: {
-      baseUrl: 'https://opencache.statkart.no',
+      baseUrl: 'https://tilecache.norgeibilder.no',
       apiKey:
         'QtFmMDmnsoVno-q57lJcem8vr-Ai7rjF5QvG5I4bkGpVQs2QlmcuuHmreysu4Qdz',
     },
