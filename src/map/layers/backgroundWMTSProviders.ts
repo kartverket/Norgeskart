@@ -155,14 +155,15 @@ const WMTSAtom = atom(async () => {
               projection: prId,
             });
             if (options != null) {
+              // Allow cross-origin tile loading for map export
+              options.crossOrigin = 'anonymous';
               const wmts = isNorgeIBilderLayer(layer)
                 ? new WMTS({
                     ...options,
                     tileLoadFunction: nibTileLoadFunction,
                   })
                 : new WMTS({ ...options });
-              // ✅ Allow cross-origin tile loading for map export
-              options.crossOrigin = 'anonymous';
+              //options.crossOrigin = 'anonymous';
               layersForProjection.set(layer, wmts);
             }
           });

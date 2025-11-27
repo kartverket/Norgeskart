@@ -53,7 +53,7 @@ export const printMap = async ({
       ctx.fillStyle = "black";
       ctx.font = "12px Arial";
 
-      const scaleText = document.querySelector(".ol-scale-line-inner")?.textContent || "";
+      const scaleText = document.querySelector(".ol-scale-text")?.textContent || "";
       ctx.textAlign = "center";
       ctx.fillText(scaleText, printCanvas.width / 2, printCanvas.height - 24);
 

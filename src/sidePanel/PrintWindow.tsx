@@ -136,27 +136,24 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
   return (
     <Box
       position="absolute"
-      top="50%"
-      left={{ base: "50%", md: "0px" }}
+      top="30%"
+      left={{ base: "0%", md: "0px" }}
       transform="translateY(-50%)"
       background="white"
       border="1px solid #ddd"
       borderRadius="8px"
       boxShadow="0 2px 10px rgba(0,0,0,0.15)"
-      p={6}
+      p={3}
       zIndex={1001}
-      width={{ base: "100%", md: "400px" }}
+      width={{ base: "100%", md: "500px" }}
     >
-      <Heading as="h3" size="md" mb={3}>
-        {t("Print map")}
-      </Heading>
 
       <Text fontSize="sm" mb={4}>
         {t("Drag the box over the map to select the area to print.")}
       </Text>
 
       {/* KVIB Select */}
-      <Box mb={4}>
+      <Box mb={2}>
         <SelectRoot
           collection={layoutCollection}
           value={[layout]}
