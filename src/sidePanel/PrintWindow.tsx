@@ -31,14 +31,15 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
 
-  const overlayRef = useRef<HTMLDivElement | null>(null);
-  const { generate, loading } = useGenerateMapPdf();
-
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
   const [layout, setLayout] = useState<PrintLayout>("A4 Portrait");
 
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+
   const { aWidthPx, aHeightPx, overlayWidth, overlayHeight } =
     getDpiMetrics(layout);
+
+  const { generate, loading } = useGenerateMapPdf(layout);
 
   const LAYOUTS: PrintLayout[] = [
     "A4 Portrait",
