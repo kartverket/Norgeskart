@@ -178,6 +178,7 @@
     "selectPrintLayout": "Select print layout",
     "quickPrint": "Quick Print",
     "downloadPdf": "Download PDF",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "loading": "Loading map tiles..."
   }
 }

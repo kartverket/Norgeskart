@@ -183,7 +183,7 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
       {loading && (
         <Flex justifyContent="center" alignItems="center" mb={3} gap={2}>
           <Spinner />
-          <Text>{t("Loading map tiles...")}</Text>
+          <Text>{t("printMap.loading")}</Text>
         </Flex>
       )}
 
