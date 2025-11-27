@@ -13,7 +13,12 @@ export const getWMSLayer = (
       return new TileLayer({
         source: new TileWMS({
           url: ENV.layerProviderParameters.geoNorgeWMS.baseUrl + '.ecc_enc',
-          params: { LAYERS: 'cells', TILED: true, SRS: projection },
+          params: {
+            LAYERS: 'cells',
+            TILED: true,
+            SRS: projection,
+            TICKET: 'B8LBG7B',
+          },
           projection: projection,
         }),
         properties: {
