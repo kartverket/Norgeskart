@@ -1,27 +1,27 @@
 import {
   Box,
-  Heading,
-  Text,
-  Flex,
-  Spinner,
   Button,
+  createListCollection,
+  Flex,
+  Heading,
   SelectContent,
   SelectItem,
   SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  createListCollection,
-} from "@kvib/react";
+  Spinner,
+  Text,
+} from '@kvib/react';
 
-import { useGenerateMapPdf } from "../shared/utils/useGenerateMapPdf";
-import { useTranslation } from "react-i18next";
-import { useAtomValue } from "jotai";
-import { mapAtom } from "../map/atoms";
-import { useRef, useState, useEffect } from "react";
-import { useDraggableOverlay } from "../shared/utils/useDraggableOverlay";
-import { getDpiMetrics, PrintLayout } from "../shared/utils/getDpiMetrics";
-import { printMap } from "../shared/utils/printMap";
+import { useAtomValue } from 'jotai';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { mapAtom } from '../map/atoms';
+import { getDpiMetrics, PrintLayout } from '../shared/utils/getDpiMetrics';
+import { printMap } from '../shared/utils/printMap';
+import { useDraggableOverlay } from '../shared/utils/useDraggableOverlay';
+import { useGenerateMapPdf } from '../shared/utils/useGenerateMapPdf';
 
 interface PrintWindowProps {
   onClose: () => void;
@@ -32,7 +32,7 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
   const map = useAtomValue(mapAtom);
 
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
-  const [layout, setLayout] = useState<PrintLayout>("A4 Portrait");
+  const [layout, setLayout] = useState<PrintLayout>('A4 Portrait');
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,10 +42,10 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
   const { generate, loading } = useGenerateMapPdf(layout);
 
   const LAYOUTS: PrintLayout[] = [
-    "A4 Portrait",
-    "A4 Landscape",
-    "A3 Portrait",
-    "A3 Landscape",
+    'A4 Portrait',
+    'A4 Landscape',
+    'A3 Portrait',
+    'A3 Landscape',
   ];
 
   // KVIB Select collection
@@ -62,16 +62,16 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
     if (!map) return;
 
     const mapContainer = map.getViewport();
-    const overlay = document.createElement("div");
+    const overlay = document.createElement('div');
     overlayRef.current = overlay;
 
-    overlay.style.position = "absolute";
-    overlay.style.border = "2px dashed rgba(0,0,0,0.5)";
-    overlay.style.backgroundColor = "rgba(255,255,255,0.1)";
-    overlay.style.cursor = "move";
-    overlay.style.zIndex = "999";
-    overlay.style.pointerEvents = "auto";
-    overlay.style.userSelect = "none";
+    overlay.style.position = 'absolute';
+    overlay.style.border = '2px dashed rgba(0,0,0,0.5)';
+    overlay.style.backgroundColor = 'rgba(255,255,255,0.1)';
+    overlay.style.cursor = 'move';
+    overlay.style.zIndex = '999';
+    overlay.style.pointerEvents = 'auto';
+    overlay.style.userSelect = 'none';
 
     overlay.style.width = `${overlayWidth}px`;
     overlay.style.height = `${overlayHeight}px`;
@@ -136,34 +136,31 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
   return (
     <Box
       position="absolute"
-      top="50%"
-      left={{ base: "50%", md: "0px" }}
+      top="30%"
+      left={{ base: '0%', md: '0px' }}
       transform="translateY(-50%)"
       background="white"
       border="1px solid #ddd"
       borderRadius="8px"
       boxShadow="0 2px 10px rgba(0,0,0,0.15)"
-      p={6}
+      p={3}
       zIndex={1001}
-      width={{ base: "100%", md: "400px" }}
+      width={{ base: '100%', md: '500px' }}
     >
       <Heading as="h3" size="md" mb={3}>
-        {t("printMap.heading")}
+        {t('printMap.heading')}
       </Heading>
 
       <Text fontSize="sm" mb={4}>
-        {t("printMap.description")}
+        {t('printMap.description')}
       </Text>
 
       {/* KVIB Select */}
-      <Box mb={4}>
-        <SelectRoot
-          collection={layoutCollection}
-          value={[layout]}
-        >
-          <SelectLabel>{t("")}</SelectLabel>
+      <Box mb={2}>
+        <SelectRoot collection={layoutCollection} value={[layout]}>
+          <SelectLabel>{t('')}</SelectLabel>
           <SelectTrigger>
-            <SelectValueText placeholder={t("printMap.selectLayout")} />
+            <SelectValueText placeholder={t('printMap.selectLayout')} />
           </SelectTrigger>
 
           <SelectContent>
@@ -183,17 +180,26 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
       {loading && (
         <Flex justifyContent="center" alignItems="center" mb={3} gap={2}>
           <Spinner />
-          <Text>{t("printMap.loading")}</Text>
+          <Text>{t('printMap.loading')}</Text>
         </Flex>
       )}
 
       <Flex justifyContent="flex-end" gap={3}>
-        <Button onClick={onClose} variant="ghost" colorPalette="gray" disabled={loading}>
-          {t("printMap.cancel")}
+        <Button
+          onClick={onClose}
+          variant="ghost"
+          colorPalette="gray"
+          disabled={loading}
+        >
+          {t('printMap.cancel')}
         </Button>
 
-        <Button onClick={handleQuickPrint} colorPalette="green" disabled={loading}>
-          {t("printMap.quickPrint")}
+        <Button
+          onClick={handleQuickPrint}
+          colorPalette="green"
+          disabled={loading}
+        >
+          {t('printMap.quickPrint')}
         </Button>
 
         <Button
@@ -201,7 +207,7 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
           colorPalette="green"
           disabled={loading}
         >
-          {t("printMap.downloadPdf")}
+          {t('printMap.downloadPdf')}
         </Button>
       </Flex>
     </Box>
