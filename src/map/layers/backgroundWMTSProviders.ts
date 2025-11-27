@@ -1,7 +1,9 @@
 import { atom } from 'jotai';
 import { loadable } from 'jotai/utils';
+import { ImageTile } from 'ol';
 import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
+import Tile, { LoadFunction } from 'ol/Tile';
 import { getEnv } from '../../env';
 import { AvailableProjections, ProjectionIdentifier } from '../atoms';
 
@@ -31,6 +33,15 @@ type WMTSProvider = {
     getCapabilities: string;
   };
   layers: WMTSLayerName[];
+};
+
+const isNorgeIBilderLayer = (layer: WMTSLayerName) => {
+  return (
+    layer === 'Nibcache_web_mercator_v2' ||
+    layer === 'Nibcache_UTM32_EUREF89_v2' ||
+    layer === 'Nibcache_UTM33_EUREF89_v2' ||
+    layer === 'Nibcache_UTM35_EUREF89_v2'
+  );
 };
 
 type WMTSProviders = Record<WMTSProviderId, WMTSProvider>;
@@ -80,6 +91,17 @@ const providers: WMTSProviders = {
     layers: ['Nibcache_UTM35_EUREF89_v2'],
   },
 };
+
+const nibTileLoadFunction: LoadFunction = (imageTile: Tile, src: string) => {
+  const token = ENV.layerProviderParameters.norgeIBilder.apiKey;
+  if (imageTile instanceof ImageTile) {
+    const image = imageTile.getImage();
+    if (image instanceof HTMLImageElement) {
+      image.src = src + (src.includes('?') ? '&' : '?') + 'token=' + token;
+    }
+  }
+};
+
 // To allow the strange matrix set identifiers in NorgeIBilder
 const parseMatrixSetString = (identifier: string) => {
   const parsed = identifier.replace('::', ':').split('crs:')[1];
@@ -132,7 +154,13 @@ const WMTSAtom = atom(async () => {
               projection: prId,
             });
             if (options != null) {
-              layersForProjection.set(layer, new WMTS(options));
+              const wmts = isNorgeIBilderLayer(layer)
+                ? new WMTS({
+                    ...options,
+                    tileLoadFunction: nibTileLoadFunction,
+                  })
+                : new WMTS({ ...options });
+              layersForProjection.set(layer, wmts);
             }
           });
           projectionLayerMapForProvider.set(prId, layersForProjection);
