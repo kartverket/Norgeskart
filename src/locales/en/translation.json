@@ -171,7 +171,13 @@
     "naval": "Naval map"
   },
     "printMap": {
-      "printSuccess": "Successful.",
-      "printError": "Error."
+    "printSuccess": "Vellykket.",
+    "printError": "Feil.",
+    "heading": "Print map",
+    "description": "Drag the box over the map to select the area to print",
+    "selectPrintLayout": "Select print layout",
+    "quickPrint": "Quick Print",
+    "downloadPdf": "Download PDF",
+    "cancel": "Cancel"
   }
 }
