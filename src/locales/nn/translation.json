@@ -316,8 +316,14 @@
     "naval": "Sjøkart"
   },
   "printMap": {
-    "printSuccess": "Successful.",
-    "printError": "Error."
+    "printSuccess": "Vellykket.",
+    "printError": "Feil.",
+    "heading": "Skriv ut kart",
+    "description": "Juster boksen på kartet for å velge område for utskriving",
+    "selectPrintLayout": "Velg layout for utskriving",
+    "quickPrint": "Rask utskriving",
+    "downloadPdf": "Last ned PDF",
+    "cancel": "Avbryt"
   },
   "cookieDialog": {
     "heading": "Vi nytter informasjonskapsler",

@@ -322,6 +322,12 @@
   },
   "printMap": {
     "printSuccess": "Vellykket.",
-    "printError": "Feil."
+    "printError": "Feil.",
+    "heading": "Skriv ut kart",
+    "description": "Juster boksen på kartet for å velge område for utskriving",
+    "selectPrintLayout": "Velg layout for utskriving",
+    "quickPrint": "Rask utskriving",
+    "downloadPdf": "Last ned PDF",
+    "cancel": "Avbryt"
   }
 }
