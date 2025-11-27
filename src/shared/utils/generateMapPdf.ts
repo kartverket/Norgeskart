@@ -8,6 +8,7 @@ interface GenerateMapPdfProps {
   overlayRef: React.RefObject<HTMLDivElement | null>;
   setLoading: (value: boolean) => void;
   t: (key: string) => string;
+  currentLayout: string;
 }
 
 // Background layer configuration mapping
@@ -209,6 +210,7 @@ export const generateMapPdf = async ({
   overlayRef,
   setLoading,
   t,
+  currentLayout,
 }: GenerateMapPdfProps) => {
   if (!map || !overlayRef.current) {
     console.warn("Map or overlay not available for PDF generation.");
@@ -216,6 +218,7 @@ export const generateMapPdf = async ({
   }
 
   setLoading(true);
+  console.log("Using layout in hook:", currentLayout);
 
   try {
     const overlayRect = overlayRef.current.getBoundingClientRect();
@@ -247,6 +250,15 @@ export const generateMapPdf = async ({
 
     const scale = getNearestScale(map);
 
+    const layoutMap: Record<string, string> = {
+    "A4 Portrait": "1_A4_portrait",
+    "A4 Landscape": "2_A4_landscape",
+    "A3 Portrait": "3_A3_portrait",
+    "A3 Landscape": "4_A3_landscape",
+  };
+
+  const api_layout = layoutMap[currentLayout] || "1_A4_portrait";  
+  console.log("Mapped layout for API:", api_layout);
 
     const payload = {
       attributes: {
@@ -297,7 +309,7 @@ export const generateMapPdf = async ({
         scale_string: `1: ${scale}` || "1:25000",
         //title: "Test Title.",
       },
-      layout: "2_A4_landscape",
+      layout: api_layout,
       outputFormat: "pdf",
       outputFilename: "norgeskart-utskrift",
     };
