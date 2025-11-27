@@ -1,7 +1,10 @@
 import { atom } from 'jotai';
 import { loadable } from 'jotai/utils';
+import { ImageTile } from 'ol';
 import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
+import Tile, { LoadFunction } from 'ol/Tile';
+import { getEnv } from '../../env';
 import { AvailableProjections, ProjectionIdentifier } from '../atoms';
 
 export const DEFAULT_BACKGROUND_LAYER = 'topo';
@@ -32,49 +35,73 @@ type WMTSProvider = {
   layers: WMTSLayerName[];
 };
 
-type WMTSProviders = Record<WMTSProviderId, WMTSProvider>;
+const isNorgeIBilderLayer = (layer: WMTSLayerName) => {
+  return (
+    layer === 'Nibcache_web_mercator_v2' ||
+    layer === 'Nibcache_UTM32_EUREF89_v2' ||
+    layer === 'Nibcache_UTM33_EUREF89_v2' ||
+    layer === 'Nibcache_UTM35_EUREF89_v2'
+  );
+};
 
+type WMTSProviders = Record<WMTSProviderId, WMTSProvider>;
+const ENV = getEnv();
 const providers: WMTSProviders = {
   kartverketCache: {
-    baseUrl: 'https://cache.kartverket.no',
+    baseUrl: ENV.layerProviderParameters.kartverketCache.baseUrl,
     endpoints: {
       getCapabilities: '/v1/service?Request=GetCapabilities&Service=WMTS',
     },
     layers: ['topo', 'topograatone', 'toporaster', 'sjokartraster'],
   },
   norgeibilder_webmercator: {
-    baseUrl: 'https://opencache.statkart.no',
+    baseUrl: ENV.layerProviderParameters.norgeIBilder.baseUrl,
     endpoints: {
       getCapabilities:
-        '/gatekeeper/gk/gk.open_nib_web_mercator_wmts_v2?Request=GetCapabilities&Service=WMTS',
+        '/arcgis/rest/services/Nibcache_web_mercator_v2/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?token=' +
+        ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_web_mercator_v2'],
   },
   norgeibilder_utm32: {
-    baseUrl: 'https://opencache.statkart.no',
+    baseUrl: ENV.layerProviderParameters.norgeIBilder.baseUrl,
     endpoints: {
       getCapabilities:
-        '/gatekeeper/gk/gk.open_nib_utm32_wmts_v2?Request=GetCapabilities&Service=WMTS',
+        '/arcgis/rest/services/Nibcache_UTM32_EUREF89_v2/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?token=' +
+        ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_UTM32_EUREF89_v2'],
   },
   norgeibilder_utm33: {
-    baseUrl: 'https://opencache.statkart.no',
+    baseUrl: ENV.layerProviderParameters.norgeIBilder.baseUrl,
     endpoints: {
       getCapabilities:
-        '/gatekeeper/gk/gk.open_nib_utm33_wmts_v2?Request=GetCapabilities&Service=WMTS',
+        '/arcgis/rest/services/Nibcache_UTM33_EUREF89_v2/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?token=' +
+        ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_UTM33_EUREF89_v2'],
   },
   norgeibilder_utm35: {
-    baseUrl: 'https://opencache.statkart.no',
+    baseUrl: ENV.layerProviderParameters.norgeIBilder.baseUrl,
     endpoints: {
       getCapabilities:
-        '/gatekeeper/gk/gk.open_nib_utm35_wmts_v2?Request=GetCapabilities&Service=WMTS',
+        '/arcgis/rest/services/Nibcache_UTM35_EUREF89_v2/MapServer/WMTS/1.0.0/WMTSCapabilities.xml?token=' +
+        ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_UTM35_EUREF89_v2'],
   },
 };
+
+const nibTileLoadFunction: LoadFunction = (imageTile: Tile, src: string) => {
+  const token = ENV.layerProviderParameters.norgeIBilder.apiKey;
+  if (imageTile instanceof ImageTile) {
+    const image = imageTile.getImage();
+    if (image instanceof HTMLImageElement) {
+      image.src = src + (src.includes('?') ? '&' : '?') + 'token=' + token;
+    }
+  }
+};
+
 // To allow the strange matrix set identifiers in NorgeIBilder
 const parseMatrixSetString = (identifier: string) => {
   const parsed = identifier.replace('::', ':').split('crs:')[1];
@@ -127,7 +154,13 @@ const WMTSAtom = atom(async () => {
               projection: prId,
             });
             if (options != null) {
-              layersForProjection.set(layer, new WMTS(options));
+              const wmts = isNorgeIBilderLayer(layer)
+                ? new WMTS({
+                    ...options,
+                    tileLoadFunction: nibTileLoadFunction,
+                  })
+                : new WMTS({ ...options });
+              layersForProjection.set(layer, wmts);
             }
           });
           projectionLayerMapForProvider.set(prId, layersForProjection);

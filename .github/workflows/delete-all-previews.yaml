@@ -24,7 +24,7 @@ jobs:
           identity: norgeskart5
 
       - name: Checkout apps repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: kartverket/tnt-apps
           ref: main
