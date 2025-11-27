@@ -1,6 +1,5 @@
 import {
   Box,
-  Heading,
   Text,
   Flex,
   Spinner,
@@ -149,7 +148,7 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
     >
 
       <Text fontSize="sm" mb={4}>
-        {t("Drag the box over the map to select the area to print.")}
+        {t('printMap.description')}
       </Text>
 
       {/* KVIB Select */}
@@ -158,9 +157,9 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
           collection={layoutCollection}
           value={[layout]}
         >
-          <SelectLabel>{t("Select print layout")}</SelectLabel>
+          <SelectLabel>{t("printMap.selectPrintLayout")}</SelectLabel>
           <SelectTrigger>
-            <SelectValueText placeholder={t("Select layout")} />
+            <SelectValueText placeholder={t("printMap.selectPrintLayout")} />
           </SelectTrigger>
 
           <SelectContent>
@@ -186,11 +185,11 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
 
       <Flex justifyContent="flex-end" gap={3}>
         <Button onClick={onClose} variant="ghost" colorPalette="gray" disabled={loading}>
-          {t("Cancel")}
+          {t("printMap.cancel")}
         </Button>
 
         <Button onClick={handleQuickPrint} colorPalette="green" disabled={loading}>
-          {t("Quick Print")}
+          {t("printMap.quickPrint")}
         </Button>
 
         <Button
@@ -198,7 +197,7 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
           colorPalette="green"
           disabled={loading}
         >
-          {t("Download PDF")}
+          {t("printMap.downloadPdf")}
         </Button>
       </Flex>
     </Box>
