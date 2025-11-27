@@ -1,36 +1,78 @@
+type layerProviderParameters = {
+  norgeIBilder: {
+    baseUrl: string;
+    apiKey: string;
+  };
+  kartverketCache: {
+    baseUrl: string;
+  };
+  geoNorgeWMS: {
+    baseUrl: string;
+  };
+};
+
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
 type Env = {
   apiUrl: string;
-  geoNorgeWMSUrl: string;
   geoNorgeApiBaseUrl: string;
+  layerProviderParameters: layerProviderParameters;
   envName: EnvName;
 };
 
 const LOCAL_ENV: Env = {
   apiUrl: 'https://testapi.norgeskart.no',
-  geoNorgeWMSUrl: 'https://wms.geonorge.no/skwms1/wms',
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
+  layerProviderParameters: {
+    norgeIBilder: {
+      baseUrl: 'https://opencache.statkart.no',
+      apiKey:
+        'QtFmMDmnsoVno-q57lJceiJZECE2vsxbc5o9M3U3NQZBfyjWzpmpwzuyTFS-9dgt',
+    },
+    kartverketCache: {
+      baseUrl: 'https://cache.kartverket.no',
+    },
+    geoNorgeWMS: {
+      baseUrl: 'https://wms.geonorge.no/skwms1/wms',
+    },
+  },
   envName: 'local',
 };
 
 const DEV_ENV: Env = {
   apiUrl: 'https://testapi.norgeskart.no',
-  geoNorgeWMSUrl: 'https://wms.geonorge.no/skwms1/wms',
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
+  layerProviderParameters: {
+    norgeIBilder: {
+      baseUrl: 'https://opencache.statkart.no',
+      apiKey:
+        'QtFmMDmnsoVno-q57lJcemfvn7mqMQwgmV0iOBRmE7r4BOMdUgOHUm2KhICHF7zmr45l-P4-Lzoazyp9kxDTXA..',
+    },
+    kartverketCache: {
+      baseUrl: 'https://cache.kartverket.no',
+    },
+    geoNorgeWMS: {
+      baseUrl: 'https://wms.geonorge.no/skwms1/wms',
+    },
+  },
   envName: 'dev',
-};
-
-const TEST_ENV: Env = {
-  apiUrl: 'https://testapi.norgeskart.no',
-  geoNorgeWMSUrl: 'https://wms.geonorge.no/skwms1/wms',
-  geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
-  envName: 'test',
 };
 
 const PROD_ENV: Env = {
   apiUrl: 'https://testapi.norgeskart.no',
-  geoNorgeWMSUrl: 'https://wms.geonorge.no/skwms1/wms',
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
+  layerProviderParameters: {
+    norgeIBilder: {
+      baseUrl: 'https://opencache.statkart.no',
+      apiKey:
+        'QtFmMDmnsoVno-q57lJcem8vr-Ai7rjF5QvG5I4bkGpVQs2QlmcuuHmreysu4Qdz',
+    },
+    kartverketCache: {
+      baseUrl: 'https://cache.kartverket.no',
+    },
+    geoNorgeWMS: {
+      baseUrl: 'https://wms.geonorge.no/skwms1/wms',
+    },
+  },
   envName: 'prod',
 };
 
@@ -51,13 +93,7 @@ const getEnv = (): Env => {
   if (previewRegex.test(domain)) {
     return DEV_ENV;
   }
-  if (
-    domain == 'norgeskart.atgcp1-prod.kartverket-intern.cloud' ||
-    domain == 'test.norgeskart.no'
-  ) {
-    return TEST_ENV;
-  }
-  if (domain == 'norgeskart.no') {
+  if (domain == 'test.norgeskart.no') {
     return PROD_ENV;
   }
 

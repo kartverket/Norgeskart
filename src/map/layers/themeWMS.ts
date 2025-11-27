@@ -162,7 +162,7 @@ const getGeoNorgeWMSLayer = (
 ): TileLayer => {
   return new TileLayer({
     source: new TileWMS({
-      url: `${ENV.geoNorgeWMSUrl}.${wmsName}`,
+      url: `${ENV.layerProviderParameters.geoNorgeWMS.baseUrl}.${wmsName}`,
       params: {
         LAYERS: layerNames,
         TILED: true,
