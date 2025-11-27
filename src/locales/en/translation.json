@@ -145,19 +145,30 @@
     "leaseNr": "Lease nr.",
     "sectionNr": "Section nr.",
     "multipleAddressesText": "The property has several addresses",
-    "moreInformation": "Show more information"
+    "moreInformation": "Show more information",
+    "landRegistration": "Land Registration",
+    "cadastre": "Cadastre"
   },
   "placeInfo": {
     "locationNumber": "Location number",
     "nameObjectType": "Name object type",
     "loadingPlaceNameInfo": "Loading place name information",
-    "errorPlaceNameInfo": "Error fetching place name information"
+    "errorPlaceNameInfo": "Error fetching place name information",
+    "recreation": {
+      "recreation": "Recreation",
+      "hikingTrail": "Hiking trail",
+      "fishingZone": "Fishing zones"
+    }
   },
   "locationType": {
     "property": "Property",
     "road": "Road",
     "place": "Placename",
     "address": "Address"
+  },
+  "maps": {
+    "topographic": "Topographic map",
+    "naval": "Naval map"
   },
     "printMap": {
       "printSuccess": "Successful.",

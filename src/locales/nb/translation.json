@@ -150,19 +150,30 @@
     "leaseNr": "Festenr.",
     "sectionNr": "Seksjonsnr.",
     "multipleAddressesText": "Eiendommen har flere adresser",
-    "moreInformation": "Vis mer informasjon"
+    "moreInformation": "Vis mer informasjon",
+    "landRegistration": "Grunnbok",
+    "cadastre": "Matrikkel"
   },
   "placeInfo": {
     "locationNumber": "Stedsnummer",
     "nameObjectType": "Navneobjekttype",
     "loadingPlaceNameInfo": "Laster stedsnavninformasjon",
-    "errorPlaceNameInfo": "Feil ved henting av stedsnavninformasjon"
+    "errorPlaceNameInfo": "Feil ved henting av stedsnavninformasjon",
+    "recreation": {
+      "recreation": "Friluftsliv",
+      "hikingTrail": "Turstier",
+      "fishingZone": "Fiskekortsoner"
+    }
   },
   "locationType": {
     "property": "Eiendom",
     "road": "Vei",
     "place": "Stedsnavn",
     "address": "Adresse"
+  },
+  "maps": {
+    "topographic": "Topografisk kart",
+    "naval": "Sjøkart"
   },
   "printMap": {
     "printSuccess": "Vellykket.",
