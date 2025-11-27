@@ -1,11 +1,10 @@
-const HASH_ROUTING_PREFIX = '#!?';
+export const HASH_ROUTING_PREFIX = '#!?';
 
 const isUsingHashRouting = (url: URL): boolean => {
   return url.hash.startsWith(HASH_ROUTING_PREFIX);
 };
 
 const getSearchParams = (): URLSearchParams => {
-  // Helper to parse URL parameters from both modern (?param=value) and legacy (#!?param=value) formats
   const url = new URL(window.location.href);
   if (isUsingHashRouting(url)) {
     const hashParams = url.hash.substring(HASH_ROUTING_PREFIX.length);
@@ -94,6 +93,20 @@ export const removeFromUrlListParameter = (
   });
 };
 
+export const transitionHashToQuery = (): void => {
+  const url = new URL(window.location.href);
+  if (!isUsingHashRouting(url)) return;
+  
+  const hashParams = new URLSearchParams(
+    url.hash.substring(HASH_ROUTING_PREFIX.length)
+  );
+  hashParams.forEach((value, key) => {
+    url.searchParams.set(key, value);
+  });
+  url.hash = '';
+  window.history.replaceState({}, '', url.toString());
+};
+
 export type NKUrlParameter =
   | 'projection'
   | 'backgroundLayer'
@@ -104,4 +117,5 @@ export type NKUrlParameter =
   | 'zoom'
   | 'drawing'
   | 'layers' // Legacy parameter from old norgeskart.no
+  | 'project' // Legacy project parameter from old norgeskart.no
   | 'sok';

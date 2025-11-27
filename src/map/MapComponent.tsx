@@ -12,6 +12,7 @@ import {
   getUrlParameter,
   removeUrlParameter,
   setUrlParameter,
+  transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
 import {
@@ -22,7 +23,6 @@ import {
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import {
   mapLegacyThemeLayerId,
-  parseLegacyLayersParameter,
   useThemeLayers,
 } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
@@ -59,8 +59,28 @@ export const MapComponent = () => {
     };
   }, [setTargetElement, mapRef]);
 
+  /**
+   * Process legacy URL parameters from old norgeskart.no format.
+   * 
+   * Legacy format: #!?project=<category>&layers=<id1>,<id2>
+   * Modern format: ?backgroundLayer=<name>&themeLayers=<id1>,<id2>
+   * 
+   * Timing is critical:
+   * 1. Hash transition must happen BEFORE processing (enables proper URL operations)
+   * 2. Config must be loaded (needed for legacy ID mapping)
+   * 3. Background layers must be available (needed for layer activation)
+   * 4. Process only once per session (prevents re-running on URL updates)
+   * 
+   * The legacy 'layers' param contains both background (1001-1010) and theme (>1010) IDs.
+   * The 'project' param filters which theme layers are valid for the current category.
+   */
   useEffect(() => {
     if (!map) {
+      return;
+    }
+    
+    if (configLoadable.state === 'hasError') {
+      hasProcessedUrlRef.current = true;
       return;
     }
     
@@ -76,25 +96,26 @@ export const MapComponent = () => {
       return;
     }
     
-    // Check both new 'backgroundLayer' and legacy 'layers' parameter
+    transitionHashToQuery();
+    
     let layerNameFromUrl = getUrlParameter('backgroundLayer');
     const legacyLayerParam = getUrlParameter('layers');
-    const projectParam = getUrlParameter('project');
+    const projectParam = getUrlParameter('project') ?? undefined;
     let legacyThemeLayerIds: string[] = [];
 
     if (legacyLayerParam) {
-      const layerIds = legacyLayerParam.split(',').map((s) => s.trim());
+      const layerIds = legacyLayerParam
+        .split(',')
+        .map((s) => s.trim())
+        .filter((id) => id.length > 0);
       
-      // Separate background layer (1001-1010) from theme layers (1011+)
-      const backgroundLayerId = layerIds.find((id) => {
-        const numId = parseInt(id, 10);
-        return !isNaN(numId) && numId >= 1001 && numId <= 1010;
-      });
+      const backgroundLayerId = layerIds.find((id) => 
+        mapLegacyBackgroundLayerId(id) !== null
+      );
       
-      const themeLayerIds = layerIds.filter((id) => {
-        const numId = parseInt(id, 10);
-        return !isNaN(numId) && numId > 1010;
-      });
+      const themeLayerIds = layerIds.filter((id) => 
+        id !== backgroundLayerId && parseInt(id, 10) > 1010
+      );
       
       if (backgroundLayerId) {
         layerNameFromUrl = backgroundLayerId;
@@ -103,7 +124,6 @@ export const MapComponent = () => {
       legacyThemeLayerIds = themeLayerIds;
     }
 
-    // Support legacy numeric IDs from old norgeskart.no
     if (layerNameFromUrl) {
       const legacyLayerName = mapLegacyBackgroundLayerId(layerNameFromUrl);
       if (legacyLayerName) {
@@ -116,29 +136,21 @@ export const MapComponent = () => {
 
     if (legacyLayerParam) {
       removeUrlParameter('layers');
-      removeUrlParameter('project'); // Also remove project param after processing
+      removeUrlParameter('project');
       setUrlParameter('backgroundLayer', finalLayerName);
 
+      const currentThemeLayers = getListUrlParameter('themeLayers') || [];
+      const newThemeLayers = [...currentThemeLayers];
+      
       legacyThemeLayerIds.forEach((legacyId) => {
         const modernId = mapLegacyThemeLayerId(legacyId, configLoadable, projectParam);
-        if (modernId) {
-          const currentThemeLayers = getListUrlParameter('themeLayers') || [];
-          if (!currentThemeLayers.includes(modernId)) {
-            const updated = [...currentThemeLayers, modernId];
-            setUrlParameter('themeLayers', updated.join(','));
-          }
+        if (modernId && !newThemeLayers.includes(modernId)) {
+          newThemeLayers.push(modernId);
         }
       });
       
-      // Transition from hash-based (#!?) to modern query params (?)
-      const url = new URL(window.location.href);
-      if (url.hash.startsWith('#!?')) {
-        const hashParams = new URLSearchParams(url.hash.substring(3));
-        hashParams.forEach((value, key) => {
-          url.searchParams.set(key, value);
-        });
-        url.hash = '';
-        window.history.replaceState({}, '', url.toString());
+      if (newThemeLayers.length > currentThemeLayers.length) {
+        setUrlParameter('themeLayers', newThemeLayers.join(','));
       }
     }
 
