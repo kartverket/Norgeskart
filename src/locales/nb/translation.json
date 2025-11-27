@@ -328,6 +328,7 @@
     "selectPrintLayout": "Velg layout for utskriving",
     "quickPrint": "Rask utskriving",
     "downloadPdf": "Last ned PDF",
-    "cancel": "Avbryt"
+    "cancel": "Avbryt",
+    "loading": "Laster ned kart tiles..."
   }
 }

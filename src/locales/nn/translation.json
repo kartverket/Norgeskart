@@ -323,7 +323,8 @@
     "selectPrintLayout": "Velg layout for utskriving",
     "quickPrint": "Rask utskriving",
     "downloadPdf": "Last ned PDF",
-    "cancel": "Avbryt"
+    "cancel": "Avbryt",
+    "loading": "Lastar ned kart tiles..."
   },
   "cookieDialog": {
     "heading": "Vi nytter informasjonskapsler",

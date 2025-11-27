@@ -318,13 +318,16 @@
     "topographic": "Topographic map",
     "naval": "Naval map"
   },
-    "printMap": {
+  "printMap": {
     "heading": "Print map",
     "description": "Drag the box over the map to select the area to print",
     "selectPrintLayout": "Select print layout",
     "quickPrint": "Quick Print",
     "downloadPdf": "Download PDF",
     "cancel": "Cancel",
-  
+
+    "loading": "Loading map tiles...",
     "printSuccess": "Successful.",
-    "printError": "Error."}
+    "printError": "Error."
+  }
+}
