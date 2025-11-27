@@ -21,10 +21,7 @@ import {
   useBackgoundLayers,
 } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
-import {
-  mapLegacyThemeLayerId,
-  useThemeLayers,
-} from './layers/themeLayers.ts';
+import { mapLegacyThemeLayerId, useThemeLayers } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import {
@@ -61,16 +58,16 @@ export const MapComponent = () => {
 
   /**
    * Process legacy URL parameters from old norgeskart.no format.
-   * 
+   *
    * Legacy format: #!?project=<category>&layers=<id1>,<id2>
    * Modern format: ?backgroundLayer=<name>&themeLayers=<id1>,<id2>
-   * 
+   *
    * Timing is critical:
    * 1. Hash transition must happen BEFORE processing (enables proper URL operations)
    * 2. Config must be loaded (needed for legacy ID mapping)
    * 3. Background layers must be available (needed for layer activation)
    * 4. Process only once per session (prevents re-running on URL updates)
-   * 
+   *
    * The legacy 'layers' param contains both background (1001-1010) and theme (>1010) IDs.
    * The 'project' param filters which theme layers are valid for the current category.
    */
@@ -78,26 +75,26 @@ export const MapComponent = () => {
     if (!map) {
       return;
     }
-    
+
     if (configLoadable.state === 'hasError') {
       hasProcessedUrlRef.current = true;
       return;
     }
-    
+
     if (configLoadable.state === 'loading') {
       return;
     }
-    
+
     if (backgroundLayerState !== 'hasData') {
       return;
     }
-    
+
     if (hasProcessedUrlRef.current) {
       return;
     }
-    
+
     transitionHashToQuery();
-    
+
     let layerNameFromUrl = getUrlParameter('backgroundLayer');
     const legacyLayerParam = getUrlParameter('layers');
     const projectParam = getUrlParameter('project') ?? undefined;
@@ -108,19 +105,19 @@ export const MapComponent = () => {
         .split(',')
         .map((s) => s.trim())
         .filter((id) => id.length > 0);
-      
-      const backgroundLayerId = layerIds.find((id) => 
-        mapLegacyBackgroundLayerId(id) !== null
+
+      const backgroundLayerId = layerIds.find(
+        (id) => mapLegacyBackgroundLayerId(id) !== null,
       );
-      
-      const themeLayerIds = layerIds.filter((id) => 
-        id !== backgroundLayerId && parseInt(id, 10) > 1010
+
+      const themeLayerIds = layerIds.filter(
+        (id) => id !== backgroundLayerId && parseInt(id, 10) > 1010,
       );
-      
+
       if (backgroundLayerId) {
         layerNameFromUrl = backgroundLayerId;
       }
-      
+
       legacyThemeLayerIds = themeLayerIds;
     }
 
@@ -141,14 +138,18 @@ export const MapComponent = () => {
 
       const currentThemeLayers = getListUrlParameter('themeLayers') || [];
       const newThemeLayers = [...currentThemeLayers];
-      
+
       legacyThemeLayerIds.forEach((legacyId) => {
-        const modernId = mapLegacyThemeLayerId(legacyId, configLoadable, projectParam);
+        const modernId = mapLegacyThemeLayerId(
+          legacyId,
+          configLoadable,
+          projectParam,
+        );
         if (modernId && !newThemeLayers.includes(modernId)) {
           newThemeLayers.push(modernId);
         }
       });
-      
+
       if (newThemeLayers.length > currentThemeLayers.length) {
         setUrlParameter('themeLayers', newThemeLayers.join(','));
       }
@@ -156,7 +157,13 @@ export const MapComponent = () => {
 
     setBackgroundLayer(finalLayerName);
     hasProcessedUrlRef.current = true;
-  }, [setBackgroundLayer, map, configLoadable, backgroundLayerState, addThemeLayerToMap]);
+  }, [
+    setBackgroundLayer,
+    map,
+    configLoadable,
+    backgroundLayerState,
+    addThemeLayerToMap,
+  ]);
 
   useEffect(() => {
     if (!map) {

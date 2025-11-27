@@ -3,25 +3,22 @@ import {
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
+  Alert,
   Box,
   Flex,
   Heading,
   Switch,
   Text,
-  Alert,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   getMainCategories,
   getSubcategories,
   themeLayerConfigLoadableAtom,
 } from '../../api/themeLayerConfigApi';
-import {
-  MAX_THEME_LAYERS,
-  useThemeLayers,
-} from '../../map/layers/themeLayers';
+import { MAX_THEME_LAYERS, useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
 import { getListUrlParameter } from '../../shared/utils/urlUtils';
 
@@ -42,18 +39,18 @@ type SubTheme = {
   }[];
 };
 export const MapThemes = () => {
-  const { addThemeLayerToMap, removeThemeLayerFromMap, getActiveThemeLayerCount } =
-    useThemeLayers();
+  const {
+    addThemeLayerToMap,
+    removeThemeLayerFromMap,
+    getActiveThemeLayerCount,
+  } = useThemeLayers();
   const { t, i18n } = useTranslation();
   const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
-  const [showLimitWarning, setShowLimitWarning] = useState(false);
-  const [activeCount, setActiveCount] = useState(0);
-
-  useEffect(() => {
-    const count = getActiveThemeLayerCount();
-    setActiveCount(count);
-    setShowLimitWarning(count >= MAX_THEME_LAYERS);
-  }, [getActiveThemeLayerCount]);
+  const count = getActiveThemeLayerCount();
+  const [showLimitWarning, setShowLimitWarning] = useState(
+    count >= MAX_THEME_LAYERS,
+  );
+  const [activeCount, setActiveCount] = useState(count);
 
   const updateActiveCount = () => {
     const count = getActiveThemeLayerCount();
@@ -158,7 +155,10 @@ export const MapThemes = () => {
 
   const getActiveCategoryCount = (theme: Theme): number => {
     return theme.subThemes.reduce((count, subTheme) => {
-      return count + subTheme.layers.filter(layer => isLayerChecked(layer.name)).length;
+      return (
+        count +
+        subTheme.layers.filter((layer) => isLayerChecked(layer.name)).length
+      );
     }, 0);
   };
 
@@ -173,8 +173,18 @@ export const MapThemes = () => {
       <Heading size="lg">{t('map.settings.layers.theme.label')} </Heading>
       <Box marginBottom={4} marginTop={2}>
         <Flex justifyContent="space-between" alignItems="center">
-          <Text fontSize="sm" colorPalette={activeCount >= MAX_THEME_LAYERS ? 'red' : activeCount >= MAX_THEME_LAYERS * 0.8 ? 'orange' : 'gray'}>
-            {t('map.settings.layers.theme.activeLayersCount')}: {activeCount} / {MAX_THEME_LAYERS}
+          <Text
+            fontSize="sm"
+            colorPalette={
+              activeCount >= MAX_THEME_LAYERS
+                ? 'red'
+                : activeCount >= MAX_THEME_LAYERS * 0.8
+                  ? 'orange'
+                  : 'gray'
+            }
+          >
+            {t('map.settings.layers.theme.activeLayersCount')}: {activeCount} /{' '}
+            {MAX_THEME_LAYERS}
           </Text>
         </Flex>
         {showLimitWarning && (
@@ -192,16 +202,20 @@ export const MapThemes = () => {
           </Alert>
         )}
       </Box>
-      
+
       <Accordion collapsible multiple size="sm" variant="outline">
         {themeLayers.map((theme) => {
           const activeInCategory = getActiveCategoryCount(theme);
           const totalInCategory = getTotalCategoryLayers(theme);
-          
+
           return (
             <AccordionItem key={theme.name} value={theme.name}>
               <AccordionItemTrigger>
-                <Flex justifyContent="space-between" width="100%" alignItems="center">
+                <Flex
+                  justifyContent="space-between"
+                  width="100%"
+                  alignItems="center"
+                >
                   <Heading size="lg">{theme.heading}</Heading>
                   {activeInCategory > 0 && (
                     <Text fontSize="sm" colorPalette="green" marginLeft={2}>
@@ -226,7 +240,10 @@ export const MapThemes = () => {
                           size="sm"
                           variant="raised"
                           defaultChecked={isLayerChecked(layer.name)}
-                          disabled={!isLayerChecked(layer.name) && activeCount >= MAX_THEME_LAYERS}
+                          disabled={
+                            !isLayerChecked(layer.name) &&
+                            activeCount >= MAX_THEME_LAYERS
+                          }
                           onCheckedChange={(e) => {
                             if (e.checked) {
                               const success = addThemeLayerToMap(layer.name);

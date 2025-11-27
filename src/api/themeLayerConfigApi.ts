@@ -21,7 +21,7 @@ export interface ThemeLayerDefinition {
     en: string;
   };
   wmsUrl?: string;
-  legendUrl?: string; 
+  legendUrl?: string;
   layers: string;
   categoryId: string;
   groupid: number;

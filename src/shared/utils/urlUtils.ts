@@ -13,9 +13,14 @@ const getSearchParams = (): URLSearchParams => {
   return url.searchParams;
 };
 
-const updateUrl = (url: URL, updateFn: (params: URLSearchParams) => void): void => {
+const updateUrl = (
+  url: URL,
+  updateFn: (params: URLSearchParams) => void,
+): void => {
   if (isUsingHashRouting(url)) {
-    const hashParams = new URLSearchParams(url.hash.substring(HASH_ROUTING_PREFIX.length));
+    const hashParams = new URLSearchParams(
+      url.hash.substring(HASH_ROUTING_PREFIX.length),
+    );
     updateFn(hashParams);
     url.hash = HASH_ROUTING_PREFIX + hashParams.toString();
   } else {
@@ -63,9 +68,9 @@ export const addToUrlListParameter = (
   value: string | number | boolean,
 ): void => {
   const param = getSearchParams().get(key);
-  let values: string[] = param ? param.split(',') : [];
+  const values: string[] = param ? param.split(',') : [];
   const stringValue = String(value);
-  
+
   if (!values.includes(stringValue)) {
     values.push(stringValue);
     const url = new URL(window.location.href);
@@ -79,11 +84,11 @@ export const removeFromUrlListParameter = (
 ): void => {
   const param = getSearchParams().get(key);
   if (!param) return;
-  
+
   const stringValue = String(value);
   const values = param.split(',').filter((v) => v !== stringValue);
   const url = new URL(window.location.href);
-  
+
   updateUrl(url, (params) => {
     if (values.length === 0) {
       params.delete(key);
@@ -96,9 +101,9 @@ export const removeFromUrlListParameter = (
 export const transitionHashToQuery = (): void => {
   const url = new URL(window.location.href);
   if (!isUsingHashRouting(url)) return;
-  
+
   const hashParams = new URLSearchParams(
-    url.hash.substring(HASH_ROUTING_PREFIX.length)
+    url.hash.substring(HASH_ROUTING_PREFIX.length),
   );
   hashParams.forEach((value, key) => {
     url.searchParams.set(key, value);

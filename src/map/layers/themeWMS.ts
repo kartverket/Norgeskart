@@ -79,7 +79,7 @@ export const createThemeLayerFromConfig = (
         ...(layerDef.styles ? { STYLES: layerDef.styles } : {}),
       },
       projection: projection,
-      cacheSize: 512, 
+      cacheSize: 512,
       transition: 0,
     }),
     properties: {

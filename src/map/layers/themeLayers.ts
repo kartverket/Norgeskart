@@ -18,26 +18,28 @@ export const MAX_THEME_LAYERS = 10;
 
 export const mapLegacyThemeLayerId = (
   legacyId: string,
-  configLoadable?: ReturnType<typeof useAtomValue<typeof themeLayerConfigLoadableAtom>>,
+  configLoadable?: ReturnType<
+    typeof useAtomValue<typeof themeLayerConfigLoadableAtom>
+  >,
   projectName?: string,
 ): string | undefined => {
   if (configLoadable?.state === 'hasData') {
     const layer = configLoadable.data.layers.find((l) => {
       const legacyIdMatches = l.legacyId === legacyId;
-      
+
       if (!legacyIdMatches) return false;
-      
+
       if (!projectName) {
         return true;
       }
-      
+
       const category = configLoadable.data.categories.find(
         (cat) => cat.id === l.categoryId,
       );
-      
+
       return category?.id === projectName;
     });
-    
+
     if (layer) {
       return layer.id;
     }
@@ -45,12 +47,12 @@ export const mapLegacyThemeLayerId = (
 
   const legacyMap: Record<string, string> = {
     // Property/Cadastre
-    'adresses': 'adresses',
-    'buildings': 'buildings',
-    'parcels': 'parcels',
+    adresses: 'adresses',
+    buildings: 'buildings',
+    parcels: 'parcels',
     // Historical maps
-    'economicMapFirstEdition': 'economicMapFirstEdition',
-    'amtMap': 'amtMap',
+    economicMapFirstEdition: 'economicMapFirstEdition',
+    amtMap: 'amtMap',
   };
 
   return legacyMap[legacyId];
