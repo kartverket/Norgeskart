@@ -209,7 +209,21 @@
         },
         "projection": {
           "label": "Vel koordinatsystem",
-          "placeholder": "Vel"
+          "placeholder": "Vel",
+          "projections": {
+            "epsg25833": {
+              "displayName": "UTM 33 (anbefalt)"
+            },
+            "epsg25832": {
+              "displayName": "UTM 32"
+            },
+            "epsg25835": {
+              "displayName": "UTM 35"
+            },
+            "epsg3857": {
+              "displayName": "Webmercator"
+            }
+          }
         },
         "theme": {
           "label": "Vel temakart"

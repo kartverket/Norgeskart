@@ -7,6 +7,7 @@ import {
   SelectValueText,
 } from '@kvib/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AvailableProjections, ProjectionIdentifier } from '../../map/atoms';
 
 export interface ProjectionSelectorProps {
@@ -16,17 +17,23 @@ export interface ProjectionSelectorProps {
   textColor: 'white' | 'black';
 }
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
+  const { t } = useTranslation();
   const [selectedProjection, setSelectedProjection] =
     useState<ProjectionIdentifier>(props.default);
 
-  const projectionCollection = AvailableProjections.map((projection) => ({
-    value: projection,
-    label: projection,
-  }));
+  const projectionCollection = AvailableProjections.map((projection) => {
+    const label = t(
+      `map.settings.layers.projection.projections.${projection.replace(':', '').toLowerCase()}.displayName`,
+    );
+    return {
+      value: projection,
+      label: label,
+    };
+  });
 
   return (
     <SelectRoot
-      width="140px"
+      width="180px"
       size="sm"
       collection={createListCollection({ items: projectionCollection })}
       value={[selectedProjection]}

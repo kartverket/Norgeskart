@@ -204,7 +204,21 @@
         },
         "projection": {
           "label": "Chose map coordination system",
-          "placeholder": "Chose"
+          "placeholder": "Chose",
+          "projections": {
+            "epsg25833": {
+              "displayName": "UTM 33 (recomended)"
+            },
+            "epsg25832": {
+              "displayName": "UTM 32"
+            },
+            "epsg25835": {
+              "displayName": "UTM 35"
+            },
+            "epsg3857": {
+              "displayName": "Webmercator"
+            }
+          }
         },
         "theme": {
           "label": "Chose theme layers"
