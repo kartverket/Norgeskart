@@ -73,7 +73,7 @@
           "title": "Koordinatar kopiert til utklipstavla"
         }
       },
-      "differentCrs": "Endre koordinatsystem",
+      "differentCrs": "Vis i koordinatsystem",
       "east": "Øst",
       "north": "Nord"
     },
@@ -208,7 +208,7 @@
           }
         },
         "projection": {
-          "label": "Vel projeksjon",
+          "label": "Vel koordinatsystem",
           "placeholder": "Vel"
         },
         "theme": {

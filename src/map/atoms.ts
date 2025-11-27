@@ -20,7 +20,7 @@ export type ProjectionIdentifier =
   | 'EPSG:25835' // utm35n
   | 'EPSG:25836'; // utm36n
 
-const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
+export const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 3;
 export const DEFAULT_CENTER = [396722, 7197860]; // Center in EPSG:25833
 export const DEFAULT_ROTATION = 0;

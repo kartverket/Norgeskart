@@ -68,7 +68,7 @@
           "title": "Coordinates copied to clipboard"
         }
       },
-      "differentCrs": "Change coordinate system",
+      "differentCrs": "Show in coordinate system",
       "east": "East",
       "north": "North"
     },
@@ -203,7 +203,7 @@
           }
         },
         "projection": {
-          "label": "Chose map projection",
+          "label": "Chose map coordination system",
           "placeholder": "Chose"
         },
         "theme": {

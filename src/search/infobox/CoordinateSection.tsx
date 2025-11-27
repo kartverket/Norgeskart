@@ -1,4 +1,4 @@
-import { Box, Button, Stack, toaster } from '@kvib/react';
+import { Box, Button, HStack, Stack, Text, toaster } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { transform } from 'ol/proj';
 import { useState } from 'react';
@@ -36,11 +36,15 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
 
   return (
     <Stack>
-      <ProjectionSelector
-        default={currentMapProjection}
-        onProjectionChange={setSelectedProjection}
-        label={t('infoBox.coordinateSection.differentCrs')}
-      />
+      <HStack>
+        <Text>{t('infoBox.coordinateSection.differentCrs')}</Text>
+        <ProjectionSelector
+          default={currentMapProjection}
+          onProjectionChange={setSelectedProjection}
+          label={t('infoBox.coordinateSection.differentCrs')}
+          textColor="black"
+        />
+      </HStack>
       <Stack>
         <Box>{`${x.toFixed(2)} - ${t('infoBox.coordinateSection.east')} `}</Box>
         <Box>{`${y.toFixed(2)} - ${t('infoBox.coordinateSection.north')} `}</Box>

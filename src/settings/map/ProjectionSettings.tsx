@@ -1,3 +1,4 @@
+import { INITIAL_PROJECTION } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
 import { validateProjectionIdString } from '../../shared/utils/enumUtils';
@@ -12,7 +13,8 @@ export const ProjectionSettings = () => {
   return (
     <ProjectionSelector
       onProjectionChange={setProjection}
-      default={projectionId}
+      default={projectionId || INITIAL_PROJECTION}
+      textColor="white"
     />
   );
 };
