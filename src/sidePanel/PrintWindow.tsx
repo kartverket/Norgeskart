@@ -158,9 +158,9 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
       {/* KVIB Select */}
       <Box mb={2}>
         <SelectRoot collection={layoutCollection} value={[layout]}>
-          <SelectLabel>{t('')}</SelectLabel>
+          <SelectLabel>{t('printMap.selectPrintLayout')}</SelectLabel>
           <SelectTrigger>
-            <SelectValueText placeholder={t('printMap.selectLayout')} />
+            <SelectValueText placeholder={t('printMap.selectPrintLayout')} />
           </SelectTrigger>
 
           <SelectContent>
