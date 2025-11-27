@@ -6,19 +6,18 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
-import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import { AvailableProjections, ProjectionIdentifier } from '../../map/atoms';
 
 export interface ProjectionSelectorProps {
   onProjectionChange: (projection: ProjectionIdentifier) => void;
-  default?: ProjectionIdentifier | null;
+  default: ProjectionIdentifier;
   label?: string;
+  textColor: 'white' | 'black';
 }
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
-  const { t } = useTranslation();
-
-  const defaultProjection =
-    props.default != null ? props.default : 'EPSG:25833';
+  const [selectedProjection, setSelectedProjection] =
+    useState<ProjectionIdentifier>(props.default);
 
   const projectionCollection = AvailableProjections.map((projection) => ({
     value: projection,
@@ -30,22 +29,20 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       width="140px"
       size="sm"
       collection={createListCollection({ items: projectionCollection })}
-      defaultValue={[defaultProjection]}
+      value={[selectedProjection]}
     >
       <SelectTrigger>
-        <SelectValueText
-          color="white"
-          placeholder={t('map.settings.layers.projection.placeholder')}
-        />
+        <SelectValueText color={props.textColor} />
       </SelectTrigger>
       <SelectContent portalled={false}>
         {projectionCollection.map((item) => (
           <SelectItem
             key={item.value}
             item={item.value}
-            onClick={() =>
-              props.onProjectionChange(item.value as ProjectionIdentifier)
-            }
+            onClick={() => {
+              props.onProjectionChange(item.value as ProjectionIdentifier);
+              setSelectedProjection(item.value as ProjectionIdentifier);
+            }}
           >
             {item.label}
           </SelectItem>
