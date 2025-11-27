@@ -97,13 +97,6 @@
     "norwegianNynorsk": "Norsk nynorsk",
     "tabHeading": "Språk"
   },
-  "locationType": {
-    "address": "Adresse",
-    "coordinate": "Koordinat",
-    "place": "Stedsnavn",
-    "property": "Eiendom",
-    "road": "Vei"
-  },
   "map": {
     "contextmenu": {
       "items": {
@@ -308,6 +301,13 @@
   "toolbar": {
     "reportError": "Feil i kartet?"
   },
+
+  "locationType": {
+    "property": "Eiendom",
+    "road": "Vei",
+    "place": "Stedsnavn",
+    "address": "Adresse"
+  },
   "cookieDialog": {
     "heading": "Vi bruker informasjonskapsler",
     "body": "Vi gjør dett for å gi deg en bedre opplevelse. Ved å trykke på 'OK' godtar du bruk av cookies.",
@@ -315,6 +315,10 @@
       "accept": "OK",
       "reject": "Avslå"
     }
+  },
+  "maps": {
+    "topographic": "Topografisk kart",
+    "naval": "Sjøkart"
   },
   "printMap": {
     "printSuccess": "Vellykket.",

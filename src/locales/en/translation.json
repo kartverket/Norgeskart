@@ -92,13 +92,6 @@
     "norwegianNynorsk": "Norwegian nynorsk",
     "tabHeading": "Language"
   },
-  "locationType": {
-    "address": "Address",
-    "coordinate": "Coordinate",
-    "place": "Placename",
-    "property": "Property",
-    "road": "Road"
-  },
   "map": {
     "contextmenu": {
       "items": {
@@ -235,13 +228,6 @@
     "label": "Maplayers",
     "open": "Open map layer settings"
   },
-  "placeInfo": {
-    "errorPlaceNameInfo": "Error fetching place name information",
-    "loadingPlaceNameInfo": "Loading place name information",
-    "locationNumber": "Location number",
-    "nameObjectType": "Name object type",
-    "moreInfo": "More info"
-  },
   "privacyAndContact": {
     "contactUs": "Contact us",
     "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
@@ -311,8 +297,29 @@
       "reject": "Deny"
     }
   },
-    "printMap": {
-      "printSuccess": "Successful.",
-      "printError": "Error."
+  "placeInfo": {
+    "locationNumber": "Location number",
+    "nameObjectType": "Name object type",
+    "loadingPlaceNameInfo": "Loading place name information",
+    "errorPlaceNameInfo": "Error fetching place name information",
+    "recreation": {
+      "recreation": "Recreation",
+      "hikingTrail": "Hiking trail",
+      "fishingZone": "Fishing zones"
+    }
+  },
+  "locationType": {
+    "property": "Property",
+    "road": "Road",
+    "place": "Placename",
+    "address": "Address"
+  },
+  "maps": {
+    "topographic": "Topographic map",
+    "naval": "Naval map"
+  },
+  "printMap": {
+    "printSuccess": "Successful.",
+    "printError": "Error."
   }
 }

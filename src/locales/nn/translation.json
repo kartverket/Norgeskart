@@ -97,13 +97,6 @@
     "norwegianNynorsk": "Norsk nynorsk",
     "tabHeading": "Språk"
   },
-  "locationType": {
-    "address": "Adresse",
-    "coordinate": "Koordinat",
-    "place": "Stadnamn",
-    "property": "Eigedom",
-    "road": "Veg"
-  },
   "map": {
     "contextmenu": {
       "items": {
@@ -240,13 +233,6 @@
     "label": "Kartlag",
     "open": "Åpne kartlaginnstillinger"
   },
-  "placeInfo": {
-    "errorPlaceNameInfo": "Feil ved henting av stadnamninformasjon",
-    "loadingPlaceNameInfo": "Lastar stadnamninformasjon",
-    "locationNumber": "Stadnummer",
-    "nameObjectType": "Namnobjekttype",
-    "moreInfo": "Meir info"
-  },
   "privacyAndContact": {
     "contactUs": "Kontakt",
     "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
@@ -307,6 +293,31 @@
   },
   "toolbar": {
     "reportError": "Feil i kartet?"
+  },
+  "placeInfo": {
+    "locationNumber": "Stadnummer",
+    "nameObjectType": "Namnobjekttype",
+    "loadingPlaceNameInfo": "Lastar stadnamninformasjon",
+    "errorPlaceNameInfo": "Feil ved henting av stadnamninformasjon",
+    "recreation": {
+      "recreation": "Friluftsliv",
+      "hikingTrail": "Turstier",
+      "fishingZone": "Fiskekortsoner"
+    }
+  },
+  "locationType": {
+    "property": "Eigedom",
+    "road": "Veg",
+    "place": "Stadnamn",
+    "address": "Adresse"
+  },
+  "maps": {
+    "topographic": "Topografisk kart",
+    "naval": "Sjøkart"
+  },
+  "printMap": {
+    "printSuccess": "Successful.",
+    "printError": "Error."
   },
   "cookieDialog": {
     "heading": "Vi nytter informasjonskapsler",
