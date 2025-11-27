@@ -1,11 +1,29 @@
+const HASH_ROUTING_PREFIX = '#!?';
+
+const isUsingHashRouting = (url: URL): boolean => {
+  return url.hash.startsWith(HASH_ROUTING_PREFIX);
+};
+
 const getSearchParams = (): URLSearchParams => {
   // Helper to parse URL parameters from both modern (?param=value) and legacy (#!?param=value) formats
   const url = new URL(window.location.href);
-  if (url.hash.startsWith('#!?')) {
-    const hashParams = url.hash.substring(3);
+  if (isUsingHashRouting(url)) {
+    const hashParams = url.hash.substring(HASH_ROUTING_PREFIX.length);
     return new URLSearchParams(hashParams);
   }
   return url.searchParams;
+};
+
+const updateUrl = (url: URL, updateFn: (params: URLSearchParams) => void): void => {
+  if (isUsingHashRouting(url)) {
+    const hashParams = new URLSearchParams(url.hash.substring(HASH_ROUTING_PREFIX.length));
+    updateFn(hashParams);
+    url.hash = HASH_ROUTING_PREFIX + hashParams.toString();
+  } else {
+    url.hash = '';
+    updateFn(url.searchParams);
+  }
+  window.history.replaceState({}, '', url.toString());
 };
 
 export const setUrlParameter = (
@@ -13,16 +31,12 @@ export const setUrlParameter = (
   value: string | number | boolean,
 ): void => {
   const url = new URL(window.location.href);
-  url.hash = '';
-  url.searchParams.set(key, String(value));
-  window.history.replaceState({}, '', url.toString());
+  updateUrl(url, (params) => params.set(key, String(value)));
 };
 
 export const removeUrlParameter = (key: NKUrlParameter): void => {
   const url = new URL(window.location.href);
-  url.hash = '';
-  url.searchParams.delete(key);
-  window.history.replaceState({}, '', url.toString());
+  updateUrl(url, (params) => params.delete(key));
 };
 
 export const getUrlParameter = (key: NKUrlParameter): string | null => {
@@ -34,9 +48,7 @@ export const setListUrlParameter = (
   values: (string | number | boolean)[],
 ): void => {
   const url = new URL(window.location.href);
-  url.hash = '';
-  url.searchParams.set(key, values.map(String).join(','));
-  window.history.replaceState({}, '', url.toString());
+  updateUrl(url, (params) => params.set(key, values.map(String).join(',')));
 };
 
 export const getListUrlParameter = (key: NKUrlParameter): string[] | null => {
@@ -51,18 +63,14 @@ export const addToUrlListParameter = (
   key: NKUrlParameter,
   value: string | number | boolean,
 ): void => {
-  const url = new URL(window.location.href);
-  url.hash = '';
   const param = getSearchParams().get(key);
-  let values: string[] = [];
-  if (param) {
-    values = param.split(',');
-  }
+  let values: string[] = param ? param.split(',') : [];
   const stringValue = String(value);
+  
   if (!values.includes(stringValue)) {
     values.push(stringValue);
-    url.searchParams.set(key, values.join(','));
-    window.history.replaceState({}, '', url.toString());
+    const url = new URL(window.location.href);
+    updateUrl(url, (params) => params.set(key, values.join(',')));
   }
 };
 
@@ -70,22 +78,20 @@ export const removeFromUrlListParameter = (
   key: NKUrlParameter,
   value: string | number | boolean,
 ): void => {
-  const url = new URL(window.location.href);
-  url.hash = '';
   const param = getSearchParams().get(key);
-  if (param) {
-    let values = param.split(',');
-    const stringValue = String(value);
-    values = values.filter((v) => v !== stringValue);
-    const valueToSet = values.join(',');
-    if (valueToSet === '') {
-      url.searchParams.delete(key);
-      window.history.replaceState({}, '', url.toString());
+  if (!param) return;
+  
+  const stringValue = String(value);
+  const values = param.split(',').filter((v) => v !== stringValue);
+  const url = new URL(window.location.href);
+  
+  updateUrl(url, (params) => {
+    if (values.length === 0) {
+      params.delete(key);
     } else {
-      url.searchParams.set(key, valueToSet);
-      window.history.replaceState({}, '', url.toString());
+      params.set(key, values.join(','));
     }
-  }
+  });
 };
 
 export type NKUrlParameter =

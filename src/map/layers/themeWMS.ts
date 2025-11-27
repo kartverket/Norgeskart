@@ -1,5 +1,10 @@
 import TileLayer from 'ol/layer/Tile';
 import { TileWMS } from 'ol/source';
+import type {
+  ThemeLayerConfig,
+  ThemeLayerDefinition,
+} from '../../api/themeLayerConfigApi';
+import { getEffectiveWmsUrl } from '../../api/themeLayerConfigApi';
 import { getEnv } from '../../env';
 
 type LocationNameLayerName = 'economicMapFirstEdition' | 'amtMap';
@@ -13,13 +18,76 @@ type OutdoorsLifeLayerName =
   | 'waterTrails';
 type FactsLayerName = 'osloMarkaBorder';
 
+type ConfigThemeLayerName =
+  | 'historicalRoute'
+  | 'coastalTrail'
+  | 'culturalTrail'
+  | 'natureTrail'
+  | 'trimTrack'
+  | 'footRouteTypeNotSpecified'
+  | 'machinePrepared'
+  | 'snowmobile'
+  | 'unprepared'
+  | 'preparationNotSpecified'
+  | 'norwegianPlaceNames'
+  | 'luleSamiPlaceNames'
+  | 'northernSamiPlaceNames'
+  | 'skoltSamiPlaceNames'
+  | 'southernSamiPlaceNames'
+  | 'kvenPlaceNames'
+  | 'otherPlaceNames'
+  | 'nivBenchmarks'
+  | 'landNetPoints'
+  | 'primaryNetPoints'
+  | 'triangulationPoints'
+  | 'nrlArea'
+  | 'nrlLine'
+  | 'nrlAirspan'
+  | 'nrlMast'
+  | 'nrlPoint'
+  | 'accessibilityRoads'
+  | 'accessibilityHcParkering'
+  | 'accessibilityBuildingEntrance'
+  | 'accessibilityParkingArea'
+  | 'accessibilityToilet'
+  | 'accessibilitySittegruppebenk';
+
 export type ThemeLayerName =
   | PropertyLayerName
   | OutdoorsLifeLayerName
   | FactsLayerName
-  | LocationNameLayerName;
+  | LocationNameLayerName
+  | ConfigThemeLayerName;
 
 const ENV = getEnv();
+
+export const createThemeLayerFromConfig = (
+  config: ThemeLayerConfig,
+  layerDef: ThemeLayerDefinition,
+  projection: string,
+): TileLayer => {
+  const wmsUrl = getEffectiveWmsUrl(config, layerDef);
+
+  return new TileLayer({
+    source: new TileWMS({
+      url: wmsUrl,
+      params: {
+        LAYERS: layerDef.layers,
+        TILED: true,
+        TRANSPARENT: true,
+        SRS: projection,
+        ...(layerDef.styles ? { STYLES: layerDef.styles } : {}),
+      },
+      projection: projection,
+      cacheSize: 512, 
+      transition: 0,
+    }),
+    properties: {
+      id: `theme.${layerDef.id}`,
+    },
+    preload: 1,
+  });
+};
 
 export const getThemeWMSLayer = (
   layerName: ThemeLayerName,

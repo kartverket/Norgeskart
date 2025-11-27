@@ -212,7 +212,10 @@
           "placeholder": "Vel"
         },
         "theme": {
-          "label": "Vel temakart"
+          "label": "Vel temakart",
+          "activeLayersCount": "Aktive lag",
+          "warningLimit": "Maksimalt antal lag nådd. Ver vennleg og deaktiver nokre lag før du legg til fleire for betre yting.",
+          "warningPerformance": "Aktivering av mange lag kan påverke ytinga. Vurder å deaktivere ubrukte lag."
         }
       }
     }

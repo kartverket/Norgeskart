@@ -4,6 +4,7 @@ import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures } from '../api/nkApiClient.ts';
+import { themeLayerConfigLoadableAtom } from '../api/themeLayerConfigApi.ts';
 import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import {
@@ -16,9 +17,14 @@ import { mapAtom } from './atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
+  useBackgoundLayers,
 } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
-import { useThemeLayers } from './layers/themeLayers.ts';
+import {
+  mapLegacyThemeLayerId,
+  parseLegacyLayersParameter,
+  useThemeLayers,
+} from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import {
@@ -32,12 +38,15 @@ export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { setBackgroundLayer } = useMapSettings();
   const { addThemeLayerToMap } = useThemeLayers();
+  const { backgroundLayerState } = useBackgoundLayers();
   const map = useAtomValue(mapAtom);
+  const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures } = useDrawSettings();
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
+  const hasProcessedUrlRef = useRef(false);
 
   const { setTargetElement } = useMap();
 
@@ -54,20 +63,44 @@ export const MapComponent = () => {
     if (!map) {
       return;
     }
-    const hasBackgroundLayer =
-      map.getAllLayers().find((l) => {
-        return l.get('id')?.startsWith('bg.');
-      }) != null;
-
-    if (hasBackgroundLayer) {
+    
+    if (configLoadable.state === 'loading') {
       return;
     }
+    
+    if (backgroundLayerState !== 'hasData') {
+      return;
+    }
+    
+    if (hasProcessedUrlRef.current) {
+      return;
+    }
+    
     // Check both new 'backgroundLayer' and legacy 'layers' parameter
     let layerNameFromUrl = getUrlParameter('backgroundLayer');
     const legacyLayerParam = getUrlParameter('layers');
+    const projectParam = getUrlParameter('project');
+    let legacyThemeLayerIds: string[] = [];
 
-    if (!layerNameFromUrl && legacyLayerParam) {
-      layerNameFromUrl = legacyLayerParam.split(',')[0]; // Take only the first one as the background layer, @TODO: fix later theme layers
+    if (legacyLayerParam) {
+      const layerIds = legacyLayerParam.split(',').map((s) => s.trim());
+      
+      // Separate background layer (1001-1010) from theme layers (1011+)
+      const backgroundLayerId = layerIds.find((id) => {
+        const numId = parseInt(id, 10);
+        return !isNaN(numId) && numId >= 1001 && numId <= 1010;
+      });
+      
+      const themeLayerIds = layerIds.filter((id) => {
+        const numId = parseInt(id, 10);
+        return !isNaN(numId) && numId > 1010;
+      });
+      
+      if (backgroundLayerId) {
+        layerNameFromUrl = backgroundLayerId;
+      }
+      
+      legacyThemeLayerIds = themeLayerIds;
     }
 
     // Support legacy numeric IDs from old norgeskart.no
@@ -81,14 +114,37 @@ export const MapComponent = () => {
     const finalLayerName = (layerNameFromUrl ||
       DEFAULT_BACKGROUND_LAYER) as BackgroundLayerName;
 
-    // If we used the legacy 'layers' parameter, remove it and set the new 'backgroundLayer' parameter
     if (legacyLayerParam) {
       removeUrlParameter('layers');
+      removeUrlParameter('project'); // Also remove project param after processing
       setUrlParameter('backgroundLayer', finalLayerName);
+
+      legacyThemeLayerIds.forEach((legacyId) => {
+        const modernId = mapLegacyThemeLayerId(legacyId, configLoadable, projectParam);
+        if (modernId) {
+          const currentThemeLayers = getListUrlParameter('themeLayers') || [];
+          if (!currentThemeLayers.includes(modernId)) {
+            const updated = [...currentThemeLayers, modernId];
+            setUrlParameter('themeLayers', updated.join(','));
+          }
+        }
+      });
+      
+      // Transition from hash-based (#!?) to modern query params (?)
+      const url = new URL(window.location.href);
+      if (url.hash.startsWith('#!?')) {
+        const hashParams = new URLSearchParams(url.hash.substring(3));
+        hashParams.forEach((value, key) => {
+          url.searchParams.set(key, value);
+        });
+        url.hash = '';
+        window.history.replaceState({}, '', url.toString());
+      }
     }
 
     setBackgroundLayer(finalLayerName);
-  }, [setBackgroundLayer, map]);
+    hasProcessedUrlRef.current = true;
+  }, [setBackgroundLayer, map, configLoadable, backgroundLayerState, addThemeLayerToMap]);
 
   useEffect(() => {
     if (!map) {
