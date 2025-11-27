@@ -292,8 +292,74 @@
       "reject": "Deny"
     }
   },
+  "languageSelector": {
+    "tabHeading": "Language",
+    "english": "English",
+    "norwegianBokmaal": "Norwegian bokmål",
+    "norwegianNynorsk": "Norwegian nynorsk",
+    "chooseLanguage": "Select language"
+  },
+  "privacyAndContact": {
+    "contactUs": "Contact us",
+    "privacyPolicy": "Privacy policy ",
+    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
+    "sendEmail": "Send e-mail"
+  },
+  "infoBox": {
+    "roadName": "Road name",
+    "municipality": "Municipality",
+    "cadastralIdentifier": "Cadastral identifier",
+    "address": "Address",
+    "in": "in",
+    "heightEstimatedByInterpolation": "Height (estimated by interpolation):",
+    "metersAboveSeaLevel": "m.a.s.l.",
+    "propertyInfo": "See property information",
+    "coordinateInfo": "See coordinates",
+    "placeinfo": "See facts about placename",
+    "makeMap": "Make map",
+    "emergencyPoster": "Make emergency poster"
+  },
+  "propertyInfo": {
+    "municipalityNr": "Municipality nr.",
+    "holdingNr": "Holding nr.",
+    "subholdingNr": "Subholding nr.",
+    "leaseNr": "Lease nr.",
+    "sectionNr": "Section nr.",
+    "multipleAddressesText": "The property has several addresses",
+    "moreInformation": "Show more information",
+    "landRegistration": "Land Registration",
+    "cadastre": "Cadastre"
+  },
+  "placeInfo": {
+    "locationNumber": "Location number",
+    "nameObjectType": "Name object type",
+    "loadingPlaceNameInfo": "Loading place name information",
+    "errorPlaceNameInfo": "Error fetching place name information",
+    "recreation": {
+      "recreation": "Recreation",
+      "hikingTrail": "Hiking trail",
+      "fishingZone": "Fishing zones"
+    }
+  },
+  "locationType": {
+    "property": "Property",
+    "road": "Road",
+    "place": "Placename",
+    "address": "Address"
+  },
+  "maps": {
+    "topographic": "Topographic map",
+    "naval": "Naval map"
+  },
     "printMap": {
-      "printSuccess": "Successful.",
-      "printError": "Error."
+    "printSuccess": "Vellykket.",
+    "printError": "Feil.",
+    "heading": "Print map",
+    "description": "Drag the box over the map to select the area to print",
+    "selectPrintLayout": "Select print layout",
+    "quickPrint": "Quick Print",
+    "downloadPdf": "Download PDF",
+    "cancel": "Cancel",
+    "loading": "Loading map tiles..."
   }
 }

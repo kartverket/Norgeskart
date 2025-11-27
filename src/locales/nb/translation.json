@@ -289,16 +289,61 @@
   "toolbar": {
     "reportError": "Feil i kartet?"
   },
-  "cookieDialog": {
-    "heading": "Vi bruker informasjonskapsler",
-    "body": "Vi gjør dett for å gi deg en bedre opplevelse. Ved å trykke på 'OK' godtar du bruk av cookies.",
-    "buttons": {
-      "accept": "OK",
-      "reject": "Avslå"
+  "infoBox": {
+    "roadName": "Veinavn",
+    "municipality": "Kommune",
+    "cadastralIdentifier": "Gårds- og bruksnummer",
+    "address": "Adresse",
+    "in": "i",
+    "heightEstimatedByInterpolation": "Høyde (anslått ved interpolering):",
+    "metersAboveSeaLevel": "moh",
+    "propertyInfo": "Se eiendomsinformasjon",
+    "coordinateInfo": "Se koordinater",
+    "placeinfo": "Se fakta om stedsnavnet",
+    "makeMap": "Lag turkart",
+    "emergencyPoster": "Lag nødplakat"
+  },
+  "propertyInfo": {
+    "municipalityNr": "Kommunenr.",
+    "holdingNr": "Gårdsnr.",
+    "subholdingNr": "Bruksnr.",
+    "leaseNr": "Festenr.",
+    "sectionNr": "Seksjonsnr.",
+    "multipleAddressesText": "Eiendommen har flere adresser",
+    "moreInformation": "Vis mer informasjon",
+    "landRegistration": "Grunnbok",
+    "cadastre": "Matrikkel"
+  },
+  "placeInfo": {
+    "locationNumber": "Stedsnummer",
+    "nameObjectType": "Navneobjekttype",
+    "loadingPlaceNameInfo": "Laster stedsnavninformasjon",
+    "errorPlaceNameInfo": "Feil ved henting av stedsnavninformasjon",
+    "recreation": {
+      "recreation": "Friluftsliv",
+      "hikingTrail": "Turstier",
+      "fishingZone": "Fiskekortsoner"
     }
+  },
+  "locationType": {
+    "property": "Eiendom",
+    "road": "Vei",
+    "place": "Stedsnavn",
+    "address": "Adresse"
+  },
+  "maps": {
+    "topographic": "Topografisk kart",
+    "naval": "Sjøkart"
   },
   "printMap": {
     "printSuccess": "Vellykket.",
-    "printError": "Feil."
+    "printError": "Feil.",
+    "heading": "Skriv ut kart",
+    "description": "Juster boksen på kartet for å velge område for utskriving",
+    "selectPrintLayout": "Velg layout for utskriving",
+    "quickPrint": "Rask utskriving",
+    "downloadPdf": "Last ned PDF",
+    "cancel": "Avbryt",
+    "loading": "Laster ned kart tiles..."
   }
 }
