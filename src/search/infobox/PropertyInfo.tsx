@@ -169,17 +169,6 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
             >
               {t('propertyInfo.moreInformation')}
             </Link>
-            {/* <Button
-              mt={4}
-              size="xs"
-              onClick={() =>
-                window.open(
-                  propertyRegisterUrl,
-                  '_blank',
-                  'noopener,noreferrer',
-                )
-              }
-            ></Button> */}
           </Flex>
         </Box>
       </AccordionItemContent>
