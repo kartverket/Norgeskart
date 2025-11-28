@@ -1,8 +1,9 @@
 import TileLayer from 'ol/layer/Tile';
 import { TileWMS } from 'ol/source';
+import { getEnv } from '../../env';
 
 export type WMSLayerName = 'oceanicelectronic';
-
+const ENV = getEnv();
 export const getWMSLayer = (
   layerName: WMSLayerName,
   projection: string,
@@ -11,7 +12,7 @@ export const getWMSLayer = (
     case 'oceanicelectronic':
       return new TileLayer({
         source: new TileWMS({
-          url: 'https://wms.geonorge.no/skwms1/wms.ecc_enc',
+          url: ENV.layerProviderParameters.geoNorgeWMS.baseUrl + '.ecc_enc',
           params: { LAYERS: 'cells', TILED: true, SRS: projection },
           projection: projection,
         }),
