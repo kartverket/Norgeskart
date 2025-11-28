@@ -1,4 +1,6 @@
 import { useAtomValue } from 'jotai';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
 import {
   getThemeLayerById,
   themeLayerConfigLoadableAtom,
@@ -102,7 +104,10 @@ export const useThemeLayers = () => {
       return false;
     }
 
-    let layerToAdd = getThemeWMSLayer(layerName, mapProjection);
+    let layerToAdd: TileLayer | VectorLayer | null = getThemeWMSLayer(
+      layerName,
+      mapProjection,
+    );
 
     if (!layerToAdd && configLoadable.state === 'hasData') {
       const layerDef = getThemeLayerById(configLoadable.data, layerName);

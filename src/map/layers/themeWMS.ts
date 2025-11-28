@@ -1,4 +1,5 @@
 import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
 import { TileWMS } from 'ol/source';
 import type {
   ThemeLayerConfig,
@@ -6,6 +7,7 @@ import type {
 } from '../../api/themeLayerConfigApi';
 import { getEffectiveWmsUrl } from '../../api/themeLayerConfigApi';
 import { getEnv } from '../../env';
+import { createGeoJsonThemeLayer } from './themeGeoJson';
 
 type LocationNameLayerName = 'economicMapFirstEdition' | 'amtMap';
 
@@ -65,7 +67,16 @@ export const createThemeLayerFromConfig = (
   config: ThemeLayerConfig,
   layerDef: ThemeLayerDefinition,
   projection: string,
-): TileLayer => {
+): TileLayer | VectorLayer | null => {
+  if (layerDef.type === 'geojson' && layerDef.geojsonUrl) {
+    return createGeoJsonThemeLayer(layerDef, projection);
+  }
+
+  if (!layerDef.layers) {
+    console.warn(`Layer ${layerDef.id} has no WMS layers defined`);
+    return null;
+  }
+
   const wmsUrl = getEffectiveWmsUrl(config, layerDef);
 
   return new TileLayer({

@@ -13,6 +13,22 @@ export interface ThemeLayerCategory {
   parentId?: string;
 }
 
+export interface ThemeLayerStyle {
+  fill?: {
+    color: string;
+  };
+  stroke?: {
+    color: string;
+    width: number;
+  };
+  text?: {
+    property: string;
+    scale?: number;
+    fill?: { color: string };
+    stroke?: { color: string; width: number };
+  };
+}
+
 export interface ThemeLayerDefinition {
   id: string;
   name: {
@@ -20,9 +36,13 @@ export interface ThemeLayerDefinition {
     nn: string;
     en: string;
   };
+  type?: 'wms' | 'geojson';
   wmsUrl?: string;
+  geojsonUrl?: string;
+  sourceEpsg?: string;
+  style?: ThemeLayerStyle;
   legendUrl?: string;
-  layers: string;
+  layers?: string;
   categoryId: string;
   groupid: number;
   legacyId?: string;
