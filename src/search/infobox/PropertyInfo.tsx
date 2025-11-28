@@ -3,8 +3,8 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   Box,
-  Button,
   Flex,
+  Link,
   Stack,
   Switch,
   SwitchLabel,
@@ -161,19 +161,14 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
             >
               <SwitchLabel>{t('propertyInfo.markProperty.label')}</SwitchLabel>
             </Switch>
-            <Button
-              mt={4}
-              size="xs"
-              onClick={() =>
-                window.open(
-                  propertyRegisterUrl,
-                  '_blank',
-                  'noopener,noreferrer',
-                )
-              }
+            <Link
+              href={propertyRegisterUrl}
+              target="_blank"
+              fontSize="sm"
+              external
             >
               {t('propertyInfo.moreInformation')}
-            </Button>
+            </Link>
           </Flex>
         </Box>
       </AccordionItemContent>

@@ -40,17 +40,6 @@ const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
           {`${t('infoBox.address')} ${t('infoBox.in')} ${result.address.kommunenavn} ${t('infoBox.municipality').toLowerCase()}`}
         </Text>
       );
-
-    case 'Coordinate':
-      return (
-        <>
-          <Text>
-            {`${t('infoBox.coordinateSystem')}: ${result.coordinate.projection}`}
-            ;
-          </Text>
-          <Text>{result.coordinate.formattedString}</Text>
-        </>
-      );
   }
 };
 const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {

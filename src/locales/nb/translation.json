@@ -226,7 +226,8 @@
     "errorPlaceNameInfo": "Feil ved henting av stedsnavninformasjon",
     "loadingPlaceNameInfo": "Laster stedsnavninformasjon",
     "locationNumber": "Stedsnummer",
-    "nameObjectType": "Navneobjekttype"
+    "nameObjectType": "Navneobjekttype",
+    "moreInfo": "Mer info"
   },
   "privacyAndContact": {
     "contactUs": "Kontakt",
@@ -239,9 +240,9 @@
     "holdingNr": "Gårdsnr.",
     "leaseNr": "Festenr.",
     "markProperty": {
-      "label": "Vis eiendom på kartet"
+      "label": "Vis på kartet"
     },
-    "moreInformation": "Vis mer informasjon",
+    "moreInformation": "Vis mer",
     "multipleAddressesText": "Eiendommen har flere adresser",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",
