@@ -15,6 +15,7 @@ export interface ProjectionSelectorProps {
   default: ProjectionIdentifier;
   label?: string;
   textColor: 'white' | 'black';
+  hideBorders?: boolean;
 }
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
@@ -38,7 +39,10 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       collection={createListCollection({ items: projectionCollection })}
       value={[selectedProjection]}
     >
-      <SelectTrigger>
+      <SelectTrigger
+        border={'none'}
+        id={props.hideBorders ? 'crs-select-trigger' : ''}
+      >
         <SelectValueText color={props.textColor} />
       </SelectTrigger>
       <SelectContent portalled={false}>
