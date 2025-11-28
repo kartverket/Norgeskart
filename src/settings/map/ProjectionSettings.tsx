@@ -1,5 +1,7 @@
+import { HStack } from '@kvib/react';
 import { INITIAL_PROJECTION } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
+import { ProjectionPopover } from '../../shared/Components/ProjectionPopover';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
 import { validateProjectionIdString } from '../../shared/utils/enumUtils';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
@@ -11,10 +13,18 @@ export const ProjectionSettings = () => {
   );
 
   return (
-    <ProjectionSelector
-      onProjectionChange={setProjection}
-      default={projectionId || INITIAL_PROJECTION}
-      textColor="white"
-    />
+    <HStack
+      borderRight={'white 1px solid'}
+      borderLeft={'white 1px solid'}
+      pr={2}
+    >
+      <ProjectionSelector
+        onProjectionChange={setProjection}
+        default={projectionId || INITIAL_PROJECTION}
+        textColor="white"
+        hideBorders
+      />
+      <ProjectionPopover />
+    </HStack>
   );
 };
