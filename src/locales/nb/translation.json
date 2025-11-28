@@ -223,6 +223,10 @@
             "epsg3857": {
               "displayName": "Webmercator"
             }
+          },
+          "popover": {
+            "title": "Koordinatreferansesystem",
+            "body": "Velg et koordinatreferansesystem. Forskjellige systemer har forskjellige nøyaktighet i deler av landet. Vi anbefaler UTM 33 hvis du er usikker."
           }
         },
         "theme": {
