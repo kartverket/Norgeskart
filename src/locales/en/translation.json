@@ -68,7 +68,7 @@
           "title": "Coordinates copied to clipboard"
         }
       },
-      "differentCrs": "Show in coordinate system",
+      "differentCrs": "Display in",
       "east": "East",
       "north": "North"
     },
@@ -207,7 +207,7 @@
           "placeholder": "Chose",
           "projections": {
             "epsg25833": {
-              "displayName": "UTM 33 (recomended)"
+              "displayName": "UTM 33 (default)"
             },
             "epsg25832": {
               "displayName": "UTM 32"
