@@ -400,9 +400,10 @@ const useDrawSettings = () => {
     });
     drawSource.clear();
     drawSource.addFeatures(featuresToAddWithStyle);
-    featuresToAddWithStyle.filter(
+    const loll = featuresToAddWithStyle.filter(
       (f) => f.getProperties()['overlayIcon'] != null,
-    ).forEach;
+    );
+    console.log('features with overlay', loll);
   };
 
   const setDisplayInteractiveMeasurementForDrawInteraction = (

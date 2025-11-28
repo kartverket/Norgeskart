@@ -21,7 +21,7 @@
       "colorPoint": "Point color",
       "colorStroke": "Stroke color",
       "colorText": "Text color",
-      "pointType": "Point type",
+      "pointType": "Select icon",
       "showMeasurements": "Show measurments",
       "tool": {
         "tooltip": {

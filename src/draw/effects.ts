@@ -12,7 +12,6 @@ import {
   distanceUnitAtom,
   drawTypeStateAtom,
   lineWidthAtom,
-  pointStyleReadAtom,
   primaryColorAtom,
   secondaryColorAtom,
   showMeasurementsAtom,
@@ -116,8 +115,6 @@ export const drawStyleEffect = atomEffect((get) => {
   }
 
   if (drawType === 'Point') {
-    const newStyle = get(pointStyleReadAtom);
-    drawInteraction.getOverlay().setStyle(newStyle);
     return;
   }
   const newStyle = overlayDrawStyle.clone() as Style;

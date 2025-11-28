@@ -1,6 +1,6 @@
 import { MaterialSymbol } from '@kvib/react';
 import { atom } from 'jotai';
-import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
+import { Fill, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { DrawType } from '../../draw/drawControls/hooks/drawSettings';
 
@@ -10,8 +10,6 @@ export const DEFAULT_SECONDARY_COLOR = '#1d823b80';
 export type LineWidth = 2 | 4 | 8;
 
 export type DistanceUnit = 'm' | 'NM';
-
-export type PointType = 'circle' | 'square' | 'triangle' | 'diamond' | 'star';
 
 export type TextFontSize = 12 | 16 | 24;
 
@@ -46,69 +44,7 @@ export const drawTypeStateAtom = atom<DrawType | null>(null);
 export const drawEnabledAtom = atom<boolean>(false);
 export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
-
-export const pointTypeAtom = atom<PointType>('circle');
 export const pointIconAtom = atom<MaterialSymbol | null>(null);
-
-export const pointStyleReadAtom = atom((get) => {
-  const type = get(pointTypeAtom);
-  const color = get(primaryColorAtom);
-  const lineWidth = get(lineWidthAtom);
-  const pointRadius = lineWidth * 3;
-
-  switch (type) {
-    case 'circle':
-      return new Style({
-        image: new CircleStyle({
-          radius: pointRadius,
-          fill: new Fill({ color: color }),
-        }),
-      });
-    case 'square':
-      return new Style({
-        image: new RegularShape({
-          points: 4,
-          radius: pointRadius,
-          angle: Math.PI / 4,
-          fill: new Fill({ color: color }),
-        }),
-      });
-    case 'triangle':
-      return new Style({
-        image: new RegularShape({
-          points: 3,
-          radius: pointRadius,
-          fill: new Fill({ color: color }),
-        }),
-      });
-    case 'diamond':
-      return new Style({
-        image: new RegularShape({
-          points: 4,
-          radius: pointRadius,
-          angle: 0,
-          scale: [1, 1.7],
-          fill: new Fill({ color: color }),
-        }),
-      });
-    case 'star':
-      return new Style({
-        image: new RegularShape({
-          points: 5,
-          radius: pointRadius,
-          radius2: pointRadius / 2,
-          fill: new Fill({ color: color }),
-        }),
-      });
-    default:
-      return new Style({
-        image: new CircleStyle({
-          radius: pointRadius,
-          fill: new Fill({ color: color }),
-        }),
-      });
-  }
-});
 
 export const textInputAtom = atom('');
 

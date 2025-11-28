@@ -107,7 +107,7 @@ export const MapComponent = () => {
     themeLayers.forEach((layerName) => {
       addThemeLayerToMap(layerName as ThemeLayerName);
     });
-  }, []);
+  }, [addThemeLayerToMap]);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -118,7 +118,7 @@ export const MapComponent = () => {
       }
     };
     asyncEffect();
-  }, []);
+  }, [setDrawLayerFeatures]);
 
   return (
     <Box position={'relative'} width="100%" height="100%">
