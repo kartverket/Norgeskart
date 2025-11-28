@@ -120,7 +120,8 @@ const useDrawSettings = () => {
     const elm = document.createElement('i');
     elm.classList.add('material-symbols-rounded');
     elm.style.color = color;
-    elm.style.fontSize = `${size * 6}px`;
+    elm.style.fontSize = `${size * 10}px`;
+    elm.style.userSelect = 'none';
     elm.style.pointerEvents = 'none';
     elm.textContent = icon;
 
@@ -128,6 +129,7 @@ const useDrawSettings = () => {
       element: elm,
       position: pointCoordinates,
       positioning: 'center-center',
+      stopEvent: false,
     });
     map.addOverlay(overlay);
     point.setProperties({
