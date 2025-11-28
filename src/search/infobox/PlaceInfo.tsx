@@ -1,4 +1,4 @@
-import { Box, Link, Separator, Text } from '@kvib/react';
+import { Link, Separator, SimpleGrid, Text, VStack } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { Place } from '../../types/searchTypes';
 
@@ -10,12 +10,14 @@ export const PlaceInfo = ({ place }: PlaceInfoProps) => {
   const { t } = useTranslation();
 
   return (
-    <Box>
-      <Link
-        key={place.name}
-        mb={4}
-        href={`https://stadnamn.kartverket.no/fakta/${place.placeNumber}`}
-      >
+    <SimpleGrid
+      columns={2}
+      templateColumns="1fr auto"
+      gap={2}
+      w="100%"
+      alignItems={'start'}
+    >
+      <VStack align={'start'} userSelect={'text'}>
         <Text>{place.name}</Text>
         <Text fontSize="sm">
           {t('placeInfo.locationNumber')}: {place.placeNumber}
@@ -24,7 +26,16 @@ export const PlaceInfo = ({ place }: PlaceInfoProps) => {
           {t('placeInfo.nameObjectType')}: {place.placeType}
         </Text>
         <Separator mt={2} />
+      </VStack>
+      <Link
+        key={place.name}
+        href={`https://stadnamn.kartverket.no/fakta/${place.placeNumber}`}
+        w={'100%'}
+        textDecorationLine={'none'}
+        external
+      >
+        {t('placeInfo.moreInfo')}
       </Link>
-    </Box>
+    </SimpleGrid>
   );
 };
