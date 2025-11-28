@@ -218,6 +218,10 @@
             "epsg3857": {
               "displayName": "Webmercator"
             }
+          },
+          "popover": {
+            "title": "Coordinate refereance system",
+            "body": "Select a coordinate refereance system to use. Different systems are accurate in different parts of the country. We recomend using UTM 33 if you are unsure."
           }
         },
         "theme": {

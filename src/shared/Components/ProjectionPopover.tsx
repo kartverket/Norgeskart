@@ -1,4 +1,5 @@
 import {
+  Heading,
   Icon,
   PopoverArrow,
   PopoverBody,
@@ -9,8 +10,10 @@ import {
   PopoverTrigger,
   Text,
 } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
 
 export const ProjectionPopover = () => {
+  const { t } = useTranslation();
   return (
     <PopoverRoot>
       <PopoverTrigger>
@@ -21,14 +24,12 @@ export const ProjectionPopover = () => {
         <PopoverCloseTrigger />
         <PopoverArrow />
         <PopoverBody>
-          <PopoverTitle>Hva er et CRS</PopoverTitle>
-          <Text>
-            Hvem vet, men det er viktig. Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. more lorem ipsum dolor sit amet, consectetur
-            adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.
-          </Text>
+          <PopoverTitle>
+            <Heading size="md">
+              {t('map.settings.layers.projection.popover.title')}
+            </Heading>
+          </PopoverTitle>
+          <Text>{t('map.settings.layers.projection.popover.body')}</Text>
         </PopoverBody>
       </PopoverContent>
     </PopoverRoot>
