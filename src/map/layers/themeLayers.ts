@@ -14,7 +14,7 @@ import {
   ThemeLayerName,
 } from './themeWMS';
 
-export const MAX_THEME_LAYERS = 10; // Maximum number of theme layers allowed on the map, what is a good number here? 
+export const MAX_THEME_LAYERS = 10; // Maximum number of theme layers allowed on the map, what is a good number here?
 
 export const mapLegacyThemeLayerId = (
   legacyId: string,
