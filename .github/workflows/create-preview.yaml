@@ -27,14 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docker_tag: ${{ steps.meta.outputs.tags }}
-      target_branch_short_name: ${{ steps.get_sha.outputs.branchname }}
+      target_branch_short_name: ${{ steps.get_sanatized_name.outputs.branchname }}
     steps:
       - name: 'Checkout code'
         uses: actions/checkout@v6
-        with:
+        with: 
           ref: ${{ github.event.inputs.targetBranch }}
-      - name: Get target branch SHA
-        id: get_sha
+      - name: Get target branch sanatized name
+        id: get_sanatized_name
         run: echo "branchname=$(git branch --show-current | sed 's/[^a-z0-9._-]/-/g' | sed 's/^-*//;s/-*$//' | sed 's/-\{2,\}/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-15)" >> $GITHUB_OUTPUT
 
       - name: 'Setup node.js'
