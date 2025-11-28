@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       docker_tag: ${{ steps.meta.outputs.tags }}
-      target_branch_sha: ${{ steps.get_sha.outputs.sha }}
+      target_branch_short_name: ${{ steps.get_sha.outputs.branchname }}
     steps:
       - name: 'Checkout code'
         uses: actions/checkout@v6
@@ -35,7 +35,7 @@ jobs:
           ref: ${{ github.event.inputs.targetBranch }}
       - name: Get target branch SHA
         id: get_sha
-        run: echo "sha=$(git rev-parse HEAD | cut -c1-6)" >> $GITHUB_OUTPUT
+        run: echo "branchname=$(git branch --show-current | sed 's/[^a-z0-9._-]/-/g' | sed 's/^-*//;s/-*$//' | sed 's/-\{2,\}/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-15)" >> $GITHUB_OUTPUT
 
       - name: 'Setup node.js'
         uses: actions/setup-node@v6
@@ -111,17 +111,17 @@ jobs:
 
       - name: Update deployment
         env:
-          COMMIT_MESSAGE: Create preview for commit ${{ needs.build.outputs.target_branch_sha }}
-          NEW_FILE_PATH: env/atgcp1-dev/norgeskart-preview/norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.jsonnet
+          COMMIT_MESSAGE: Create preview for branch ${{ needs.build.outputs.target_branch_short_name }}
+          NEW_FILE_PATH: env/atgcp1-dev/norgeskart-preview/norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.jsonnet
         run: |
           mkdir -p env/atgcp1-dev/norgeskart-preview
-          cp applications/partials/norgeskart-preview-partial.jsonnet $NEW_FILE_PATH
-          sed -i '1ilocal name = "norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}";' $NEW_FILE_PATH
+          cp -f applications/partials/norgeskart-preview-partial.jsonnet $NEW_FILE_PATH
+          sed -i '1ilocal name = "norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}";' $NEW_FILE_PATH
           sed -i '1ilocal image = "${{ needs.build.outputs.docker_tag }}";' $NEW_FILE_PATH
-          sed -i '1ilocal ingress = ["norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud"];' $NEW_FILE_PATH
+          sed -i '1ilocal ingress = ["norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atgcp1-dev.kartverket-intern.cloud"];' $NEW_FILE_PATH
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
       - name: Add url to  output
         run:  |
-          echo "Trykk her snart https://norgeskart-preview-${{ needs.build.outputs.target_branch_sha }}.atgcp1-dev.kartverket-intern.cloud" >> $GITHUB_STEP_SUMMARY
+          echo "Trykk her snart https://norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atgcp1-dev.kartverket-intern.cloud" >> $GITHUB_STEP_SUMMARY
