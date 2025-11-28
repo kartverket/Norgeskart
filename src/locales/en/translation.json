@@ -68,7 +68,7 @@
           "title": "Coordinates copied to clipboard"
         }
       },
-      "differentCrs": "Change coordinate system",
+      "differentCrs": "Display in",
       "east": "East",
       "north": "North"
     },
@@ -203,8 +203,26 @@
           }
         },
         "projection": {
-          "label": "Chose map projection",
-          "placeholder": "Chose"
+          "label": "Chose map coordination system",
+          "placeholder": "Chose",
+          "projections": {
+            "epsg25833": {
+              "displayName": "UTM 33 (default)"
+            },
+            "epsg25832": {
+              "displayName": "UTM 32"
+            },
+            "epsg25835": {
+              "displayName": "UTM 35"
+            },
+            "epsg3857": {
+              "displayName": "Webmercator"
+            }
+          },
+          "popover": {
+            "title": "Coordinate refereance system",
+            "body": "Select a coordinate refereance system to use. Different systems are accurate in different parts of the country. We recomend using UTM 33 if you are unsure."
+          }
         },
         "theme": {
           "label": "Chose theme layers"
