@@ -204,12 +204,12 @@
       }
     },
     {
-      "id": "geodetic",
+      "id": "fastmerker",
       "groupid": 13,
       "name": {
-        "nb": "Geodetisk infrastruktur",
-        "nn": "Geodetisk infrastruktur",
-        "en": "Geodetic infrastructure"
+        "nb": "Fastmerker",
+        "nn": "Fastmerke",
+        "en": "Reference marks"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.fastmerker2"
     },
@@ -222,7 +222,7 @@
         "en": "Benchmarks"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.fastmerker2",
-      "parentId": "geodetic"
+      "parentId": "fastmerker"
     },
     {
       "id": "baseStations",
@@ -233,7 +233,7 @@
         "en": "Base stations"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.fastmerker2",
-      "parentId": "geodetic"
+      "parentId": "fastmerker"
     },
     {
       "id": "utmGrid",
@@ -244,17 +244,17 @@
         "en": "UTM grid"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.rutenett",
-      "parentId": "geodetic"
+      "parentId": "fastmerker"
     },
     {
-      "id": "cadastre",
+      "id": "seeiendom",
       "groupid": 16,
       "name": {
-        "nb": "Matrikkel",
-        "nn": "Matrikkel",
-        "en": "Cadastre"
+        "nb": "Eiendom",
+        "nn": "Eiendom",
+        "en": "Property"
       },
-      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.matrikkel2"
+      "wmsUrl": "https://testapi.norgeskart.no/v1/matrikkel/wms"
     },
     {
       "id": "nrl",
@@ -1156,12 +1156,12 @@
     {
       "id": "cadastreAddresses",
       "name": {
-        "nb": "Matrikkeladresser",
-        "nn": "Matrikkeladresser",
-        "en": "Cadastre addresses"
+        "nb": "Adresser",
+        "nn": "Adresser",
+        "en": "Addresses"
       },
       "layers": "MATRIKKELADRESSEWFS,VEGADRESSEWFS",
-      "categoryId": "cadastre",
+      "categoryId": "seeiendom",
       "groupid": 16,
       "legacyId": "1011",
       "queryable": true
@@ -1174,7 +1174,7 @@
         "en": "Buildings"
       },
       "layers": "BYGNINGWFS",
-      "categoryId": "cadastre",
+      "categoryId": "seeiendom",
       "groupid": 16,
       "legacyId": "1012",
       "queryable": true
@@ -1187,7 +1187,7 @@
         "en": "Property boundaries and parcel numbers"
       },
       "layers": "TEIGGRENSEWFS,TEIGWFS",
-      "categoryId": "cadastre",
+      "categoryId": "seeiendom",
       "groupid": 16,
       "legacyId": "1013",
       "queryable": true
@@ -1475,7 +1475,7 @@
       "layers": "statlig_sikra_polygon_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.statlig_sikra_polygon_01",
+      "legacyId": "1011",
       "queryable": true
     },
     {
@@ -1488,7 +1488,7 @@
       "layers": "friluftsomrade_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.friluftsomrade_01",
+      "legacyId": "1012",
       "queryable": true
     },
     {
@@ -1501,7 +1501,7 @@
       "layers": "parkeringsomrader_friluft_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.parkeringsomrader_friluft_01",
+      "legacyId": "1013",
       "queryable": true
     },
     {
@@ -1514,7 +1514,7 @@
       "layers": "turvei_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.turvei_01",
+      "legacyId": "1014",
       "queryable": true
     },
     {
@@ -1527,7 +1527,7 @@
       "layers": "turisthytte_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.turisthytte_01",
+      "legacyId": "1015",
       "queryable": true
     },
     {
@@ -1540,7 +1540,7 @@
       "layers": "gapahukhytte_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.gapahukhytte_01",
+      "legacyId": "1016",
       "queryable": true
     },
     {
@@ -1553,7 +1553,7 @@
       "layers": "fiskeplass_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.fiskeplass_01",
+      "legacyId": "1017",
       "queryable": true
     },
     {
@@ -1566,7 +1566,7 @@
       "layers": "grillbalplass_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.grillbalplass_01",
+      "legacyId": "1018",
       "queryable": true
     },
     {
@@ -1579,7 +1579,7 @@
       "layers": "baderampe_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.baderampe_01",
+      "legacyId": "1019",
       "queryable": true
     },
     {
@@ -1592,7 +1592,7 @@
       "layers": "hc_parkering_friluft_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.hc_parkering_friluft_01",
+      "legacyId": "1020",
       "queryable": true
     },
     {
@@ -1605,7 +1605,7 @@
       "layers": "skiloype_01",
       "categoryId": "accessibilityRecreationWheelchair",
       "groupid": 5,
-      "legacyId": "5.skiloype_01",
+      "legacyId": "1021",
       "queryable": true
     },
     {
@@ -1618,7 +1618,7 @@
       "layers": "statlig_sikra_polygon_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.statlig_sikra_polygon_02",
+      "legacyId": "1022",
       "queryable": true
     },
     {
@@ -1631,7 +1631,7 @@
       "layers": "friluftsomrade_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.friluftsomrade_02",
+      "legacyId": "1023",
       "queryable": true
     },
     {
@@ -1644,7 +1644,7 @@
       "layers": "parkeringsomrader_friluft_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.parkeringsomrader_friluft_02",
+      "legacyId": "1024",
       "queryable": true
     },
     {
@@ -1657,7 +1657,7 @@
       "layers": "turvei_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.turvei_02",
+      "legacyId": "1025",
       "queryable": true
     },
     {
@@ -1670,7 +1670,7 @@
       "layers": "turisthytte_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.turisthytte_02",
+      "legacyId": "1026",
       "queryable": true
     },
     {
@@ -1683,7 +1683,7 @@
       "layers": "gapahukhytte_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.gapahukhytte_02",
+      "legacyId": "1027",
       "queryable": true
     },
     {
@@ -1696,7 +1696,7 @@
       "layers": "fiskeplass_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.fiskeplass_02",
+      "legacyId": "1028",
       "queryable": true
     },
     {
@@ -1709,7 +1709,7 @@
       "layers": "grillbalplass_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.grillbalplass_02",
+      "legacyId": "1029",
       "queryable": true
     },
     {
@@ -1722,7 +1722,7 @@
       "layers": "hc_parkering_friluft_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.hc_parkering_friluft_02",
+      "legacyId": "1030",
       "queryable": true
     },
     {
@@ -1735,7 +1735,7 @@
       "layers": "skiloype_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
       "groupid": 7,
-      "legacyId": "7.skiloype_02",
+      "legacyId": "1031",
       "queryable": true
     },
     {
@@ -1748,7 +1748,7 @@
       "layers": "statlig_sikra_polygon_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.statlig_sikra_polygon_03",
+      "legacyId": "1032",
       "queryable": true
     },
     {
@@ -1761,7 +1761,7 @@
       "layers": "friluftsomrade_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.friluftsomrade_03",
+      "legacyId": "1033",
       "queryable": true
     },
     {
@@ -1774,7 +1774,7 @@
       "layers": "parkeringsomrader_friluft_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.parkeringsomrader_friluft_03",
+      "legacyId": "1034",
       "queryable": true
     },
     {
@@ -1787,7 +1787,7 @@
       "layers": "turvei_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.turvei_03",
+      "legacyId": "1035",
       "queryable": true
     },
     {
@@ -1800,7 +1800,7 @@
       "layers": "turisthytte_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.turisthytte_03",
+      "legacyId": "1036",
       "queryable": true
     },
     {
@@ -1813,7 +1813,7 @@
       "layers": "gapahukhytte_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.gapahukhytte_03",
+      "legacyId": "1037",
       "queryable": true
     },
     {
@@ -1826,7 +1826,7 @@
       "layers": "fiskeplass_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.fiskeplass_03",
+      "legacyId": "1038",
       "queryable": true
     },
     {
@@ -1839,7 +1839,7 @@
       "layers": "grillbalplass_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.grillbalplass_03",
+      "legacyId": "1039",
       "queryable": true
     },
     {
@@ -1852,7 +1852,7 @@
       "layers": "baderampe_02",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.baderampe_02",
+      "legacyId": "1040",
       "queryable": true
     },
     {
@@ -1865,7 +1865,7 @@
       "layers": "hc_parkering_friluft_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.hc_parkering_friluft_03",
+      "legacyId": "1041",
       "queryable": true
     },
     {
@@ -1878,7 +1878,7 @@
       "layers": "skiloype_03",
       "categoryId": "accessibilityRecreationSight",
       "groupid": 3,
-      "legacyId": "3.skiloype_03",
+      "legacyId": "1042",
       "queryable": true
     },
     {
@@ -1891,7 +1891,7 @@
       "layers": "toalett",
       "categoryId": "accessibilityShared",
       "groupid": 10,
-      "legacyId": "10.toalett",
+      "legacyId": "1043",
       "queryable": true
     },
     {
@@ -1904,7 +1904,7 @@
       "layers": "sittegruppebenk",
       "categoryId": "accessibilityShared",
       "groupid": 10,
-      "legacyId": "10.sittegruppebenk",
+      "legacyId": "1044",
       "queryable": true
     }
   ]

@@ -24,20 +24,21 @@ export const mapLegacyThemeLayerId = (
   projectName?: string,
 ): string | undefined => {
   if (configLoadable?.state === 'hasData') {
+    const normalizedProject = projectName?.toLowerCase();
+
     const layer = configLoadable.data.layers.find((l) => {
-      const legacyIdMatches = l.legacyId === legacyId;
+      if (l.legacyId !== legacyId) return false;
 
-      if (!legacyIdMatches) return false;
-
-      if (!projectName) {
-        return true;
-      }
+      if (!normalizedProject) return true;
 
       const category = configLoadable.data.categories.find(
         (cat) => cat.id === l.categoryId,
       );
 
-      return category?.id === projectName;
+      return (
+        category?.id === normalizedProject ||
+        category?.parentId === normalizedProject
+      );
     });
 
     if (layer) {
