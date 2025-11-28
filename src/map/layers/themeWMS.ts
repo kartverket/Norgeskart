@@ -61,6 +61,17 @@ export type ThemeLayerName =
   | LocationNameLayerName
   | ConfigThemeLayerName;
 
+export const QUERYABLE_LAYERS: ThemeLayerName[] = [
+  'adresses',
+  'buildings',
+  'parcels',
+  'hikingTrails',
+  'skiingTrails',
+  'routeInfoPoints',
+  'bikeTrails',
+  'waterTrails',
+];
+
 const ENV = getEnv();
 
 export const createThemeLayerFromConfig = (
@@ -95,6 +106,8 @@ export const createThemeLayerFromConfig = (
     }),
     properties: {
       id: `theme.${layerDef.id}`,
+      queryable: layerDef.queryable ?? false,
+      layerTitle: layerDef.name.nb || layerDef.id,
     },
     preload: 1,
   });
@@ -104,6 +117,8 @@ export const getThemeWMSLayer = (
   layerName: ThemeLayerName,
   projection: string,
 ): TileLayer | null => {
+  const isQueryable = QUERYABLE_LAYERS.includes(layerName);
+
   switch (layerName) {
     case 'adresses':
       return new TileLayer({
@@ -119,6 +134,8 @@ export const getThemeWMSLayer = (
         }),
         properties: {
           id: `theme.${layerName}`,
+          queryable: isQueryable,
+          layerTitle: 'Adresser',
         },
       });
     case 'buildings':
@@ -135,6 +152,8 @@ export const getThemeWMSLayer = (
         }),
         properties: {
           id: `theme.${layerName}`,
+          queryable: isQueryable,
+          layerTitle: 'Bygninger',
         },
       });
     case 'parcels':
@@ -152,6 +171,8 @@ export const getThemeWMSLayer = (
         }),
         properties: {
           id: `theme.${layerName}`,
+          queryable: isQueryable,
+          layerTitle: 'Teiggrenser',
         },
       });
 
@@ -161,7 +182,7 @@ export const getThemeWMSLayer = (
     case 'skiingTrails':
     case 'bikeTrails':
     case 'waterTrails':
-      return getOutdoorsLifeWMSLayer(layerName, projection);
+      return getOutdoorsLifeWMSLayer(layerName, projection, isQueryable);
     case 'osloMarkaBorder':
       return getNorwayFactsWMSLayer(layerName, projection);
     case 'economicMapFirstEdition':
@@ -170,6 +191,7 @@ export const getThemeWMSLayer = (
         projection,
         'n5raster_foerstegang_metadata,n5raster_foerstegang',
         layerName,
+        false,
       );
     case 'amtMap':
       return getGeoNorgeWMSLayer(
@@ -177,6 +199,7 @@ export const getThemeWMSLayer = (
         projection,
         'amt1',
         layerName,
+        false,
       );
     default:
       return null;
@@ -199,29 +222,37 @@ const getNorwayFactsWMSLayer = (
     projection,
     wmsLayerName,
     layerName,
+    false,
   );
 };
 
 const getOutdoorsLifeWMSLayer = (
   layerName: OutdoorsLifeLayerName,
   projection: string,
+  isQueryable: boolean,
 ): TileLayer | null => {
   let wmsLayerName: string;
+  let layerTitle: string;
   switch (layerName) {
     case 'hikingTrails':
       wmsLayerName = 'Fotrute';
+      layerTitle = 'Fotruter';
       break;
     case 'skiingTrails':
       wmsLayerName = 'Skiloype';
+      layerTitle = 'Skiløyper';
       break;
     case 'routeInfoPoints':
       wmsLayerName = 'Ruteinfopunkt';
+      layerTitle = 'Ruteinfopunkt';
       break;
     case 'bikeTrails':
       wmsLayerName = 'Sykkelrute';
+      layerTitle = 'Sykkelruter';
       break;
     case 'waterTrails':
       wmsLayerName = 'AnnenRute';
+      layerTitle = 'Andre ruter';
       break;
   }
 
@@ -230,6 +261,8 @@ const getOutdoorsLifeWMSLayer = (
     projection,
     wmsLayerName,
     layerName,
+    isQueryable,
+    layerTitle,
   );
 };
 
@@ -238,6 +271,8 @@ const getGeoNorgeWMSLayer = (
   projection: string,
   layerNames: string,
   layerId: string,
+  isQueryable: boolean,
+  layerTitle?: string,
 ): TileLayer => {
   return new TileLayer({
     source: new TileWMS({
@@ -252,6 +287,8 @@ const getGeoNorgeWMSLayer = (
     }),
     properties: {
       id: `theme.${layerId}`,
+      queryable: isQueryable,
+      layerTitle: layerTitle || layerId,
     },
   });
 };

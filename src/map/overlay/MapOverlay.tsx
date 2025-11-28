@@ -7,6 +7,7 @@ import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { Toolbar } from '../../toolbar/Toolbar';
 import { displayCompassOverlayAtom } from '../atoms';
+import { useFeatureInfoClick } from '../featureInfo/useFeatureInfo';
 import { MapControlButtons } from '../MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './atoms';
 import { Compass } from './Compass';
@@ -22,6 +23,8 @@ export const MapOverlay = () => {
   const { drawEnabled, setDrawEnabled } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
+
+  useFeatureInfoClick();
 
   useEffect(() => {
     if (!portalRef.current) {

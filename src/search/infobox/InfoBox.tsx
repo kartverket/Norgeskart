@@ -16,6 +16,7 @@ import { ProjectionIdentifier } from '../../map/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './CoordinateSection';
+import { FeatureInfoSection } from './FeatureInfoSection';
 import { InfoBoxContent } from './InfoBoxContent';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
@@ -86,6 +87,7 @@ export const InfoBox = () => {
               />
             </AccordionItemContent>
           </AccordionItem>
+          <FeatureInfoSection />
         </AccordionRoot>
       </Box>
     </Stack>
