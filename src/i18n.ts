@@ -13,7 +13,7 @@ i18n
     supportedLngs: ['nb', 'nn', 'en'],
     fallbackLng: 'nb',
     detection: {
-      order: ['localStorage', 'navigator', 'htmlTag'],
+      order: ['localStorage', 'htmlTag'],
       caches: ['localStorage'],
     },
     load: 'languageOnly',
