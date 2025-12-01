@@ -135,7 +135,26 @@ const useDrawSettings = () => {
     point.setProperties({
       overlayIcon: icon,
     });
-    feature.setStyle(new Style({}));
+    feature.on('change', (e) => {
+      console.log('feature changed', e);
+      const geom = feature.getGeometry();
+      if (geom && geom instanceof Point) {
+        const coords = geom.getCoordinates();
+        overlay.setPosition(coords);
+      }
+    });
+    feature.on('change:geometry', () => {
+      console.log('geometry changed');
+    });
+    feature.setStyle(
+      new Style({
+        image: new CircleStyle({
+          radius: size * 5,
+          fill: new Fill({ color: 'transparent' }),
+          stroke: new Stroke({ color: 'transparent', width: 0 }),
+        }),
+      }),
+    );
   };
 
   const setDrawType = (type: DrawType) => {
@@ -225,6 +244,10 @@ const useDrawSettings = () => {
       if (icon) {
         addIconOverlayToPointFeature(eventFeature, icon);
       }
+    } else {
+      const style = store.get(drawStyleReadAtom);
+      style.setZIndex(zIndex);
+      eventFeature.setStyle(style);
     }
 
     if (drawType === 'Text') {

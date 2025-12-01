@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { getEnvName } from '../env';
 import { drawActionsAtom } from '../settings/draw/drawActions/atoms';
 import { Actions } from './Actions';
+import { Selected } from './Selected';
 
 export const Debug = () => {
   const hideDebug = localStorage.getItem('hideDebug') === 'true';
@@ -54,9 +55,13 @@ export const Debug = () => {
             <TabsTrigger value="actions">
               Draw Actions [{drawActions.length}]
             </TabsTrigger>
+            <TabsTrigger value="selected">Selected</TabsTrigger>
           </TabsList>
           <TabsContent value="actions">
             <Actions />
+          </TabsContent>
+          <TabsContent value="selected">
+            <Selected />
           </TabsContent>
         </Tabs>
       </Box>
