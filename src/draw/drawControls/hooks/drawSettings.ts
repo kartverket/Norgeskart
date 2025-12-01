@@ -224,10 +224,6 @@ const useDrawSettings = () => {
       const icon = store.get(pointIconAtom);
       if (icon) {
         addIconOverlayToPointFeature(eventFeature, icon);
-      } else {
-        const style = store.get(drawStyleReadAtom);
-        style.setZIndex(zIndex);
-        eventFeature.setStyle(style);
       }
     }
 
