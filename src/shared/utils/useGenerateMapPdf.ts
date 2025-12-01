@@ -1,10 +1,8 @@
-import { useState, useCallback } from "react";
-import { generateMapPdf } from "../utils/generateMapPdf";
-import { useTranslation } from "react-i18next";
-
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { generateMapPdf } from '../utils/generateMapPdf';
 
 export const useGenerateMapPdf = (currentLayout: string) => {
-
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
@@ -17,12 +15,12 @@ export const useGenerateMapPdf = (currentLayout: string) => {
       try {
         await generateMapPdf({ map, overlayRef, setLoading, t, currentLayout });
       } catch (err: any) {
-        console.error("Error generating PDF:", err);
+        console.error('Error generating PDF:', err);
       } finally {
         setLoading(false);
       }
     },
-    [t, currentLayout]
+    [t, currentLayout],
   );
 
   return { generate, loading };

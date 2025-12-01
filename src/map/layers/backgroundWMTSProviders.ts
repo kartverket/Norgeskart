@@ -102,7 +102,6 @@ const nibTileLoadFunction: LoadFunction = (imageTile: Tile, src: string) => {
   }
 };
 
-
 // To allow the strange matrix set identifiers in NorgeIBilder
 const parseMatrixSetString = (identifier: string) => {
   const parsed = identifier.replace('::', ':').split('crs:')[1];

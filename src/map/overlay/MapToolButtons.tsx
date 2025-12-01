@@ -47,7 +47,7 @@ export const MapToolButtons = () => {
   const [showPrintWindow, setShowPrintWindow] = useState(false);
   const isMobileScreen = useIsMobileScreen();
   const posthog = usePostHog();
-  
+
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -88,7 +88,9 @@ export const MapToolButtons = () => {
         />
         <MapButton
           onClick={() => {
-            setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
+            setCurrentMapTool(
+              currentMapTool === 'settings' ? null : 'settings',
+            );
           }}
           icon={currentMapTool === 'settings' ? 'close' : 'settings'}
           label={

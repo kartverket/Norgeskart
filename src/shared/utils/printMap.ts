@@ -1,4 +1,4 @@
-import { toaster } from "@kvib/react";
+import { toaster } from '@kvib/react';
 
 interface PrintMapProps {
   map: any;
@@ -21,18 +21,20 @@ export const printMap = async ({
   setLoading(true);
 
   try {
-    map.once("rendercomplete", () => {
-      const mapCanvas = map.getViewport().querySelector("canvas") as HTMLCanvasElement | null;
+    map.once('rendercomplete', () => {
+      const mapCanvas = map
+        .getViewport()
+        .querySelector('canvas') as HTMLCanvasElement | null;
       if (!mapCanvas) {
-        toaster.create({ title: "Map canvas not found", type: "error" });
+        toaster.create({ title: 'Map canvas not found', type: 'error' });
         setLoading(false);
         return;
       }
 
-      const printCanvas = document.createElement("canvas");
+      const printCanvas = document.createElement('canvas');
       printCanvas.width = a4WidthPx;
       printCanvas.height = a4HeightPx;
-      const ctx = printCanvas.getContext("2d");
+      const ctx = printCanvas.getContext('2d');
       if (!ctx) return;
 
       const overlayRect = overlayRef.current!.getBoundingClientRect();
@@ -47,21 +49,44 @@ export const printMap = async ({
       const sh = overlayRect.height * scaleY;
 
       // Draw map portion
-      ctx.drawImage(mapCanvas, sx, sy, sw, sh, 0, 0, printCanvas.width, printCanvas.height - 50);
+      ctx.drawImage(
+        mapCanvas,
+        sx,
+        sy,
+        sw,
+        sh,
+        0,
+        0,
+        printCanvas.width,
+        printCanvas.height - 50,
+      );
 
       // Draw annotations
-      ctx.fillStyle = "black";
-      ctx.font = "12px Arial";
+      ctx.fillStyle = 'black';
+      ctx.font = '12px Arial';
 
-      const scaleText = document.querySelector(".ol-scale-text")?.textContent || "";
-      ctx.textAlign = "center";
+      const scaleText =
+        document.querySelector('.ol-scale-text')?.textContent || '';
+      ctx.textAlign = 'center';
       ctx.fillText(scaleText, printCanvas.width / 2, printCanvas.height - 24);
 
       const center = map.getView().getCenter();
-      ctx.textAlign = "left";
-      ctx.fillText(`Senterposisjon: ${center?.map((v: number) => v.toFixed(2)).join(", ")}`, 0, printCanvas.height - 24);
-      ctx.fillText(`Koordinatsystem: ${projection}`, 0, printCanvas.height - 12);
-      ctx.fillText(`Utskriftsdato: ${new Date().toLocaleDateString("no-NO")}`, 0, printCanvas.height);
+      ctx.textAlign = 'left';
+      ctx.fillText(
+        `Senterposisjon: ${center?.map((v: number) => v.toFixed(2)).join(', ')}`,
+        0,
+        printCanvas.height - 24,
+      );
+      ctx.fillText(
+        `Koordinatsystem: ${projection}`,
+        0,
+        printCanvas.height - 12,
+      );
+      ctx.fillText(
+        `Utskriftsdato: ${new Date().toLocaleDateString('no-NO')}`,
+        0,
+        printCanvas.height,
+      );
 
       // Draw logo
       const logo = new Image();
@@ -69,18 +94,24 @@ export const printMap = async ({
       logo.onload = () => {
         const logoHeight = 35;
         const logoWidth = (logo.width / logo.height) * logoHeight;
-        ctx.drawImage(logo, a4WidthPx - logoWidth, a4HeightPx - logoHeight - 1, logoWidth, logoHeight);
+        ctx.drawImage(
+          logo,
+          a4WidthPx - logoWidth,
+          a4HeightPx - logoHeight - 1,
+          logoWidth,
+          logoHeight,
+        );
 
         // Open print window
-        const imgData = printCanvas.toDataURL("image/png");
-        const printWindow = window.open("", "_blank", "width=800,height=1000");
+        const imgData = printCanvas.toDataURL('image/png');
+        const printWindow = window.open('', '_blank', 'width=800,height=1000');
         if (!printWindow) return;
 
-        printWindow.document.body.style.margin = "0";
-        printWindow.document.body.style.background = "white";
+        printWindow.document.body.style.margin = '0';
+        printWindow.document.body.style.background = 'white';
         const printImg = new Image();
         printImg.src = imgData;
-        printImg.style.width = "100%";
+        printImg.style.width = '100%';
         printWindow.document.body.appendChild(printImg);
         printWindow.focus();
         setTimeout(() => {
@@ -92,8 +123,12 @@ export const printMap = async ({
 
     map.renderSync();
   } catch (err) {
-    console.error("Print failed:", err);
-    toaster.create({ title: "Failed to print map", description: String(err), type: "error" });
+    console.error('Print failed:', err);
+    toaster.create({
+      title: 'Failed to print map',
+      description: String(err),
+      type: 'error',
+    });
   } finally {
     setLoading(false);
   }

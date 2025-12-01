@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 interface UseDraggableOverlayProps {
   map: any;
@@ -29,7 +29,7 @@ export const useDraggableOverlay = ({
     const interactions = map.getInteractions();
     const toggleDragPan = (enable: boolean) => {
       interactions.forEach((i: any) => {
-        if (i.constructor.name.includes("DragPan")) i.setActive(enable);
+        if (i.constructor.name.includes('DragPan')) i.setActive(enable);
       });
     };
 
@@ -70,13 +70,13 @@ export const useDraggableOverlay = ({
       isDragging = false;
     };
 
-    overlay.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
+    overlay.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
 
     // Handle map resize or layout change
     const resizeObserver = new ResizeObserver(() => {
-      setOverlayPosition(prev => constrainPosition(prev.x, prev.y));
+      setOverlayPosition((prev) => constrainPosition(prev.x, prev.y));
     });
 
     const viewport = map.getViewport();
@@ -84,9 +84,9 @@ export const useDraggableOverlay = ({
 
     // Cleanup
     return () => {
-      overlay.removeEventListener("mousedown", onMouseDown);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
+      overlay.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
       resizeObserver.disconnect();
     };
   }, [map, overlayRef, overlayWidth, overlayHeight, setOverlayPosition]);
