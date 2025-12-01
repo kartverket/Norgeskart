@@ -18,6 +18,7 @@ import {
 } from '../settings/draw/atoms';
 import { enableFeatureMeasurmentOverlay } from './drawControls/drawUtils';
 import {
+  ICON_OVERLAY_PREFIX,
   INTERACTIVE_OVERLAY_PREFIX,
   MEASUREMNT_OVERLAY_PREFIX,
 } from './drawControls/hooks/drawSettings';
@@ -54,6 +55,27 @@ export const editPrimaryColorEffect = atomEffect((get) => {
   if (selectInteraction) {
     selectInteraction.getFeatures().forEach((feature) => {
       const featureStyle = feature.getStyle() as Style | undefined;
+
+      if (feature.getGeometry()?.getType() === 'Point') {
+        console.log('point');
+        const id = feature.getId();
+        const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
+        const overlays = map.getOverlays().getArray();
+        console.log(overlays);
+        console.log('id', prefixedId);
+        const overlay = map
+          .getOverlays()
+          .getArray()
+          .find((ov) => ov.getId() === prefixedId);
+        console.log(overlay);
+        if (overlay) {
+          const element = overlay.getElement();
+          if (element) {
+            element.style.color = primaryColor;
+          }
+        }
+        return;
+      }
       if (!featureStyle) {
         return;
       }

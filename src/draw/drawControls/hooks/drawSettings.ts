@@ -49,6 +49,7 @@ export const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 export const INTERACTIVE_OVERLAY_PREFIX = 'interactive-overlay-';
 export const INTERACTIVE_MEASUREMNT_OVERLAY_ID =
   'interactive-measurement-tooltip';
+export const ICON_OVERLAY_PREFIX = 'icon-overlay-';
 export const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
 export type FeatureMoveDetail = {
@@ -111,6 +112,7 @@ const useDrawSettings = () => {
     if (!point || !(point instanceof Point)) {
       return;
     }
+    const featureId = feature.getId();
 
     const store = getDefaultStore();
 
@@ -124,27 +126,25 @@ const useDrawSettings = () => {
     elm.style.userSelect = 'none';
     elm.style.pointerEvents = 'none';
     elm.textContent = icon;
+    const overlayId = `${ICON_OVERLAY_PREFIX}${featureId}`;
 
     const overlay = new Overlay({
       element: elm,
       position: pointCoordinates,
       positioning: 'center-center',
       stopEvent: false,
+      id: overlayId,
     });
     map.addOverlay(overlay);
     point.setProperties({
       overlayIcon: icon,
     });
-    feature.on('change', (e) => {
-      console.log('feature changed', e);
+    feature.on('change', () => {
       const geom = feature.getGeometry();
       if (geom && geom instanceof Point) {
         const coords = geom.getCoordinates();
         overlay.setPosition(coords);
       }
-    });
-    feature.on('change:geometry', () => {
-      console.log('geometry changed');
     });
     feature.setStyle(
       new Style({
@@ -238,7 +238,8 @@ const useDrawSettings = () => {
     const store = getDefaultStore();
     const drawType = store.get(drawTypeStateAtom);
     const zIndex = getHighestZIndex() + 1;
-
+    const featureId = uuidv4();
+    eventFeature.setId(featureId);
     if (drawType === 'Point') {
       const icon = store.get(pointIconAtom);
       if (icon) {
@@ -260,8 +261,6 @@ const useDrawSettings = () => {
       eventFeature.setStyle(style);
     }
 
-    const featureId = uuidv4();
-    eventFeature.setId(featureId);
     eventFeature.set('zIndex', zIndex);
     addDrawAction({
       type: 'CREATE',
@@ -538,6 +537,17 @@ const useDrawSettings = () => {
     const source = drawLayer.getSource() as VectorSource;
     source.clear();
     setShowMeasurements(false);
+    map.getOverlays().forEach((overlay) => {
+      const overlayId = overlay.getId();
+      if (
+        typeof overlayId === 'string' &&
+        (overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX) ||
+          overlayId.startsWith(INTERACTIVE_OVERLAY_PREFIX) ||
+          overlayId.startsWith(ICON_OVERLAY_PREFIX))
+      ) {
+        map.removeOverlay(overlay);
+      }
+    });
     resetActions();
   };
 

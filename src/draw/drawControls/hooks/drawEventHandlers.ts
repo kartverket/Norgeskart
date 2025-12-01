@@ -119,6 +119,10 @@ const handleSelect = (e: BaseEvent | Event) => {
     handleUpdateStyle(e.deselected);
     e.selected.forEach((f) => {
       const style = f.getStyle();
+      const geometry = f.getGeometry();
+      if (geometry && geometry.getType() === 'Point') {
+        return;
+      }
       if (style && style instanceof Style) {
         f.set('stylePreSelect', style);
         const newStyle = style.clone();
