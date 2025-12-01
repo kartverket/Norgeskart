@@ -6,46 +6,54 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AvailableProjections, ProjectionIdentifier } from '../../map/atoms';
 
 export interface ProjectionSelectorProps {
   onProjectionChange: (projection: ProjectionIdentifier) => void;
-  default?: ProjectionIdentifier | null;
+  default: ProjectionIdentifier;
   label?: string;
+  textColor: 'white' | 'black';
+  hideBorders?: boolean;
 }
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
+  const [selectedProjection, setSelectedProjection] =
+    useState<ProjectionIdentifier>(props.default);
 
-  const defaultProjection =
-    props.default != null ? props.default : 'EPSG:25833';
-
-  const projectionCollection = AvailableProjections.map((projection) => ({
-    value: projection,
-    label: projection,
-  }));
+  const projectionCollection = AvailableProjections.map((projection) => {
+    const label = t(
+      `map.settings.layers.projection.projections.${projection.replace(':', '').toLowerCase()}.displayName`,
+    );
+    return {
+      value: projection,
+      label: label,
+    };
+  });
 
   return (
     <SelectRoot
-      width="140px"
+      width="180px"
       size="sm"
       collection={createListCollection({ items: projectionCollection })}
-      defaultValue={[defaultProjection]}
+      value={[selectedProjection]}
     >
-      <SelectTrigger>
-        <SelectValueText
-          color="white"
-          placeholder={t('map.settings.layers.projection.placeholder')}
-        />
+      <SelectTrigger
+        border={'none'}
+        id={props.hideBorders ? 'crs-select-trigger' : ''}
+      >
+        <SelectValueText color={props.textColor} />
       </SelectTrigger>
       <SelectContent portalled={false}>
         {projectionCollection.map((item) => (
           <SelectItem
             key={item.value}
             item={item.value}
-            onClick={() =>
-              props.onProjectionChange(item.value as ProjectionIdentifier)
-            }
+            onClick={() => {
+              props.onProjectionChange(item.value as ProjectionIdentifier);
+              setSelectedProjection(item.value as ProjectionIdentifier);
+            }}
           >
             {item.label}
           </SelectItem>
