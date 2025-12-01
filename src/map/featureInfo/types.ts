@@ -16,6 +16,7 @@ export interface LayerFeatureInfo {
   layerTitle: string;
   features: FeatureInfoFeature[];
   error?: string;
+  imageBaseUrl?: string;
 }
 
 export interface FeatureInfoResult {

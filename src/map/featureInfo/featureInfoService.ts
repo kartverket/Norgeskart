@@ -170,6 +170,54 @@ const parseXmlFeatureInfo = (text: string): FeatureInfoFeature[] => {
 
     const features: FeatureInfoFeature[] = [];
 
+    const msGMLOutput = doc.querySelector('msGMLOutput');
+    if (msGMLOutput) {
+      const layerElements = Array.from(msGMLOutput.children).filter((el) =>
+        el.localName.endsWith('_layer'),
+      );
+
+      for (const layerElement of layerElements) {
+        const featureElements = Array.from(layerElement.children).filter((el) =>
+          el.localName.endsWith('_feature'),
+        );
+
+        for (const featureElement of featureElements) {
+          const properties: FeatureProperties = {};
+
+          for (const child of Array.from(featureElement.children)) {
+            if (
+              child.localName.toLowerCase().includes('geom') ||
+              child.localName.toLowerCase() === 'the_geom' ||
+              child.localName.toLowerCase() === 'shape' ||
+              child.localName.toLowerCase() === 'posisjon' ||
+              child.localName === 'boundedBy' ||
+              child.namespaceURI === 'http://www.opengis.net/gml'
+            ) {
+              continue;
+            }
+
+            if (child.textContent) {
+              const value = child.textContent.trim();
+              if (value === '') continue;
+
+              const numValue = parseFloat(value);
+              if (!isNaN(numValue) && value === numValue.toString()) {
+                properties[child.localName] = numValue;
+              } else {
+                properties[child.localName] = value;
+              }
+            }
+          }
+
+          if (Object.keys(properties).length > 0) {
+            features.push({ properties });
+          }
+        }
+      }
+
+      return features;
+    }
+
     const featureMembers = doc.querySelectorAll(
       'featureMember, gml\\:featureMember, featureMembers > *',
     );
@@ -297,12 +345,14 @@ export const fetchLayerFeatureInfo = async (
   const layerTitle =
     (layer.get('layerTitle') as string) || layerId.replace('theme.', '');
 
-  const formatsToTry: InfoFormat[] = [
-    'application/json',
-    'application/vnd.ogc.gml',
-    'text/xml',
-    'text/plain',
-  ];
+  const preferredFormat = layer.get('infoFormat') as InfoFormat | undefined;
+  const imageBaseUrl = layer.get('featureInfoImageBaseUrl') as
+    | string
+    | undefined;
+
+  const formatsToTry: InfoFormat[] = preferredFormat
+    ? [preferredFormat]
+    : ['application/json', 'application/vnd.ogc.gml', 'text/xml', 'text/plain'];
 
   for (const format of formatsToTry) {
     const url = buildFeatureInfoUrl(layer, coordinate, map, format);
@@ -312,6 +362,7 @@ export const fetchLayerFeatureInfo = async (
         layerTitle,
         features: [],
         error: 'Could not build GetFeatureInfo URL',
+        ...(imageBaseUrl ? { imageBaseUrl } : {}),
       };
     }
 
@@ -333,6 +384,7 @@ export const fetchLayerFeatureInfo = async (
           layerId,
           layerTitle,
           features,
+          ...(imageBaseUrl ? { imageBaseUrl } : {}),
         };
       }
 
@@ -341,6 +393,7 @@ export const fetchLayerFeatureInfo = async (
           layerId,
           layerTitle,
           features: [],
+          ...(imageBaseUrl ? { imageBaseUrl } : {}),
         };
       }
     } catch (error) {
@@ -355,6 +408,7 @@ export const fetchLayerFeatureInfo = async (
     layerId,
     layerTitle,
     features: [],
+    ...(imageBaseUrl ? { imageBaseUrl } : {}),
   };
 };
 

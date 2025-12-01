@@ -115,7 +115,9 @@
         "nn": "Tilgjenge",
         "en": "Accessibility"
       },
-      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3"
+      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
+      "infoFormat": "application/vnd.ogc.gml",
+      "featureInfoImageBaseUrl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet"
     },
     {
       "id": "accessibilityVillageWheelchair",

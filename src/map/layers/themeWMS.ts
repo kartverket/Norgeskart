@@ -5,7 +5,11 @@ import type {
   ThemeLayerConfig,
   ThemeLayerDefinition,
 } from '../../api/themeLayerConfigApi';
-import { getEffectiveWmsUrl } from '../../api/themeLayerConfigApi';
+import {
+  getCategoryById,
+  getEffectiveWmsUrl,
+  getParentCategory,
+} from '../../api/themeLayerConfigApi';
 import { getEnv } from '../../env';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
 
@@ -90,6 +94,17 @@ export const createThemeLayerFromConfig = (
 
   const wmsUrl = getEffectiveWmsUrl(config, layerDef);
 
+  const category = getCategoryById(config, layerDef.categoryId);
+  const parentCategory = category
+    ? getParentCategory(config, category)
+    : undefined;
+  const infoFormat =
+    layerDef.infoFormat || category?.infoFormat || parentCategory?.infoFormat;
+  const featureInfoImageBaseUrl =
+    layerDef.featureInfoImageBaseUrl ||
+    category?.featureInfoImageBaseUrl ||
+    parentCategory?.featureInfoImageBaseUrl;
+
   return new TileLayer({
     source: new TileWMS({
       url: wmsUrl,
@@ -108,6 +123,8 @@ export const createThemeLayerFromConfig = (
       id: `theme.${layerDef.id}`,
       queryable: layerDef.queryable ?? false,
       layerTitle: layerDef.name.nb || layerDef.id,
+      ...(infoFormat ? { infoFormat } : {}),
+      ...(featureInfoImageBaseUrl ? { featureInfoImageBaseUrl } : {}),
     },
     preload: 1,
   });

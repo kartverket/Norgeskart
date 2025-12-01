@@ -11,6 +11,8 @@ export interface ThemeLayerCategory {
   };
   wmsUrl?: string;
   parentId?: string;
+  infoFormat?: string;
+  featureInfoImageBaseUrl?: string;
 }
 
 export interface ThemeLayerStyle {
@@ -48,6 +50,8 @@ export interface ThemeLayerDefinition {
   legacyId?: string;
   queryable?: boolean;
   styles?: string;
+  infoFormat?: string;
+  featureInfoImageBaseUrl?: string;
 }
 
 export interface ThemeLayerConfig {

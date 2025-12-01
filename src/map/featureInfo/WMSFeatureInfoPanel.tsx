@@ -8,6 +8,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Image,
   Link,
   Spinner,
   Stack,
@@ -20,6 +21,49 @@ import type {
   LayerFeatureInfo,
 } from './types';
 import { useFeatureInfo } from './useFeatureInfo';
+
+const IMAGE_FIELD_PATTERN = /^bildefil\d*$/i;
+
+const getImageFields = (properties: FeatureProperties): string[] => {
+  return Object.entries(properties)
+    .filter(
+      ([key, value]) =>
+        IMAGE_FIELD_PATTERN.test(key) &&
+        typeof value === 'string' &&
+        value.trim() !== '',
+    )
+    .map(([, value]) => value as string);
+};
+
+const ImageGallery = ({
+  imageBaseUrl,
+  imageFilenames,
+}: {
+  imageBaseUrl: string;
+  imageFilenames: string[];
+}) => {
+  if (imageFilenames.length === 0) return null;
+
+  return (
+    <Stack gap={2} mb={3}>
+      {imageFilenames.map((filename, index) => {
+        const imageUrl = `${imageBaseUrl}/${filename}`;
+        return (
+          <Box key={index}>
+            <Link href={imageUrl} target="_blank" rel="noopener noreferrer">
+              <Image
+                src={imageUrl}
+                alt={`Bilde ${index + 1}`}
+                maxW="100%"
+                borderRadius="md"
+              />
+            </Link>
+          </Box>
+        );
+      })}
+    </Stack>
+  );
+};
 
 const formatPropertyValue = (value: unknown): string => {
   if (value === null || value === undefined) return '-';
@@ -86,18 +130,23 @@ const PropertyItem = ({ name, value }: { name: string; value: unknown }) => {
   );
 };
 
-const FeatureProperties = ({
+const FeaturePropertiesDisplay = ({
   feature,
   index,
+  imageBaseUrl,
 }: {
   feature: FeatureInfoFeature;
   index: number;
+  imageBaseUrl?: string;
 }) => {
+  const imageFilenames = imageBaseUrl ? getImageFields(feature.properties) : [];
   const entries = Object.entries(feature.properties).filter(
-    ([key]) => !key.startsWith('_') || key === '_html',
+    ([key]) =>
+      (!key.startsWith('_') || key === '_html') &&
+      !IMAGE_FIELD_PATTERN.test(key),
   );
 
-  if (entries.length === 0) {
+  if (entries.length === 0 && imageFilenames.length === 0) {
     return (
       <Text fontSize="sm" color="gray.500">
         Ingen egenskaper
@@ -115,6 +164,12 @@ const FeatureProperties = ({
         <Text fontSize="xs" color="gray.400" mb={2}>
           Feature ID: {feature.id}
         </Text>
+      )}
+      {imageBaseUrl && imageFilenames.length > 0 && (
+        <ImageGallery
+          imageBaseUrl={imageBaseUrl}
+          imageFilenames={imageFilenames}
+        />
       )}
       {entries.map(([key, value]) => (
         <PropertyItem key={`${index}-${key}`} name={key} value={value} />
@@ -168,7 +223,11 @@ const LayerFeatureInfoSection = ({
                 Objekt {index + 1}
               </Text>
             )}
-            <FeatureProperties feature={feature} index={index} />
+            <FeaturePropertiesDisplay
+              feature={feature}
+              index={index}
+              imageBaseUrl={layerInfo.imageBaseUrl}
+            />
           </Box>
         ))}
       </AccordionItemContent>

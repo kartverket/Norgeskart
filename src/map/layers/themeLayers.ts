@@ -1,4 +1,4 @@
-import { useAtomValue } from 'jotai';
+import { getDefaultStore, useAtomValue } from 'jotai';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import {
@@ -10,6 +10,10 @@ import {
   removeFromUrlListParameter,
 } from '../../shared/utils/urlUtils';
 import { mapAtom } from '../atoms';
+import {
+  featureInfoPanelOpenAtom,
+  featureInfoResultAtom,
+} from '../featureInfo/atoms';
 import {
   createThemeLayerFromConfig,
   getThemeWMSLayer,
@@ -139,6 +143,23 @@ export const useThemeLayers = () => {
       .find((layer) => layer.get('id') === `theme.${layerName}`);
     if (layer) {
       map.removeLayer(layer);
+
+      const store = getDefaultStore();
+      const currentResult = store.get(featureInfoResultAtom);
+      if (currentResult) {
+        const remainingLayers = currentResult.layers.filter(
+          (l) => l.layerId !== `theme.${layerName}`,
+        );
+        if (remainingLayers.length === 0) {
+          store.set(featureInfoResultAtom, null);
+          store.set(featureInfoPanelOpenAtom, false);
+        } else if (remainingLayers.length !== currentResult.layers.length) {
+          store.set(featureInfoResultAtom, {
+            ...currentResult,
+            layers: remainingLayers,
+          });
+        }
+      }
     }
     removeFromUrlListParameter('themeLayers', layerName);
   };
