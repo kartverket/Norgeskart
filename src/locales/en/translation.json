@@ -60,7 +60,7 @@
   "infoBox": {
     "address": "Address",
     "cadastralIdentifier": "Cadastral identifier",
-    "coordinateInfo": "See coordinates",
+    "coordinateInfo": "Coordinates",
     "coordinateSection": {
       "copy": {
         "label": "Copy coordinates",
@@ -80,8 +80,8 @@
     "makeMap": "Make map",
     "metersAboveSeaLevel": "m.a.s.l.",
     "municipality": "Municipality",
-    "placeinfo": "See facts about placename",
-    "propertyInfo": "See property information",
+    "placeinfo": "Facts about placename",
+    "propertyInfo": "Property information",
     "roadName": "Road name",
     "utmCoordinates": "UTM coordinates"
   },
@@ -221,7 +221,8 @@
     "errorPlaceNameInfo": "Error fetching place name information",
     "loadingPlaceNameInfo": "Loading place name information",
     "locationNumber": "Location number",
-    "nameObjectType": "Name object type"
+    "nameObjectType": "Name object type",
+    "moreInfo": "More info"
   },
   "privacyAndContact": {
     "contactUs": "Contact us",
@@ -234,9 +235,9 @@
     "holdingNr": "Holding nr.",
     "leaseNr": "Lease nr.",
     "markProperty": {
-      "label": "Show property on map"
+      "label": "Show on map"
     },
-    "moreInformation": "Show more information",
+    "moreInformation": "Show more",
     "multipleAddressesText": "The property has several addresses",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",
