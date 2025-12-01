@@ -73,7 +73,7 @@
           "title": "Koordinater kopier til utklipstavlen"
         }
       },
-      "differentCrs": "Endre koordinatsystem",
+      "differentCrs": "Vis i",
       "east": "Øst",
       "north": "Nord"
     },
@@ -269,8 +269,26 @@
           }
         },
         "projection": {
-          "label": "Velg projeksjon",
-          "placeholder": "Velg"
+          "label": "Velg koordinatsystem",
+          "placeholder": "Velg",
+          "projections": {
+            "epsg25833": {
+              "displayName": "UTM 33 (anbefalt)"
+            },
+            "epsg25832": {
+              "displayName": "UTM 32"
+            },
+            "epsg25835": {
+              "displayName": "UTM 35"
+            },
+            "epsg3857": {
+              "displayName": "Webmercator"
+            }
+          },
+          "popover": {
+            "title": "Koordinatreferansesystem",
+            "body": "Velg et koordinatreferansesystem. Forskjellige systemer har forskjellige nøyaktighet i deler av landet. Vi anbefaler UTM 33 hvis du er usikker."
+          }
         },
         "theme": {
           "label": "Velg temakart",
@@ -290,7 +308,8 @@
     "errorPlaceNameInfo": "Feil ved henting av stedsnavninformasjon",
     "loadingPlaceNameInfo": "Laster stedsnavninformasjon",
     "locationNumber": "Stedsnummer",
-    "nameObjectType": "Navneobjekttype"
+    "nameObjectType": "Navneobjekttype",
+    "moreInfo": "Mer info"
   },
   "privacyAndContact": {
     "contactUs": "Kontakt",
@@ -303,9 +322,9 @@
     "holdingNr": "Gårdsnr.",
     "leaseNr": "Festenr.",
     "markProperty": {
-      "label": "Vis eiendom på kartet"
+      "label": "Vis på kartet"
     },
-    "moreInformation": "Vis mer informasjon",
+    "moreInformation": "Vis mer",
     "multipleAddressesText": "Eiendommen har flere adresser",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",

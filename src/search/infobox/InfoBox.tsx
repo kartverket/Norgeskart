@@ -56,15 +56,18 @@ export const InfoBox = () => {
       </Flex>
       <InfoBoxContent result={selectedResult} x={x} y={y} />
       <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
-        <AccordionRoot collapsible defaultValue={['propertyInfo', 'placeInfo']}>
-          {selectedResult.type === 'Property' ||
-            (selectedResult.type === 'Coordinate' && (
-              <PropertyInfo
-                lon={selectedResult.lon}
-                lat={selectedResult.lat}
-                inputCRS={inputCRS}
-              />
-            ))}
+        <AccordionRoot
+          collapsible
+          multiple
+          defaultValue={['placeInfo', 'propertyInfo']}
+        >
+          {['Property', 'Coordinate'].includes(selectedResult.type) && (
+            <PropertyInfo
+              lon={selectedResult.lon}
+              lat={selectedResult.lat}
+              inputCRS={inputCRS}
+            />
+          )}
           {selectedResult.type === 'Place' && (
             <AccordionItem value="placeInfo">
               <AccordionItemTrigger pl={0}>

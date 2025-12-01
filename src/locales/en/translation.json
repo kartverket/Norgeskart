@@ -60,7 +60,7 @@
   "infoBox": {
     "address": "Address",
     "cadastralIdentifier": "Cadastral identifier",
-    "coordinateInfo": "See coordinates",
+    "coordinateInfo": "Coordinates",
     "coordinateSection": {
       "copy": {
         "label": "Copy coordinates",
@@ -68,7 +68,7 @@
           "title": "Coordinates copied to clipboard"
         }
       },
-      "differentCrs": "Change coordinate system",
+      "differentCrs": "Display in",
       "east": "East",
       "north": "North"
     },
@@ -80,8 +80,8 @@
     "makeMap": "Make map",
     "metersAboveSeaLevel": "m.a.s.l.",
     "municipality": "Municipality",
-    "placeinfo": "See facts about placename",
-    "propertyInfo": "See property information",
+    "placeinfo": "Facts about placename",
+    "propertyInfo": "Property information",
     "roadName": "Road name",
     "utmCoordinates": "UTM coordinates"
   },
@@ -203,8 +203,26 @@
           }
         },
         "projection": {
-          "label": "Chose map projection",
-          "placeholder": "Chose"
+          "label": "Chose map coordination system",
+          "placeholder": "Chose",
+          "projections": {
+            "epsg25833": {
+              "displayName": "UTM 33 (default)"
+            },
+            "epsg25832": {
+              "displayName": "UTM 32"
+            },
+            "epsg25835": {
+              "displayName": "UTM 35"
+            },
+            "epsg3857": {
+              "displayName": "Webmercator"
+            }
+          },
+          "popover": {
+            "title": "Coordinate refereance system",
+            "body": "Select a coordinate refereance system to use. Different systems are accurate in different parts of the country. We recomend using UTM 33 if you are unsure."
+          }
         },
         "theme": {
           "label": "Chose theme layers",
@@ -224,7 +242,8 @@
     "errorPlaceNameInfo": "Error fetching place name information",
     "loadingPlaceNameInfo": "Loading place name information",
     "locationNumber": "Location number",
-    "nameObjectType": "Name object type"
+    "nameObjectType": "Name object type",
+    "moreInfo": "More info"
   },
   "privacyAndContact": {
     "contactUs": "Contact us",
@@ -237,9 +256,9 @@
     "holdingNr": "Holding nr.",
     "leaseNr": "Lease nr.",
     "markProperty": {
-      "label": "Show property on map"
+      "label": "Show on map"
     },
-    "moreInformation": "Show more information",
+    "moreInformation": "Show more",
     "multipleAddressesText": "The property has several addresses",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",

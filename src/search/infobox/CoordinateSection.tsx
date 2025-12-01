@@ -1,9 +1,10 @@
-import { Box, Button, Stack, toaster } from '@kvib/react';
+import { Box, Button, HStack, Stack, Text, toaster } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { transform } from 'ol/proj';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom, ProjectionIdentifier } from '../../map/atoms';
+import { ProjectionPopover } from '../../shared/Components/ProjectionPopover';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
 
 interface CoordinateInfoProps {
@@ -36,11 +37,19 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
 
   return (
     <Stack>
-      <ProjectionSelector
-        default={currentMapProjection}
-        onProjectionChange={setSelectedProjection}
-        label={t('infoBox.coordinateSection.differentCrs')}
-      />
+      <HStack justifyContent="space-between">
+        <Text>{t('infoBox.coordinateSection.differentCrs')}</Text>
+        <HStack>
+          <ProjectionSelector
+            default={currentMapProjection}
+            onProjectionChange={setSelectedProjection}
+            label={t('infoBox.coordinateSection.differentCrs')}
+            textColor="black"
+          />
+          <ProjectionPopover />
+        </HStack>
+      </HStack>
+
       <Stack>
         <Box>{`${x.toFixed(2)} - ${t('infoBox.coordinateSection.east')} `}</Box>
         <Box>{`${y.toFixed(2)} - ${t('infoBox.coordinateSection.north')} `}</Box>
