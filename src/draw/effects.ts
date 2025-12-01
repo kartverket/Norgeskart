@@ -57,12 +57,8 @@ export const editPrimaryColorEffect = atomEffect((get) => {
       const featureStyle = feature.getStyle() as Style | undefined;
 
       if (feature.getGeometry()?.getType() === 'Point') {
-        console.log('point');
         const id = feature.getId();
         const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
-        const overlays = map.getOverlays().getArray();
-        console.log(overlays);
-        console.log('id', prefixedId);
         const overlay = map
           .getOverlays()
           .getArray()
@@ -116,6 +112,32 @@ export const editSecondaryColorEffect = atomEffect((get) => {
         featureStyle.setFill(currentFill);
       }
       feature.setStyle(featureStyle);
+    });
+  }
+});
+
+export const lineWidthEffect = atomEffect((get) => {
+  const lineWidth = get(lineWidthAtom);
+  const map = get(mapAtom);
+  const selectInteraction = getSelectInteraction(map);
+  if (selectInteraction) {
+    selectInteraction.getFeatures().forEach((feature) => {
+      const featuretype = feature.getGeometry()?.getType();
+      if (featuretype === 'Point') {
+        const id = feature.getId();
+        const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
+        const overlay = map
+          .getOverlays()
+          .getArray()
+          .find((ov) => ov.getId() === prefixedId);
+
+        if (overlay) {
+          const element = overlay.getElement();
+          if (element) {
+            element.style.fontSize = `${lineWidth * 10}px`;
+          }
+        }
+      }
     });
   }
 });

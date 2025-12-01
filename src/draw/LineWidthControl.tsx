@@ -18,7 +18,8 @@ export const LineWidthControl = () => {
   if (
     drawType !== 'LineString' &&
     drawType !== 'Point' &&
-    drawType !== 'Polygon'
+    drawType !== 'Polygon' &&
+    drawType !== 'Move'
   ) {
     return null;
   }
