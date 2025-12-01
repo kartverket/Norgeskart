@@ -16,11 +16,11 @@
     "close": "Lukk",
     "confrimClear": "Er du sikker?",
     "controls": {
-      "colorBackground": "Bakgrunnsfarge",
-      "colorFill": "Fyllfarge",
-      "colorPoint": "Punktfarge",
-      "colorStroke": "Omrissfarge",
-      "colorText": "Tekstfarge",
+      "colorBackground": "Bakgrunn",
+      "colorFill": "Fyll",
+      "colorPoint": "Punkt",
+      "colorStroke": "Omriss",
+      "colorText": "Tekst",
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål",
       "tool": {
