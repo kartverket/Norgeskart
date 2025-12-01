@@ -40,7 +40,6 @@ export const MapToolButtons = () => {
         }}
         icon={'edit'}
         label={t('draw.tabHeading')}
-
         active={currentMapTool === 'draw'}
       />
       <MapButton
@@ -92,7 +91,6 @@ const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
       pt={8}
       pb={8}
       backgroundColor={active ? '#D0ECD6' : ''}
-
     >
       <VStack>
         <Icon icon={icon} />
