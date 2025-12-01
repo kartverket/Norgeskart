@@ -25,7 +25,7 @@ export const ProjectionSettings = () => {
         hideBorders
         isToolbar
       />
-      <ProjectionPopover />
+      <ProjectionPopover isToolbar />
     </HStack>
   );
 };
