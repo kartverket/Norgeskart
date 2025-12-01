@@ -40,6 +40,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       value={[selectedProjection]}
     >
       <SelectTrigger
+        className="toolbar-select"
         border={'none'}
         id={props.hideBorders ? 'crs-select-trigger' : ''}
       >

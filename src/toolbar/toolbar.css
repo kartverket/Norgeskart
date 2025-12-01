@@ -4,7 +4,7 @@
   }
 }
 
-.kvib-select__indicator svg {
+.toolbar-select .kvib-select__indicator svg {
   stroke: white;
   fill: white;
 }
