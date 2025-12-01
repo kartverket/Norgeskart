@@ -18,7 +18,7 @@
     "cy:run": "cypress run"
   },
   "dependencies": {
-    "@kvib/react": "^6.1.1",
+    "@kvib/react": "^6.1.2",
     "@posthog/react": "^1.4.0",
     "@tanstack/react-query": "^5.90.11",
     "@types/geojson": "^7946.0.16",
