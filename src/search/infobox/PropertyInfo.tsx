@@ -14,12 +14,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getPropertyGeometry } from '../../api/nkApiClient';
 import { mapAtom } from '../../map/atoms';
 import { mapLayers } from '../../map/layers';
 import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
+import {
+  getUrlParameter,
+  removeUrlParameter,
+  setUrlParameter,
+} from '../../shared/utils/urlUtils';
 import { Property } from '../../types/searchTypes';
 import {
   getPropertyDetailsByMatrikkelId,
@@ -57,6 +62,12 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   const { t } = useTranslation();
   const [lon4326, lat4326] = transform([lon, lat], inputCRS, 'EPSG:4326');
   const map = useAtomValue(mapAtom);
+
+  const [showGeometry, setShowGeometry] = useState(() => {
+    const showSelectionParam = getUrlParameter('showSelection');
+    return showSelectionParam === 'true';
+  });
+
   useEffect(() => {
     return () => {
       const existingLayer = map
@@ -79,11 +90,57 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     enabled: lat4326 != null && lon4326 != null,
   });
 
+  const property = Array.isArray(propertyDetails)
+    ? propertyDetails?.[0]
+    : propertyDetails;
+
+  useEffect(() => {
+    if (showGeometry && property) {
+      handleShowGeometry(true, property);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [property]);
+
+  const handleShowGeometry = async (checked: boolean, prop: Property) => {
+    const existingLayer = map
+      .getLayers()
+      .getArray()
+      .find((layer) => layer.get('id') === 'propertyGeometryLayer');
+    if (existingLayer) {
+      map.removeLayer(existingLayer);
+    }
+    if (checked) {
+      const layerToAdd =
+        mapLayers.propertyGeometryLayer.getLayer() as VectorLayer;
+      const features = await getPropertyGeometry(
+        prop.KOMMUNENR,
+        prop.GARDSNR,
+        prop.BRUKSNR,
+        prop.FESTENR,
+        prop.SEKSJONSNR,
+      );
+
+      if (features) {
+        layerToAdd.getSource()?.addFeatures(features);
+        map.addLayer(layerToAdd);
+      }
+    }
+  };
+
+  const handleSwitchChange = async (checked: boolean) => {
+    setShowGeometry(checked);
+    if (checked) {
+      setUrlParameter('showSelection', 'true');
+    } else {
+      removeUrlParameter('showSelection');
+    }
+    if (property) {
+      handleShowGeometry(checked, property);
+    }
+  };
+
   if (isLoading || error || propertyDetails == null) return null;
 
-  const property = Array.isArray(propertyDetails)
-    ? propertyDetails[0]
-    : propertyDetails;
   if (!property) {
     return <>Ingen eiendomsinformasjon funnet.</>;
   }
@@ -101,32 +158,6 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   ];
 
   const propertyRegisterUrl = `https://eiendomsregisteret.kartverket.no/eiendom/${property.KOMMUNENR}/${property.GARDSNR}/${property.BRUKSNR}/${property.FESTENR}/${property.SEKSJONSNR}`;
-
-  const handleSwitchChange = async (checked: boolean) => {
-    const existingLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === 'propertyGeometryLayer');
-    if (existingLayer) {
-      map.removeLayer(existingLayer);
-    }
-    if (checked) {
-      const layerToAdd =
-        mapLayers.propertyGeometryLayer.getLayer() as VectorLayer;
-      const features = await getPropertyGeometry(
-        property.KOMMUNENR,
-        property.GARDSNR,
-        property.BRUKSNR,
-        property.FESTENR,
-        property.SEKSJONSNR,
-      );
-
-      if (features) {
-        layerToAdd.getSource()?.addFeatures(features);
-        map.addLayer(layerToAdd);
-      }
-    }
-  };
 
   return (
     <AccordionItem value="propertyInfo">
@@ -155,6 +186,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
           </Stack>
           <Flex justify="space-between" align="center">
             <Switch
+              checked={showGeometry}
               onCheckedChange={(e) => {
                 handleSwitchChange(e.checked);
               }}

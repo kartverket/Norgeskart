@@ -123,4 +123,5 @@ export type NKUrlParameter =
   | 'drawing'
   | 'layers' // Legacy parameter from old norgeskart.no
   | 'project' // Legacy project parameter from old norgeskart.no
-  | 'sok';
+  | 'sok'
+  | 'showSelection';
