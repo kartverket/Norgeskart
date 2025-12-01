@@ -11,7 +11,7 @@ import {
   Text,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   getMainCategories,
@@ -51,6 +51,7 @@ export const MapThemes = () => {
     count >= MAX_THEME_LAYERS,
   );
   const [activeCount, setActiveCount] = useState(count);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const updateActiveCount = () => {
     const count = getActiveThemeLayerCount();
@@ -58,48 +59,66 @@ export const MapThemes = () => {
     setShowLimitWarning(count >= MAX_THEME_LAYERS);
   };
 
-  const createTheme = (
-    themeName: string,
-    subCategories: { name: string; layerNames: string[] }[],
-  ): Theme => {
-    return {
-      name: themeName,
-      heading: t(`${BASE_THEME_MAP_KEY}.${themeName}.themeName`),
-      subThemes: subCategories.map((subTheme) => ({
-        name: subTheme.name,
-        heading: t(
-          `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.heading`,
-        ),
-        layers: subTheme.layerNames.map((layerName) => ({
-          name: layerName as ThemeLayerName,
-          label: t(
-            `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.layers.${layerName}`,
+  const activeThemeLayersSet = useMemo(() => {
+    const urlLayers = getListUrlParameter('themeLayers');
+    return new Set(urlLayers || []);
+  }, [activeCount]);
+
+  const isLayerChecked = useCallback(
+    (layerName: ThemeLayerName): boolean => {
+      return activeThemeLayersSet.has(layerName);
+    },
+    [activeThemeLayersSet],
+  );
+
+  const hardcodedThemeLayers = useMemo(() => {
+    const createTheme = (
+      themeName: string,
+      subCategories: { name: string; layerNames: string[] }[],
+    ): Theme => {
+      return {
+        name: themeName,
+        heading: t(`${BASE_THEME_MAP_KEY}.${themeName}.themeName`),
+        subThemes: subCategories.map((subTheme) => ({
+          name: subTheme.name,
+          heading: t(
+            `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.heading`,
           ),
+          layers: subTheme.layerNames.map((layerName) => ({
+            name: layerName as ThemeLayerName,
+            label: t(
+              `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.layers.${layerName}`,
+            ),
+          })),
         })),
-      })),
+      };
     };
-  };
 
-  const hardcodedThemeLayers = [
-    createTheme('property', [
-      {
-        name: 'matrikkeldata',
-        layerNames: ['adresses', 'buildings', 'parcels'],
-      },
-    ]),
-    createTheme('locations', [
-      {
-        name: 'historicalMaps',
-        layerNames: ['economicMapFirstEdition', 'amtMap'],
-      },
-    ]),
-  ];
+    return [
+      createTheme('property', [
+        {
+          name: 'matrikkeldata',
+          layerNames: ['adresses', 'buildings', 'parcels'],
+        },
+      ]),
+      createTheme('locations', [
+        {
+          name: 'historicalMaps',
+          layerNames: ['economicMapFirstEdition', 'amtMap'],
+        },
+      ]),
+    ];
+  }, [t]);
 
-  const configThemeLayers: Theme[] = [];
-  if (configLoadable.state === 'hasData') {
+  const configThemeLayers = useMemo((): Theme[] => {
+    if (configLoadable.state !== 'hasData') {
+      return [];
+    }
+
     const config = configLoadable.data;
     const currentLang = i18n.language as 'nb' | 'nn' | 'en';
     const mainCategories = getMainCategories(config);
+    const result: Theme[] = [];
 
     mainCategories.forEach((mainCategory) => {
       const subcategories = getSubcategories(config, mainCategory.id);
@@ -119,7 +138,7 @@ export const MapThemes = () => {
           };
         });
 
-        configThemeLayers.push({
+        result.push({
           name: mainCategory.id,
           heading: mainCategory.name[currentLang] || mainCategory.name.nb,
           subThemes,
@@ -128,7 +147,7 @@ export const MapThemes = () => {
         const layers = config.layers.filter(
           (layer) => layer.categoryId === mainCategory.id,
         );
-        configThemeLayers.push({
+        result.push({
           name: mainCategory.id,
           heading: mainCategory.name[currentLang] || mainCategory.name.nb,
           subThemes: [
@@ -144,29 +163,32 @@ export const MapThemes = () => {
         });
       }
     });
-  }
 
-  const themeLayers = [...hardcodedThemeLayers, ...configThemeLayers];
+    return result;
+  }, [configLoadable, i18n.language]);
 
-  const isLayerChecked = (layerName: ThemeLayerName): boolean => {
-    const urlLayers = getListUrlParameter('themeLayers');
-    return urlLayers != null && urlLayers.includes(layerName);
-  };
+  const themeLayers = useMemo(
+    () => [...hardcodedThemeLayers, ...configThemeLayers],
+    [hardcodedThemeLayers, configThemeLayers],
+  );
 
-  const getActiveCategoryCount = (theme: Theme): number => {
-    return theme.subThemes.reduce((count, subTheme) => {
-      return (
-        count +
-        subTheme.layers.filter((layer) => isLayerChecked(layer.name)).length
-      );
-    }, 0);
-  };
+  const getActiveCategoryCount = useCallback(
+    (theme: Theme): number => {
+      return theme.subThemes.reduce((count, subTheme) => {
+        return (
+          count +
+          subTheme.layers.filter((layer) => isLayerChecked(layer.name)).length
+        );
+      }, 0);
+    },
+    [isLayerChecked],
+  );
 
-  const getTotalCategoryLayers = (theme: Theme): number => {
+  const getTotalCategoryLayers = useCallback((theme: Theme): number => {
     return theme.subThemes.reduce((count, subTheme) => {
       return count + subTheme.layers.length;
     }, 0);
-  };
+  }, []);
 
   return (
     <>
@@ -203,10 +225,18 @@ export const MapThemes = () => {
         )}
       </Box>
 
-      <Accordion collapsible multiple size="sm" variant="outline">
+      <Accordion
+        collapsible
+        multiple
+        size="sm"
+        variant="outline"
+        value={expandedItems}
+        onValueChange={(details) => setExpandedItems(details.value)}
+      >
         {themeLayers.map((theme) => {
           const activeInCategory = getActiveCategoryCount(theme);
           const totalInCategory = getTotalCategoryLayers(theme);
+          const isExpanded = expandedItems.includes(theme.name);
 
           return (
             <AccordionItem key={theme.name} value={theme.name}>
@@ -225,43 +255,44 @@ export const MapThemes = () => {
                 </Flex>
               </AccordionItemTrigger>
               <AccordionItemContent>
-                {theme.subThemes.map((subTheme) => (
-                  <Box key={subTheme.name} marginBottom={4}>
-                    <Heading size="md">{subTheme.heading}</Heading>
-                    {subTheme.layers.map((layer) => (
-                      <Flex
-                        key={layer.name}
-                        justifyContent="space-between"
-                        paddingTop={2}
-                      >
-                        <Text>{layer.label}</Text>
-                        <Switch
-                          colorPalette="green"
-                          size="sm"
-                          variant="raised"
-                          defaultChecked={isLayerChecked(layer.name)}
-                          disabled={
-                            !isLayerChecked(layer.name) &&
-                            activeCount >= MAX_THEME_LAYERS
-                          }
-                          onCheckedChange={(e) => {
-                            if (e.checked) {
-                              const success = addThemeLayerToMap(layer.name);
-                              if (success) {
-                                updateActiveCount();
-                              } else {
-                                e.checked = false;
-                              }
-                            } else {
-                              removeThemeLayerFromMap(layer.name);
-                              updateActiveCount();
+                {isExpanded &&
+                  theme.subThemes.map((subTheme) => (
+                    <Box key={subTheme.name} marginBottom={4}>
+                      <Heading size="md">{subTheme.heading}</Heading>
+                      {subTheme.layers.map((layer) => (
+                        <Flex
+                          key={layer.name}
+                          justifyContent="space-between"
+                          paddingTop={2}
+                        >
+                          <Text>{layer.label}</Text>
+                          <Switch
+                            colorPalette="green"
+                            size="sm"
+                            variant="raised"
+                            defaultChecked={isLayerChecked(layer.name)}
+                            disabled={
+                              !isLayerChecked(layer.name) &&
+                              activeCount >= MAX_THEME_LAYERS
                             }
-                          }}
-                        />
-                      </Flex>
-                    ))}
-                  </Box>
-                ))}
+                            onCheckedChange={(e) => {
+                              if (e.checked) {
+                                const success = addThemeLayerToMap(layer.name);
+                                if (success) {
+                                  updateActiveCount();
+                                } else {
+                                  e.checked = false;
+                                }
+                              } else {
+                                removeThemeLayerFromMap(layer.name);
+                                updateActiveCount();
+                              }
+                            }}
+                          />
+                        </Flex>
+                      ))}
+                    </Box>
+                  ))}
               </AccordionItemContent>
             </AccordionItem>
           );
