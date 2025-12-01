@@ -1,3 +1,5 @@
+/* eslint-disable  react-hooks/exhaustive-deps, react-hooks/set-state-in-effect */
+
 import {
   Box,
   Button,

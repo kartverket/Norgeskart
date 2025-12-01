@@ -1,7 +1,8 @@
 import { toaster } from '@kvib/react';
+import { Map } from 'ol';
 
 interface PrintMapProps {
-  map: any;
+  map: Map;
   overlayRef: React.RefObject<HTMLDivElement | null>;
   a4WidthPx: number;
   a4HeightPx: number;

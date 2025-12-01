@@ -1,7 +1,9 @@
+import { Map } from 'ol';
+import Interaction from 'ol/interaction/Interaction';
 import { useEffect } from 'react';
 
 interface UseDraggableOverlayProps {
-  map: any;
+  map: Map;
   overlayRef?: React.RefObject<HTMLDivElement | null>;
   overlayWidth: number;
   overlayHeight: number;
@@ -28,7 +30,7 @@ export const useDraggableOverlay = ({
     // Enable/disable map panning while dragging
     const interactions = map.getInteractions();
     const toggleDragPan = (enable: boolean) => {
-      interactions.forEach((i: any) => {
+      interactions.forEach((i: Interaction) => {
         if (i.constructor.name.includes('DragPan')) i.setActive(enable);
       });
     };
@@ -58,8 +60,8 @@ export const useDraggableOverlay = ({
     const onMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
 
-      let x = e.clientX - offsetX;
-      let y = e.clientY - offsetY;
+      const x = e.clientX - offsetX;
+      const y = e.clientY - offsetY;
 
       const { x: cx, y: cy } = constrainPosition(x, y);
       setOverlayPosition({ x: cx, y: cy });

@@ -3,10 +3,56 @@ interface PdfStatusResponse {
   downloadURL?: string;
 }
 
+interface Matrix {
+  identifier: string;
+  scaleDenominator: number;
+  topLeftCorner: [number, number];
+  tileSize: [number, number];
+  matrixSize: [number, number];
+}
+
+interface Layer {
+  baseURL: string;
+  customParams: { TRANSPARENT: string };
+  style: string;
+  imageFormat: string;
+  layer: string;
+  opacity: number;
+  type: 'WMTS';
+  dimensions: null;
+  requestEncoding: 'KVP';
+  dimensionParams: Record<string, unknown>;
+  matrixSet: string;
+  matrices: Matrix[];
+}
+
+interface MapAttributes {
+  center: [number, number];
+  projection: string;
+  dpi: number;
+  rotation: number;
+  scale: number;
+  layers: Layer[];
+}
+
+interface Attributes {
+  map: MapAttributes;
+  pos: string;
+  scale_string: string;
+  // title?: string; // Uncomment if needed
+}
+
+export interface Payload {
+  attributes: Attributes;
+  layout: string;
+  outputFormat: 'pdf' | 'png' | 'jpg'; // Extend if needed
+  outputFilename: string;
+}
+
 const BASE_API_URL = 'https://ws.geonorge.no';
 
 export const requestPdfGeneration = async (
-  payload: any,
+  payload: Payload,
 ): Promise<{ statusURL: string }> => {
   const response = await fetch(`${BASE_API_URL}/print/kv/report.pdf`, {
     method: 'POST',

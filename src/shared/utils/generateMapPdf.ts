@@ -1,10 +1,14 @@
 import { toaster } from '@kvib/react';
 import { Map } from 'ol';
 import proj4 from 'proj4';
-import { pollPdfStatus, requestPdfGeneration } from '../../api/printApi';
+import {
+  Payload,
+  pollPdfStatus,
+  requestPdfGeneration,
+} from '../../api/printApi';
 
 interface GenerateMapPdfProps {
-  map: any;
+  map: Map;
   overlayRef: React.RefObject<HTMLDivElement | null>;
   setLoading: (value: boolean) => void;
   t: (key: string) => string;
@@ -270,7 +274,7 @@ export const generateMapPdf = async ({
     const rotation = map.getView().getRotation() || 0;
     const rotationDegrees = (rotation * 180) / Math.PI;
 
-    const scale = getNearestScale(map);
+    let scale = getNearestScale(map);
 
     const layoutMap: Record<string, string> = {
       'A4 Portrait': '1_A4_portrait',
@@ -278,11 +282,14 @@ export const generateMapPdf = async ({
       'A3 Portrait': '3_A3_portrait',
       'A3 Landscape': '4_A3_landscape',
     };
+    if (scale === null) {
+      scale = 25000;
+    }
 
     const api_layout = layoutMap[currentLayout] || '1_A4_portrait';
     console.log('Mapped layout for API:', api_layout);
 
-    const payload = {
+    const payload: Payload = {
       attributes: {
         map: {
           center: [convertedLon, convertedLat],
@@ -442,8 +449,7 @@ export const generateMapPdf = async ({
           ],
         },
         pos: `${convertedLon.toFixed(2)}, ${convertedLat.toFixed(2)}`,
-        scale_string: `1: ${scale}` || '1:25000',
-        //title: "Test Title.",
+        scale_string: `1: ${scale}`,
       },
       layout: api_layout,
       outputFormat: 'pdf',
@@ -471,11 +477,12 @@ export const generateMapPdf = async ({
         type: 'error',
       });
     }
-  } catch (err: any) {
+  } catch (err) {
     console.error('printMap.printError', err);
+    const message = err instanceof Error ? err.message : String(err);
     toaster.create({
       title: t('printMap.printError') || 'Failed to generate PDF',
-      description: err.message || String(err),
+      description: message,
       type: 'error',
     });
   } finally {
