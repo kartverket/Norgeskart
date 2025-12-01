@@ -211,7 +211,7 @@ export const MapComponent = () => {
         const resolution = view.getResolution();
         const units = view.getProjection().getUnits();
         if (resolution && units) {
-          setScale(getScaleFromResolution(resolution, map, true));
+          setScale(getScaleFromResolution(resolution, map));
         }
       };
       updateScale();
