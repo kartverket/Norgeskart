@@ -33,6 +33,15 @@ const normalizeDirections = (input: string): string => {
     .replace(/Vest|VEST|West|WEST/g, 'W');
 };
 
+const normalizeDecimalSeparators = (input: string): string => {
+  let result = input;
+  // Pattern: digit,digits followed by ", " or end of string or space+digit
+  // This catches European decimals like "60,135106, 10,618917"
+  result = result.replace(/(\d),(\d+)(?=,\s|\s|$)/g, '$1.$2');
+
+  return result;
+};
+
 /**
  * Parses coordinate input from search query and detects format
  * Supports:
@@ -53,7 +62,9 @@ export const parseCoordinateInput = (
     return null;
   }
 
-  const normalizedInput = normalizeDirections(input.trim());
+  const normalizedInput = normalizeDecimalSeparators(
+    normalizeDirections(input.trim()),
+  );
   const trimmedInput = normalizedInput;
 
   const epsgResult = parseWithEPSG(trimmedInput);
@@ -169,20 +180,25 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   // Determine input format based on EPSG and coordinate values
   let inputFormat: 'decimal' | 'dms' | 'utm';
   let formattedString: string;
+  let lat: number, lon: number;
 
   if (epsgCode === 4326 || epsgCode === 4258) {
-    // Geographic coordinates (lat/lon)
+    // Geographic coordinates (lat/lon) - first is lat, second is lon
     inputFormat = 'decimal';
-    formattedString = `${coord1.toFixed(5)}, ${coord2.toFixed(5)} (${formatName})`;
+    lat = coord1;
+    lon = coord2;
+    formattedString = `${lat.toFixed(5)}, ${lon.toFixed(5)} (${formatName})`;
   } else {
-    // Projected coordinates (UTM, Web Mercator, etc.)
+    // Projected coordinates (UTM, Web Mercator, etc.) - first is easting, second is northing
     inputFormat = 'utm';
+    lon = coord1; // easting
+    lat = coord2; // northing
     formattedString = `${formatName}: ${coord1.toFixed(0)}E ${coord2.toFixed(0)}N`;
   }
 
   return {
-    lat: coord2, // Second coordinate is typically northing/latitude
-    lon: coord1, // First coordinate is typically easting/longitude
+    lat,
+    lon,
     projection,
     formattedString,
     inputFormat,
