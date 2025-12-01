@@ -16,7 +16,7 @@ export const ProjectionPopover = () => {
   const { t } = useTranslation();
   return (
     <PopoverRoot>
-      <PopoverTrigger>
+      <PopoverTrigger color="white">
         <Icon icon={'info'} />
       </PopoverTrigger>
 
