@@ -62,6 +62,7 @@ export const MapThemes = () => {
   const activeThemeLayersSet = useMemo(() => {
     const urlLayers = getListUrlParameter('themeLayers');
     return new Set(urlLayers || []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCount]);
 
   const isLayerChecked = useCallback(
