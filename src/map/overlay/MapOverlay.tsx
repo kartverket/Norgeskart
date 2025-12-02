@@ -42,7 +42,7 @@ export const MapOverlay = () => {
         console.error('Error in MapOverlay');
       }}
     >
-      <Box bgColor={'hotpink'}>
+      <Box>
         {showSearchComponent && <SearchComponent />}
 
         {displayCompassOverlay && <Compass />}
