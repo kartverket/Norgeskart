@@ -28,23 +28,16 @@ export default function PrintWindow() {
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
   const [layout, setLayout] = useState<PrintLayout>('A4 Portrait');
 
-  const { aWidthPx, aHeightPx, overlayWidth, overlayHeight } =
-    getDpiMetrics(layout);
-
+  const { aWidthPx, aHeightPx, overlayWidth, overlayHeight } = getDpiMetrics(layout);
   const { generate, loading } = useGenerateMapPdf(layout);
 
-  const LAYOUTS: PrintLayout[] = [
-    'A4 Portrait',
-    'A4 Landscape',
-    'A3 Portrait',
-    'A3 Landscape',
-  ];
+  const LAYOUTS: PrintLayout[] = ['A4 Portrait', 'A4 Landscape', 'A3 Portrait', 'A3 Landscape'];
 
   const layoutCollection = createListCollection({
     items: LAYOUTS.map((l) => ({ key: l, label: l, value: l })),
   });
 
-  // Create overlay
+  // Create overlay inside map viewport
   useEffect(() => {
     if (!map) return;
 
@@ -62,10 +55,10 @@ export default function PrintWindow() {
     overlay.style.width = `${overlayWidth}px`;
     overlay.style.height = `${overlayHeight}px`;
 
-    const rect = mapContainer.getBoundingClientRect();
+    const mapRect = mapContainer.getBoundingClientRect();
     setOverlayPosition({
-      x: rect.width / 2 - overlayWidth / 2,
-      y: rect.height / 2 - overlayHeight / 2,
+      x: mapRect.width / 2 - overlayWidth / 2,
+      y: mapRect.height / 2 - overlayHeight / 2,
     });
 
     mapContainer.appendChild(overlay);
@@ -73,21 +66,21 @@ export default function PrintWindow() {
     return () => overlay.remove();
   }, [map, overlayWidth, overlayHeight]);
 
-  // Resize overlay when layout changes
+  // Update overlay size on layout change
   useEffect(() => {
     if (!overlayRef.current || !map) return;
 
     overlayRef.current.style.width = `${overlayWidth}px`;
     overlayRef.current.style.height = `${overlayHeight}px`;
 
-    const rect = map.getViewport().getBoundingClientRect();
+    const mapRect = map.getViewport().getBoundingClientRect();
     setOverlayPosition({
-      x: rect.width / 2 - overlayWidth / 2,
-      y: rect.height / 2 - overlayHeight / 2,
+      x: mapRect.width / 2 - overlayWidth / 2,
+      y: mapRect.height / 2 - overlayHeight / 2,
     });
   }, [layout, overlayWidth, overlayHeight, map]);
 
-  // Reflect overlay position
+  // Apply overlay position
   useEffect(() => {
     if (overlayRef.current) {
       overlayRef.current.style.top = `${overlayPosition.y}px`;
@@ -95,17 +88,12 @@ export default function PrintWindow() {
     }
   }, [overlayPosition]);
 
-  useDraggableOverlay({
-    map,
-    overlayRef,
-    overlayWidth,
-    overlayHeight,
-    setOverlayPosition,
-  });
+  // Enable dragging
+  useDraggableOverlay({ map, overlayRef, overlayWidth, overlayHeight, setOverlayPosition });
 
+  // Quick print
   const handleQuickPrint = () => {
     if (!map || !overlayRef.current) return;
-
     printMap({
       map,
       overlayRef,
@@ -120,6 +108,7 @@ export default function PrintWindow() {
     <Flex direction="column" gap={3} p={3}>
       <Text fontSize="sm">{t('printMap.description')}</Text>
 
+      {/* Layout selector */}
       <SelectRoot collection={layoutCollection} value={[layout]}>
         <SelectLabel>{t('printMap.selectPrintLayout')}</SelectLabel>
         <SelectTrigger>
@@ -134,6 +123,7 @@ export default function PrintWindow() {
         </SelectContent>
       </SelectRoot>
 
+      {/* Loading */}
       {loading && (
         <Flex justify="center" align="center" gap={2}>
           <Spinner />
@@ -141,20 +131,13 @@ export default function PrintWindow() {
         </Flex>
       )}
 
+      {/* Buttons */}
       <Flex justify="flex-end" gap={3}>
-        <Button
-          onClick={handleQuickPrint}
-          colorPalette="green"
-          disabled={loading}
-        >
+        <Button onClick={handleQuickPrint} colorPalette="green" disabled={loading}>
           {t('printMap.quickPrint')}
         </Button>
 
-        <Button
-          onClick={() => generate(map, overlayRef)}
-          colorPalette="green"
-          disabled={loading}
-        >
+        <Button onClick={() => generate(map, overlayRef)} colorPalette="green" disabled={loading}>
           {t('printMap.downloadPdf')}
         </Button>
       </Flex>

@@ -42,10 +42,12 @@ export const MapToolCards = ({
   if (currentMapTool === 'print') {
     return (
       <MapToolCard label={t('controller.print.text')} onClose={onClose}>
-        <PrintWindow onClose={onClose} />
+        <PrintWindow />
       </MapToolCard>
     );
   }
+
+  return null;
 };
 
 interface MapToolCardProps {
