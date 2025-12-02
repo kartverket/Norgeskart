@@ -1,354 +1,354 @@
 {
-	"type" : "FeatureCollection",
-	"name" : "overseilingskart",
-	"features" : [
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ -45, 53.75 ],
-							[ 45, 53.75 ],
-							[ 45, 78.5 ],
-							[ -45, 78.5 ],
-							[ -45, 53.75 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Norwegian Sea and adjacent seas",
-				"id" : "300",
-				"p" : "Mercator",
-				"s" : "1 : 10000000",
-				"u" : "2021 Efs 15/21",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "300"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ -4.3333333333, 48.1666666667 ],
-							[ 12.6, 48.1666666667 ],
-							[ 12.6, 62.8333333333 ],
-							[ -4.3333333333, 62.8333333333 ],
-							[ -4.3333333333, 48.1666666667 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Nordsjøen",
-				"id" : "301",
-				"p" : "Mercator",
-				"s" : "1 : 1500000",
-				"u" : "2021 Efs 15/21",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "301"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ -9.5, 67.75 ],
-							[ 23.8333333333, 67.75 ],
-							[ 23.8333333333, 74.6 ],
-							[ -9.5, 74.6 ],
-							[ -9.5, 67.75 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Norskehavet, Norge - Jan Mayen",
-				"id" : "303",
-				"p" : "Mercator",
-				"s" : "1 : 3500000",
-				"u" : "2025 Efs 03/25",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "303"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ -17, 59.4166666667 ],
-							[ 16.3333333333, 59.4166666667 ],
-							[ 16.3333333333, 68.7 ],
-							[ -17, 68.7 ],
-							[ -17, 59.4166666667 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Norskehavet, Norge - Island",
-				"id" : "304",
-				"p" : "Mercator",
-				"s" : "1 : 3500000",
-				"u" : "2025 Efs 03/25",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "304"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ -33.3333333333, 67.75 ],
-							[ 0, 67.75 ],
-							[ 0, 74.6 ],
-							[ -33.3333333333, 74.6 ],
-							[ -33.3333333333, 67.75 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Grønlandshavet",
-				"id" : "315",
-				"p" : "Mercator",
-				"s" : "1 : 3500000",
-				"u" : "2025 Efs 16/25",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "315"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ 8, 74.3333333333 ],
-							[ 35, 74.3333333333 ],
-							[ 35, 78.9166666667 ],
-							[ 8, 78.9166666667 ],
-							[ 8, 74.3333333333 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Svalbard. Bjørnøya - Isfjorden - Storfjorden - Hopen",
-				"id" : "505",
-				"p" : "Mercator",
-				"s" : "1 : 700000",
-				"u" : "2022 Efs 04/22",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "505"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ 29, 74.3333333333 ],
-							[ 56, 74.3333333333 ],
-							[ 56, 78.5 ],
-							[ 29, 78.5 ],
-							[ 29, 74.3333333333 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Barentshavet, fra Storbk/Sentralbk til Nov.Zemlja",
-				"id" : "506",
-				"p" : "Mercator",
-				"s" : "1 : 700000",
-				"u" : "2025 Efs 16/25",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "506"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ 6, 77.9166666667 ],
-							[ 34, 77.9166666667 ],
-							[ 34, 81.5 ],
-							[ 6, 81.5 ],
-							[ 6, 77.9166666667 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Nordsvalbard",
-				"id" : "507",
-				"p" : "Mercator",
-				"s" : "1 : 700000",
-				"u" : "2022 Efs 04/22",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "507"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ 17, 69 ],
-							[ 70, 69 ],
-							[ 70, 82.5 ],
-							[ 17, 82.5 ],
-							[ 17, 69 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Barentshavet",
-				"id" : "514",
-				"p" : "Mercator",
-				"s" : "1 : 2000000",
-				"u" : "2021 Efs 15/21",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "514"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ -28, 69 ],
-							[ 20, 69 ],
-							[ 20, 82.5 ],
-							[ -28, 82.5 ],
-							[ -28, 69 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Svalbard - Grønland",
-				"id" : "515",
-				"p" : "Mercator",
-				"s" : "1 : 2000000",
-				"u" : "2025 Efs 16/25",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "515"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ -173, -79.0000205798 ],
-							[ -125.0001544418, -79.0000205798 ],
-							[ -125.0001544418, -70.5500010761 ],
-							[ -173, -70.5500010761 ],
-							[ -173, -79.0000205798 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Mount Siple - Cape Colbeck",
-				"id" : "549",
-				"p" : "Mercator",
-				"s" : "1 : 2000000",
-				"u" : "2025 Efs 03/25",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "549"
-			}
-		},
-		{
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "MultiPolygon",
-				"coordinates" : [
-					[
-						[
-							[ -15, -73 ],
-							[ 33.3333333333, -73 ],
-							[ 33.3333333333, -60.1666666667 ],
-							[ -15, -60.1666666667 ],
-							[ -15, -73 ]
-						]
-					]
-				]
-			},
-			"properties" : {
-				"name" : "Dronning Maud Land",
-				"id" : "550",
-				"p" : "Mercator",
-				"s" : "1 : 2000000",
-				"u" : "2025 Efs 03/25",
-				"d" : "WGS84",
-				"g" : "",
-				"f" : "",
-				"t" : "Overseilingskart",
-				"n" : "550"
-			}
-		}
-	]
+  "type": "FeatureCollection",
+  "name": "overseilingskart",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-45, 53.75],
+              [45, 53.75],
+              [45, 78.5],
+              [-45, 78.5],
+              [-45, 53.75]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Norwegian Sea and adjacent seas",
+        "id": "300",
+        "p": "Mercator",
+        "s": "1 : 10000000",
+        "u": "2021 Efs 15/21",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "300"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-4.3333333333, 48.1666666667],
+              [12.6, 48.1666666667],
+              [12.6, 62.8333333333],
+              [-4.3333333333, 62.8333333333],
+              [-4.3333333333, 48.1666666667]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Nordsjøen",
+        "id": "301",
+        "p": "Mercator",
+        "s": "1 : 1500000",
+        "u": "2021 Efs 15/21",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "301"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-9.5, 67.75],
+              [23.8333333333, 67.75],
+              [23.8333333333, 74.6],
+              [-9.5, 74.6],
+              [-9.5, 67.75]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Norskehavet, Norge - Jan Mayen",
+        "id": "303",
+        "p": "Mercator",
+        "s": "1 : 3500000",
+        "u": "2025 Efs 03/25",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "303"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-17, 59.4166666667],
+              [16.3333333333, 59.4166666667],
+              [16.3333333333, 68.7],
+              [-17, 68.7],
+              [-17, 59.4166666667]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Norskehavet, Norge - Island",
+        "id": "304",
+        "p": "Mercator",
+        "s": "1 : 3500000",
+        "u": "2025 Efs 03/25",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "304"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-33.3333333333, 67.75],
+              [0, 67.75],
+              [0, 74.6],
+              [-33.3333333333, 74.6],
+              [-33.3333333333, 67.75]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Grønlandshavet",
+        "id": "315",
+        "p": "Mercator",
+        "s": "1 : 3500000",
+        "u": "2025 Efs 16/25",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "315"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [8, 74.3333333333],
+              [35, 74.3333333333],
+              [35, 78.9166666667],
+              [8, 78.9166666667],
+              [8, 74.3333333333]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Svalbard. Bjørnøya - Isfjorden - Storfjorden - Hopen",
+        "id": "505",
+        "p": "Mercator",
+        "s": "1 : 700000",
+        "u": "2022 Efs 04/22",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "505"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [29, 74.3333333333],
+              [56, 74.3333333333],
+              [56, 78.5],
+              [29, 78.5],
+              [29, 74.3333333333]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Barentshavet, fra Storbk/Sentralbk til Nov.Zemlja",
+        "id": "506",
+        "p": "Mercator",
+        "s": "1 : 700000",
+        "u": "2025 Efs 16/25",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "506"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [6, 77.9166666667],
+              [34, 77.9166666667],
+              [34, 81.5],
+              [6, 81.5],
+              [6, 77.9166666667]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Nordsvalbard",
+        "id": "507",
+        "p": "Mercator",
+        "s": "1 : 700000",
+        "u": "2022 Efs 04/22",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "507"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [17, 69],
+              [70, 69],
+              [70, 82.5],
+              [17, 82.5],
+              [17, 69]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Barentshavet",
+        "id": "514",
+        "p": "Mercator",
+        "s": "1 : 2000000",
+        "u": "2021 Efs 15/21",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "514"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-28, 69],
+              [20, 69],
+              [20, 82.5],
+              [-28, 82.5],
+              [-28, 69]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Svalbard - Grønland",
+        "id": "515",
+        "p": "Mercator",
+        "s": "1 : 2000000",
+        "u": "2025 Efs 16/25",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "515"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-173, -79.0000205798],
+              [-125.0001544418, -79.0000205798],
+              [-125.0001544418, -70.5500010761],
+              [-173, -70.5500010761],
+              [-173, -79.0000205798]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Mount Siple - Cape Colbeck",
+        "id": "549",
+        "p": "Mercator",
+        "s": "1 : 2000000",
+        "u": "2025 Efs 03/25",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "549"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-15, -73],
+              [33.3333333333, -73],
+              [33.3333333333, -60.1666666667],
+              [-15, -60.1666666667],
+              [-15, -73]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Dronning Maud Land",
+        "id": "550",
+        "p": "Mercator",
+        "s": "1 : 2000000",
+        "u": "2025 Efs 03/25",
+        "d": "WGS84",
+        "g": "",
+        "f": "",
+        "t": "Overseilingskart",
+        "n": "550"
+      }
+    }
+  ]
 }

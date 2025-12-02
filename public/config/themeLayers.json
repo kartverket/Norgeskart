@@ -43,7 +43,12 @@
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.ssr2",
       "featureInfoFields": [
         { "name": "stedsnavn", "alias": "Stedsnavn" },
-        { "name": "stedsnummer", "alias": "Stedsnummer", "type": "link", "baseurl": "https://stadnamn.kartverket.no/fakta/" }
+        {
+          "name": "stedsnummer",
+          "alias": "Stedsnummer",
+          "type": "link",
+          "baseurl": "https://stadnamn.kartverket.no/fakta/"
+        }
       ]
     },
     {
@@ -123,15 +128,64 @@
       "infoFormat": "application/vnd.ogc.gml",
       "featureInfoImageBaseUrl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet",
       "featureInfoFields": [
-        { "name": "tilgjengvurderingrulleauto", "type": "symbol", "alias": "Rullestol", "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol/", "filetype": "png" },
-        { "name": "tilgjengvurderingelrullestol", "type": "symbol", "alias": "El-rullestol", "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol_el/", "filetype": "png" },
-        { "name": "tilgjengvurderingelrull", "type": "symbol", "alias": "El-rullestol", "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol_el/", "filetype": "png" },
-        { "name": "tilgjengvurderingsyn", "type": "symbol", "alias": "Syn", "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/syn/", "filetype": "png" },
-        { "name": "bildefil1", "type": "picture", "alias": "Bilde 1", "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/" },
-        { "name": "bildefil2", "type": "picture", "alias": "Bilde 2", "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/" },
-        { "name": "bildefil3", "type": "picture", "alias": "Bilde 3", "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/" },
-        { "name": "linkskjema", "type": "link", "alias": "Skjema", "baseurl": "https://data.kartverket.no/tilgjengelighet/friluft-skjema-FRL-2012/" },
-        { "name": "linkbilde", "type": "link", "alias": "Bilde (lenke)", "baseurl": "https://data.kartverket.no/tilgjengelighet/friluft-skjema-FRL-2012/" },
+        {
+          "name": "tilgjengvurderingrulleauto",
+          "type": "symbol",
+          "alias": "Rullestol",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol/",
+          "filetype": "png"
+        },
+        {
+          "name": "tilgjengvurderingelrullestol",
+          "type": "symbol",
+          "alias": "El-rullestol",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol_el/",
+          "filetype": "png"
+        },
+        {
+          "name": "tilgjengvurderingelrull",
+          "type": "symbol",
+          "alias": "El-rullestol",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol_el/",
+          "filetype": "png"
+        },
+        {
+          "name": "tilgjengvurderingsyn",
+          "type": "symbol",
+          "alias": "Syn",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/syn/",
+          "filetype": "png"
+        },
+        {
+          "name": "bildefil1",
+          "type": "picture",
+          "alias": "Bilde 1",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/"
+        },
+        {
+          "name": "bildefil2",
+          "type": "picture",
+          "alias": "Bilde 2",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/"
+        },
+        {
+          "name": "bildefil3",
+          "type": "picture",
+          "alias": "Bilde 3",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/"
+        },
+        {
+          "name": "linkskjema",
+          "type": "link",
+          "alias": "Skjema",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/friluft-skjema-FRL-2012/"
+        },
+        {
+          "name": "linkbilde",
+          "type": "link",
+          "alias": "Bilde (lenke)",
+          "baseurl": "https://data.kartverket.no/tilgjengelighet/friluft-skjema-FRL-2012/"
+        },
         { "name": "lenke", "type": "link", "alias": "Lenke", "baseurl": "" },
         { "name": "forstedatafangstdato", "alias": "Registrert" },
         { "name": "datafangstdato", "alias": "Oppdatert" },
@@ -158,8 +212,16 @@
         { "name": "rampeterskel", "alias": "Rampe terskel", "unit": "cm" },
         { "name": "rampetilgjengelig", "alias": "Rampe tilgjengelig" },
         { "name": "handlist", "alias": "Håndlist" },
-        { "name": "handlisthoydeovre", "alias": "Håndlist høyde øvre", "unit": "cm" },
-        { "name": "handlisthoydenedre", "alias": "Håndlist høyde nedre", "unit": "cm" },
+        {
+          "name": "handlisthoydeovre",
+          "alias": "Håndlist høyde øvre",
+          "unit": "cm"
+        },
+        {
+          "name": "handlisthoydenedre",
+          "alias": "Håndlist høyde nedre",
+          "unit": "cm"
+        },
         { "name": "diameter", "alias": "Diameter", "unit": "cm" },
         { "name": "breddeinngang", "alias": "Inngang bredde", "unit": "cm" },
         { "name": "hoydeinngang", "alias": "Inngang høyde", "unit": "cm" },
@@ -170,7 +232,11 @@
         { "name": "stoppkanthoyde", "alias": "Stoppkant høyde", "unit": "cm" },
         { "name": "skiltet", "alias": "Skiltet" },
         { "name": "merket", "alias": "Merket" },
-        { "name": "avstandfasilitet", "alias": "Avstand fasilitet", "unit": "m" },
+        {
+          "name": "avstandfasilitet",
+          "alias": "Avstand fasilitet",
+          "unit": "m"
+        },
         { "name": "bredde_hc", "alias": "Bredde HC", "unit": "cm" },
         { "name": "lengde_hc", "alias": "Lengde HC", "unit": "cm" },
         { "name": "avgift", "alias": "Avgift" },
@@ -314,7 +380,11 @@
         { "name": "underlag", "alias": "Underlag" },
         { "name": "kvalitet_nn1954", "alias": "Kvalitet NN1954", "unit": "mm" },
         { "name": "kvalitet_nn2000", "alias": "Kvalitet NN2000", "unit": "mm" },
-        { "name": "kvalitet_grunnriss", "alias": "Kvalitet grunnriss", "unit": "mm" },
+        {
+          "name": "kvalitet_grunnriss",
+          "alias": "Kvalitet grunnriss",
+          "unit": "mm"
+        },
         { "name": "status", "alias": "Status" },
         { "name": "status_ar", "alias": "Status år" },
         { "name": "beskrivelse", "alias": "Beskrivelse" }
@@ -378,10 +448,16 @@
         { "name": "anleggsbredde", "alias": "Anleggsbredde" },
         { "name": "status", "alias": "Status" },
         { "name": "oppdateringsdato", "alias": "Oppdateringsdato" },
-        { "name": "verifisertrapporteringsnoyaktighet", "alias": "Verifisert rapporteringsnøyaktighet" },
+        {
+          "name": "verifisertrapporteringsnoyaktighet",
+          "alias": "Verifisert rapporteringsnøyaktighet"
+        },
         { "name": "registreringsdato", "alias": "Registreringsdato" },
         { "name": "luftfartshindermerking", "alias": "Luftfartshindermerking" },
-        { "name": "luftfartshinderlyssetting", "alias": "Luftfartshinderlyssetting" },
+        {
+          "name": "luftfartshinderlyssetting",
+          "alias": "Luftfartshinderlyssetting"
+        },
         { "name": "materiale", "alias": "Materiale" },
         { "name": "datafangstdato", "alias": "Datafangstdato" },
         { "name": "datafangstmetode", "alias": "Datafangstmetode" },
@@ -2056,7 +2132,12 @@
       "style": {
         "fill": { "color": "rgba(51, 153, 204, 0.2)" },
         "stroke": { "color": "#3399cc", "width": 2 },
-        "text": { "property": "n", "scale": 1.2, "fill": { "color": "#000000" }, "stroke": { "color": "#ffffff", "width": 3 } }
+        "text": {
+          "property": "n",
+          "scale": 1.2,
+          "fill": { "color": "#000000" },
+          "stroke": { "color": "#ffffff", "width": 3 }
+        }
       }
     },
     {
@@ -2076,7 +2157,12 @@
       "style": {
         "fill": { "color": "rgba(102, 178, 102, 0.2)" },
         "stroke": { "color": "#66b266", "width": 2 },
-        "text": { "property": "n", "scale": 1.2, "fill": { "color": "#000000" }, "stroke": { "color": "#ffffff", "width": 3 } }
+        "text": {
+          "property": "n",
+          "scale": 1.2,
+          "fill": { "color": "#000000" },
+          "stroke": { "color": "#ffffff", "width": 3 }
+        }
       }
     },
     {
@@ -2095,7 +2181,12 @@
       "style": {
         "fill": { "color": "rgba(204, 153, 51, 0.2)" },
         "stroke": { "color": "#cc9933", "width": 2 },
-        "text": { "property": "n", "scale": 1.2, "fill": { "color": "#000000" }, "stroke": { "color": "#ffffff", "width": 3 } }
+        "text": {
+          "property": "n",
+          "scale": 1.2,
+          "fill": { "color": "#000000" },
+          "stroke": { "color": "#ffffff", "width": 3 }
+        }
       }
     },
     {
@@ -2114,7 +2205,12 @@
       "style": {
         "fill": { "color": "rgba(153, 102, 204, 0.2)" },
         "stroke": { "color": "#9966cc", "width": 2 },
-        "text": { "property": "n", "scale": 1.2, "fill": { "color": "#000000" }, "stroke": { "color": "#ffffff", "width": 3 } }
+        "text": {
+          "property": "n",
+          "scale": 1.2,
+          "fill": { "color": "#000000" },
+          "stroke": { "color": "#ffffff", "width": 3 }
+        }
       }
     },
     {
@@ -2133,7 +2229,12 @@
       "style": {
         "fill": { "color": "rgba(204, 51, 102, 0.2)" },
         "stroke": { "color": "#cc3366", "width": 2 },
-        "text": { "property": "n", "scale": 1.2, "fill": { "color": "#000000" }, "stroke": { "color": "#ffffff", "width": 3 } }
+        "text": {
+          "property": "n",
+          "scale": 1.2,
+          "fill": { "color": "#000000" },
+          "stroke": { "color": "#ffffff", "width": 3 }
+        }
       }
     },
     {
@@ -2152,7 +2253,12 @@
       "style": {
         "fill": { "color": "rgba(102, 178, 204, 0.2)" },
         "stroke": { "color": "#66b2cc", "width": 2 },
-        "text": { "property": "n", "scale": 1.2, "fill": { "color": "#000000" }, "stroke": { "color": "#ffffff", "width": 3 } }
+        "text": {
+          "property": "n",
+          "scale": 1.2,
+          "fill": { "color": "#000000" },
+          "stroke": { "color": "#ffffff", "width": 3 }
+        }
       }
     }
   ]
