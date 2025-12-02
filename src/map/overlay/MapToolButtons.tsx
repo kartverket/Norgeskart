@@ -38,32 +38,25 @@ export const MapToolButtons = () => {
           posthog.capture('map_draw_button_clicked');
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
-        icon={currentMapTool == 'draw' ? 'close' : 'edit'}
-        label={
-          currentMapTool == 'draw' ? t('draw.close') : t('draw.tabHeading')
-        }
+        icon={'edit'}
+        label={t('draw.tabHeading')}
+        active={currentMapTool === 'draw'}
       />
       <MapButton
         onClick={() => {
           setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
         }}
-        icon={currentMapTool == 'layers' ? 'close' : 'layers'}
-        label={
-          currentMapTool == 'layers'
-            ? t('draw.close')
-            : t('controller.maplayers.openText')
-        }
+        icon={'layers'}
+        label={t('controller.maplayers.openText')}
+        active={currentMapTool === 'layers'}
       />
       <MapButton
         onClick={() => {
           setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
         }}
-        icon={currentMapTool === 'settings' ? 'close' : 'settings'}
-        label={
-          currentMapTool == 'settings'
-            ? t('shared.close')
-            : t('controller.settings.text')
-        }
+        icon={'settings'}
+        label={t('controller.settings.text')}
+        active={currentMapTool === 'settings'}
       />
 
       <MapButton
@@ -87,8 +80,9 @@ interface MapButtonProps {
   onClick: () => void;
   icon: MaterialSymbol;
   label: string;
+  active?: boolean;
 }
-const MapButton = ({ onClick, icon, label }: MapButtonProps) => {
+const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
   return (
     <Button
       onClick={onClick}
@@ -96,6 +90,7 @@ const MapButton = ({ onClick, icon, label }: MapButtonProps) => {
       colorPalette="green"
       pt={8}
       pb={8}
+      backgroundColor={active ? '#D0ECD6' : ''}
     >
       <VStack>
         <Icon icon={icon} />

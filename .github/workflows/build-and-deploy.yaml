@@ -37,16 +37,16 @@ jobs:
         with:
           node-version: '22'
 
+      - name: 'Audit dependencies'
+        if: ${{ !github.event.inputs.bypassValidation }}
+        run: npm audit --production --audit-level=high
+
       - name: 'Install dependencies'
-        run: npm install
+        run: npm ci
 
       - name: 'Verify linting'
         if: ${{ !github.event.inputs.bypassValidation }}
         run: npm run lint
-
-      - name: 'Audit dependencies'
-        if: ${{ !github.event.inputs.bypassValidation }}
-        run: npm audit --production --audit-level=high
 
       - name: 'Verify formatting'
         if: ${{ !github.event.inputs.bypassValidation }}
