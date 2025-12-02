@@ -418,16 +418,6 @@
       "parentId": "fastmerker"
     },
     {
-      "id": "seeiendom",
-      "groupid": 16,
-      "name": {
-        "nb": "Eiendom",
-        "nn": "Eiendom",
-        "en": "Property"
-      },
-      "wmsUrl": "https://testapi.norgeskart.no/v1/matrikkel/wms"
-    },
-    {
       "id": "nrl",
       "groupid": 17,
       "name": {
@@ -1360,45 +1350,6 @@
       "categoryId": "baseStations",
       "groupid": 14,
       "legacyId": "1017",
-      "queryable": true
-    },
-    {
-      "id": "cadastreAddresses",
-      "name": {
-        "nb": "Adresser",
-        "nn": "Adresser",
-        "en": "Addresses"
-      },
-      "layers": "MATRIKKELADRESSEWFS,VEGADRESSEWFS",
-      "categoryId": "seeiendom",
-      "groupid": 16,
-      "legacyId": "1011",
-      "queryable": true
-    },
-    {
-      "id": "cadastreBuildings",
-      "name": {
-        "nb": "Bygninger",
-        "nn": "Bygningar",
-        "en": "Buildings"
-      },
-      "layers": "BYGNINGWFS",
-      "categoryId": "seeiendom",
-      "groupid": 16,
-      "legacyId": "1012",
-      "queryable": true
-    },
-    {
-      "id": "cadastrePropertyBoundaries",
-      "name": {
-        "nb": "Teiggrenser og matrikkelnr",
-        "nn": "Teiggrenser og matrikkelnr",
-        "en": "Property boundaries and parcel numbers"
-      },
-      "layers": "TEIGGRENSEWFS,TEIGWFS",
-      "categoryId": "seeiendom",
-      "groupid": 16,
-      "legacyId": "1013",
       "queryable": true
     },
     {
