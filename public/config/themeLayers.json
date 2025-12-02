@@ -36,9 +36,9 @@
       "id": "placeNames",
       "groupid": 1,
       "name": {
-        "nb": "Stedsnavn",
-        "nn": "Stadnamn",
-        "en": "Place names"
+        "nb": "Stedsnavn ( SSR )",
+        "nn": "Stadnamn ( SSR )",
+        "en": "Place names ( SSR )"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.ssr2",
       "featureInfoFields": [
@@ -337,15 +337,6 @@
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
       "parentId": "accessibility"
-    },
-    {
-      "id": "historicalMaps",
-      "groupid": 9,
-      "name": {
-        "nb": "Historiske kart",
-        "nn": "Historiske kart",
-        "en": "Historical maps"
-      }
     },
     {
       "id": "fastmerker",
@@ -1284,34 +1275,6 @@
       "groupid": 10,
       "legacyId": "1037",
       "queryable": true
-    },
-    {
-      "id": "historicalMapFirstEdition",
-      "name": {
-        "nb": "ØK 1. utgave",
-        "nn": "ØK 1. utgåve",
-        "en": "Economic map 1st edition"
-      },
-      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.n5raster2",
-      "layers": "n5raster_foerstegang_metadata,n5raster_foerstegang",
-      "categoryId": "historicalMaps",
-      "groupid": 9,
-      "legacyId": "1011",
-      "queryable": false
-    },
-    {
-      "id": "historicalMapAmtskart",
-      "name": {
-        "nb": "Amtskart",
-        "nn": "Amtskart",
-        "en": "County map"
-      },
-      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.historiskekart",
-      "layers": "amt1",
-      "categoryId": "historicalMaps",
-      "groupid": 9,
-      "legacyId": "1012",
-      "queryable": false
     },
     {
       "id": "utmGrid",
