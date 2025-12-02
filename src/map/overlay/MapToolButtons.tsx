@@ -35,7 +35,7 @@ export const MapToolButtons = () => {
     <HStack
       align="flex-end"
       bg={'white'}
-      borderRadius="lg"
+      borderRadius={{ md: 'lg' }}
       p={2}
       pointerEvents={'all'}
     >

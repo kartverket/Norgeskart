@@ -89,7 +89,7 @@ export const MapOverlay = () => {
           }}
           gridRow={4}
           alignContent={'end'}
-          mb={4}
+          mb={{ base: 0, md: 4 }}
         >
           <MapToolButtons />
         </GridItem>
