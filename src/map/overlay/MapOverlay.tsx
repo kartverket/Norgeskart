@@ -5,6 +5,7 @@ import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
+import { useIsMobileScreen } from '../../shared/hooks';
 import { Toolbar } from '../../toolbar/Toolbar';
 import { displayCompassOverlayAtom } from '../atoms';
 import { useFeatureInfoClick } from '../featureInfo/useFeatureInfo';
@@ -22,6 +23,7 @@ export const MapOverlay = () => {
   const { drawEnabled, setDrawEnabled } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
+  const isMobile = useIsMobileScreen();
 
   useFeatureInfoClick();
 
@@ -48,8 +50,14 @@ export const MapOverlay = () => {
         position={'absolute'}
         height={'100%'}
         width={'100%'}
-        gridTemplateColumns="repeat(5, 1fr)"
-        gridTemplateRows="1fr 1fr 1fr 1fr 40px"
+        gridTemplateColumns={{
+          base: '1fr',
+          md: 'repeat(5, 1fr)',
+        }}
+        gridTemplateRows={{
+          base: '1fr 1fr 1fr 110px',
+          md: '1fr 1fr 1fr 1fr 40px',
+        }}
         pointerEvents="none"
       >
         <GridItem gridColumn={1} gridRow={1} gridRowStart={1} gridRowEnd={5}>
@@ -61,29 +69,45 @@ export const MapOverlay = () => {
             }}
           />
         </GridItem>
-        <GridItem gridColumn={5} gridRow={1}>
+        <GridItem gridColumn={{ base: 1, md: 5 }} gridRow={1}>
           <InfoBox />
         </GridItem>
 
-        <GridItem gridColumn={1} gridRow={4} alignContent={'end'} mb={4} ml={4}>
+        <GridItem
+          gridColumn={1}
+          gridRow={{ base: 3, md: 4 }}
+          alignContent={'end'}
+          mb={4}
+          ml={4}
+        >
           <LinkLogo />
         </GridItem>
-        <GridItem gridColumn={3} gridRow={4} alignContent={'end'} mb={4}>
+        <GridItem
+          gridColumn={{
+            base: 1,
+            md: 3,
+          }}
+          gridRow={4}
+          alignContent={'end'}
+          mb={4}
+        >
           <MapToolButtons />
         </GridItem>
         <GridItem
           justifySelf={'end'}
-          alignItems={'end'}
-          gridColumn={5}
-          gridRow={4}
+          alignContent={'end'}
+          gridColumn={{ base: 1, md: 5 }}
+          gridRow={{ base: 3, md: 4 }}
           mb={4}
           mr={4}
         >
           <MapControlButtons />
         </GridItem>
-        <GridItem h="40px" alignContent="end" gridRow={5} colSpan={5}>
-          <Toolbar />
-        </GridItem>
+        {!isMobile && (
+          <GridItem h="40px" alignContent="end" gridRow={5} colSpan={5}>
+            <Toolbar />
+          </GridItem>
+        )}
       </Grid>
     </ErrorBoundary>
   );
