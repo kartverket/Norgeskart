@@ -13,7 +13,7 @@ import { Compass } from './Compass';
 import { MapToolButtons } from './MapToolButtons';
 import { MapToolCards } from './MapToolCards';
 
-export type MapTool = 'layers' | 'draw' | 'settings' | null;
+export type MapTool = 'draw' | 'layers' | 'settings' | 'print' | null;
 
 export const MapOverlay = () => {
   const [portalTargetFound, setPortalTargetFound] = useState<boolean>(false);

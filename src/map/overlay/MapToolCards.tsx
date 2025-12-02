@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapSettings } from '../../settings/map/MapSettings';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
+import PrintWindow from '../../sidePanel/PrintWindow';
 import { MapTool } from './MapOverlay';
 
 export const MapToolCards = ({
@@ -13,6 +14,7 @@ export const MapToolCards = ({
   onClose: () => void;
 }) => {
   const { t } = useTranslation();
+
   if (currentMapTool === 'draw') {
     return (
       <MapToolCard label={t('draw.tabHeading')} onClose={onClose}>
@@ -20,6 +22,7 @@ export const MapToolCards = ({
       </MapToolCard>
     );
   }
+
   if (currentMapTool === 'layers') {
     return (
       <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
@@ -27,10 +30,19 @@ export const MapToolCards = ({
       </MapToolCard>
     );
   }
+
   if (currentMapTool === 'settings') {
     return (
       <MapToolCard label={t('settings.label')} onClose={onClose}>
         <SettingsDrawer />
+      </MapToolCard>
+    );
+  }
+
+  if (currentMapTool === 'print') {
+    return (
+      <MapToolCard label={t('controller.print.text')} onClose={onClose}>
+        <PrintWindow onClose={onClose} />
       </MapToolCard>
     );
   }
@@ -41,12 +53,13 @@ interface MapToolCardProps {
   children: React.ReactNode | React.ReactNode[] | undefined;
   onClose: () => void;
 }
+
 const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
     <Box
       position="fixed"
-      top={'16px'}
-      left={'16px'}
+      top="16px"
+      left="16px"
       width="20vw"
       minWidth="350px"
       height="80vh"
@@ -59,7 +72,7 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       borderRight="1px solid rgba(0,0,0,0.1)"
       px={4}
       py={4}
-      borderRadius={'16px'}
+      borderRadius="16px"
     >
       <Flex justify="space-between">
         <Heading fontWeight="bold" mb="2rem">
@@ -70,13 +83,11 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
           icon="close"
           aria-label="Lukk"
           colorPalette="red"
-          onClick={() => {
-            onClose();
-          }}
+          onClick={onClose}
           size="sm"
         />
       </Flex>
-      <Box overflowY="auto" height={'100%'}>
+      <Box overflowY="auto" height="100%">
         {children}
       </Box>
     </Box>

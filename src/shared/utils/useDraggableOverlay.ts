@@ -1,5 +1,5 @@
 import { Map } from 'ol';
-import Interaction from 'ol/interaction/Interaction';
+import { Interaction } from 'ol/interaction';
 import { useEffect } from 'react';
 
 interface UseDraggableOverlayProps {
@@ -27,7 +27,6 @@ export const useDraggableOverlay = ({
     let offsetY = 0;
     let isDragging = false;
 
-    // Enable/disable map panning while dragging
     const interactions = map.getInteractions();
     const toggleDragPan = (enable: boolean) => {
       interactions.forEach((i: Interaction) => {
@@ -35,10 +34,8 @@ export const useDraggableOverlay = ({
       });
     };
 
-    // Keep overlay inside viewport based on updated width/height
     const constrainPosition = (x: number, y: number) => {
       const rect = map.getViewport().getBoundingClientRect();
-
       return {
         x: Math.max(0, Math.min(x, rect.width - overlayWidth)),
         y: Math.max(0, Math.min(y, rect.height - overlayHeight)),
@@ -47,18 +44,23 @@ export const useDraggableOverlay = ({
 
     const onMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return;
-      isDragging = true;
 
+      e.preventDefault();
+      e.stopPropagation(); // stop map from dragging
+
+      isDragging = true;
       const rect = overlay.getBoundingClientRect();
       offsetX = e.clientX - rect.left;
       offsetY = e.clientY - rect.top;
 
       toggleDragPan(false);
-      e.preventDefault();
     };
 
     const onMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
+
+      e.preventDefault();
+      e.stopPropagation(); // stop map from dragging
 
       const x = e.clientX - offsetX;
       const y = e.clientY - offsetY;
@@ -67,8 +69,13 @@ export const useDraggableOverlay = ({
       setOverlayPosition({ x: cx, y: cy });
     };
 
-    const onMouseUp = () => {
-      if (isDragging) toggleDragPan(true);
+    const onMouseUp = (e: MouseEvent) => {
+      if (!isDragging) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      toggleDragPan(true);
       isDragging = false;
     };
 
@@ -76,7 +83,6 @@ export const useDraggableOverlay = ({
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
 
-    // Handle map resize or layout change
     const resizeObserver = new ResizeObserver(() => {
       setOverlayPosition((prev) => constrainPosition(prev.x, prev.y));
     });
@@ -84,7 +90,6 @@ export const useDraggableOverlay = ({
     const viewport = map.getViewport();
     if (viewport) resizeObserver.observe(viewport);
 
-    // Cleanup
     return () => {
       overlay.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mousemove', onMouseMove);
