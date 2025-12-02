@@ -60,12 +60,11 @@ export const Toolbar = () => {
   return (
     <Flex
       width="100%"
-      height="28px"
+      height={10}
       bg="#156630"
       bottom="0"
       position="absolute"
       p={2}
-      gap={3}
     >
       <Flex alignItems="center" flex="1">
         <Tooltip content={t('map.settings.compass.enabled')}>

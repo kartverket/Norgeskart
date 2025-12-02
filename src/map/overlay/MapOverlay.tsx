@@ -42,49 +42,51 @@ export const MapOverlay = () => {
         console.error('Error in MapOverlay');
       }}
     >
-      {showSearchComponent && <SearchComponent />}
+      <Box bgColor={'hotpink'}>
+        {showSearchComponent && <SearchComponent />}
 
-      {displayCompassOverlay && <Compass />}
+        {displayCompassOverlay && <Compass />}
 
-      <Box position="absolute" bottom="30px" left="16px">
-        <Link
-          href="https://www.kartverket.no"
-          target="_blank"
-          rel="noopener noreferrer"
-          outline="none"
+        <Box position="absolute" bottom="30px" left="16px">
+          <Link
+            href="https://www.kartverket.no"
+            target="_blank"
+            rel="noopener noreferrer"
+            outline="none"
+          >
+            <Image
+              src="/logos/KV_logo_staa.svg"
+              alt="Logo"
+              style={{ height: 64 }}
+            />
+          </Link>
+        </Box>
+
+        {/* Her er hovedboksen for knappene i senter */}
+        <Box
+          position="absolute"
+          bottom="40px"
+          left="50%"
+          transform="translateX(-50%)"
+          zIndex={10}
+          bg="#FFFF"
+          borderRadius="lg"
+          p={2}
+          boxShadow="lg"
         >
-          <Image
-            src="/logos/KV_logo_staa.svg"
-            alt="Logo"
-            style={{ height: 64 }}
-          />
-        </Link>
-      </Box>
+          <MapToolButtons />
+        </Box>
+        <MapToolCards
+          currentMapTool={currentMapTool}
+          onClose={() => {
+            setCurrentMapTool(null);
+          }}
+        />
 
-      {/* Her er hovedboksen for knappene i senter */}
-      <Box
-        position="absolute"
-        bottom="40px"
-        left="50%"
-        transform="translateX(-50%)"
-        zIndex={10}
-        bg="#FFFF"
-        borderRadius="lg"
-        p={2}
-        boxShadow="lg"
-      >
-        <MapToolButtons />
+        <InfoBox />
+        <MapControlButtons />
+        <Toolbar />
       </Box>
-      <MapToolCards
-        currentMapTool={currentMapTool}
-        onClose={() => {
-          setCurrentMapTool(null);
-        }}
-      />
-
-      <InfoBox />
-      <MapControlButtons />
-      <Toolbar />
     </ErrorBoundary>
   );
 };
