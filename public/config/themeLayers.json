@@ -1464,7 +1464,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1011",
-      "queryable": true
+      "queryable": false
     },
     {
       "id": "nrlLine",
@@ -1477,7 +1477,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1012",
-      "queryable": true
+      "queryable": false
     },
     {
       "id": "nrlAirspan",
@@ -1490,7 +1490,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1013",
-      "queryable": true
+      "queryable": false
     },
     {
       "id": "nrlMast",
@@ -1503,7 +1503,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1014",
-      "queryable": true
+      "queryable": false
     },
     {
       "id": "nrlPoint",
@@ -1516,7 +1516,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1015",
-      "queryable": true
+      "queryable": false
     },
     {
       "id": "6_t_parkeringsomrade_r",
