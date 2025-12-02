@@ -2,7 +2,7 @@ import Map from 'ol/Map';
 import { getPointResolution } from 'ol/proj';
 
 const DPI = 96;
-const INCHES_PER_METER = 39.37;
+const METERS_PER_INCH = 0.0254;
 
 //Converts map resolution (meters per pixel) to scale
 export const getScaleFromResolution = (
@@ -16,9 +16,10 @@ export const getScaleFromResolution = (
 
   if (!center) throw new Error('Map center undefined');
 
-  // getPointResolution tar hensyn til projeksjon og posisjon
   const pointResolution = getPointResolution(projection, resolution, center);
-  const scale = pointResolution * INCHES_PER_METER * DPI;
+  const metersPerUnit = projection.getMetersPerUnit() ?? 1;
+
+  const scale = pointResolution * metersPerUnit * DPI / METERS_PER_INCH;
 
   return round ? Math.round(scale) : scale;
 };
@@ -27,12 +28,9 @@ export const getScaleFromResolution = (
 export const scaleToResolution = (scale: number, map: Map) => {
   const view = map.getView();
   const projection = view.getProjection();
-  const center = view.getCenter();
 
-  if (!center) throw new Error('Map center undefined');
-
-  const pointResolution = scale / (INCHES_PER_METER * DPI);
-  const resolution = getPointResolution(projection, pointResolution, center);
+  const metersPerUnit = projection.getMetersPerUnit() ?? 1;
+  const resolution = scale * METERS_PER_INCH / (DPI * metersPerUnit);
 
   return resolution;
 };

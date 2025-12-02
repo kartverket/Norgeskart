@@ -20,7 +20,7 @@ export const ScaleSelector = () => {
   }));
   return (
     <SelectRoot
-      width="230px"
+      width="300px"
       size="sm"
       collection={createListCollection({ items: scaleCollection })}
     >
