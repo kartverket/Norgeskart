@@ -6,7 +6,6 @@ import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { useIsMobileScreen } from '../../shared/hooks';
-import { useIsMobileScreen } from '../../shared/hooks';
 import { Toolbar } from '../../toolbar/Toolbar';
 import { displayCompassOverlayAtom } from '../atoms';
 import { useFeatureInfoClick } from '../featureInfo/useFeatureInfo';
@@ -71,17 +70,10 @@ export const MapOverlay = () => {
           />
         </GridItem>
         <GridItem gridColumn={{ base: 1, md: 5 }} gridRow={1}>
-        <GridItem gridColumn={{ base: 1, md: 5 }} gridRow={1}>
           <InfoBox />
         </GridItem>
 
-        <GridItem
-          gridColumn={1}
-          gridRow={{ base: 3, md: 4 }}
-          alignContent={'end'}
-          mb={4}
-          ml={4}
-        >
+        
         <GridItem
           gridColumn={1}
           gridRow={{ base: 3, md: 4 }}
@@ -105,21 +97,13 @@ export const MapOverlay = () => {
         <GridItem
           justifySelf={'end'}
           alignContent={'end'}
-          gridColumn={{ base: 1, md: 5 }}
           gridRow={{ base: 3, md: 4 }}
-          alignContent={'end'}
           gridColumn={{ base: 1, md: 5 }}
-          gridRow={{ base: 3, md: 4 }}
           mb={4}
           mr={4}
         >
           <MapControlButtons />
         </GridItem>
-        {!isMobile && (
-          <GridItem h="40px" alignContent="end" gridRow={5} colSpan={5}>
-            <Toolbar />
-          </GridItem>
-        )}
         {!isMobile && (
           <GridItem h="40px" alignContent="end" gridRow={5} colSpan={5}>
             <Toolbar />
