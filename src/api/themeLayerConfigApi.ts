@@ -1,6 +1,15 @@
 import { atom } from 'jotai';
 import { loadable } from 'jotai/utils';
 
+export interface FieldConfig {
+  name: string;
+  alias?: string;
+  type?: 'symbol' | 'link' | 'picture';
+  baseurl?: string;
+  filetype?: string;
+  unit?: string;
+}
+
 export interface ThemeLayerCategory {
   id: string;
   groupid: number;
@@ -13,6 +22,7 @@ export interface ThemeLayerCategory {
   parentId?: string;
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
+  featureInfoFields?: FieldConfig[];
 }
 
 export interface ThemeLayerStyle {
@@ -52,6 +62,7 @@ export interface ThemeLayerDefinition {
   styles?: string;
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
+  featureInfoFields?: FieldConfig[];
 }
 
 export interface ThemeLayerConfig {

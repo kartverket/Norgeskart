@@ -104,6 +104,10 @@ export const createThemeLayerFromConfig = (
     layerDef.featureInfoImageBaseUrl ||
     category?.featureInfoImageBaseUrl ||
     parentCategory?.featureInfoImageBaseUrl;
+  const featureInfoFields =
+    layerDef.featureInfoFields ||
+    category?.featureInfoFields ||
+    parentCategory?.featureInfoFields;
 
   return new TileLayer({
     source: new TileWMS({
@@ -125,6 +129,7 @@ export const createThemeLayerFromConfig = (
       layerTitle: layerDef.name.nb || layerDef.id,
       ...(infoFormat ? { infoFormat } : {}),
       ...(featureInfoImageBaseUrl ? { featureInfoImageBaseUrl } : {}),
+      ...(featureInfoFields ? { featureInfoFields } : {}),
     },
     preload: 1,
   });

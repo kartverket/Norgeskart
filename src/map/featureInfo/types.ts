@@ -1,6 +1,4 @@
-/**
- * Types for WMS GetFeatureInfo responses and state management
- */
+import type { FieldConfig } from '../../api/themeLayerConfigApi';
 
 export interface FeatureProperties {
   [key: string]: string | number | boolean | null;
@@ -17,6 +15,7 @@ export interface LayerFeatureInfo {
   features: FeatureInfoFeature[];
   error?: string;
   imageBaseUrl?: string;
+  fieldConfigs?: FieldConfig[];
 }
 
 export interface FeatureInfoResult {

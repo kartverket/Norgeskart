@@ -14,6 +14,7 @@ import {
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import type { FieldConfig } from '../../api/themeLayerConfigApi';
 import {
   featureInfoLoadingAtom,
   featureInfoResultAtom,
@@ -25,6 +26,23 @@ import type {
 } from '../../map/featureInfo/types';
 
 const IMAGE_FIELD_PATTERN = /^bildefil\d*$/i;
+
+const getFieldConfig = (
+  fieldName: string,
+  fieldConfigs?: FieldConfig[],
+): FieldConfig | undefined => {
+  return fieldConfigs?.find(
+    (fc) => fc.name.toLowerCase() === fieldName.toLowerCase(),
+  );
+};
+
+const isSpecialField = (
+  fieldName: string,
+  fieldConfigs?: FieldConfig[],
+): boolean => {
+  const config = getFieldConfig(fieldName, fieldConfigs);
+  return config?.type === 'symbol' || config?.type === 'picture';
+};
 
 const getImageFields = (properties: FeatureProperties): string[] => {
   return Object.entries(properties)
@@ -67,22 +85,114 @@ const ImageGallery = ({
   );
 };
 
-const formatPropertyValue = (value: unknown): string => {
+const SymbolGallery = ({
+  symbols,
+}: {
+  symbols: Array<{ url: string; alt: string }>;
+}) => {
+  if (symbols.length === 0) return null;
+
+  return (
+    <Flex gap={2} mb={3} wrap="wrap">
+      {symbols.map((symbol, index) => (
+        <Image
+          key={index}
+          src={symbol.url}
+          alt={symbol.alt}
+          h="32px"
+          title={symbol.alt}
+        />
+      ))}
+    </Flex>
+  );
+};
+
+const getSymbolFields = (
+  properties: FeatureProperties,
+  fieldConfigs?: FieldConfig[],
+): Array<{ url: string; alt: string }> => {
+  if (!fieldConfigs) return [];
+
+  const symbols: Array<{ url: string; alt: string }> = [];
+
+  for (const config of fieldConfigs) {
+    if (config.type !== 'symbol' || !config.baseurl) continue;
+
+    const value = properties[config.name];
+    if (!value || (typeof value === 'string' && value.trim() === '')) continue;
+
+    const filename = config.filetype
+      ? `${value}.${config.filetype}`
+      : String(value);
+    const baseUrl = config.baseurl.endsWith('/')
+      ? config.baseurl.slice(0, -1)
+      : config.baseurl;
+    const url = `${baseUrl}/${filename}`;
+    const alt = config.alias || config.name;
+
+    symbols.push({ url, alt });
+  }
+
+  return symbols;
+};
+
+const formatPropertyValue = (
+  value: unknown,
+  fieldConfig?: FieldConfig,
+): string => {
   if (value === null || value === undefined) return '-';
   if (typeof value === 'boolean') return value ? 'Ja' : 'Nei';
+
+  let displayValue: string;
   if (typeof value === 'number') {
-    if (Number.isInteger(value)) return value.toString();
-    return value.toFixed(2);
+    displayValue = Number.isInteger(value)
+      ? value.toString()
+      : value.toFixed(2);
+  } else {
+    displayValue = String(value);
   }
-  return String(value);
+
+  if (fieldConfig?.unit && displayValue !== '-') {
+    displayValue = `${displayValue} ${fieldConfig.unit}`;
+  }
+
+  return displayValue;
 };
 
 const isUrl = (value: string): boolean => {
   return value.startsWith('http://') || value.startsWith('https://');
 };
 
-const PropertyItem = ({ name, value }: { name: string; value: unknown }) => {
-  const displayValue = formatPropertyValue(value);
+const buildLinkUrl = (
+  value: string,
+  fieldConfig?: FieldConfig,
+): string | null => {
+  if (!fieldConfig?.type || fieldConfig.type !== 'link') return null;
+
+  if (isUrl(value)) return value;
+
+  if (!fieldConfig.baseurl || fieldConfig.baseurl.trim() === '') return null;
+
+  const baseUrl = fieldConfig.baseurl.trim().endsWith('/')
+    ? fieldConfig.baseurl.trim().slice(0, -1)
+    : fieldConfig.baseurl.trim();
+
+  if (baseUrl === '') return isUrl(value) ? value : null;
+
+  return `${baseUrl}/${value}`;
+};
+
+const PropertyItem = ({
+  name,
+  value,
+  fieldConfig,
+}: {
+  name: string;
+  value: unknown;
+  fieldConfig?: FieldConfig;
+}) => {
+  const displayName = fieldConfig?.alias || name;
+  const displayValue = formatPropertyValue(value, fieldConfig);
 
   if (name.startsWith('_') && name !== '_html') return null;
 
@@ -102,17 +212,49 @@ const PropertyItem = ({ name, value }: { name: string; value: unknown }) => {
     );
   }
 
-  return (
-    <Flex
-      justify="space-between"
-      py={1}
-      borderBottom="1px solid"
-      borderColor="gray.100"
-    >
-      <Text fontSize="sm" color="gray.600" fontWeight="medium">
-        {name}
-      </Text>
-      {isUrl(displayValue) ? (
+  if (
+    fieldConfig?.type === 'link' &&
+    (typeof value === 'string' || typeof value === 'number') &&
+    String(value).trim() !== ''
+  ) {
+    const linkUrl = buildLinkUrl(String(value), fieldConfig);
+    if (linkUrl) {
+      return (
+        <Flex
+          justify="space-between"
+          py={1}
+          borderBottom="1px solid"
+          borderColor="gray.100"
+        >
+          <Text fontSize="sm" color="gray.600" fontWeight="medium">
+            {displayName}
+          </Text>
+          <Link
+            fontSize="sm"
+            href={linkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="blue.600"
+            textDecoration="underline"
+          >
+            Åpne lenke
+          </Link>
+        </Flex>
+      );
+    }
+  }
+
+  if (isUrl(displayValue)) {
+    return (
+      <Flex
+        justify="space-between"
+        py={1}
+        borderBottom="1px solid"
+        borderColor="gray.100"
+      >
+        <Text fontSize="sm" color="gray.600" fontWeight="medium">
+          {displayName}
+        </Text>
         <Link
           fontSize="sm"
           href={displayValue}
@@ -123,11 +265,23 @@ const PropertyItem = ({ name, value }: { name: string; value: unknown }) => {
         >
           Link
         </Link>
-      ) : (
-        <Text fontSize="sm" textAlign="right" maxW="60%">
-          {displayValue}
-        </Text>
-      )}
+      </Flex>
+    );
+  }
+
+  return (
+    <Flex
+      justify="space-between"
+      py={1}
+      borderBottom="1px solid"
+      borderColor="gray.100"
+    >
+      <Text fontSize="sm" color="gray.600" fontWeight="medium">
+        {displayName}
+      </Text>
+      <Text fontSize="sm" textAlign="right" maxW="60%">
+        {displayValue}
+      </Text>
     </Flex>
   );
 };
@@ -136,19 +290,30 @@ const FeatureProperties = ({
   feature,
   index,
   imageBaseUrl,
+  fieldConfigs,
 }: {
   feature: FeatureInfoFeature;
   index: number;
   imageBaseUrl?: string;
+  fieldConfigs?: FieldConfig[];
 }) => {
   const imageFilenames = imageBaseUrl ? getImageFields(feature.properties) : [];
-  const entries = Object.entries(feature.properties).filter(
-    ([key]) =>
-      (!key.startsWith('_') || key === '_html') &&
-      !IMAGE_FIELD_PATTERN.test(key),
-  );
+  const symbols = getSymbolFields(feature.properties, fieldConfigs);
 
-  if (entries.length === 0 && imageFilenames.length === 0) {
+  const entries = Object.entries(feature.properties).filter(([key]) => {
+    if (key.startsWith('_') && key !== '_html') return false;
+    if (imageBaseUrl && IMAGE_FIELD_PATTERN.test(key)) return false;
+    if (isSpecialField(key, fieldConfigs)) return false;
+    const config = getFieldConfig(key, fieldConfigs);
+    if (config?.type === 'picture') return false;
+    return true;
+  });
+
+  if (
+    entries.length === 0 &&
+    imageFilenames.length === 0 &&
+    symbols.length === 0
+  ) {
     return (
       <Text fontSize="sm" color="gray.500">
         Ingen egenskaper
@@ -167,6 +332,7 @@ const FeatureProperties = ({
           Feature ID: {feature.id}
         </Text>
       )}
+      {symbols.length > 0 && <SymbolGallery symbols={symbols} />}
       {imageBaseUrl && imageFilenames.length > 0 && (
         <ImageGallery
           imageBaseUrl={imageBaseUrl}
@@ -174,7 +340,12 @@ const FeatureProperties = ({
         />
       )}
       {entries.map(([key, value]) => (
-        <PropertyItem key={`${index}-${key}`} name={key} value={value} />
+        <PropertyItem
+          key={`${index}-${key}`}
+          name={key}
+          value={value}
+          fieldConfig={getFieldConfig(key, fieldConfigs)}
+        />
       ))}
     </Box>
   );
@@ -229,6 +400,7 @@ const LayerFeatureInfoSection = ({
               feature={feature}
               index={index}
               imageBaseUrl={layerInfo.imageBaseUrl}
+              fieldConfigs={layerInfo.fieldConfigs}
             />
           </Box>
         ))}

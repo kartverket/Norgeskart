@@ -7,6 +7,7 @@ import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
+import type { FieldConfig } from '../../api/themeLayerConfigApi';
 import type {
   FeatureInfoFeature,
   FeatureInfoResult,
@@ -349,6 +350,9 @@ export const fetchLayerFeatureInfo = async (
   const imageBaseUrl = layer.get('featureInfoImageBaseUrl') as
     | string
     | undefined;
+  const fieldConfigs = layer.get('featureInfoFields') as
+    | FieldConfig[]
+    | undefined;
 
   const formatsToTry: InfoFormat[] = preferredFormat
     ? [preferredFormat]
@@ -363,6 +367,7 @@ export const fetchLayerFeatureInfo = async (
         features: [],
         error: 'Could not build GetFeatureInfo URL',
         ...(imageBaseUrl ? { imageBaseUrl } : {}),
+        ...(fieldConfigs ? { fieldConfigs } : {}),
       };
     }
 
@@ -385,6 +390,7 @@ export const fetchLayerFeatureInfo = async (
           layerTitle,
           features,
           ...(imageBaseUrl ? { imageBaseUrl } : {}),
+          ...(fieldConfigs ? { fieldConfigs } : {}),
         };
       }
 
@@ -394,6 +400,7 @@ export const fetchLayerFeatureInfo = async (
           layerTitle,
           features: [],
           ...(imageBaseUrl ? { imageBaseUrl } : {}),
+          ...(fieldConfigs ? { fieldConfigs } : {}),
         };
       }
     } catch (error) {
@@ -409,6 +416,7 @@ export const fetchLayerFeatureInfo = async (
     layerTitle,
     features: [],
     ...(imageBaseUrl ? { imageBaseUrl } : {}),
+    ...(fieldConfigs ? { fieldConfigs } : {}),
   };
 };
 

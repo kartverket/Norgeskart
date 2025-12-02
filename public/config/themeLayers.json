@@ -40,7 +40,11 @@
         "nn": "Stadnamn",
         "en": "Place names"
       },
-      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.ssr2"
+      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.ssr2",
+      "featureInfoFields": [
+        { "name": "stedsnavn", "alias": "Stedsnavn" },
+        { "name": "stedsnummer", "alias": "Stedsnummer", "type": "link", "baseurl": "https://stadnamn.kartverket.no/fakta/" }
+      ]
     },
     {
       "id": "facts",
@@ -117,7 +121,79 @@
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
       "infoFormat": "application/vnd.ogc.gml",
-      "featureInfoImageBaseUrl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet"
+      "featureInfoImageBaseUrl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet",
+      "featureInfoFields": [
+        { "name": "tilgjengvurderingrulleauto", "type": "symbol", "alias": "Rullestol", "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol/", "filetype": "png" },
+        { "name": "tilgjengvurderingelrullestol", "type": "symbol", "alias": "El-rullestol", "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol_el/", "filetype": "png" },
+        { "name": "tilgjengvurderingelrull", "type": "symbol", "alias": "El-rullestol", "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/rullestol_el/", "filetype": "png" },
+        { "name": "tilgjengvurderingsyn", "type": "symbol", "alias": "Syn", "baseurl": "https://data.kartverket.no/tilgjengelighet/symboler/syn/", "filetype": "png" },
+        { "name": "bildefil1", "type": "picture", "alias": "Bilde 1", "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/" },
+        { "name": "bildefil2", "type": "picture", "alias": "Bilde 2", "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/" },
+        { "name": "bildefil3", "type": "picture", "alias": "Bilde 3", "baseurl": "https://data.kartverket.no/tilgjengelighet/tilgjengelighet/" },
+        { "name": "linkskjema", "type": "link", "alias": "Skjema", "baseurl": "https://data.kartverket.no/tilgjengelighet/friluft-skjema-FRL-2012/" },
+        { "name": "linkbilde", "type": "link", "alias": "Bilde (lenke)", "baseurl": "https://data.kartverket.no/tilgjengelighet/friluft-skjema-FRL-2012/" },
+        { "name": "lenke", "type": "link", "alias": "Lenke", "baseurl": "" },
+        { "name": "forstedatafangstdato", "alias": "Registrert" },
+        { "name": "datafangstdato", "alias": "Oppdatert" },
+        { "name": "navn", "alias": "Navn" },
+        { "name": "eier", "alias": "Eier" },
+        { "name": "veitype", "alias": "Veitype" },
+        { "name": "spesialfotrutetype", "alias": "Spesial fotrutetype" },
+        { "name": "dekkemateriale", "alias": "Dekke materiale" },
+        { "name": "plankeavstand", "alias": "Plankeavstand", "unit": "cm" },
+        { "name": "dekketilstand", "alias": "Dekke tilstand" },
+        { "name": "dekkefasthet", "alias": "Dekke fasthet" },
+        { "name": "bredde", "alias": "Bredde", "unit": "cm" },
+        { "name": "stigning", "alias": "Stigning", "unit": "°" },
+        { "name": "tverrfall", "alias": "Tverrfall", "unit": "°" },
+        { "name": "belysning", "alias": "Belysning" },
+        { "name": "frihoyde", "alias": "Fri høyde" },
+        { "name": "ledelinje", "alias": "Ledelinje" },
+        { "name": "kommentar", "alias": "Kommentar" },
+        { "name": "objektnr", "alias": "Objekt ID" },
+        { "name": "lokalid", "alias": "Lokal ID" },
+        { "name": "rampebredde", "alias": "Rampe bredde", "unit": "cm" },
+        { "name": "rampelengde", "alias": "Rampelengde", "unit": "cm" },
+        { "name": "rampestigning", "alias": "Rampe stigning", "unit": "°" },
+        { "name": "rampeterskel", "alias": "Rampe terskel", "unit": "cm" },
+        { "name": "rampetilgjengelig", "alias": "Rampe tilgjengelig" },
+        { "name": "handlist", "alias": "Håndlist" },
+        { "name": "handlisthoydeovre", "alias": "Håndlist høyde øvre", "unit": "cm" },
+        { "name": "handlisthoydenedre", "alias": "Håndlist høyde nedre", "unit": "cm" },
+        { "name": "diameter", "alias": "Diameter", "unit": "cm" },
+        { "name": "breddeinngang", "alias": "Inngang bredde", "unit": "cm" },
+        { "name": "hoydeinngang", "alias": "Inngang høyde", "unit": "cm" },
+        { "name": "terskelhoyde", "alias": "Terskel høyde", "unit": "cm" },
+        { "name": "flytebrygge", "alias": "Flytebrygge" },
+        { "name": "rekkverk", "alias": "Rekkverk" },
+        { "name": "stoppkant", "alias": "Stoppkant" },
+        { "name": "stoppkanthoyde", "alias": "Stoppkant høyde", "unit": "cm" },
+        { "name": "skiltet", "alias": "Skiltet" },
+        { "name": "merket", "alias": "Merket" },
+        { "name": "avstandfasilitet", "alias": "Avstand fasilitet", "unit": "m" },
+        { "name": "bredde_hc", "alias": "Bredde HC", "unit": "cm" },
+        { "name": "lengde_hc", "alias": "Lengde HC", "unit": "cm" },
+        { "name": "avgift", "alias": "Avgift" },
+        { "name": "hoyde_kantsten", "alias": "Høyde kantsten", "unit": "cm" },
+        { "name": "tilgjengeligautomat", "alias": "Tilgjengelig automat" },
+        { "name": "kapasitetpersonbiler", "alias": "Kapasitet personbiler" },
+        { "name": "antalluu", "alias": "Antall UU" },
+        { "name": "naturbaseid", "alias": "Naturbase ID" },
+        { "name": "hcparkeringsplass", "alias": "HC-parkeringsplass" },
+        { "name": "toalett", "alias": "Toalett" },
+        { "name": "turvei", "alias": "Turvei" },
+        { "name": "baderampe", "alias": "Baderampe" },
+        { "name": "fiskeplass", "alias": "Fiskeplass" },
+        { "name": "grillbalplass", "alias": "Grillbålplass" },
+        { "name": "sittegruppe", "alias": "Sittegruppe" },
+        { "name": "gapahuk", "alias": "Gapahuk" },
+        { "name": "informasjon", "alias": "Informasjon" },
+        { "name": "sperrebom", "alias": "Sperrebom" },
+        { "name": "sperrebomtilgjengelig", "alias": "Sperrebom tilgjengelig" },
+        { "name": "dobbelspor", "alias": "Dobbelspor" },
+        { "name": "forbedringsforslag", "alias": "Forbedringsforslag" },
+        { "name": "plasstype", "alias": "Plasstype" }
+      ]
     },
     {
       "id": "accessibilityVillageWheelchair",
@@ -224,7 +300,25 @@
         "en": "Benchmarks"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.fastmerker2",
-      "parentId": "fastmerker"
+      "parentId": "fastmerker",
+      "featureInfoFields": [
+        { "name": "punktnummer", "alias": "Punktnummer" },
+        { "name": "punktnavn", "alias": "Punktnavn" },
+        { "name": "nord", "alias": "Nord" },
+        { "name": "ost", "alias": "Øst" },
+        { "name": "sone", "alias": "Sone" },
+        { "name": "hoyde_nn2000", "alias": "Høyde NN2000", "unit": "m" },
+        { "name": "hoyde_nn1954", "alias": "Høyde NN1954", "unit": "m" },
+        { "name": "ellipsoidisk_hoyde", "alias": "Ellipsoidisk høyde" },
+        { "name": "punkttype", "alias": "Punkttype" },
+        { "name": "underlag", "alias": "Underlag" },
+        { "name": "kvalitet_nn1954", "alias": "Kvalitet NN1954", "unit": "mm" },
+        { "name": "kvalitet_nn2000", "alias": "Kvalitet NN2000", "unit": "mm" },
+        { "name": "kvalitet_grunnriss", "alias": "Kvalitet grunnriss", "unit": "mm" },
+        { "name": "status", "alias": "Status" },
+        { "name": "status_ar", "alias": "Status år" },
+        { "name": "beskrivelse", "alias": "Beskrivelse" }
+      ]
     },
     {
       "id": "baseStations",
@@ -235,7 +329,12 @@
         "en": "Base stations"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.fastmerker2",
-      "parentId": "fastmerker"
+      "parentId": "fastmerker",
+      "featureInfoFields": [
+        { "name": "sitename", "alias": "Stasjonsnavn" },
+        { "name": "fourcharid", "alias": "StasjonsId" },
+        { "name": "siteconfigstattypename", "alias": "Status" }
+      ]
     },
     {
       "id": "utmGrid",
@@ -266,7 +365,30 @@
         "nn": "Luftfartshinder (NRL)",
         "en": "Aviation obstacles (NRL)"
       },
-      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.nrl5"
+      "wmsUrl": "https://wms.geonorge.no/skwms1/wms.nrl5",
+      "featureInfoFields": [
+        { "name": "lokalid", "alias": "Lokal ID" },
+        { "name": "navn", "alias": "Navn" },
+        { "name": "luftspenntype", "alias": "Luftspenntype" },
+        { "name": "linjetype", "alias": "Linjetype" },
+        { "name": "masttype", "alias": "Masttype" },
+        { "name": "punkttype", "alias": "Punkttype" },
+        { "name": "vertikalavstand", "alias": "Vertikalavstand", "unit": "m" },
+        { "name": "horisontalavstand", "alias": "Horisontalavstand" },
+        { "name": "anleggsbredde", "alias": "Anleggsbredde" },
+        { "name": "status", "alias": "Status" },
+        { "name": "oppdateringsdato", "alias": "Oppdateringsdato" },
+        { "name": "verifisertrapporteringsnoyaktighet", "alias": "Verifisert rapporteringsnøyaktighet" },
+        { "name": "registreringsdato", "alias": "Registreringsdato" },
+        { "name": "luftfartshindermerking", "alias": "Luftfartshindermerking" },
+        { "name": "luftfartshinderlyssetting", "alias": "Luftfartshinderlyssetting" },
+        { "name": "materiale", "alias": "Materiale" },
+        { "name": "datafangstdato", "alias": "Datafangstdato" },
+        { "name": "datafangstmetode", "alias": "Datafangstmetode" },
+        { "name": "noyaktighet", "alias": "Nøyaktighet" },
+        { "name": "informasjon", "alias": "Informasjon" },
+        { "name": "luftfartshinderid", "alias": "Historisk NRL ID" }
+      ]
     },
     {
       "id": "dekning",
@@ -497,7 +619,7 @@
       "categoryId": "placeNameLanguages",
       "groupid": 8,
       "legacyId": "1013",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "luleSamiPlaceNames",
@@ -510,7 +632,7 @@
       "categoryId": "placeNameLanguages",
       "groupid": 8,
       "legacyId": "1014",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "northernSamiPlaceNames",
@@ -523,7 +645,7 @@
       "categoryId": "placeNameLanguages",
       "groupid": 8,
       "legacyId": "1015",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "skoltSamiPlaceNames",
@@ -536,7 +658,7 @@
       "categoryId": "placeNameLanguages",
       "groupid": 8,
       "legacyId": "1016",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "southernSamiPlaceNames",
@@ -549,7 +671,7 @@
       "categoryId": "placeNameLanguages",
       "groupid": 8,
       "legacyId": "1017",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "kvenPlaceNames",
@@ -562,7 +684,7 @@
       "categoryId": "placeNameLanguages",
       "groupid": 8,
       "legacyId": "1018",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "otherPlaceNames",
@@ -575,7 +697,7 @@
       "categoryId": "placeNameLanguages",
       "groupid": 8,
       "legacyId": "1019",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "administrativeAreasPlaceNames",
@@ -588,7 +710,7 @@
       "categoryId": "placeNameTypes",
       "groupid": 3,
       "legacyId": "1020",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "settlementPlaceNames",
@@ -601,7 +723,7 @@
       "categoryId": "placeNameTypes",
       "groupid": 3,
       "legacyId": "1021",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "infrastructurePlaceNames",
@@ -614,7 +736,7 @@
       "categoryId": "placeNameTypes",
       "groupid": 3,
       "legacyId": "1022",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "seaPlaceNames",
@@ -627,7 +749,7 @@
       "categoryId": "placeNameTypes",
       "groupid": 3,
       "legacyId": "1023",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "landTypePlaceNames",
@@ -640,7 +762,7 @@
       "categoryId": "placeNameTypes",
       "groupid": 3,
       "legacyId": "1024",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "freshwaterPlaceNames",
@@ -653,7 +775,7 @@
       "categoryId": "placeNameTypes",
       "groupid": 3,
       "legacyId": "1025",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "terrainPlaceNames",
@@ -666,7 +788,7 @@
       "categoryId": "placeNameTypes",
       "groupid": 3,
       "legacyId": "1026",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "culturePlaceNames",
@@ -679,7 +801,7 @@
       "categoryId": "placeNameTypes",
       "groupid": 3,
       "legacyId": "1027",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "approvedPlaceNames",
@@ -692,7 +814,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1038",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "approvedNamePartPlaceNames",
@@ -705,7 +827,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1039",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "acceptedPlaceNames",
@@ -718,7 +840,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1040",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "internationalPlaceNames",
@@ -731,7 +853,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1041",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "privatePlaceNames",
@@ -744,7 +866,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1042",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "historicalPlaceNames",
@@ -757,7 +879,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1043",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "proposedPlaceNames",
@@ -770,7 +892,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1044",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "unevaluatedPlaceNames",
@@ -783,7 +905,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1045",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "rejectedNamePartPlaceNames",
@@ -796,7 +918,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1046",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "rejectedPlaceNames",
@@ -809,7 +931,7 @@
       "categoryId": "placeNameWritingStatus",
       "groupid": 4,
       "legacyId": "1047",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "caseStatusUntreatedPlaceNames",
@@ -822,7 +944,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1048",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "notToBeProcessedPlaceNames",
@@ -835,7 +957,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1049",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "approvedByAuthorityPlaceNames",
@@ -848,7 +970,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1050",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "collectiveDecisionPlaceNames",
@@ -861,7 +983,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1051",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "collectiveDecisionWithdrawnPlaceNames",
@@ -874,7 +996,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1052",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "caseRaisedPlaceNames",
@@ -887,7 +1009,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1053",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "caseDecisionPlaceNames",
@@ -900,7 +1022,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1054",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "decisionPostponedPlaceNames",
@@ -913,7 +1035,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1055",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "appealDecisionNotWithdrawnPlaceNames",
@@ -926,7 +1048,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1056",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "appealDecisionWithdrawnPlaceNames",
@@ -939,7 +1061,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1057",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "appealDecisionPostponedPlaceNames",
@@ -952,7 +1074,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1058",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "simplifiedDecisionPlaceNames",
@@ -965,7 +1087,7 @@
       "categoryId": "placeNameCaseStatus",
       "groupid": 2,
       "legacyId": "1059",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "decision24MonthsPlaceNames",
@@ -978,7 +1100,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1028",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "decision12MonthsPlaceNames",
@@ -991,7 +1113,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1029",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "decision6MonthsPlaceNames",
@@ -1004,7 +1126,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1030",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "decision3MonthsPlaceNames",
@@ -1017,7 +1139,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1031",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "decision1MonthPlaceNames",
@@ -1030,7 +1152,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1032",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "collectiveDecision24MonthsPlaceNames",
@@ -1043,7 +1165,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1033",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "collectiveDecision12MonthsPlaceNames",
@@ -1056,7 +1178,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1034",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "collectiveDecision6MonthsPlaceNames",
@@ -1069,7 +1191,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1035",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "collectiveDecision3MonthsPlaceNames",
@@ -1082,7 +1204,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1036",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "collectiveDecision1MonthPlaceNames",
@@ -1095,7 +1217,7 @@
       "categoryId": "placeNameRecentDecisions",
       "groupid": 10,
       "legacyId": "1037",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "historicalMapFirstEdition",
@@ -1149,7 +1271,7 @@
       "categoryId": "baseStations",
       "groupid": 14,
       "legacyId": "1016",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "swedishFinnishBaseStations",
@@ -1162,7 +1284,7 @@
       "categoryId": "baseStations",
       "groupid": 14,
       "legacyId": "1017",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "cadastreAddresses",
@@ -1214,7 +1336,7 @@
       "categoryId": "benchmarks",
       "groupid": 13,
       "legacyId": "1011",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "landNetPoints",
@@ -1227,7 +1349,7 @@
       "categoryId": "benchmarks",
       "groupid": 13,
       "legacyId": "1012",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "primaryNetPoints",
@@ -1240,7 +1362,7 @@
       "categoryId": "benchmarks",
       "groupid": 13,
       "legacyId": "1013",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "triangulationPoints",
@@ -1253,7 +1375,7 @@
       "categoryId": "benchmarks",
       "groupid": 13,
       "legacyId": "1014",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "nrlArea",
@@ -1266,7 +1388,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1011",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "nrlLine",
@@ -1279,7 +1401,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1012",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "nrlAirspan",
@@ -1292,7 +1414,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1013",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "nrlMast",
@@ -1305,7 +1427,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1014",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "nrlPoint",
@@ -1318,7 +1440,7 @@
       "categoryId": "nrl",
       "groupid": 17,
       "legacyId": "1015",
-      "queryable": false
+      "queryable": true
     },
     {
       "id": "6_t_parkeringsomrade_r",
