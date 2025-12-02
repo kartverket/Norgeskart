@@ -34,7 +34,7 @@ export const MapControlButtons = () => {
   };
 
   return (
-    <VStack bg="#FFFF" borderRadius="xl" alignItems="center" w={'48px'}>
+    <VStack bg="#FFFF" borderRadius={'xl'} alignItems="center" w={'48px'}>
       {/* Zoom */}
       <IconButton
         variant="ghost"
