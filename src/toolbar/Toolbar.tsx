@@ -58,16 +58,7 @@ export const Toolbar = () => {
   }, [map]);
 
   return (
-    <Flex
-      width="100%"
-      height={10}
-      bg="#156630"
-      bottom="0"
-      left={0}
-      position="absolute"
-      p={2}
-      zIndex={10}
-    >
+    <Flex width="100%" height={10} bg="#156630" w={'100%'} p={2} zIndex={10}>
       <Flex alignItems="center" flex="1">
         <Tooltip content={t('map.settings.compass.enabled')}>
           <IconButton
