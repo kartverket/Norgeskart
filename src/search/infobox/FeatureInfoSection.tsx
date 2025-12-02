@@ -199,16 +199,19 @@ const PropertyItem = ({
   if (name === '_html' && typeof value === 'string') {
     return (
       <Box
-        dangerouslySetInnerHTML={{ __html: value }}
-        fontSize="sm"
-        css={{
-          '& table': { width: '100%', borderCollapse: 'collapse' },
-          '& td, & th': {
-            padding: '4px 8px',
-            borderBottom: '1px solid #e2e8f0',
-          },
-        }}
-      />
+        p={3}
+        bg="yellow.50"
+        borderRadius="md"
+        borderLeft="4px solid"
+        borderColor="yellow.400"
+      >
+        <Text fontSize="sm" color="gray.700" fontWeight="medium" mb={1}>
+          HTML-respons mottatt
+        </Text>
+        <Text fontSize="xs" color="gray.600">
+          Dette laget returnerer ikke strukturert data.
+        </Text>
+      </Box>
     );
   }
 
