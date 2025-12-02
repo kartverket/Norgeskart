@@ -1,7 +1,6 @@
 import { atom } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls } from 'ol/control/defaults.js';
-import ScaleLine from 'ol/control/ScaleLine.js';
 import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 
@@ -121,9 +120,9 @@ export const mapAtom = atom<Map>(() => {
   const intialView = getInitialMapView();
 
   map.setView(intialView);
-  map.addControl(
-    new ScaleLine({ minWidth: 160, bar: true, text: true, units: 'metric' }),
-  );
+  // map.addControl(
+  //   new ScaleLine({ minWidth: 160, bar: true, text: true, units: 'metric' }),
+  // );
   map.on('moveend', (e) => {
     const view = e.map.getView();
     const center = view.getCenter();

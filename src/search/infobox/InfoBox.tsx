@@ -44,6 +44,7 @@ export const InfoBox = () => {
       p={4}
       borderRadius={'16px'}
       bg="white"
+      pointerEvents={'all'}
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading size={'lg'}>{selectedResult.name}</Heading>

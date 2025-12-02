@@ -32,7 +32,13 @@ export const MapToolButtons = () => {
   };
 
   return (
-    <HStack align="flex-end">
+    <HStack
+      align="flex-end"
+      bg={'white'}
+      borderRadius="lg"
+      p={2}
+      pointerEvents={'all'}
+    >
       <MapButton
         onClick={() => {
           posthog.capture('map_draw_button_clicked');

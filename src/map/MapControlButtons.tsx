@@ -1,4 +1,4 @@
-import { Box, IconButton } from '@kvib/react';
+import { Box, IconButton, VStack } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useIsMobileScreen } from '../shared/hooks';
 import { mapOrientationDegreesAtom } from './atoms';
@@ -34,20 +34,7 @@ export const MapControlButtons = () => {
   };
 
   return (
-    <Box
-      className="custom-controls"
-      position="absolute"
-      bottom="35px"
-      right="16px"
-      zIndex={10}
-      bg="#FFFF"
-      borderRadius="xl"
-      px={3}
-      py={2}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-    >
+    <VStack bg="#FFFF" borderRadius="xl" alignItems="center" w={'48px'}>
       {/* Zoom */}
       <IconButton
         variant="ghost"
@@ -118,6 +105,6 @@ export const MapControlButtons = () => {
         aria-label="Fullskjerm"
         onClick={handleFullScreenClick}
       />
-    </Box>
+    </VStack>
   );
 };

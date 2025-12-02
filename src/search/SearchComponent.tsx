@@ -151,7 +151,7 @@ export const SearchComponent = () => {
   }, [mapClickHandler, map]);
 
   return (
-    <Box position={'absolute'} top={'8px'} left={'8px'} width={'400px'}>
+    <Box width={'400px'} pointerEvents={'all'}>
       <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>
         <Box position="relative" width="100%">
           <Box position="relative" width="100%">
