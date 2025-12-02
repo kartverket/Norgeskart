@@ -3,3 +3,8 @@
     border: none;
   }
 }
+
+.toolbar-select .kvib-select__indicator svg {
+  stroke: white;
+  fill: white;
+}

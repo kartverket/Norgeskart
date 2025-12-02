@@ -23,8 +23,9 @@ export const ProjectionSettings = () => {
         default={projectionId || INITIAL_PROJECTION}
         textColor="white"
         hideBorders
+        isToolbar
       />
-      <ProjectionPopover />
+      <ProjectionPopover isToolbar />
     </HStack>
   );
 };

@@ -16,7 +16,9 @@ export interface ProjectionSelectorProps {
   label?: string;
   textColor: 'white' | 'black';
   hideBorders?: boolean;
+  isToolbar?: boolean;
 }
+
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
   const [selectedProjection, setSelectedProjection] =
@@ -40,6 +42,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       value={[selectedProjection]}
     >
       <SelectTrigger
+        className={props.isToolbar ? 'toolbar-select' : ''}
         border={'none'}
         id={props.hideBorders ? 'crs-select-trigger' : ''}
       >
