@@ -237,7 +237,7 @@ const PropertyItem = ({
             color="blue.600"
             textDecoration="underline"
           >
-            Åpne lenke
+            {value}
           </Link>
         </Flex>
       );
