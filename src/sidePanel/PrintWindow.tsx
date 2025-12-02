@@ -20,11 +20,7 @@ import { printMap } from '../shared/utils/printMap';
 import { useDraggableOverlay } from '../shared/utils/useDraggableOverlay';
 import { useGenerateMapPdf } from '../shared/utils/useGenerateMapPdf';
 
-interface PrintWindowProps {
-  onClose: () => void;
-}
-
-export default function PrintWindow({ onClose }: PrintWindowProps) {
+export default function PrintWindow() {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
 
@@ -32,18 +28,26 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
   const [layout, setLayout] = useState<PrintLayout>('A4 Portrait');
 
-  const { aWidthPx, aHeightPx, overlayWidth, overlayHeight } = getDpiMetrics(layout);
+  const { aWidthPx, aHeightPx, overlayWidth, overlayHeight } =
+    getDpiMetrics(layout);
+
   const { generate, loading } = useGenerateMapPdf(layout);
 
-  const LAYOUTS: PrintLayout[] = ['A4 Portrait', 'A4 Landscape', 'A3 Portrait', 'A3 Landscape'];
+  const LAYOUTS: PrintLayout[] = [
+    'A4 Portrait',
+    'A4 Landscape',
+    'A3 Portrait',
+    'A3 Landscape',
+  ];
 
   const layoutCollection = createListCollection({
     items: LAYOUTS.map((l) => ({ key: l, label: l, value: l })),
   });
 
-  // Create draggable overlay on the map
+  // Create overlay
   useEffect(() => {
     if (!map) return;
+
     const mapContainer = map.getViewport();
     const overlay = document.createElement('div');
     overlayRef.current = overlay;
@@ -58,30 +62,32 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
     overlay.style.width = `${overlayWidth}px`;
     overlay.style.height = `${overlayHeight}px`;
 
-    const mapRect = mapContainer.getBoundingClientRect();
+    const rect = mapContainer.getBoundingClientRect();
     setOverlayPosition({
-      x: mapRect.width / 2 - overlayWidth / 2,
-      y: mapRect.height / 2 - overlayHeight / 2,
+      x: rect.width / 2 - overlayWidth / 2,
+      y: rect.height / 2 - overlayHeight / 2,
     });
 
     mapContainer.appendChild(overlay);
+
     return () => overlay.remove();
   }, [map, overlayWidth, overlayHeight]);
 
   // Resize overlay when layout changes
   useEffect(() => {
     if (!overlayRef.current || !map) return;
+
     overlayRef.current.style.width = `${overlayWidth}px`;
     overlayRef.current.style.height = `${overlayHeight}px`;
 
-    const mapRect = map.getViewport().getBoundingClientRect();
+    const rect = map.getViewport().getBoundingClientRect();
     setOverlayPosition({
-      x: mapRect.width / 2 - overlayWidth / 2,
-      y: mapRect.height / 2 - overlayHeight / 2,
+      x: rect.width / 2 - overlayWidth / 2,
+      y: rect.height / 2 - overlayHeight / 2,
     });
   }, [layout, overlayWidth, overlayHeight, map]);
 
-  // Update overlay position in DOM
+  // Reflect overlay position
   useEffect(() => {
     if (overlayRef.current) {
       overlayRef.current.style.top = `${overlayPosition.y}px`;
@@ -89,11 +95,17 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
     }
   }, [overlayPosition]);
 
-  // Enable dragging
-  useDraggableOverlay({ map, overlayRef, overlayWidth, overlayHeight, setOverlayPosition });
+  useDraggableOverlay({
+    map,
+    overlayRef,
+    overlayWidth,
+    overlayHeight,
+    setOverlayPosition,
+  });
 
   const handleQuickPrint = () => {
     if (!map || !overlayRef.current) return;
+
     printMap({
       map,
       overlayRef,
@@ -106,10 +118,8 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
 
   return (
     <Flex direction="column" gap={3} p={3}>
-      {/* Only content, no title or close button */}
       <Text fontSize="sm">{t('printMap.description')}</Text>
 
-      {/* Layout selector */}
       <SelectRoot collection={layoutCollection} value={[layout]}>
         <SelectLabel>{t('printMap.selectPrintLayout')}</SelectLabel>
         <SelectTrigger>
@@ -124,7 +134,6 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
         </SelectContent>
       </SelectRoot>
 
-      {/* Loading spinner */}
       {loading && (
         <Flex justify="center" align="center" gap={2}>
           <Spinner />
@@ -132,12 +141,20 @@ export default function PrintWindow({ onClose }: PrintWindowProps) {
         </Flex>
       )}
 
-      {/* Action buttons */}
       <Flex justify="flex-end" gap={3}>
-        <Button onClick={handleQuickPrint} colorPalette="green" disabled={loading}>
+        <Button
+          onClick={handleQuickPrint}
+          colorPalette="green"
+          disabled={loading}
+        >
           {t('printMap.quickPrint')}
         </Button>
-        <Button onClick={() => generate(map, overlayRef)} colorPalette="green" disabled={loading}>
+
+        <Button
+          onClick={() => generate(map, overlayRef)}
+          colorPalette="green"
+          disabled={loading}
+        >
           {t('printMap.downloadPdf')}
         </Button>
       </Flex>
