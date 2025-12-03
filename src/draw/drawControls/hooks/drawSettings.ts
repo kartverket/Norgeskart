@@ -111,51 +111,6 @@ const useDrawSettings = () => {
     setDrawAtomEnabled(enable);
   };
 
-  const addIconOverlayToPointFeature = (feature: Feature, icon: PointIcon) => {
-    const point = feature.getGeometry();
-    if (!point || !(point instanceof Point)) {
-      return;
-    }
-    const featureId = feature.getId();
-    const pointCoordinates = point.getCoordinates();
-    const elm = document.createElement('i');
-    elm.classList.add('material-symbols-rounded');
-    elm.style.color = icon.color;
-    elm.style.fontSize = `${icon.size * 10}px`;
-    elm.style.userSelect = 'none';
-    elm.style.pointerEvents = 'none';
-    elm.textContent = icon.icon;
-    const overlayId = `${ICON_OVERLAY_PREFIX}${featureId}`;
-
-    const overlay = new Overlay({
-      element: elm,
-      position: pointCoordinates,
-      positioning: 'center-center',
-      stopEvent: false,
-      id: overlayId,
-    });
-    map.addOverlay(overlay);
-    point.setProperties({
-      overlayIcon: icon,
-    });
-    feature.on('change', () => {
-      const geom = feature.getGeometry();
-      if (geom && geom instanceof Point) {
-        const coords = geom.getCoordinates();
-        overlay.setPosition(coords);
-      }
-    });
-    feature.setStyle(
-      new Style({
-        image: new CircleStyle({
-          radius: icon.size * 5, //To make the overlay area easier to click on
-          fill: new Fill({ color: 'transparent' }),
-          stroke: new Stroke({ color: 'transparent', width: 0 }),
-        }),
-      }),
-    );
-  };
-
   const setDrawType = (type: DrawType) => {
     const draw = getDrawInteraction();
     const select = getSelectInteraction();
@@ -601,3 +556,57 @@ const useDrawSettings = () => {
 };
 
 export { useDrawSettings };
+
+export const addIconOverlayToPointFeature = (
+  feature: Feature,
+  icon: PointIcon,
+) => {
+  const point = feature.getGeometry();
+  if (!point || !(point instanceof Point)) {
+    return;
+  }
+  const map = getDefaultStore().get(mapAtom);
+  const featureId = feature.getId();
+  const pointCoordinates = point.getCoordinates();
+  const elm = document.createElement('i');
+  elm.classList.add('material-symbols-rounded');
+  elm.style.color = icon.color;
+  elm.style.fontSize = `${icon.size * 10}px`;
+  elm.style.userSelect = 'none';
+  elm.style.pointerEvents = 'none';
+  elm.textContent = icon.icon;
+  const overlayId = `${ICON_OVERLAY_PREFIX}${featureId}`;
+  const existingOverlay = map.getOverlayById(overlayId);
+  if (existingOverlay) {
+    existingOverlay.getElement()?.remove();
+    map.removeOverlay(existingOverlay);
+  }
+
+  const overlay = new Overlay({
+    element: elm,
+    position: pointCoordinates,
+    positioning: 'center-center',
+    stopEvent: false,
+    id: overlayId,
+  });
+  map.addOverlay(overlay);
+  point.setProperties({
+    overlayIcon: icon,
+  });
+  feature.on('change', () => {
+    const geom = feature.getGeometry();
+    if (geom && geom instanceof Point) {
+      const coords = geom.getCoordinates();
+      overlay.setPosition(coords);
+    }
+  });
+  feature.setStyle(
+    new Style({
+      image: new CircleStyle({
+        radius: icon.size * 5, //To make the overlay area easier to click on
+        fill: new Fill({ color: 'transparent' }),
+        stroke: new Stroke({ color: 'transparent', width: 0 }),
+      }),
+    }),
+  );
+};
