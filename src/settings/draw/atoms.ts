@@ -44,7 +44,7 @@ export const drawTypeStateAtom = atom<DrawType | null>(null);
 export const drawEnabledAtom = atom<boolean>(false);
 export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
-export const pointIconAtom = atom<MaterialSymbol | null>(null);
+export const pointIconAtom = atom<MaterialSymbol>('circle');
 
 export const textInputAtom = atom('');
 

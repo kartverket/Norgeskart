@@ -24,6 +24,9 @@ const stylesAreEqual = (style1: Style, style2: Style): boolean => {
   if (style1 === style2) {
     return true;
   }
+  if (style1 == null || style2 == null) {
+    return false;
+  }
   // Compare stroke
   const stroke1 = style1.getStroke();
   const stroke2 = style2.getStroke();

@@ -63,7 +63,6 @@ export const editPrimaryColorEffect = atomEffect((get) => {
           .getOverlays()
           .getArray()
           .find((ov) => ov.getId() === prefixedId);
-        console.log(overlay);
         if (overlay) {
           const element = overlay.getElement();
           if (element) {

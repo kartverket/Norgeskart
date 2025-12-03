@@ -10,11 +10,9 @@ export const Selected = () => {
   );
   const { getSelectInteraction } = useMapInteractions();
   const getSelectedFeatures = () => {
-    console.log('sup');
     const interactions = getSelectInteraction();
     if (interactions) {
       const features = interactions.getFeatures().getArray();
-      console.log(features);
       setSelectedFeatures([...features]);
     } else {
       setSelectedFeatures([]);
