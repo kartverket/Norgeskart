@@ -17,7 +17,11 @@ import { Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
 import { Style } from 'ol/style';
 import { useState } from 'react';
-import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
+import {
+  getFeatureIcon,
+  getStyleForStorage,
+  saveFeatures,
+} from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
 import { canRedoAtom, canUndoAtom } from '../settings/draw/drawActions/atoms';
 import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
@@ -71,7 +75,7 @@ export const DrawControlFooter = () => {
           mapProjection,
         );
         const featureStyle = feature.getStyle() as Style | null;
-        const icon = feature.get('overlayIcon') || null;
+        const icon = getFeatureIcon(feature);
         const styleForStorage = getStyleForStorage(featureStyle);
         return {
           type: 'Feature',
@@ -81,7 +85,7 @@ export const DrawControlFooter = () => {
           },
           properties: {
             style: styleForStorage,
-            overlayIcon: icon,
+            overlayIcon: icon || undefined,
           },
         } as Feature;
       })

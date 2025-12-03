@@ -4,10 +4,11 @@ import { Feature } from 'ol';
 import { Color } from 'ol/color';
 import { ColorLike, PatternDescriptor } from 'ol/colorlike';
 import { GML } from 'ol/format';
-import { Polygon } from 'ol/geom';
+import { Geometry, Polygon } from 'ol/geom';
 import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import RegularShape from 'ol/style/RegularShape';
+import { PointIcon } from '../draw/drawControls/hooks/drawSettings';
 import { getEnv } from '../env';
 import { mapAtom } from '../map/atoms';
 
@@ -122,6 +123,23 @@ export const getPropertyGeometry = async (
       feature.setStyle(style);
       return feature;
     });
+};
+
+export const getFeatureIcon = (
+  feature: Feature<Geometry>,
+): PointIcon | null => {
+  let icon = null;
+  const props = feature.getProperties();
+  if ('overlayIcon' in props) {
+    icon = props['overlayIcon'] as PointIcon;
+  } else {
+    try {
+      icon = feature.getGeometry()?.getProperties()['overlayIcon'] as PointIcon;
+    } catch {
+      icon = null;
+    }
+  }
+  return icon;
 };
 
 export const getStyleForStorage = (

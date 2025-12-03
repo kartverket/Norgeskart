@@ -28,6 +28,7 @@ import {
   textStyleReadAtom,
 } from '../../../settings/draw/atoms';
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
+import { removeUrlParameter } from '../../../shared/utils/urlUtils';
 import {
   addInteractiveMesurementOverlayToFeature,
   enableFeatureMeasurmentOverlay,
@@ -56,6 +57,12 @@ export type FeatureMoveDetail = {
   featureId: string;
   geometryBeforeMove: Geometry;
   geometryAfterMove: Geometry;
+};
+
+export type PointIcon = {
+  icon: MaterialSymbol;
+  color: string;
+  size: number;
 };
 
 export type DrawType =
@@ -137,7 +144,11 @@ const useDrawSettings = () => {
     });
     map.addOverlay(overlay);
     point.setProperties({
-      overlayIcon: icon,
+      overlayIcon: {
+        icon: icon,
+        color: color,
+        size: size,
+      } as PointIcon,
     });
     feature.on('change', () => {
       const geom = feature.getGeometry();
@@ -149,7 +160,7 @@ const useDrawSettings = () => {
     feature.setStyle(
       new Style({
         image: new CircleStyle({
-          radius: size * 5,
+          radius: size * 5, //To make the overlay area easier to click on
           fill: new Fill({ color: 'transparent' }),
           stroke: new Stroke({ color: 'transparent', width: 0 }),
         }),
@@ -549,6 +560,7 @@ const useDrawSettings = () => {
       }
     });
     resetActions();
+    removeUrlParameter('drawing');
   };
 
   const abortDrawing = () => {
