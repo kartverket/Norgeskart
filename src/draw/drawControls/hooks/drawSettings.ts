@@ -508,22 +508,27 @@ const useDrawSettings = () => {
     });
   };
 
-  const clearDrawing = () => {
-    const drawLayer = getDrawLayer();
-    const source = drawLayer.getSource() as VectorSource;
-    source.clear();
+  const clearDrawing = async () => {
     setShowMeasurements(false);
-    map.getOverlays().forEach((overlay) => {
+    const overlays = [...map.getOverlays().getArray()];
+    overlays.forEach((overlay) => {
+      if (overlay == null) {
+        return;
+      }
       const overlayId = overlay.getId();
       if (
         typeof overlayId === 'string' &&
-        (overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX) ||
-          overlayId.startsWith(INTERACTIVE_OVERLAY_PREFIX) ||
-          overlayId.startsWith(ICON_OVERLAY_PREFIX))
+        (overlayId.startsWith(ICON_OVERLAY_PREFIX) ||
+          overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX) ||
+          overlayId.startsWith(INTERACTIVE_OVERLAY_PREFIX))
       ) {
+        overlay.getElement()?.remove();
         map.removeOverlay(overlay);
       }
     });
+    const drawLayer = getDrawLayer();
+    const source = drawLayer.getSource() as VectorSource;
+    source.clear();
     resetActions();
     removeUrlParameter('drawing');
   };
