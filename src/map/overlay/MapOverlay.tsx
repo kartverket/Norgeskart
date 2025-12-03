@@ -39,6 +39,7 @@ export const MapOverlay = () => {
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
+    
     <ErrorBoundary
       fallback={undefined}
       onError={() => {
