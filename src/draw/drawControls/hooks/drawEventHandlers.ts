@@ -7,7 +7,6 @@ import { ModifyEvent } from 'ol/interaction/Modify';
 import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
-import { getFeatureIcon } from '../../../api/nkApiClient';
 import { mapAtom } from '../../../map/atoms';
 import {
   addInteractiveMesurementOverlayToFeature,
@@ -51,6 +50,23 @@ export const getFeatureOverlayIconProperties = (
   const fontSize =
     (element.style.fontSize.replace('px', '') as unknown as number) / 10; //This is bad
   return { icon: iconChar, color: color, size: fontSize };
+};
+
+export const getFeatureIcon = (
+  feature: Feature<Geometry>,
+): PointIcon | null => {
+  let icon = null;
+  const props = feature.getProperties();
+  if ('overlayIcon' in props) {
+    icon = props['overlayIcon'] as PointIcon;
+  } else {
+    try {
+      icon = feature.getGeometry()?.getProperties()['overlayIcon'] as PointIcon;
+    } catch {
+      icon = null;
+    }
+  }
+  return icon;
 };
 
 //Create a function to compare two styles
@@ -164,6 +180,18 @@ const handleSelected = (selected: Feature<Geometry>[]) => {
     if (geometry && geometry.getType() === 'Point') {
       const icon = getFeatureIcon(f);
       f.set('iconPreSelect', icon);
+      const featureId = f.getId();
+      if (!featureId) {
+        return;
+      }
+      const map = getDefaultStore().get(mapAtom);
+      const overlay = map.getOverlayById(`${ICON_OVERLAY_PREFIX}${featureId}`);
+      if (overlay) {
+        const element = overlay.getElement();
+        if (element) {
+          element.style.border = '2px solid black';
+        }
+      }
       return;
     }
     if (style && style instanceof Style) {
@@ -207,6 +235,15 @@ const handleUpdateStyle = (features: Feature<Geometry>[]) => {
         oldIcon: iconPreSelect || undefined,
         newIcon: getFeatureOverlayIconProperties(feature) || undefined,
       });
+
+      const map = getDefaultStore().get(mapAtom);
+      const overlay = map.getOverlayById(`${ICON_OVERLAY_PREFIX}${featureId}`);
+      if (overlay) {
+        const element = overlay.getElement();
+        if (element) {
+          element.style.border = 'none';
+        }
+      }
 
       if (!stylesAreEqual(style, featureStylePreSelect)) {
         anyStyleChanged = true;

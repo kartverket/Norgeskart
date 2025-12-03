@@ -17,15 +17,12 @@ import { Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
 import { Style } from 'ol/style';
 import { useState } from 'react';
-import {
-  getFeatureIcon,
-  getStyleForStorage,
-  saveFeatures,
-} from '../api/nkApiClient';
+import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
 import { canRedoAtom, canUndoAtom } from '../settings/draw/drawActions/atoms';
 import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
+import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
