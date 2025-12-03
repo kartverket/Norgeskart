@@ -1,17 +1,21 @@
 import {
   Box,
   Button,
-  Heading,
+  Flex,
   Image,
   SimpleGrid,
   Text,
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtomValue } from 'jotai';
-import { useState } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom } from '../../map/atoms';
+import {
+  activeBackgroundLayerAtom,
+  getBackgroundLayerImageName,
+  mapAtom,
+} from '../../map/atoms';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
@@ -65,18 +69,13 @@ const LayerCard = ({
     borderRadius="lg"
     display="flex"
     alignItems="center"
-    width="120px"
-    height="auto"
-    minHeight="120px"
+    width="135px"
+    justifyContent="center"
+    maxHeight="116px"
+    padding={14}
   >
     <VStack>
-      <Box
-        width="72px"
-        height="72px"
-        borderRadius="md"
-        overflow="hidden"
-        borderColor="gray.100"
-      >
+      <Box width="96px" height="76px" borderRadius="md" overflow="hidden">
         <Image src={thumbnailUrl} alt={label} width="100%" objectFit="cover" />
       </Box>
       <Text fontSize="xs" textAlign="center" lineHeight="short">
@@ -85,20 +84,6 @@ const LayerCard = ({
     </VStack>
   </Button>
 );
-
-const getBackgroundLayerImageName = (
-  layerName: BackgroundLayerName,
-): string => {
-  switch (layerName) {
-    case 'Nibcache_web_mercator_v2':
-    case 'Nibcache_UTM32_EUREF89_v2':
-    case 'Nibcache_UTM33_EUREF89_v2':
-    case 'Nibcache_UTM35_EUREF89_v2':
-      return 'Nibcache_web_mercator_v2';
-    default:
-      return layerName;
-  }
-};
 
 const BackgroundLayerGrid = ({
   layers,
@@ -109,7 +94,7 @@ const BackgroundLayerGrid = ({
   currentLayer: BackgroundLayerName;
   setLayer: (layer: BackgroundLayerName) => void;
 }) => (
-  <SimpleGrid columns={3} gap={1}>
+  <SimpleGrid columns={2} justifyItems="center" gap={3}>
     {layers.map((layer) => (
       <LayerCard
         key={layer.value}
@@ -128,6 +113,7 @@ export const BackgroundLayerSettings = () => {
   const WMTSProviders = useAtomValue(loadableWMTS);
   const map = useAtomValue(mapAtom);
   const posthog = usePostHog();
+  const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
 
   const initialLayer: BackgroundLayerName = (() => {
     const currentBackgroundLayer = map
@@ -148,6 +134,9 @@ export const BackgroundLayerSettings = () => {
 
   const [currentLayer, setCurrentLayer] =
     useState<BackgroundLayerName>(initialLayer);
+  useEffect(() => {
+    setActiveBackgroundLayer(initialLayer);
+  }, [initialLayer, setActiveBackgroundLayer]);
 
   if (WMTSProviders.state !== 'hasData') {
     return null;
@@ -185,18 +174,23 @@ export const BackgroundLayerSettings = () => {
     posthog.capture('map_background_layer_changed', { layerName: layer });
     setBackgroundLayer(layer);
     setCurrentLayer(layer);
+    setActiveBackgroundLayer(layer);
   };
 
   return (
-    <Box>
-      <Heading size="lg" mb={2}>
-        {t('map.settings.layers.background.label')}
-      </Heading>
-      <BackgroundLayerGrid
-        layers={sortedLayers}
-        currentLayer={currentLayer}
-        setLayer={handleSetLayer}
-      />
-    </Box>
+    <Flex flexDir="column" gap={2} p={4}>
+      <Box
+        position="relative"
+        width="100%"
+        backgroundColor="#FFFF"
+        borderRadius={10}
+      >
+        <BackgroundLayerGrid
+          layers={sortedLayers}
+          currentLayer={currentLayer}
+          setLayer={handleSetLayer}
+        />
+      </Box>
+    </Flex>
   );
 };
