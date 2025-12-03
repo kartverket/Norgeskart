@@ -150,32 +150,40 @@ const removeSelectedOutlineToStyle = (style: Style) => {
   style.setStroke(newStroke);
 };
 
-const handleSelect = (e: BaseEvent | Event) => {
+const handleSelection = (e: BaseEvent | Event) => {
   if (e instanceof SelectEvent) {
-    e.deselected.forEach(handleFeatureSetZIndex);
-    handleUpdateStyle(e.deselected);
-    e.selected.forEach((f) => {
-      const style = f.getStyle();
-      const geometry = f.getGeometry();
-      if (geometry && geometry.getType() === 'Point') {
-        const icon = getFeatureIcon(f);
-        f.set('iconPreSelect', icon);
-        return;
-      }
-      if (style && style instanceof Style) {
-        f.set('stylePreSelect', style);
-        const newStyle = style.clone();
-        addSelectedOutlineToStyle(newStyle);
-        f.setStyle(newStyle);
-      }
-    });
+    handleDeselected(e.deselected);
+    handleSelected(e.selected);
   }
+};
+
+const handleSelected = (selected: Feature<Geometry>[]) => {
+  selected.forEach((f) => {
+    const style = f.getStyle();
+    const geometry = f.getGeometry();
+    if (geometry && geometry.getType() === 'Point') {
+      const icon = getFeatureIcon(f);
+      f.set('iconPreSelect', icon);
+      return;
+    }
+    if (style && style instanceof Style) {
+      f.set('stylePreSelect', style);
+      const newStyle = style.clone();
+      addSelectedOutlineToStyle(newStyle);
+      f.setStyle(newStyle);
+    }
+  });
+};
+
+const handleDeselected = (deselected: Feature<Geometry>[]) => {
+  handleUpdateStyle(deselected);
 };
 
 const handleUpdateStyle = (features: Feature<Geometry>[]) => {
   const featureStyleChangeList: StyleChangeDetail[] = [];
   let anyStyleChanged = false;
   features.forEach((feature) => {
+    handleFeatureSetZIndex(feature);
     const style = feature.getStyle();
     if (style && style instanceof Style) {
       removeSelectedOutlineToStyle(style);
@@ -272,6 +280,6 @@ export {
   handleFeatureSelectDone,
   handleModifyEnd,
   handleModifyStart,
-  handleSelect,
+  handleSelection as handleSelect,
   removeSelectedOutlineToStyle,
 };
