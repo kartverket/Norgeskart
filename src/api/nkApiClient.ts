@@ -142,12 +142,6 @@ export const getFeatureIcon = (
   return icon;
 };
 
-export const getFeatureOverlayIconProperties = (
-  feature: Feature<Geometry>,
-): PointIcon | null => {
-  return null;
-};
-
 export const getStyleForStorage = (
   style: Style | null,
 ): StyleForStorage | null => {
