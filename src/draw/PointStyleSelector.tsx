@@ -16,13 +16,20 @@ import { useTranslation } from 'react-i18next';
 import { pointIconAtom } from '../settings/draw/atoms';
 
 const icons: MaterialSymbol[] = [
-  'circle',
-  'skull',
-  'house',
-  'fastfood',
-  'plane_contrails',
-  'flutter_dash',
-  'coffee',
+  'directions_walk',
+  'directions_bike',
+  'kayaking',
+  'sledding',
+  'phishing',
+  'camping',
+  'anchor',
+  'home_pin',
+  'pin_drop',
+  'flag',
+  'local_parking',
+  'beenhere',
+  'local_see',
+  'elevation',
 ];
 
 const iconsCollection = createListCollection({
@@ -38,7 +45,7 @@ export const PointStyleSelector = () => {
 
   return (
     <SelectRoot
-      w={'200px'}
+      w={'80px'}
       collection={iconsCollection}
       value={pointIcon ? [pointIcon] : []}
     >
