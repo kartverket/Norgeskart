@@ -95,6 +95,7 @@ export const useDrawActions = () => {
       }
       if (styleChange.oldIcon != null) {
         addIconOverlayToPointFeature(feature, styleChange.oldIcon || null);
+        return;
       }
       feature.setStyle(styleChange.oldStyle);
     });
@@ -117,6 +118,10 @@ export const useDrawActions = () => {
         console.warn(
           `Feature with ID ${styleChange.featureId} not found in draw source`,
         );
+        return;
+      }
+      if (styleChange.newIcon != null) {
+        addIconOverlayToPointFeature(feature, styleChange.newIcon || null);
         return;
       }
 
