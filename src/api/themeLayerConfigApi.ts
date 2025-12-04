@@ -70,15 +70,40 @@ export interface ThemeLayerConfig {
   layers: ThemeLayerDefinition[];
 }
 
+const CATEGORY_FILES = [
+  'outdoorRecreation',
+  //'placeNames',
+  'facts',
+  'accessibility',
+  'fastmerker',
+  //'nrl',
+  'dekning',
+];
+
 const themeLayerConfigAtom = atom<Promise<ThemeLayerConfig>>(async () => {
-  const response = await fetch('/config/themeLayers.json');
-  if (!response.ok) {
-    throw new Error(
-      `Failed to load theme layer config: ${response.statusText}`,
-    );
+  const configPromises = CATEGORY_FILES.map(async (categoryName) => {
+    const response = await fetch(`/config/categories/${categoryName}.json`);
+    if (!response.ok) {
+      throw new Error(
+        `Failed to load category config ${categoryName}: ${response.statusText}`,
+      );
+    }
+    return response.json() as Promise<ThemeLayerConfig>;
+  });
+
+  const configs = await Promise.all(configPromises);
+
+  const mergedConfig: ThemeLayerConfig = {
+    categories: [],
+    layers: [],
+  };
+
+  for (const config of configs) {
+    mergedConfig.categories.push(...config.categories);
+    mergedConfig.layers.push(...config.layers);
   }
-  const config: ThemeLayerConfig = await response.json();
-  return config;
+
+  return mergedConfig;
 });
 
 export const themeLayerConfigLoadableAtom = loadable(themeLayerConfigAtom);
