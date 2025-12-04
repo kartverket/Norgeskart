@@ -13,7 +13,7 @@ on:
         required: true
         default: 'main'
         type: string
-                
+
 env:
   image_registry: ghcr.io
 
@@ -31,13 +31,13 @@ jobs:
     steps:
       - name: 'Checkout code'
         uses: actions/checkout@v6
-        with: 
+        with:
           ref: ${{ github.event.inputs.targetBranch }}
-          
+
       - name: Get target branch sanatized name
         id: get_sanatized_name
         run: echo "branchname=$(git branch --show-current | sed 's/[^a-z0-9._-]/-/g' | sed 's/^-*//;s/-*$//' | sed 's/-\{2,\}/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-15)" >> $GITHUB_OUTPUT
-      
+
       - name: Get commit sha
         id: get_sha
         run: echo "sha=$(git rev-parse HEAD | cut -c1-6)" >> $GITHUB_OUTPUT
@@ -45,7 +45,7 @@ jobs:
       - name: 'Setup node.js'
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: 'Install dependencies'
         run: npm install
@@ -128,5 +128,5 @@ jobs:
           git commit -m "$COMMIT_MESSAGE"
           git push
       - name: Add url to  output
-        run:  |
+        run: |
           echo "Trykk her snart https://norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atgcp1-dev.kartverket-intern.cloud" >> $GITHUB_STEP_SUMMARY
