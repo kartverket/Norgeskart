@@ -9,7 +9,6 @@ import {
   CookieConsentDialog,
   LOCALSTORAGE_CONSENT_KEY,
 } from './CookieConsentDialog.tsx';
-import { addGA, removeGA } from './gaScript.ts';
 import './index.css';
 import { Observers } from './Observers.tsx';
 import { projInit } from './projInit.ts';
@@ -19,10 +18,8 @@ projInit();
 const previousCookieConsent = localStorage.getItem(LOCALSTORAGE_CONSENT_KEY);
 if (previousCookieConsent === 'granted') {
   enableCookies();
-  addGA();
 } else {
   disableCookies();
-  removeGA();
 }
 const posthogKey = 'phc_SSu8pWSYaJDpMXVIUGuCKfGaxRnfJEI8ZbhXe4FEsE4';
 createRoot(document.getElementById('root')!).render(
