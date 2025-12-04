@@ -1,9 +1,10 @@
 import { Box, Text } from '@kvib/react';
-import { getDefaultStore, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures } from '../api/nkApiClient.ts';
+import { themeLayerConfigLoadableAtom } from '../api/themeLayerConfigApi.ts';
 import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import {
@@ -11,14 +12,16 @@ import {
   getUrlParameter,
   removeUrlParameter,
   setUrlParameter,
+  transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
 import { mapAtom } from './atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
+  useBackgoundLayers,
 } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
-import { useThemeLayers } from './layers/themeLayers.ts';
+import { mapLegacyThemeLayerId, useThemeLayers } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import {
@@ -32,11 +35,17 @@ export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { setBackgroundLayer } = useMapSettings();
   const { addThemeLayerToMap } = useThemeLayers();
+  const { backgroundLayerState } = useBackgoundLayers();
+  const map = useAtomValue(mapAtom);
+  const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures } = useDrawSettings();
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
+  const hasProcessedUrlRef = useRef(false);
+  const hasLoadedThemeLayersRef = useRef(false);
+  const hasLoadedDrawingRef = useRef(false);
 
   const { setTargetElement } = useMap();
 
@@ -49,32 +58,71 @@ export const MapComponent = () => {
     };
   }, [setTargetElement, mapRef]);
 
-  //Disse use effectene trigges for ofte. Det bør bare trigges en gang ved initiering av kartet.
-  //Flytte flere ting til jotai, og sette initial verdi der og ha en effect? Så de ikke kjører når kartet endrer seg
-
+  /**
+   * Process legacy URL parameters from old norgeskart.no format.
+   *
+   * Legacy format: #!?project=<category>&layers=<id1>,<id2>
+   * Modern format: ?backgroundLayer=<name>&themeLayers=<id1>,<id2>
+   *
+   * Timing is critical:
+   * 1. Hash transition must happen BEFORE processing (enables proper URL operations)
+   * 2. Config must be loaded (needed for legacy ID mapping)
+   * 3. Background layers must be available (needed for layer activation)
+   * 4. Process only once per session (prevents re-running on URL updates)
+   *
+   * The legacy 'layers' param contains both background (1001-1010) and theme (>1010) IDs.
+   * The 'project' param filters which theme layers are valid for the current category.
+   */
   useEffect(() => {
-    const store = getDefaultStore();
-    const map = store.get(mapAtom);
     if (!map) {
       return;
     }
-    const hasBackgroundLayer =
-      map.getAllLayers().find((l) => {
-        return l.get('id')?.startsWith('bg.');
-      }) != null;
 
-    if (hasBackgroundLayer) {
+    if (configLoadable.state === 'hasError') {
+      hasProcessedUrlRef.current = true;
       return;
     }
-    // Check both new 'backgroundLayer' and legacy 'layers' parameter
-    let layerNameFromUrl = getUrlParameter('backgroundLayer');
-    const legacyLayerParam = getUrlParameter('layers');
 
-    if (!layerNameFromUrl && legacyLayerParam) {
-      layerNameFromUrl = legacyLayerParam.split(',')[0]; // Take only the first one as the background layer, @TODO: fix later theme layers
+    if (configLoadable.state === 'loading') {
+      return;
     }
 
-    // Support legacy numeric IDs from old norgeskart.no
+    if (backgroundLayerState !== 'hasData') {
+      return;
+    }
+
+    if (hasProcessedUrlRef.current) {
+      return;
+    }
+
+    transitionHashToQuery();
+
+    let layerNameFromUrl = getUrlParameter('backgroundLayer');
+    const legacyLayerParam = getUrlParameter('layers');
+    const projectParam = getUrlParameter('project') ?? undefined;
+    let legacyThemeLayerIds: string[] = [];
+
+    if (legacyLayerParam) {
+      const layerIds = legacyLayerParam
+        .split(',')
+        .map((s) => s.trim())
+        .filter((id) => id.length > 0);
+
+      const backgroundLayerId = layerIds.find(
+        (id) => mapLegacyBackgroundLayerId(id) !== null,
+      );
+
+      const themeLayerIds = layerIds.filter(
+        (id) => id !== backgroundLayerId && parseInt(id, 10) > 1010,
+      );
+
+      if (backgroundLayerId) {
+        layerNameFromUrl = backgroundLayerId;
+      }
+
+      legacyThemeLayerIds = themeLayerIds;
+    }
+
     if (layerNameFromUrl) {
       const legacyLayerName = mapLegacyBackgroundLayerId(layerNameFromUrl);
       if (legacyLayerName) {
@@ -85,19 +133,45 @@ export const MapComponent = () => {
     const finalLayerName = (layerNameFromUrl ||
       DEFAULT_BACKGROUND_LAYER) as BackgroundLayerName;
 
-    // If we used the legacy 'layers' parameter, remove it and set the new 'backgroundLayer' parameter
     if (legacyLayerParam) {
       removeUrlParameter('layers');
+      removeUrlParameter('project');
       setUrlParameter('backgroundLayer', finalLayerName);
+
+      const currentThemeLayers = getListUrlParameter('themeLayers') || [];
+      const newThemeLayers = [...currentThemeLayers];
+
+      legacyThemeLayerIds.forEach((legacyId) => {
+        const modernId = mapLegacyThemeLayerId(
+          legacyId,
+          configLoadable,
+          projectParam,
+        );
+        if (modernId && !newThemeLayers.includes(modernId)) {
+          newThemeLayers.push(modernId);
+        }
+      });
+
+      if (newThemeLayers.length > currentThemeLayers.length) {
+        setUrlParameter('themeLayers', newThemeLayers.join(','));
+      }
     }
 
     setBackgroundLayer(finalLayerName);
-  }, [setBackgroundLayer]);
+    hasProcessedUrlRef.current = true;
+  }, [
+    setBackgroundLayer,
+    map,
+    configLoadable,
+    backgroundLayerState,
+    addThemeLayerToMap,
+  ]);
 
   useEffect(() => {
-    const store = getDefaultStore();
-    const map = store.get(mapAtom);
     if (!map) {
+      return;
+    }
+    if (hasLoadedThemeLayersRef.current) {
       return;
     }
     const themeLayers = getListUrlParameter('themeLayers');
@@ -107,14 +181,19 @@ export const MapComponent = () => {
     themeLayers.forEach((layerName) => {
       addThemeLayerToMap(layerName as ThemeLayerName);
     });
-  }, [addThemeLayerToMap]);
+    hasLoadedThemeLayersRef.current = true;
+  }, [map, addThemeLayerToMap]);
 
   useEffect(() => {
+    if (hasLoadedDrawingRef.current) {
+      return;
+    }
     const asyncEffect = async () => {
       const drawingId = getUrlParameter('drawing');
       if (drawingId) {
         const features = await getFeatures(drawingId);
         setDrawLayerFeatures(features, 'EPSG:4326');
+        hasLoadedDrawingRef.current = true;
       }
     };
     asyncEffect();

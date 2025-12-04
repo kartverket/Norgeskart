@@ -1,6 +1,7 @@
 import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
+import { ParsedCoordinate } from '../shared/utils/coordinateParser';
 import {
   getUrlParameter,
   removeUrlParameter,
@@ -152,7 +153,38 @@ export const allSearchResultsAtom = atom((get) => {
   return searchResultsMapper(placeNames, roads, addresses, properties);
 });
 
-export const selectedResultAtom = atom<SearchResult | null>(null);
+const getInitialSelectedResult = (): SearchResult | null => {
+  const lon = getUrlParameter('lon');
+  const lat = getUrlParameter('lat');
+  const projection = getUrlParameter('projection') || 'EPSG:25833';
+
+  if (lon != null && lat != null) {
+    const parsedLon = parseFloat(lon);
+    const parsedLat = parseFloat(lat);
+    if (!Number.isNaN(parsedLon) && !Number.isNaN(parsedLat)) {
+      const parsedCoordinate: ParsedCoordinate = {
+        lat: parsedLon,
+        lon: parsedLat,
+        projection: projection as ProjectionIdentifier,
+        formattedString: `${parsedLon.toFixed(2)}, ${parsedLat.toFixed(2)} @ ${projection.split(':')[1]}`,
+        inputFormat: 'utm',
+      };
+
+      return {
+        lon: parsedLon,
+        lat: parsedLat,
+        name: parsedCoordinate.formattedString,
+        type: 'Coordinate',
+        coordinate: parsedCoordinate,
+      };
+    }
+  }
+  return null;
+};
+
+export const selectedResultAtom = atom<SearchResult | null>(
+  getInitialSelectedResult(),
+);
 
 export const useResetSearchResults = () => {
   const setAddressResults = useSetAtom(addressResultsAtom);
