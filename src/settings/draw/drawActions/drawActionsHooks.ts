@@ -3,7 +3,10 @@ import {
   enableFeatureMeasurmentOverlay,
   removeFeatureMeasurementOverlay,
 } from '../../../draw/drawControls/drawUtils';
-import { useDrawSettings } from '../../../draw/drawControls/hooks/drawSettings';
+import {
+  addIconOverlayToPointFeature,
+  useDrawSettings,
+} from '../../../draw/drawControls/hooks/drawSettings';
 import {
   actionOffsetAtom,
   canRedoAtom,
@@ -75,6 +78,7 @@ export const useDrawActions = () => {
       console.warn('Not an edit style action');
       return;
     }
+    console.log(action);
     action.details.forEach((styleChange) => {
       const drawLayer = getDrawLayer();
       const drawSource = drawLayer?.getSource();
@@ -89,7 +93,10 @@ export const useDrawActions = () => {
         );
         return;
       }
-
+      if (styleChange.oldIcon != null) {
+        addIconOverlayToPointFeature(feature, styleChange.oldIcon || null);
+        return;
+      }
       feature.setStyle(styleChange.oldStyle);
     });
   };
@@ -111,6 +118,10 @@ export const useDrawActions = () => {
         console.warn(
           `Feature with ID ${styleChange.featureId} not found in draw source`,
         );
+        return;
+      }
+      if (styleChange.newIcon != null) {
+        addIconOverlayToPointFeature(feature, styleChange.newIcon || null);
         return;
       }
 

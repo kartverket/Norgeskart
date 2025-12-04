@@ -3,10 +3,10 @@ import {
   ColorPickerArea,
   ColorPickerContent,
   ColorPickerControl,
-  ColorPickerInput,
   ColorPickerLabel,
   ColorPickerSliders,
   ColorPickerTrigger,
+  HStack,
   parseColor,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
@@ -20,7 +20,7 @@ export const ColorControls = () => {
   const { primaryLabel, secondaryLabel } = useColorLabels();
 
   return (
-    <>
+    <HStack>
       <SingleColorControl
         label={primaryLabel}
         color={primaryColor}
@@ -34,7 +34,7 @@ export const ColorControls = () => {
           onSetColor={setSecondaryColor}
         />
       )}
-    </>
+    </HStack>
   );
 };
 
@@ -56,7 +56,6 @@ const SingleColorControl = ({
     >
       <ColorPickerLabel>{label}</ColorPickerLabel>
       <ColorPickerControl>
-        <ColorPickerInput />
         <ColorPickerTrigger />
       </ColorPickerControl>
       <ColorPickerContent>

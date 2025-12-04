@@ -16,12 +16,12 @@
     "close": "Close",
     "confrimClear": "Are you sure?",
     "controls": {
-      "colorBackground": "Background color",
-      "colorFill": "Fill color",
-      "colorPoint": "Point color",
-      "colorStroke": "Stroke color",
-      "colorText": "Text color",
-      "pointType": "Point type",
+      "colorBackground": "Background ",
+      "colorFill": "Fill",
+      "colorPoint": "Point",
+      "colorStroke": "Stroke",
+      "colorText": "Text",
+      "pointType": "Select icon",
       "showMeasurements": "Show measurments",
       "tool": {
         "tooltip": {

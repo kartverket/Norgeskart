@@ -1,10 +1,11 @@
+import { MaterialSymbol } from '@kvib/react';
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
-import { Feature } from 'ol';
+import { Feature, Overlay } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
-import { Geometry } from 'ol/geom';
+import { Geometry, Point } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify.js';
 import Select from 'ol/interaction/Select';
@@ -19,12 +20,15 @@ import {
   drawEnabledAtom,
   drawStyleReadAtom,
   drawTypeStateAtom,
-  pointStyleReadAtom,
+  lineWidthAtom,
+  pointIconAtom,
+  primaryColorAtom,
   showMeasurementsAtom,
   textInputAtom,
   textStyleReadAtom,
 } from '../../../settings/draw/atoms';
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
+import { removeUrlParameter } from '../../../shared/utils/urlUtils';
 import {
   addInteractiveMesurementOverlayToFeature,
   enableFeatureMeasurmentOverlay,
@@ -46,12 +50,19 @@ export const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 export const INTERACTIVE_OVERLAY_PREFIX = 'interactive-overlay-';
 export const INTERACTIVE_MEASUREMNT_OVERLAY_ID =
   'interactive-measurement-tooltip';
+export const ICON_OVERLAY_PREFIX = 'icon-overlay-';
 export const MEASUREMNT_ELEMENT_PREFIX = 'measurement-tooltip-';
 
 export type FeatureMoveDetail = {
   featureId: string;
   geometryBeforeMove: Geometry;
   geometryAfterMove: Geometry;
+};
+
+export type PointIcon = {
+  icon: MaterialSymbol;
+  color: string;
+  size: number;
 };
 
 export type DrawType =
@@ -176,15 +187,23 @@ const useDrawSettings = () => {
   };
 
   const drawEnd = (event: BaseEvent | Event) => {
-    const eventFeature = (event as unknown as DrawEvent).feature;
+    const drawEvent = event as DrawEvent;
+    const eventFeature = drawEvent.feature;
     const store = getDefaultStore();
     const drawType = store.get(drawTypeStateAtom);
     const zIndex = getHighestZIndex() + 1;
-
+    const featureId = uuidv4();
+    eventFeature.setId(featureId);
     if (drawType === 'Point') {
-      const style = store.get(pointStyleReadAtom);
-      style.setZIndex(zIndex);
-      eventFeature.setStyle(style);
+      const icon = store.get(pointIconAtom);
+      if (icon) {
+        const pointIcon = {
+          icon: icon,
+          color: store.get(primaryColorAtom),
+          size: store.get(lineWidthAtom),
+        };
+        addIconOverlayToPointFeature(eventFeature, pointIcon);
+      }
     } else {
       const style = store.get(drawStyleReadAtom);
       style.setZIndex(zIndex);
@@ -201,8 +220,6 @@ const useDrawSettings = () => {
       eventFeature.setStyle(style);
     }
 
-    const featureId = uuidv4();
-    eventFeature.setId(featureId);
     eventFeature.set('zIndex', zIndex);
     addDrawAction({
       type: 'CREATE',
@@ -278,6 +295,13 @@ const useDrawSettings = () => {
     return style;
   };
 
+  const getOverlayIconFromProperties = (
+    properties: GeoJsonProperties,
+  ): PointIcon | null => {
+    const iconFromProps = properties?.overlayIcon as PointIcon | null;
+    return iconFromProps;
+  };
+
   const removeDrawnFeatureById = (featureId: string) => {
     const drawLayer = getDrawLayer();
     const drawSource = drawLayer.getSource() as VectorSource | null;
@@ -348,13 +372,21 @@ const useDrawSettings = () => {
         const transformedGeometry = geometryOriginalProjection
           .getGeometry()
           ?.transform(sourceProjection, mapProjection);
-        const featureStyle = getStyleFromProperties(feature.properties); //
+        const featureStyle = getStyleFromProperties(feature.properties);
+        const overlayIcon = getOverlayIconFromProperties(feature.properties);
+
         if (transformedGeometry) {
           const newFeature = new Feature({
             geometry: transformedGeometry,
           });
+          newFeature.setId(uuidv4());
           if (featureStyle) {
             newFeature.setStyle(featureStyle);
+          }
+          if (overlayIcon) {
+            newFeature.setProperties({
+              overlayIcon: overlayIcon,
+            });
           }
           featuresToAddWithStyle.push(newFeature);
         }
@@ -362,6 +394,12 @@ const useDrawSettings = () => {
     });
     drawSource.clear();
     drawSource.addFeatures(featuresToAddWithStyle);
+    featuresToAddWithStyle.forEach((f) => {
+      const iconProps = f.getProperties()['overlayIcon'];
+      if (iconProps != null && f.getGeometry() instanceof Point) {
+        addIconOverlayToPointFeature(f, iconProps);
+      }
+    });
   };
 
   const setDisplayInteractiveMeasurementForDrawInteraction = (
@@ -470,12 +508,29 @@ const useDrawSettings = () => {
     });
   };
 
-  const clearDrawing = () => {
+  const clearDrawing = async () => {
+    setShowMeasurements(false);
+    const overlays = [...map.getOverlays().getArray()];
+    overlays.forEach((overlay) => {
+      if (overlay == null) {
+        return;
+      }
+      const overlayId = overlay.getId();
+      if (
+        typeof overlayId === 'string' &&
+        (overlayId.startsWith(ICON_OVERLAY_PREFIX) ||
+          overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX) ||
+          overlayId.startsWith(INTERACTIVE_OVERLAY_PREFIX))
+      ) {
+        overlay.getElement()?.remove();
+        map.removeOverlay(overlay);
+      }
+    });
     const drawLayer = getDrawLayer();
     const source = drawLayer.getSource() as VectorSource;
     source.clear();
-    setShowMeasurements(false);
     resetActions();
+    removeUrlParameter('drawing');
   };
 
   const abortDrawing = () => {
@@ -506,3 +561,57 @@ const useDrawSettings = () => {
 };
 
 export { useDrawSettings };
+
+export const addIconOverlayToPointFeature = (
+  feature: Feature,
+  icon: PointIcon,
+) => {
+  const point = feature.getGeometry();
+  if (!point || !(point instanceof Point)) {
+    return;
+  }
+  const map = getDefaultStore().get(mapAtom);
+  const featureId = feature.getId();
+  const pointCoordinates = point.getCoordinates();
+  const elm = document.createElement('i');
+  elm.classList.add('material-symbols-rounded');
+  elm.style.color = icon.color;
+  elm.style.fontSize = `${icon.size * 10}px`;
+  elm.style.userSelect = 'none';
+  elm.style.pointerEvents = 'none';
+  elm.textContent = icon.icon;
+  const overlayId = `${ICON_OVERLAY_PREFIX}${featureId}`;
+  const existingOverlay = map.getOverlayById(overlayId);
+  if (existingOverlay) {
+    existingOverlay.getElement()?.remove();
+    map.removeOverlay(existingOverlay);
+  }
+
+  const overlay = new Overlay({
+    element: elm,
+    position: pointCoordinates,
+    positioning: 'center-center',
+    stopEvent: false,
+    id: overlayId,
+  });
+  map.addOverlay(overlay);
+  point.setProperties({
+    overlayIcon: icon,
+  });
+  feature.on('change', () => {
+    const geom = feature.getGeometry();
+    if (geom && geom instanceof Point) {
+      const coords = geom.getCoordinates();
+      overlay.setPosition(coords);
+    }
+  });
+  feature.setStyle(
+    new Style({
+      image: new CircleStyle({
+        radius: icon.size * 5, //To make the overlay area easier to click on
+        fill: new Fill({ color: 'transparent' }),
+        stroke: new Stroke({ color: 'transparent', width: 0 }),
+      }),
+    }),
+  );
+};

@@ -1,3 +1,5 @@
+import { MaterialSymbol } from '@kvib/react';
+import { getDefaultStore } from 'jotai';
 import { Feature } from 'ol';
 import BaseEvent from 'ol/events/Event';
 import { Geometry } from 'ol/geom';
@@ -5,24 +7,75 @@ import { ModifyEvent } from 'ol/interaction/Modify';
 import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
+import { mapAtom } from '../../../map/atoms';
 import {
   addInteractiveMesurementOverlayToFeature,
   enableFeatureMeasurmentOverlay,
   removeFeatureMeasurementOverlay,
   removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
-import { FeatureMoveDetail } from './drawSettings';
+import {
+  FeatureMoveDetail,
+  ICON_OVERLAY_PREFIX,
+  PointIcon,
+} from './drawSettings';
 
 export type StyleChangeDetail = {
   featureId: string | number;
   oldStyle: Style;
   newStyle: Style;
+  oldIcon?: PointIcon;
+  newIcon?: PointIcon;
+};
+
+export const getFeatureOverlayIconProperties = (
+  feature: Feature<Geometry>,
+): PointIcon | null => {
+  const featureId = feature.getId();
+  if (!featureId) {
+    return null;
+  }
+  const map = getDefaultStore().get(mapAtom);
+  const overlay = map.getOverlayById(`${ICON_OVERLAY_PREFIX}${featureId}`);
+  if (!overlay) {
+    return null;
+  }
+
+  const element = overlay.getElement();
+  if (!element) {
+    return null;
+  }
+  const iconChar = element.textContent as MaterialSymbol;
+  const color = element.style.color;
+  const fontSize =
+    (element.style.fontSize.replace('px', '') as unknown as number) / 10; //This is bad
+  return { icon: iconChar, color: color, size: fontSize };
+};
+
+export const getFeatureIcon = (
+  feature: Feature<Geometry>,
+): PointIcon | null => {
+  let icon = null;
+  const props = feature.getProperties();
+  if ('overlayIcon' in props) {
+    icon = props['overlayIcon'] as PointIcon;
+  } else {
+    try {
+      icon = feature.getGeometry()?.getProperties()['overlayIcon'] as PointIcon;
+    } catch {
+      icon = null;
+    }
+  }
+  return icon;
 };
 
 //Create a function to compare two styles
 const stylesAreEqual = (style1: Style, style2: Style): boolean => {
   if (style1 === style2) {
     return true;
+  }
+  if (style1 == null || style2 == null) {
+    return false;
   }
   // Compare stroke
   const stroke1 = style1.getStroke();
@@ -113,26 +166,52 @@ const removeSelectedOutlineToStyle = (style: Style) => {
   style.setStroke(newStroke);
 };
 
-const handleSelect = (e: BaseEvent | Event) => {
+const handleSelection = (e: BaseEvent | Event) => {
   if (e instanceof SelectEvent) {
-    e.deselected.forEach(handleFeatureSetZIndex);
-    handleUpdateStyle(e.deselected);
-    e.selected.forEach((f) => {
-      const style = f.getStyle();
-      if (style && style instanceof Style) {
-        f.set('stylePreSelect', style);
-        const newStyle = style.clone();
-        addSelectedOutlineToStyle(newStyle);
-        f.setStyle(newStyle);
-      }
-    });
+    handleDeselected(e.deselected);
+    handleSelected(e.selected);
   }
+};
+
+const handleSelected = (selected: Feature<Geometry>[]) => {
+  selected.forEach((f) => {
+    const style = f.getStyle();
+    const geometry = f.getGeometry();
+    if (geometry && geometry.getType() === 'Point') {
+      const icon = getFeatureIcon(f);
+      f.set('iconPreSelect', icon);
+      const featureId = f.getId();
+      if (!featureId) {
+        return;
+      }
+      const map = getDefaultStore().get(mapAtom);
+      const overlay = map.getOverlayById(`${ICON_OVERLAY_PREFIX}${featureId}`);
+      if (overlay) {
+        const element = overlay.getElement();
+        if (element) {
+          element.style.border = '2px solid black';
+        }
+      }
+      return;
+    }
+    if (style && style instanceof Style) {
+      f.set('stylePreSelect', style);
+      const newStyle = style.clone();
+      addSelectedOutlineToStyle(newStyle);
+      f.setStyle(newStyle);
+    }
+  });
+};
+
+const handleDeselected = (deselected: Feature<Geometry>[]) => {
+  handleUpdateStyle(deselected);
 };
 
 const handleUpdateStyle = (features: Feature<Geometry>[]) => {
   const featureStyleChangeList: StyleChangeDetail[] = [];
   let anyStyleChanged = false;
   features.forEach((feature) => {
+    handleFeatureSetZIndex(feature);
     const style = feature.getStyle();
     if (style && style instanceof Style) {
       removeSelectedOutlineToStyle(style);
@@ -143,7 +222,9 @@ const handleUpdateStyle = (features: Feature<Geometry>[]) => {
         feature.setStyle(style);
       }
       const featureStylePreSelect = feature.get('stylePreSelect') as Style;
+      const iconPreSelect = feature.get('iconPreSelect') as PointIcon | null;
       const featureId = feature.getId();
+
       if (!featureId) {
         return;
       }
@@ -151,7 +232,18 @@ const handleUpdateStyle = (features: Feature<Geometry>[]) => {
         featureId: featureId,
         oldStyle: featureStylePreSelect,
         newStyle: style,
+        oldIcon: iconPreSelect || undefined,
+        newIcon: getFeatureOverlayIconProperties(feature) || undefined,
       });
+
+      const map = getDefaultStore().get(mapAtom);
+      const overlay = map.getOverlayById(`${ICON_OVERLAY_PREFIX}${featureId}`);
+      if (overlay) {
+        const element = overlay.getElement();
+        if (element) {
+          element.style.border = 'none';
+        }
+      }
 
       if (!stylesAreEqual(style, featureStylePreSelect)) {
         anyStyleChanged = true;
@@ -159,6 +251,7 @@ const handleUpdateStyle = (features: Feature<Geometry>[]) => {
     }
 
     feature.set('stylePreSelect', undefined);
+    feature.set('iconPreSelect', undefined);
   });
 
   if (anyStyleChanged && featureStyleChangeList.length > 0) {
@@ -224,6 +317,6 @@ export {
   handleFeatureSelectDone,
   handleModifyEnd,
   handleModifyStart,
-  handleSelect,
+  handleSelection as handleSelect,
   removeSelectedOutlineToStyle,
 };
