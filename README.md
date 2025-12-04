@@ -12,7 +12,7 @@ The code contents are available under the MIT licence, see the LICENCE file for 
 
 ## Kom igang
 
-For å kjøre applikasjonen kreves npm og node >= 20.0.0.
+For å kjøre applikasjonen kreves npm og node. Vi prøver å holde oss til current LTS, som nå er 24.
 
 ```sh
 npm install &&\
