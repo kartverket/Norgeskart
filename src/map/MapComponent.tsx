@@ -44,6 +44,8 @@ export const MapComponent = () => {
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
   const hasProcessedUrlRef = useRef(false);
+  const hasLoadedThemeLayersRef = useRef(false);
+  const hasLoadedDrawingRef = useRef(false);
 
   const { setTargetElement } = useMap();
 
@@ -169,6 +171,9 @@ export const MapComponent = () => {
     if (!map) {
       return;
     }
+    if (hasLoadedThemeLayersRef.current) {
+      return;
+    }
     const themeLayers = getListUrlParameter('themeLayers');
     if (!themeLayers) {
       return;
@@ -176,18 +181,23 @@ export const MapComponent = () => {
     themeLayers.forEach((layerName) => {
       addThemeLayerToMap(layerName as ThemeLayerName);
     });
+    hasLoadedThemeLayersRef.current = true;
   }, [map, addThemeLayerToMap]);
 
   useEffect(() => {
+    if (hasLoadedDrawingRef.current) {
+      return;
+    }
     const asyncEffect = async () => {
       const drawingId = getUrlParameter('drawing');
       if (drawingId) {
         const features = await getFeatures(drawingId);
         setDrawLayerFeatures(features, 'EPSG:4326');
+        hasLoadedDrawingRef.current = true;
       }
     };
     asyncEffect();
-  }, [map, setDrawLayerFeatures]);
+  }, [setDrawLayerFeatures]);
 
   return (
     <Box position={'relative'} width="100%" height="100%">
