@@ -3,7 +3,6 @@ import { usePostHog } from '@posthog/react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { disableCookies, enableCookies } from './cookieBlocker';
-import { addGA, removeGA } from './gaScript';
 
 export const LOCALSTORAGE_CONSENT_KEY = 'cookie_consent';
 
@@ -24,7 +23,6 @@ export const CookieConsentDialog = () => {
     localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'granted');
     setConsentStatus('granted');
     enableCookies();
-    addGA();
   }, [posthog]);
 
   const handleDisableCookies = useCallback(() => {
@@ -32,7 +30,6 @@ export const CookieConsentDialog = () => {
     localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'denied');
     setConsentStatus('denied');
     disableCookies();
-    removeGA();
   }, [posthog]);
 
   if (consentStatus !== 'pending') {
