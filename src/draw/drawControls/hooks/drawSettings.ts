@@ -209,7 +209,6 @@ const useDrawSettings = () => {
       style.setZIndex(zIndex);
       eventFeature.setStyle(style);
     }
-
     if (drawType === 'Text') {
       const text = store.get(textInputAtom);
       const style = store.get(textStyleReadAtom).clone();
@@ -217,6 +216,7 @@ const useDrawSettings = () => {
       if (textStyle) {
         textStyle.setText(text);
       }
+      style.setZIndex(zIndex);
       eventFeature.setStyle(style);
     }
 
@@ -248,14 +248,20 @@ const useDrawSettings = () => {
     if (styleFromProps == null) {
       return null;
     }
-    const fill = new Fill({ color: styleFromProps.fill.color });
-    const stroke = new Stroke({
-      color: styleFromProps.stroke.color,
-      width: styleFromProps.stroke.width,
-    });
+
+    const fill = styleFromProps.fill?.color
+      ? new Fill({ color: styleFromProps.fill.color })
+      : undefined;
+
+    const stroke = styleFromProps.stroke?.color
+      ? new Stroke({
+          color: styleFromProps.stroke.color,
+          width: styleFromProps.stroke.width ?? 2,
+        })
+      : undefined;
 
     const icon =
-      styleFromProps.icon.points != null
+      styleFromProps.icon?.points != null
         ? new RegularShape({
             points: styleFromProps.icon.points,
             radius: styleFromProps.icon.radius ?? 10,
@@ -264,26 +270,42 @@ const useDrawSettings = () => {
             scale: styleFromProps.icon.scale,
             fill: new Fill({ color: styleFromProps.icon.color }),
           })
-        : styleFromProps.icon.radius != null &&
-            styleFromProps.icon.color != null
+        : styleFromProps.icon?.radius != null &&
+            styleFromProps.icon?.color != null
           ? new CircleStyle({
               radius: styleFromProps.icon.radius,
               fill: new Fill({ color: styleFromProps.icon.color }),
             })
           : undefined;
 
-    const text = styleFromProps.text
+    const textValue =
+      (styleFromProps.text as { text?: string; value?: string })?.text ??
+      (styleFromProps.text as { text?: string; value?: string })?.value;
+    const text = textValue
       ? new Text({
-          text: styleFromProps.text?.value,
-          font: styleFromProps.text?.font,
+          text: textValue,
+          font: styleFromProps.text?.font ?? '16px sans-serif',
           fill: styleFromProps.text?.fillColor
-            ? new Fill({ color: styleFromProps.text?.fillColor })
+            ? new Fill({ color: styleFromProps.text.fillColor })
+            : new Fill({ color: '#000000' }),
+          stroke: styleFromProps.text?.stroke?.color
+            ? new Stroke({
+                color: styleFromProps.text.stroke.color,
+                width: styleFromProps.text.stroke.width ?? 1,
+              })
             : undefined,
           backgroundFill: styleFromProps.text?.backgroundFillColor
-            ? new Fill({ color: styleFromProps.text?.backgroundFillColor })
+            ? new Fill({ color: styleFromProps.text.backgroundFillColor })
             : undefined,
+          offsetY: -15,
+          textAlign: 'center',
+          textBaseline: 'bottom',
         })
       : undefined;
+
+    if (!fill && !stroke && !icon && !text) {
+      return null;
+    }
 
     const style = new Style({
       fill,
@@ -359,12 +381,16 @@ const useDrawSettings = () => {
           const transformedGeometry = geom
             .getGeometry()
             ?.transform(sourceProjection, mapProjection);
-          const featureStyle = feature.properties?.style as Style | null;
+          const featureStyle = getStyleFromProperties(feature.properties);
           if (transformedGeometry) {
             const newFeature = new Feature({
               geometry: transformedGeometry,
-              style: featureStyle,
             });
+            const featureId = uuidv4();
+            newFeature.setId(featureId);
+            if (featureStyle) {
+              newFeature.setStyle(featureStyle);
+            }
             featuresToAddWithStyle.push(newFeature);
           }
         });
@@ -379,7 +405,8 @@ const useDrawSettings = () => {
           const newFeature = new Feature({
             geometry: transformedGeometry,
           });
-          newFeature.setId(uuidv4());
+          const featureId = uuidv4();
+          newFeature.setId(featureId);
           if (featureStyle) {
             newFeature.setStyle(featureStyle);
           }
@@ -400,6 +427,12 @@ const useDrawSettings = () => {
         addIconOverlayToPointFeature(f, iconProps);
       }
     });
+
+    if (showMeasurements) {
+      featuresToAddWithStyle.forEach((feature) => {
+        enableFeatureMeasurmentOverlay(feature);
+      });
+    }
   };
 
   const setDisplayInteractiveMeasurementForDrawInteraction = (

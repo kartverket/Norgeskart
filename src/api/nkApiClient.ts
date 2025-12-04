@@ -28,10 +28,15 @@ export type StyleForStorage = {
     scale?: [number, number] | undefined;
   };
   text?: {
-    value: string | undefined;
+    text?: string | undefined; // Preferred/current format; 'value' is supported for backward compatibility
+    value?: string | undefined;
     font: string | undefined;
     fillColor: Color | ColorLike | PatternDescriptor | null;
     backgroundFillColor: Color | ColorLike | PatternDescriptor | null;
+    stroke?: {
+      color: Color | ColorLike | undefined;
+      width: number | undefined;
+    };
   };
 };
 
@@ -188,15 +193,21 @@ export const getStyleForStorage = (
       const backgroundFillColor = text
         .getBackgroundFill()
         ?.getColor() as string;
+      const textStroke = text.getStroke();
+      const textStrokeColor = textStroke?.getColor();
+      const textStrokeWidth = textStroke?.getWidth();
       return {
         fill: { color: fillColor },
         stroke: { color: strokeColor, width: strokeWidth },
         icon: { radius: circleRadius, color: imageFillColor },
         text: {
-          value: textValue,
+          text: textValue,
           font,
           fillColor: textFillColor,
           backgroundFillColor,
+          stroke: textStrokeColor
+            ? { color: textStrokeColor, width: textStrokeWidth }
+            : undefined,
         },
       };
     }
