@@ -28,7 +28,7 @@ export type StyleForStorage = {
     scale?: [number, number] | undefined;
   };
   text?: {
-    text?: string | undefined; // Old format - kept for backward compatibility
+    text?: string | undefined; // Preferred/current format; 'value' is supported for backward compatibility
     value?: string | undefined;
     font: string | undefined;
     fillColor: Color | ColorLike | PatternDescriptor | null;
