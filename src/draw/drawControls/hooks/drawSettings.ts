@@ -372,7 +372,7 @@ const useDrawSettings = () => {
         const transformedGeometry = geometryOriginalProjection
           .getGeometry()
           ?.transform(sourceProjection, mapProjection);
-        const featureStyle = getStyleFromProperties(feature.properties); //
+        const featureStyle = getStyleFromProperties(feature.properties);
         const overlayIcon = getOverlayIconFromProperties(feature.properties);
 
         if (transformedGeometry) {
