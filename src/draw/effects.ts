@@ -12,13 +12,13 @@ import {
   distanceUnitAtom,
   drawTypeStateAtom,
   lineWidthAtom,
-  pointStyleReadAtom,
   primaryColorAtom,
   secondaryColorAtom,
   showMeasurementsAtom,
 } from '../settings/draw/atoms';
 import { enableFeatureMeasurmentOverlay } from './drawControls/drawUtils';
 import {
+  ICON_OVERLAY_PREFIX,
   INTERACTIVE_OVERLAY_PREFIX,
   MEASUREMNT_OVERLAY_PREFIX,
 } from './drawControls/hooks/drawSettings';
@@ -55,6 +55,22 @@ export const editPrimaryColorEffect = atomEffect((get) => {
   if (selectInteraction) {
     selectInteraction.getFeatures().forEach((feature) => {
       const featureStyle = feature.getStyle() as Style | undefined;
+
+      if (feature.getGeometry()?.getType() === 'Point') {
+        const id = feature.getId();
+        const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
+        const overlay = map
+          .getOverlays()
+          .getArray()
+          .find((ov) => ov.getId() === prefixedId);
+        if (overlay) {
+          const element = overlay.getElement();
+          if (element) {
+            element.style.color = primaryColor;
+          }
+        }
+        return;
+      }
       if (!featureStyle) {
         return;
       }
@@ -99,6 +115,32 @@ export const editSecondaryColorEffect = atomEffect((get) => {
   }
 });
 
+export const lineWidthEffect = atomEffect((get) => {
+  const lineWidth = get(lineWidthAtom);
+  const map = get(mapAtom);
+  const selectInteraction = getSelectInteraction(map);
+  if (selectInteraction) {
+    selectInteraction.getFeatures().forEach((feature) => {
+      const featuretype = feature.getGeometry()?.getType();
+      if (featuretype === 'Point') {
+        const id = feature.getId();
+        const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
+        const overlay = map
+          .getOverlays()
+          .getArray()
+          .find((ov) => ov.getId() === prefixedId);
+
+        if (overlay) {
+          const element = overlay.getElement();
+          if (element) {
+            element.style.fontSize = `${lineWidth * 10}px`;
+          }
+        }
+      }
+    });
+  }
+});
+
 export const drawStyleEffect = atomEffect((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
@@ -116,8 +158,6 @@ export const drawStyleEffect = atomEffect((get) => {
   }
 
   if (drawType === 'Point') {
-    const newStyle = get(pointStyleReadAtom);
-    drawInteraction.getOverlay().setStyle(newStyle);
     return;
   }
   const newStyle = overlayDrawStyle.clone() as Style;

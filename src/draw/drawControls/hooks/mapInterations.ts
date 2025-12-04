@@ -1,11 +1,11 @@
-import { useAtomValue } from 'jotai';
+import { getDefaultStore } from 'jotai';
 import Draw from 'ol/interaction/Draw';
 import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
 import { mapAtom } from '../../../map/atoms';
 
 export const useMapInteractions = () => {
-  const map = useAtomValue(mapAtom);
+  const map = getDefaultStore().get(mapAtom);
   const getSelectInteraction = () => {
     return map
       .getInteractions()

@@ -84,7 +84,7 @@ export const ExportControls = () => {
     }
   };
   return (
-    <VStack alignItems="flex-start" w={'100%'}>
+    <VStack alignItems="flex-start" w={'200px'}>
       <Heading size={'lg'} as="h3">
         {t('export.heading')}
       </Heading>
@@ -117,10 +117,10 @@ export const ExportControls = () => {
             ))}
           </SelectContent>
         </SelectRoot>
-        <Button size="sm" onClick={handleExport}>
-          {t('shared.actions.download')}
-        </Button>
       </HStack>
+      <Button size="sm" onClick={handleExport}>
+        {t('shared.actions.download')}
+      </Button>
     </VStack>
   );
 };

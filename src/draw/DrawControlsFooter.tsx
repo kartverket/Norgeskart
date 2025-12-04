@@ -22,6 +22,7 @@ import { useMapSettings } from '../map/mapHooks';
 import { canRedoAtom, canUndoAtom } from '../settings/draw/drawActions/atoms';
 import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
+import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
@@ -71,6 +72,7 @@ export const DrawControlFooter = () => {
           mapProjection,
         );
         const featureStyle = feature.getStyle() as Style | null;
+        const icon = getFeatureIcon(feature);
         const styleForStorage = getStyleForStorage(featureStyle);
         return {
           type: 'Feature',
@@ -80,6 +82,7 @@ export const DrawControlFooter = () => {
           },
           properties: {
             style: styleForStorage,
+            overlayIcon: icon || undefined,
           },
         } as Feature;
       })

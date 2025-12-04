@@ -1,4 +1,4 @@
-import { Button, VStack } from '@kvib/react';
+import { Button, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -27,8 +27,10 @@ export const DrawControls = () => {
       <DrawToolSelector />
       {drawType === 'Text' && <TextStyleControl />}
       <EditControls />
-      <ColorControls />
-      {drawType === 'Point' && <PointStyleSelector />}
+      <HStack>
+        <ColorControls />
+        {drawType === 'Point' && <PointStyleSelector />}
+      </HStack>
       {isMobile && drawType == 'Move' && (
         <Button onClick={deleteSelected}>{t('draw.deleteSelection')}</Button>
       )}
