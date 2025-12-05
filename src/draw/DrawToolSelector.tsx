@@ -1,8 +1,8 @@
 import { Flex, IconButton, MaterialSymbol, Tooltip } from '@kvib/react';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { primaryColorAtom } from '../settings/draw/atoms';
-import { DrawType, useDrawSettings } from './drawControls/hooks/drawSettings';
+import { drawTypeAtom, primaryColorAtom } from '../settings/draw/atoms';
+import { DrawType } from './drawControls/hooks/drawSettings';
 
 export const DrawToolSelector = () => {
   const { t } = useTranslation();
@@ -12,14 +12,14 @@ export const DrawToolSelector = () => {
     tooltip: string;
   }[] = [
     {
-      value: 'Polygon',
-      icon: 'pentagon',
-      tooltip: t('draw.controls.tool.tooltip.polygon'),
-    },
-    {
       value: 'Move',
       icon: 'arrow_selector_tool',
       tooltip: t('draw.controls.tool.tooltip.edit'),
+    },
+    {
+      value: 'Polygon',
+      icon: 'pentagon',
+      tooltip: t('draw.controls.tool.tooltip.polygon'),
     },
     {
       value: 'Point',
@@ -65,7 +65,7 @@ const DrawTypeButton = ({
   icon: MaterialSymbol;
   tooltip: string;
 }) => {
-  const { drawType, setDrawType } = useDrawSettings();
+  const [drawType, setDrawType] = useAtom(drawTypeAtom);
   const isCurrentTool = drawType === type;
   const setPrimaryColor = useSetAtom(primaryColorAtom);
   const setSecondaryColor = useSetAtom(primaryColorAtom);

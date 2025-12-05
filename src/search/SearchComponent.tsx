@@ -144,11 +144,12 @@ export const SearchComponent = () => {
     [map, setSearchCoordinates, setSelectedResult],
   );
   useEffect(() => {
+    const map = getDefaultStore().get(mapAtom);
     map.on('click', mapClickHandler);
     return () => {
       map.un('click', mapClickHandler);
     };
-  }, [mapClickHandler, map]);
+  }, [mapClickHandler]);
 
   return (
     <Flex
@@ -203,7 +204,13 @@ export const SearchComponent = () => {
         </Flex>
       </Box>
       {showBackgroundSettings ? (
-        <Box bg="white" borderRadius="md" boxShadow="md" width="100%">
+        <Box
+          bg="white"
+          borderRadius="md"
+          boxShadow="md"
+          maxWidth="450px"
+          py={2}
+        >
           <BackgroundLayerSettings />
         </Box>
       ) : coordinateResult ? (

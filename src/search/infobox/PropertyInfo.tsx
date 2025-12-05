@@ -11,12 +11,13 @@ import {
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
-import { useAtomValue } from 'jotai';
+import { getDefaultStore } from 'jotai';
 import VectorLayer from 'ol/layer/Vector';
 import { transform } from 'ol/proj';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getPropertyGeometry } from '../../api/nkApiClient';
+import { getPropertyGeometryLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
 import { mapLayers } from '../../map/layers';
 import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
@@ -61,24 +62,11 @@ const fetchPropertyDetailsByCoordinates = async (
 export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   const { t } = useTranslation();
   const [lon4326, lat4326] = transform([lon, lat], inputCRS, 'EPSG:4326');
-  const map = useAtomValue(mapAtom);
 
   const [showGeometry, setShowGeometry] = useState(() => {
     const showSelectionParam = getUrlParameter('showSelection');
     return showSelectionParam === 'true';
   });
-
-  useEffect(() => {
-    return () => {
-      const existingLayer = map
-        .getLayers()
-        .getArray()
-        .find((layer) => layer.get('id') === 'propertyGeometryLayer');
-      if (existingLayer) {
-        map.removeLayer(existingLayer);
-      }
-    };
-  }, [map]);
 
   const {
     data: propertyDetails,
@@ -95,48 +83,48 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     : propertyDetails;
 
   useEffect(() => {
-    if (showGeometry && property) {
-      handleShowGeometry(true, property);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [property]);
-
-  const handleShowGeometry = async (checked: boolean, prop: Property) => {
-    const existingLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === 'propertyGeometryLayer');
-    if (existingLayer) {
-      map.removeLayer(existingLayer);
-    }
-    if (checked) {
-      const layerToAdd =
-        mapLayers.propertyGeometryLayer.getLayer() as VectorLayer;
-      const features = await getPropertyGeometry(
-        prop.KOMMUNENR,
-        prop.GARDSNR,
-        prop.BRUKSNR,
-        prop.FESTENR,
-        prop.SEKSJONSNR,
-      );
-
-      if (features) {
-        layerToAdd.getSource()?.addFeatures(features);
-        map.addLayer(layerToAdd);
+    const handleShowGeometry = async (checked: boolean, prop: Property) => {
+      const existingLayer = getPropertyGeometryLayer();
+      const map = getDefaultStore().get(mapAtom);
+      if (existingLayer) {
+        map.removeLayer(existingLayer);
       }
-    }
-  };
+      if (checked) {
+        const layerToAdd =
+          mapLayers.propertyGeometryLayer.getLayer() as VectorLayer;
+        const features = await getPropertyGeometry(
+          prop.KOMMUNENR,
+          prop.GARDSNR,
+          prop.BRUKSNR,
+          prop.FESTENR,
+          prop.SEKSJONSNR,
+        );
 
-  const handleSwitchChange = async (checked: boolean) => {
-    setShowGeometry(checked);
-    if (checked) {
+        if (features) {
+          layerToAdd.getSource()?.addFeatures(features);
+          map.addLayer(layerToAdd);
+        }
+      }
+    };
+    if (property) {
+      handleShowGeometry(showGeometry, property);
+    }
+    if (showGeometry) {
       setUrlParameter('showSelection', 'true');
     } else {
       removeUrlParameter('showSelection');
     }
-    if (property) {
-      handleShowGeometry(checked, property);
-    }
+    return () => {
+      const existingLayer = getPropertyGeometryLayer();
+      const map = getDefaultStore().get(mapAtom);
+      if (existingLayer) {
+        map.removeLayer(existingLayer);
+      }
+    };
+  }, [showGeometry, property]);
+
+  const handleSwitchChange = async (checked: boolean) => {
+    setShowGeometry(checked);
   };
 
   if (isLoading || error || propertyDetails == null) return null;

@@ -1,7 +1,5 @@
 import { Grid, GridItem } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { useEffect } from 'react';
-import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
@@ -20,23 +18,12 @@ export type MapTool = 'layers' | 'draw' | 'settings' | null;
 
 export const MapOverlay = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
-  const { drawEnabled, setDrawEnabled } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
   const isMobile = useIsMobileScreen();
 
   useFeatureInfoClick();
 
-  /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    if (currentMapTool !== 'draw' && drawEnabled) {
-      setDrawEnabled(false);
-    }
-    if (currentMapTool === 'draw' && !drawEnabled) {
-      setDrawEnabled(true);
-    }
-  }, [currentMapTool, setDrawEnabled]);
-  /* eslint-enable react-hooks/exhaustive-deps */
   return (
     <ErrorBoundary
       fallback={undefined}

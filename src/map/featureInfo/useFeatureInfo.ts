@@ -1,4 +1,4 @@
-import { useAtomValue, useSetAtom } from 'jotai';
+import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
 import { useCallback, useEffect } from 'react';
@@ -15,13 +15,13 @@ import {
 } from './featureInfoService';
 
 export const useFeatureInfoClick = () => {
-  const map = useAtomValue(mapAtom);
   const setFeatureInfoResult = useSetAtom(featureInfoResultAtom);
   const setFeatureInfoLoading = useSetAtom(featureInfoLoadingAtom);
   const setFeatureInfoPanelOpen = useSetAtom(featureInfoPanelOpenAtom);
 
   const handleMapClick = useCallback(
     async (e: Event | BaseEvent) => {
+      const map = getDefaultStore().get(mapAtom);
       const contextMenuOpen = document.querySelector(
         '[data-context-menu-open]',
       );
@@ -64,15 +64,16 @@ export const useFeatureInfoClick = () => {
         setFeatureInfoLoading(false);
       }
     },
-    [map, setFeatureInfoResult, setFeatureInfoLoading, setFeatureInfoPanelOpen],
+    [setFeatureInfoResult, setFeatureInfoLoading, setFeatureInfoPanelOpen],
   );
 
   useEffect(() => {
+    const map = getDefaultStore().get(mapAtom);
     map.on('singleclick', handleMapClick);
     return () => {
       map.un('singleclick', handleMapClick);
     };
-  }, [map, handleMapClick]);
+  }, [handleMapClick]);
 
   const closeFeatureInfoPanel = useCallback(() => {
     setFeatureInfoPanelOpen(false);

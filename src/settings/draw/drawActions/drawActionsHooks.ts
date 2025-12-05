@@ -258,3 +258,15 @@ export const useDrawActionsState = () => {
     resetActions,
   };
 };
+
+export const addDrawAction = (action: DrawAction) => {
+  const store = getDefaultStore();
+  const currentOffset = store.get(actionOffsetAtom);
+  const previousActions = store.get(drawActionsAtom);
+  const offsetActionList = previousActions.slice(
+    0,
+    previousActions.length - currentOffset,
+  );
+  store.set(drawActionsAtom, [...offsetActionList, action]);
+  store.set(actionOffsetAtom, 0);
+};
