@@ -56,25 +56,26 @@ export const MapOverlay = () => {
           md: 'repeat(5, 1fr)',
         }}
         gridTemplateRows={{
-          base: '1fr 1fr 1fr 110px',
+          base: '1fr 1fr 1fr 82px',
           md: '1fr 1fr 1fr 1fr 40px',
         }}
         pointerEvents="none"
       >
+         
         <GridItem gridColumn={1} gridRow={1} gridRowStart={1} gridRowEnd={5}>
-          {showSearchComponent && <SearchComponent />}
-          <MapToolCards
-            currentMapTool={currentMapTool}
-            onClose={() => {
-              setCurrentMapTool(null);
-            }}
+          {showSearchComponent && <SearchComponent />} 
+        </GridItem>
+        <GridItem gridColumn={1} gridRow={{base:3, md:1}} zIndex={1}>
+            <MapToolCards
+              currentMapTool={currentMapTool}
+              onClose={() => {
+                setCurrentMapTool(null);
+              }}
           />
         </GridItem>
         <GridItem gridColumn={{ base: 1, md: 5 }} gridRow={1}>
           <InfoBox />
         </GridItem>
-
-        
         <GridItem
           gridColumn={1}
           gridRow={{ base: 3, md: 4 }}

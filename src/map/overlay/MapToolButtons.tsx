@@ -34,6 +34,7 @@ export const MapToolButtons = () => {
   return (
     <HStack
       align="flex-end"
+      justify="space-between"
       bg={'white'}
       borderRadius={{ md: 'lg' }}
       p={2}

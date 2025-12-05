@@ -44,15 +44,17 @@ interface MapToolCardProps {
 const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
     <VStack
-      width={'fit-content'}
+      width={{ base: '100%', md: "450px" }}
       pointerEvents="auto"
       bg="#f5f2f2"
       shadow="lg"
       borderRight="1px solid rgba(0,0,0,0.1)"
       px={8}
       py={4}
-      m={4}
+      m={{base: 0, md:4}}
       borderRadius={'16px'}
+      borderBottomLeftRadius={{ base: '0px', md: '16px' }}
+      borderBottomRightRadius={{ base: '0px', md: '16px' }} 
     >
       <Flex justify="space-between" w={'100%'}>
         <Heading fontWeight="bold" mb="2rem">
@@ -69,7 +71,7 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
           size="sm"
         />
       </Flex>
-      <Box overflowY="auto" height={'100%'}>
+      <Box overflowY="auto" height={'100%'} w={"100%"}>
         {children}
       </Box>
     </VStack>

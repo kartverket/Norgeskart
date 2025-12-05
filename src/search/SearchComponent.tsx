@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  Icon,
-  IconButton,
-  Image,
-  Search,
-  Spinner,
-} from '@kvib/react';
+import { Box, Flex, Icon, IconButton, Search, Spinner } from '@kvib/react';
 import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
@@ -19,7 +11,6 @@ import {
   ProjectionIdentifier,
 } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms.ts';
-import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import {
   parseCoordinateInput,
   ParsedCoordinate,
