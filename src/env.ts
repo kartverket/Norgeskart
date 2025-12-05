@@ -15,11 +15,13 @@ type EnvName = 'local' | 'dev' | 'test' | 'prod';
 type Env = {
   apiUrl: string;
   geoNorgeApiBaseUrl: string;
+  usePostHog: boolean;
   layerProviderParameters: layerProviderParameters;
   envName: EnvName;
 };
 
 const LOCAL_ENV: Env = {
+  usePostHog: false,
   apiUrl: 'https://testapi.norgeskart.no',
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   layerProviderParameters: {
@@ -39,6 +41,7 @@ const LOCAL_ENV: Env = {
 };
 
 const DEV_ENV: Env = {
+  usePostHog: true,
   apiUrl: 'https://testapi.norgeskart.no',
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   layerProviderParameters: {
@@ -58,6 +61,7 @@ const DEV_ENV: Env = {
 };
 
 const PROD_ENV: Env = {
+  usePostHog: true,
   apiUrl: 'https://testapi.norgeskart.no',
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   layerProviderParameters: {
