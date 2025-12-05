@@ -144,11 +144,12 @@ export const SearchComponent = () => {
     [map, setSearchCoordinates, setSelectedResult],
   );
   useEffect(() => {
+    const map = getDefaultStore().get(mapAtom);
     map.on('click', mapClickHandler);
     return () => {
       map.un('click', mapClickHandler);
     };
-  }, [mapClickHandler, map]);
+  }, [mapClickHandler]);
 
   return (
     <Flex

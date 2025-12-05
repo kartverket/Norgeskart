@@ -34,7 +34,7 @@ const mapLayers: MapLayers = {
   markerLayer: {
     getLayer: () => {
       return new VectorLayer({
-        zIndex: 3,
+        zIndex: 6,
         source: new VectorSource({ wrapX: false }),
         properties: { id: 'markerLayer' },
       });
