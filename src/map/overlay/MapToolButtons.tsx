@@ -46,7 +46,7 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={'edit'}
-        label={t('draw.tabHeading')}
+        label={t('controller.draw.text')}
         active={currentMapTool === 'draw'}
       />
       <MapButton

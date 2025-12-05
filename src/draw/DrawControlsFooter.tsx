@@ -149,9 +149,6 @@ export const DrawControlFooter = () => {
         <Button size="sm" onClick={onSaveFeatures}>
           {t('draw.save')}
         </Button>
-        <Button size="sm" onClick={undoLast}>
-          Undo
-        </Button>
       </ButtonGroup>
     </>
   );
