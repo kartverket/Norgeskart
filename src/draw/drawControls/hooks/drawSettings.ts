@@ -27,6 +27,7 @@ import {
   removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
 
+import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
 import { getDrawLayer } from './mapLayers';
 
@@ -200,6 +201,10 @@ const useDrawSettings = () => {
     drawSource.addFeature(feature);
     if (showMeasurements) {
       enableFeatureMeasurmentOverlay(feature);
+    }
+    const iconProps = getFeatureIcon(feature);
+    if (iconProps) {
+      addIconOverlayToPointFeature(feature, iconProps);
     }
   };
 
