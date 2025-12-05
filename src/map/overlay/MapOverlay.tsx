@@ -2,6 +2,7 @@ import { Grid, GridItem } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
+import { allSearchResultsAtom, searchQueryAtom } from '../../search/atoms';
 import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
@@ -38,8 +39,13 @@ export const MapOverlay = () => {
   }, [currentMapTool, setDrawEnabled]);
   /* eslint-enable react-hooks/exhaustive-deps */
 
+  const allResults = useAtomValue(allSearchResultsAtom);
+  const searchQuery = useAtomValue(searchQueryAtom);
+
+  // true når vi faktisk har noe å vise i resultater
+  const hasSearchResults = allResults.length > 0 && searchQuery !== '';
+
   return (
-    
     <ErrorBoundary
       fallback={undefined}
       onError={() => {
@@ -56,58 +62,76 @@ export const MapOverlay = () => {
           md: 'repeat(5, 1fr)',
         }}
         gridTemplateRows={{
-          base: '1fr 1fr 1fr 82px',
-          md: '1fr 1fr 1fr 1fr 40px',
+          base: 'auto 1fr auto auto',
+          md: '1fr 1fr 1fr 1fr auto auto',
+          lg: '1fr auto auto',
         }}
         pointerEvents="none"
       >
-         
-        <GridItem gridColumn={1} gridRow={1} gridRowStart={1} gridRowEnd={5}>
-          {showSearchComponent && <SearchComponent />} 
+        <GridItem
+          gridColumn={{
+            base: '1 / span 4',
+            md: '1 / span 3',
+            lg: '1 / span 2',
+            xl: '1  / span 1',
+          }}
+          gridRow={1}
+        >
+          {showSearchComponent && <SearchComponent />}
         </GridItem>
-        <GridItem gridColumn={1} gridRow={{base:3, md:1}} zIndex={1}>
-            <MapToolCards
-              currentMapTool={currentMapTool}
-              onClose={() => {
-                setCurrentMapTool(null);
-              }}
+        <GridItem
+          gridColumn="1 / span 4"
+          gridRow={{ base: 4, md: 1 }}
+          zIndex={1}
+        >
+          <MapToolCards
+            currentMapTool={currentMapTool}
+            onClose={() => {
+              setCurrentMapTool(null);
+            }}
           />
         </GridItem>
         <GridItem gridColumn={{ base: 1, md: 5 }} gridRow={1}>
           <InfoBox />
         </GridItem>
+
         <GridItem
-          gridColumn={1}
-          gridRow={{ base: 3, md: 4 }}
-          alignContent={'end'}
+          gridColumn="1"
+          gridRow={{ base: 4, md: 4, lg: 5 }}
+          alignContent="end"
           mb={4}
           ml={4}
         >
           <LinkLogo />
         </GridItem>
+
         <GridItem
           gridColumn={{
-            base: 1,
-            md: 3,
+            base: '1 / span 4',
+            md: '2 / span 3',
+            lg: '2 / span 3',
           }}
-          gridRow={4}
+          gridRow="5"
           alignContent={'end'}
+          justifySelf={'center'}
           mb={{ base: 0, md: 4 }}
         >
           <MapToolButtons />
         </GridItem>
+
         <GridItem
-          justifySelf={'end'}
-          alignContent={'end'}
-          gridRow={{ base: 3, md: 4 }}
-          gridColumn={{ base: 1, md: 5 }}
-          mb={4}
+          justifySelf="end"
+          alignContent="end"
+          gridRow={{ base: 4, md: 4, lg: 5 }}
+          gridColumn={{ base: 3, md: 5 }}
+          mb={5}
           mr={4}
         >
           <MapControlButtons />
         </GridItem>
+
         {!isMobile && (
-          <GridItem h="40px" alignContent="end" gridRow={5} colSpan={5}>
+          <GridItem h="40px" alignContent="end" gridRow={6} colSpan={5}>
             <Toolbar />
           </GridItem>
         )}

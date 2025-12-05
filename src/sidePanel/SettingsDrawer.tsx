@@ -61,7 +61,7 @@ export const SettingsDrawer = () => {
   }, [i18n.language]);
 
   return (
-    <SimpleGrid columns={1} gap="7">
+    <SimpleGrid columns={1} gap="2">
       <Heading size="md">{t('tipsandtricks.heading')}</Heading>
 
       <Accordion collapsible multiple size="md" variant="outline">

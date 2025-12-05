@@ -85,8 +85,15 @@ export const SearchResults = ({
   }
 
   return (
-    <Stack gap={0} p={4} bg="white" borderRadius={'16px'}>
-      <Box overflowY="auto" overflowX="hidden" maxHeight="60vh">
+    <Stack
+      gap={0}
+      p={4}
+      bg="white"
+      borderRadius={'16px'}
+      maxHeight="30vh"
+      display={'flex'}
+    >
+      <Box overflowY="auto" overflowX="hidden" minHeight="0px">
         <AccordionRoot
           collapsible
           multiple

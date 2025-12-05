@@ -1,4 +1,12 @@
-import { Box, Flex, Icon, IconButton, Search, Spinner } from '@kvib/react';
+import {
+  Box,
+  Flex,
+  Icon,
+  IconButton,
+  Image,
+  Search,
+  Spinner,
+} from '@kvib/react';
 import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
@@ -11,6 +19,7 @@ import {
   ProjectionIdentifier,
 } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms.ts';
+import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import {
   parseCoordinateInput,
   ParsedCoordinate,
@@ -142,9 +151,36 @@ export const SearchComponent = () => {
   }, [mapClickHandler, map]);
 
   return (
-    <Box width={'400px'} pointerEvents={'all'}>
-      <Flex flexDir="column" alignItems="stretch" gap={4} p={4}>
-        <Box position="relative" width="100%">
+    <Flex
+      flexDir="column"
+      alignItems="stretch"
+      gap={2}
+      p={1}
+      m={2}
+      pointerEvents={'auto'}
+    >
+      {/* TOPP: kart-flis + søkefelt */}
+      <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
+        <Flex alignItems="center" gap={2}>
+          {/* Kart-flis til venstre */}
+          <Box
+            width="46px"
+            height="44px"
+            borderRadius={8}
+            overflow="hidden"
+            cursor="pointer"
+            onClick={toggleBackgroundSettings}
+            boxShadow="md"
+          >
+            <Image
+              src={backgroundImageUrl}
+              alt="Velg bakgrunnskart"
+              width="100%"
+              height="100%"
+              objectFit="cover"
+            />
+          </Box>
+
           <Box position="relative" width="100%">
             <Search
               width="100%"
@@ -164,22 +200,25 @@ export const SearchComponent = () => {
               <SearchIcon />
             </Box>
           </Box>
+        </Flex>
+      </Box>
+      {showBackgroundSettings ? (
+        <Box bg="white" borderRadius="md" boxShadow="md" width="100%">
+          <BackgroundLayerSettings />
         </Box>
-
-        {coordinateResult ? (
-          <CoordinateResults
-            coordinateResult={coordinateResult}
-            setSelectedResult={setSelectedResult}
-            hoveredResult={hoveredResult}
-            setHoveredResult={setHoveredResult}
-          />
-        ) : (
-          <SearchResults
-            hoveredResult={hoveredResult}
-            setHoveredResult={setHoveredResult}
-          />
-        )}
-      </Flex>
-    </Box>
+      ) : coordinateResult ? (
+        <CoordinateResults
+          coordinateResult={coordinateResult}
+          setSelectedResult={setSelectedResult}
+          hoveredResult={hoveredResult}
+          setHoveredResult={setHoveredResult}
+        />
+      ) : (
+        <SearchResults
+          hoveredResult={hoveredResult}
+          setHoveredResult={setHoveredResult}
+        />
+      )}
+    </Flex>
   );
 };
