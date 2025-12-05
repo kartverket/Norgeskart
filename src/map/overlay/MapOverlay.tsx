@@ -24,17 +24,6 @@ export const MapOverlay = () => {
 
   useFeatureInfoClick();
 
-  // /* eslint-disable react-hooks/exhaustive-deps */
-  // useEffect(() => {
-  //   if (currentMapTool !== 'draw' && drawEnabled) {
-  //     setDrawEnabled(false);
-  //   }
-  //   if (currentMapTool === 'draw' && !drawEnabled) {
-  //     setDrawEnabled(true);
-  //   }
-  // }, [currentMapTool, setDrawEnabled]);
-  // /* eslint-enable react-hooks/exhaustive-deps */
-
   return (
     <ErrorBoundary
       fallback={undefined}
