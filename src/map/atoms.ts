@@ -120,9 +120,6 @@ export const mapAtom = atom<Map>(() => {
   const intialView = getInitialMapView();
 
   map.setView(intialView);
-  // map.addControl(
-  //   new ScaleLine({ minWidth: 160, bar: true, text: true, units: 'metric' }),
-  // );
   map.on('moveend', (e) => {
     const view = e.map.getView();
     const center = view.getCenter();
