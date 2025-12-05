@@ -8,6 +8,9 @@
     },
     "settings": {
       "text": "Innstillinger"
+    },
+    "draw": {
+      "text": "Tekne og måle"
     }
   },
   "draw": {
@@ -45,7 +48,7 @@
     "size": {
       "label": "Storleik"
     },
-    "tabHeading": "Tekne",
+    "tabHeading": "Tekne og måle",
     "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {

@@ -8,6 +8,9 @@
     },
     "settings": {
       "text": "Settings"
+    },
+    "draw": {
+      "text": "Draw and measure"
     }
   },
   "draw": {
@@ -45,7 +48,7 @@
     "size": {
       "label": "Size"
     },
-    "tabHeading": "Draw",
+    "tabHeading": "Draw and measure",
     "textInputLabel": "Enter text",
     "tools": "Tools",
     "yesClear": "Yes clear"

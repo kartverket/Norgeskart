@@ -78,7 +78,6 @@ export const useDrawActions = () => {
       console.warn('Not an edit style action');
       return;
     }
-    console.log(action);
     action.details.forEach((styleChange) => {
       const drawLayer = getDrawLayer();
       const drawSource = drawLayer?.getSource();

@@ -27,6 +27,7 @@ import {
   removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
 
+import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
 import { getDrawLayer } from './mapLayers';
 
@@ -178,6 +179,14 @@ const useDrawSettings = () => {
     const feature = drawSource.getFeatureById(featureId);
     if (feature) {
       removeFeatureMeasurementOverlay(feature);
+      const iconOverlay = map.getOverlayById(
+        `${ICON_OVERLAY_PREFIX}${featureId}`,
+      );
+      if (iconOverlay) {
+        iconOverlay.getElement()?.remove();
+        map.removeOverlay(iconOverlay);
+      }
+
       drawSource.removeFeature(feature);
     }
   };
@@ -192,6 +201,10 @@ const useDrawSettings = () => {
     drawSource.addFeature(feature);
     if (showMeasurements) {
       enableFeatureMeasurmentOverlay(feature);
+    }
+    const iconProps = getFeatureIcon(feature);
+    if (iconProps) {
+      addIconOverlayToPointFeature(feature, iconProps);
     }
   };
 
