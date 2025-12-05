@@ -97,7 +97,7 @@ export const MapOverlay = () => {
 
         <GridItem
           gridColumn="1"
-          gridRow={{ base: 4, md: 4, lg: 5 }}
+          gridRow={{ base: 4, md: 5, lg: 5 }}
           alignContent="end"
           mb={4}
           ml={4}
@@ -113,7 +113,7 @@ export const MapOverlay = () => {
           }}
           gridRow="5"
           alignContent={'end'}
-          justifySelf={'center'}
+          justifySelf={{ md: 'center' }}
           mb={{ base: 0, md: 4 }}
         >
           <MapToolButtons />
@@ -122,7 +122,7 @@ export const MapOverlay = () => {
         <GridItem
           justifySelf="end"
           alignContent="end"
-          gridRow={{ base: 4, md: 4, lg: 5 }}
+          gridRow={{ base: 4, md: 5, lg: 5 }}
           gridColumn={{ base: 3, md: 5 }}
           mb={5}
           mr={4}
