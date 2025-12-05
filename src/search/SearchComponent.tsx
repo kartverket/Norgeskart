@@ -151,9 +151,16 @@ export const SearchComponent = () => {
   }, [mapClickHandler, map]);
 
   return (
-    <Flex flexDir="column" alignItems="stretch" gap={2} p={1} m={2}>
+    <Flex
+      flexDir="column"
+      alignItems="stretch"
+      gap={2}
+      p={1}
+      m={2}
+      pointerEvents={'auto'}
+    >
       {/* TOPP: kart-flis + søkefelt */}
-      <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
+      <Box backgroundColor="#FFFF" p={2} borderRadius={10} maxWidth="450px">
         <Flex alignItems="center" gap={2}>
           {/* Kart-flis til venstre */}
           <Box

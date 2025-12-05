@@ -1,4 +1,4 @@
-import { Box, IconButton } from '@kvib/react';
+import { IconButton, VStack } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useIsMobileScreen } from '../shared/hooks';
 import { mapOrientationDegreesAtom } from './atoms';
@@ -33,45 +33,63 @@ export const MapControlButtons = () => {
     }
   };
 
+  const orientationButton = (
+    <IconButton
+      variant="ghost"
+      colorPalette="green"
+      size="lg"
+      icon="navigation"
+      aria-label="Nullstill rotasjon"
+      onClick={() => setMapAngle(0)}
+      style={{ transform: `rotate(${mapOrientation}deg)` }}
+    />
+  );
+
+  const myLocationButton = (
+    <IconButton
+      variant="ghost"
+      colorPalette="green"
+      size="lg"
+      icon="my_location"
+      aria-label="Min posisjon"
+      onClick={handleMapLocationClick}
+    />
+  );
+
   return (
-    <Box
-      className="custom-controls"
-      position="absolute"
-      bottom="35px"
-      right="16px"
-      zIndex={10}
+    <VStack
       bg="#FFFF"
       borderRadius="xl"
-      px={3}
-      py={2}
-      display="flex"
-      flexDirection="column"
       alignItems="center"
+      w="48px"
+      pointerEvents="auto"
     >
-      {/* Zoom */}
-      <IconButton
-        variant="ghost"
-        colorPalette="green"
-        size="lg"
-        icon="add"
-        aria-label="Zoom inn"
-        onClick={zoomIn}
-      />
-      <IconButton
-        variant="ghost"
-        colorPalette="green"
-        size="lg"
-        icon="remove"
-        aria-label="Zoom ut"
-        onClick={zoomOut}
-      />
-
-      {/* Separator */}
-      <Box w="60%" h="1px" bg="rgba(255,255,255,0.2)" my={1} />
-
-      {/* Rotasjon */}
-      {!isMobile && (
+      {isMobile ? (
         <>
+          {orientationButton}
+          {myLocationButton}
+        </>
+      ) : (
+        <>
+          {/* Zoom */}
+          <IconButton
+            variant="ghost"
+            colorPalette="green"
+            size="lg"
+            icon="add"
+            aria-label="Zoom inn"
+            onClick={zoomIn}
+          />
+          <IconButton
+            variant="ghost"
+            colorPalette="green"
+            size="lg"
+            icon="remove"
+            aria-label="Zoom ut"
+            onClick={zoomOut}
+          />
+
+          {/* Rotasjon */}
           <IconButton
             variant="ghost"
             colorPalette="green"
@@ -80,15 +98,7 @@ export const MapControlButtons = () => {
             aria-label="Roter venstre"
             onClick={() => rotateSnappy('left')}
           />
-          <IconButton
-            variant="ghost"
-            colorPalette="green"
-            size="lg"
-            icon="navigation"
-            aria-label="Nullstill rotasjon"
-            onClick={() => setMapAngle(0)}
-            style={{ transform: `rotate(${mapOrientation}deg)` }}
-          />
+          {orientationButton}
           <IconButton
             variant="ghost"
             colorPalette="green"
@@ -97,27 +107,19 @@ export const MapControlButtons = () => {
             aria-label="Roter høyre"
             onClick={() => rotateSnappy('right')}
           />
+
+          {/* Andre handlinger */}
+          {myLocationButton}
+          <IconButton
+            variant="ghost"
+            colorPalette="green"
+            size="lg"
+            icon="fullscreen"
+            aria-label="Fullskjerm"
+            onClick={handleFullScreenClick}
+          />
         </>
       )}
-      {/* Separator */}
-      <Box w="60%" h="1px" bg="rgba(255,255,255,0.2)" my={1} />
-      {/* Andre handlinger */}
-      <IconButton
-        variant="ghost"
-        colorPalette="green"
-        size="lg"
-        icon="my_location"
-        aria-label="Min posisjon"
-        onClick={handleMapLocationClick}
-      />
-      <IconButton
-        variant="ghost"
-        colorPalette="green"
-        size="lg"
-        icon="fullscreen"
-        aria-label="Fullskjerm"
-        onClick={handleFullScreenClick}
-      />
-    </Box>
+    </VStack>
   );
 };

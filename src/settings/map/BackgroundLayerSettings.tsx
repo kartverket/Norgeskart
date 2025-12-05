@@ -71,11 +71,11 @@ const LayerCard = ({
     alignItems="center"
     width="135px"
     justifyContent="center"
-    maxHeight="116px"
-    padding={14}
+    maxHeight="100px"
+    padding={10}
   >
     <VStack>
-      <Box width="96px" height="76px" borderRadius="md" overflow="hidden">
+      <Box width="46px" height="46px" borderRadius="md" overflow="hidden">
         <Image src={thumbnailUrl} alt={label} width="100%" objectFit="cover" />
       </Box>
       <Text fontSize="xs" textAlign="center" lineHeight="short">
@@ -94,7 +94,7 @@ const BackgroundLayerGrid = ({
   currentLayer: BackgroundLayerName;
   setLayer: (layer: BackgroundLayerName) => void;
 }) => (
-  <SimpleGrid columns={2} justifyItems="center" gap={3}>
+  <SimpleGrid columns={2} justifyItems="center" gap={0}>
     {layers.map((layer) => (
       <LayerCard
         key={layer.value}
@@ -178,13 +178,8 @@ export const BackgroundLayerSettings = () => {
   };
 
   return (
-    <Flex flexDir="column" gap={2} p={4}>
-      <Box
-        position="relative"
-        width="100%"
-        backgroundColor="#FFFF"
-        borderRadius={10}
-      >
+    <Flex flexDir="column">
+      <Box position="relative" backgroundColor="#FFFF" borderRadius={10}>
         <BackgroundLayerGrid
           layers={sortedLayers}
           currentLayer={currentLayer}

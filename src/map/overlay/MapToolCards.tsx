@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, IconButton } from '@kvib/react';
+import { Box, Flex, Heading, IconButton, VStack } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapSettings } from '../../settings/map/MapSettings';
@@ -43,25 +43,21 @@ interface MapToolCardProps {
 }
 const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
-    <Box
-      position="fixed"
-      top={'16px'}
-      left={'16px'}
-      width="20vw"
-      minWidth="350px"
-      height="80vh"
-      zIndex={2000}
+    <VStack
+      width={{ base: '100%', md: '450px' }}
       pointerEvents="auto"
-      bg="#f5f2f2"
+      bg="#FFFF"
       shadow="lg"
-      display="flex"
-      flexDirection="column"
       borderRight="1px solid rgba(0,0,0,0.1)"
-      px={4}
+      px={8}
       py={4}
+      m={{ base: 0, md: 1, lg: 4 }}
       borderRadius={'16px'}
+      borderBottomLeftRadius={{ base: '0px', md: '16px' }}
+      borderBottomRightRadius={{ base: '0px', md: '16px' }}
+      maxHeight="45vh"
     >
-      <Flex justify="space-between">
+      <Flex justify="center" gap="2" w={'100%'}>
         <Heading fontWeight="bold" mb="2rem">
           {label}
         </Heading>
@@ -76,9 +72,9 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
           size="sm"
         />
       </Flex>
-      <Box overflowY="auto" height={'100%'}>
+      <Box overflowY="auto" height={'100%'} w={'100%'}>
         {children}
       </Box>
-    </Box>
+    </VStack>
   );
 };
