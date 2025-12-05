@@ -160,7 +160,7 @@ export const SearchComponent = () => {
       pointerEvents={'auto'}
     >
       {/* TOPP: kart-flis + søkefelt */}
-      <Box backgroundColor="#FFFF" p={2} borderRadius={10}  maxWidth="450px">
+      <Box backgroundColor="#FFFF" p={2} borderRadius={10} maxWidth="450px">
         <Flex alignItems="center" gap={2}>
           {/* Kart-flis til venstre */}
           <Box

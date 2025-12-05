@@ -2,7 +2,6 @@ import { Grid, GridItem } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
-import { allSearchResultsAtom, searchQueryAtom } from '../../search/atoms';
 import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
