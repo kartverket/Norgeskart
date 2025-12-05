@@ -38,13 +38,6 @@ export const MapOverlay = () => {
     }
   }, [currentMapTool, setDrawEnabled]);
   /* eslint-enable react-hooks/exhaustive-deps */
-
-  const allResults = useAtomValue(allSearchResultsAtom);
-  const searchQuery = useAtomValue(searchQueryAtom);
-
-  // true når vi faktisk har noe å vise i resultater
-  const hasSearchResults = allResults.length > 0 && searchQuery !== '';
-
   return (
     <ErrorBoundary
       fallback={undefined}

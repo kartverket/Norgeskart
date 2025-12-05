@@ -92,6 +92,7 @@ export const SearchResults = ({
       borderRadius={'16px'}
       maxHeight="30vh"
       display={'flex'}
+      maxWidth={"450px"}
     >
       <Box overflowY="auto" overflowX="hidden" minHeight="0px">
         <AccordionRoot
