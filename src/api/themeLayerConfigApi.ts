@@ -74,7 +74,7 @@ const CATEGORY_FILES = [
   'outdoorRecreation',
   //'placeNames',
   'facts',
-  'accessibility',
+  'tilgjengelighet',
   'fastmerker',
   //'nrl',
   'dekning',

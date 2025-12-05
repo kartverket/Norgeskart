@@ -1,7 +1,7 @@
 {
   "categories": [
     {
-      "id": "accessibility",
+      "id": "tilgjengelighet",
       "groupid": 11,
       "name": {
         "nb": "Tilgjengelighet",
@@ -346,7 +346,7 @@
         "en": "Village - Wheelchair"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
-      "parentId": "accessibility"
+      "parentId": "tilgjengelighet"
     },
     {
       "id": "accessibilityVillageElectricWheelchair",
@@ -357,7 +357,7 @@
         "en": "Village - Electric wheelchair"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
-      "parentId": "accessibility"
+      "parentId": "tilgjengelighet"
     },
     {
       "id": "accessibilityVillageSight",
@@ -368,7 +368,7 @@
         "en": "Village - Sight"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
-      "parentId": "accessibility"
+      "parentId": "tilgjengelighet"
     },
     {
       "id": "accessibilityRecreationWheelchair",
@@ -379,7 +379,7 @@
         "en": "Recreation - Wheelchair"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
-      "parentId": "accessibility"
+      "parentId": "tilgjengelighet"
     },
     {
       "id": "accessibilityRecreationElectricWheelchair",
@@ -390,7 +390,7 @@
         "en": "Recreation - Electric wheelchair"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
-      "parentId": "accessibility"
+      "parentId": "tilgjengelighet"
     },
     {
       "id": "accessibilityRecreationSight",
@@ -401,7 +401,7 @@
         "en": "Recreation - Sight"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
-      "parentId": "accessibility"
+      "parentId": "tilgjengelighet"
     },
     {
       "id": "accessibilityShared",
@@ -412,7 +412,7 @@
         "en": "Shared"
       },
       "wmsUrl": "https://wms.geonorge.no/skwms1/wms.tilgjengelighet3",
-      "parentId": "accessibility"
+      "parentId": "tilgjengelighet"
     }
   ],
   "layers": [
