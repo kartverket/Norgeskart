@@ -1,14 +1,11 @@
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { useMapInteractions } from './mapInterations';
-import { useMapLayers } from './mapLayers';
+import { getSelectInteraction } from './mapInterations';
+import { getDrawLayer } from './mapLayers';
 
 type MoveDirection = 'up' | 'down';
 
 export const useVerticalMove = () => {
-  const { getSelectInteraction } = useMapInteractions();
-  const { getDrawLayer } = useMapLayers();
-
   const getExtremaOtherFeatures = (
     feature: Feature<Geometry>,
     type: 'max' | 'min',
@@ -119,4 +116,19 @@ export const useVerticalMove = () => {
   };
 
   return { getHighestZIndex, moveSelectedUp, moveSelectedDown };
+};
+
+export const getHighestZIndex = () => {
+  const drawLayer = getDrawLayer();
+  if (!drawLayer) {
+    return 0;
+  }
+  const drawnFeatures = drawLayer.getSource()?.getFeatures() as
+    | Feature<Geometry>[]
+    | undefined;
+  if (!drawnFeatures) {
+    return 0;
+  }
+  const zIndecies = drawnFeatures.map((f) => f.get('zIndex') | 0);
+  return Math.max(...zIndecies);
 };

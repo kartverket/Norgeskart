@@ -10,7 +10,7 @@ import Select from 'ol/interaction/Select';
 import VectorLayer from 'ol/layer/Vector';
 import {
   distanceUnitAtom,
-  drawTypeStateAtom,
+  drawTypeAtom,
   lineWidthAtom,
   primaryColorAtom,
   secondaryColorAtom,
@@ -146,7 +146,7 @@ export const drawStyleEffect = atomEffect((get) => {
   const secondaryColor = get(secondaryColorAtom);
   const lineWidth = get(lineWidthAtom);
   const map = get(mapAtom);
-  const drawType = get(drawTypeStateAtom);
+  const drawType = get(drawTypeAtom);
   const drawInteraction = getDrawInteraction(map);
   if (!drawInteraction) {
     return;

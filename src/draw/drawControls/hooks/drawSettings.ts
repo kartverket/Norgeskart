@@ -2,14 +2,10 @@ import { MaterialSymbol } from '@kvib/react';
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
-import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Geometry, Point } from 'ol/geom';
-import Draw, { DrawEvent } from 'ol/interaction/Draw';
-import Modify from 'ol/interaction/Modify.js';
-import Select from 'ol/interaction/Select';
-import Translate from 'ol/interaction/Translate';
+import { DrawEvent } from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -18,14 +14,8 @@ import { StyleForStorage } from '../../../api/nkApiClient';
 import { mapAtom, ProjectionIdentifier } from '../../../map/atoms';
 import {
   drawEnabledAtom,
-  drawStyleReadAtom,
-  drawTypeStateAtom,
-  lineWidthAtom,
-  pointIconAtom,
-  primaryColorAtom,
+  drawTypeAtom,
   showMeasurementsAtom,
-  textInputAtom,
-  textStyleReadAtom,
 } from '../../../settings/draw/atoms';
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
 import { removeUrlParameter } from '../../../shared/utils/urlUtils';
@@ -36,15 +26,9 @@ import {
   removeFeatureMeasurementOverlay,
   removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
-import {
-  handleFeatureSelectDone,
-  handleModifyEnd,
-  handleModifyStart,
-  handleSelect,
-} from './drawEventHandlers';
-import { useMapInteractions } from './mapInterations';
-import { useMapLayers } from './mapLayers';
-import { useVerticalMove } from './verticalMove';
+
+import { getDrawInteraction, getSelectInteraction } from './mapInterations';
+import { getDrawLayer } from './mapLayers';
 
 export const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 export const INTERACTIVE_OVERLAY_PREFIX = 'interactive-overlay-';
@@ -75,157 +59,17 @@ export type DrawType =
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
-  const [drawType, setDrawTypeState] = useAtom(drawTypeStateAtom);
-  const [drawEnabled, setDrawAtomEnabled] = useAtom(drawEnabledAtom);
+  const [drawType, _] = useAtom(drawTypeAtom);
+  const drawEnabled = useAtomValue(drawEnabledAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
-  const { getHighestZIndex } = useVerticalMove();
-
-  const { getSelectInteraction, getTranslateInteraction, getDrawInteraction } =
-    useMapInteractions();
-  const { getDrawLayer } = useMapLayers();
 
   const { addDrawAction, resetActions } = useDrawActionsState();
   const mapProjection = map.getView().getProjection().getCode();
-
-  const setDrawEnabled = (enable: boolean) => {
-    const drawInteraction = getDrawInteraction();
-    const selectInteraction = getSelectInteraction();
-    const translateInteraction = getTranslateInteraction();
-    if (drawInteraction) {
-      map.removeInteraction(drawInteraction);
-    }
-    if (enable) {
-      setDrawType('Polygon');
-    }
-    if (!enable) {
-      if (selectInteraction) {
-        const features = selectInteraction.getFeatures();
-        map.removeInteraction(selectInteraction);
-        features.forEach(handleFeatureSelectDone);
-      }
-      if (translateInteraction) {
-        map.removeInteraction(translateInteraction);
-      }
-    }
-    setDrawAtomEnabled(enable);
-  };
-
-  const setDrawType = (type: DrawType) => {
-    const draw = getDrawInteraction();
-    const select = getSelectInteraction();
-    const translate = getTranslateInteraction();
-    if (select) {
-      const features = select.getFeatures();
-      map.removeInteraction(select);
-      features.forEach(handleFeatureSelectDone);
-    }
-    if (translate) {
-      map.removeInteraction(translate);
-    }
-    if (draw) {
-      map.removeInteraction(draw);
-    }
-
-    if (type === 'Move') {
-      const drawLayer = getDrawLayer();
-      const selectInteraction = new Select({
-        layers: [drawLayer],
-        style: null,
-      });
-      selectInteraction.addEventListener('select', handleSelect);
-      map.addInteraction(selectInteraction);
-
-      const translateInteraction = new Translate({
-        features: selectInteraction.getFeatures(),
-      });
-
-      translateInteraction.addEventListener(
-        'translatestart',
-        handleModifyStart,
-      );
-      translateInteraction.addEventListener('translateend', handleModifyEnd);
-
-      const modifyInteraction = new Modify({
-        features: selectInteraction.getFeatures(),
-      });
-
-      modifyInteraction.addEventListener('modifystart', handleModifyStart);
-      modifyInteraction.addEventListener('modifyend', handleModifyEnd);
-      map.addInteraction(translateInteraction);
-      map.addInteraction(modifyInteraction);
-      setDrawTypeState(type);
-      return;
-    }
-
-    const drawLayer = getDrawLayer();
-
-    const newDraw = new Draw({
-      source: drawLayer.getSource() as VectorSource,
-      type: type === 'Text' ? 'Point' : type,
-      condition: (e) => noModifierKeys(e) && primaryAction(e),
-    });
-
-    const store = getDefaultStore();
-    const style = store.get(drawStyleReadAtom);
-
-    newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
-    newDraw.getOverlay().setStyle(style);
-    newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
-      drawEnd(event);
-    });
-    map.addInteraction(newDraw);
-
-    setShowMeasurements(showMeasurements);
-    setDrawTypeState(type);
-  };
-
   const getDrawnFeatures = () => {
     return getDrawLayer()?.getSource()?.getFeatures() as
       | Feature<Geometry>[]
       | undefined;
-  };
-
-  const drawEnd = (event: BaseEvent | Event) => {
-    const drawEvent = event as DrawEvent;
-    const eventFeature = drawEvent.feature;
-    const store = getDefaultStore();
-    const drawType = store.get(drawTypeStateAtom);
-    const zIndex = getHighestZIndex() + 1;
-    const featureId = uuidv4();
-    eventFeature.setId(featureId);
-    if (drawType === 'Point') {
-      const icon = store.get(pointIconAtom);
-      if (icon) {
-        const pointIcon = {
-          icon: icon,
-          color: store.get(primaryColorAtom),
-          size: store.get(lineWidthAtom),
-        };
-        addIconOverlayToPointFeature(eventFeature, pointIcon);
-      }
-    } else {
-      const style = store.get(drawStyleReadAtom);
-      style.setZIndex(zIndex);
-      eventFeature.setStyle(style);
-    }
-    if (drawType === 'Text') {
-      const text = store.get(textInputAtom);
-      const style = store.get(textStyleReadAtom).clone();
-      const textStyle = style.getText();
-      if (textStyle) {
-        textStyle.setText(text);
-      }
-      style.setZIndex(zIndex);
-      eventFeature.setStyle(style);
-    }
-
-    eventFeature.set('zIndex', zIndex);
-    addDrawAction({
-      type: 'CREATE',
-      featureId: featureId,
-      details: { feature: eventFeature },
-    });
   };
 
   const getDrawType = () => {
@@ -580,8 +424,6 @@ const useDrawSettings = () => {
     removeDrawnFeatureById,
     addFeature,
     setDrawLayerFeatures,
-    setDrawEnabled,
-    setDrawType,
     setShowMeasurements,
     undoLast,
     abortDrawing,
