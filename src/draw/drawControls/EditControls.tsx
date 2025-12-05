@@ -1,5 +1,5 @@
 import { HStack, IconButton, Tooltip } from '@kvib/react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DrawAction } from '../../settings/draw/drawActions/atoms';
 import { useDrawActionsState } from '../../settings/draw/drawActions/drawActionsHooks';
@@ -13,32 +13,38 @@ export const EditControls = () => {
   const { addDrawAction } = useDrawActionsState();
   const { t } = useTranslation();
 
-  const featureMovedListener = (e: Event) => {
-    if (e instanceof CustomEvent) {
-      const action: DrawAction = {
-        type: 'MOVE',
-        details: {
-          featuresMoved: e.detail,
-        },
-      };
-      addDrawAction(action);
-    }
-  };
+  const featureMovedListener = useCallback(
+    (e: Event) => {
+      if (e instanceof CustomEvent) {
+        const action: DrawAction = {
+          type: 'MOVE',
+          details: {
+            featuresMoved: e.detail,
+          },
+        };
+        addDrawAction(action);
+      }
+    },
+    [addDrawAction],
+  );
 
-  const featureStyleChangedListener = (e: Event) => {
-    if (e instanceof CustomEvent) {
-      const action: DrawAction = {
-        type: 'EDIT_STYLE',
-        details: e.detail as StyleChangeDetail[],
-      };
-      addDrawAction(action);
-    }
-  };
+  const featureStyleChangedListener = useCallback(
+    (e: Event) => {
+      if (e instanceof CustomEvent) {
+        const action: DrawAction = {
+          type: 'EDIT_STYLE',
+          details: e.detail as StyleChangeDetail[],
+        };
+        addDrawAction(action);
+      }
+    },
+    [addDrawAction],
+  );
   useEffect(() => {
     document.addEventListener('featureMoved', featureMovedListener);
     return () =>
       document.removeEventListener('featureMoved', featureMovedListener);
-  });
+  }, [featureMovedListener]);
   useEffect(() => {
     document.addEventListener(
       'featureStyleChanged',
@@ -49,7 +55,7 @@ export const EditControls = () => {
         'featureStyleChanged',
         featureStyleChangedListener,
       );
-  });
+  }, [featureStyleChangedListener]);
 
   if (drawType !== 'Move') {
     return null;
