@@ -32,7 +32,7 @@ export const ScaleSelector = () => {
         }
       }}
     >
-      <SelectTrigger>
+      <SelectTrigger className={'toolbar-select-trigger'}>
         <SelectValueText color="white" placeholder={label}></SelectValueText>
       </SelectTrigger>
       <SelectContent>
