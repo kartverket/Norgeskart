@@ -2,7 +2,7 @@ import Map from 'ol/Map';
 import { getPointResolution } from 'ol/proj';
 
 //DPI (dots per inch) based on the standard 0.28 mm per pixel used by OpenLayers
-//Used to convert between pixels and real-world size
+// Note: This is not the actual screen DPI, but a reference value for map scale calculations.
 const DPI = 25.4 / 0.28;
 const METERS_PER_INCH = 0.0254;
 
