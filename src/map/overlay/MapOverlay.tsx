@@ -21,6 +21,8 @@ export const MapOverlay = () => {
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
   const isMobile = useIsMobileScreen();
+  const isToolOpen = currentMapTool !== null;
+
 
   useFeatureInfoClick();
 
@@ -37,8 +39,9 @@ export const MapOverlay = () => {
         height={'100%'}
         width={'100%'}
         gridTemplateColumns={{
-          base: '1fr',
+          base: 'repeat(12, 1fr)',
           md: 'repeat(5, 1fr)',
+          lg: 'repeat(5, 1fr)',
         }}
         gridTemplateRows={{
           base: 'auto 1fr auto auto',
@@ -49,7 +52,7 @@ export const MapOverlay = () => {
       >
         <GridItem
           gridColumn={{
-            base: '1 / span 4',
+            base: '1 / span 12',
             md: '1 / span 3',
             lg: '1 / span 2',
             xl: '1  / span 2',
@@ -59,8 +62,8 @@ export const MapOverlay = () => {
           {showSearchComponent && <SearchComponent />}
         </GridItem>
         <GridItem
-          gridColumn="1 / span 4"
-          gridRow={{ base: 4, md: 1 }}
+          gridColumn={{base:'1 / span 12', md:'1 / span 4'}}
+          gridRow={{ base: 5, md: 1 }}
           zIndex={1}
         >
           <MapToolCards
@@ -75,18 +78,19 @@ export const MapOverlay = () => {
         </GridItem>
 
         <GridItem
-          gridColumn="1"
+          gridColumn={{base:'1 / span 4'}}
           gridRow={{ base: 4, md: 5, lg: 5 }}
-          alignContent="end"
-          mb={4}
-          ml={4}
+          alignContent={{base:'start', md:'end'}}
+          mb={{base:'0', md:4}}
+          ml={{base:'1', md:'4'}}
+          display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
           <LinkLogo />
         </GridItem>
 
         <GridItem
           gridColumn={{
-            base: '1 / span 4',
+            base: '3 / span 9',
             md: '2 / span 3',
             lg: '2 / span 3',
           }}
@@ -102,9 +106,10 @@ export const MapOverlay = () => {
           justifySelf="end"
           alignContent="end"
           gridRow={{ base: 4, md: 5, lg: 5 }}
-          gridColumn={{ base: 3, md: 5 }}
-          mb={5}
-          mr={4}
+          gridColumn={{ base: 12, md: 5 }}
+          mb={{base:'3', md:'5'}}
+          mr={{base:'2', md:'3'}}
+          display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
           <MapControlButtons />
         </GridItem>
