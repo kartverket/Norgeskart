@@ -57,3 +57,11 @@ const MinKomponent = () => {
   return <>{t('path.til.det.du.vil.sette')}</>;
 };
 ```
+
+## Nettleserkompatibilitet
+
+En gang i bland, kjør føglende for å holde caniuse-db oppdatert
+
+```sh
+npx update-browserslist-db@latest
+```
