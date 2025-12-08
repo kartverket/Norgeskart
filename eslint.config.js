@@ -36,16 +36,12 @@ export default defineConfig(
   },
 
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{ts,tsx}'],
     plugins: {
       compat,
     },
     rules: {
-      // Fail CI if an unsupported Web API is used
       'compat/compat': 'error',
     },
-    // // Option B (recommended): omit `settings.targets` and define Browserslist in package.json.
-    // // eslint-plugin-compat will read it automatically:
-    // browserslist: ['>0.5%', 'last 2 versions', 'not dead'],
   },
 );
