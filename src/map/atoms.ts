@@ -118,6 +118,7 @@ export const mapAtom = atom<Map>(() => {
 
   map.addLayer(mapLayers.markerLayer.getLayer());
   map.addLayer(mapLayers.drawLayer.getLayer());
+  map.addLayer(mapLayers.drawOverlayLayer.getLayer());
 
   const intialView = getInitialMapView();
 

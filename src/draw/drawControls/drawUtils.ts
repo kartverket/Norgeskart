@@ -2,6 +2,7 @@ import { getDefaultStore } from 'jotai';
 import { Feature, Overlay } from 'ol';
 import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
 import { getArea, getLength } from 'ol/sphere';
+import { Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../map/atoms';
 import {
   DistanceUnit,
@@ -15,6 +16,7 @@ import {
   MEASUREMNT_ELEMENT_PREFIX,
   MEASUREMNT_OVERLAY_PREFIX,
 } from './hooks/drawSettings';
+import { getDrawOverlayLayer } from './hooks/mapLayers';
 
 const getMeasurementText = (
   geometry: Geometry,
@@ -36,6 +38,16 @@ const getMeasurementText = (
     measurementText = formatDistance(radius, unit);
   }
   return measurementText;
+};
+
+const getCircleRadiusMeasurementText = (circle: Circle, unit: DistanceUnit) => {
+  const radius = circle.getRadius();
+  return 'r: ' + formatDistance(radius, unit);
+};
+
+const getCircleAreaMeasurementText = (circle: Circle, unit: DistanceUnit) => {
+  const area = circle.getRadius() * circle.getRadius() * Math.PI;
+  return 'A: ' + formatArea(area, unit);
 };
 
 const getGeometryPositionForOverlay = (geometry: Geometry) => {
@@ -78,26 +90,97 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
   }
 
   const projection = map.getView().getProjection().getCode();
-  const measurementText = getMeasurementText(geometry, projection, unit);
 
-  const overlayPosition = getGeometryPositionForOverlay(geometry);
-  if (!overlayPosition) {
-    return;
+  if (geometry instanceof Circle) {
+    const radiusText = getCircleRadiusMeasurementText(geometry, unit);
+    const areaText = getCircleAreaMeasurementText(geometry, unit);
+
+    const elmArea = document.createElement('div');
+    elmArea.id = MEASUREMNT_ELEMENT_PREFIX + featId + 'area';
+    elmArea.classList.add(
+      'ol-tooltip',
+      'ol-tooltip-static',
+      'ol-tooltip-measure-arrow-down',
+      'ol-tooltip-static-arrow-down',
+    );
+    elmArea.style.userSelect = 'text';
+    elmArea.innerHTML = areaText;
+
+    const areaOverlay = new Overlay({
+      element: elmArea,
+      offset: [0, -9],
+      positioning: 'bottom-center',
+      id: MEASUREMNT_OVERLAY_PREFIX + featId + 'area',
+      position: geometry.getCenter(),
+    });
+    map.addOverlay(areaOverlay);
+
+    const center = geometry.getCenter();
+    const radius = geometry.getRadius();
+    const angle = 0; // 0 radians = east/right
+    const edge = [
+      center[0] + radius * Math.cos(angle),
+      center[1] + radius * Math.sin(angle),
+    ];
+
+    const midPoint = [
+      center[0] + (radius / 2) * Math.cos(angle),
+      center[1] + (radius / 2) * Math.sin(angle),
+    ];
+
+    // Create a LineString from center to edge
+    const radiusLine = new Feature(new LineString([center, edge]));
+    radiusLine.setStyle(
+      new Style({
+        stroke: new Stroke({
+          color: 'red',
+          width: 2,
+          lineDash: [10, 10],
+        }),
+      }),
+    );
+    getDrawOverlayLayer().getSource()?.addFeature(radiusLine);
+
+    const elmRadius = document.createElement('div');
+    elmRadius.id = MEASUREMNT_ELEMENT_PREFIX + featId + 'radius';
+    elmRadius.classList.add(
+      'ol-tooltip',
+      'ol-tooltip-static',
+      'ol-tooltip-measure-arrow-up',
+      'ol-tooltip-static-arrow-up',
+    );
+    elmRadius.innerHTML = radiusText;
+    const radiusOverlay = new Overlay({
+      element: elmRadius,
+      offset: [0, 6],
+      positioning: 'top-center',
+      id: MEASUREMNT_OVERLAY_PREFIX + featId + 'radius',
+      position: midPoint,
+    });
+
+    map.addOverlay(radiusOverlay);
+  } else {
+    const measurementText = getMeasurementText(geometry, projection, unit);
+
+    const overlayPosition = getGeometryPositionForOverlay(geometry);
+    if (!overlayPosition) {
+      return;
+    }
+    const elm = document.createElement('div');
+    elm.id = MEASUREMNT_ELEMENT_PREFIX + featId;
+    elm.classList.add('ol-tooltip', 'ol-tooltip-measure', 'ol-tooltip-static');
+    elm.innerHTML = measurementText;
+
+    const toolTip = new Overlay({
+      element: undefined,
+      offset: [0, -15],
+      positioning: 'bottom-center',
+      id: MEASUREMNT_OVERLAY_PREFIX + featId,
+    });
+    toolTip.setElement(elm);
+    toolTip.setPosition(overlayPosition);
+    map.addOverlay(toolTip);
   }
-  const elm = document.createElement('div');
-  elm.id = MEASUREMNT_ELEMENT_PREFIX + featId;
-  elm.classList.add('ol-tooltip', 'ol-tooltip-measure', 'ol-tooltip-static');
-  elm.innerHTML = measurementText;
-
-  const toolTip = new Overlay({
-    element: elm,
-    offset: [0, -15],
-    positioning: 'bottom-center',
-    id: MEASUREMNT_OVERLAY_PREFIX + featId,
-  });
-
-  toolTip.setPosition(overlayPosition);
-  map.addOverlay(toolTip);
 };
 
 const removeFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
