@@ -1,36 +1,36 @@
 import Map from 'ol/Map';
 import { getPointResolution } from 'ol/proj';
 
-const DPI = 96;
+//DPI (dots per inch) based on the standard 0.28 mm per pixel used by OpenLayers
+//Used to convert between pixels and real-world size
+const DPI = 25.4 / 0.28;
 const METERS_PER_INCH = 0.0254;
 
-//Converts map resolution (meters per pixel) to scale
-export const getScaleFromResolution = (
-  resolution: number,
-  map: Map,
-  round = true,
-) => {
+//Converts map resolutions to a map scale
+//Resolution depeonds on the map projection and the map's current center
+export const getScaleFromResolution = (resolution: number, map: Map) => {
+  const view = map.getView();
+  const projection = view.getProjection();
+  const center = view.getCenter()!;
+
+  const pointResolution = getPointResolution(projection, resolution, center);
+
+  const metersPerPixel = pointResolution;
+
+  const scale = (metersPerPixel * DPI) / METERS_PER_INCH;
+  return Math.round(scale);
+};
+
+export const scaleToResolution = (scale: number, map: Map) => {
   const view = map.getView();
   const projection = view.getProjection();
   const center = view.getCenter();
 
-  if (!center) throw new Error('Map center undefined');
+  if (!center) return;
 
-  const pointResolution = getPointResolution(projection, resolution, center);
-  const metersPerUnit = projection.getMetersPerUnit() ?? 1;
+  const targetMetersPerPixel = (scale * METERS_PER_INCH) / DPI;
 
-  const scale = pointResolution * metersPerUnit * DPI / METERS_PER_INCH;
+  const metersPerPixelInProjection = getPointResolution(projection, 1, center);
 
-  return round ? Math.round(scale) : scale;
-};
-
-//Converts a scale to map resolution (meters per pixel)
-export const scaleToResolution = (scale: number, map: Map) => {
-  const view = map.getView();
-  const projection = view.getProjection();
-
-  const metersPerUnit = projection.getMetersPerUnit() ?? 1;
-  const resolution = scale * METERS_PER_INCH / (DPI * metersPerUnit);
-
-  return resolution;
+  return targetMetersPerPixel / metersPerPixelInProjection;
 };

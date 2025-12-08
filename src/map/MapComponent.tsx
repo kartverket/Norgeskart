@@ -24,16 +24,13 @@ import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { mapLegacyThemeLayerId, useThemeLayers } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
+import { getScaleFromResolution, scaleToResolution } from './mapScale.ts';
 import {
   mapContextIsOpenAtom,
   mapContextXPosAtom,
   mapContextYPosAtom,
 } from './menu/atoms.ts';
 import { MapContextMenu } from './menu/MapContextMenu.tsx';
-import {
-  getScaleFromResolution,
-  scaleToResolution,
-} from './mapScale.ts'
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -205,29 +202,34 @@ export const MapComponent = () => {
   }, [map, setDrawLayerFeatures]);
 
   useEffect(() => {
-    if (map) {
-      const view = map.getView();
-      const updateScale = () => {
-        const resolution = view.getResolution();
-        if (resolution) {
-          setScale(getScaleFromResolution(resolution, map));
-        }
-      };
-      updateScale();
-      map.on('moveend', updateScale);
-      return () => {
-        map.un('moveend', updateScale);
-      };
-    }
-  }, [map, setScale]);
+    if (!map) return;
+
+    const view = map.getView();
+    const updateScale = () => {
+      const resolution = view.getResolution();
+
+      if (resolution) {
+        const scale = getScaleFromResolution(resolution, map);
+        setScale(scale);
+      }
+    };
+
+    map.on('moveend', updateScale);
+    updateScale();
+
+    return () => {
+      map.un('moveend', updateScale);
+    };
+  });
 
   useEffect(() => {
-    if (scale && map) {
-      const resolution = scaleToResolution(scale, map);
-      map.getView().setResolution(resolution);
-    }
-  }, [scale, map]);
+    if (!map || !scale) return;
 
+    const view = map.getView();
+    const resolution = scaleToResolution(scale, map);
+
+    view.setResolution(resolution);
+  });
   return (
     <Box position={'relative'} width="100%" height="100%">
       <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>
