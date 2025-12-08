@@ -5,6 +5,7 @@ import {
   MaterialSymbol,
   Text,
   toaster,
+  useBreakpointValue,
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
@@ -34,10 +35,11 @@ export const MapToolButtons = () => {
   return (
     <HStack
       align="flex-end"
-      justify="space-between"
+      justify="space-around"
       bg={'white'}
       borderRadius={{ md: 'lg' }}
-      p={2}
+      py={2}
+      px={{ base: 0, md: 2 }}
       pointerEvents={'all'}
     >
       <MapButton
@@ -90,20 +92,30 @@ interface MapButtonProps {
   active?: boolean;
 }
 const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
+  const isSmall = useBreakpointValue({ base: true, sm: false });
+
   return (
     <Button
+      w={'fit-content'}
+      maxW={{ base: '25%', md: '20%' }}
       onClick={onClick}
       variant="ghost"
       colorPalette="green"
-      pt={8}
-      pb={8}
+      py={8}
       backgroundColor={active ? '#D0ECD6' : ''}
     >
-      <VStack>
+      <VStack gap={1} align="center" justify="center">
         <Icon icon={icon} />
-        <Text fontSize="sm" fontWeight="medium">
-          {label}
-        </Text>
+        {!isSmall && (
+          <Text
+            fontSize="sm"
+            fontWeight="medium"
+            textAlign="center"
+            whiteSpace="normal"
+          >
+            {label}
+          </Text>
+        )}
       </VStack>
     </Button>
   );
