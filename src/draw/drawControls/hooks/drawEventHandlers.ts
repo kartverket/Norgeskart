@@ -8,10 +8,11 @@ import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../../map/atoms';
+import { showMeasurementsAtom } from '../../../settings/draw/atoms';
 import {
   addInteractiveMesurementOverlayToFeature,
+  clearStaticOverlaysForFeature,
   enableFeatureMeasurmentOverlay,
-  removeFeatureMeasurementOverlay,
   removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
 import {
@@ -277,9 +278,12 @@ const handleModifyStart = (e: BaseEvent | Event) => {
       if (preGeo == null) {
         return;
       }
-      removeFeatureMeasurementOverlay(f);
+      clearStaticOverlaysForFeature(f);
       f.set('geometryPreMove', preGeo);
-      addInteractiveMesurementOverlayToFeature(f);
+      const shouldShowInteractive = getDefaultStore().get(showMeasurementsAtom);
+      if (shouldShowInteractive) {
+        addInteractiveMesurementOverlayToFeature(f);
+      }
     });
   }
 };

@@ -21,9 +21,9 @@ import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActi
 import { removeUrlParameter } from '../../../shared/utils/urlUtils';
 import {
   addInteractiveMesurementOverlayToFeature,
+  clearStaticOverlaysForFeature,
   enableFeatureMeasurmentOverlay,
   removeFeaturelessInteractiveMeasurementOverlay,
-  removeFeatureMeasurementOverlay,
   removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
 
@@ -178,7 +178,7 @@ const useDrawSettings = () => {
     }
     const feature = drawSource.getFeatureById(featureId);
     if (feature) {
-      removeFeatureMeasurementOverlay(feature);
+      clearStaticOverlaysForFeature(feature);
       const iconOverlay = map.getOverlayById(
         `${ICON_OVERLAY_PREFIX}${featureId}`,
       );
@@ -320,7 +320,7 @@ const useDrawSettings = () => {
   };
 
   const setDisplayStaticMeasurement = (enable: boolean) => {
-    removeFeatureMeasurementOverlays();
+    clearStaticOverlaysForFeatures();
     if (!enable) {
       return;
     }
@@ -347,7 +347,7 @@ const useDrawSettings = () => {
     });
   };
 
-  const removeFeatureMeasurementOverlays = () => {
+  const clearStaticOverlaysForFeatures = () => {
     const overlays = getMeasurementOverlays();
     overlays.forEach((overlay) => {
       overlay.getElement()?.remove();

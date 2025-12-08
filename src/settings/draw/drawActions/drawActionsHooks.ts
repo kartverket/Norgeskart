@@ -1,7 +1,7 @@
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import {
+  clearStaticOverlaysForFeature,
   enableFeatureMeasurmentOverlay,
-  removeFeatureMeasurementOverlay,
 } from '../../../draw/drawControls/drawUtils';
 import {
   addIconOverlayToPointFeature,
@@ -42,7 +42,7 @@ export const useDrawActions = () => {
         );
         return;
       }
-      removeFeatureMeasurementOverlay(feature);
+      clearStaticOverlaysForFeature(feature);
       feature.setGeometry(moveDetail.geometryBeforeMove);
       enableFeatureMeasurmentOverlay(feature);
     });
@@ -67,7 +67,7 @@ export const useDrawActions = () => {
         );
         return;
       }
-      removeFeatureMeasurementOverlay(feature);
+      clearStaticOverlaysForFeature(feature);
       feature.setGeometry(moveDetail.geometryAfterMove);
       enableFeatureMeasurmentOverlay(feature);
     });

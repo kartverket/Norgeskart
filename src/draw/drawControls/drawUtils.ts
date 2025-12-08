@@ -63,20 +63,13 @@ const getGeometryPositionForOverlay = (geometry: Geometry) => {
   return null;
 };
 
-const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
+const clearStaticOverlaysForFeature = (feature: Feature<Geometry>) => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
-  const unit = store.get(distanceUnitAtom);
-  const shouldShow = store.get(showMeasurementsAtom);
-  if (!shouldShow) {
-    return;
-  }
-
   const featId = feature.getId();
   if (!featId) {
     return;
   }
-
   map
     .getOverlays()
     .getArray()
@@ -96,18 +89,34 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
     });
 
   const drawOverlayLayerSource = getDrawOverlayLayer().getSource();
+  console.log(drawOverlayLayerSource?.getFeatures());
   if (drawOverlayLayerSource) {
     const existingLine = drawOverlayLayerSource.getFeatureById(
       MEASUREMNT_ELEMENT_PREFIX + featId + 'radiusline',
     );
+    console.log(existingLine);
     if (existingLine) {
       drawOverlayLayerSource.removeFeature(existingLine);
     }
   }
+};
+
+const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const unit = store.get(distanceUnitAtom);
+  const shouldShow = store.get(showMeasurementsAtom);
+  if (!shouldShow) {
+    return;
+  }
+  clearStaticOverlaysForFeature(feature);
+
   const geometry = feature.getGeometry();
+
   if (!geometry) {
     return;
   }
+  const featId = feature.getId();
 
   const projection = map.getView().getProjection().getCode();
 
@@ -151,8 +160,9 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
     // Create a LineString from center to edge
     const radiusLine = new Feature({
       geometry: new LineString([center, edge]),
-      properties: { id: MEASUREMNT_ELEMENT_PREFIX + featId + 'radiusline' },
+      id: MEASUREMNT_ELEMENT_PREFIX + featId + 'radiusline',
     });
+    radiusLine.setId(MEASUREMNT_ELEMENT_PREFIX + featId + 'radiusline');
     radiusLine.setStyle(
       new Style({
         stroke: new Stroke({
@@ -203,24 +213,6 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
     toolTip.setElement(elm);
     toolTip.setPosition(overlayPosition);
     map.addOverlay(toolTip);
-  }
-};
-
-const removeFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
-  const store = getDefaultStore();
-  const map = store.get(mapAtom);
-  const featId = feature.getId();
-  if (!featId) {
-    console.warn('feature has no id');
-    return;
-  }
-  const overlay = map.getOverlayById(MEASUREMNT_OVERLAY_PREFIX + featId);
-  if (overlay) {
-    map.removeOverlay(overlay);
-  }
-  const elm = document.getElementById(MEASUREMNT_ELEMENT_PREFIX + featId);
-  if (elm) {
-    elm.remove();
   }
 };
 
@@ -301,10 +293,10 @@ const removeFeaturelessInteractiveMeasurementOverlay = () => {
 
 export {
   addInteractiveMesurementOverlayToFeature,
+  clearStaticOverlaysForFeature,
   enableFeatureMeasurmentOverlay,
   getGeometryPositionForOverlay,
   getMeasurementText,
   removeFeaturelessInteractiveMeasurementOverlay,
-  removeFeatureMeasurementOverlay,
   removeInteractiveMesurementOverlayFromFeature,
 };
