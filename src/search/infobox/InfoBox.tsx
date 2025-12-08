@@ -38,7 +38,7 @@ export const InfoBox = () => {
   return (
     <Stack
       p={4}
-      mt={{base:'0', md:'3'}}
+      mt='3'
       mr={{base:'0', md:'3'}}
       borderRadius={'16px'}
       bg="white"

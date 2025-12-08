@@ -40,8 +40,8 @@ export const MapOverlay = () => {
         width={'100%'}
         gridTemplateColumns={{
           base: 'repeat(12, 1fr)',
-          md: 'repeat(5, 1fr)',
-          lg: 'repeat(5, 1fr)',
+          md: 'repeat(11, 1fr)',
+          lg: 'repeat(11, 1fr)',
         }}
         gridTemplateRows={{
           base: 'auto 1fr auto auto',
@@ -53,9 +53,9 @@ export const MapOverlay = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '1 / span 3',
-            lg: '1 / span 2',
-            xl: '1  / span 2',
+            md: '1 / span 6',
+            lg: '1 / span 10',
+            xl: '1  / span 10',
           }}
           gridRow={1}
         >
@@ -73,7 +73,7 @@ export const MapOverlay = () => {
             }}
           />
         </GridItem>
-        <GridItem gridColumn={{ base: '2 / span 10', md: '4 / span 2'}} gridRow={1}>
+        <GridItem gridColumn={{ base: '2 / span 10', md: '9 / span 4'}} gridRow={1}>
           <InfoBox />
         </GridItem>
 
@@ -91,22 +91,22 @@ export const MapOverlay = () => {
         <GridItem
           gridColumn={{
             base: '3 / span 9',
-            md: '2 / span 3',
-            lg: '2 / span 3',
+            md: '2 / span 10',
+            lg: '2 / span 10',
           }}
           gridRow="5"
           alignContent={'end'}
           justifySelf={{ md: 'center' }}
           mb={{ base: 0, md: 4 }}
         >
-          <MapToolButtons />
+          <MapToolButtons/>
         </GridItem>
 
         <GridItem
           justifySelf="end"
           alignContent="end"
           gridRow={{ base: 4, md: 5, lg: 5 }}
-          gridColumn={{ base: 12, md: 5 }}
+          gridColumn={{ base: 12, md: 12}}
           mb={{base:'3', md:'5'}}
           mr={{base:'2', md:'3'}}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
@@ -115,7 +115,7 @@ export const MapOverlay = () => {
         </GridItem>
 
         {!isMobile && (
-          <GridItem h="40px" alignContent="end" gridRow={6} colSpan={5}>
+          <GridItem h="40px" alignContent="end" gridRow={6} colSpan={12}>
             <Toolbar />
           </GridItem>
         )}
