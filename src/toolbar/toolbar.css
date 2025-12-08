@@ -12,5 +12,6 @@
 .toolbar-select-trigger {
   button {
     border-top: none;
+    border-bottom: none;
   }
 }
