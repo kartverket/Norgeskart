@@ -34,10 +34,11 @@ export const MapToolButtons = () => {
   return (
     <HStack
       align="flex-end"
-      justify="space-between"
+      justify="space-around"
       bg={'white'}
       borderRadius={{ md: 'lg' }}
-      p={2}
+      py={2}
+      px={{ base: 0, md: 2 }}
       pointerEvents={'all'}
     >
       <MapButton
@@ -92,16 +93,22 @@ interface MapButtonProps {
 const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
   return (
     <Button
+      w={'fit-content'}
+      maxW={{ base: '25%', md: '20%' }}
       onClick={onClick}
       variant="ghost"
       colorPalette="green"
-      pt={8}
-      pb={8}
+      py={8}
       backgroundColor={active ? '#D0ECD6' : ''}
     >
-      <VStack>
+      <VStack gap={1} align="center" justify="center">
         <Icon icon={icon} />
-        <Text fontSize="sm" fontWeight="medium">
+        <Text
+          fontSize="sm"
+          fontWeight="medium"
+          textAlign="center"
+          whiteSpace="normal"
+        >
           {label}
         </Text>
       </VStack>
