@@ -29,7 +29,7 @@ import {
 
 import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
-import { getDrawLayer } from './mapLayers';
+import { getDrawLayer, getDrawOverlayLayer } from './mapLayers';
 
 export const MEASUREMNT_OVERLAY_PREFIX = 'measurement-overlay-';
 export const INTERACTIVE_OVERLAY_PREFIX = 'interactive-overlay-';
@@ -353,6 +353,7 @@ const useDrawSettings = () => {
       overlay.getElement()?.remove();
       map.removeOverlay(overlay);
     });
+    getDrawOverlayLayer().getSource()?.clear();
   };
 
   const setShowMeasurements = (enable: boolean) => {

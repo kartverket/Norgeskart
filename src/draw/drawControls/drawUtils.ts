@@ -77,13 +77,33 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
     return;
   }
 
-  const existingOverlay = map.getOverlayById(
-    MEASUREMNT_OVERLAY_PREFIX + featId,
-  );
-  if (existingOverlay) {
-    map.removeOverlay(existingOverlay);
-  }
+  map
+    .getOverlays()
+    .getArray()
+    .filter((f) => {
+      const fid = f.getId();
+      return (
+        fid != null &&
+        fid.toString().startsWith(MEASUREMNT_OVERLAY_PREFIX + featId)
+      );
+    })
+    .forEach((f) => {
+      const elm = f.getElement();
+      if (elm) {
+        elm.remove();
+      }
+      map.removeOverlay(f);
+    });
 
+  const drawOverlayLayerSource = getDrawOverlayLayer().getSource();
+  if (drawOverlayLayerSource) {
+    const existingLine = drawOverlayLayerSource.getFeatureById(
+      MEASUREMNT_ELEMENT_PREFIX + featId + 'radiusline',
+    );
+    if (existingLine) {
+      drawOverlayLayerSource.removeFeature(existingLine);
+    }
+  }
   const geometry = feature.getGeometry();
   if (!geometry) {
     return;
@@ -129,7 +149,10 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
     ];
 
     // Create a LineString from center to edge
-    const radiusLine = new Feature(new LineString([center, edge]));
+    const radiusLine = new Feature({
+      geometry: new LineString([center, edge]),
+      properties: { id: MEASUREMNT_ELEMENT_PREFIX + featId + 'radiusline' },
+    });
     radiusLine.setStyle(
       new Style({
         stroke: new Stroke({
