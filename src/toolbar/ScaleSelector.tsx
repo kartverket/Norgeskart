@@ -21,6 +21,7 @@ export const ScaleSelector = () => {
 
   return (
     <SelectRoot
+      className={'toolbar-select'}
       width="180px"
       size="sm"
       collection={createListCollection({ items: scaleCollection })}
