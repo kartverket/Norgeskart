@@ -21,7 +21,7 @@ export const ScaleSelector = () => {
 
   return (
     <SelectRoot
-      width="300px"
+      width="180px"
       size="sm"
       collection={createListCollection({ items: scaleCollection })}
       value={[]}
