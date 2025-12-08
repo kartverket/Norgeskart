@@ -258,14 +258,14 @@ export const MapThemes = () => {
                 {isExpanded &&
                   theme.subThemes.map((subTheme) => (
                     <Box key={subTheme.name} marginBottom={4}>
-                      <Heading fontWeight={'600'} size='sm'>{subTheme.heading}</Heading>
+                      <Heading fontWeight={'600'} size={{base:'sm', md:'md'}}>{subTheme.heading}</Heading>
                       {subTheme.layers.map((layer) => (
                         <Flex
                           key={layer.name}
                           justifyContent="space-between"
                           paddingTop={2}
                         >
-                          <Text>{layer.label}</Text>
+                          <Text fontSize={{base:'sm', md:'md'}}>{layer.label}</Text>
                           <Switch
                             colorPalette="green"
                             size="sm"

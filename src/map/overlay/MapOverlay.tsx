@@ -73,7 +73,7 @@ export const MapOverlay = () => {
             }}
           />
         </GridItem>
-        <GridItem gridColumn={{ base: '2 / span 10', md: '9 / span 4'}} gridRow={1}>
+        <GridItem gridColumn={{ base: '1 / span 12', md: '9 / span 4'}} gridRow={1}>
           <InfoBox />
         </GridItem>
 
