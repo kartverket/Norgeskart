@@ -193,8 +193,7 @@ export const MapThemes = () => {
 
   return (
     <>
-      <Heading size="lg">{t('map.settings.layers.theme.label')} </Heading>
-      <Box marginBottom={4} marginTop={2}>
+      <Box marginBottom={{base:'0', md:'4'}} >
         <Flex justifyContent="space-between" alignItems="center">
           <Text
             fontSize="sm"
@@ -247,7 +246,7 @@ export const MapThemes = () => {
                   width="100%"
                   alignItems="center"
                 >
-                  <Heading size="lg">{theme.heading}</Heading>
+                  <Heading size={{base:'sm', md:'lg'}} >{theme.heading}</Heading>
                   {activeInCategory > 0 && (
                     <Text fontSize="sm" colorPalette="green" marginLeft={2}>
                       ({activeInCategory}/{totalInCategory})
@@ -259,7 +258,7 @@ export const MapThemes = () => {
                 {isExpanded &&
                   theme.subThemes.map((subTheme) => (
                     <Box key={subTheme.name} marginBottom={4}>
-                      <Heading size="md">{subTheme.heading}</Heading>
+                      <Heading fontWeight={'600'} size='sm'>{subTheme.heading}</Heading>
                       {subTheme.layers.map((layer) => (
                         <Flex
                           key={layer.name}

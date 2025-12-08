@@ -55,10 +55,11 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       borderRadius={'16px'}
       borderBottomLeftRadius={{ base: '0px', md: '16px' }}
       borderBottomRightRadius={{ base: '0px', md: '16px' }}
-      maxHeight={{base:'60vh', md:'45vh'}}
+      maxHeight={{base:'65vh', md:'55vh'}}
+      
     >
       <Flex justify="space-between" gap="2" w={'100%'}>
-        <Heading fontWeight="bold" mb="2rem">
+        <Heading fontWeight="bold" mb={{base:'0', md:'2'}}>
           {label}
         </Heading>
         <IconButton

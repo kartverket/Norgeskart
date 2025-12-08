@@ -37,14 +37,13 @@ export const InfoBox = () => {
 
   return (
     <Stack
-      position={'fixed'}
-      right={'16px'}
-      top={'16px'}
-      w={'400px'}
       p={4}
+      mt={{base:'0', md:'3'}}
+      mr={{base:'0', md:'3'}}
       borderRadius={'16px'}
       bg="white"
       pointerEvents={'auto'}
+      
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading size={'lg'}>{selectedResult.name}</Heading>
