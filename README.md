@@ -60,7 +60,7 @@ const MinKomponent = () => {
 
 ## Nettleserkompatibilitet
 
-En gang i bland, kjør føglende for å holde caniuse-db oppdatert
+En gang i blandt, kjør følgende for å holde caniuse-db oppdatert
 
 ```sh
 npx update-browserslist-db@latest
