@@ -35,12 +35,12 @@ export const MapToolButtons = () => {
   return (
     <HStack
       align="flex-end"
-      justify="center"
+      justify="space-around"
       bg={{ base: 'rgba(255, 255, 255, 0.85)', md: 'white' }}
       borderRadius="lg"
-      py={{base:1, md:2}}
+      py={{ base: 1, md: 2 }}
       px={{ base: 0, md: 2 }}
-      mb={{base:2, md:0}}
+      mb={{ base: 2, md: 0 }}
       pointerEvents={'all'}
     >
       <MapButton
@@ -49,7 +49,9 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={'edit'}
-        label={isMobile ? 'Verktøy' : t('controller.draw.text')}
+        label={
+          isMobile ? t('controller.draw.mobiletext') : t('controller.draw.text')
+        }
         active={currentMapTool === 'draw'}
       />
       <MapButton
@@ -57,22 +59,34 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
         }}
         icon={'layers'}
-        label={isMobile ? 'Lag' : t('controller.maplayers.openText')}
+        label={
+          isMobile
+            ? t('controller.maplayers.mobiletext')
+            : t('controller.maplayers.openText')
+        }
         active={currentMapTool === 'layers'}
       />
       <MapButton
         onClick={() => {
           setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
         }}
-        icon={'settings'}
-        label={isMobile ? 'Info' : t('controller.settings.text')}
+        icon={'info'}
+        label={
+          isMobile
+            ? t('controller.settings.mobiletext')
+            : t('controller.settings.text')
+        }
         active={currentMapTool === 'settings'}
       />
 
       <MapButton
         onClick={handleShareMapClick}
         icon={'share'}
-        label={isMobile ? 'Del' : t('search.actions.shareMap.tooltip')}
+        label={
+          isMobile
+            ? t('controller.sharemap.mobiletext')
+            : t('controller.sharemap.text')
+        }
       />
 
       {!isMobile && (
@@ -101,19 +115,19 @@ const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
       onClick={onClick}
       variant="ghost"
       colorPalette="green"
-      py={{base:0, md:8}}
+      py={{ base: 0, md: 8 }}
       backgroundColor={active ? '#D0ECD6' : ''}
     >
-      <VStack gap={{base:0, md:1}} align="center" justify="center">
-        <Icon icon={icon} />   
-          <Text
-            fontSize="sm"
-            fontWeight="medium"
-            textAlign="start"
-            whiteSpace="no-wrap"
-          >
-            {label}
-          </Text>
+      <VStack gap={{ base: 0, md: 1 }} align="center" justify="center">
+        <Icon icon={icon} />
+        <Text
+          fontSize="sm"
+          fontWeight="medium"
+          textAlign="start"
+          whiteSpace="no-wrap"
+        >
+          {label}
+        </Text>
       </VStack>
     </Button>
   );

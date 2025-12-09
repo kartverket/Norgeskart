@@ -1,16 +1,23 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag"
+      "openText": "Kartlag",
+      "mobiletext": "Lag"
     },
     "print": {
       "text": "Print"
     },
-    "settings": {
-      "text": "Innstillinger"
-    },
     "draw": {
-      "text": "Tegne og måle"
+      "text": "Tegne og måle",
+      "mobiletext": "Verktøy"
+    },
+    "settings": {
+      "mobiletext": "Info",
+      "text": "Informasjon"
+    },
+    "sharemap": {
+      "text": "Del kart",
+      "mobiletext": "Del"
     }
   },
   "draw": {

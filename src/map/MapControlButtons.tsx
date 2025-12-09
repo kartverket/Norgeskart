@@ -37,12 +37,11 @@ export const MapControlButtons = () => {
     <IconButton
       variant="ghost"
       colorPalette="green"
-      size={{base:'sm', md:'lg'}}
+      size={{ base: 'sm', md: 'lg' }}
       icon="navigation"
       aria-label="Nullstill rotasjon"
       onClick={() => setMapAngle(0)}
       style={{ transform: `rotate(${mapOrientation}deg)` }}
-      
     />
   );
 
@@ -50,7 +49,7 @@ export const MapControlButtons = () => {
     <IconButton
       variant="ghost"
       colorPalette="green"
-      size={{base:'sm', md:'lg'}}
+      size={{ base: 'sm', md: 'lg' }}
       icon="my_location"
       aria-label="Min posisjon"
       onClick={handleMapLocationClick}
@@ -62,7 +61,7 @@ export const MapControlButtons = () => {
       bg="#FFFF"
       borderRadius="xl"
       alignItems="center"
-      w={{base:'10', md:'12'}}
+      w={{ base: '10', md: '12' }}
       pointerEvents="auto"
     >
       {isMobile ? (
