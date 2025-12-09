@@ -8,3 +8,10 @@
   stroke: white;
   fill: white;
 }
+
+.toolbar-select-trigger {
+  button {
+    border-top: none;
+    border-bottom: none;
+  }
+}

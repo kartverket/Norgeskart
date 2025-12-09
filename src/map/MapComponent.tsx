@@ -14,7 +14,7 @@ import {
   setUrlParameter,
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom } from './atoms.ts';
+import { mapAtom, scaleAtom } from './atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
@@ -24,6 +24,7 @@ import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { mapLegacyThemeLayerId, useThemeLayers } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
+import { getScaleFromResolution } from './mapScale.ts';
 import {
   mapContextIsOpenAtom,
   mapContextXPosAtom,
@@ -46,7 +47,7 @@ export const MapComponent = () => {
   const hasProcessedUrlRef = useRef(false);
   const hasLoadedThemeLayersRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
-
+  const setScale = useSetAtom(scaleAtom);
   const { setTargetElement } = useMap();
 
   useEffect(() => {
@@ -197,7 +198,28 @@ export const MapComponent = () => {
       }
     };
     asyncEffect();
-  }, [setDrawLayerFeatures]);
+  }, [map, setDrawLayerFeatures]);
+
+  useEffect(() => {
+    if (!map) return;
+
+    const view = map.getView();
+    const updateScale = () => {
+      const resolution = view.getResolution();
+
+      if (resolution) {
+        const scale = getScaleFromResolution(resolution, map);
+        setScale(scale);
+      }
+    };
+
+    map.on('moveend', updateScale);
+    updateScale();
+
+    return () => {
+      map.un('moveend', updateScale);
+    };
+  }, [map, setScale]);
 
   return (
     <Box position={'relative'} width="100%" height="100%">

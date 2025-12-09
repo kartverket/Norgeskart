@@ -16,10 +16,12 @@ import { useTranslation } from 'react-i18next';
 import {
   displayCompassOverlayAtom,
   mapAtom,
+  scaleToResolutionEffect,
   useMagneticNorthAtom,
 } from '../map/atoms';
 import { isRettIKartetDialogOpenAtom } from '../map/menu/dialogs/atoms';
 import { ProjectionSettings } from '../settings/map/ProjectionSettings';
+import { ScaleSelector } from './ScaleSelector';
 
 const formatCoords = (coord: [number, number] | null, crsCode: string) => {
   if (!coord) return '';
@@ -41,6 +43,7 @@ export const Toolbar = () => {
     [number, number] | null
   >(null);
   const map = useAtomValue(mapAtom);
+  useAtom(scaleToResolutionEffect);
 
   const crsCode = map.getView().getProjection().getCode();
 
@@ -98,7 +101,7 @@ export const Toolbar = () => {
             ? formatCoords(mousePositionCoords, crsCode)
             : ''}
         </Text>
-        <Text fontSize="sm">Målestokk her</Text>
+        <ScaleSelector />
       </Flex>
       <Flex flex="1" justify="flex-end" alignItems="center">
         <Button
