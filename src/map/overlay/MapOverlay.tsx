@@ -80,11 +80,11 @@ export const MapOverlay = () => {
         </GridItem>
 
         <GridItem
-          gridColumn={{ base: '1 / span 4' }}
+          gridColumn={{ base: '1 / span 3' }}
           gridRow={{ base: 4, md: 5, lg: 5 }}
-          alignContent={{ base: 'start', md: 'end' }}
-          mb={{ base: '0', md: 4 }}
-          ml={{ base: '1', md: '4' }}
+          alignContent={{ base: 'end', md: 'end' }}
+          mb={{ base: 3, md: 4 }}
+          ml={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
           <LinkLogo />
@@ -109,8 +109,8 @@ export const MapOverlay = () => {
           alignContent="end"
           gridRow={{ base: 4, md: 5, lg: 5 }}
           gridColumn={{ base: 12, md: 12 }}
-          mb={{ base: '3', md: '5' }}
-          mr={{ base: '2', md: '3' }}
+          mb={{ base: 3, md: 5 }}
+          mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
           <MapControlButtons />
