@@ -14,7 +14,7 @@ import {
   setUrlParameter,
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom, scaleAtom, useMapEffects } from './atoms.ts';
+import { mapAtom, scaleAtom } from './atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
@@ -48,8 +48,6 @@ export const MapComponent = () => {
   const hasLoadedThemeLayersRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
   const setScale = useSetAtom(scaleAtom);
-  useMapEffects();
-
   const { setTargetElement } = useMap();
 
   useEffect(() => {
@@ -202,7 +200,7 @@ export const MapComponent = () => {
     asyncEffect();
   }, [map, setDrawLayerFeatures]);
 
-  (useEffect(() => {
+  useEffect(() => {
     if (!map) return;
 
     const view = map.getView();
@@ -221,8 +219,7 @@ export const MapComponent = () => {
     return () => {
       map.un('moveend', updateScale);
     };
-  }),
-    []);
+  }, [map, setScale]);
 
   return (
     <Box position={'relative'} width="100%" height="100%">

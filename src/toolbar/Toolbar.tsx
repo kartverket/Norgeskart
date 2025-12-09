@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import {
   displayCompassOverlayAtom,
   mapAtom,
+  scaleToResolutionEffect,
   useMagneticNorthAtom,
 } from '../map/atoms';
 import { isRettIKartetDialogOpenAtom } from '../map/menu/dialogs/atoms';
@@ -42,6 +43,7 @@ export const Toolbar = () => {
     [number, number] | null
   >(null);
   const map = useAtomValue(mapAtom);
+  useAtom(scaleToResolutionEffect);
 
   const crsCode = map.getView().getProjection().getCode();
 
