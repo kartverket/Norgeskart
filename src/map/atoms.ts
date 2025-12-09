@@ -4,6 +4,7 @@ import { defaults as defaultControls } from 'ol/control/defaults.js';
 import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 
+import { atomEffect } from 'jotai-effect';
 import { v4 as uuidv4 } from 'uuid';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
@@ -11,6 +12,7 @@ import { mapLayers } from './layers';
 import { BackgroundLayerName } from './layers/backgroundLayers';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders';
 import { ControlPortal } from './mapControls';
+import { scaleToResolution } from './mapScale';
 
 export type ProjectionIdentifier =
   | 'EPSG:4326' // wgs84
@@ -105,7 +107,7 @@ const getInitialMapView = () => {
     zoom: initialZoom,
     rotation: initialRotation,
     projection: initialProjection,
-    constrainResolution: true,
+    constrainResolution: false,
   });
 };
 
@@ -146,4 +148,14 @@ export const availableScales = [
   5000, 10000, 25000, 50000, 80000, 100000, 250000,
 ];
 
-export const scaleAtom = atom<number | null | undefined>(null);
+export const scaleAtom = atom<number | null>(null);
+
+export const scaleToResolutionEffect = atomEffect((get) => {
+  const map = get(mapAtom);
+  const scale = get(scaleAtom);
+  if (!map || !scale) return;
+
+  const view = map.getView();
+  const resolution = scaleToResolution(scale, map);
+  view.setResolution(resolution);
+});

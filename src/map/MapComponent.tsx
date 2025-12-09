@@ -14,7 +14,7 @@ import {
   setUrlParameter,
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom, scaleAtom } from './atoms.ts';
+import { mapAtom, scaleAtom, scaleToResolutionEffect } from './atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
@@ -24,7 +24,7 @@ import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { mapLegacyThemeLayerId, useThemeLayers } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
-import { getScaleFromResolution, scaleToResolution } from './mapScale.ts';
+import { getScaleFromResolution } from './mapScale.ts';
 import {
   mapContextIsOpenAtom,
   mapContextXPosAtom,
@@ -47,7 +47,8 @@ export const MapComponent = () => {
   const hasProcessedUrlRef = useRef(false);
   const hasLoadedThemeLayersRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
-  const [scale, setScale] = useAtom(scaleAtom);
+  const setScale = useSetAtom(scaleAtom);
+  useAtom(scaleToResolutionEffect);
 
   const { setTargetElement } = useMap();
 
@@ -201,7 +202,7 @@ export const MapComponent = () => {
     asyncEffect();
   }, [map, setDrawLayerFeatures]);
 
-  useEffect(() => {
+  (useEffect(() => {
     if (!map) return;
 
     const view = map.getView();
@@ -220,16 +221,9 @@ export const MapComponent = () => {
     return () => {
       map.un('moveend', updateScale);
     };
-  });
+  }),
+    []);
 
-  useEffect(() => {
-    if (!map || !scale) return;
-
-    const view = map.getView();
-    const resolution = scaleToResolution(scale, map);
-
-    view.setResolution(resolution);
-  });
   return (
     <Box position={'relative'} width="100%" height="100%">
       <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>
