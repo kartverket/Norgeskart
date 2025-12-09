@@ -16,7 +16,7 @@ import { mapToolAtom } from './atoms';
 
 export const MapToolButtons = () => {
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
-  const isMobileScreen = useIsMobileScreen();
+  const isMobile = useIsMobileScreen();
   const posthog = usePostHog();
   const handleShareMapClick = () => {
     const url = window.location.href;
@@ -35,10 +35,10 @@ export const MapToolButtons = () => {
   return (
     <HStack
       align="flex-end"
-      justify="space-around"
+      justify="center"
       bg={{ base: 'rgba(255, 255, 255, 0.85)', md: 'white' }}
       borderRadius="lg"
-      py={{base:0, md:2}}
+      py={{base:1, md:2}}
       px={{ base: 0, md: 2 }}
       mb={{base:2, md:0}}
       pointerEvents={'all'}
@@ -49,7 +49,7 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={'edit'}
-        label={t('controller.draw.text')}
+        label={isMobile ? 'Verktøy' : t('controller.draw.text')}
         active={currentMapTool === 'draw'}
       />
       <MapButton
@@ -57,7 +57,7 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
         }}
         icon={'layers'}
-        label={t('controller.maplayers.openText')}
+        label={isMobile ? 'Lag' : t('controller.maplayers.openText')}
         active={currentMapTool === 'layers'}
       />
       <MapButton
@@ -65,17 +65,17 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
         }}
         icon={'settings'}
-        label={t('controller.settings.text')}
+        label={isMobile ? 'Info' : t('controller.settings.text')}
         active={currentMapTool === 'settings'}
       />
 
       <MapButton
         onClick={handleShareMapClick}
         icon={'share'}
-        label={t('search.actions.shareMap.tooltip')}
+        label={isMobile ? 'Del' : t('search.actions.shareMap.tooltip')}
       />
 
-      {!isMobileScreen && (
+      {!isMobile && (
         <MapButton
           onClick={handlePrintMapClick}
           icon={'print'}
@@ -104,18 +104,16 @@ const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
       py={{base:0, md:8}}
       backgroundColor={active ? '#D0ECD6' : ''}
     >
-      <VStack gap={1} align="center" justify="center">
-        <Icon icon={icon} />
-        {!isSmall && (
+      <VStack gap={{base:0, md:1}} align="center" justify="center">
+        <Icon icon={icon} />   
           <Text
             fontSize="sm"
             fontWeight="medium"
-            textAlign="center"
-            whiteSpace="normal"
+            textAlign="start"
+            whiteSpace="no-wrap"
           >
             {label}
           </Text>
-        )}
       </VStack>
     </Button>
   );

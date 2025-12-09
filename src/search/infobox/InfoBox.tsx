@@ -44,6 +44,8 @@ export const InfoBox = () => {
       borderRadius={'16px'}
       bg="white"
       pointerEvents={'auto'}
+      position={'relative'}
+      zIndex={1}
       
     >
       <Flex justifyContent={'space-between'} alignItems="center">
