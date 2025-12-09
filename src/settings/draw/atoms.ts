@@ -1,12 +1,14 @@
 import { MaterialSymbol } from '@kvib/react';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import { Map } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify';
 import Select from 'ol/interaction/Select';
 import Translate from 'ol/interaction/Translate';
+import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -121,58 +123,62 @@ export const drawEnabledEffect = atomEffect((get, set) => {
   }
 });
 
+const addSelectMoveInteractionToMap = (drawLayer: VectorLayer, map: Map) => {
+  const selectInteraction = new Select({
+    layers: [drawLayer],
+    style: null,
+  });
+  selectInteraction.addEventListener('select', handleSelect);
+  map.addInteraction(selectInteraction);
+
+  const translateInteraction = new Translate({
+    features: selectInteraction.getFeatures(),
+  });
+
+  translateInteraction.addEventListener('translatestart', handleModifyStart);
+  translateInteraction.addEventListener('translateend', handleModifyEnd);
+
+  const modifyInteraction = new Modify({
+    features: selectInteraction.getFeatures(),
+  });
+
+  modifyInteraction.addEventListener('modifystart', handleModifyStart);
+  modifyInteraction.addEventListener('modifyend', handleModifyEnd);
+  map.addInteraction(translateInteraction);
+  map.addInteraction(modifyInteraction);
+};
+
+const addDrawInteractionToMap = (
+  type: DrawType,
+  drawLayer: VectorLayer,
+  map: Map,
+) => {
+  if (type === 'Move') {
+    return;
+  }
+  const newDraw = new Draw({
+    source: drawLayer.getSource() as VectorSource,
+    type: type === 'Text' ? 'Point' : type,
+    condition: (e) => noModifierKeys(e) && primaryAction(e),
+  });
+
+  const style = getDefaultStore().get(drawStyleReadAtom);
+  newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
+  newDraw.getOverlay().setStyle(style);
+  newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
+    drawEnd(event);
+  });
+  map.addInteraction(newDraw);
+};
 export const drawTypeEffect = atomEffect((get) => {
-  const store = getDefaultStore();
   const drawType = get(drawTypeAtom);
+  const measurementEnabled = get(showMeasurementsAtom);
+  const store = getDefaultStore();
   const draw = getDrawInteraction();
   const select = getSelectInteraction();
   const translate = getTranslateInteraction();
   const map = store.get(mapAtom);
   const drawLayer = getDrawLayer();
-
-  const addSelectMoveInteractionToMap = () => {
-    const selectInteraction = new Select({
-      layers: [drawLayer],
-      style: null,
-    });
-    selectInteraction.addEventListener('select', handleSelect);
-    map.addInteraction(selectInteraction);
-
-    const translateInteraction = new Translate({
-      features: selectInteraction.getFeatures(),
-    });
-
-    translateInteraction.addEventListener('translatestart', handleModifyStart);
-    translateInteraction.addEventListener('translateend', handleModifyEnd);
-
-    const modifyInteraction = new Modify({
-      features: selectInteraction.getFeatures(),
-    });
-
-    modifyInteraction.addEventListener('modifystart', handleModifyStart);
-    modifyInteraction.addEventListener('modifyend', handleModifyEnd);
-    map.addInteraction(translateInteraction);
-    map.addInteraction(modifyInteraction);
-  };
-
-  const addDrawInteractionToMap = (type: DrawType) => {
-    if (type === 'Move') {
-      return;
-    }
-    const newDraw = new Draw({
-      source: drawLayer.getSource() as VectorSource,
-      type: type === 'Text' ? 'Point' : type,
-      condition: (e) => noModifierKeys(e) && primaryAction(e),
-    });
-
-    const style = store.get(drawStyleReadAtom);
-    newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
-    newDraw.getOverlay().setStyle(style);
-    newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
-      drawEnd(event);
-    });
-    map.addInteraction(newDraw);
-  };
 
   if (select) {
     const features = select.getFeatures();
@@ -187,10 +193,15 @@ export const drawTypeEffect = atomEffect((get) => {
     map.removeInteraction(draw);
   }
 
-  if (drawType === 'Move') {
-    addSelectMoveInteractionToMap();
-  } else if (drawType != null) {
-    addDrawInteractionToMap(drawType);
+  switch (drawType) {
+    case null:
+      return;
+    case 'Move':
+      addSelectMoveInteractionToMap(drawLayer, map);
+      break;
+    default:
+      addDrawInteractionToMap(drawType, drawLayer, map);
+      break;
   }
 });
 

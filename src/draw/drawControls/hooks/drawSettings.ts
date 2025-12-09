@@ -60,7 +60,7 @@ export type DrawType =
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
-  const [drawType, _] = useAtom(drawTypeAtom);
+  const drawType = useAtomValue(drawTypeAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
   const [showMeasurements, setShowMeasurementsAtom] =
     useAtom(showMeasurementsAtom);
