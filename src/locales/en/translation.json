@@ -1,16 +1,23 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Maplayers"
+      "openText": "Maplayers",
+      "mobiletext": "Layers"
     },
     "print": {
       "text": "Print"
     },
-    "settings": {
-      "text": "Settings"
-    },
     "draw": {
-      "text": "Draw and measure"
+      "text": "Draw and measure",
+      "mobiletext": "Tools"
+    },
+    "settings": {
+      "mobiletext": "Info",
+      "text": "Information"
+    },
+    "sharemap": {
+      "text": "Share map",
+      "mobiletext": "Share"
     }
   },
   "draw": {

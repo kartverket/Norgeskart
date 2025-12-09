@@ -9,7 +9,11 @@ export const LinkLogo: React.FC = () => {
       rel="noopener noreferrer"
       outline="none"
     >
-      <Image src="/logos/KV_logo_staa.svg" alt="Logo" style={{ height: 64 }} />
+      <Image
+        src="/logos/KV_logo_staa_color.svg"
+        alt="Logo"
+        height={{ base: '42px', md: '64px' }}
+      />
     </Link>
   );
 };

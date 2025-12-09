@@ -156,9 +156,9 @@ export const SearchComponent = () => {
       flexDir="column"
       alignItems="stretch"
       gap={2}
-      p={1}
-      m={2}
       pointerEvents={'auto'}
+      px={3}
+      pt={3}
     >
       {/* TOPP: kart-flis + søkefelt */}
       <Box backgroundColor="#FFFF" p={2} borderRadius={10} maxWidth="450px">
