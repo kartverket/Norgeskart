@@ -1,6 +1,10 @@
 import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
-import { mapAtom, ProjectionIdentifier } from '../map/atoms';
+import {
+  DEFAULT_PROJECTION,
+  mapAtom,
+  ProjectionIdentifier,
+} from '../map/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
 import {
   getUrlParameter,
@@ -52,8 +56,13 @@ export const placeNamePageAtom = atom<number>(1);
 const searchCoordinatesEffect = atomEffect((get, set) => {
   const coords = get(searchCoordinatesAtom);
   if (coords === null) {
+    removeUrlParameter('markerLon');
+    removeUrlParameter('markerLat');
     return;
   }
+
+  setUrlParameter('markerLon', coords.x.toString());
+  setUrlParameter('markerLat', coords.y.toString());
 
   const fetchData = async () => {
     return await Promise.all([
@@ -154,9 +163,9 @@ export const allSearchResultsAtom = atom((get) => {
 });
 
 const getInitialSelectedResult = (): SearchResult | null => {
-  const lon = getUrlParameter('lon');
-  const lat = getUrlParameter('lat');
-  const projection = getUrlParameter('projection') || 'EPSG:25833';
+  const lon = getUrlParameter('markerLon');
+  const lat = getUrlParameter('markerLat');
+  const projection = getUrlParameter('projection') || DEFAULT_PROJECTION;
 
   if (lon != null && lat != null) {
     const parsedLon = parseFloat(lon);
