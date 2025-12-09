@@ -5,7 +5,6 @@ import {
   MaterialSymbol,
   Text,
   toaster,
-  useBreakpointValue,
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
@@ -107,8 +106,6 @@ interface MapButtonProps {
   active?: boolean;
 }
 const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
-  const isSmall = useBreakpointValue({ base: true, sm: false });
-
   return (
     <Button
       w={'fit-content'}
