@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atom, useAtom } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls } from 'ol/control/defaults.js';
 import Map from 'ol/Map';
@@ -159,3 +159,7 @@ export const scaleToResolutionEffect = atomEffect((get) => {
   const resolution = scaleToResolution(scale, map);
   view.setResolution(resolution);
 });
+
+export const useMapEffects = () => {
+  useAtom(scaleToResolutionEffect);
+};

@@ -1,5 +1,5 @@
 import { Box, Text } from '@kvib/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,7 @@ import {
   setUrlParameter,
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom, scaleAtom, scaleToResolutionEffect } from './atoms.ts';
+import { mapAtom, scaleAtom, useMapEffects } from './atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
@@ -48,7 +48,7 @@ export const MapComponent = () => {
   const hasLoadedThemeLayersRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
   const setScale = useSetAtom(scaleAtom);
-  useAtom(scaleToResolutionEffect);
+  useMapEffects();
 
   const { setTargetElement } = useMap();
 
