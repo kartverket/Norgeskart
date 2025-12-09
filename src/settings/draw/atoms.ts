@@ -14,6 +14,12 @@ import { Fill, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  addInteractiveMesurementOverlayToFeature,
+  enableFeatureMeasurmentOverlay,
+  removeFeaturelessInteractiveMeasurementOverlay,
+  removeInteractiveMesurementOverlayFromFeature,
+} from '../../draw/drawControls/drawUtils';
+import {
   handleFeatureSelectDone,
   handleModifyEnd,
   handleModifyStart,
@@ -22,13 +28,18 @@ import {
 import {
   addIconOverlayToPointFeature,
   DrawType,
+  INTERACTIVE_OVERLAY_PREFIX,
+  MEASUREMNT_OVERLAY_PREFIX,
 } from '../../draw/drawControls/hooks/drawSettings';
 import {
   getDrawInteraction,
   getSelectInteraction,
   getTranslateInteraction,
 } from '../../draw/drawControls/hooks/mapInterations';
-import { getDrawLayer } from '../../draw/drawControls/hooks/mapLayers';
+import {
+  getDrawLayer,
+  getDrawOverlayLayer,
+} from '../../draw/drawControls/hooks/mapLayers';
 import { getHighestZIndex } from '../../draw/drawControls/hooks/verticalMove';
 import { mapAtom } from '../../map/atoms';
 import { mapToolAtom } from '../../map/overlay/atoms';
@@ -170,6 +181,69 @@ const addDrawInteractionToMap = (
   });
   map.addInteraction(newDraw);
 };
+
+const setDisplayStaticMeasurement = (enable: boolean, map: Map) => {
+  clearStaticOverlaysForFeatures(map);
+  if (!enable) {
+    return;
+  }
+  const drawLayer = getDrawLayer();
+  const source = drawLayer.getSource();
+  if (!source) {
+    return;
+  }
+  const drawnFeatures = source.getFeatures();
+  drawnFeatures.forEach(enableFeatureMeasurmentOverlay);
+};
+const clearStaticOverlaysForFeatures = (map: Map) => {
+  const overlays = getMeasurementOverlays(map);
+  overlays.forEach((overlay) => {
+    overlay.getElement()?.remove();
+    map.removeOverlay(overlay);
+  });
+  getDrawOverlayLayer().getSource()?.clear();
+};
+
+const getMeasurementOverlays = (map: Map) => {
+  const overlays = map.getOverlays().getArray();
+  return overlays.filter((overlay) => {
+    const overlayId = overlay.getId()?.toString();
+    if (!overlayId) {
+      return false;
+    }
+    return (
+      overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX) ||
+      overlayId.startsWith(INTERACTIVE_OVERLAY_PREFIX)
+    );
+  });
+};
+
+const setDisplayInteractiveMeasurementForDrawInteraction = (
+  enable: boolean,
+) => {
+  const drawInteraction = getDrawInteraction();
+  if (!drawInteraction) {
+    return;
+  }
+  const drawStartMesurmentListener = (event: BaseEvent | Event) => {
+    const eventFeature = (event as unknown as DrawEvent).feature;
+    addInteractiveMesurementOverlayToFeature(eventFeature);
+  };
+  const drawEndMesurmentListener = (event: BaseEvent | Event) => {
+    const eventFeature = (event as unknown as DrawEvent).feature;
+    removeInteractiveMesurementOverlayFromFeature(eventFeature);
+    enableFeatureMeasurmentOverlay(eventFeature);
+    removeFeaturelessInteractiveMeasurementOverlay();
+  };
+
+  if (enable) {
+    drawInteraction.on('drawstart', drawStartMesurmentListener);
+    drawInteraction.on('drawend', drawEndMesurmentListener);
+  } else {
+    drawInteraction.un('drawstart', drawStartMesurmentListener);
+    drawInteraction.un('drawend', drawEndMesurmentListener);
+  }
+};
 export const drawTypeEffect = atomEffect((get) => {
   const drawType = get(drawTypeAtom);
   const measurementEnabled = get(showMeasurementsAtom);
@@ -180,6 +254,7 @@ export const drawTypeEffect = atomEffect((get) => {
   const map = store.get(mapAtom);
   const drawLayer = getDrawLayer();
 
+  //Cleanup existing interactions
   if (select) {
     const features = select.getFeatures();
     map.removeInteraction(select);
@@ -203,6 +278,9 @@ export const drawTypeEffect = atomEffect((get) => {
       addDrawInteractionToMap(drawType, drawLayer, map);
       break;
   }
+
+  setDisplayStaticMeasurement(measurementEnabled, map);
+  setDisplayInteractiveMeasurementForDrawInteraction(measurementEnabled);
 });
 
 const drawEnd = (event: BaseEvent | Event) => {
