@@ -16,7 +16,7 @@ import {
   secondaryColorAtom,
   showMeasurementsAtom,
 } from '../settings/draw/atoms';
-import { enableFeatureMeasurmentOverlay } from './drawControls/drawUtils';
+import { enableFeatureMeasurementOverlay } from './drawControls/drawUtils';
 import {
   ICON_OVERLAY_PREFIX,
   INTERACTIVE_OVERLAY_PREFIX,
@@ -215,6 +215,6 @@ export const distanceUnitAtomEffect = atomEffect((get) => {
     .getSource()
     ?.getFeatures()
     .forEach((feature) => {
-      enableFeatureMeasurmentOverlay(feature);
+      enableFeatureMeasurementOverlay(feature);
     });
 });

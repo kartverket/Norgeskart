@@ -19,7 +19,7 @@ import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActi
 import { removeUrlParameter } from '../../../shared/utils/urlUtils';
 import {
   clearStaticOverlaysForFeature,
-  enableFeatureMeasurmentOverlay,
+  enableFeatureMeasurementOverlay,
 } from '../drawUtils';
 
 import { getFeatureIcon } from './drawEventHandlers';
@@ -194,7 +194,7 @@ const useDrawSettings = () => {
     }
     drawSource.addFeature(feature);
     if (showMeasurements) {
-      enableFeatureMeasurmentOverlay(feature);
+      enableFeatureMeasurementOverlay(feature);
     }
     const iconProps = getFeatureIcon(feature);
     if (iconProps) {
@@ -281,7 +281,7 @@ const useDrawSettings = () => {
 
     if (showMeasurements) {
       featuresToAddWithStyle.forEach((feature) => {
-        enableFeatureMeasurmentOverlay(feature);
+        enableFeatureMeasurementOverlay(feature);
       });
     }
   };

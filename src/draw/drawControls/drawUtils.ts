@@ -98,7 +98,7 @@ const clearStaticOverlaysForFeature = (feature: Feature<Geometry>) => {
   }
 };
 
-const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
+const enableFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const unit = store.get(distanceUnitAtom);
@@ -213,7 +213,7 @@ const enableFeatureMeasurmentOverlay = (feature: Feature<Geometry>) => {
   }
 };
 
-const addInteractiveMesurementOverlayToFeature = (
+const addInteractiveMeasurementOverlayToFeature = (
   feature: Feature<Geometry>,
 ) => {
   const store = getDefaultStore();
@@ -255,7 +255,7 @@ const addInteractiveMesurementOverlayToFeature = (
   });
 };
 
-const removeInteractiveMesurementOverlayFromFeature = (
+const removeInteractiveMeasurementOverlayFromFeature = (
   feature: Feature<Geometry>,
 ) => {
   const store = getDefaultStore();
@@ -289,11 +289,11 @@ const removeFeaturelessInteractiveMeasurementOverlay = () => {
 };
 
 export {
-  addInteractiveMesurementOverlayToFeature,
+  addInteractiveMeasurementOverlayToFeature,
   clearStaticOverlaysForFeature,
-  enableFeatureMeasurmentOverlay,
+  enableFeatureMeasurementOverlay,
   getGeometryPositionForOverlay,
   getMeasurementText,
   removeFeaturelessInteractiveMeasurementOverlay,
-  removeInteractiveMesurementOverlayFromFeature,
+  removeInteractiveMeasurementOverlayFromFeature,
 };
