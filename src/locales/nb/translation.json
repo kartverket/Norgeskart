@@ -140,10 +140,6 @@
       }
     },
     "errorMessage": "Noe gikk veldig galt med kartet",
-    "overlay": {
-      "fullscreen": "Fullskjerm",
-      "myPosition": "Vis min posisjon"
-    },
     "settings": {
       "compass": {
         "enabled": "Vis kompass",
@@ -307,6 +303,29 @@
           "warningPerformance": "Aktivering av mange lag kan påvirke ytelsen. Vurder å deaktivere ubrukte lag."
         }
       }
+    },
+    "controls": {
+      "zoomIn": {
+        "label": "Zoom inn"
+      },
+      "zoomOut": {
+        "label": "Zoom ut"
+      },
+      "rotateLeft": {
+        "label": "Roter venstre"
+      },
+      "orientation": {
+        "label": "Kartorientering. Trykk for å nullstille"
+      },
+      "rotateRight": {
+        "label": "Roter høyre"
+      },
+      "myLocation": {
+        "label": "Gå til min posisjon"
+      },
+      "fullscreen": {
+        "label": "Bruk fullskjerm"
+      }
     }
   },
   "mapLayers": {
@@ -384,7 +403,6 @@
       "label": "Feil i kartet?",
       "tooltip": "Ser du feil i kartet, meld fra til oss her"
     },
-
     "scale": {
       "tooltip": "Velg målestokk"
     },
