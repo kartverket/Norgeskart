@@ -86,12 +86,12 @@ const clearStaticOverlaysForFeature = (feature: Feature<Geometry>) => {
     });
 
   const drawOverlayLayerSource = getDrawOverlayLayer().getSource();
-  console.log(drawOverlayLayerSource?.getFeatures());
+
   if (drawOverlayLayerSource) {
     const existingLine = drawOverlayLayerSource.getFeatureById(
       MEASUREMNT_ELEMENT_PREFIX + featId + 'radiusline',
     );
-    console.log(existingLine);
+
     if (existingLine) {
       drawOverlayLayerSource.removeFeature(existingLine);
     }
