@@ -37,7 +37,7 @@ export const MapControlButtons = () => {
     <IconButton
       variant="ghost"
       colorPalette="green"
-      size={{ base: 'sm', md: 'lg' }}
+      size={{ base: 'sm', md: 'md' }}
       icon="navigation"
       aria-label="Nullstill rotasjon"
       onClick={() => setMapAngle(0)}
@@ -49,7 +49,7 @@ export const MapControlButtons = () => {
     <IconButton
       variant="ghost"
       colorPalette="green"
-      size={{ base: 'sm', md: 'lg' }}
+      size={{ base: 'sm', md: 'md' }}
       icon="my_location"
       aria-label="Min posisjon"
       onClick={handleMapLocationClick}
@@ -63,6 +63,7 @@ export const MapControlButtons = () => {
       alignItems="center"
       w={{ base: '10', md: '12' }}
       pointerEvents="auto"
+      py={1}
     >
       {isMobile ? (
         <>
@@ -75,7 +76,7 @@ export const MapControlButtons = () => {
           <IconButton
             variant="ghost"
             colorPalette="green"
-            size="lg"
+            size="md"
             icon="add"
             aria-label="Zoom inn"
             onClick={zoomIn}
@@ -83,7 +84,7 @@ export const MapControlButtons = () => {
           <IconButton
             variant="ghost"
             colorPalette="green"
-            size="lg"
+            size="md"
             icon="remove"
             aria-label="Zoom ut"
             onClick={zoomOut}
@@ -93,7 +94,7 @@ export const MapControlButtons = () => {
           <IconButton
             variant="ghost"
             colorPalette="green"
-            size="lg"
+            size="md"
             icon="rotate_left"
             aria-label="Roter venstre"
             onClick={() => rotateSnappy('left')}
@@ -102,7 +103,7 @@ export const MapControlButtons = () => {
           <IconButton
             variant="ghost"
             colorPalette="green"
-            size="lg"
+            size="md"
             icon="rotate_right"
             aria-label="Roter høyre"
             onClick={() => rotateSnappy('right')}
@@ -113,7 +114,7 @@ export const MapControlButtons = () => {
           <IconButton
             variant="ghost"
             colorPalette="green"
-            size="lg"
+            size="md"
             icon="fullscreen"
             aria-label="Fullskjerm"
             onClick={handleFullScreenClick}
