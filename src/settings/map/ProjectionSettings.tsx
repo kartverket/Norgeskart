@@ -1,4 +1,5 @@
 import { HStack } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
 import { DEFAULT_PROJECTION } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { ProjectionPopover } from '../../shared/Components/ProjectionPopover';
@@ -11,6 +12,7 @@ export const ProjectionSettings = () => {
   const projectionId = validateProjectionIdString(
     getUrlParameter('projection'),
   );
+  const { t } = useTranslation();
 
   return (
     <HStack
@@ -24,6 +26,7 @@ export const ProjectionSettings = () => {
         textColor="white"
         hideBorders
         isToolbar
+        label={t('toolbar.crs.tooltip')}
       />
       <ProjectionPopover isToolbar />
     </HStack>

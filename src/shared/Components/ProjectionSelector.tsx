@@ -5,6 +5,7 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Tooltip,
 } from '@kvib/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -46,9 +47,19 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
         border={'none'}
         id={props.hideBorders ? 'crs-select-trigger' : ''}
       >
-        <SelectValueText color={props.textColor} />
+        {props.label ? (
+          <Tooltip
+            content={props.label}
+            portalled={false}
+            positioning={{ placement: 'top' }}
+          >
+            <SelectValueText color={props.textColor} />
+          </Tooltip>
+        ) : (
+          <SelectValueText color={props.textColor} />
+        )}
       </SelectTrigger>
-      <SelectContent portalled={false}>
+      <SelectContent portalled={true}>
         {projectionCollection.map((item) => (
           <SelectItem
             key={item.value}

@@ -5,12 +5,15 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Tooltip,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { availableScales, scaleAtom } from '../map/atoms';
 
 export const ScaleSelector = () => {
   const [scale, setScale] = useAtom(scaleAtom);
+  const { t } = useTranslation();
 
   const scaleCollection = [...availableScales].map((s) => ({
     value: String(s),
@@ -32,9 +35,11 @@ export const ScaleSelector = () => {
         }
       }}
     >
-      <SelectTrigger className={'toolbar-select-trigger'}>
-        <SelectValueText color="white" placeholder={label}></SelectValueText>
-      </SelectTrigger>
+      <Tooltip content={t('toolbar.scale.tooltip')}>
+        <SelectTrigger className={'toolbar-select-trigger'}>
+          <SelectValueText color="white" placeholder={label}></SelectValueText>
+        </SelectTrigger>
+      </Tooltip>
       <SelectContent>
         {scaleCollection.map((item) => (
           <SelectItem

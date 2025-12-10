@@ -314,7 +314,13 @@
     "heading": "Tips and tricks"
   },
   "toolbar": {
-    "reportError": "Error in the map?"
+    "reportError": "Error in the map?",
+    "scale": {
+      "tooltip": "Select a scale"
+    },
+    "crs": {
+      "tooltip": "Select coordinate system"
+    }
   },
   "cookieDialog": {
     "heading": "We're using cookies ",

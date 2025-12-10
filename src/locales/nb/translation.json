@@ -380,7 +380,13 @@
     "heading": "Tips og triks"
   },
   "toolbar": {
-    "reportError": "Feil i kartet?"
+    "reportError": "Feil i kartet?",
+    "scale": {
+      "tooltip": "Velg målestokk"
+    },
+    "crs": {
+      "tooltip": "Velg koordinatsystem"
+    }
   },
   "cookieDialog": {
     "heading": "Vi bruker informasjonskapsler",

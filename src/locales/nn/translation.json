@@ -319,7 +319,13 @@
     "heading": "Tips og triks"
   },
   "toolbar": {
-    "reportError": "Feil i kartet?"
+    "reportError": "Feil i kartet?",
+    "scale": {
+      "tooltip": "Vel målestokk"
+    },
+    "crs": {
+      "tooltip": "Vel koordinatsystem"
+    }
   },
   "cookieDialog": {
     "heading": "Vi nytter informasjonskapsler",
