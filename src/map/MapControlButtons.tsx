@@ -103,26 +103,33 @@ interface ControlButtonProps {
   hide?: boolean;
 }
 
+const ControlIconButton = (props: ControlButtonProps) => {
+  return (
+    <IconButton
+      variant="ghost"
+      colorPalette="green"
+      size={{ base: 'sm', md: 'md' }}
+      icon={props.icon}
+      aria-label={props.label}
+      onClick={props.onClick}
+      style={props.style}
+    />
+  );
+};
 const ControlButton = (props: ControlButtonProps) => {
   if (props.hide) {
     return null;
   }
-  const ControlIconButton = () => {
-    return (
-      <IconButton
-        variant="ghost"
-        colorPalette="green"
-        size={{ base: 'sm', md: 'md' }}
-        icon={props.icon}
-        aria-label={props.label}
-        onClick={props.onClick}
-        style={props.style}
-      />
-    );
-  };
 
   if (!props.displayTooltip) {
-    return <ControlIconButton />;
+    return (
+      <ControlIconButton
+        label={props.label}
+        style={props.style}
+        icon={props.icon}
+        onClick={props.onClick}
+      />
+    );
   }
 
   return (
@@ -133,7 +140,12 @@ const ControlButton = (props: ControlButtonProps) => {
     >
       {/* Box here to render the tooltip */}
       <Box>
-        <ControlIconButton />
+        <ControlIconButton
+          label={props.label}
+          style={props.style}
+          icon={props.icon}
+          onClick={props.onClick}
+        />
       </Box>
     </Tooltip>
   );
