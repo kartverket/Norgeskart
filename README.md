@@ -1,6 +1,6 @@
 # Norgeskart
 
-Kildekode til norgeskart.no 2025. Enn så lenge WIP
+Kildekode til test.norgeskart.no 2025. Enn så lenge WIP
 
 ## Copyright
 
