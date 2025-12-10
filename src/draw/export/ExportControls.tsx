@@ -11,58 +11,21 @@ import {
   SelectValueText,
   VStack,
 } from '@kvib/react';
-import { GeoJSON, GML } from 'ol/format';
-import VectorLayer from 'ol/layer/Vector';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { downloadStringAsFile } from '../shared/utils/fileOperations';
-import { useDrawSettings } from './drawControls/hooks/drawSettings';
+import { useDrawSettings } from '../drawControls/hooks/drawSettings';
+import {
+  handleGeoJsonExport,
+  handleGMLExport,
+  handleGPXExport,
+} from './exportUtils';
 
-const exportFormats = ['GeoJSON', 'GML'] as const;
+const exportFormats = ['GeoJSON', 'GML', 'GPX'] as const;
 type ExportFormat = (typeof exportFormats)[number];
 const exportFormatsCollection = exportFormats.map((format) => ({
   value: format,
   label: format,
 }));
-
-const handleGeoJsonExport = (layer: VectorLayer) => {
-  const formater = new GeoJSON();
-  const features = layer.getSource()?.getFeatures();
-  if (!features || features.length === 0) {
-    console.error('No features to export');
-    return;
-  }
-  const geojsonStr = formater.writeFeatures(features);
-  downloadStringAsFile(
-    geojsonStr,
-    'Norgeskart_eksport.geojson',
-    'application/json',
-  );
-};
-
-const handleGmlExport = (layer: VectorLayer) => {
-  const features = layer.getSource()?.getFeatures();
-  if (!features || features.length === 0) {
-    console.error('No features to export');
-    return;
-  }
-  // Use a default feature type and geometry name
-  const formater = new GML({
-    featureNS: 'http://www.opengis.net/gml',
-    featureType: 'feature',
-    srsName: layer.getSource()?.getProjection()?.getCode() || 'EPSG:4326',
-  });
-
-  // Ensure all features have the correct geometry name
-  features.forEach((f) => {
-    if (f.getGeometryName() !== 'geometry') {
-      f.setGeometryName('geometry');
-    }
-  });
-
-  const gmlStr = formater.writeFeatures(features);
-  downloadStringAsFile(gmlStr, 'Norgeskart_eksport.gml', 'application/gml+xml');
-};
 
 export const ExportControls = () => {
   const { getDrawLayer } = useDrawSettings();
@@ -76,7 +39,10 @@ export const ExportControls = () => {
         handleGeoJsonExport(drawLayer);
         break;
       case 'GML':
-        handleGmlExport(drawLayer);
+        handleGMLExport(drawLayer);
+        break;
+      case 'GPX':
+        handleGPXExport(drawLayer);
         break;
       default:
         console.error('Unsupported export format:', exportFormat);
