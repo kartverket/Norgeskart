@@ -421,7 +421,7 @@
       "name": {
         "nb": "Parkerings område",
         "nn": "Parkerings område",
-        "en": "Parkerings område"
+        "en": "Parking area"
       },
       "layers": "t_parkeringsomrade_r",
       "categoryId": "accessibilityVillageWheelchair",
@@ -434,7 +434,7 @@
       "name": {
         "nb": "Vei",
         "nn": "Vei",
-        "en": "Vei"
+        "en": "Road"
       },
       "layers": "t_vei_r",
       "categoryId": "accessibilityVillageWheelchair",
@@ -447,7 +447,7 @@
       "name": {
         "nb": "HC-parkering",
         "nn": "HC-parkering",
-        "en": "HC-parkering"
+        "en": "HC-parking"
       },
       "layers": "t_HC_parkering_r",
       "categoryId": "accessibilityVillageWheelchair",
@@ -460,7 +460,7 @@
       "name": {
         "nb": "Inngang bygg",
         "nn": "Inngang bygg",
-        "en": "Inngang bygg"
+        "en": "Bulding entrance"
       },
       "layers": "t_inngangbygg_r_01",
       "categoryId": "accessibilityVillageWheelchair",
@@ -473,7 +473,7 @@
       "name": {
         "nb": "Parkerings område",
         "nn": "Parkerings område",
-        "en": "Parkerings område"
+        "en": "Parking area"
       },
       "layers": "t_parkeringsomrade_el",
       "categoryId": "accessibilityVillageElectricWheelchair",
@@ -486,7 +486,7 @@
       "name": {
         "nb": "Vei",
         "nn": "Vei",
-        "en": "Vei"
+        "en": "Road"
       },
       "layers": "t_vei_el",
       "categoryId": "accessibilityVillageElectricWheelchair",
@@ -499,7 +499,7 @@
       "name": {
         "nb": "HC-parkering",
         "nn": "HC-parkering",
-        "en": "HC-parkering"
+        "en": "HC-parking"
       },
       "layers": "t_HC_parkering_el",
       "categoryId": "accessibilityVillageElectricWheelchair",
@@ -512,7 +512,7 @@
       "name": {
         "nb": "Inngang bygg",
         "nn": "Inngang bygg",
-        "en": "Inngang bygg"
+        "en": "Bulding entrance"
       },
       "layers": "t_inngangbygg_r_02",
       "categoryId": "accessibilityVillageElectricWheelchair",
@@ -525,7 +525,7 @@
       "name": {
         "nb": "Parkerings område",
         "nn": "Parkerings område",
-        "en": "Parkerings område"
+        "en": "Parking area"
       },
       "layers": "t_parkeringsomrade",
       "categoryId": "accessibilityVillageSight",
@@ -538,7 +538,7 @@
       "name": {
         "nb": "Vei",
         "nn": "Vei",
-        "en": "Vei"
+        "en": "Road"
       },
       "layers": "t_vei",
       "categoryId": "accessibilityVillageSight",
@@ -551,7 +551,7 @@
       "name": {
         "nb": "HC-parkering",
         "nn": "HC-parkering",
-        "en": "HC-parkering"
+        "en": "HC-parking"
       },
       "layers": "t_HC_parkering",
       "categoryId": "accessibilityVillageSight",
@@ -564,7 +564,7 @@
       "name": {
         "nb": "Inngang bygg",
         "nn": "Inngang bygg",
-        "en": "Inngang bygg"
+        "en": "Bulding entrance"
       },
       "layers": "t_inngangbygg",
       "categoryId": "accessibilityVillageSight",
@@ -577,7 +577,7 @@
       "name": {
         "nb": "Statlig sikra",
         "nn": "Statlig sikra",
-        "en": "Statlig sikra"
+        "en": "Secured by the state "
       },
       "layers": "statlig_sikra_polygon_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -590,7 +590,7 @@
       "name": {
         "nb": "Friluftsområde",
         "nn": "Friluftsområde",
-        "en": "Friluftsområde"
+        "en": "Recreational area"
       },
       "layers": "friluftsomrade_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -603,7 +603,7 @@
       "name": {
         "nb": "Parkeringsområder",
         "nn": "Parkeringsområder",
-        "en": "Parkeringsområder"
+        "en": "Parking areas"
       },
       "layers": "parkeringsomrader_friluft_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -616,7 +616,7 @@
       "name": {
         "nb": "Turvei",
         "nn": "Turvei",
-        "en": "Turvei"
+        "en": "Hiking path"
       },
       "layers": "turvei_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -629,7 +629,7 @@
       "name": {
         "nb": "Turisthytte",
         "nn": "Turisthytte",
-        "en": "Turisthytte"
+        "en": "Tourist cabin"
       },
       "layers": "turisthytte_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -642,7 +642,7 @@
       "name": {
         "nb": "Gapahukhytte",
         "nn": "Gapahukhytte",
-        "en": "Gapahukhytte"
+        "en": "Lean-to shelter"
       },
       "layers": "gapahukhytte_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -655,7 +655,7 @@
       "name": {
         "nb": "Fiskeplass",
         "nn": "Fiskeplass",
-        "en": "Fiskeplass"
+        "en": "Fishing spot"
       },
       "layers": "fiskeplass_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -668,7 +668,7 @@
       "name": {
         "nb": "Grillbålplass",
         "nn": "Grillbålplass",
-        "en": "Grillbålplass"
+        "en": "BBQ fire pit"
       },
       "layers": "grillbalplass_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -681,7 +681,7 @@
       "name": {
         "nb": "Baderampe",
         "nn": "Baderampe",
-        "en": "Baderampe"
+        "en": "Swiming accessibility ramp"
       },
       "layers": "baderampe_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -694,7 +694,7 @@
       "name": {
         "nb": "HC-parkering",
         "nn": "HC-parkering",
-        "en": "HC-parkering"
+        "en": "HC-parking"
       },
       "layers": "hc_parkering_friluft_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -707,7 +707,7 @@
       "name": {
         "nb": "Skiløype",
         "nn": "Skiløype",
-        "en": "Skiløype"
+        "en": "Cross country skiing route"
       },
       "layers": "skiloype_01",
       "categoryId": "accessibilityRecreationWheelchair",
@@ -720,7 +720,7 @@
       "name": {
         "nb": "Statlig sikra",
         "nn": "Statlig sikra",
-        "en": "Statlig sikra"
+        "en": "Secured by the state "
       },
       "layers": "statlig_sikra_polygon_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -733,7 +733,7 @@
       "name": {
         "nb": "Friluftsområde",
         "nn": "Friluftsområde",
-        "en": "Friluftsområde"
+        "en": "Recreational area"
       },
       "layers": "friluftsomrade_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -746,7 +746,7 @@
       "name": {
         "nb": "Parkeringsområder",
         "nn": "Parkeringsområder",
-        "en": "Parkeringsområder"
+        "en": "Parking areas"
       },
       "layers": "parkeringsomrader_friluft_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -759,7 +759,7 @@
       "name": {
         "nb": "Turvei",
         "nn": "Turvei",
-        "en": "Turvei"
+        "en": "Hiking path"
       },
       "layers": "turvei_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -772,7 +772,7 @@
       "name": {
         "nb": "turisthytte",
         "nn": "turisthytte",
-        "en": "turisthytte"
+        "en": "Tourist cabin"
       },
       "layers": "turisthytte_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -785,7 +785,7 @@
       "name": {
         "nb": "Gapahukhytte",
         "nn": "Gapahukhytte",
-        "en": "Gapahukhytte"
+        "en": "Lean-to shelter"
       },
       "layers": "gapahukhytte_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -798,7 +798,7 @@
       "name": {
         "nb": "Fiskeplass",
         "nn": "Fiskeplass",
-        "en": "Fiskeplass"
+        "en": "Fishing spot"
       },
       "layers": "fiskeplass_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -811,7 +811,7 @@
       "name": {
         "nb": "Grillbålplass",
         "nn": "Grillbålplass",
-        "en": "Grillbålplass"
+        "en": "BBQ fire pit"
       },
       "layers": "grillbalplass_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -824,7 +824,7 @@
       "name": {
         "nb": "HC-parkering",
         "nn": "HC-parkering",
-        "en": "HC-parkering"
+        "en": "HC-parking"
       },
       "layers": "hc_parkering_friluft_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -837,7 +837,7 @@
       "name": {
         "nb": "Skiløype",
         "nn": "Skiløype",
-        "en": "Skiløype"
+        "en": "Cross country skiing route"
       },
       "layers": "skiloype_02",
       "categoryId": "accessibilityRecreationElectricWheelchair",
@@ -850,7 +850,7 @@
       "name": {
         "nb": "Statlig sikra",
         "nn": "Statlig sikra",
-        "en": "Statlig sikra"
+        "en": "Secured by the state "
       },
       "layers": "statlig_sikra_polygon_03",
       "categoryId": "accessibilityRecreationSight",
@@ -863,7 +863,7 @@
       "name": {
         "nb": "Friluftsområde",
         "nn": "Friluftsområde",
-        "en": "Friluftsområde"
+        "en": "Recreational area"
       },
       "layers": "friluftsomrade_03",
       "categoryId": "accessibilityRecreationSight",
@@ -876,7 +876,7 @@
       "name": {
         "nb": "Parkeringsområder",
         "nn": "Parkeringsområder",
-        "en": "Parkeringsområder"
+        "en": "Parking areas"
       },
       "layers": "parkeringsomrader_friluft_03",
       "categoryId": "accessibilityRecreationSight",
@@ -889,7 +889,7 @@
       "name": {
         "nb": "Turvei",
         "nn": "Turvei",
-        "en": "Turvei"
+        "en": "Hiking path"
       },
       "layers": "turvei_03",
       "categoryId": "accessibilityRecreationSight",
@@ -902,7 +902,7 @@
       "name": {
         "nb": "Turisthytte",
         "nn": "Turisthytte",
-        "en": "Turisthytte"
+        "en": "Tourist cabin"
       },
       "layers": "turisthytte_03",
       "categoryId": "accessibilityRecreationSight",
@@ -915,7 +915,7 @@
       "name": {
         "nb": "Gapahukhytte",
         "nn": "Gapahukhytte",
-        "en": "Gapahukhytte"
+        "en": "Lean-to shelter"
       },
       "layers": "gapahukhytte_03",
       "categoryId": "accessibilityRecreationSight",
@@ -928,7 +928,7 @@
       "name": {
         "nb": "Fiskeplass",
         "nn": "Fiskeplass",
-        "en": "Fiskeplass"
+        "en": "Fishing spot"
       },
       "layers": "fiskeplass_03",
       "categoryId": "accessibilityRecreationSight",
@@ -941,7 +941,7 @@
       "name": {
         "nb": "Grillbålplass",
         "nn": "Grillbålplass",
-        "en": "Grillbålplass"
+        "en": "BBQ fire pit"
       },
       "layers": "grillbalplass_03",
       "categoryId": "accessibilityRecreationSight",
@@ -954,7 +954,7 @@
       "name": {
         "nb": "Baderampe",
         "nn": "Baderampe",
-        "en": "Baderampe"
+        "en": "Swiming accessibility ramp"
       },
       "layers": "baderampe_02",
       "categoryId": "accessibilityRecreationSight",
@@ -967,7 +967,7 @@
       "name": {
         "nb": "HC-parkering",
         "nn": "HC-parkering",
-        "en": "HC-parkering"
+        "en": "HC-parking"
       },
       "layers": "hc_parkering_friluft_03",
       "categoryId": "accessibilityRecreationSight",
@@ -980,7 +980,7 @@
       "name": {
         "nb": "Skiløype",
         "nn": "Skiløype",
-        "en": "Skiløype"
+        "en": "Cross country skiing route"
       },
       "layers": "skiloype_03",
       "categoryId": "accessibilityRecreationSight",
