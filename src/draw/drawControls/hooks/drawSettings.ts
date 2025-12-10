@@ -57,8 +57,7 @@ const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
   const drawType = useAtomValue(drawTypeAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
-  const [showMeasurements, setShowMeasurementsAtom] =
-    useAtom(showMeasurementsAtom);
+  const [showMeasurements, setShowMeasurements] = useAtom(showMeasurementsAtom);
 
   const { addDrawAction, resetActions } = useDrawActionsState();
   const mapProjection = map.getView().getProjection().getCode();
@@ -287,10 +286,6 @@ const useDrawSettings = () => {
     }
   };
 
-  const setShowMeasurements = (enable: boolean) => {
-    setShowMeasurementsAtom(enable);
-  };
-
   const undoLast = () => {
     const drawInteraction = getDrawInteraction();
     if (!drawInteraction) {
@@ -363,11 +358,9 @@ const useDrawSettings = () => {
   return {
     drawEnabled,
     drawType,
-    showMeasurements,
     removeDrawnFeatureById,
     addFeature,
     setDrawLayerFeatures,
-    setShowMeasurements,
     undoLast,
     abortDrawing,
     deleteSelected,
