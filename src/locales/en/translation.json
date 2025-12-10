@@ -123,7 +123,7 @@
             },
             "rettikartetcategories": {
               "n50kartdata": "N50 maps",
-              "sjo": "Oceanic",
+              "sjo": "Nautical charts",
               "turruter": "Hiking trails",
               "veger": "Roads and adresses"
             },
@@ -155,8 +155,8 @@
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_web_mercator_v2": "Aerial photos",
-            "oceanicelectronic": "Electronic seamap",
-            "sjokartraster": "Oceanic paper map",
+            "oceanicelectronic": "Electronic Nautical Charts",
+            "sjokartraster": "Nautical Charts",
             "topo": "Topographic map",
             "topo_2025": "Topo 2025",
             "topograatone": "Topografic, grayscale",
