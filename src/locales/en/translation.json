@@ -342,6 +342,9 @@
     },
     "crs": {
       "tooltip": "Select coordinate system"
+    },
+    "coordinates": {
+      "tooltip": "Coordinates of the mouse pointer"
     }
   },
   "cookieDialog": {

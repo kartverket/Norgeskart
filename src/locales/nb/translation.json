@@ -408,6 +408,9 @@
     },
     "crs": {
       "tooltip": "Velg koordinatsystem"
+    },
+    "coordinates": {
+      "tooltip": "Pekerens koordinater"
     }
   },
   "cookieDialog": {

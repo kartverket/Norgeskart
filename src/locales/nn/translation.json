@@ -347,6 +347,9 @@
     },
     "crs": {
       "tooltip": "Vel koordinatsystem"
+    },
+    "coordinates": {
+      "tooltip": "Pekerens koordinatar"
     }
   },
   "cookieDialog": {
