@@ -23,21 +23,18 @@ const getMeasurementText = (
   projection: string,
   unit: DistanceUnit,
 ) => {
-  let measurementText = '';
-
   if (geometry instanceof Polygon) {
     const area = getArea(geometry, { projection: projection });
-    measurementText = formatArea(area, unit);
+    return formatArea(area, unit);
   }
   if (geometry instanceof LineString) {
     const length = getLength(geometry, { projection: projection });
-    measurementText = formatDistance(length, unit);
+    return formatDistance(length, unit);
   }
   if (geometry instanceof Circle) {
-    const radius = geometry.getRadius();
-    measurementText = formatDistance(radius, unit);
+    return `${getCircleRadiusMeasurementText(geometry, unit)}, ${getCircleAreaMeasurementText(geometry, unit)}`;
   }
-  return measurementText;
+  return '';
 };
 
 const getCircleRadiusMeasurementText = (circle: Circle, unit: DistanceUnit) => {
