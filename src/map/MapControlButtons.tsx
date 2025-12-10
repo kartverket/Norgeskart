@@ -69,6 +69,7 @@ export const MapControlButtons = () => {
         label={t('map.controls.orientation.label')}
         style={{ transform: `rotate(${mapOrientation}deg)` }}
         displayTooltip
+        variant="tertiary"
       />
       <ControlButton
         icon="rotate_right"
@@ -101,12 +102,13 @@ interface ControlButtonProps {
   displayTooltip?: boolean;
   style?: CSSProperties;
   hide?: boolean;
+  variant?: 'ghost' | 'tertiary';
 }
 
 const ControlIconButton = (props: ControlButtonProps) => {
   return (
     <IconButton
-      variant="ghost"
+      variant={props.variant || 'ghost'}
       colorPalette="green"
       size={{ base: 'sm', md: 'md' }}
       icon={props.icon}
@@ -128,6 +130,7 @@ const ControlButton = (props: ControlButtonProps) => {
         style={props.style}
         icon={props.icon}
         onClick={props.onClick}
+        variant={props.variant}
       />
     );
   }
@@ -145,6 +148,7 @@ const ControlButton = (props: ControlButtonProps) => {
           style={props.style}
           icon={props.icon}
           onClick={props.onClick}
+          variant={props.variant}
         />
       </Box>
     </Tooltip>
