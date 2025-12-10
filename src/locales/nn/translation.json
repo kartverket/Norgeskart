@@ -41,7 +41,7 @@
           "movedown": "Flytt ned",
           "moveup": "Flytt ned",
           "point": "Punkt",
-          "polygon": "Polygon",
+          "polygon": "Flate",
           "text": "Tekst"
         }
       },
@@ -122,7 +122,7 @@
             "category": {
               "label": "Vel kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. Vel fra kategoriene under.",
+            "description": "Meld om feil i kart på rettikartet.no. Vel fra kategoriene under for å åpne rettikartet i nytt vindu.",
             "link": {
               "label": "Åpne rettikartet.no i ei ny fane"
             },
@@ -140,10 +140,6 @@
       }
     },
     "errorMessage": "Noko gikk galt med kartet",
-    "overlay": {
-      "fullscreen": "Fullskjerm",
-      "myPosition": "Vis min posisjon"
-    },
     "settings": {
       "compass": {
         "enabled": "Vis kompass",
@@ -246,6 +242,29 @@
           "warningPerformance": "Aktivering av mange lag kan påverke ytinga. Vurder å deaktivere ubrukte lag."
         }
       }
+    },
+    "controls": {
+      "zoomIn": {
+        "label": "Zoom inn"
+      },
+      "zoomOut": {
+        "label": "Zoom ut"
+      },
+      "rotateLeft": {
+        "label": "Roter venstre"
+      },
+      "orientation": {
+        "label": "Kartorientering. Trykk for å tilbakestille"
+      },
+      "rotateRight": {
+        "label": "Roter høger"
+      },
+      "myLocation": {
+        "label": "Gå til min posisjon"
+      },
+      "fullscreen": {
+        "label": "Bruk fullskjerm"
+      }
     }
   },
   "mapLayers": {
@@ -319,7 +338,19 @@
     "heading": "Tips og triks"
   },
   "toolbar": {
-    "reportError": "Feil i kartet?"
+    "reportError": {
+      "label": "Feil i kartet?",
+      "tooltip": "Ser du feil i kartet, meld fra til oss her"
+    },
+    "scale": {
+      "tooltip": "Vel målestokk"
+    },
+    "crs": {
+      "tooltip": "Vel koordinatsystem"
+    },
+    "coordinates": {
+      "tooltip": "Pekerens koordinatar"
+    }
   },
   "cookieDialog": {
     "heading": "Vi nytter informasjonskapsler",

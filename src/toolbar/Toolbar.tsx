@@ -96,22 +96,26 @@ export const Toolbar = () => {
         <ProjectionSettings />
       </Flex>
       <Flex justify="center" alignItems="center" gap={4} color="white">
-        <Text fontSize="sm">
-          {mousePositionCoords
-            ? formatCoords(mousePositionCoords, crsCode)
-            : ''}
-        </Text>
+        <Tooltip content={t('toolbar.coordinates.tooltip')}>
+          <Text fontSize="sm">
+            {mousePositionCoords
+              ? formatCoords(mousePositionCoords, crsCode)
+              : ''}
+          </Text>
+        </Tooltip>
         <ScaleSelector />
       </Flex>
       <Flex flex="1" justify="flex-end" alignItems="center">
-        <Button
-          variant="plain"
-          color="white"
-          size="sm"
-          onClick={() => setRettIKartetDialogOpen(true)}
-        >
-          {t('toolbar.reportError')}
-        </Button>
+        <Tooltip content={t('toolbar.reportError.tooltip')}>
+          <Button
+            variant="plain"
+            color="white"
+            size="sm"
+            onClick={() => setRettIKartetDialogOpen(true)}
+          >
+            {t('toolbar.reportError.label')}
+          </Button>
+        </Tooltip>
       </Flex>
     </Flex>
   );

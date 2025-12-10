@@ -117,13 +117,13 @@
             "category": {
               "label": "Select map category"
             },
-            "description": "Report something wrong with a map in rettikartet.no. Select a category below.",
+            "description": "Report something wrong with a map in rettikartet.no. Select a category below to open rettikartet in a new window.",
             "link": {
               "label": "Open rettikartet.no in a new tab"
             },
             "rettikartetcategories": {
               "n50kartdata": "N50 maps",
-              "sjo": "Oceanic",
+              "sjo": "Nautical charts",
               "turruter": "Hiking trails",
               "veger": "Roads and adresses"
             },
@@ -135,10 +135,6 @@
       }
     },
     "errorMessage": "Something went very wrong with the map",
-    "overlay": {
-      "fullscreen": "Toggle fullscreen",
-      "myPosition": "Show my location"
-    },
     "settings": {
       "compass": {
         "enabled": "Show compass",
@@ -155,8 +151,8 @@
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_web_mercator_v2": "Aerial photos",
-            "oceanicelectronic": "Electronic seamap",
-            "sjokartraster": "Oceanic paper map",
+            "oceanicelectronic": "Electronic Nautical Charts",
+            "sjokartraster": "Nautical Charts",
             "topo": "Topographic map",
             "topo_2025": "Topo 2025",
             "topograatone": "Topografic, grayscale",
@@ -241,6 +237,29 @@
           "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers."
         }
       }
+    },
+    "controls": {
+      "zoomIn": {
+        "label": "Zoom in"
+      },
+      "zoomOut": {
+        "label": "Zoom out"
+      },
+      "rotateLeft": {
+        "label": "Rotate left"
+      },
+      "orientation": {
+        "label": "Map orientation. Click to reset"
+      },
+      "rotateRight": {
+        "label": "Rotate right"
+      },
+      "myLocation": {
+        "label": "Go to my location"
+      },
+      "fullscreen": {
+        "label": "Use fullscreen"
+      }
     }
   },
   "mapLayers": {
@@ -314,7 +333,19 @@
     "heading": "Tips and tricks"
   },
   "toolbar": {
-    "reportError": "Error in the map?"
+    "reportError": {
+      "label": "Error in the map?",
+      "tooltip": "Spotted an error, notify us here"
+    },
+    "scale": {
+      "tooltip": "Select a scale"
+    },
+    "crs": {
+      "tooltip": "Select coordinate system"
+    },
+    "coordinates": {
+      "tooltip": "Coordinates of the mouse pointer"
+    }
   },
   "cookieDialog": {
     "heading": "We're using cookies ",
