@@ -104,14 +104,16 @@ export const Toolbar = () => {
         <ScaleSelector />
       </Flex>
       <Flex flex="1" justify="flex-end" alignItems="center">
-        <Button
-          variant="plain"
-          color="white"
-          size="sm"
-          onClick={() => setRettIKartetDialogOpen(true)}
-        >
-          {t('toolbar.reportError')}
-        </Button>
+        <Tooltip content={t('toolbar.reportError.tooltip')}>
+          <Button
+            variant="plain"
+            color="white"
+            size="sm"
+            onClick={() => setRettIKartetDialogOpen(true)}
+          >
+            {t('toolbar.reportError.label')}
+          </Button>
+        </Tooltip>
       </Flex>
     </Flex>
   );

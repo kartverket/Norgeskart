@@ -41,7 +41,7 @@
           "movedown": "Flytt ned",
           "moveup": "Flytt opp",
           "point": "Punkter",
-          "polygon": "Polygon",
+          "polygon": "Flate",
           "text": "Tekst"
         }
       },
@@ -122,7 +122,7 @@
             "category": {
               "label": "Velg kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under.",
+            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne rettikartet i nytt vindu.",
             "link": {
               "label": "Åpne rettikartet.no i en ny fane"
             },
@@ -380,7 +380,11 @@
     "heading": "Tips og triks"
   },
   "toolbar": {
-    "reportError": "Feil i kartet?",
+    "reportError": {
+      "label": "Feil i kartet?",
+      "tooltip": "Ser du feil i kartet, meld fra til oss her"
+    },
+
     "scale": {
       "tooltip": "Velg målestokk"
     },

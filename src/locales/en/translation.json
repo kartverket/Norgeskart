@@ -117,7 +117,7 @@
             "category": {
               "label": "Select map category"
             },
-            "description": "Report something wrong with a map in rettikartet.no. Select a category below.",
+            "description": "Report something wrong with a map in rettikartet.no. Select a category below to open rettikartet in a new window.",
             "link": {
               "label": "Open rettikartet.no in a new tab"
             },
@@ -314,7 +314,11 @@
     "heading": "Tips and tricks"
   },
   "toolbar": {
-    "reportError": "Error in the map?",
+    "reportError": {
+      "label": "Error in the map?",
+      "tooltip": "Spotted an error, notify us here"
+    },
+
     "scale": {
       "tooltip": "Select a scale"
     },
