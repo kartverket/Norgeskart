@@ -10,10 +10,10 @@ import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../../map/atoms';
 import { showMeasurementsAtom } from '../../../settings/draw/atoms';
 import {
-  addInteractiveMesurementOverlayToFeature,
+  addInteractiveMeasurementOverlayToFeature,
   clearStaticOverlaysForFeature,
-  enableFeatureMeasurmentOverlay,
-  removeInteractiveMesurementOverlayFromFeature,
+  enableFeatureMeasurementOverlay,
+  removeInteractiveMeasurementOverlayFromFeature,
 } from '../drawUtils';
 import {
   FeatureMoveDetail,
@@ -282,7 +282,7 @@ const handleModifyStart = (e: BaseEvent | Event) => {
       f.set('geometryPreMove', preGeo);
       const shouldShowInteractive = getDefaultStore().get(showMeasurementsAtom);
       if (shouldShowInteractive) {
-        addInteractiveMesurementOverlayToFeature(f);
+        addInteractiveMeasurementOverlayToFeature(f);
       }
     });
   }
@@ -300,8 +300,8 @@ const handleModifyEnd = (e: BaseEvent | Event) => {
       } as FeatureMoveDetail;
     });
     e.features.getArray().forEach((f) => {
-      removeInteractiveMesurementOverlayFromFeature(f);
-      enableFeatureMeasurmentOverlay(f);
+      removeInteractiveMeasurementOverlayFromFeature(f);
+      enableFeatureMeasurementOverlay(f);
     });
 
     const event = new CustomEvent('featureMoved', { detail: moveDetails });

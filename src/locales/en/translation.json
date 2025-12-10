@@ -32,7 +32,7 @@
       "colorStroke": "Stroke",
       "colorText": "Text",
       "pointType": "Select icon",
-      "showMeasurements": "Show measurments",
+      "showMeasurements": "Show measurements",
       "tool": {
         "tooltip": {
           "circle": "Circle",
@@ -200,7 +200,7 @@
                 "historicalMaps": {
                   "heading": "Historical maps",
                   "layers": {
-                    "economicMapFirstEdition": "Economic Mapping Authoroty 1. edition",
+                    "economicMapFirstEdition": "Economic Mapping Authority 1. edition",
                     "amtMap": "Amt maps"
                   }
                 }

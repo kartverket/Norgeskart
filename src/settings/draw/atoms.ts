@@ -14,10 +14,10 @@ import { Fill, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  addInteractiveMesurementOverlayToFeature,
-  enableFeatureMeasurmentOverlay,
+  addInteractiveMeasurementOverlayToFeature,
+  enableFeatureMeasurementOverlay,
   removeFeaturelessInteractiveMeasurementOverlay,
-  removeInteractiveMesurementOverlayFromFeature,
+  removeInteractiveMeasurementOverlayFromFeature,
 } from '../../draw/drawControls/drawUtils';
 import {
   handleFeatureSelectDone,
@@ -193,7 +193,7 @@ const setDisplayStaticMeasurement = (enable: boolean, map: Map) => {
     return;
   }
   const drawnFeatures = source.getFeatures();
-  drawnFeatures.forEach(enableFeatureMeasurmentOverlay);
+  drawnFeatures.forEach(enableFeatureMeasurementOverlay);
 };
 const clearStaticOverlaysForFeatures = (map: Map) => {
   const overlays = getMeasurementOverlays(map);
@@ -227,12 +227,12 @@ const setDisplayInteractiveMeasurementForDrawInteraction = (
   }
   const drawStartMesurmentListener = (event: BaseEvent | Event) => {
     const eventFeature = (event as unknown as DrawEvent).feature;
-    addInteractiveMesurementOverlayToFeature(eventFeature);
+    addInteractiveMeasurementOverlayToFeature(eventFeature);
   };
   const drawEndMesurmentListener = (event: BaseEvent | Event) => {
     const eventFeature = (event as unknown as DrawEvent).feature;
-    removeInteractiveMesurementOverlayFromFeature(eventFeature);
-    enableFeatureMeasurmentOverlay(eventFeature);
+    removeInteractiveMeasurementOverlayFromFeature(eventFeature);
+    enableFeatureMeasurementOverlay(eventFeature);
     removeFeaturelessInteractiveMeasurementOverlay();
   };
 
