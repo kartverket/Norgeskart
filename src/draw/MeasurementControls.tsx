@@ -13,8 +13,11 @@ import {
 } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
-import { DistanceUnit, distanceUnitAtom } from '../settings/draw/atoms';
-import { useDrawSettings } from './drawControls/hooks/drawSettings';
+import {
+  DistanceUnit,
+  distanceUnitAtom,
+  showMeasurementsAtom,
+} from '../settings/draw/atoms';
 
 const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
   { value: 'm', label: `${t('shared.units.meter')} [m]` },
@@ -24,7 +27,7 @@ const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
 export const MeasurementControls = () => {
   const [distanceUnit, setDistanceUnit] = useAtom(distanceUnitAtom);
 
-  const { showMeasurements, setShowMeasurements } = useDrawSettings();
+  const [showMeasurements, setShowMeasurements] = useAtom(showMeasurementsAtom);
   return (
     <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
       <SwitchRoot

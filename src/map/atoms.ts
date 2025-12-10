@@ -23,7 +23,7 @@ export type ProjectionIdentifier =
   | 'EPSG:25835' // utm35n
   | 'EPSG:25836'; // utm36n
 
-export const INITIAL_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
+export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 3;
 export const DEFAULT_CENTER = [396722, 7197860]; // Center in EPSG:25833
 export const DEFAULT_ROTATION = 0;
@@ -67,7 +67,7 @@ const getInitialMapView = () => {
   );
   const projectionId = projectionIdFromUrl
     ? projectionIdFromUrl
-    : INITIAL_PROJECTION;
+    : DEFAULT_PROJECTION;
 
   const initialProjection = getProjection(projectionId)!;
 
@@ -118,6 +118,7 @@ export const mapAtom = atom<Map>(() => {
 
   map.addLayer(mapLayers.markerLayer.getLayer());
   map.addLayer(mapLayers.drawLayer.getLayer());
+  map.addLayer(mapLayers.drawOverlayLayer.getLayer());
 
   const intialView = getInitialMapView();
 

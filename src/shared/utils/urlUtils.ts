@@ -119,6 +119,8 @@ export type NKUrlParameter =
   | 'rotation'
   | 'lat'
   | 'lon'
+  | 'markerLat'
+  | 'markerLon'
   | 'zoom'
   | 'drawing'
   | 'layers' // Legacy parameter from old norgeskart.no

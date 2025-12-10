@@ -23,3 +23,13 @@ export const getPropertyGeometryLayer = (): VectorLayer | null => {
   }
   return layersMatching[0] as unknown as VectorLayer;
 };
+
+export const getDrawOverlayLayer = (): VectorLayer => {
+  const map = getDefaultStore().get(mapAtom);
+  return map
+    .getLayers()
+    .getArray()
+    .filter(
+      (layer) => layer.get('id') === 'drawOverlayLayer',
+    )[0] as unknown as VectorLayer;
+};

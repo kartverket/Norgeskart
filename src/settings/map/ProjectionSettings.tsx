@@ -1,5 +1,5 @@
 import { HStack } from '@kvib/react';
-import { INITIAL_PROJECTION } from '../../map/atoms';
+import { DEFAULT_PROJECTION } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { ProjectionPopover } from '../../shared/Components/ProjectionPopover';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
@@ -20,7 +20,7 @@ export const ProjectionSettings = () => {
     >
       <ProjectionSelector
         onProjectionChange={setProjection}
-        default={projectionId || INITIAL_PROJECTION}
+        default={projectionId || DEFAULT_PROJECTION}
         textColor="white"
         hideBorders
         isToolbar

@@ -2,10 +2,8 @@ import { MaterialSymbol } from '@kvib/react';
 import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
-import BaseEvent from 'ol/events/Event';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Geometry, Point } from 'ol/geom';
-import { DrawEvent } from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -20,11 +18,8 @@ import {
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
 import { removeUrlParameter } from '../../../shared/utils/urlUtils';
 import {
-  addInteractiveMesurementOverlayToFeature,
+  clearStaticOverlaysForFeature,
   enableFeatureMeasurmentOverlay,
-  removeFeaturelessInteractiveMeasurementOverlay,
-  removeFeatureMeasurementOverlay,
-  removeInteractiveMesurementOverlayFromFeature,
 } from '../drawUtils';
 
 import { getFeatureIcon } from './drawEventHandlers';
@@ -60,10 +55,9 @@ export type DrawType =
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
-  const [drawType, _] = useAtom(drawTypeAtom);
+  const drawType = useAtomValue(drawTypeAtom);
   const drawEnabled = useAtomValue(drawEnabledAtom);
-  const [showMeasurements, setShowMeasurementsAtom] =
-    useAtom(showMeasurementsAtom);
+  const [showMeasurements, setShowMeasurements] = useAtom(showMeasurementsAtom);
 
   const { addDrawAction, resetActions } = useDrawActionsState();
   const mapProjection = map.getView().getProjection().getCode();
@@ -178,7 +172,7 @@ const useDrawSettings = () => {
     }
     const feature = drawSource.getFeatureById(featureId);
     if (feature) {
-      removeFeatureMeasurementOverlay(feature);
+      clearStaticOverlaysForFeature(feature);
       const iconOverlay = map.getOverlayById(
         `${ICON_OVERLAY_PREFIX}${featureId}`,
       );
@@ -292,75 +286,6 @@ const useDrawSettings = () => {
     }
   };
 
-  const setDisplayInteractiveMeasurementForDrawInteraction = (
-    enable: boolean,
-  ) => {
-    const drawInteraction = getDrawInteraction();
-    if (!drawInteraction) {
-      return;
-    }
-    const drawStartMesurmentListener = (event: BaseEvent | Event) => {
-      const eventFeature = (event as unknown as DrawEvent).feature;
-      addInteractiveMesurementOverlayToFeature(eventFeature);
-    };
-    const drawEndMesurmentListener = (event: BaseEvent | Event) => {
-      const eventFeature = (event as unknown as DrawEvent).feature;
-      removeInteractiveMesurementOverlayFromFeature(eventFeature);
-      enableFeatureMeasurmentOverlay(eventFeature);
-      removeFeaturelessInteractiveMeasurementOverlay();
-    };
-
-    if (enable) {
-      drawInteraction.on('drawstart', drawStartMesurmentListener);
-      drawInteraction.on('drawend', drawEndMesurmentListener);
-    } else {
-      drawInteraction.un('drawstart', drawStartMesurmentListener);
-      drawInteraction.un('drawend', drawEndMesurmentListener);
-    }
-  };
-
-  const setDisplayStaticMeasurement = (enable: boolean) => {
-    removeFeatureMeasurementOverlays();
-    if (!enable) {
-      return;
-    }
-    const drawLayer = getDrawLayer();
-    const source = drawLayer.getSource();
-    if (!source) {
-      return;
-    }
-    const drawnFeatures = source.getFeatures();
-    drawnFeatures.forEach(enableFeatureMeasurmentOverlay);
-  };
-
-  const getMeasurementOverlays = () => {
-    const overlays = map.getOverlays().getArray();
-    return overlays.filter((overlay) => {
-      const overlayId = overlay.getId()?.toString();
-      if (!overlayId) {
-        return false;
-      }
-      return (
-        overlayId.startsWith(MEASUREMNT_OVERLAY_PREFIX) ||
-        overlayId.startsWith(INTERACTIVE_OVERLAY_PREFIX)
-      );
-    });
-  };
-
-  const removeFeatureMeasurementOverlays = () => {
-    const overlays = getMeasurementOverlays();
-    overlays.forEach((overlay) => {
-      overlay.getElement()?.remove();
-      map.removeOverlay(overlay);
-    });
-  };
-
-  const setShowMeasurements = (enable: boolean) => {
-    setShowMeasurementsAtom(enable);
-    setDisplayStaticMeasurement(enable);
-    setDisplayInteractiveMeasurementForDrawInteraction(enable);
-  };
-
   const undoLast = () => {
     const drawInteraction = getDrawInteraction();
     if (!drawInteraction) {
@@ -433,11 +358,9 @@ const useDrawSettings = () => {
   return {
     drawEnabled,
     drawType,
-    showMeasurements,
     removeDrawnFeatureById,
     addFeature,
     setDrawLayerFeatures,
-    setShowMeasurements,
     undoLast,
     abortDrawing,
     deleteSelected,

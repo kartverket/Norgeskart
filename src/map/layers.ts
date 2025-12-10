@@ -15,6 +15,7 @@ export type MapLayer = {
 
 export type MapLayers = {
   drawLayer: MapLayer;
+  drawOverlayLayer: MapLayer;
   markerLayer: MapLayer;
   clusterLayer: MapLayer;
   propertyGeometryLayer: MapLayer;
@@ -30,7 +31,15 @@ const mapLayers: MapLayers = {
       });
     },
   },
-
+  drawOverlayLayer: {
+    getLayer: () => {
+      return new VectorLayer({
+        zIndex: 3,
+        source: new VectorSource({ wrapX: false }),
+        properties: { id: 'drawOverlayLayer' },
+      });
+    },
+  },
   markerLayer: {
     getLayer: () => {
       return new VectorLayer({
