@@ -19,7 +19,7 @@ import { removeUrlParameter } from '../../shared/utils/urlUtils';
 import { placesNearbyAtom, selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
-import { InfoBoxContent } from './InfoBoxContent';
+import { InfoBoxPreamble } from './InfoBoxPreamble';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
 
@@ -65,7 +65,7 @@ export const InfoBox = () => {
           alignSelf={'flex-end'}
         />
       </Flex>
-      <InfoBoxContent result={selectedResult} x={x} y={y} />
+      <InfoBoxPreamble result={selectedResult} x={x} y={y} />
       <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
         <AccordionRoot
           collapsible
@@ -79,15 +79,12 @@ export const InfoBox = () => {
               inputCRS={inputCRS}
             />
           )}
-          {selectedResult.type === 'Coordinate' && (
+          {selectedResult.type === 'Coordinate' && placesNearby.length > 0 && (
             <AccordionItem value={'PlacesNearby'}>
               <AccordionItemTrigger pl={0}>
                 {t('infoBox.placesNearby')}
               </AccordionItemTrigger>
               <AccordionItemContent>
-                {placesNearby.length === 0 && (
-                  <Box>{t('infoBox.noPlacesNearby')}</Box>
-                )}
                 {placesNearby.map((place) => (
                   <Box
                     key={place.placeNumber}

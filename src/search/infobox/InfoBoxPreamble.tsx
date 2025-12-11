@@ -68,8 +68,8 @@ const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
           {t('infoBox.metersAboveSeaLevel')}
         </Text>
         <Popover>
-          <PopoverTrigger>
-            <Icon boxSize={4} cursor="pointer" icon={'info'} />
+          <PopoverTrigger cursor="pointer">
+            <Icon icon={'info'} />
           </PopoverTrigger>
           <PopoverContent>
             <Box p={2}>
@@ -83,7 +83,7 @@ const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
   return null;
 };
 
-export const InfoBoxContent = ({ result, x, y }: InfoBoxContentProps) => {
+export const InfoBoxPreamble = ({ result, x, y }: InfoBoxContentProps) => {
   return (
     <Box userSelect={'text'}>
       <InfoBoxTextContent result={result} />
