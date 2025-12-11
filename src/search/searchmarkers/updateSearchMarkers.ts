@@ -119,7 +119,9 @@ export const updateSearchMarkers = (
     map.on('singleclick', (evt) => {
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         const featuresAtPixel = feature.get('features') as Feature[];
-        if (!featuresAtPixel) return;
+        if (!featuresAtPixel) {
+          return;
+        }
 
         if (featuresAtPixel.length === 1) {
           handleMarkerClick(featuresAtPixel[0], onResultClick);

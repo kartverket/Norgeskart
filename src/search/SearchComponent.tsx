@@ -109,6 +109,48 @@ export const SearchComponent = () => {
     setHoveredResult(null);
   };
 
+  const isClusterClick = useCallback((e: MapBrowserEvent): boolean => {
+    const map = getDefaultStore().get(mapAtom);
+    const features = map.getFeaturesAtPixel(e.pixel);
+    return (
+      features &&
+      features.length === 1 &&
+      features[0].get('features') &&
+      Array.isArray(features[0].get('features')) &&
+      features[0].get('features').length > 1
+    );
+  }, []);
+
+  const handlePositionClick = useCallback(
+    (e: MapBrowserEvent) => {
+      const map = getDefaultStore().get(mapAtom);
+      const coordinate = e.coordinate;
+      const projection = map.getView().getProjection().getCode();
+      setSearchCoordinates({
+        x: coordinate[0],
+        y: coordinate[1],
+        projection: projection as ProjectionIdentifier,
+      });
+
+      const parsedCoordinate: ParsedCoordinate = {
+        lat: coordinate[0],
+        lon: coordinate[1],
+        projection: projection as ProjectionIdentifier,
+        formattedString: `${coordinate[0].toFixed(2)}, ${coordinate[1].toFixed(2)} @ ${projection.split(':')[1]}`,
+        inputFormat: 'utm',
+      };
+
+      setSelectedResult({
+        lon: coordinate[0],
+        lat: coordinate[1],
+        name: parsedCoordinate.formattedString,
+        type: 'Coordinate',
+        coordinate: parsedCoordinate,
+      });
+    },
+    [setSearchCoordinates, setSelectedResult],
+  );
+
   const mapClickHandler = useCallback(
     (e: Event | BaseEvent) => {
       const isContextMenuOpen = getDefaultStore().get(mapContextIsOpenAtom);
@@ -116,38 +158,21 @@ export const SearchComponent = () => {
         return;
       }
       if (e instanceof MapBrowserEvent) {
-        const coordinate = e.coordinate;
-        const projection = map.getView().getProjection().getCode();
-        setSearchCoordinates({
-          x: coordinate[0],
-          y: coordinate[1],
-          projection: projection as ProjectionIdentifier,
-        });
+        const isClickClusterClick = isClusterClick(e);
 
-        const parsedCoordinate: ParsedCoordinate = {
-          lat: coordinate[0],
-          lon: coordinate[1],
-          projection: projection as ProjectionIdentifier,
-          formattedString: `${coordinate[0].toFixed(2)}, ${coordinate[1].toFixed(2)} @ ${projection.split(':')[1]}`,
-          inputFormat: 'utm',
-        };
-
-        setSelectedResult({
-          lon: coordinate[0],
-          lat: coordinate[1],
-          name: parsedCoordinate.formattedString,
-          type: 'Coordinate',
-          coordinate: parsedCoordinate,
-        });
+        if (isClickClusterClick) {
+          return;
+        }
+        handlePositionClick(e);
       }
     },
-    [map, setSearchCoordinates, setSelectedResult],
+    [handlePositionClick, isClusterClick],
   );
   useEffect(() => {
     const map = getDefaultStore().get(mapAtom);
-    map.on('click', mapClickHandler);
+    map.addEventListener('click', mapClickHandler);
     return () => {
-      map.un('click', mapClickHandler);
+      map.removeEventListener('click', mapClickHandler);
     };
   }, [mapClickHandler]);
 
