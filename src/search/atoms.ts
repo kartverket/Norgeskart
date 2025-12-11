@@ -13,6 +13,7 @@ import {
 } from '../shared/utils/urlUtils';
 import {
   Address,
+  AddressApiResponse,
   Metadata,
   Place,
   Property,
@@ -82,6 +83,16 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
     }
   });
 });
+
+const performAddressSearch = async (
+  searchQuery: string,
+): Promise<AddressApiResponse | null> => {
+  const searchConditionRegex = /\D+\s\d+.*/;
+  if (searchConditionRegex.test(searchQuery)) {
+    return getAddresses(searchQuery + '*');
+  }
+  return null;
+};
 const searchQueryEffect = atomEffect((get, set) => {
   const searchQuery = get(searchQueryAtom);
 
@@ -103,7 +114,7 @@ const searchQueryEffect = atomEffect((get, set) => {
 
   const fetchData = async () => {
     return await Promise.all([
-      getAddresses(searchQuery),
+      performAddressSearch(searchQuery),
       getPlaceNames(searchQuery, 1),
       getRoads(searchQuery),
       getProperties(searchQuery),
@@ -111,8 +122,10 @@ const searchQueryEffect = atomEffect((get, set) => {
   };
   fetchData().then((r) => {
     const [addresResult, placeResult, roadsResult, propertiesResult] = r;
-    if (addresResult.adresser) {
+    if (addresResult?.adresser) {
       set(addressResultsAtom, addresResult.adresser);
+    } else {
+      set(addressResultsAtom, []);
     }
     if (placeResult.navn) {
       set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
