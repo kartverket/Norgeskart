@@ -8,8 +8,9 @@ import {
   Spinner,
 } from '@kvib/react';
 import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { MapBrowserEvent } from 'ol';
+import { Feature, MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
+import { Geometry } from 'ol/geom';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -109,16 +110,29 @@ export const SearchComponent = () => {
     setHoveredResult(null);
   };
 
+  //I hate this function
   const isClusterClick = useCallback((e: MapBrowserEvent): boolean => {
     const map = getDefaultStore().get(mapAtom);
     const features = map.getFeaturesAtPixel(e.pixel);
-    return (
+    // Check if the click is on a cluster
+    const isCluster =
       features &&
       features.length === 1 &&
       features[0].get('features') &&
       Array.isArray(features[0].get('features')) &&
-      features[0].get('features').length > 1
-    );
+      features[0].get('features').length > 1;
+
+    const hasMarkerFeature =
+      features &&
+      features.some((f) => {
+        return f.get('features').some((ff: Feature<Geometry>) => {
+          return ff.get('isMarker') === true;
+        });
+      });
+
+    console.log(hasMarkerFeature);
+
+    return isCluster || hasMarkerFeature;
   }, []);
 
   const handlePositionClick = useCallback(

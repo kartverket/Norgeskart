@@ -111,6 +111,7 @@ export const updateSearchMarkers = (
     const iconSrc = isHovered ? LOCATION_RED_SVG : LOCATION_BLUE_SVG;
 
     const marker = createMarker(res, iconSrc, map);
+    marker.setProperties({ isMarker: true });
     markerSource.addFeature(marker);
   });
 
