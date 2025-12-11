@@ -249,7 +249,7 @@
         "label": "Rotate left"
       },
       "orientation": {
-        "label": "Map orientation. Click to reset"
+        "label": "Reset the map to standard view"
       },
       "rotateRight": {
         "label": "Rotate right"
@@ -335,7 +335,7 @@
   "toolbar": {
     "reportError": {
       "label": "Error in the map?",
-      "tooltip": "Spotted an error, notify us here"
+      "tooltip": "Report errrors or things missing in the map."
     },
     "scale": {
       "tooltip": "Select a scale"
