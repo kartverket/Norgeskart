@@ -1,7 +1,7 @@
 import { Separator, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { DrawControls } from '../../draw/drawControls/DrawControls';
-import { ExportControls } from '../../draw/ExportControls';
+import { ExportControls } from '../../draw/export/ExportControls';
 import { drawEnabledEffect, drawTypeEffect } from './atoms';
 
 export const DrawSettings = () => {
