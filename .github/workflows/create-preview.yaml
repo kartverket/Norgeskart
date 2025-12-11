@@ -36,7 +36,14 @@ jobs:
 
       - name: Get target branch sanatized name
         id: get_sanatized_name
-        run: echo "branchname=$(git branch --show-current | sed 's/[^a-z0-9._-]/-/g' | sed 's/^-*//;s/-*$//' | sed 's/-\{2,\}/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-15)" >> $GITHUB_OUTPUT
+        run: |
+          echo "branchname=$(git branch --show-current \
+          | sed 's/[^a-zA-Z0-9._-]/-/g' \
+          | sed 's/^[^a-zA-Z0-9]*//;s/[^a-zA-Z0-9]*$//' \
+          | sed 's/-\{2,\}/-/g' \
+          | tr '[:upper:]' '[:lower:]' \
+          | cut -c1-15 \
+          | sed 's/[^a-zA-Z0-9]$//')" >> $GITHUB_OUTPUT
 
       - name: Get commit sha
         id: get_sha
