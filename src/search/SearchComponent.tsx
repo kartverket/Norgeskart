@@ -130,8 +130,6 @@ export const SearchComponent = () => {
         });
       });
 
-    console.log(hasMarkerFeature);
-
     return isCluster || hasMarkerFeature;
   }, []);
 
