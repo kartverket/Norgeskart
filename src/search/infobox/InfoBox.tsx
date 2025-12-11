@@ -11,9 +11,11 @@ import {
 } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { transform } from 'ol/proj';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
+import { removeUrlParameter } from '../../shared/utils/urlUtils';
 import { selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
@@ -24,6 +26,12 @@ import { PropertyInfo } from './PropertyInfo';
 export const InfoBox = () => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const { t } = useTranslation();
+
+  const onClose = useCallback(() => {
+    removeUrlParameter('markerLat');
+    removeUrlParameter('markerLon');
+    setSelectedResult(null);
+  }, [setSelectedResult]);
 
   if (selectedResult === null) {
     return null;
@@ -50,7 +58,7 @@ export const InfoBox = () => {
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading size={'lg'}>{selectedResult.name}</Heading>
         <IconButton
-          onClick={() => setSelectedResult(null)}
+          onClick={onClose}
           icon={'close'}
           variant="ghost"
           alignSelf={'flex-end'}

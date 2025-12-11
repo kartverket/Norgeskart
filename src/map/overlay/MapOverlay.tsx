@@ -56,6 +56,7 @@ export const MapOverlay = () => {
             lg: '1 / span 3',
           }}
           gridRow={1}
+          onClick={(e) => e.stopPropagation()}
         >
           {showSearchComponent && <SearchComponent />}
         </GridItem>
