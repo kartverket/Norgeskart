@@ -221,3 +221,55 @@ export type SearchResult = SearchResultBase &
         coordinate: ParsedCoordinate;
       }
   );
+
+export function propertyToSearchResult(property: Property): SearchResult {
+  return {
+    type: 'Property',
+    name: property.NAVN,
+    lat: parseFloat(property.LATITUDE),
+    lon: parseFloat(property.LONGITUDE),
+    property,
+  };
+}
+
+export function roadToSearchResult(road: Road): SearchResult {
+  return {
+    type: 'Road',
+    name: road.NAVN,
+    lat: parseFloat(road.LATITUDE),
+    lon: parseFloat(road.LONGITUDE),
+    road,
+  };
+}
+
+export function placeToSearchResult(place: Place): SearchResult {
+  return {
+    type: 'Place',
+    name: place.name,
+    lat: place.location.nord,
+    lon: place.location.øst,
+    place,
+  };
+}
+
+export function addressToSearchResult(address: Address): SearchResult {
+  return {
+    type: 'Address',
+    name: address.adressetekst,
+    lat: address.representasjonspunkt.lat,
+    lon: address.representasjonspunkt.lon,
+    address,
+  };
+}
+
+export function coordinateToSearchResult(
+  coordinate: ParsedCoordinate,
+): SearchResult {
+  return {
+    type: 'Coordinate',
+    name: coordinate.formattedString,
+    lat: coordinate.lat,
+    lon: coordinate.lon,
+    coordinate,
+  };
+}

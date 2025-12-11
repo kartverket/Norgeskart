@@ -1,5 +1,6 @@
 import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import { transform } from 'ol/proj';
 import {
   DEFAULT_PROJECTION,
   mapAtom,
@@ -14,6 +15,8 @@ import {
 import {
   Address,
   AddressApiResponse,
+  addressToSearchResult,
+  coordinateToSearchResult,
   Metadata,
   Place,
   Property,
@@ -102,12 +105,16 @@ const searchQueryEffect = atomEffect((get, set) => {
     removeUrlParameter('sok');
   }
 
-  if (searchQuery === '') {
+  const clearResults = () => {
     set(addressResultsAtom, []);
     set(placeNameResultsAtom, []);
     set(roadResultsAtom, []);
     set(propertyResultsAtom, []);
     set(placeNameMetedataAtom, null);
+  };
+
+  if (searchQuery === '') {
+    clearResults();
     return;
   }
   set(searchPendingAtom, true);
@@ -123,6 +130,22 @@ const searchQueryEffect = atomEffect((get, set) => {
   fetchData().then((r) => {
     const [addresResult, placeResult, roadsResult, propertiesResult] = r;
     if (addresResult?.adresser) {
+      if (addresResult.adresser.length === 1) {
+        const onlyAddress = addresResult.adresser[0];
+        set(selectedResultAtom, addressToSearchResult(onlyAddress));
+        const mapView = getDefaultStore().get(mapAtom).getView();
+        mapView.setCenter(
+          transform(
+            [
+              onlyAddress.representasjonspunkt.lon,
+              onlyAddress.representasjonspunkt.lat,
+            ],
+            onlyAddress.representasjonspunkt.epsg,
+            mapView.getProjection().getCode(),
+          ),
+        );
+        mapView.setZoom(15);
+      }
       set(addressResultsAtom, addresResult.adresser);
     } else {
       set(addressResultsAtom, []);
@@ -192,13 +215,7 @@ const getInitialSelectedResult = (): SearchResult | null => {
         inputFormat: 'utm',
       };
 
-      return {
-        lon: parsedLon,
-        lat: parsedLat,
-        name: parsedCoordinate.formattedString,
-        type: 'Coordinate',
-        coordinate: parsedCoordinate,
-      };
+      return coordinateToSearchResult(parsedCoordinate);
     }
   }
   return null;
