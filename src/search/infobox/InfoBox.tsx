@@ -9,14 +9,14 @@ import {
   IconButton,
   Stack,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { removeUrlParameter } from '../../shared/utils/urlUtils';
-import { selectedResultAtom } from '../atoms';
+import { placesNearbyAtom, selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
 import { InfoBoxContent } from './InfoBoxContent';
@@ -25,6 +25,7 @@ import { PropertyInfo } from './PropertyInfo';
 
 export const InfoBox = () => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
+  const placesNearby = useAtomValue(placesNearbyAtom);
   const { t } = useTranslation();
 
   const onClose = useCallback(() => {
@@ -77,6 +78,28 @@ export const InfoBox = () => {
               lat={selectedResult.lat}
               inputCRS={inputCRS}
             />
+          )}
+          {selectedResult.type === 'Coordinate' && (
+            <AccordionItem value={'PlacesNearby'}>
+              <AccordionItemTrigger pl={0}>
+                {t('infoBox.placesNearby')}
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                {placesNearby.length === 0 && (
+                  <Box>{t('infoBox.noPlacesNearby')}</Box>
+                )}
+                {placesNearby.map((place) => (
+                  <Box
+                    key={place.placeNumber}
+                    mb={2}
+                    p={2}
+                    borderBottom="1px solid #E2E8F0"
+                  >
+                    <PlaceInfo place={place} />
+                  </Box>
+                ))}
+              </AccordionItemContent>
+            </AccordionItem>
           )}
           {selectedResult.type === 'Place' && (
             <AccordionItem value="placeInfo">

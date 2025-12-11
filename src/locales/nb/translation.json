@@ -98,7 +98,8 @@
     "placeinfo": "Stedsnavnfakta",
     "propertyInfo": "Eiendomsinformasjon",
     "roadName": "Veinavn",
-    "utmCoordinates": "UTM-koordinater"
+    "utmCoordinates": "UTM-koordinater",
+    "placesNearby": "Steder i nærheten"
   },
   "languageSelector": {
     "chooseLanguage": "Velg språk",

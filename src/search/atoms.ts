@@ -38,17 +38,6 @@ type CoordinateWithProjection = {
   projection: string;
 };
 
-const getPlaceNameRadius = () => {
-  const store = getDefaultStore();
-  const map = store.get(mapAtom);
-  const view = map.getView();
-  view.getZoom();
-  const zoom = view.getZoom() || 0;
-  if (zoom < 10) return 1000;
-  if (zoom < 15) return 500;
-  return 150;
-};
-
 export const searchCoordinatesAtom = atom<CoordinateWithProjection | null>(
   null,
 );
@@ -73,7 +62,7 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
       getPlaceNamesByLocation(
         coords.x,
         coords.y,
-        getPlaceNameRadius(),
+        500,
         coords.projection as ProjectionIdentifier,
       ),
     ]);
@@ -81,8 +70,7 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
   fetchData().then((res) => {
     const [placeResult] = res;
     if (placeResult.navn) {
-      set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
-      set(placeNameMetedataAtom, placeResult.metadata);
+      set(placesNearbyAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
     }
   });
 });
@@ -188,6 +176,7 @@ export const placeNameResultsAtom = atom<Place[]>([]);
 export const placeNameMetedataAtom = atom<Metadata | null>(null);
 export const roadResultsAtom = atom<Road[]>([]);
 export const propertyResultsAtom = atom<Property[]>([]);
+export const placesNearbyAtom = atom<Place[]>([]); // For use in the infobox. Populated by coordinate search rather than text search.
 
 export const allSearchResultsAtom = atom((get) => {
   const addresses = get(addressResultsAtom);

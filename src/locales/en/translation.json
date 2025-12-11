@@ -93,7 +93,8 @@
     "placeinfo": "Facts about placename",
     "propertyInfo": "Property information",
     "roadName": "Road name",
-    "utmCoordinates": "UTM coordinates"
+    "utmCoordinates": "UTM coordinates",
+    "placesNearby": "Places nearby"
   },
   "languageSelector": {
     "chooseLanguage": "Select language",
