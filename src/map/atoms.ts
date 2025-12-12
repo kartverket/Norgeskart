@@ -39,6 +39,8 @@ export const mapOrientationDegreesAtom = atom<number>((get) => {
   const radians = get(mapOrientationAtom);
   return (radians * 180) / Math.PI; // Convert radians to degrees
 });
+
+export const displayMapLegendAtom = atom<boolean>(false);
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
 export const magneticDeclinationAtom = atom<number>(0);

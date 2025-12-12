@@ -261,6 +261,9 @@
       },
       "fullscreen": {
         "label": "Use fullscreen"
+      },
+      "symbols": {
+        "label": "Map legend"
       }
     }
   },
