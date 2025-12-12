@@ -254,7 +254,7 @@
         "label": "Roter venstre"
       },
       "orientation": {
-        "label": "Kartorientering. Trykk for å tilbakestille"
+        "label": "Tilbakestill kartet til standard visning"
       },
       "rotateRight": {
         "label": "Roter høger"
@@ -340,7 +340,7 @@
   "toolbar": {
     "reportError": {
       "label": "Feil i kartet?",
-      "tooltip": "Ser du feil i kartet, meld fra til oss her"
+      "tooltip": "Rapporter feil eller mangler i kartet."
     },
     "scale": {
       "tooltip": "Vel målestokk"
