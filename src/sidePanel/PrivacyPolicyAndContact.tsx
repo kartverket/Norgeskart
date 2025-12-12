@@ -30,7 +30,13 @@ const PrivacyPolicy = () => {
       <Box my={5}></Box>
       <Text>
         {t('privacyAndContact.infoText')}
-        <Link colorPalette="green" href="/?path=/" external variant="underline">
+        <Link
+          colorPalette="green"
+          href="/?path=/"
+          external
+          variant="underline"
+          ml={1}
+        >
           {t('privacyAndContact.privacyPolicy')}
         </Link>
       </Text>
