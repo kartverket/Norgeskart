@@ -1,4 +1,12 @@
-import { Box, Text } from '@kvib/react';
+import {
+  Box,
+  HStack,
+  Icon,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Text,
+} from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/searchTypes';
@@ -53,17 +61,29 @@ const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
 
   if (status === 'success' && elevationData) {
     return (
-      <Text>
-        {t('infoBox.heightEstimatedByInterpolation')}{' '}
-        {Number(elevationData?.value).toFixed(1)}{' '}
-        {t('infoBox.metersAboveSeaLevel')}
-      </Text>
+      <HStack>
+        <Text>
+          {t('infoBox.heightEstimatedByInterpolation')}{' '}
+          {Number(elevationData?.value).toFixed(1)}{' '}
+          {t('infoBox.metersAboveSeaLevel')}
+        </Text>
+        <Popover>
+          <PopoverTrigger cursor="pointer">
+            <Icon icon={'info'} />
+          </PopoverTrigger>
+          <PopoverContent>
+            <Box p={2}>
+              <Text>{t('infoBox.metersAboveSeaLevelTooltip')}</Text>
+            </Box>
+          </PopoverContent>
+        </Popover>
+      </HStack>
     );
   }
   return null;
 };
 
-export const InfoBoxContent = ({ result, x, y }: InfoBoxContentProps) => {
+export const InfoBoxPreamble = ({ result, x, y }: InfoBoxContentProps) => {
   return (
     <Box userSelect={'text'}>
       <InfoBoxTextContent result={result} />

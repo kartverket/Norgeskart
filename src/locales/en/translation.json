@@ -85,15 +85,17 @@
     "coordinateSystem": "Coordinate system",
     "decimalDegrees": "Decimal degrees",
     "emergencyPoster": "Make emergency poster",
-    "heightEstimatedByInterpolation": "Height (estimated by interpolation):",
+    "heightEstimatedByInterpolation": "Height:",
     "in": "in",
     "makeMap": "Make map",
     "metersAboveSeaLevel": "m.a.s.l.",
+    "metersAboveSeaLevelTooltip": "Meters above sealevel, estimated using interpolation",
     "municipality": "Municipality",
     "placeinfo": "Facts about placename",
     "propertyInfo": "Property information",
     "roadName": "Road name",
-    "utmCoordinates": "UTM coordinates"
+    "utmCoordinates": "UTM coordinates",
+    "placesNearby": "Places nearby"
   },
   "languageSelector": {
     "chooseLanguage": "Select language",

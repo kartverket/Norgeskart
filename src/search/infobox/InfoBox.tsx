@@ -9,22 +9,23 @@ import {
   IconButton,
   Stack,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { removeUrlParameter } from '../../shared/utils/urlUtils';
-import { selectedResultAtom } from '../atoms';
+import { placesNearbyAtom, selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
-import { InfoBoxContent } from './InfoBoxContent';
+import { InfoBoxPreamble } from './InfoBoxPreamble';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
 
 export const InfoBox = () => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
+  const placesNearby = useAtomValue(placesNearbyAtom);
   const { t } = useTranslation();
 
   const onClose = useCallback(() => {
@@ -64,7 +65,7 @@ export const InfoBox = () => {
           alignSelf={'flex-end'}
         />
       </Flex>
-      <InfoBoxContent result={selectedResult} x={x} y={y} />
+      <InfoBoxPreamble result={selectedResult} x={x} y={y} />
       <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
         <AccordionRoot
           collapsible
@@ -77,6 +78,25 @@ export const InfoBox = () => {
               lat={selectedResult.lat}
               inputCRS={inputCRS}
             />
+          )}
+          {selectedResult.type === 'Coordinate' && placesNearby.length > 0 && (
+            <AccordionItem value={'PlacesNearby'}>
+              <AccordionItemTrigger pl={0}>
+                {t('infoBox.placesNearby')}
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                {placesNearby.map((place) => (
+                  <Box
+                    key={place.placeNumber}
+                    mb={2}
+                    p={2}
+                    borderBottom="1px solid #E2E8F0"
+                  >
+                    <PlaceInfo place={place} />
+                  </Box>
+                ))}
+              </AccordionItemContent>
+            </AccordionItem>
           )}
           {selectedResult.type === 'Place' && (
             <AccordionItem value="placeInfo">

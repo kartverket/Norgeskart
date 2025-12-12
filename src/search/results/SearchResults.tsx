@@ -104,6 +104,12 @@ export const SearchResults = ({
           borderRadius={10}
           variant={'plain'}
         >
+          <AddressesResults
+            handleSearchClick={handleSearchClick}
+            handleHover={handleHover}
+            setHoveredResult={setHoveredResult}
+            onTabClick={() => handleAccordionTabClick('addresses')}
+          />
           <PlacesResult
             handleSearchClick={handleSearchClick}
             handleHover={handleHover}
@@ -121,12 +127,6 @@ export const SearchResults = ({
             handleHover={handleHover}
             setHoveredResult={setHoveredResult}
             onTabClick={() => handleAccordionTabClick('properties')}
-          />
-          <AddressesResults
-            handleSearchClick={handleSearchClick}
-            handleHover={handleHover}
-            setHoveredResult={setHoveredResult}
-            onTabClick={() => handleAccordionTabClick('addresses')}
           />
         </AccordionRoot>
       </Box>

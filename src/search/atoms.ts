@@ -1,5 +1,6 @@
 import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import { transform } from 'ol/proj';
 import {
   DEFAULT_PROJECTION,
   mapAtom,
@@ -13,6 +14,9 @@ import {
 } from '../shared/utils/urlUtils';
 import {
   Address,
+  AddressApiResponse,
+  addressToSearchResult,
+  coordinateToSearchResult,
   Metadata,
   Place,
   Property,
@@ -32,17 +36,6 @@ type CoordinateWithProjection = {
   x: number;
   y: number;
   projection: string;
-};
-
-const getPlaceNameRadius = () => {
-  const store = getDefaultStore();
-  const map = store.get(mapAtom);
-  const view = map.getView();
-  view.getZoom();
-  const zoom = view.getZoom() || 0;
-  if (zoom < 10) return 1000;
-  if (zoom < 15) return 500;
-  return 150;
 };
 
 export const searchCoordinatesAtom = atom<CoordinateWithProjection | null>(
@@ -69,7 +62,7 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
       getPlaceNamesByLocation(
         coords.x,
         coords.y,
-        getPlaceNameRadius(),
+        500,
         coords.projection as ProjectionIdentifier,
       ),
     ]);
@@ -77,11 +70,20 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
   fetchData().then((res) => {
     const [placeResult] = res;
     if (placeResult.navn) {
-      set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
-      set(placeNameMetedataAtom, placeResult.metadata);
+      set(placesNearbyAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
     }
   });
 });
+
+const performAddressSearch = async (
+  searchQuery: string,
+): Promise<AddressApiResponse | null> => {
+  const searchConditionRegex = /\D+\s\d+.*/;
+  if (searchConditionRegex.test(searchQuery)) {
+    return getAddresses(searchQuery + '*');
+  }
+  return null;
+};
 const searchQueryEffect = atomEffect((get, set) => {
   const searchQuery = get(searchQueryAtom);
 
@@ -91,19 +93,23 @@ const searchQueryEffect = atomEffect((get, set) => {
     removeUrlParameter('sok');
   }
 
-  if (searchQuery === '') {
+  const clearResults = () => {
     set(addressResultsAtom, []);
     set(placeNameResultsAtom, []);
     set(roadResultsAtom, []);
     set(propertyResultsAtom, []);
     set(placeNameMetedataAtom, null);
+  };
+
+  if (searchQuery === '') {
+    clearResults();
     return;
   }
   set(searchPendingAtom, true);
 
   const fetchData = async () => {
     return await Promise.all([
-      getAddresses(searchQuery),
+      performAddressSearch(searchQuery),
       getPlaceNames(searchQuery, 1),
       getRoads(searchQuery),
       getProperties(searchQuery),
@@ -111,8 +117,26 @@ const searchQueryEffect = atomEffect((get, set) => {
   };
   fetchData().then((r) => {
     const [addresResult, placeResult, roadsResult, propertiesResult] = r;
-    if (addresResult.adresser) {
+    if (addresResult?.adresser) {
+      if (addresResult.adresser.length === 1) {
+        const onlyAddress = addresResult.adresser[0];
+        set(selectedResultAtom, addressToSearchResult(onlyAddress));
+        const mapView = getDefaultStore().get(mapAtom).getView();
+        mapView.setCenter(
+          transform(
+            [
+              onlyAddress.representasjonspunkt.lon,
+              onlyAddress.representasjonspunkt.lat,
+            ],
+            onlyAddress.representasjonspunkt.epsg,
+            mapView.getProjection().getCode(),
+          ),
+        );
+        mapView.setZoom(15);
+      }
       set(addressResultsAtom, addresResult.adresser);
+    } else {
+      set(addressResultsAtom, []);
     }
     if (placeResult.navn) {
       set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
@@ -152,6 +176,7 @@ export const placeNameResultsAtom = atom<Place[]>([]);
 export const placeNameMetedataAtom = atom<Metadata | null>(null);
 export const roadResultsAtom = atom<Road[]>([]);
 export const propertyResultsAtom = atom<Property[]>([]);
+export const placesNearbyAtom = atom<Place[]>([]); // For use in the infobox. Populated by coordinate search rather than text search.
 
 export const allSearchResultsAtom = atom((get) => {
   const addresses = get(addressResultsAtom);
@@ -179,13 +204,7 @@ const getInitialSelectedResult = (): SearchResult | null => {
         inputFormat: 'utm',
       };
 
-      return {
-        lon: parsedLon,
-        lat: parsedLat,
-        name: parsedCoordinate.formattedString,
-        type: 'Coordinate',
-        coordinate: parsedCoordinate,
-      };
+      return coordinateToSearchResult(parsedCoordinate);
     }
   }
   return null;

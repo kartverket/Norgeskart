@@ -90,15 +90,17 @@
     "coordinateSystem": "Koordinatsystem",
     "decimalDegrees": "Desimalgrader",
     "emergencyPoster": "Lag nødplakat",
-    "heightEstimatedByInterpolation": "Høyde (anslått ved interpolering):",
+    "heightEstimatedByInterpolation": "Høyde:",
     "in": "i",
     "makeMap": "Lag turkart",
     "metersAboveSeaLevel": "moh",
+    "metersAboveSeaLevelTooltip": "Meter over havet, estimert ved interpolasjon",
     "municipality": "Kommune",
     "placeinfo": "Stedsnavnfakta",
     "propertyInfo": "Eiendomsinformasjon",
     "roadName": "Veinavn",
-    "utmCoordinates": "UTM-koordinater"
+    "utmCoordinates": "UTM-koordinater",
+    "placesNearby": "Steder i nærheten"
   },
   "languageSelector": {
     "chooseLanguage": "Velg språk",
