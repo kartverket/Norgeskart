@@ -1,5 +1,6 @@
 import { Grid, GridItem } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
+import { useSearchEffects } from '../../search/atoms';
 import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
@@ -24,6 +25,7 @@ export const MapOverlay = () => {
   const isToolOpen = currentMapTool !== null;
 
   useFeatureInfoClick();
+  useSearchEffects();
 
   return (
     <ErrorBoundary
