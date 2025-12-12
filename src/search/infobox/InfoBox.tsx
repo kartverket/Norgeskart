@@ -9,14 +9,17 @@ import {
   IconButton,
   Stack,
 } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
-import { removeUrlParameter } from '../../shared/utils/urlUtils';
-import { placesNearbyAtom, selectedResultAtom } from '../atoms';
+import {
+  placesNearbyAtom,
+  searchCoordinatesAtom,
+  selectedResultAtom,
+} from '../atoms';
 import { CoordinateInfo } from './CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
 import { InfoBoxPreamble } from './InfoBoxPreamble';
@@ -25,14 +28,14 @@ import { PropertyInfo } from './PropertyInfo';
 
 export const InfoBox = () => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
+  const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
   const placesNearby = useAtomValue(placesNearbyAtom);
   const { t } = useTranslation();
 
   const onClose = useCallback(() => {
-    removeUrlParameter('markerLat');
-    removeUrlParameter('markerLon');
     setSelectedResult(null);
-  }, [setSelectedResult]);
+    setClickedCoordinate(null);
+  }, [setSelectedResult, setClickedCoordinate]);
 
   if (selectedResult === null) {
     return null;
