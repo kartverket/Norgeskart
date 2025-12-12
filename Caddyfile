@@ -16,8 +16,8 @@ route {
                 default-src 'self';
                 script-src 'self' ph.kartverket.no;
                 img-src 'self' tilecache.norgeibilder.no opencache.statkart.no *.geonorge.no *.norgeskart.no cache.kartverket.no *.kartverket-intern.cloud cache.atgcp1-prod.kartverket.cloud cache.atkv3-dev.kartverket.cloud;
-                connect-src 'self' tilecache.norgeibilder.no *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no cache.kartverket.no cache.atkv3-dev.kartverket.cloud opencache.statkart.no raw.githubusercontent.com ph.kartverket.no;
-                style-src 'self' 'unsafe-inline' ph.kartverket.no;
+                connect-src 'self' *.posthog.com internal-j.posthog.com us.posthog.com  tilecache.norgeibilder.no *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no cache.kartverket.no cache.atkv3-dev.kartverket.cloud opencache.statkart.no raw.githubusercontent.com ph.kartverket.no;
+                style-src 'self' 'unsafe-inline' ph.kartverket.no eu.i.posthog.com *.posthog.com;
         "
         header Permissions-Policy "geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), accelerometer=(), camera=()"
 }
