@@ -4,9 +4,9 @@
       "id": "propertyInfo",
       "groupid": 30,
       "name": {
-        "nb": "Eiendomsinformasjon",
-        "nn": "Eigedomsinformasjon",
-        "en": "Property information"
+        "nb": "Eiendom",
+        "nn": "Eigedom",
+        "en": "Properties"
       }
     },
     {

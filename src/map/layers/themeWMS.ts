@@ -10,7 +10,6 @@ import {
   getEffectiveWmsUrl,
   getParentCategory,
 } from '../../api/themeLayerConfigApi';
-import { getEnv } from '../../env';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
 
 type LocationNameLayerName = 'economicMapFirstEdition' | 'amtMap';
@@ -75,8 +74,6 @@ export const QUERYABLE_LAYERS: ThemeLayerName[] = [
   'bikeTrails',
   'waterTrails',
 ];
-
-const ENV = getEnv();
 
 export const createThemeLayerFromConfig = (
   config: ThemeLayerConfig,
