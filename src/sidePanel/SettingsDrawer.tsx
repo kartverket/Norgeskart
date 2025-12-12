@@ -71,6 +71,8 @@ export const SettingsDrawer = () => {
         onOpenChange={(details) => setTipsOpen(details.open)}
       >
         <CollapsibleTrigger
+          fontWeight={600}
+          textDecoration={'underline'}
           mb={2}
           _hover={{
             cursor: 'pointer',
