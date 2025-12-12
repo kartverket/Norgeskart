@@ -55,7 +55,13 @@ export const CoordinateResults = ({
   }
 
   return (
-    <List backgroundColor="white" mt="5px" borderRadius={10} padding={2}>
+    <List
+      backgroundColor="white"
+      mt="5px"
+      borderRadius={10}
+      padding={2}
+      maxWidth={'450px'}
+    >
       <SearchResultLine
         key="coordinate-result"
         heading={coordinateResult.coordinate.formattedString}
