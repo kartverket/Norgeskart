@@ -9,7 +9,6 @@ import {
   allSearchResultsAtom,
   searchQueryAtom,
   selectedResultAtom,
-  useSearchEffects,
 } from '../atoms.ts';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
@@ -39,7 +38,6 @@ export const SearchResults = ({
   ]);
 
   const allResults = useAtomValue(allSearchResultsAtom);
-  useSearchEffects();
 
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
 
