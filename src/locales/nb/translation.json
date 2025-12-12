@@ -327,6 +327,9 @@
       },
       "fullscreen": {
         "label": "Bruk fullskjerm"
+      },
+      "symbols": {
+        "label": "Tegnforklaring"
       }
     }
   },
