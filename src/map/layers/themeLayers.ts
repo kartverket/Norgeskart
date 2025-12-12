@@ -1,6 +1,4 @@
 import { getDefaultStore, useAtomValue } from 'jotai';
-import TileLayer from 'ol/layer/Tile';
-import VectorLayer from 'ol/layer/Vector';
 import {
   getThemeLayerById,
   themeLayerConfigLoadableAtom,
@@ -14,11 +12,7 @@ import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
-import {
-  createThemeLayerFromConfig,
-  getThemeWMSLayer,
-  ThemeLayerName,
-} from './themeWMS';
+import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
 
 export const MAX_THEME_LAYERS = 10; // Maximum number of theme layers allowed on the map, what is a good number here?
 
@@ -108,21 +102,23 @@ export const useThemeLayers = () => {
       return false;
     }
 
-    let layerToAdd: TileLayer | VectorLayer | null = getThemeWMSLayer(
-      layerName,
+    if (configLoadable.state !== 'hasData') {
+      console.warn('Config not loaded yet');
+      return false;
+    }
+
+    const layerDef = getThemeLayerById(configLoadable.data, layerName);
+
+    if (!layerDef) {
+      console.warn(`Layer definition not found for layer name: ${layerName}`);
+      return false;
+    }
+
+    const layerToAdd = createThemeLayerFromConfig(
+      configLoadable.data,
+      layerDef,
       mapProjection,
     );
-
-    if (!layerToAdd && configLoadable.state === 'hasData') {
-      const layerDef = getThemeLayerById(configLoadable.data, layerName);
-      if (layerDef) {
-        layerToAdd = createThemeLayerFromConfig(
-          configLoadable.data,
-          layerDef,
-          mapProjection,
-        );
-      }
-    }
 
     if (!layerToAdd) {
       console.warn(

@@ -71,8 +71,9 @@ export interface ThemeLayerConfig {
 }
 
 const CATEGORY_FILES = [
+  'propertyInfo',
+  'placeNames',
   'outdoorRecreation',
-  //'placeNames',
   'facts',
   'tilgjengelighet',
   'fastmerker',
