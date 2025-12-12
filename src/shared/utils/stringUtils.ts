@@ -57,3 +57,37 @@ export const createHash = (text: string) => {
   }
   return hash;
 };
+
+export const computeLevenshteinDistance = (
+  input1: string,
+  input2: string,
+): number => {
+  const s1 = input1.toLowerCase();
+  const s2 = input2.toLowerCase();
+  if (s1 === s2) return 0;
+  if (!s1.length || !s2.length) return s1.length + s2.length;
+
+  // Create matrix for dynamic programming
+  const matrix = [];
+  for (let i = 0; i <= s2.length; i++) {
+    matrix[i] = [i]; // Initialize the first column
+  }
+  for (let j = 0; j <= s1.length; j++) {
+    matrix[0][j] = j; // Initialize the first row
+  }
+
+  // Fill in the rest of the matrix
+  for (let i = 1; i <= s2.length; i++) {
+    for (let j = 1; j <= s1.length; j++) {
+      const cost = s1[j - 1] === s2[i - 1] ? 0 : 1;
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1, // Deletion
+        matrix[i][j - 1] + 1, // Insertion
+        matrix[i - 1][j - 1] + cost, // Substitution
+      );
+    }
+  }
+
+  // The bottom-right cell contains the final distance
+  return matrix[s2.length][s1.length];
+};

@@ -15,7 +15,7 @@ export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
   const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${query}&treffPerSide=10`,
+    `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${query}&treffPerSide=20`,
   );
   if (!res.ok) throw new Error('Feil ved henting av adresser');
   return res.json();

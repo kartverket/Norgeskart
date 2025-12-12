@@ -99,15 +99,12 @@ export const SearchComponent = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    setSelectedResult(null);
     setHoveredResult(null);
     setShowBackgroundSettings(false);
   };
 
   const toggleBackgroundSettings = () => {
     setShowBackgroundSettings((prev) => !prev);
-    setSelectedResult(null);
-    setHoveredResult(null);
   };
 
   //I hate this function
