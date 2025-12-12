@@ -70,7 +70,12 @@ export const SettingsDrawer = () => {
         open={tipsOpen}
         onOpenChange={(details) => setTipsOpen(details.open)}
       >
-        <CollapsibleTrigger mb={2}>
+        <CollapsibleTrigger
+          mb={2}
+          _hover={{
+            cursor: 'pointer',
+          }}
+        >
           {tipsOpen
             ? t('tipsandtricks.headingOpen')
             : t('tipsandtricks.headingClosed')}
