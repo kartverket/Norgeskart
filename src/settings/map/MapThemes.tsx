@@ -22,8 +22,6 @@ import { MAX_THEME_LAYERS, useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
 import { getListUrlParameter } from '../../shared/utils/urlUtils';
 
-const BASE_THEME_MAP_KEY = 'map.settings.layers.mapNames.themeMaps';
-
 type Theme = {
   name: string;
   heading: string;
@@ -71,45 +69,6 @@ export const MapThemes = () => {
     },
     [activeThemeLayersSet],
   );
-
-  const hardcodedThemeLayers = useMemo(() => {
-    const createTheme = (
-      themeName: string,
-      subCategories: { name: string; layerNames: string[] }[],
-    ): Theme => {
-      return {
-        name: themeName,
-        heading: t(`${BASE_THEME_MAP_KEY}.${themeName}.themeName`),
-        subThemes: subCategories.map((subTheme) => ({
-          name: subTheme.name,
-          heading: t(
-            `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.heading`,
-          ),
-          layers: subTheme.layerNames.map((layerName) => ({
-            name: layerName as ThemeLayerName,
-            label: t(
-              `${BASE_THEME_MAP_KEY}.${themeName}.subThemes.${subTheme.name}.layers.${layerName}`,
-            ),
-          })),
-        })),
-      };
-    };
-
-    return [
-      createTheme('property', [
-        {
-          name: 'matrikkeldata',
-          layerNames: ['adresses', 'buildings', 'parcels'],
-        },
-      ]),
-      createTheme('locations', [
-        {
-          name: 'historicalMaps',
-          layerNames: ['economicMapFirstEdition', 'amtMap'],
-        },
-      ]),
-    ];
-  }, [t]);
 
   const configThemeLayers = useMemo((): Theme[] => {
     if (configLoadable.state !== 'hasData') {
@@ -167,11 +126,6 @@ export const MapThemes = () => {
 
     return result;
   }, [configLoadable, i18n.language]);
-
-  const themeLayers = useMemo(
-    () => [...hardcodedThemeLayers, ...configThemeLayers],
-    [hardcodedThemeLayers, configThemeLayers],
-  );
 
   const getActiveCategoryCount = useCallback(
     (theme: Theme): number => {
@@ -233,7 +187,7 @@ export const MapThemes = () => {
         value={expandedItems}
         onValueChange={(details) => setExpandedItems(details.value)}
       >
-        {themeLayers.map((theme) => {
+        {configThemeLayers.map((theme) => {
           const activeInCategory = getActiveCategoryCount(theme);
           const totalInCategory = getTotalCategoryLayers(theme);
           const isExpanded = expandedItems.includes(theme.name);
