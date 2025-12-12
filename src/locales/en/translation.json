@@ -315,9 +315,6 @@
     "tabHeading": "Search",
     "noResults": "No results found"
   },
-  "settings": {
-    "label": "Settings for Norgeskart"
-  },
   "shared": {
     "actions": {
       "download": "Download",
@@ -332,7 +329,9 @@
     "yes": "Yes"
   },
   "tipsandtricks": {
-    "heading": "Tips and tricks"
+    "heading": "Tips and tricks",
+    "headingClosed": "Show tips and tricks",
+    "headingOpen": "Close "
   },
   "toolbar": {
     "reportError": {
@@ -356,5 +355,8 @@
       "accept": "OK",
       "reject": "Deny"
     }
+  },
+  "settings": {
+    "label": "Information"
   }
 }

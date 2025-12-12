@@ -320,9 +320,6 @@
     "tabHeading": "Søk",
     "noResults": "Inge treff"
   },
-  "settings": {
-    "label": "Innstillingar for Norgeskart"
-  },
   "shared": {
     "actions": {
       "download": "Last ned ",
@@ -337,7 +334,9 @@
     "yes": "Ja"
   },
   "tipsandtricks": {
-    "heading": "Tips og triks"
+    "heading": "Tips og triks",
+    "headingClosed": "Vis tips og triks",
+    "headingOpen": "Lukk"
   },
   "toolbar": {
     "reportError": {
@@ -361,5 +360,8 @@
       "accept": "OK",
       "reject": "Avslå"
     }
+  },
+  "settings": {
+    "label": "Informasjon"
   }
 }
