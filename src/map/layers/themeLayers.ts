@@ -83,19 +83,9 @@ export const useThemeLayers = () => {
     });
   };
 
-  const getActiveThemeLayerCount = (): number => {
-    return map
-      .getLayers()
-      .getArray()
-      .filter((layer) => {
-        const id = layer.get('id');
-        return typeof id === 'string' && id.startsWith('theme.');
-      }).length;
-  };
-
   return {
+    activeLayerSet,
     addThemeLayerToMap,
     removeThemeLayerFromMap,
-    getActiveThemeLayerCount,
   };
 };

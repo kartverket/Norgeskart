@@ -20,7 +20,6 @@ import {
 } from '../../api/themeLayerConfigApi';
 import { MAX_THEME_LAYERS, useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
-import { getListUrlParameter } from '../../shared/utils/urlUtils';
 
 type Theme = {
   name: string;
@@ -37,37 +36,20 @@ type SubTheme = {
   }[];
 };
 export const MapThemes = () => {
-  const {
-    addThemeLayerToMap,
-    removeThemeLayerFromMap,
-    getActiveThemeLayerCount,
-  } = useThemeLayers();
+  const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
+    useThemeLayers();
   const { t, i18n } = useTranslation();
   const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
-  const count = getActiveThemeLayerCount();
-  const [showLimitWarning, setShowLimitWarning] = useState(
-    count >= MAX_THEME_LAYERS,
-  );
-  const [activeCount, setActiveCount] = useState(count);
+  const activeCount = activeLayerSet.size;
+  const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
+
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-
-  const updateActiveCount = () => {
-    const count = getActiveThemeLayerCount();
-    setActiveCount(count);
-    setShowLimitWarning(count >= MAX_THEME_LAYERS);
-  };
-
-  const activeThemeLayersSet = useMemo(() => {
-    const urlLayers = getListUrlParameter('themeLayers');
-    return new Set(urlLayers || []);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCount]);
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
-      return activeThemeLayersSet.has(layerName);
+      return activeLayerSet.has(layerName);
     },
-    [activeThemeLayersSet],
+    [activeLayerSet],
   );
 
   const configThemeLayers = useMemo((): Theme[] => {
@@ -233,22 +215,16 @@ export const MapThemes = () => {
                             colorPalette="green"
                             size="sm"
                             variant="raised"
-                            defaultChecked={isLayerChecked(layer.name)}
+                            checked={isLayerChecked(layer.name)}
                             disabled={
                               !isLayerChecked(layer.name) &&
                               activeCount >= MAX_THEME_LAYERS
                             }
                             onCheckedChange={(e) => {
                               if (e.checked) {
-                                const success = addThemeLayerToMap(layer.name);
-                                if (success) {
-                                  updateActiveCount();
-                                } else {
-                                  e.checked = false;
-                                }
+                                addThemeLayerToMap(layer.name);
                               } else {
                                 removeThemeLayerFromMap(layer.name);
-                                updateActiveCount();
                               }
                             }}
                           />
