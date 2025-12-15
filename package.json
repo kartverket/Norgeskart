@@ -29,7 +29,7 @@
     "ol": "^10.7.0",
     "posthog-js": "^1.302.2",
     "proj4": "^2.20.2",
-    "react": "^19.2.1",
+    "react": "^19.2.3",
     "react-dom": "^19.2.1",
     "react-i18next": "^16.4.0",
     "react-markdown": "^10.1.0",
