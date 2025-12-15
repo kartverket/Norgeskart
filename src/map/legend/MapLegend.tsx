@@ -9,6 +9,9 @@ export const MapLegend = () => {
   const { t } = useTranslation();
   const activeThemeLayers = useAtomValue(activeThemeLayersAtom);
   const layers = Array.from(activeThemeLayers);
+  if (layers.length === 0) {
+    return null;
+  }
   return (
     <Stack
       w={'100%'}

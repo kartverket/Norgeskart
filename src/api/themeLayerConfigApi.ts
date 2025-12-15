@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import { loadable } from 'jotai/utils';
+import { ThemeLayerName } from '../map/layers/themeWMS';
 
 export interface FieldConfig {
   name: string;
@@ -158,6 +159,30 @@ export const getEffectiveWmsUrl = (
   throw new Error(
     `No wmsUrl found for layer ${layer.id} in category ${layer.categoryId}`,
   );
+};
+
+export const getEffectiveLegendUrl = (
+  config: ThemeLayerConfig,
+  id: ThemeLayerName,
+): string | undefined => {
+  const layer = getThemeLayerById(config, id);
+
+  if (!layer) {
+    return undefined;
+  }
+  if (layer.legendUrl) {
+    return layer.legendUrl;
+  }
+  if (layer.type !== 'geojson') {
+    const wmsUrl = getEffectiveWmsUrl(config, layer);
+    console.log(wmsUrl);
+    return (
+      wmsUrl +
+      '?Service=wms&Request=GetStyles&Version=1.3.0&Format=application/json&Layers=' +
+      layer.layers
+    );
+  }
+  return undefined;
 };
 
 export const getMainCategories = (
