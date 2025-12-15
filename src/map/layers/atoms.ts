@@ -4,8 +4,15 @@ import {
   getThemeLayerById,
   themeLayerConfigLoadableAtom,
 } from '../../api/themeLayerConfigApi';
-import { addToUrlListParameter } from '../../shared/utils/urlUtils';
+import {
+  addToUrlListParameter,
+  removeFromUrlListParameter,
+} from '../../shared/utils/urlUtils';
 import { mapAtom } from '../atoms';
+import {
+  featureInfoPanelOpenAtom,
+  featureInfoResultAtom,
+} from '../featureInfo/atoms';
 import { BackgroundLayerName } from './backgroundLayers';
 import { DEFAULT_BACKGROUND_LAYER } from './backgroundWMTSProviders';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
@@ -25,10 +32,28 @@ export const themeLayerEffect = atomEffect((get) => {
     console.warn('Theme layer config not loaded yet');
     return;
   }
-  const map = getDefaultStore().get(mapAtom);
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
+  const themelayersActive = new Set(
+    map
+      .getLayers()
+      .getArray()
+      .filter((layer) => {
+        const id = layer.get('id');
+        return typeof id === 'string' && id.startsWith('theme.');
+      })
+      .map((layer) => layer.get('id').substring(6) as ThemeLayerName),
+  );
 
-  themeLayers.forEach((layerName) => {
+  const themeLayersToAdd = Array.from(themeLayers).filter(
+    (layerName) => !themelayersActive.has(layerName),
+  );
+  const themeLayersToRemove = Array.from(themelayersActive).filter(
+    (layerName) => !themeLayers.has(layerName),
+  );
+
+  themeLayersToAdd.forEach((layerName) => {
     const layerExists = map
       .getLayers()
       .getArray()
@@ -61,5 +86,34 @@ export const themeLayerEffect = atomEffect((get) => {
     map.addLayer(layerToAdd);
     addToUrlListParameter('themeLayers', layerName);
   });
+
+  themeLayersToRemove.forEach((layerName) => {
+    const layer = map
+      .getLayers()
+      .getArray()
+      .find((layer) => layer.get('id') === `theme.${layerName}`);
+    if (layer) {
+      map.removeLayer(layer);
+
+      const store = getDefaultStore();
+      const currentResult = store.get(featureInfoResultAtom);
+      if (currentResult) {
+        const remainingLayers = currentResult.layers.filter(
+          (l) => l.layerId !== `theme.${layerName}`,
+        );
+        if (remainingLayers.length === 0) {
+          store.set(featureInfoResultAtom, null);
+          store.set(featureInfoPanelOpenAtom, false);
+        } else if (remainingLayers.length !== currentResult.layers.length) {
+          store.set(featureInfoResultAtom, {
+            ...currentResult,
+            layers: remainingLayers,
+          });
+        }
+      }
+    }
+    removeFromUrlListParameter('themeLayers', layerName);
+  });
+
   return;
 });

@@ -1,11 +1,6 @@
-import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { themeLayerConfigLoadableAtom } from '../../api/themeLayerConfigApi';
-import { removeFromUrlListParameter } from '../../shared/utils/urlUtils';
 import { mapAtom } from '../atoms';
-import {
-  featureInfoPanelOpenAtom,
-  featureInfoResultAtom,
-} from '../featureInfo/atoms';
 import { activeThemeLayersAtom } from './atoms';
 import { ThemeLayerName } from './themeWMS';
 
@@ -69,41 +64,18 @@ export const parseLegacyLayersParameter = (
 
 export const useThemeLayers = () => {
   const map = useAtomValue(mapAtom);
-  const mapProjection = map.getView().getProjection().getCode();
-  const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
-  const setActiveLayerSet = useSetAtom(activeThemeLayersAtom);
+
+  const [activeLayerSet, setActiveLayerSet] = useAtom(activeThemeLayersAtom);
 
   const addThemeLayerToMap = (layerName: ThemeLayerName): boolean => {
+    if (activeLayerSet.size >= MAX_THEME_LAYERS) {
+      return false;
+    }
     setActiveLayerSet((prev) => new Set(prev).add(layerName));
     return true;
   };
 
   const removeThemeLayerFromMap = (layerName: ThemeLayerName) => {
-    const layer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === `theme.${layerName}`);
-    if (layer) {
-      map.removeLayer(layer);
-
-      const store = getDefaultStore();
-      const currentResult = store.get(featureInfoResultAtom);
-      if (currentResult) {
-        const remainingLayers = currentResult.layers.filter(
-          (l) => l.layerId !== `theme.${layerName}`,
-        );
-        if (remainingLayers.length === 0) {
-          store.set(featureInfoResultAtom, null);
-          store.set(featureInfoPanelOpenAtom, false);
-        } else if (remainingLayers.length !== currentResult.layers.length) {
-          store.set(featureInfoResultAtom, {
-            ...currentResult,
-            layers: remainingLayers,
-          });
-        }
-      }
-    }
-    removeFromUrlListParameter('themeLayers', layerName);
     setActiveLayerSet((prev) => {
       const newSet = new Set(prev);
       newSet.delete(layerName);
