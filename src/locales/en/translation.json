@@ -364,5 +364,11 @@
       "text": "Information",
       "base": "Info"
     }
+  },
+  "legend": {
+    "heading": {
+      "title": "Map legend",
+      "preamble": "Legend for theme layers"
+    }
   }
 }

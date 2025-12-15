@@ -121,6 +121,7 @@ export const MapOverlay = () => {
         </GridItem>
         {displayMapLegend && (
           <GridItem
+            alignContent="end"
             gridRow={{ base: 4, md: 5, lg: '2 / span 4' }}
             gridColumn={{ base: '10 / span 3' }}
             mb={{ base: 3, md: 4 }}

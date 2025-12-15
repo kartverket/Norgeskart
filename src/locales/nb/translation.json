@@ -430,5 +430,11 @@
       "text": "Informasjon",
       "base": "Info"
     }
+  },
+  "legend": {
+    "heading": {
+      "title": "Symbolforklaring",
+      "preamble": "Symbolforklaring for temakart"
+    }
   }
 }
