@@ -58,6 +58,7 @@ export const InfoBox = () => {
       pointerEvents={'auto'}
       position={'relative'}
       zIndex={1}
+      overflowY={'hidden'}
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading size={'lg'}>{selectedResult.name}</Heading>
@@ -82,7 +83,18 @@ export const InfoBox = () => {
               inputCRS={inputCRS}
             />
           )}
-          {selectedResult.type === 'Coordinate' && placesNearby.length > 0 && (
+
+          {selectedResult.type === 'Place' && (
+            <AccordionItem value="placeInfo">
+              <AccordionItemTrigger pl={0}>
+                {t('infoBox.placeinfo')}
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                <PlaceInfo place={selectedResult.place} />
+              </AccordionItemContent>
+            </AccordionItem>
+          )}
+          {placesNearby.length > 0 && (
             <AccordionItem value={'PlacesNearby'}>
               <AccordionItemTrigger pl={0}>
                 {t('infoBox.placesNearby')}
@@ -98,16 +110,6 @@ export const InfoBox = () => {
                     <PlaceInfo place={place} />
                   </Box>
                 ))}
-              </AccordionItemContent>
-            </AccordionItem>
-          )}
-          {selectedResult.type === 'Place' && (
-            <AccordionItem value="placeInfo">
-              <AccordionItemTrigger pl={0}>
-                {t('infoBox.placeinfo')}
-              </AccordionItemTrigger>
-              <AccordionItemContent>
-                <PlaceInfo place={selectedResult.place} />
               </AccordionItemContent>
             </AccordionItem>
           )}
