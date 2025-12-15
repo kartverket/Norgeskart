@@ -1,11 +1,11 @@
-# nonk8s
-apiVersion: "backstage.io/v1alpha1"
-kind: "Component"
+apiVersion: backstage.io/v1alpha1
+kind: Component
 metadata:
-  name: "Norgeskart"
+  name: Norgeskart
   tags:
-  - "public"
+    - public
 spec:
-  type: "website"
-  lifecycle: "production"
-  owner: "land"
+  type: website
+  lifecycle: production
+  owner: team_norgeskart_og_topo
+  system: norgeskart
