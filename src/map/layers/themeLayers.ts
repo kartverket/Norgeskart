@@ -1,6 +1,5 @@
 import { useAtom, useAtomValue } from 'jotai';
 import { themeLayerConfigLoadableAtom } from '../../api/themeLayerConfigApi';
-import { mapAtom } from '../atoms';
 import { activeThemeLayersAtom } from './atoms';
 import { ThemeLayerName } from './themeWMS';
 
@@ -63,8 +62,6 @@ export const parseLegacyLayersParameter = (
 };
 
 export const useThemeLayers = () => {
-  const map = useAtomValue(mapAtom);
-
   const [activeLayerSet, setActiveLayerSet] = useAtom(activeThemeLayersAtom);
 
   const addThemeLayerToMap = (layerName: ThemeLayerName): boolean => {
