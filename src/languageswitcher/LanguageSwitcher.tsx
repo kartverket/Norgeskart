@@ -18,7 +18,7 @@ const LanguageSwitcher = () => {
     { value: 'en', label: t('languageSelector.english') },
   ];
 
-   const currentLanguage = i18n.language;
+  const currentLanguage = i18n.language;
   const languageOptionCollection = createListCollection({
     items: languageOptions.map((opt) => ({
       key: opt.value,
