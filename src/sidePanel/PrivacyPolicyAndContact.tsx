@@ -32,7 +32,7 @@ const PrivacyPolicy = () => {
         {t('privacyAndContact.infoText')}
         <Link
           colorPalette="green"
-          href="/?path=/"
+          href="https://www.kartverket.no/om-kartverket/personvern"
           external
           variant="underline"
           ml={1}
