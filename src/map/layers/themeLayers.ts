@@ -1,4 +1,4 @@
-import { getDefaultStore, useAtomValue } from 'jotai';
+import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import {
   getThemeLayerById,
   themeLayerConfigLoadableAtom,
@@ -7,7 +7,7 @@ import {
   addToUrlListParameter,
   removeFromUrlListParameter,
 } from '../../shared/utils/urlUtils';
-import { mapAtom } from '../atoms';
+import { activeThemeLayersAtom, mapAtom } from '../atoms';
 import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
@@ -76,6 +76,7 @@ export const useThemeLayers = () => {
   const map = useAtomValue(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
   const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
+  const [_activeLayerSet, setActiveLayerSet] = useAtom(activeThemeLayersAtom);
 
   const addThemeLayerToMap = (layerName: ThemeLayerName): boolean => {
     const layerExists = map
@@ -86,6 +87,7 @@ export const useThemeLayers = () => {
       console.warn('Layer already exists on map');
       return false;
     }
+    setActiveLayerSet((prev) => new Set(prev).add(layerName));
 
     const activeThemeLayers = map
       .getLayers()
@@ -158,6 +160,11 @@ export const useThemeLayers = () => {
       }
     }
     removeFromUrlListParameter('themeLayers', layerName);
+    setActiveLayerSet((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(layerName);
+      return newSet;
+    });
   };
 
   const getActiveThemeLayerCount = (): number => {

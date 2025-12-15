@@ -11,6 +11,7 @@ import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
 import { BackgroundLayerName } from './layers/backgroundLayers';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders';
+import { ThemeLayerName } from './layers/themeWMS';
 import { ControlPortal } from './mapControls';
 import { scaleToResolution } from './mapScale';
 
@@ -47,6 +48,10 @@ export const magneticDeclinationAtom = atom<number>(0);
 
 export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
   DEFAULT_BACKGROUND_LAYER,
+);
+
+export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(
+  new Set<ThemeLayerName>(),
 );
 
 export const getBackgroundLayerImageName = (
