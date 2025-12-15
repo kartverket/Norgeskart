@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import PrivacyPolicy from './PrivacyPolicyAndContact';
 
-// ✅ importer typer og utils fra tips.ts
 import { Tip, unwrapJsonModule } from '../types/tips';
 
 // --------------------
@@ -48,8 +47,6 @@ export const InfoDrawer = () => {
     load()
       .then((m) => {
         if (cancelled) return;
-
-        // ✅ typesikker håndtering av ESM-JSON
         const data = unwrapJsonModule<Tip[]>(m);
         setTipsData(data);
       })

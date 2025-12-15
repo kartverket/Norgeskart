@@ -18,28 +18,31 @@ const LanguageSwitcher = () => {
     { value: 'en', label: t('languageSelector.english') },
   ];
 
-  const currentLanguage = i18n.language;
-  const languageOptionCollection = createListCollection({
-    items: languageOptions.map((opt) => ({
-      key: opt.value,
-      ...opt,
-    })),
+  const currentLanguage = (i18n.language || 'nb').split('-')[0];
+
+  const collection = createListCollection({
+    items: languageOptions.map((opt) => ({ key: opt.value, ...opt })),
   });
 
   return (
-    <SelectRoot collection={languageOptionCollection} value={[currentLanguage]}>
+    <SelectRoot
+      collection={collection}
+      value={[currentLanguage]}
+      onValueChange={(details) => {
+        const next = details.value?.[0];
+        if (next) i18n.changeLanguage(next);
+      }}
+    >
       <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
+
       <SelectTrigger>
         <SelectValueText placeholder={t('languageSelector.chooseLanguage')} />
       </SelectTrigger>
+
       <SelectContent style={{ zIndex: 9999 }}>
-        {languageOptions.map((lang) => (
-          <SelectItem
-            key={lang.value}
-            item={lang.value}
-            onClick={() => i18n.changeLanguage(lang.value)}
-          >
-            {lang.label}
+        {collection.items.map((item) => (
+          <SelectItem key={item.key} item={item}>
+            {item.label}
           </SelectItem>
         ))}
       </SelectContent>
