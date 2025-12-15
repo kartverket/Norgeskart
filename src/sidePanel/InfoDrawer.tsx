@@ -14,14 +14,10 @@ import {
 } from '@kvib/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import PrivacyPolicy from './PrivacyPolicyAndContact';
 
 import { Tip, unwrapJsonModule } from '../types/tips';
 
-// --------------------
-// JSON-loaders
-// --------------------
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   nb: () =>
     import('../locales/nb/tipsandtricks.json', { assert: { type: 'json' } }),
@@ -31,9 +27,6 @@ const loaders: Record<string, () => Promise<{ default: unknown }>> = {
     import('../locales/en/tipsandtricks.json', { assert: { type: 'json' } }),
 };
 
-// --------------------
-// COMPONENT
-// --------------------
 export const InfoDrawer = () => {
   const { i18n, t } = useTranslation();
   const [tipsData, setTipsData] = useState<Tip[]>([]);
@@ -62,7 +55,6 @@ export const InfoDrawer = () => {
 
   return (
     <SimpleGrid columns={1} gap="6">
-      <LanguageSwitcher />
       <Collapsible
         open={tipsOpen}
         onOpenChange={(details) => setTipsOpen(details.open)}
