@@ -2,7 +2,7 @@ import { Box, Flex, Heading, IconButton, VStack } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapSettings } from '../../settings/map/MapSettings';
-import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
+import { InfoDrawer } from '../../sidePanel/InfoDrawer';
 import { MapTool } from './MapOverlay';
 
 export const MapToolCards = ({
@@ -30,7 +30,7 @@ export const MapToolCards = ({
   if (currentMapTool === 'settings') {
     return (
       <MapToolCard label={t('settings.label')} onClose={onClose}>
-        <SettingsDrawer />
+        <InfoDrawer />
       </MapToolCard>
     );
   }

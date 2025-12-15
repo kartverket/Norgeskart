@@ -36,10 +36,10 @@ export const MapToolButtons = () => {
       align="flex-end"
       justify="space-around"
       bg={{ base: 'rgba(255, 255, 255, 0.85)', md: 'white' }}
-      borderRadius="lg"
+      borderRadius={{base:"", md:"lg"}}
       py={{ base: 1, md: 2 }}
       px={{ base: 0, md: 2 }}
-      mb={{ base: 2, md: 0 }}
+      mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
     >
       <MapButton

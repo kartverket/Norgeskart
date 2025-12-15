@@ -35,7 +35,7 @@ const loaders: Record<string, () => Promise<{ default: unknown }>> = {
 // --------------------
 // COMPONENT
 // --------------------
-export const SettingsDrawer = () => {
+export const InfoDrawer = () => {
   const { i18n, t } = useTranslation();
   const [tipsData, setTipsData] = useState<Tip[]>([]);
   const [tipsOpen, setTipsOpen] = useState(false);
