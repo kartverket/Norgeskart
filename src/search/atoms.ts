@@ -80,7 +80,7 @@ const performAddressSearch = async (
 ): Promise<AddressApiResponse | null> => {
   const searchConditionRegex = /\D+\s\d+.*/;
   if (searchConditionRegex.test(searchQuery)) {
-    return getAddresses(searchQuery + '*');
+    return getAddresses(searchQuery);
   }
   return null;
 };
