@@ -4,6 +4,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
 import { displayMapLegendAtom, mapOrientationDegreesAtom } from './atoms';
+import { useThemeLayers } from './layers/themeLayers';
 import { useMapSettings } from './mapHooks';
 
 export const MapControlButtons = () => {
@@ -18,6 +19,8 @@ export const MapControlButtons = () => {
     zoomIn,
     zoomOut,
   } = useMapSettings();
+
+  const { activeLayerSet } = useThemeLayers();
 
   const handleMapLocationClick = () => {
     if (!navigator.geolocation) return;
@@ -45,12 +48,14 @@ export const MapControlButtons = () => {
       pointerEvents="auto"
       py={1}
     >
-      <ControlButton
-        label={t('map.controls.symbols.label')}
-        icon={'info'}
-        onClick={() => setDisplayMapLegend((prev) => !prev)}
-        displayTooltip
-      />
+      {activeLayerSet.size > 0 && (
+        <ControlButton
+          label={t('map.controls.symbols.label')}
+          icon={'info'}
+          onClick={() => setDisplayMapLegend((prev) => !prev)}
+          displayTooltip
+        />
+      )}
 
       <ControlButton
         icon="add"
