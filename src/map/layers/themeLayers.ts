@@ -1,18 +1,13 @@
-import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
-import {
-  getThemeLayerById,
-  themeLayerConfigLoadableAtom,
-} from '../../api/themeLayerConfigApi';
-import {
-  addToUrlListParameter,
-  removeFromUrlListParameter,
-} from '../../shared/utils/urlUtils';
-import { activeThemeLayersAtom, mapAtom } from '../atoms';
+import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
+import { themeLayerConfigLoadableAtom } from '../../api/themeLayerConfigApi';
+import { removeFromUrlListParameter } from '../../shared/utils/urlUtils';
+import { mapAtom } from '../atoms';
 import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
-import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
+import { activeThemeLayersAtom } from './atoms';
+import { ThemeLayerName } from './themeWMS';
 
 export const MAX_THEME_LAYERS = 10; // Maximum number of theme layers allowed on the map, what is a good number here?
 
@@ -76,61 +71,10 @@ export const useThemeLayers = () => {
   const map = useAtomValue(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
   const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
-  const [_activeLayerSet, setActiveLayerSet] = useAtom(activeThemeLayersAtom);
+  const setActiveLayerSet = useSetAtom(activeThemeLayersAtom);
 
   const addThemeLayerToMap = (layerName: ThemeLayerName): boolean => {
-    const layerExists = map
-      .getLayers()
-      .getArray()
-      .some((layer) => layer.get('id') === `theme.${layerName}`);
-    if (layerExists) {
-      console.warn('Layer already exists on map');
-      return false;
-    }
     setActiveLayerSet((prev) => new Set(prev).add(layerName));
-
-    const activeThemeLayers = map
-      .getLayers()
-      .getArray()
-      .filter((layer) => {
-        const id = layer.get('id');
-        return typeof id === 'string' && id.startsWith('theme.');
-      });
-
-    if (activeThemeLayers.length >= MAX_THEME_LAYERS) {
-      console.warn(
-        `Maximum theme layers limit (${MAX_THEME_LAYERS}) reached. Please deactivate some layers before adding more.`,
-      );
-      return false;
-    }
-
-    if (configLoadable.state !== 'hasData') {
-      console.warn('Config not loaded yet');
-      return false;
-    }
-
-    const layerDef = getThemeLayerById(configLoadable.data, layerName);
-
-    if (!layerDef) {
-      console.warn(`Layer definition not found for layer name: ${layerName}`);
-      return false;
-    }
-
-    const layerToAdd = createThemeLayerFromConfig(
-      configLoadable.data,
-      layerDef,
-      mapProjection,
-    );
-
-    if (!layerToAdd) {
-      console.warn(
-        `Could not create theme layer: ${layerName} for projection: ${mapProjection}`,
-      );
-      return false;
-    }
-    layerToAdd.setZIndex(10);
-    map.addLayer(layerToAdd);
-    addToUrlListParameter('themeLayers', layerName);
     return true;
   };
 

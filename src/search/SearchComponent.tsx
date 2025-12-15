@@ -14,11 +14,11 @@ import { Geometry } from 'ol/geom';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  activeBackgroundLayerAtom,
   getBackgroundLayerImageName,
   mapAtom,
   ProjectionIdentifier,
 } from '../map/atoms';
+import { activeBackgroundLayerAtom } from '../map/layers/atoms.ts';
 import { mapContextIsOpenAtom } from '../map/menu/atoms.ts';
 import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import {

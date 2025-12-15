@@ -40,7 +40,7 @@ export const Debug = () => {
         zIndex={999999}
         style={{ cursor: 'move' }}
         // Draggable logic below
-        ref={(boxRef) => {
+        ref={(boxRef: any) => {
           if (!boxRef) return;
           let isDragging = false;
           let startX = 0;

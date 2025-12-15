@@ -1,6 +1,6 @@
 import { Box, Heading } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { activeThemeLayersAtom } from '../map/atoms';
+import { activeThemeLayersAtom } from '../map/layers/atoms';
 
 export const Layers = () => {
   const backgroundLayers = useAtomValue(activeThemeLayersAtom);

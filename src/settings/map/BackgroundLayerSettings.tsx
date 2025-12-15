@@ -11,11 +11,8 @@ import { usePostHog } from '@posthog/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  activeBackgroundLayerAtom,
-  getBackgroundLayerImageName,
-  mapAtom,
-} from '../../map/atoms';
+import { getBackgroundLayerImageName, mapAtom } from '../../map/atoms';
+import { activeBackgroundLayerAtom } from '../../map/layers/atoms.ts';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
