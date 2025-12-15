@@ -22,7 +22,7 @@ export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
 );
 
 export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(
-  new Set<ThemeLayerName>(new Set()),
+  new Set<ThemeLayerName>(),
 );
 
 export const themeLayerEffect = atomEffect((get) => {
