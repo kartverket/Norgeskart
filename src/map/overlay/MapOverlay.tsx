@@ -15,7 +15,7 @@ import { LinkLogo } from './LinkLogo';
 import { MapToolButtons } from './MapToolButtons';
 import { MapToolCards } from './MapToolCards';
 
-export type MapTool = 'layers' | 'draw' | 'settings' | null;
+export type MapTool = 'layers' | 'draw' | 'info' | 'settings' | null;
 
 export const MapOverlay = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
@@ -55,7 +55,7 @@ export const MapOverlay = () => {
           gridColumn={{
             base: '1 / span 12',
             md: '1 / span 6',
-            lg: '1 / span 3',
+            lg: '1 / span 4',
           }}
           gridRow={1}
           onClick={(e) => e.stopPropagation()}
@@ -94,9 +94,9 @@ export const MapOverlay = () => {
 
         <GridItem
           gridColumn={{
-            base: '2 / span 10',
+            base: '1 / span 12',
             md: '2 / span 10',
-            lg: '2 / span 10',
+            lg: '2 / span 9',
           }}
           gridRow="5"
           alignContent={'end'}

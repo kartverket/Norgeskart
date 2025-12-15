@@ -12,8 +12,8 @@
       "mobiletext": "Tools"
     },
     "settings": {
-      "mobiletext": "Info",
-      "text": "Information"
+      "mobiletext": "Settings",
+      "text": "Settings"
     },
     "sharemap": {
       "text": "Share map",
@@ -356,7 +356,10 @@
       "reject": "Deny"
     }
   },
-  "settings": {
-    "label": "Information"
+  "info": {
+    "settings": {
+      "text": "Information",
+      "base": "Info"
+    }
   }
 }

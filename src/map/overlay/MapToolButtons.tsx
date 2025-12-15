@@ -8,12 +8,13 @@ import {
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { t } from 'i18next';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { mapToolAtom } from './atoms';
 
 export const MapToolButtons = () => {
+  const { t } = useTranslation();
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const isMobile = useIsMobileScreen();
   const posthog = usePostHog();
@@ -34,12 +35,12 @@ export const MapToolButtons = () => {
   return (
     <HStack
       align="flex-end"
-      justify="space-around"
-      bg={{ base: 'rgba(255, 255, 255, 0.85)', md: 'white' }}
-      borderRadius="lg"
-      py={{ base: 1, md: 2 }}
+      justify="space-between"
+      bg="#FFFF"
+      borderRadius={{ base: '', md: 'lg' }}
+      py={{ base: 3, md: 2 }}
       px={{ base: 0, md: 2 }}
-      mb={{ base: 2, md: 0 }}
+      mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
     >
       <MapButton
@@ -67,15 +68,11 @@ export const MapToolButtons = () => {
       />
       <MapButton
         onClick={() => {
-          setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
+          setCurrentMapTool(currentMapTool === 'info' ? null : 'info');
         }}
         icon={'info'}
-        label={
-          isMobile
-            ? t('controller.settings.mobiletext')
-            : t('controller.settings.text')
-        }
-        active={currentMapTool === 'settings'}
+        label={isMobile ? t('info.settings.base') : t('info.settings.text')}
+        active={currentMapTool === 'info'}
       />
 
       <MapButton
@@ -95,6 +92,17 @@ export const MapToolButtons = () => {
           label={t('controller.print.text')}
         />
       )}
+      <MapButton
+        onClick={() => {
+          setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
+        }}
+        icon={'settings'}
+        label={
+          isMobile
+            ? t('controller.settings.mobiletext')
+            : t('controller.settings.text')
+        }
+      />
     </HStack>
   );
 };
@@ -112,7 +120,7 @@ const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
       onClick={onClick}
       variant="ghost"
       colorPalette="green"
-      py={{ base: 0, md: 8 }}
+      py={{ base: 2, md: 8 }}
       backgroundColor={active ? '#D0ECD6' : ''}
     >
       <VStack gap={{ base: 0, md: 1 }} align="center" justify="center">

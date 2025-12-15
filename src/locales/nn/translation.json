@@ -12,8 +12,8 @@
       "mobiletext": "Verktøy"
     },
     "settings": {
-      "mobiletext": "Info",
-      "text": "Informasjon"
+      "mobiletext": "Innstillinger",
+      "text": "Innstillinger"
     },
     "sharemap": {
       "text": "Del kart",
@@ -361,7 +361,10 @@
       "reject": "Avslå"
     }
   },
-  "settings": {
-    "label": "Informasjon"
+  "info": {
+    "settings": {
+      "text": "Informasjon",
+      "base": "Info"
+    }
   }
 }
