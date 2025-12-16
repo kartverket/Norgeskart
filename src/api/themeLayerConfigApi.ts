@@ -178,7 +178,7 @@ export const getEffectiveLegendUrl = (
     console.log(wmsUrl);
     return (
       wmsUrl +
-      '?Service=wms&Request=GetStyles&Version=1.3.0&Format=application/json&Layers=' +
+      '?SERVICE=wms&REQUEST=GetStyles&VERSION=1.3.0&FORMAT=application/json&Layers=' +
       layer.layers
     );
   }

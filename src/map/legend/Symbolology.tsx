@@ -1,7 +1,8 @@
-import { Box, HStack, VStack } from '@kvib/react';
+import { Box, HStack, Text, useKvibContext, VStack } from '@kvib/react';
 
 import {
   FeatureTypeStyle,
+  Fill,
   LineSymbolizer,
   NamedLayer,
   PointSymbolizer,
@@ -12,6 +13,21 @@ import {
   UserStyle,
 } from '../types/StyledMapDescriptor';
 
+const getParamsFromFill = (fill: Fill) => {
+  let color;
+  let opacity;
+  const svgParams = fill.SvgParameter;
+  const cssParams = fill.CssParameter;
+  if (svgParams) {
+    color = svgParams[0];
+    opacity = svgParams[1];
+  } else if (cssParams) {
+    color = cssParams[0];
+    opacity = cssParams[1];
+  }
+  return { color, opacity };
+};
+
 const PointSymbolizerPart = ({
   symbolizer,
 }: {
@@ -20,7 +36,13 @@ const PointSymbolizerPart = ({
   console.log(symbolizer);
   return <Box>Point Symbolizer</Box>;
 };
-const LineSymbolizerPart = ({ symbolizer }: { symbolizer: LineSymbolizer }) => {
+const LineSymbolizerPart = ({
+  symbolizer,
+  text,
+}: {
+  symbolizer: LineSymbolizer;
+  text?: string;
+}) => {
   let color;
   let width;
   const svgParams = symbolizer.Stroke?.SvgParameter;
@@ -33,15 +55,16 @@ const LineSymbolizerPart = ({ symbolizer }: { symbolizer: LineSymbolizer }) => {
     width = cssParams[2];
   }
   return (
-    <HStack>
-      <Box>Line</Box>
-      <Box
-        height={'28px'}
-        width={'28px'}
-        bg={'transparent'}
-        borderWidth={width}
-        borderColor={color}
-      ></Box>
+    <HStack justify="space-between" align="end" w={'100%'}>
+      <Text mr={2}>{text}</Text>
+      <svg width="28" height="28">
+        <polyline
+          points="2,14 7,7 14,21 21,7 26,14"
+          fill="none"
+          stroke={color}
+          strokeWidth={width}
+        />
+      </svg>
     </HStack>
   );
 };
@@ -75,34 +98,58 @@ const PolygonSymbolizerPart = ({
   );
 };
 const TextSymbolizerPart = ({ symbolizer }: { symbolizer: TextSymbolizer }) => {
-  console.log(symbolizer);
-  return <Box>Text</Box>;
+  const system = useKvibContext();
+  const bgColor = system.token('colors.gray.100');
+
+  const { color } = symbolizer.Fill
+    ? getParamsFromFill(symbolizer.Fill)
+    : { color: 'black' };
+
+  const { color: haloColor, radius } = symbolizer.Halo
+    ? {
+        color: symbolizer.Halo.Fill.SvgParameter,
+        radius: symbolizer.Halo.Radius * 2,
+      }
+    : { color: undefined };
+  return (
+    <Box
+      color={color}
+      backgroundColor={bgColor}
+      p={1}
+      borderRadius={'4px'}
+      textShadow={
+        haloColor
+          ? `${radius}px ${radius}px ${radius}px ${haloColor}`
+          : undefined
+      }
+    >
+      {symbolizer.Label}
+    </Box>
+  );
 };
 
 const RulePart = ({ rule }: { rule: Rule }) => {
   return (
-    <VStack align={'flex-start'}>
-      <Box>
-        {rule.PointSymbolizer && (
-          <PointSymbolizerPart symbolizer={rule.PointSymbolizer} />
-        )}
-        {rule.LineSymbolizer && (
-          <LineSymbolizerPart symbolizer={rule.LineSymbolizer} />
-        )}
-        {rule.PolygonSymbolizer && (
-          <PolygonSymbolizerPart symbolizer={rule.PolygonSymbolizer} />
-        )}
-        {rule.TextSymbolizer && (
-          <TextSymbolizerPart symbolizer={rule.TextSymbolizer} />
-        )}
-      </Box>
+    <VStack align={'flex-start'} w={'100%'}>
+      {rule.PointSymbolizer && (
+        <PointSymbolizerPart symbolizer={rule.PointSymbolizer} />
+      )}
+      {rule.LineSymbolizer && (
+        <LineSymbolizerPart symbolizer={rule.LineSymbolizer} text={rule.Name} />
+      )}
+      {rule.PolygonSymbolizer && (
+        <PolygonSymbolizerPart symbolizer={rule.PolygonSymbolizer} />
+      )}
+      {rule.TextSymbolizer && (
+        <TextSymbolizerPart symbolizer={rule.TextSymbolizer} />
+      )}
     </VStack>
   );
 };
 
 const FeatureTypeStylePart = ({ fts }: { fts: FeatureTypeStyle }) => {
   return (
-    <Box>
+    <Box w={'100%'}>
       {Array.isArray(fts.Rule) ? (
         fts.Rule.map((rule) => <RulePart key={rule.Name} rule={rule} />)
       ) : (
@@ -114,31 +161,27 @@ const FeatureTypeStylePart = ({ fts }: { fts: FeatureTypeStyle }) => {
 
 const UserStylePart = ({ style }: { style: UserStyle }) => {
   return (
-    <HStack justify={'space-between'}>
-      <Box>{style.Name}</Box>
-      <Box>
-        {Array.isArray(style.FeatureTypeStyle) ? (
-          style.FeatureTypeStyle.map((fts, index) => (
-            <FeatureTypeStylePart key={index} fts={fts} />
-          ))
-        ) : (
-          <FeatureTypeStylePart fts={style.FeatureTypeStyle} />
-        )}
-      </Box>
+    <HStack justify={'space-between'} w={'100%'}>
+      {Array.isArray(style.FeatureTypeStyle) ? (
+        style.FeatureTypeStyle.map((fts, index) => (
+          <FeatureTypeStylePart key={index} fts={fts} />
+        ))
+      ) : (
+        <FeatureTypeStylePart fts={style.FeatureTypeStyle} />
+      )}
     </HStack>
   );
 };
 
 const NamedLayerPart = ({ namedLayer }: { namedLayer: NamedLayer }) => {
   return (
-    <HStack key={namedLayer.Name} justifyContent={'space-between'}>
-      <Box>{namedLayer.Name} </Box>
+    <>
       {Array.isArray(namedLayer.UserStyle) ? (
         namedLayer.UserStyle.map((s) => <UserStylePart style={s} />)
       ) : (
         <UserStylePart style={namedLayer.UserStyle} />
       )}
-    </HStack>
+    </>
   );
 };
 

@@ -112,7 +112,7 @@ export const MapOverlay = () => {
           justifySelf="end"
           alignContent="end"
           gridRow={{ base: 4, md: 5, lg: 5 }}
-          gridColumn={{ base: 12, md: displayMapLegend ? 9 : 12 }}
+          gridColumn={{ base: 12, md: displayMapLegend ? 10 : 12 }}
           mb={{ base: 3, md: 4 }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
@@ -123,7 +123,7 @@ export const MapOverlay = () => {
           <GridItem
             alignContent="end"
             gridRow={{ base: 4, md: 5, lg: '2 / span 4' }}
-            gridColumn={{ base: '10 / span 3' }}
+            gridColumn={{ base: '11 / span 2' }}
             mb={{ base: 3, md: 4 }}
             mr={{ base: 2, md: 3 }}
           >

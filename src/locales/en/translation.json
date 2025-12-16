@@ -371,7 +371,7 @@
       "preamble": "Legend for theme layers"
     },
     "item": {
-      "fallbackMessage": "Error rendering legende"
+      "fallbackMessage": "has no legend"
     }
   }
 }

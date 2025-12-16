@@ -67,6 +67,7 @@ export interface TextSymbolizer {
   Label: string;
   Font?: Font;
   Fill?: Fill;
+  Halo?: Halo;
 }
 
 // Supporting types
@@ -88,6 +89,11 @@ export interface Stroke {
 export interface Fill {
   CssParameter?: string[];
   SvgParameter?: string[];
+}
+
+export interface Halo {
+  Fill: { SvgParameter: string };
+  Radius: number;
 }
 
 export interface Font {

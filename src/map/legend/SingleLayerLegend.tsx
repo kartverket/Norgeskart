@@ -46,15 +46,18 @@ export const SingleLayerLegend = ({
     layer.id as ThemeLayerName,
   );
 
-  const lmao = useMemo(async () => {
+  const fetchStyleData = useMemo(async () => {
     if (!legendUrl) return;
     const res = await fetch(legendUrl);
+    if (!res.ok) {
+      return null;
+    }
     const text = await res.text();
     const styleObject = parser.parse(text);
     return styleObject as LayerStyleProps;
   }, [layerName]);
 
-  lmao.then((r) => {
+  fetchStyleData.then((r) => {
     if (r) {
       setLegendData(r);
     }
@@ -64,7 +67,11 @@ export const SingleLayerLegend = ({
     return null;
   }
   return (
-    <ErrorBoundary fallback={t('legend.item.fallbackMessage')}>
+    <ErrorBoundary
+      fallback={
+        layer.name[currentLang] + ' ' + t('legend.item.fallbackMessage')
+      }
+    >
       <AccordionItem value={layer.id}>
         <AccordionItemTrigger>
           <Heading size={'sm'}>{layer.name[currentLang]}</Heading>
