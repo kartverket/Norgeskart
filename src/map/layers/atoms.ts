@@ -8,7 +8,7 @@ import {
   addToUrlListParameter,
   removeFromUrlListParameter,
 } from '../../shared/utils/urlUtils';
-import { mapAtom } from '../atoms';
+import { displayMapLegendAtom, mapAtom } from '../atoms';
 import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
@@ -25,9 +25,12 @@ export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(
   new Set<ThemeLayerName>(),
 );
 
-export const themeLayerEffect = atomEffect((get) => {
+export const themeLayerEffect = atomEffect((get, set) => {
   const themeLayers = get(activeThemeLayersAtom);
   const configLoadable = get(themeLayerConfigLoadableAtom);
+  if (themeLayers.size === 0) {
+    set(displayMapLegendAtom, false);
+  }
   if (configLoadable.state !== 'hasData') {
     console.warn('Theme layer config not loaded yet');
     return;
