@@ -374,6 +374,9 @@
     "heading": {
       "title": "Symbolforklaring",
       "preamble": "Symbolforklaring for temakart "
+    },
+    "item": {
+      "fallbackMessage": "Kunne ikkje laste teknforklaring for laget"
     }
   }
 }

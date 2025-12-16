@@ -369,6 +369,9 @@
     "heading": {
       "title": "Map legend",
       "preamble": "Legend for theme layers"
+    },
+    "item": {
+      "fallbackMessage": "Error rendering legende"
     }
   }
 }

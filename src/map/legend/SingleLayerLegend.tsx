@@ -1,4 +1,9 @@
-import { Heading, Stack } from '@kvib/react';
+import {
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
+  Heading,
+} from '@kvib/react';
 import { XMLParser } from 'fast-xml-parser';
 import { useAtomValue } from 'jotai';
 import { useMemo, useState } from 'react';
@@ -8,8 +13,14 @@ import {
   getThemeLayerById,
   themeLayerConfigLoadableAtom,
 } from '../../api/themeLayerConfigApi';
+import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { ThemeLayerName } from '../layers/themeWMS';
 import { StyledLayerDescriptor } from '../types/StyledMapDescriptor';
+import { Symbolology } from './Symbolology';
+
+type LayerStyleProps = {
+  StyledLayerDescriptor: StyledLayerDescriptor;
+};
 const parser = new XMLParser({ removeNSPrefix: true });
 
 export const SingleLayerLegend = ({
@@ -17,14 +28,12 @@ export const SingleLayerLegend = ({
 }: {
   layerName: ThemeLayerName;
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const config = useAtomValue(themeLayerConfigLoadableAtom);
   if (config.state !== 'hasData') {
     return null;
   }
-  const [legendData, setLegendData] = useState<StyledLayerDescriptor | null>(
-    null,
-  );
+  const [legendData, setLegendData] = useState<LayerStyleProps | null>(null);
 
   const layer = getThemeLayerById(config.data, layerName);
   if (!layer) {
@@ -42,7 +51,7 @@ export const SingleLayerLegend = ({
     const res = await fetch(legendUrl);
     const text = await res.text();
     const styleObject = parser.parse(text);
-    return styleObject as StyledLayerDescriptor;
+    return styleObject as LayerStyleProps;
   }, [layerName]);
 
   lmao.then((r) => {
@@ -51,10 +60,22 @@ export const SingleLayerLegend = ({
     }
   });
 
+  if (legendData === null) {
+    return null;
+  }
   return (
-    <Stack>
-      <Heading size={'sm'}>{layer.name[currentLang]}</Heading>
-      {legendData?.Name}
-    </Stack>
+    <ErrorBoundary fallback={t('legend.item.fallbackMessage')}>
+      <AccordionItem value={layer.id}>
+        <AccordionItemTrigger>
+          <Heading size={'sm'}>{layer.name[currentLang]}</Heading>
+        </AccordionItemTrigger>
+        <AccordionItemContent>
+          <Symbolology
+            activeThemeLayers={legendData.StyledLayerDescriptor}
+            heading={layer.id}
+          />
+        </AccordionItemContent>
+      </AccordionItem>
+    </ErrorBoundary>
   );
 };

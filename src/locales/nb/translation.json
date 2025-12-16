@@ -435,6 +435,9 @@
     "heading": {
       "title": "Symbolforklaring",
       "preamble": "Symbolforklaring for temakart"
+    },
+    "item": {
+      "fallbackMessage": "Kunne ikke laste tegnforklaring for laget"
     }
   }
 }

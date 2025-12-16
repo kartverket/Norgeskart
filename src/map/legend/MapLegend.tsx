@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@kvib/react';
+import { AccordionRoot, Heading, Stack } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,11 +22,13 @@ export const MapLegend = () => {
       pointerEvents="auto"
     >
       <Heading size={'md'}>{t('legend.heading.title')}</Heading>
-      {layers.map((l) => (
-        <React.Fragment key={l}>
-          <SingleLayerLegend layerName={l} />
-        </React.Fragment>
-      ))}
+      <AccordionRoot collapsible multiple defaultValue={layers}>
+        {layers.map((l) => (
+          <React.Fragment key={l}>
+            <SingleLayerLegend layerName={l} />
+          </React.Fragment>
+        ))}
+      </AccordionRoot>
     </Stack>
   );
 };
