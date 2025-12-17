@@ -36,7 +36,8 @@
       "categoryId": "outdoorRecreation",
       "groupid": 5,
       "legacyId": "5.Fotrute",
-      "queryable": true
+      "queryable": true,
+      "useLegendGraphic": true
     },
     {
       "id": "skiingTrails",

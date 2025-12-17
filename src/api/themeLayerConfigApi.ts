@@ -64,6 +64,7 @@ export interface ThemeLayerDefinition {
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];
+  useLegendGraphic?: boolean;
 }
 
 export interface ThemeLayerConfig {
@@ -179,6 +180,25 @@ export const getEffectiveLegendUrl = (
     return (
       wmsUrl +
       '?SERVICE=wms&REQUEST=GetStyles&VERSION=1.3.0&FORMAT=application/json&Layers=' +
+      layer.layers
+    );
+  }
+  return undefined;
+};
+
+export const getEffectiveLegendImageUrl = (
+  config: ThemeLayerConfig,
+  id: ThemeLayerName,
+) => {
+  const layer = getThemeLayerById(config, id);
+  if (!layer) {
+    return undefined;
+  }
+  if (layer.useLegendGraphic) {
+    const wmsUrl = getEffectiveWmsUrl(config, layer);
+    return (
+      wmsUrl +
+      '?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image/png&LAYER=' +
       layer.layers
     );
   }
