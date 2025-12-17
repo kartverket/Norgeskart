@@ -15,14 +15,19 @@ export const MapLegend = () => {
   return (
     <Stack
       w={'100%'}
-      overflowY={'auto'}
       bgColor={'white'}
       p={4}
       borderRadius="16px"
       pointerEvents="auto"
     >
       <Heading size={'md'}>{t('legend.heading.title')}</Heading>
-      <AccordionRoot collapsible multiple defaultValue={layers}>
+      <AccordionRoot
+        collapsible
+        multiple
+        defaultValue={layers}
+        maxH={'30vh'}
+        overflowY={'auto'}
+      >
         {layers.map((l) => (
           <React.Fragment key={l}>
             <SingleLayerLegend layerName={l} />

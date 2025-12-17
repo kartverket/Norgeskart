@@ -70,8 +70,10 @@ const LineSymbolizerPart = ({
 };
 const PolygonSymbolizerPart = ({
   symbolizer,
+  text,
 }: {
   symbolizer: PolygonSymbolizer;
+  text?: string;
 }) => {
   let color;
   let opacity;
@@ -86,8 +88,8 @@ const PolygonSymbolizerPart = ({
   }
 
   return (
-    <HStack>
-      <Box>Polygon</Box>
+    <HStack justify="space-between" align="end" w={'100%'}>
+      <Text mr={2}>{text}</Text>
       <Box
         height={'28px'}
         width={'28px'}
@@ -138,7 +140,10 @@ const RulePart = ({ rule }: { rule: Rule }) => {
         <LineSymbolizerPart symbolizer={rule.LineSymbolizer} text={rule.Name} />
       )}
       {rule.PolygonSymbolizer && (
-        <PolygonSymbolizerPart symbolizer={rule.PolygonSymbolizer} />
+        <PolygonSymbolizerPart
+          symbolizer={rule.PolygonSymbolizer}
+          text={rule.Name}
+        />
       )}
       {rule.TextSymbolizer && (
         <TextSymbolizerPart symbolizer={rule.TextSymbolizer} />

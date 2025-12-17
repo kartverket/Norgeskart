@@ -3,6 +3,7 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   Heading,
+  Text,
 } from '@kvib/react';
 import { XMLParser } from 'fast-xml-parser';
 import { useAtomValue } from 'jotai';
@@ -30,10 +31,15 @@ export const SingleLayerLegend = ({
 }) => {
   const { t, i18n } = useTranslation();
   const config = useAtomValue(themeLayerConfigLoadableAtom);
+
+  const [legendData, setLegendData] = useState<
+    LayerStyleProps | null | 'loading'
+  >('loading');
+
   if (config.state !== 'hasData') {
+    222;
     return null;
   }
-  const [legendData, setLegendData] = useState<LayerStyleProps | null>(null);
 
   const layer = getThemeLayerById(config.data, layerName);
   if (!layer) {
@@ -47,31 +53,37 @@ export const SingleLayerLegend = ({
   );
 
   const fetchStyleData = useMemo(async () => {
-    if (!legendUrl) return;
+    if (!legendUrl) return null;
     const res = await fetch(legendUrl);
     if (!res.ok) {
       return null;
     }
     const text = await res.text();
     const styleObject = parser.parse(text);
-    return styleObject as LayerStyleProps;
+    if (styleObject) {
+      return styleObject as LayerStyleProps;
+    }
+    return null;
   }, [layerName]);
 
   fetchStyleData.then((r) => {
-    if (r) {
-      setLegendData(r);
-    }
+    setLegendData(r);
   });
+  const fallback = (
+    <Text>
+      {layer.name[currentLang] + ' ' + t('legend.item.fallbackMessage')}
+    </Text>
+  );
 
   if (legendData === null) {
+    return fallback;
+  }
+
+  if (legendData === 'loading') {
     return null;
   }
   return (
-    <ErrorBoundary
-      fallback={
-        layer.name[currentLang] + ' ' + t('legend.item.fallbackMessage')
-      }
-    >
+    <ErrorBoundary fallback={fallback}>
       <AccordionItem value={layer.id}>
         <AccordionItemTrigger>
           <Heading size={'sm'}>{layer.name[currentLang]}</Heading>
