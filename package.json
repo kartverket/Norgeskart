@@ -46,7 +46,7 @@
     "eslint-plugin-compat": "^6.0.2",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.25",
+    "eslint-plugin-react-refresh": "^0.4.26",
     "globals": "^16.5.0",
     "playwright-webkit": "^1.57.0",
     "prettier-plugin-organize-imports": "^4.3.0",
