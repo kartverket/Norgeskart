@@ -76,10 +76,12 @@ const getParamsFromStroke = (stroke: Stroke) => {
 
 const PointSymbolizerPart = ({
   symbolizer,
+  text,
 }: {
   symbolizer: PointSymbolizer;
+  text?: string;
 }) => {
-  return <Box>Point Symbolizer</Box>;
+  return <Box>{text}</Box>;
 };
 const LineSymbolizerPart = ({
   symbolizer,
@@ -141,7 +143,13 @@ const PolygonSymbolizerPart = ({
     </HStack>
   );
 };
-const TextSymbolizerPart = ({ symbolizer }: { symbolizer: TextSymbolizer }) => {
+const TextSymbolizerPart = ({
+  symbolizer,
+  text,
+}: {
+  symbolizer: TextSymbolizer;
+  text?: string;
+}) => {
   const system = useKvibContext();
   const bgColor = system.token('colors.gray.100');
 
@@ -156,19 +164,22 @@ const TextSymbolizerPart = ({ symbolizer }: { symbolizer: TextSymbolizer }) => {
       }
     : { color: undefined };
   return (
-    <Box
-      color={color}
-      backgroundColor={bgColor}
-      p={1}
-      borderRadius={'4px'}
-      textShadow={
-        haloColor
-          ? `${radius}px ${radius}px ${radius}px ${haloColor}`
-          : undefined
-      }
-    >
-      {symbolizer.Label}
-    </Box>
+    <HStack justify="space-between" align="end" w={'100%'}>
+      <Text mr={2}>{text}</Text>
+      <Box
+        color={color}
+        backgroundColor={bgColor}
+        p={1}
+        borderRadius={'4px'}
+        textShadow={
+          haloColor
+            ? `${radius}px ${radius}px ${radius}px ${haloColor}`
+            : undefined
+        }
+      >
+        {symbolizer.Label}
+      </Box>
+    </HStack>
   );
 };
 
@@ -176,7 +187,10 @@ const RulePart = ({ rule }: { rule: Rule }) => {
   return (
     <VStack align={'flex-start'} w={'100%'}>
       {rule.PointSymbolizer && (
-        <PointSymbolizerPart symbolizer={rule.PointSymbolizer} />
+        <PointSymbolizerPart
+          symbolizer={rule.PointSymbolizer}
+          text={rule.Name}
+        />
       )}
       {rule.LineSymbolizer && (
         <LineSymbolizerPart symbolizer={rule.LineSymbolizer} text={rule.Name} />
@@ -188,7 +202,7 @@ const RulePart = ({ rule }: { rule: Rule }) => {
         />
       )}
       {rule.TextSymbolizer && (
-        <TextSymbolizerPart symbolizer={rule.TextSymbolizer} />
+        <TextSymbolizerPart symbolizer={rule.TextSymbolizer} text={rule.Name} />
       )}
     </VStack>
   );
