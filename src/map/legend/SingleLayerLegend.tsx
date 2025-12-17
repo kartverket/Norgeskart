@@ -69,6 +69,7 @@ export const SingleLayerLegend = ({
   fetchStyleData.then((r) => {
     setLegendData(r);
   });
+  console.log('legendData', legendData);
   const fallback = (
     <Text>
       {layer.name[currentLang] + ' ' + t('legend.item.fallbackMessage')}

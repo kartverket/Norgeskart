@@ -34,7 +34,7 @@ export interface Rule {
   MaxScaleDenominator?: number;
   PointSymbolizer?: PointSymbolizer;
   LineSymbolizer?: LineSymbolizer;
-  PolygonSymbolizer?: PolygonSymbolizer;
+  PolygonSymbolizer?: PolygonSymbolizer | PolygonSymbolizer[];
   TextSymbolizer?: TextSymbolizer;
 }
 
@@ -56,11 +56,11 @@ export interface LineSymbolizer {
   Stroke: Stroke;
 }
 
-export interface PolygonSymbolizer {
+export type PolygonSymbolizer = {
   Type: 'Polygon';
   Fill?: Fill;
   Stroke?: Stroke;
-}
+};
 
 export interface TextSymbolizer {
   Type: 'Text';
@@ -82,19 +82,22 @@ export interface ExternalGraphic {
 }
 
 export interface Stroke {
-  CssParameter?: string[];
-  SvgParameter?: string[];
+  CssParameter?: CssParameter;
+  SvgParameter?: SvgParameter;
 }
 
 export interface Fill {
-  CssParameter?: string[];
-  SvgParameter?: string[];
+  CssParameter?: CssParameter;
+  SvgParameter?: SvgParameter;
 }
 
 export interface Halo {
   Fill: { SvgParameter: string };
   Radius: number;
 }
+
+export type CssParameter = string | string[];
+export type SvgParameter = string | string[];
 
 export interface Font {
   Family: string;

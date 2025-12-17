@@ -8,10 +8,34 @@ import {
   PointSymbolizer,
   PolygonSymbolizer,
   Rule,
+  Stroke,
   StyledLayerDescriptor,
   TextSymbolizer,
   UserStyle,
 } from '../types/StyledMapDescriptor';
+
+const getParamsFromPolygonSymboliser = (
+  symbolizer?: PolygonSymbolizer | PolygonSymbolizer[],
+) => {
+  if (!symbolizer) {
+    console.log('no symbolizer');
+    return { fill: undefined, stroke: undefined };
+  }
+  let fill;
+  if (Array.isArray(symbolizer)) {
+    fill = symbolizer[0].Fill;
+  } else {
+    fill = symbolizer.Fill;
+  }
+  let stroke;
+  if (Array.isArray(symbolizer)) {
+    stroke = symbolizer[1].Stroke;
+  } else {
+    stroke = symbolizer.Stroke;
+  }
+
+  return { fill, stroke };
+};
 
 const getParamsFromFill = (fill: Fill) => {
   let color;
@@ -19,13 +43,36 @@ const getParamsFromFill = (fill: Fill) => {
   const svgParams = fill.SvgParameter;
   const cssParams = fill.CssParameter;
   if (svgParams) {
-    color = svgParams[0];
-    opacity = svgParams[1];
+    if (Array.isArray(svgParams)) {
+      color = svgParams[0];
+      opacity = svgParams[1];
+    } else {
+      color = svgParams;
+    }
   } else if (cssParams) {
-    color = cssParams[0];
-    opacity = cssParams[1];
+    if (Array.isArray(cssParams)) {
+      color = cssParams[0];
+      opacity = cssParams[1];
+    } else {
+      color = cssParams;
+    }
   }
   return { color, opacity };
+};
+
+const getParamsFromStroke = (stroke: Stroke) => {
+  let strokeColor;
+  let strokeWidth;
+  const svgParams = stroke.SvgParameter;
+  const cssParams = stroke.CssParameter;
+  if (svgParams) {
+    strokeColor = svgParams[0];
+    strokeWidth = svgParams[1];
+  } else if (cssParams) {
+    strokeColor = cssParams[0];
+    strokeWidth = cssParams[2];
+  }
+  return { strokeColor, strokeWidth };
 };
 
 const PointSymbolizerPart = ({
@@ -72,21 +119,17 @@ const PolygonSymbolizerPart = ({
   symbolizer,
   text,
 }: {
-  symbolizer: PolygonSymbolizer;
+  symbolizer: PolygonSymbolizer | PolygonSymbolizer[];
   text?: string;
 }) => {
-  let color;
-  let opacity;
-  const svgParams = symbolizer.Fill?.SvgParameter;
-  const cssParams = symbolizer.Fill?.CssParameter;
-  if (svgParams) {
-    color = svgParams[0];
-    opacity = svgParams[1];
-  } else if (cssParams) {
-    color = cssParams[0];
-    opacity = cssParams[1];
-  }
+  const { fill, stroke } = getParamsFromPolygonSymboliser(symbolizer);
+  const { color, opacity } = fill
+    ? getParamsFromFill(fill)
+    : { color: undefined, opacity: 0 };
 
+  const { strokeColor, strokeWidth } = stroke
+    ? getParamsFromStroke(stroke)
+    : { strokeColor: undefined, strokeWidth: 0 };
   return (
     <HStack justify="space-between" align="end" w={'100%'}>
       <Text mr={2}>{text}</Text>
@@ -94,6 +137,7 @@ const PolygonSymbolizerPart = ({
         height={'28px'}
         width={'28px'}
         bgColor={color}
+        border={`${strokeWidth}px solid ${strokeColor}`}
         opacity={opacity}
       ></Box>
     </HStack>
@@ -153,6 +197,7 @@ const RulePart = ({ rule }: { rule: Rule }) => {
 };
 
 const FeatureTypeStylePart = ({ fts }: { fts: FeatureTypeStyle }) => {
+  console.log(fts);
   return (
     <Box w={'100%'}>
       {Array.isArray(fts.Rule) ? (
