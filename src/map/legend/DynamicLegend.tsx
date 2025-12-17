@@ -1,6 +1,6 @@
 import { Text } from '@kvib/react';
 import { XMLParser } from 'fast-xml-parser';
-import { useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   getEffectiveLegendUrl,
@@ -13,6 +13,7 @@ import { Symbolology } from './Symbolology';
 type LayerStyleProps = {
   StyledLayerDescriptor: StyledLayerDescriptor;
 };
+const parser = new XMLParser({ removeNSPrefix: true });
 
 export const DynamicLegend = ({
   config,
@@ -27,9 +28,7 @@ export const DynamicLegend = ({
     LayerStyleProps | null | 'loading'
   >('loading');
 
-  const parser = new XMLParser({ removeNSPrefix: true });
-
-  const fetchStyleData = useMemo(async () => {
+  const fetchStyleData = useCallback(async () => {
     const legendUrl = getEffectiveLegendUrl(config, layer.id as ThemeLayerName);
     if (!legendUrl) return null;
     const res = await fetch(legendUrl);
@@ -44,7 +43,7 @@ export const DynamicLegend = ({
     return null;
   }, [layer, config]);
 
-  fetchStyleData.then((r) => {
+  fetchStyleData().then((r) => {
     setLegendData(r);
   });
   const fallback = (

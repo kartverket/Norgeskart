@@ -164,7 +164,13 @@ export const MapComponent = () => {
 
     setBackgroundLayer(finalLayerName);
     hasProcessedUrlRef.current = true;
-  }, [setBackgroundLayer, map, configLoadable, backgroundLayerState]);
+  }, [
+    setActiveThemeLayers,
+    setBackgroundLayer,
+    map,
+    configLoadable,
+    backgroundLayerState,
+  ]);
 
   useEffect(() => {
     if (hasLoadedDrawingRef.current) {

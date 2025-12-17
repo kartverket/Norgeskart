@@ -176,7 +176,6 @@ export const getEffectiveLegendUrl = (
   }
   if (layer.type !== 'geojson') {
     const wmsUrl = getEffectiveWmsUrl(config, layer);
-    console.log(wmsUrl);
     return (
       wmsUrl +
       '?SERVICE=wms&REQUEST=GetStyles&VERSION=1.3.0&FORMAT=application/json&Layers=' +

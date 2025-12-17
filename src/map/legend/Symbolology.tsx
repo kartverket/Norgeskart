@@ -18,7 +18,6 @@ const getParamsFromPolygonSymboliser = (
   symbolizer?: PolygonSymbolizer | PolygonSymbolizer[],
 ) => {
   if (!symbolizer) {
-    console.log('no symbolizer');
     return { fill: undefined, stroke: undefined };
   }
   let fill;
@@ -80,7 +79,6 @@ const PointSymbolizerPart = ({
 }: {
   symbolizer: PointSymbolizer;
 }) => {
-  console.log(symbolizer);
   return <Box>Point Symbolizer</Box>;
 };
 const LineSymbolizerPart = ({
@@ -197,7 +195,6 @@ const RulePart = ({ rule }: { rule: Rule }) => {
 };
 
 const FeatureTypeStylePart = ({ fts }: { fts: FeatureTypeStyle }) => {
-  console.log(fts);
   return (
     <Box w={'100%'}>
       {Array.isArray(fts.Rule) ? (
