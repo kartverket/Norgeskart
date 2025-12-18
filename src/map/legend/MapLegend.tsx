@@ -23,8 +23,9 @@ export const MapLegend = () => {
       pointerEvents="auto"
     >
       <HStack justify={'space-between'}>
-        <Heading size={'md'}>{t('legend.heading.title')}</Heading>
+        <Heading size={'sm'}>{t('legend.heading.title')}</Heading>
         <IconButton
+          size={'md'}
           variant="tertiary"
           icon="close"
           onClick={() => setShowMapLegend(false)}
