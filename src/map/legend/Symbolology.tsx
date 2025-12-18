@@ -99,6 +99,18 @@ const MarkSymbol = ({ mark }: { mark: Mark }) => {
           <circle cx="14" cy="14" r="10" fill={color} />
         </svg>
       );
+    case 'square':
+      return (
+        <svg width="28" height="28">
+          <rect x="4" y="4" width="20" height="20" fill={color} />
+        </svg>
+      );
+    case 'triangle':
+      return (
+        <svg width="28" height="28">
+          <polygon points="14,4 24,24 4,24" fill={color} />
+        </svg>
+      );
     default:
       return (
         <svg width="28" height="28">
