@@ -15,6 +15,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   displayCompassOverlayAtom,
+  displayMapLegendAtom,
+  displayMapLegendControlAtom,
   mapAtom,
   scaleToResolutionEffect,
   useMagneticNorthAtom,
@@ -38,6 +40,8 @@ export const Toolbar = () => {
   const [displayCompassOverlay, setDisplayCompassOverlay] = useAtom(
     displayCompassOverlayAtom,
   );
+  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
+  const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
   const [mousePositionCoords, setMousePositionCoords] = useState<
     [number, number] | null
@@ -106,6 +110,18 @@ export const Toolbar = () => {
         <ScaleSelector />
       </Flex>
       <Flex flex="1" justify="flex-end" alignItems="center">
+        {displayMapLegendControl && (
+          <Tooltip content={t('toolbar.legend.tooltip')}>
+            <Button
+              variant="plain"
+              color="white"
+              size="sm"
+              onClick={() => setDisplayMapLegend(true)}
+            >
+              {t('toolbar.legend.label')}
+            </Button>
+          </Tooltip>
+        )}
         <Tooltip content={t('toolbar.reportError.tooltip')}>
           <Button
             variant="plain"

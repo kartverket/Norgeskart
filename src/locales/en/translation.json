@@ -349,6 +349,10 @@
     },
     "coordinates": {
       "tooltip": "Coordinates of the mouse pointer"
+    },
+    "legend": {
+      "tooltip": "Show map legend",
+      "label": "Map legend"
     }
   },
   "cookieDialog": {

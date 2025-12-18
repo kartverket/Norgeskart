@@ -1,16 +1,21 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { CSSProperties } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
-import { displayMapLegendAtom, mapOrientationDegreesAtom } from './atoms';
+import {
+  displayMapLegendAtom,
+  displayMapLegendControlAtom,
+  mapOrientationDegreesAtom,
+} from './atoms';
 import { useThemeLayers } from './layers/themeLayers';
 import { useMapSettings } from './mapHooks';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
-  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
+  const [displayMapLegend, setDisplayMapLegend] = useAtom(displayMapLegendAtom);
+  const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const {
     rotateSnappy,
     setMapAngle,
@@ -48,7 +53,7 @@ export const MapControlButtons = () => {
       pointerEvents="auto"
       py={1}
     >
-      {activeLayerSet.size > 0 && (
+      {displayMapLegendControl && (
         <ControlButton
           label={t('map.controls.symbols.label')}
           icon={'info'}

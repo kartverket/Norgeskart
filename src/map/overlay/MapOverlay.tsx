@@ -8,6 +8,7 @@ import { useIsMobileScreen } from '../../shared/hooks';
 import { Toolbar } from '../../toolbar/Toolbar';
 import { displayCompassOverlayAtom, displayMapLegendAtom } from '../atoms';
 import { useFeatureInfoClick } from '../featureInfo/useFeatureInfo';
+import { activeThemeLayersAtom } from '../layers/atoms';
 import { MapLegend } from '../legend/MapLegend';
 import { MapControlButtons } from '../MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './atoms';
@@ -23,9 +24,11 @@ export const MapOverlay = () => {
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
   const displayMapLegend = useAtomValue(displayMapLegendAtom);
+  const themeLayers = useAtomValue(activeThemeLayersAtom);
   const isMobile = useIsMobileScreen();
   const isToolOpen = currentMapTool !== null;
 
+  const shouldDisplayLegend = themeLayers.size > 0 && displayMapLegend;
   useFeatureInfoClick();
   useSearchEffects();
 
@@ -112,14 +115,14 @@ export const MapOverlay = () => {
           justifySelf="end"
           alignContent="end"
           gridRow={{ base: 4, md: 5, lg: 5 }}
-          gridColumn={{ base: 12, md: displayMapLegend ? 10 : 12 }}
+          gridColumn={{ base: 12, md: shouldDisplayLegend ? 10 : 12 }}
           mb={{ base: 3, md: 4 }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
           <MapControlButtons />
         </GridItem>
-        {displayMapLegend && (
+        {shouldDisplayLegend && (
           <GridItem
             alignContent="end"
             gridRow={{ base: 4, md: 5, lg: '2 / span 4' }}

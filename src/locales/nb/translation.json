@@ -415,6 +415,10 @@
     },
     "coordinates": {
       "tooltip": "Pekerens koordinater"
+    },
+    "legend": {
+      "tooltip": "Vis symbolforklaring",
+      "label": "Tegnforklaring"
     }
   },
   "cookieDialog": {
