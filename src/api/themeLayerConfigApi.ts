@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import { loadable } from 'jotai/utils';
+import { ThemeLayerName } from '../map/layers/themeWMS';
 
 export interface FieldConfig {
   name: string;
@@ -63,6 +64,7 @@ export interface ThemeLayerDefinition {
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];
+  useLegendGraphic?: boolean;
 }
 
 export interface ThemeLayerConfig {
@@ -71,8 +73,9 @@ export interface ThemeLayerConfig {
 }
 
 const CATEGORY_FILES = [
+  'propertyInfo',
+  'placeNames',
   'outdoorRecreation',
-  //'placeNames',
   'facts',
   'tilgjengelighet',
   'fastmerker',
@@ -157,6 +160,48 @@ export const getEffectiveWmsUrl = (
   throw new Error(
     `No wmsUrl found for layer ${layer.id} in category ${layer.categoryId}`,
   );
+};
+
+export const getEffectiveLegendUrl = (
+  config: ThemeLayerConfig,
+  id: ThemeLayerName,
+): string | undefined => {
+  const layer = getThemeLayerById(config, id);
+
+  if (!layer) {
+    return undefined;
+  }
+  if (layer.legendUrl) {
+    return layer.legendUrl;
+  }
+  if (layer.type !== 'geojson') {
+    const wmsUrl = getEffectiveWmsUrl(config, layer);
+    return (
+      wmsUrl +
+      '?SERVICE=wms&REQUEST=GetStyles&VERSION=1.3.0&FORMAT=application/json&Layers=' +
+      layer.layers
+    );
+  }
+  return undefined;
+};
+
+export const getEffectiveLegendImageUrl = (
+  config: ThemeLayerConfig,
+  id: ThemeLayerName,
+) => {
+  const layer = getThemeLayerById(config, id);
+  if (!layer) {
+    return undefined;
+  }
+  if (layer.useLegendGraphic) {
+    const wmsUrl = getEffectiveWmsUrl(config, layer);
+    return (
+      wmsUrl +
+      '?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image/png&LAYER=' +
+      layer.layers
+    );
+  }
+  return undefined;
 };
 
 export const getMainCategories = (

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   Flex,
@@ -13,6 +15,7 @@ import { getEnvName } from '../env';
 import { drawActionsAtom } from '../settings/draw/drawActions/atoms';
 import { Actions } from './Actions';
 import { DrawLayer } from './DrawLayer';
+import { Layers } from './Layers';
 import { Selected } from './Selected';
 
 export const Debug = () => {
@@ -29,12 +32,56 @@ export const Debug = () => {
   } else {
     return (
       <Box
-        position={'absolute'}
+        position="absolute"
         width={500}
         backgroundColor="hotpink"
         bottom={20}
         left={20}
         zIndex={999999}
+        style={{ cursor: 'move' }}
+        // Draggable logic below
+        ref={(boxRef: any) => {
+          if (!boxRef) return;
+          let isDragging = false;
+          let startX = 0;
+          let startY = 0;
+          let origLeft = 0;
+          let origBottom = 0;
+
+          const onMouseDown = (e: MouseEvent) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            // @ts-ignore
+            origLeft = parseInt(boxRef.style.left, 10) || 20;
+            // @ts-ignore
+            origBottom = parseInt(boxRef.style.bottom, 10) || 20;
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+          };
+
+          const onMouseMove = (e: MouseEvent) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            // @ts-ignore
+            boxRef.style.left = `${origLeft + dx}px`;
+            // @ts-ignore
+            boxRef.style.bottom = `${origBottom - dy}px`;
+          };
+
+          const onMouseUp = () => {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+          };
+
+          // Only add once
+          if (!(boxRef as any)._draggableAttached) {
+            boxRef.addEventListener('mousedown', onMouseDown);
+            (boxRef as any)._draggableAttached = true;
+          }
+        }}
       >
         <Flex justifyContent="flex-end">
           <IconButton
@@ -58,6 +105,7 @@ export const Debug = () => {
             </TabsTrigger>
             <TabsTrigger value="selected">Selected</TabsTrigger>
             <TabsTrigger value="drawLayer">Draw Layer</TabsTrigger>
+            <TabsTrigger value="themeLayers">Theme Layers</TabsTrigger>
           </TabsList>
           <TabsContent value="actions">
             <Actions />
@@ -67,6 +115,9 @@ export const Debug = () => {
           </TabsContent>
           <TabsContent value="drawLayer">
             <DrawLayer />
+          </TabsContent>
+          <TabsContent value="themeLayers">
+            <Layers />
           </TabsContent>
         </Tabs>
       </Box>

@@ -58,6 +58,8 @@ async function main() {
 
   rl.close();
   exec('npm run format-specific -- src/locales/**/*.json');
+
+  console.log(inputPath);
 }
 
 main();

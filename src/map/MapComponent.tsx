@@ -1,5 +1,5 @@
 import { Box, Text } from '@kvib/react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,13 +15,14 @@ import {
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
 import { mapAtom, scaleAtom } from './atoms.ts';
+import { activeThemeLayersAtom, themeLayerEffect } from './layers/atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
   useBackgoundLayers,
 } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
-import { mapLegacyThemeLayerId, useThemeLayers } from './layers/themeLayers.ts';
+import { mapLegacyThemeLayerId } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import { getScaleFromResolution } from './mapScale.ts';
@@ -35,7 +36,7 @@ import { MapContextMenu } from './menu/MapContextMenu.tsx';
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { setBackgroundLayer } = useMapSettings();
-  const { addThemeLayerToMap } = useThemeLayers();
+  const setActiveThemeLayers = useSetAtom(activeThemeLayersAtom);
   const { backgroundLayerState } = useBackgoundLayers();
   const map = useAtomValue(mapAtom);
   const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
@@ -45,10 +46,10 @@ export const MapComponent = () => {
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
   const hasProcessedUrlRef = useRef(false);
-  const hasLoadedThemeLayersRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
   const setScale = useSetAtom(scaleAtom);
   const { setTargetElement } = useMap();
+  useAtom(themeLayerEffect);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -157,33 +158,19 @@ export const MapComponent = () => {
         setUrlParameter('themeLayers', newThemeLayers.join(','));
       }
     }
+    const finalThemeLayerList = getListUrlParameter('themeLayers') || [];
+
+    setActiveThemeLayers(new Set(finalThemeLayerList as ThemeLayerName[]));
 
     setBackgroundLayer(finalLayerName);
     hasProcessedUrlRef.current = true;
   }, [
+    setActiveThemeLayers,
     setBackgroundLayer,
     map,
     configLoadable,
     backgroundLayerState,
-    addThemeLayerToMap,
   ]);
-
-  useEffect(() => {
-    if (!map) {
-      return;
-    }
-    if (hasLoadedThemeLayersRef.current) {
-      return;
-    }
-    const themeLayers = getListUrlParameter('themeLayers');
-    if (!themeLayers) {
-      return;
-    }
-    themeLayers.forEach((layerName) => {
-      addThemeLayerToMap(layerName as ThemeLayerName);
-    });
-    hasLoadedThemeLayersRef.current = true;
-  }, [map, addThemeLayerToMap]);
 
   useEffect(() => {
     if (hasLoadedDrawingRef.current) {

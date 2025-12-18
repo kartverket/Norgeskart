@@ -9,8 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
+import { activeThemeLayersAtom } from './layers/atoms';
 import { BackgroundLayerName } from './layers/backgroundLayers';
-import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders';
 import { ControlPortal } from './mapControls';
 import { scaleToResolution } from './mapScale';
 
@@ -39,13 +39,16 @@ export const mapOrientationDegreesAtom = atom<number>((get) => {
   const radians = get(mapOrientationAtom);
   return (radians * 180) / Math.PI; // Convert radians to degrees
 });
+
+export const displayMapLegendAtom = atom<boolean>(false);
+export const displayMapLegendControlAtom = atom<boolean>((get) => {
+  const displayMapLegned = get(displayMapLegendAtom);
+  const activeThemeLayers = get(activeThemeLayersAtom);
+  return !displayMapLegned && activeThemeLayers.size > 0;
+});
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
 export const magneticDeclinationAtom = atom<number>(0);
-
-export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
-  DEFAULT_BACKGROUND_LAYER,
-);
 
 export const getBackgroundLayerImageName = (
   layerName: BackgroundLayerName,

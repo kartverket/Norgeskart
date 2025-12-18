@@ -327,6 +327,9 @@
       },
       "fullscreen": {
         "label": "Bruk fullskjerm"
+      },
+      "symbols": {
+        "label": "Tegnforklaring"
       }
     }
   },
@@ -412,6 +415,10 @@
     },
     "coordinates": {
       "tooltip": "Pekerens koordinater"
+    },
+    "legend": {
+      "tooltip": "Vis symbolforklaring",
+      "label": "Tegnforklaring"
     }
   },
   "cookieDialog": {
@@ -426,6 +433,15 @@
     "settings": {
       "text": "Informasjon",
       "base": "Info"
+    }
+  },
+  "legend": {
+    "heading": {
+      "title": "Symbolforklaring",
+      "preamble": "Symbolforklaring for temakart"
+    },
+    "item": {
+      "fallbackMessage": "har ingen tegnforklaring"
     }
   }
 }

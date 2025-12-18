@@ -193,7 +193,8 @@
       "categoryId": "benchmarks",
       "groupid": 13,
       "legacyId": "1012",
-      "queryable": true
+      "queryable": true,
+      "useLegendGraphic": true
     },
     {
       "id": "primaryNetPoints",
@@ -206,7 +207,8 @@
       "categoryId": "benchmarks",
       "groupid": 13,
       "legacyId": "1013",
-      "queryable": true
+      "queryable": true,
+      "useLegendGraphic": true
     },
     {
       "id": "triangulationPoints",
@@ -219,7 +221,8 @@
       "categoryId": "benchmarks",
       "groupid": 13,
       "legacyId": "1014",
-      "queryable": true
+      "queryable": true,
+      "useLegendGraphic": true
     }
   ]
 }

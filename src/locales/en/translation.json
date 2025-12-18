@@ -261,6 +261,9 @@
       },
       "fullscreen": {
         "label": "Use fullscreen"
+      },
+      "symbols": {
+        "label": "Map legend"
       }
     }
   },
@@ -346,6 +349,10 @@
     },
     "coordinates": {
       "tooltip": "Coordinates of the mouse pointer"
+    },
+    "legend": {
+      "tooltip": "Show map legend",
+      "label": "Map legend"
     }
   },
   "cookieDialog": {
@@ -360,6 +367,15 @@
     "settings": {
       "text": "Information",
       "base": "Info"
+    }
+  },
+  "legend": {
+    "heading": {
+      "title": "Map legend",
+      "preamble": "Legend for theme layers"
+    },
+    "item": {
+      "fallbackMessage": "has no legend"
     }
   }
 }

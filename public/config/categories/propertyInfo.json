@@ -1,0 +1,66 @@
+{
+  "categories": [
+    {
+      "id": "propertyInfo",
+      "groupid": 30,
+      "name": {
+        "nb": "Eiendom",
+        "nn": "Eigedom",
+        "en": "Properties"
+      }
+    },
+    {
+      "id": "cadastralData",
+      "groupid": 31,
+      "name": {
+        "nb": "Velg matrikkeldata",
+        "nn": "Vel matrikkeldata",
+        "en": "Select cadastral data"
+      },
+      "parentId": "propertyInfo",
+      "wmsUrl": "https://testapi.norgeskart.no/v1/matrikkel/wms"
+    }
+  ],
+  "layers": [
+    {
+      "id": "addresses",
+      "name": {
+        "nb": "Adresser",
+        "nn": "Adresser",
+        "en": "Addresses"
+      },
+      "layers": "matrikkel:MATRIKKELADRESSEWFS,matrikkel:VEGADRESSEWFS",
+      "categoryId": "cadastralData",
+      "groupid": 31,
+      "legacyId": "1011",
+      "queryable": true
+    },
+    {
+      "id": "buildings",
+      "name": {
+        "nb": "Bygninger",
+        "nn": "Bygninger",
+        "en": "Buildings"
+      },
+      "layers": "matrikkel:BYGNINGWFS",
+      "categoryId": "cadastralData",
+      "groupid": 31,
+      "legacyId": "1012",
+      "queryable": true
+    },
+    {
+      "id": "borders",
+      "name": {
+        "nb": "Teiger og grenser",
+        "nn": "Teigar og grenser",
+        "en": "Plots and borders"
+      },
+      "layers": "matrikkel:TEIGGRENSEWFS,matrikkel:TEIGWFS",
+      "categoryId": "cadastralData",
+      "groupid": 31,
+      "legacyId": "1013",
+      "queryable": true,
+      "styles": ",Matrikkelnummer"
+    }
+  ]
+}
