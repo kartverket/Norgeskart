@@ -70,8 +70,15 @@ export interface TextSymbolizer {
   Halo?: Halo;
 }
 
+export interface Mark {
+  WellKnownName: string;
+  Fill?: Fill;
+  Stroke?: Stroke;
+}
+
 // Supporting types
 export interface Graphic {
+  Mark?: Mark;
   ExternalGraphic?: ExternalGraphic;
   Size?: number;
 }

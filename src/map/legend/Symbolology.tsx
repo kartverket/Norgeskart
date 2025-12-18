@@ -1,9 +1,10 @@
 import { Box, HStack, Text, useKvibContext, VStack } from '@kvib/react';
-
+import { ReactNode } from 'react';
 import {
   FeatureTypeStyle,
   Fill,
   LineSymbolizer,
+  Mark,
   NamedLayer,
   PointSymbolizer,
   PolygonSymbolizer,
@@ -74,6 +75,39 @@ const getParamsFromStroke = (stroke: Stroke) => {
   return { strokeColor, strokeWidth };
 };
 
+const SymbolLine = ({
+  text,
+  children,
+}: {
+  text?: string;
+  children: ReactNode | string;
+}) => {
+  return (
+    <HStack justify="flex-start" align="end" w={'100%'}>
+      {children}
+      <Text mr={2}>{text}</Text>
+    </HStack>
+  );
+};
+
+const MarkSymbol = ({ mark }: { mark: Mark }) => {
+  const { color } = getParamsFromFill(mark.Fill!);
+  switch (mark.WellKnownName) {
+    case 'circle':
+      return (
+        <svg width="28" height="28">
+          <circle cx="14" cy="14" r="10" fill={color} />
+        </svg>
+      );
+    default:
+      return (
+        <svg width="28" height="28">
+          <rect x="4" y="4" width="20" height="20" fill={color} />
+        </svg>
+      );
+  }
+};
+
 const PointSymbolizerPart = ({
   symbolizer,
   text,
@@ -81,8 +115,15 @@ const PointSymbolizerPart = ({
   symbolizer: PointSymbolizer;
   text?: string;
 }) => {
-  console.log(symbolizer);
-  return <Box>{text}</Box>;
+  return (
+    <SymbolLine text={text}>
+      {symbolizer.Graphic?.Mark ? (
+        <MarkSymbol mark={symbolizer.Graphic.Mark} />
+      ) : (
+        <></>
+      )}
+    </SymbolLine>
+  );
 };
 const LineSymbolizerPart = ({
   symbolizer,
@@ -103,8 +144,7 @@ const LineSymbolizerPart = ({
     width = cssParams[2];
   }
   return (
-    <HStack justify="space-between" align="end" w={'100%'}>
-      <Text mr={2}>{text}</Text>
+    <SymbolLine text={text}>
       <svg width="28" height="28">
         <polyline
           points="2,14 7,7 14,21 21,7 26,14"
@@ -113,7 +153,7 @@ const LineSymbolizerPart = ({
           strokeWidth={width}
         />
       </svg>
-    </HStack>
+    </SymbolLine>
   );
 };
 const PolygonSymbolizerPart = ({
@@ -132,8 +172,7 @@ const PolygonSymbolizerPart = ({
     ? getParamsFromStroke(stroke)
     : { strokeColor: undefined, strokeWidth: 0 };
   return (
-    <HStack justify="space-between" align="end" w={'100%'}>
-      <Text mr={2}>{text}</Text>
+    <SymbolLine text={text}>
       <Box
         height={'28px'}
         width={'28px'}
@@ -141,7 +180,7 @@ const PolygonSymbolizerPart = ({
         border={`${strokeWidth}px solid ${strokeColor}`}
         opacity={opacity}
       ></Box>
-    </HStack>
+    </SymbolLine>
   );
 };
 const TextSymbolizerPart = ({
@@ -165,8 +204,7 @@ const TextSymbolizerPart = ({
       }
     : { color: undefined };
   return (
-    <HStack justify="space-between" align="end" w={'100%'}>
-      <Text mr={2}>{text}</Text>
+    <SymbolLine text={text}>
       <Box
         color={color}
         backgroundColor={bgColor}
@@ -180,7 +218,7 @@ const TextSymbolizerPart = ({
       >
         {symbolizer.Label}
       </Box>
-    </HStack>
+    </SymbolLine>
   );
 };
 

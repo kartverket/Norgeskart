@@ -64,7 +64,6 @@ export const DynamicLegend = ({
   if (legendData === 'loading') {
     return null;
   }
-  console.count('sup');
 
   return (
     <Symbolology
