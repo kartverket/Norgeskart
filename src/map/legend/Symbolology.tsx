@@ -83,9 +83,11 @@ const SymbolLine = ({
   children: ReactNode | string;
 }) => {
   return (
-    <HStack justify="flex-start" align="end" w={'100%'}>
+    <HStack justify="flex-start" align="center" w={'100%'}>
       {children}
-      <Text mr={2}>{text}</Text>
+      <Text ml={1} fontSize="sm">
+        {text}
+      </Text>
     </HStack>
   );
 };

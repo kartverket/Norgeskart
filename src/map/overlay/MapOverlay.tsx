@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@kvib/react';
+import { Grid, GridItem, HStack, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useSearchEffects } from '../../search/atoms';
 import { InfoBox } from '../../search/infobox/InfoBox';
@@ -27,8 +27,13 @@ export const MapOverlay = () => {
   const themeLayers = useAtomValue(activeThemeLayersAtom);
   const isMobile = useIsMobileScreen();
   const isToolOpen = currentMapTool !== null;
+  const isLargeScreen = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
 
-  const shouldDisplayLegend = themeLayers.size > 0 && displayMapLegend;
+  const shouldDisplayLegend =
+    themeLayers.size > 0 && displayMapLegend && isLargeScreen;
   useFeatureInfoClick();
   useSearchEffects();
 
@@ -115,24 +120,16 @@ export const MapOverlay = () => {
           justifySelf="end"
           alignContent="end"
           gridRow={{ base: 4, md: 5, lg: 5 }}
-          gridColumn={{ base: 12, md: shouldDisplayLegend ? 10 : 12 }}
+          gridColumn={'12 / span 3'}
           mb={{ base: 3, md: 4 }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
-          <MapControlButtons />
+          <HStack alignItems={'flex-end'}>
+            <MapControlButtons />
+            {shouldDisplayLegend && <MapLegend />}
+          </HStack>
         </GridItem>
-        {shouldDisplayLegend && (
-          <GridItem
-            alignContent="end"
-            gridRow={{ base: 4, md: 5, lg: '2 / span 4' }}
-            gridColumn={{ base: '11 / span 2' }}
-            mb={{ base: 3, md: 4 }}
-            mr={{ base: 2, md: 3 }}
-          >
-            <MapLegend />
-          </GridItem>
-        )}
 
         {!isMobile && (
           <GridItem h="40px" alignContent="end" gridRow={6} colSpan={12}>

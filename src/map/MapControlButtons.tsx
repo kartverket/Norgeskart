@@ -1,6 +1,6 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
 import {
@@ -8,13 +8,12 @@ import {
   displayMapLegendControlAtom,
   mapOrientationDegreesAtom,
 } from './atoms';
-import { useThemeLayers } from './layers/themeLayers';
 import { useMapSettings } from './mapHooks';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
-  const [displayMapLegend, setDisplayMapLegend] = useAtom(displayMapLegendAtom);
+  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const {
     rotateSnappy,
@@ -24,8 +23,6 @@ export const MapControlButtons = () => {
     zoomIn,
     zoomOut,
   } = useMapSettings();
-
-  const { activeLayerSet } = useThemeLayers();
 
   const handleMapLocationClick = () => {
     if (!navigator.geolocation) return;
