@@ -1,6 +1,6 @@
 import { Text } from '@kvib/react';
 import { XMLParser } from 'fast-xml-parser';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   getEffectiveLegendUrl,
@@ -28,24 +28,29 @@ export const DynamicLegend = ({
     LayerStyleProps | null | 'loading'
   >('loading');
 
-  const fetchStyleData = useCallback(async () => {
-    const legendUrl = getEffectiveLegendUrl(config, layer.id as ThemeLayerName);
-    if (!legendUrl) return null;
-    const res = await fetch(legendUrl);
-    if (!res.ok) {
+  useEffect(() => {
+    const fetchStyleData = async () => {
+      const legendUrl = getEffectiveLegendUrl(
+        config,
+        layer.id as ThemeLayerName,
+      );
+      if (!legendUrl) return null;
+      const res = await fetch(legendUrl);
+      if (!res.ok) {
+        return null;
+      }
+      const text = await res.text();
+      const styleObject = parser.parse(text);
+      if (styleObject) {
+        return styleObject as LayerStyleProps;
+      }
       return null;
-    }
-    const text = await res.text();
-    const styleObject = parser.parse(text);
-    if (styleObject) {
-      return styleObject as LayerStyleProps;
-    }
-    return null;
-  }, [layer, config]);
+    };
+    fetchStyleData().then((r) => {
+      setLegendData(r);
+    });
+  }, [layer.id, config]);
 
-  fetchStyleData().then((r) => {
-    setLegendData(r);
-  });
   const fallback = (
     <Text>
       {layer.name[currentLang] + ' ' + t('legend.item.fallbackMessage')}
@@ -59,6 +64,7 @@ export const DynamicLegend = ({
   if (legendData === 'loading') {
     return null;
   }
+  console.count('sup');
 
   return (
     <Symbolology

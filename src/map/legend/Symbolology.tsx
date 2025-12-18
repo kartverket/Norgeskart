@@ -81,6 +81,7 @@ const PointSymbolizerPart = ({
   symbolizer: PointSymbolizer;
   text?: string;
 }) => {
+  console.log(symbolizer);
   return <Box>{text}</Box>;
 };
 const LineSymbolizerPart = ({
