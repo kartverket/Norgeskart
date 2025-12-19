@@ -50,15 +50,14 @@ export const InfoBox = () => {
   return (
     <Stack
       p={4}
-      mt="3"
+      my="3"
       mr={{ base: '3', md: '3' }}
       ml={{ base: '3', md: '0' }}
       borderRadius={'16px'}
       bg="white"
       pointerEvents={'auto'}
-      position={'relative'}
-      zIndex={1}
       overflowY={'hidden'}
+      maxHeight={'100%'}
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading size={'lg'}>{selectedResult.name}</Heading>
