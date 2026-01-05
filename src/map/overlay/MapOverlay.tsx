@@ -1,6 +1,6 @@
 import { Grid, GridItem, HStack, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { useSearchEffects } from '../../search/atoms';
+import { selectedResultAtom, useSearchEffects } from '../../search/atoms';
 import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
@@ -31,6 +31,7 @@ export const MapOverlay = () => {
     base: false,
     lg: true,
   });
+  const selectedResult = useAtomValue(selectedResultAtom);
 
   const shouldDisplayLegend =
     themeLayers.size > 0 && displayMapLegend && isLargeScreen;
@@ -69,12 +70,16 @@ export const MapOverlay = () => {
           }}
           gridRow={1}
           onClick={(e) => e.stopPropagation()}
+          display={{
+            base: selectedResult == null ? 'block' : 'none',
+            md: 'block',
+          }}
         >
           {showSearchComponent && <SearchComponent />}
         </GridItem>
         <GridItem
           gridColumn={{ base: '1 / span 12', md: '1 / span 4' }}
-          gridRow={{ base: 5, md: 1 }}
+          gridRow={{ base: 5, md: 1, lg: '1 / span 2' }}
           zIndex={1}
         >
           <MapToolCards
@@ -85,8 +90,13 @@ export const MapOverlay = () => {
           />
         </GridItem>
         <GridItem
-          gridColumn={{ base: '1 / span 12', md: '9 / span 4' }}
-          gridRow={{ base: '1 / span 4', lg: '1/span 2' }}
+          gridColumn={{
+            base: '1 / span 12',
+            md: '7 / span 6',
+            lg: '8 / span 5',
+          }}
+          gridRow={{ base: '1 / span 4', md: 1, lg: '1 / span 2' }}
+          zIndex={2}
         >
           <InfoBox />
         </GridItem>

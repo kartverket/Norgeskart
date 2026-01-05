@@ -129,7 +129,7 @@ export const MapThemes = () => {
   }, []);
 
   return (
-    <VStack gap={0} align="stretch" maxH={'400px'}>
+    <VStack gap={0} align="stretch">
       <Box marginBottom={0}>
         <Flex justifyContent="space-between" alignItems="center">
           <Text
