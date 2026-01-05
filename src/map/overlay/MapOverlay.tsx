@@ -70,7 +70,7 @@ export const MapOverlay = () => {
             md: 'block',
           }}
         >
-          {showSearchComponent && <SearchComponent />}
+          {(showSearchComponent || !isLargeScreen) && <SearchComponent />}
         </GridItem>
         <GridItem
           gridColumn={{
