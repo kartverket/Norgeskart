@@ -50,11 +50,7 @@ export const MapOverlay = () => {
         position={'absolute'}
         height={'100%'}
         width={'100%'}
-        gridTemplateColumns={{
-          base: 'repeat(12, 1fr)',
-          md: 'repeat(12, 1fr)',
-          lg: 'repeat(12, 1fr)',
-        }}
+        gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows={{
           base: 'auto 1fr auto auto',
           md: '1fr 1fr 1fr 1fr auto auto',
@@ -78,8 +74,12 @@ export const MapOverlay = () => {
           {showSearchComponent && <SearchComponent />}
         </GridItem>
         <GridItem
-          gridColumn={{ base: '1 / span 12', md: '1 / span 4' }}
-          gridRow={{ base: 5, md: 1, lg: '1 / span 2' }}
+          gridColumn={{
+            base: '1 / span 12',
+            md: '1 / span 4',
+            lg: '1 / span 4',
+          }}
+          gridRow={{ base: 5, md: '1 / span 4' }}
           zIndex={1}
         >
           <MapToolCards
@@ -95,7 +95,7 @@ export const MapOverlay = () => {
             md: '7 / span 6',
             lg: '8 / span 5',
           }}
-          gridRow={{ base: '1 / span 4', md: 1, lg: '1 / span 2' }}
+          gridRow={{ base: '1 / span 4', md: '1', lg: '1 / span 2' }}
           zIndex={2}
         >
           <InfoBox />

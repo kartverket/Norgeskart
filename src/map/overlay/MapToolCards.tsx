@@ -63,8 +63,8 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       borderRadius={'16px'}
       borderBottomLeftRadius={{ base: '0px', md: '16px' }}
       borderBottomRightRadius={{ base: '0px', md: '16px' }}
-      overflowY={'hidden'}
-      maxHeight={{ base: '50vh', md: '100%' }}
+      overflowY={'auto'}
+      maxHeight="100%"
     >
       <Flex justify="space-between" gap="2" w={'100%'}>
         <Heading fontWeight="bold" mb={{ base: '0', md: '2' }}>
