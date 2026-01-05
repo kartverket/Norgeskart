@@ -52,9 +52,8 @@ export const MapOverlay = () => {
         width={'100%'}
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows={{
-          base: 'auto 1fr auto auto',
-          md: '1fr 1fr 1fr 1fr auto auto',
-          lg: '1fr 1fr auto',
+          base: 'repeat(4, 1fr)',
+          md: 'repeat(4, 1fr)  120px 40px',
         }}
         pointerEvents="none"
       >
@@ -64,7 +63,7 @@ export const MapOverlay = () => {
             md: '1 / span 6',
             lg: '1 / span 4',
           }}
-          gridRow={1}
+          gridRow={'1 / span 3'}
           onClick={(e) => e.stopPropagation()}
           display={{
             base: selectedResult == null ? 'block' : 'none',
@@ -80,7 +79,7 @@ export const MapOverlay = () => {
             lg: '1 / span 4',
             xl: '1 / span 3',
           }}
-          gridRow={{ base: 5, md: '1 / span 4' }}
+          gridRow={{ base: '4 / span 2', md: '1 / span 5' }}
           zIndex={1}
         >
           <MapToolCards
@@ -97,7 +96,7 @@ export const MapOverlay = () => {
             lg: '8 / span 5',
             xl: '9 / span 4',
           }}
-          gridRow={{ base: '1 / span 4', md: '1', lg: '1 / span 2' }}
+          gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 2' }}
           zIndex={2}
         >
           <InfoBox />
@@ -105,7 +104,7 @@ export const MapOverlay = () => {
 
         <GridItem
           gridColumn={{ base: '1 / span 3' }}
-          gridRow={{ base: 4, md: 5, lg: 5 }}
+          gridRow={{ base: 4, md: 5 }}
           alignContent={{ base: 'end', md: 'end' }}
           mb={{ base: 3, md: 4 }}
           ml={{ base: 2, md: 3 }}
@@ -120,7 +119,7 @@ export const MapOverlay = () => {
             md: '2 / span 10',
             lg: '2 / span 9',
           }}
-          gridRow="5"
+          gridRow={5}
           alignContent={'end'}
           justifySelf={{ md: 'center' }}
           mb={{ base: 0, md: 4 }}
@@ -131,7 +130,7 @@ export const MapOverlay = () => {
         <GridItem
           justifySelf="end"
           alignContent="end"
-          gridRow={{ base: 4, md: 5, lg: 5 }}
+          gridRow={{ base: 4, md: '4 / span 2' }}
           gridColumn={'12 / span 3'}
           mb={{ base: 3, md: 4 }}
           mr={{ base: 2, md: 3 }}
@@ -144,7 +143,13 @@ export const MapOverlay = () => {
         </GridItem>
 
         {!isMobile && (
-          <GridItem h="40px" alignContent="end" gridRow={6} colSpan={12}>
+          <GridItem
+            h="40px"
+            alignContent="end"
+            gridRow={{ base: 5, md: 6 }}
+            colSpan={12}
+            justifyContent={'end'}
+          >
             <Toolbar />
           </GridItem>
         )}
