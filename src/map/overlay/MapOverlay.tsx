@@ -130,7 +130,7 @@ export const MapOverlay = () => {
         <GridItem
           justifySelf="end"
           alignContent="end"
-          gridRow={{ base: 4, md: '4 / span 2' }}
+          gridRow={{ base: 4, md: '3 / span 3' }}
           gridColumn={'12 / span 3'}
           mb={{ base: 3, md: 4 }}
           mr={{ base: 2, md: 3 }}
@@ -146,7 +146,7 @@ export const MapOverlay = () => {
           <GridItem
             h="40px"
             alignContent="end"
-            gridRow={{ base: 5, md: 6 }}
+            gridRow={6}
             colSpan={12}
             justifyContent={'end'}
           >
