@@ -76,8 +76,9 @@ export const MapOverlay = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '1 / span 4',
+            md: '1 / span 6',
             lg: '1 / span 4',
+            xl: '1 / span 3',
           }}
           gridRow={{ base: 5, md: '1 / span 4' }}
           zIndex={1}
@@ -94,6 +95,7 @@ export const MapOverlay = () => {
             base: '1 / span 12',
             md: '7 / span 6',
             lg: '8 / span 5',
+            xl: '9 / span 4',
           }}
           gridRow={{ base: '1 / span 4', md: '1', lg: '1 / span 2' }}
           zIndex={2}
