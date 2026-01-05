@@ -80,7 +80,7 @@ export type PlaceNameDetails = {
 
 export class Place {
   counties: County[];
-  municipalities: Municipality[];
+  municipalities?: Municipality[];
   placeType: string;
   placeNumber: number;
   name: string;
