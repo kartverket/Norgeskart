@@ -82,7 +82,10 @@ export const MapControlButtons = () => {
         icon="navigation"
         onClick={() => setMapAngle(0)}
         label={t('map.controls.orientation.label')}
-        style={{ transform: `rotate(${mapOrientation}deg)` }}
+        style={{
+          transform: `rotate(${mapOrientation}deg)`,
+          transition: 'none',
+        }}
         displayTooltip
         variant="tertiary"
       />
