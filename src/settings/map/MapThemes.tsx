@@ -9,6 +9,7 @@ import {
   Heading,
   Switch,
   Text,
+  VStack,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
@@ -128,8 +129,8 @@ export const MapThemes = () => {
   }, []);
 
   return (
-    <>
-      <Box marginBottom={{ base: '0', md: '4' }}>
+    <VStack gap={0} align="stretch">
+      <Box marginBottom={0}>
         <Flex justifyContent="space-between" alignItems="center">
           <Text
             fontSize="sm"
@@ -237,6 +238,6 @@ export const MapThemes = () => {
           );
         })}
       </Accordion>
-    </>
+    </VStack>
   );
 };

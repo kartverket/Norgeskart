@@ -50,15 +50,14 @@ export const InfoBox = () => {
   return (
     <Stack
       p={4}
-      mt="3"
-      mr={{ base: '3', md: '3' }}
-      ml={{ base: '3', md: '0' }}
+      my="3"
+      mr="3"
+      ml={{ base: '3', md: '3' }}
       borderRadius={'16px'}
       bg="white"
       pointerEvents={'auto'}
-      position={'relative'}
-      zIndex={1}
       overflowY={'hidden'}
+      maxHeight={'100%'}
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading size={'lg'}>{selectedResult.name}</Heading>
@@ -70,7 +69,7 @@ export const InfoBox = () => {
         />
       </Flex>
       <InfoBoxPreamble result={selectedResult} x={x} y={y} />
-      <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
+      <Box overflowY="auto" overflowX="auto" maxHeight="80%">
         <AccordionRoot
           collapsible
           multiple

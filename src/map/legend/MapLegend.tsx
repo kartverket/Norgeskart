@@ -21,6 +21,8 @@ export const MapLegend = () => {
       p={4}
       borderRadius="16px"
       pointerEvents="auto"
+      maxH={'100%'}
+      overflowY={'hidden'}
     >
       <HStack justify={'space-between'}>
         <Heading size={'sm'}>{t('legend.heading.title')}</Heading>

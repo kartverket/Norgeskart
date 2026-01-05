@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, IconButton, VStack } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
-import { MapSettings } from '../../settings/map/MapSettings';
+import { MapThemes } from '../../settings/map/MapThemes';
 import { InfoDrawer } from '../../sidePanel/InfoDrawer';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
 import { MapTool } from './MapOverlay';
@@ -24,7 +24,7 @@ export const MapToolCards = ({
   if (currentMapTool === 'layers') {
     return (
       <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
-        <MapSettings />
+        <MapThemes />
       </MapToolCard>
     );
   }
@@ -63,7 +63,8 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       borderRadius={'16px'}
       borderBottomLeftRadius={{ base: '0px', md: '16px' }}
       borderBottomRightRadius={{ base: '0px', md: '16px' }}
-      maxHeight={{ base: '65vh', md: '55vh' }}
+      overflowY={'hidden'}
+      maxHeight={{ base: '50vh', md: '100%' }}
     >
       <Flex justify="space-between" gap="2" w={'100%'}>
         <Heading fontWeight="bold" mb={{ base: '0', md: '2' }}>
@@ -80,7 +81,7 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
           size="sm"
         />
       </Flex>
-      <Box overflowY="auto" height={'100%'} w={'100%'}>
+      <Box w={'100%'} overflowY={'auto'} maxHeight={'90%'}>
         {children}
       </Box>
     </VStack>
