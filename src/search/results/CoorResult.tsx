@@ -1,36 +1,26 @@
 import { List } from '@kvib/react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMapSettings } from '../../map/mapHooks';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
-import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers';
 import { SearchResultLine } from './SearchResultLine';
 
 interface CoordinateResultsProps {
   coordinateResult: SearchResult | null;
-  setSelectedResult: (result: SearchResult | null) => void;
-  hoveredResult: SearchResult | null;
+  setSelectedResult: (result: SearchResult) => void;
+  handleHover: (res: SearchResult) => void;
   setHoveredResult: (result: SearchResult | null) => void;
 }
 
 export const CoordinateResults = ({
   coordinateResult,
   setSelectedResult,
-  hoveredResult,
+  handleHover,
   setHoveredResult,
 }: CoordinateResultsProps) => {
   const { t } = useTranslation();
   const { setMapLocation } = useMapSettings();
-
-  const allResults = useMemo<SearchResult[]>(
-    () => (coordinateResult ? [coordinateResult] : []),
-    [coordinateResult],
-  );
-
-  const handleHover = (res: SearchResult) => {
-    setHoveredResult(res);
-  };
 
   const handleSearchClick = useCallback(
     (res: SearchResult) => {
@@ -41,28 +31,12 @@ export const CoordinateResults = ({
     [setSelectedResult, setMapLocation],
   );
 
-  useEffect(() => {
-    console.log('Updating coordinate markers');
-    updateSearchMarkers(
-      allResults,
-      hoveredResult,
-      coordinateResult,
-      handleSearchClick,
-    );
-  }, [allResults, hoveredResult, coordinateResult, handleSearchClick]);
-
   if (!coordinateResult || coordinateResult.type !== 'Coordinate') {
     return null;
   }
 
   return (
-    <List
-      backgroundColor="white"
-      mt="5px"
-      borderRadius={10}
-      padding={2}
-      maxWidth={'450px'}
-    >
+    <List>
       <SearchResultLine
         key="coordinate-result"
         heading={coordinateResult.coordinate.formattedString}
