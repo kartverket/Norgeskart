@@ -81,7 +81,7 @@ export const MapOverlay = () => {
             lg: '1 / span 4',
             xl: '1 / span 3',
           }}
-          gridRow={{ base: '4 / span 2', md: '1 / span 5' }}
+          gridRow={{ base: '4 / span 2', md: '1 / span 4' }}
           zIndex={1}
         >
           <MapToolCards
