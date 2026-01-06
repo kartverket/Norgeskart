@@ -1,5 +1,4 @@
 import { atom } from 'jotai';
-import { loadable } from 'jotai/utils';
 import { dekningConfig } from '../map/layers/config/dekning';
 import { factsConfig } from '../map/layers/config/facts';
 import { fastmerkerLayerConfig } from '../map/layers/config/fastmerker';
@@ -79,7 +78,7 @@ export interface ThemeLayerConfig {
   layers: ThemeLayerDefinition[];
 }
 
-const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
+export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
   const mergedConfig: ThemeLayerConfig = {
     categories: [],
     layers: [],
@@ -101,8 +100,6 @@ const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
 
   return mergedConfig;
 });
-
-export const themeLayerConfigLoadableAtom = loadable(themeLayerConfigAtom);
 
 export const getThemeLayerById = (
   config: ThemeLayerConfig,

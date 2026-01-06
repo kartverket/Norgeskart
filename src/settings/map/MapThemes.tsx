@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import {
   getMainCategories,
   getSubcategories,
-  themeLayerConfigLoadableAtom,
+  themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
 import { MAX_THEME_LAYERS, useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
@@ -40,7 +40,7 @@ export const MapThemes = () => {
   const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
     useThemeLayers();
   const { t, i18n } = useTranslation();
-  const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
+  const themeConfig = useAtomValue(themeLayerConfigAtom);
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
 
@@ -54,21 +54,16 @@ export const MapThemes = () => {
   );
 
   const configThemeLayers = useMemo((): Theme[] => {
-    if (configLoadable.state !== 'hasData') {
-      return [];
-    }
-
-    const config = configLoadable.data;
     const currentLang = i18n.language as 'nb' | 'nn' | 'en';
-    const mainCategories = getMainCategories(config);
+    const mainCategories = getMainCategories(themeConfig);
     const result: Theme[] = [];
 
     mainCategories.forEach((mainCategory) => {
-      const subcategories = getSubcategories(config, mainCategory.id);
+      const subcategories = getSubcategories(themeConfig, mainCategory.id);
 
       if (subcategories.length > 0) {
         const subThemes: SubTheme[] = subcategories.map((subCategory) => {
-          const layers = config.layers.filter(
+          const layers = themeConfig.layers.filter(
             (layer) => layer.categoryId === subCategory.id,
           );
           return {
@@ -87,7 +82,7 @@ export const MapThemes = () => {
           subThemes,
         });
       } else {
-        const layers = config.layers.filter(
+        const layers = themeConfig.layers.filter(
           (layer) => layer.categoryId === mainCategory.id,
         );
         result.push({
@@ -108,7 +103,7 @@ export const MapThemes = () => {
     });
 
     return result;
-  }, [configLoadable, i18n.language]);
+  }, [themeConfig, i18n.language]);
 
   const getActiveCategoryCount = useCallback(
     (theme: Theme): number => {

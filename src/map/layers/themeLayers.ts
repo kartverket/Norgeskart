@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue } from 'jotai';
-import { themeLayerConfigLoadableAtom } from '../../api/themeLayerConfigApi';
+import { themeLayerConfigAtom } from '../../api/themeLayerConfigApi';
 import { activeThemeLayersAtom } from './atoms';
 import { ThemeLayerName } from './themeWMS';
 
@@ -7,32 +7,31 @@ export const MAX_THEME_LAYERS = 10; // Maximum number of theme layers allowed on
 
 export const mapLegacyThemeLayerId = (
   legacyId: string,
-  configLoadable?: ReturnType<
-    typeof useAtomValue<typeof themeLayerConfigLoadableAtom>
-  >,
+  configLoadable?: ReturnType<typeof useAtomValue<typeof themeLayerConfigAtom>>,
   projectName?: string,
 ): string | undefined => {
-  if (configLoadable?.state === 'hasData') {
-    const normalizedProject = projectName?.toLowerCase();
+  if (!configLoadable) {
+    return undefined;
+  }
+  const normalizedProject = projectName?.toLowerCase();
 
-    const layer = configLoadable.data.layers.find((l) => {
-      if (l.legacyId !== legacyId) return false;
+  const layer = configLoadable.layers.find((l) => {
+    if (l.legacyId !== legacyId) return false;
 
-      if (!normalizedProject) return true;
+    if (!normalizedProject) return true;
 
-      const category = configLoadable.data.categories.find(
-        (cat) => cat.id === l.categoryId,
-      );
+    const category = configLoadable.categories.find(
+      (cat) => cat.id === l.categoryId,
+    );
 
-      return (
-        category?.id === normalizedProject ||
-        category?.parentId === normalizedProject
-      );
-    });
+    return (
+      category?.id === normalizedProject ||
+      category?.parentId === normalizedProject
+    );
+  });
 
-    if (layer) {
-      return layer.id;
-    }
+  if (layer) {
+    return layer.id;
   }
 
   const legacyMap: Record<string, string> = {

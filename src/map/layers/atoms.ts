@@ -2,7 +2,7 @@ import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import {
   getThemeLayerById,
-  themeLayerConfigLoadableAtom,
+  themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
 import {
   addToUrlListParameter,
@@ -27,11 +27,7 @@ export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(
 
 export const themeLayerEffect = atomEffect((get) => {
   const themeLayers = get(activeThemeLayersAtom);
-  const configLoadable = get(themeLayerConfigLoadableAtom);
-  if (configLoadable.state !== 'hasData') {
-    console.warn('Theme layer config not loaded yet');
-    return;
-  }
+  const themeLayerConfig = get(themeLayerConfigAtom);
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
@@ -63,7 +59,7 @@ export const themeLayerEffect = atomEffect((get) => {
       return;
     }
 
-    const layerDef = getThemeLayerById(configLoadable.data, layerName);
+    const layerDef = getThemeLayerById(themeLayerConfig, layerName);
 
     if (!layerDef) {
       console.warn(`Layer definition not found for layer name: ${layerName}`);
@@ -71,7 +67,7 @@ export const themeLayerEffect = atomEffect((get) => {
     }
 
     const layerToAdd = createThemeLayerFromConfig(
-      configLoadable.data,
+      themeLayerConfig,
       layerDef,
       mapProjection,
     );

@@ -9,7 +9,7 @@ import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
   getThemeLayerById,
-  themeLayerConfigLoadableAtom,
+  themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { ThemeLayerName } from '../layers/themeWMS';
@@ -22,14 +22,10 @@ export const SingleLayerLegend = ({
   layerName: ThemeLayerName;
 }) => {
   const { t, i18n } = useTranslation();
-  const config = useAtomValue(themeLayerConfigLoadableAtom);
+  const config = useAtomValue(themeLayerConfigAtom);
   const currentLang = i18n.language as 'nb' | 'nn' | 'en';
 
-  if (config.state !== 'hasData') {
-    return null;
-  }
-
-  const layer = getThemeLayerById(config.data, layerName);
+  const layer = getThemeLayerById(config, layerName);
   if (!layer) {
     return null;
   }
@@ -48,9 +44,9 @@ export const SingleLayerLegend = ({
         </AccordionItemTrigger>
         <AccordionItemContent>
           {layer.useLegendGraphic ? (
-            <ImageLegend config={config.data} layer={layer} />
+            <ImageLegend config={config} layer={layer} />
           ) : (
-            <DynamicLegend config={config.data} layer={layer} />
+            <DynamicLegend config={config} layer={layer} />
           )}
         </AccordionItemContent>
       </AccordionItem>

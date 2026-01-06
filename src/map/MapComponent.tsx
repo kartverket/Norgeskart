@@ -4,7 +4,7 @@ import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures } from '../api/nkApiClient.ts';
-import { themeLayerConfigLoadableAtom } from '../api/themeLayerConfigApi.ts';
+import { themeLayerConfigAtom } from '../api/themeLayerConfigApi.ts';
 import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import {
@@ -39,7 +39,7 @@ export const MapComponent = () => {
   const setActiveThemeLayers = useSetAtom(activeThemeLayersAtom);
   const { backgroundLayerState } = useBackgoundLayers();
   const map = useAtomValue(mapAtom);
-  const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
+  const themeLayerConfig = useAtomValue(themeLayerConfigAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures } = useDrawSettings();
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
@@ -77,15 +77,6 @@ export const MapComponent = () => {
    */
   useEffect(() => {
     if (!map) {
-      return;
-    }
-
-    if (configLoadable.state === 'hasError') {
-      hasProcessedUrlRef.current = true;
-      return;
-    }
-
-    if (configLoadable.state === 'loading') {
       return;
     }
 
@@ -146,7 +137,7 @@ export const MapComponent = () => {
       legacyThemeLayerIds.forEach((legacyId) => {
         const modernId = mapLegacyThemeLayerId(
           legacyId,
-          configLoadable,
+          themeLayerConfig,
           projectParam,
         );
         if (modernId && !newThemeLayers.includes(modernId)) {
@@ -168,7 +159,7 @@ export const MapComponent = () => {
     setActiveThemeLayers,
     setBackgroundLayer,
     map,
-    configLoadable,
+    themeLayerConfig,
     backgroundLayerState,
   ]);
 
