@@ -88,7 +88,8 @@ export const SearchResults = ({
       p={4}
       bg="white"
       borderRadius={'16px'}
-      maxHeight="30vh"
+      maxH={'100%'}
+      overflowY={'auto'}
       display={'flex'}
       maxWidth={'450px'}
     >

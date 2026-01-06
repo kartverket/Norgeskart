@@ -50,9 +50,8 @@ export const InfoBox = () => {
   return (
     <Stack
       p={4}
-      my="3"
-      mr="3"
-      ml={{ base: '3', md: '3' }}
+      m="1"
+      ml={3}
       borderRadius={'16px'}
       bg="white"
       pointerEvents={'auto'}
@@ -60,10 +59,14 @@ export const InfoBox = () => {
       maxHeight={'100%'}
     >
       <Flex justifyContent={'space-between'} alignItems="center">
-        <Heading size={'lg'}>{selectedResult.name}</Heading>
+        <Heading fontWeight="bold" size={'lg'}>
+          {selectedResult.name}
+        </Heading>
         <IconButton
           onClick={onClose}
           icon={'close'}
+          colorPalette="red"
+          size={'sm'}
           variant="ghost"
           alignSelf={'flex-end'}
         />

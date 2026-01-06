@@ -193,6 +193,8 @@ export const SearchComponent = () => {
       pointerEvents={'auto'}
       px={3}
       pt={3}
+      maxH={'100%'}
+      overflowY={'auto'}
     >
       {/* TOPP: kart-flis + søkefelt */}
       <Box backgroundColor="#FFFF" p={2} borderRadius={10} maxWidth="450px">

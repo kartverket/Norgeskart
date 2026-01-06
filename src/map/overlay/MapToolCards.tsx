@@ -52,22 +52,21 @@ interface MapToolCardProps {
 const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
     <VStack
-      width={{ base: '100%', md: '450px' }}
+      width="100%"
       pointerEvents="auto"
       bg="#FFFF"
       shadow="lg"
-      borderRight="1px solid rgba(0,0,0,0.1)"
-      px={8}
-      py={4}
-      m={{ base: 0, md: 1, lg: 4 }}
+      p={4}
+      m={{ base: 0, md: 1 }}
+      mr={{ base: 0, md: 3 }}
       borderRadius={'16px'}
       borderBottomLeftRadius={{ base: '0px', md: '16px' }}
       borderBottomRightRadius={{ base: '0px', md: '16px' }}
-      overflowY={'hidden'}
-      maxHeight={{ base: '50vh', md: '100%' }}
+      overflowY={'auto'}
+      maxHeight="100%"
     >
       <Flex justify="space-between" gap="2" w={'100%'}>
-        <Heading fontWeight="bold" mb={{ base: '0', md: '2' }}>
+        <Heading fontWeight="bold" mb={{ base: '0', md: '2' }} size={'lg'}>
           {label}
         </Heading>
         <IconButton
