@@ -68,9 +68,8 @@ export const MapComponent = () => {
    *
    * Timing is critical:
    * 1. Hash transition must happen BEFORE processing (enables proper URL operations)
-   * 2. Config must be loaded (needed for legacy ID mapping)
-   * 3. Background layers must be available (needed for layer activation)
-   * 4. Process only once per session (prevents re-running on URL updates)
+   * 2. Background layers must be available (needed for layer activation)
+   * 3. Process only once per session (prevents re-running on URL updates)
    *
    * The legacy 'layers' param contains both background (1001-1010) and theme (>1010) IDs.
    * The 'project' param filters which theme layers are valid for the current category.
