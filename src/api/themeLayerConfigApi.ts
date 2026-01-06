@@ -1,5 +1,12 @@
 import { atom } from 'jotai';
 import { loadable } from 'jotai/utils';
+import { dekningConfig } from '../map/layers/config/dekning';
+import { factsConfig } from '../map/layers/config/facts';
+import { fastmerkerLayerConfig } from '../map/layers/config/fastmerker';
+import { outdoorRecreationLayerConfig } from '../map/layers/config/outdoorRecreation';
+import { placeNamesConfig } from '../map/layers/config/placeNames';
+import { propertyInfoConfig } from '../map/layers/config/propertyInfo';
+import { tilgjengelighetConfig } from '../map/layers/config/tilgjengelighet';
 import { ThemeLayerName } from '../map/layers/themeWMS';
 
 export interface FieldConfig {
@@ -72,34 +79,20 @@ export interface ThemeLayerConfig {
   layers: ThemeLayerDefinition[];
 }
 
-const CATEGORY_FILES = [
-  'propertyInfo',
-  'placeNames',
-  'outdoorRecreation',
-  'facts',
-  'tilgjengelighet',
-  'fastmerker',
-  //'nrl',
-  'dekning',
-];
-
-const themeLayerConfigAtom = atom<Promise<ThemeLayerConfig>>(async () => {
-  const configPromises = CATEGORY_FILES.map(async (categoryName) => {
-    const response = await fetch(`/config/categories/${categoryName}.json`);
-    if (!response.ok) {
-      throw new Error(
-        `Failed to load category config ${categoryName}: ${response.statusText}`,
-      );
-    }
-    return response.json() as Promise<ThemeLayerConfig>;
-  });
-
-  const configs = await Promise.all(configPromises);
-
+const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
   const mergedConfig: ThemeLayerConfig = {
     categories: [],
     layers: [],
   };
+  const configs: ThemeLayerConfig[] = [
+    propertyInfoConfig,
+    placeNamesConfig,
+    outdoorRecreationLayerConfig,
+    factsConfig,
+    tilgjengelighetConfig,
+    fastmerkerLayerConfig,
+    dekningConfig,
+  ];
 
   for (const config of configs) {
     mergedConfig.categories.push(...config.categories);
