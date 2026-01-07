@@ -95,6 +95,7 @@ export const MapComponent = () => {
     let legacyThemeLayerIds: string[] = [];
 
     if (legacyLayerParam) {
+      console.log('hello legacy');
       const layerIds = legacyLayerParam
         .split(',')
         .map((s) => s.trim())
@@ -104,9 +105,12 @@ export const MapComponent = () => {
         (id) => mapLegacyBackgroundLayerId(id) !== null,
       );
 
+      console.log(backgroundLayerId);
+
       const themeLayerIds = layerIds.filter(
         (id) => id !== backgroundLayerId && parseInt(id, 10) > 1010,
       );
+      console.log(themeLayerIds);
 
       if (backgroundLayerId) {
         layerNameFromUrl = backgroundLayerId;
@@ -133,7 +137,10 @@ export const MapComponent = () => {
       const currentThemeLayers = getListUrlParameter('themeLayers') || [];
       const newThemeLayers = [...currentThemeLayers];
 
+      console.log(projectParam);
+
       legacyThemeLayerIds.forEach((legacyId) => {
+        console.log(legacyId);
         const modernId = mapLegacyThemeLayerId(
           legacyId,
           themeLayerConfig,
@@ -143,6 +150,8 @@ export const MapComponent = () => {
           newThemeLayers.push(modernId);
         }
       });
+
+      console.log(newThemeLayers);
 
       if (newThemeLayers.length > currentThemeLayers.length) {
         setUrlParameter('themeLayers', newThemeLayers.join(','));

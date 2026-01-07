@@ -5,6 +5,38 @@ import { ThemeLayerName } from './themeWMS';
 
 export const MAX_THEME_LAYERS = 10; // Maximum number of theme layers allowed on the map, what is a good number here?
 
+const isProjectNameAndCategoryIdMatch = (
+  projectName: string | undefined,
+  layerCategoryId: string | undefined,
+): boolean => {
+  console.log(projectName);
+  if (!projectName) {
+    return true;
+  }
+  if (!layerCategoryId) {
+    return false;
+  }
+
+  console.log(layerCategoryId);
+
+  const normalizedProjectName = projectName.toLocaleLowerCase().trim();
+  switch (normalizedProjectName) {
+    case 'norgeskart':
+      return ['facts', 'outdoorRecreation'].includes(layerCategoryId);
+    case 'seeiendom':
+      return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
+    case 'ssr':
+      return ['placeNames', 'historicalPlaceNames'].includes(layerCategoryId);
+    case 'tilgjengelighet':
+      return ['tilgjengelighet'].includes(layerCategoryId);
+    case 'fastmerker':
+      return ['fastmerker', 'benchmarks'].includes(layerCategoryId);
+    case 'dekning':
+      return ['dekning'].includes(layerCategoryId);
+  }
+  return false;
+};
+
 export const mapLegacyThemeLayerId = (
   legacyId: string,
   configLoadable?: ReturnType<typeof useAtomValue<typeof themeLayerConfigAtom>>,
@@ -13,20 +45,22 @@ export const mapLegacyThemeLayerId = (
   if (!configLoadable) {
     return undefined;
   }
-  const normalizedProject = projectName?.toLowerCase();
 
   const layer = configLoadable.layers.find((l) => {
     if (l.legacyId !== legacyId) return false;
+    console.log(l);
 
-    if (!normalizedProject) return true;
-
-    const category = configLoadable.categories.find(
+    const layerCategory = configLoadable.categories.find(
       (cat) => cat.id === l.categoryId,
     );
+    console.log(layerCategory);
 
     return (
-      category?.id === normalizedProject ||
-      category?.parentId === normalizedProject
+      isProjectNameAndCategoryIdMatch(projectName, layerCategory?.id) ||
+      isProjectNameAndCategoryIdMatch(
+        projectName,
+        layerCategory?.parentId || '',
+      )
     );
   });
 

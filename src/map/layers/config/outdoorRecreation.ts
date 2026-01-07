@@ -37,7 +37,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'Ruteinfopunkt',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '5.Fotrute',
+      legacyId: '1012',
       queryable: true,
       useLegendGraphic: true,
     },

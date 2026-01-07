@@ -24,6 +24,7 @@ export const factsConfig: ThemeLayerConfig = {
       layers: 'Markagrensen',
       categoryId: 'facts',
       groupid: 3,
+      legacyId: '1026',
       queryable: false,
     },
   ],
