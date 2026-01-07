@@ -14,11 +14,20 @@ const env = getEnv();
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${query}&treffPerSide=100&fuzzy=true`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av adresser');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(
+      `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`,
+    );
+    if (!res.ok) {
+      console.warn('Failed to fetch addresses:', res.status, res.statusText);
+      return { adresser: [], metadata: { side: 1, totaltAntallTreff: 0, treffPerSide: 100, viserFra: 0, viserTil: 0, sokeStreng: query, utkoordsys: 4258 } };
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching addresses:', error);
+    return { adresser: [], metadata: { side: 1, totaltAntallTreff: 0, treffPerSide: 100, viserFra: 0, viserTil: 0, sokeStreng: query, utkoordsys: 4258 } };
+  }
 };
 
 export const getAdressesByLocation = async (
@@ -38,11 +47,20 @@ export const getPlaceNames = async (
   query: string,
   page: number,
 ): Promise<PlaceNameApiResponse> => {
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${query}*&treffPerSide=15&side=${page}`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(
+      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*&treffPerSide=15&side=${page}`,
+    );
+    if (!res.ok) {
+      console.warn('Failed to fetch place names:', res.status, res.statusText);
+      return { navn: [], metadata: { side: page, totaltAntallTreff: 0, treffPerSide: 15, viserFra: 0, viserTil: 0, sokeStreng: query, utkoordsys: 25833 } };
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching place names:', error);
+    return { navn: [], metadata: { side: page, totaltAntallTreff: 0, treffPerSide: 15, viserFra: 0, viserTil: 0, sokeStreng: query, utkoordsys: 25833 } };
+  }
 };
 
 export const getPlaceNamesByLocation = async (
