@@ -190,8 +190,8 @@ export const MapComponent = () => {
   useEffect(() => {
     if (!map) return;
 
-    const view = map.getView();
     const updateScale = () => {
+      const view = map.getView();
       const resolution = view.getResolution();
 
       if (resolution) {
