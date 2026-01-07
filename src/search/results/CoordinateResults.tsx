@@ -42,7 +42,6 @@ export const CoordinateResults = ({
   );
 
   useEffect(() => {
-    console.log('Updating coordinate markers');
     updateSearchMarkers(
       allResults,
       hoveredResult,

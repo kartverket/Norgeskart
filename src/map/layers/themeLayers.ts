@@ -9,15 +9,12 @@ const isProjectNameAndCategoryIdMatch = (
   projectName: string | undefined,
   layerCategoryId: string | undefined,
 ): boolean => {
-  console.log(projectName);
   if (!projectName) {
     return true;
   }
   if (!layerCategoryId) {
     return false;
   }
-
-  console.log(layerCategoryId);
 
   const normalizedProjectName = projectName.toLocaleLowerCase().trim();
   switch (normalizedProjectName) {
@@ -48,12 +45,10 @@ export const mapLegacyThemeLayerId = (
 
   const layer = configLoadable.layers.find((l) => {
     if (l.legacyId !== legacyId) return false;
-    console.log(l);
 
     const layerCategory = configLoadable.categories.find(
       (cat) => cat.id === l.categoryId,
     );
-    console.log(layerCategory);
 
     return (
       isProjectNameAndCategoryIdMatch(projectName, layerCategory?.id) ||
