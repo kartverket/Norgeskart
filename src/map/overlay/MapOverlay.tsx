@@ -1,6 +1,7 @@
 import { Grid, GridItem, HStack, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { selectedResultAtom, useSearchEffects } from '../../search/atoms';
+import { useMapClickSearch } from '../../search/hooks';
 import { InfoBox } from '../../search/infobox/InfoBox';
 import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
@@ -37,6 +38,7 @@ export const MapOverlay = () => {
     themeLayers.size > 0 && displayMapLegend && isLargeScreen;
   useFeatureInfoClick();
   useSearchEffects();
+  useMapClickSearch();
 
   return (
     <ErrorBoundary
@@ -79,7 +81,7 @@ export const MapOverlay = () => {
             lg: '1 / span 4',
             xl: '1 / span 3',
           }}
-          gridRow={{ base: '4 / span 2', md: '1 / span 5' }}
+          gridRow={{ base: '4 / span 2', md: '1 / span 4' }}
           zIndex={1}
         >
           <MapToolCards
