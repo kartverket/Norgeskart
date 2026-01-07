@@ -1009,7 +1009,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       layers: 'toalett',
       categoryId: 'accessibilityShared',
       groupid: 10,
-      legacyId: '1043',
+      legacyId: '1055',
       queryable: true,
     },
     {
@@ -1022,7 +1022,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       layers: 'sittegruppebenk',
       categoryId: 'accessibilityShared',
       groupid: 10,
-      legacyId: '1044',
+      legacyId: '1056',
       queryable: true,
     },
   ],
