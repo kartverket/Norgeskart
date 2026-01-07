@@ -1,6 +1,9 @@
 import {
   Box,
   Flex,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   Icon,
   IconButton,
   Image,
@@ -63,10 +66,6 @@ export const SearchComponent = () => {
     setShowBackgroundSettings(false);
   };
 
-  const toggleBackgroundSettings = () => {
-    setShowBackgroundSettings((prev) => !prev);
-  };
-
   return (
     <Flex
       flexDir="column"
@@ -82,23 +81,40 @@ export const SearchComponent = () => {
       <Box backgroundColor="#FFFF" p={2} borderRadius={10} maxWidth="450px">
         <Flex alignItems="center" gap={2}>
           {/* Kart-flis til venstre */}
-          <Box
-            width="46px"
-            height="44px"
-            borderRadius={8}
-            overflow="hidden"
-            cursor="pointer"
-            onClick={toggleBackgroundSettings}
-            boxShadow="md"
+          <HoverCard
+            openDelay={100}
+            closeDelay={500}
+            open={showBackgroundSettings}
+            onOpenChange={(e) => {
+              setShowBackgroundSettings(e.open);
+            }}
+            positioning={{ offset: { mainAxis: 10 } }}
           >
-            <Image
-              src={backgroundImageUrl}
-              alt="Velg bakgrunnskart"
-              width="100%"
-              height="100%"
-              objectFit="cover"
-            />
-          </Box>
+            <HoverCardTrigger>
+              <Box
+                width="46px"
+                height="44px"
+                borderRadius={8}
+                overflow="hidden"
+                cursor="pointer"
+                onClick={() => setShowBackgroundSettings(true)}
+                boxShadow="md"
+              >
+                <Image
+                  src={backgroundImageUrl}
+                  alt="Velg bakgrunnskart"
+                  width="100%"
+                  height="100%"
+                  objectFit="cover"
+                />
+              </Box>
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <BackgroundLayerSettings
+                onSelectComplete={() => setShowBackgroundSettings(false)}
+              />
+            </HoverCardContent>
+          </HoverCard>
 
           <Box position="relative" width="100%">
             <Search
@@ -121,22 +137,11 @@ export const SearchComponent = () => {
           </Box>
         </Flex>
       </Box>
-      {showBackgroundSettings ? (
-        <Box
-          bg="white"
-          borderRadius="md"
-          boxShadow="md"
-          maxWidth="450px"
-          py={2}
-        >
-          <BackgroundLayerSettings />
-        </Box>
-      ) : (
-        <SearchResults
-          hoveredResult={hoveredResult}
-          setHoveredResult={setHoveredResult}
-        />
-      )}
+
+      <SearchResults
+        hoveredResult={hoveredResult}
+        setHoveredResult={setHoveredResult}
+      />
     </Flex>
   );
 };

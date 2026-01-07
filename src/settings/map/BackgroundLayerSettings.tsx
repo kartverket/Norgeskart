@@ -104,7 +104,11 @@ const BackgroundLayerGrid = ({
   </SimpleGrid>
 );
 
-export const BackgroundLayerSettings = () => {
+export const BackgroundLayerSettings = ({
+  onSelectComplete,
+}: {
+  onSelectComplete: () => void;
+}) => {
   const { t } = useTranslation();
   const { setBackgroundLayer, getMapProjectionCode } = useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
@@ -172,6 +176,7 @@ export const BackgroundLayerSettings = () => {
     setBackgroundLayer(layer);
     setCurrentLayer(layer);
     setActiveBackgroundLayer(layer);
+    onSelectComplete();
   };
 
   return (
