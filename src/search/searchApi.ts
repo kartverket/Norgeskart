@@ -21,12 +21,34 @@ export const getAddresses = async (
     );
     if (!res.ok) {
       console.warn('Failed to fetch addresses:', res.status, res.statusText);
-      return { adresser: [], metadata: { side: 1, totaltAntallTreff: 0, treffPerSide: 100, viserFra: 0, viserTil: 0, sokeStreng: query, utkoordsys: 4258 } };
+      return {
+        adresser: [],
+        metadata: {
+          side: 1,
+          totaltAntallTreff: 0,
+          treffPerSide: 100,
+          viserFra: 0,
+          viserTil: 0,
+          sokeStreng: query,
+          utkoordsys: 4258,
+        },
+      };
     }
     return res.json();
   } catch (error) {
     console.error('Error fetching addresses:', error);
-    return { adresser: [], metadata: { side: 1, totaltAntallTreff: 0, treffPerSide: 100, viserFra: 0, viserTil: 0, sokeStreng: query, utkoordsys: 4258 } };
+    return {
+      adresser: [],
+      metadata: {
+        side: 1,
+        totaltAntallTreff: 0,
+        treffPerSide: 100,
+        viserFra: 0,
+        viserTil: 0,
+        sokeStreng: query,
+        utkoordsys: 4258,
+      },
+    };
   }
 };
 
@@ -54,12 +76,34 @@ export const getPlaceNames = async (
     );
     if (!res.ok) {
       console.warn('Failed to fetch place names:', res.status, res.statusText);
-      return { navn: [], metadata: { side: page, totaltAntallTreff: 0, treffPerSide: 15, viserFra: 0, viserTil: 0, sokeStreng: query, utkoordsys: 25833 } };
+      return {
+        navn: [],
+        metadata: {
+          side: page,
+          totaltAntallTreff: 0,
+          treffPerSide: 15,
+          viserFra: 0,
+          viserTil: 0,
+          sokeStreng: query,
+          utkoordsys: 25833,
+        },
+      };
     }
     return res.json();
   } catch (error) {
     console.error('Error fetching place names:', error);
-    return { navn: [], metadata: { side: page, totaltAntallTreff: 0, treffPerSide: 15, viserFra: 0, viserTil: 0, sokeStreng: query, utkoordsys: 25833 } };
+    return {
+      navn: [],
+      metadata: {
+        side: page,
+        totaltAntallTreff: 0,
+        treffPerSide: 15,
+        viserFra: 0,
+        viserTil: 0,
+        sokeStreng: query,
+        utkoordsys: 25833,
+      },
+    };
   }
 };
 
