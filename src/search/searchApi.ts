@@ -20,7 +20,13 @@ export const getAddresses = async (
       `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`,
     );
     if (!res.ok) {
-      console.warn('Failed to fetch addresses:', res.status, res.statusText);
+      console.warn('API request failed', {
+        endpoint: 'addresses',
+        query,
+        status: res.status,
+        statusText: res.statusText,
+        url: res.url,
+      });
       return {
         adresser: [],
         metadata: {
@@ -36,7 +42,10 @@ export const getAddresses = async (
     }
     return res.json();
   } catch (error) {
-    console.error('Error fetching addresses:', error);
+    console.error('Error fetching addresses', {
+      query,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return {
       adresser: [],
       metadata: {
@@ -75,7 +84,14 @@ export const getPlaceNames = async (
       `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*&treffPerSide=15&side=${page}`,
     );
     if (!res.ok) {
-      console.warn('Failed to fetch place names:', res.status, res.statusText);
+      console.warn('API request failed', {
+        endpoint: 'placeNames',
+        query,
+        page,
+        status: res.status,
+        statusText: res.statusText,
+        url: res.url,
+      });
       return {
         navn: [],
         metadata: {
@@ -91,7 +107,11 @@ export const getPlaceNames = async (
     }
     return res.json();
   } catch (error) {
-    console.error('Error fetching place names:', error);
+    console.error('Error fetching place names', {
+      query,
+      page,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return {
       navn: [],
       metadata: {
