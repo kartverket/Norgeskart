@@ -64,8 +64,9 @@ export const MapOverlay = () => {
             base: '1 / span 12',
             md: '1 / span 6',
             lg: '1 / span 4',
+            xl: '1 / span 3',
           }}
-          gridRow={'1 / span 3'}
+          gridRow={{ base: '1 / span 3', md: '1 / span 4' }}
           onClick={(e) => e.stopPropagation()}
           display={{
             base: selectedResult == null ? 'block' : 'none',
