@@ -6,6 +6,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
+  Icon,
   Link,
   List,
   ListItem,
@@ -67,9 +68,18 @@ export const InfoDrawer = () => {
             cursor: 'pointer',
           }}
         >
-          {tipsOpen
-            ? t('tipsandtricks.headingOpen')
-            : t('tipsandtricks.headingClosed')}
+          {tipsOpen ? (
+            <>
+              {t('tipsandtricks.headingOpen')}
+              <Icon icon={'arrow_drop_up'} />
+            </>
+          ) : (
+            <>
+              {t('tipsandtricks.headingClosed')}
+              <Icon icon={'arrow_drop_down'} />
+            </>
+          )}
+          {}
         </CollapsibleTrigger>
         <CollapsibleContent>
           <Accordion collapsible multiple size="md" variant="outline">
