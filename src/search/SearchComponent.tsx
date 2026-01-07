@@ -1,13 +1,9 @@
 import {
   Box,
   Flex,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
   Icon,
   IconButton,
   Image,
-  Portal,
   Search,
   Spinner,
 } from '@kvib/react';
@@ -25,6 +21,9 @@ import {
   useResetSearchResults,
 } from './atoms.ts';
 import { SearchResults } from './results/SearchResults.tsx';
+
+const HOVER_TIMEOUT_ID = 'hover-timeout-id';
+const HOVER_LEAVE_TIMEOUT_ID = 'hover-leave-timeout-id';
 
 const SearchIcon = () => {
   const searchQuery = useAtomValue(searchQueryAtom);
@@ -56,7 +55,8 @@ export const SearchComponent = () => {
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
-  const layerSettingsRef = useRef(null);
+  const settingsHoverTimeoutRef = useRef<number | null>(null);
+  const iconHoverTimeoutRef = useRef<number | null>(null);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
   );
@@ -78,47 +78,41 @@ export const SearchComponent = () => {
       pt={3}
       maxH={'100%'}
       overflowY={'auto'}
+      maxW={'450px'}
     >
       {/* TOPP: kart-flis + søkefelt */}
-      <Box backgroundColor="#FFFF" p={2} borderRadius={10} maxWidth="450px">
+      <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
         <Flex alignItems="center" gap={2}>
           {/* Kart-flis til venstre */}
-          <HoverCard
-            openDelay={100}
-            closeDelay={500}
-            open={showBackgroundSettings}
-            onOpenChange={(e) => {
-              setShowBackgroundSettings(e.open);
+
+          <Box
+            width="46px"
+            height="44px"
+            borderRadius={8}
+            overflow="hidden"
+            cursor="pointer"
+            onMouseEnter={() => {
+              iconHoverTimeoutRef.current = window.setTimeout(
+                () => setShowBackgroundSettings(true),
+                100,
+              );
             }}
-            positioning={{ offset: { mainAxis: 10 } }}
+            onClick={() => {
+              setShowBackgroundSettings(!showBackgroundSettings);
+              if (iconHoverTimeoutRef.current) {
+                clearTimeout(iconHoverTimeoutRef.current);
+              }
+            }}
+            boxShadow="md"
           >
-            <HoverCardTrigger>
-              <Box
-                width="46px"
-                height="44px"
-                borderRadius={8}
-                overflow="hidden"
-                cursor="pointer"
-                onClick={() => setShowBackgroundSettings(true)}
-                boxShadow="md"
-              >
-                <Image
-                  src={backgroundImageUrl}
-                  alt="Velg bakgrunnskart"
-                  width="100%"
-                  height="100%"
-                  objectFit="cover"
-                />
-              </Box>
-            </HoverCardTrigger>
-            <Portal container={layerSettingsRef}>
-              <HoverCardContent portalled={false} w={'inherit'}>
-                <BackgroundLayerSettings
-                  onSelectComplete={() => setShowBackgroundSettings(false)}
-                />
-              </HoverCardContent>
-            </Portal>
-          </HoverCard>
+            <Image
+              src={backgroundImageUrl}
+              alt="Velg bakgrunnskart"
+              width="100%"
+              height="100%"
+              objectFit="cover"
+            />
+          </Box>
 
           <Box position="relative" width="100%">
             <Search
@@ -146,9 +140,24 @@ export const SearchComponent = () => {
         hoveredResult={hoveredResult}
         setHoveredResult={setHoveredResult}
       />
-      <Box id="hei" w={'100%'} backgroundColor={'hotpink'}>
-        <Box ref={layerSettingsRef} />
-      </Box>
+      {showBackgroundSettings && (
+        <Box
+          onMouseLeave={() => {
+            settingsHoverTimeoutRef.current = window.setTimeout(() => {
+              setShowBackgroundSettings(false);
+            }, 700);
+          }}
+          onMouseEnter={() => {
+            if (settingsHoverTimeoutRef.current) {
+              clearTimeout(settingsHoverTimeoutRef.current);
+            }
+          }}
+        >
+          <BackgroundLayerSettings
+            onSelectComplete={() => setShowBackgroundSettings(false)}
+          />
+        </Box>
+      )}
     </Flex>
   );
 };

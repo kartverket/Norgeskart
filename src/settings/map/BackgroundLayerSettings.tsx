@@ -172,10 +172,12 @@ export const BackgroundLayerSettings = ({
   };
 
   return (
-    <BackgroundLayerGrid
-      layers={sortedLayers}
-      currentLayer={currentLayer}
-      setLayer={handleSetLayer}
-    />
+    <Box backgroundColor="#FFFF" p={2} borderRadius={10} w={'100%'}>
+      <BackgroundLayerGrid
+        layers={sortedLayers}
+        currentLayer={currentLayer}
+        setLayer={handleSetLayer}
+      />
+    </Box>
   );
 };
