@@ -15,3 +15,14 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+Cypress.on('uncaught:exception', (err) => {
+  // Only ignore place name and address search API errors
+  if (
+    err.message.includes('Feil ved henting av stedsnavn') ||
+    err.message.includes('Feil ved henting av adresser')
+  ) {
+    return false;
+  }
+  return true;
+});

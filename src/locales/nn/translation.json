@@ -289,7 +289,12 @@
     "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
     "infoText": "Les korleis vi tek vare på personopplysningar i Kartverket si",
     "privacyPolicy": "Personvernerklæring ",
-    "sendEmail": "Send e-post"
+    "sendEmail": "Send e-post",
+    "privacy": "Personvern",
+    "status": {
+      "heading": "Status",
+      "infoText": "Sjå status for våre tjenester ved å nytte lenka"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Gardsnr.",

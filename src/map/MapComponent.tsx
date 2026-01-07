@@ -4,7 +4,7 @@ import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures } from '../api/nkApiClient.ts';
-import { themeLayerConfigLoadableAtom } from '../api/themeLayerConfigApi.ts';
+import { themeLayerConfigAtom } from '../api/themeLayerConfigApi.ts';
 import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import {
@@ -39,7 +39,7 @@ export const MapComponent = () => {
   const setActiveThemeLayers = useSetAtom(activeThemeLayersAtom);
   const { backgroundLayerState } = useBackgoundLayers();
   const map = useAtomValue(mapAtom);
-  const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
+  const themeLayerConfig = useAtomValue(themeLayerConfigAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures } = useDrawSettings();
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
@@ -68,24 +68,14 @@ export const MapComponent = () => {
    *
    * Timing is critical:
    * 1. Hash transition must happen BEFORE processing (enables proper URL operations)
-   * 2. Config must be loaded (needed for legacy ID mapping)
-   * 3. Background layers must be available (needed for layer activation)
-   * 4. Process only once per session (prevents re-running on URL updates)
+   * 2. Background layers must be available (needed for layer activation)
+   * 3. Process only once per session (prevents re-running on URL updates)
    *
    * The legacy 'layers' param contains both background (1001-1010) and theme (>1010) IDs.
    * The 'project' param filters which theme layers are valid for the current category.
    */
   useEffect(() => {
     if (!map) {
-      return;
-    }
-
-    if (configLoadable.state === 'hasError') {
-      hasProcessedUrlRef.current = true;
-      return;
-    }
-
-    if (configLoadable.state === 'loading') {
       return;
     }
 
@@ -146,7 +136,7 @@ export const MapComponent = () => {
       legacyThemeLayerIds.forEach((legacyId) => {
         const modernId = mapLegacyThemeLayerId(
           legacyId,
-          configLoadable,
+          themeLayerConfig,
           projectParam,
         );
         if (modernId && !newThemeLayers.includes(modernId)) {
@@ -168,7 +158,7 @@ export const MapComponent = () => {
     setActiveThemeLayers,
     setBackgroundLayer,
     map,
-    configLoadable,
+    themeLayerConfig,
     backgroundLayerState,
   ]);
 
