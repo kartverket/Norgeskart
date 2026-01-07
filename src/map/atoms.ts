@@ -149,7 +149,7 @@ export const mapAtom = atom<Map>(() => {
 });
 
 export const availableScales = [
-  5000, 10000, 25000, 50000, 80000, 100000, 250000,
+  5000, 10000, 25000, 50000, 80000, 100000, 250000, 500000, 1000000,
 ];
 
 export const scaleAtom = atom<number | null>(null);
