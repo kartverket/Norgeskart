@@ -7,11 +7,12 @@ import {
   Icon,
   IconButton,
   Image,
+  Portal,
   Search,
   Spinner,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
 import { activeBackgroundLayerAtom } from '../map/layers/atoms.ts';
@@ -55,6 +56,7 @@ export const SearchComponent = () => {
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const layerSettingsRef = useRef(null);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
   );
@@ -109,11 +111,13 @@ export const SearchComponent = () => {
                 />
               </Box>
             </HoverCardTrigger>
-            <HoverCardContent>
-              <BackgroundLayerSettings
-                onSelectComplete={() => setShowBackgroundSettings(false)}
-              />
-            </HoverCardContent>
+            <Portal container={layerSettingsRef}>
+              <HoverCardContent portalled={false} w={'inherit'}>
+                <BackgroundLayerSettings
+                  onSelectComplete={() => setShowBackgroundSettings(false)}
+                />
+              </HoverCardContent>
+            </Portal>
           </HoverCard>
 
           <Box position="relative" width="100%">
@@ -142,6 +146,9 @@ export const SearchComponent = () => {
         hoveredResult={hoveredResult}
         setHoveredResult={setHoveredResult}
       />
+      <Box id="hei" w={'100%'} backgroundColor={'hotpink'}>
+        <Box ref={layerSettingsRef} />
+      </Box>
     </Flex>
   );
 };

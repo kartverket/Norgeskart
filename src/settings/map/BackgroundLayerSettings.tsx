@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  SimpleGrid,
-  Text,
-  VStack,
-} from '@kvib/react';
+import { Box, Button, Image, SimpleGrid, Text, VStack } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
@@ -91,7 +83,7 @@ const BackgroundLayerGrid = ({
   currentLayer: BackgroundLayerName;
   setLayer: (layer: BackgroundLayerName) => void;
 }) => (
-  <SimpleGrid columns={2} justifyItems="center" gap={0}>
+  <SimpleGrid columns={2} justifyItems="center" gap={0} w={'inherit'}>
     {layers.map((layer) => (
       <LayerCard
         key={layer.value}
@@ -180,14 +172,10 @@ export const BackgroundLayerSettings = ({
   };
 
   return (
-    <Flex flexDir="column">
-      <Box position="relative" backgroundColor="#FFFF" borderRadius={10}>
-        <BackgroundLayerGrid
-          layers={sortedLayers}
-          currentLayer={currentLayer}
-          setLayer={handleSetLayer}
-        />
-      </Box>
-    </Flex>
+    <BackgroundLayerGrid
+      layers={sortedLayers}
+      currentLayer={currentLayer}
+      setLayer={handleSetLayer}
+    />
   );
 };
