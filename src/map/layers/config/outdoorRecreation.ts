@@ -24,7 +24,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'Fotrute',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '5.Fotrute',
+      legacyId: '1011',
       queryable: true,
     },
     {
@@ -51,7 +51,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'Skiloype',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '5.Skiloype',
+      legacyId: '1013',
       queryable: true,
     },
     {
@@ -64,7 +64,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'Sykkelrute',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '5.Sykkelrute',
+      legacyId: '1014',
       queryable: true,
     },
     {
@@ -77,7 +77,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'AnnenRute',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '5.AnnenRute',
+      legacyId: '1015',
       queryable: true,
     },
   ],

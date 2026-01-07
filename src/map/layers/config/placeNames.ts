@@ -3,15 +3,6 @@ import { ThemeLayerConfig } from '../../../api/themeLayerConfigApi';
 export const placeNamesConfig: ThemeLayerConfig = {
   categories: [
     {
-      id: 'placeNames',
-      groupid: 1,
-      name: {
-        nb: 'Stedsnavn',
-        nn: 'Stednamn',
-        en: 'Placenames',
-      },
-    },
-    {
       id: 'historicalPlaceNames',
       groupid: 2,
       name: {
