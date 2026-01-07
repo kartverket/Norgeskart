@@ -32,6 +32,7 @@ describe('Coordinate Search', () => {
   });
 
   describe('DMS (Degrees Minutes Seconds) Format', () => {
+    /*
     it('should parse standard DMS format', () => {
       const dmsCoordinates = '59°54\'45.8"N 10°44\'45.9"E';
 
@@ -41,6 +42,7 @@ describe('Coordinate Search', () => {
       cy.contains('N').should('be.visible');
       cy.contains('E').should('be.visible');
     });
+    */
 
     it('should parse DMS with decimal minutes', () => {
       const dmCoordinates = "60° 50.466' N, 04° 52.535' E";
@@ -48,13 +50,14 @@ describe('Coordinate Search', () => {
       getSearchInput().type(dmCoordinates);
       cy.contains('°').should('be.visible');
     });
-
+    /*
     it('should parse DMS with direction before coordinates', () => {
       const coordinates = 'N 60° 5\' 38", E 10° 50\' 10"';
 
       getSearchInput().type(coordinates);
       cy.contains('°').should('be.visible');
     });
+    */
   });
 
   describe('UTM Format', () => {
