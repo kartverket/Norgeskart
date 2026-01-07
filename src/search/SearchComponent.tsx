@@ -22,9 +22,6 @@ import {
 } from './atoms.ts';
 import { SearchResults } from './results/SearchResults.tsx';
 
-const HOVER_TIMEOUT_ID = 'hover-timeout-id';
-const HOVER_LEAVE_TIMEOUT_ID = 'hover-leave-timeout-id';
-
 const SearchIcon = () => {
   const searchQuery = useAtomValue(searchQueryAtom);
   const isSearchPending = useAtomValue(searchPendingAtom);
@@ -96,6 +93,14 @@ export const SearchComponent = () => {
                 () => setShowBackgroundSettings(true),
                 100,
               );
+            }}
+            onMouseLeave={() => {
+              if (iconHoverTimeoutRef.current) {
+                clearTimeout(iconHoverTimeoutRef.current);
+              }
+              settingsHoverTimeoutRef.current = window.setTimeout(() => {
+                setShowBackgroundSettings(false);
+              }, 700);
             }}
             onClick={() => {
               setShowBackgroundSettings(!showBackgroundSettings);
