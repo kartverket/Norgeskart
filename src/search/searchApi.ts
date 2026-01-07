@@ -20,13 +20,7 @@ export const getAddresses = async (
       `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`,
     );
     if (!res.ok) {
-      console.warn('API request failed', {
-        endpoint: 'addresses',
-        query,
-        status: res.status,
-        statusText: res.statusText,
-        url: res.url,
-      });
+      console.warn(`API failed [addresses]: ${res.status} for "${query}"`);
       return {
         adresser: [],
         metadata: {
@@ -42,10 +36,7 @@ export const getAddresses = async (
     }
     return res.json();
   } catch (error) {
-    console.error('Error fetching addresses', {
-      query,
-      error: error instanceof Error ? error.message : String(error),
-    });
+    console.error(`Error [addresses]: ${query}`, error);
     return {
       adresser: [],
       metadata: {
@@ -84,14 +75,7 @@ export const getPlaceNames = async (
       `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*&treffPerSide=15&side=${page}`,
     );
     if (!res.ok) {
-      console.warn('API request failed', {
-        endpoint: 'placeNames',
-        query,
-        page,
-        status: res.status,
-        statusText: res.statusText,
-        url: res.url,
-      });
+      console.warn(`API failed [placeNames]: ${res.status} for "${query}"`);
       return {
         navn: [],
         metadata: {
@@ -107,11 +91,7 @@ export const getPlaceNames = async (
     }
     return res.json();
   } catch (error) {
-    console.error('Error fetching place names', {
-      query,
-      page,
-      error: error instanceof Error ? error.message : String(error),
-    });
+    console.error(`Error [placeNames]: ${query}`, error);
     return {
       navn: [],
       metadata: {
@@ -142,15 +122,33 @@ export const getPlaceNamesByLocation = async (
 };
 
 export const getRoads = async (query: string): Promise<Road[]> => {
-  const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${query}`);
-  if (!res.ok) throw new Error('Feil ved henting av veg');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${encodedQuery}`);
+    if (!res.ok) {
+      console.warn(`API failed [roads]: ${res.status} for "${query}"`);
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [roads]: ${query}`, error);
+    return [];
+  }
 };
 
 export const getProperties = async (query: string): Promise<Property[]> => {
-  const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${query}`);
-  if (!res.ok) throw new Error('Feil ved henting av eiendom');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${encodedQuery}`);
+    if (!res.ok) {
+      console.warn(`API failed [properties]: ${res.status} for "${query}"`);
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [properties]: ${query}`, error);
+    return [];
+  }
 };
 
 export const getElevation = async (x: number, y: number) => {
