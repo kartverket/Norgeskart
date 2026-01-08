@@ -8,7 +8,7 @@ import {
   Spinner,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
 import { activeBackgroundLayerAtom } from '../map/layers/atoms.ts';
@@ -65,6 +65,17 @@ export const SearchComponent = () => {
     setShowBackgroundSettings(false);
   };
 
+  const cancelTimeouts = useMemo(() => {
+    return () => {
+      if (settingsHoverTimeoutRef.current) {
+        clearTimeout(settingsHoverTimeoutRef.current);
+      }
+      if (iconHoverTimeoutRef.current) {
+        clearTimeout(iconHoverTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <Flex
       flexDir="column"
@@ -95,18 +106,14 @@ export const SearchComponent = () => {
               );
             }}
             onMouseLeave={() => {
-              if (iconHoverTimeoutRef.current) {
-                clearTimeout(iconHoverTimeoutRef.current);
-              }
+              cancelTimeouts();
               settingsHoverTimeoutRef.current = window.setTimeout(() => {
                 setShowBackgroundSettings(false);
               }, 700);
             }}
             onClick={() => {
               setShowBackgroundSettings(!showBackgroundSettings);
-              if (iconHoverTimeoutRef.current) {
-                clearTimeout(iconHoverTimeoutRef.current);
-              }
+              cancelTimeouts();
             }}
             boxShadow="md"
           >
@@ -153,9 +160,7 @@ export const SearchComponent = () => {
             }, 700);
           }}
           onMouseEnter={() => {
-            if (settingsHoverTimeoutRef.current) {
-              clearTimeout(settingsHoverTimeoutRef.current);
-            }
+            cancelTimeouts();
           }}
         >
           <BackgroundLayerSettings
