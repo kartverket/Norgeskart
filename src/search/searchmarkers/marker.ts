@@ -38,3 +38,16 @@ export const createMarker = (
   marker.setStyle(createMarkerStyle(iconSrc));
   return marker;
 };
+
+export const createMarkerFromCoordinate = (
+  lon: number,
+  lat: number,
+  iconSrc: MarkerIcon,
+): Feature => {
+  const marker = new Feature({
+    geometry: new Point([lon, lat]),
+  });
+  marker.set('isMarker', true);
+  marker.setStyle(createMarkerStyle(iconSrc));
+  return marker;
+};
