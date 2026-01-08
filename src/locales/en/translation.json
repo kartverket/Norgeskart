@@ -398,6 +398,18 @@
       "emergencyPoster": {
         "heading": "Emergency poster"
       }
+    },
+    "emergencyPoster": {
+      "disclaimer": {
+        "heading": "The users responsibility",
+        "sections": {
+          "section1": "The emergency poster is developed in collaboration with the Joint Rescue centers and emergency services. Kartverket is responsible for the data, ie, place names and maps - as well as the technology.",
+          "section2": "It is the user's responsibility to verify that it is the correct cabin or location shown on the poster.",
+          "section3": "Kartverket assumes no responsibility for any errors caused by user, data or technology."
+        },
+        "accept": "I understand and accept",
+        "reject": "Cancel"
+      }
     }
   }
 }

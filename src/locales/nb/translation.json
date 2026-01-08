@@ -464,6 +464,18 @@
       "emergencyPoster": {
         "heading": "Nødplakat"
       }
+    },
+    "emergencyPoster": {
+      "disclaimer": {
+        "heading": "Brukerens ansvar",
+        "sections": {
+          "section1": "Nødplakaten er utviklet i samarbeid med Hovedredningsentralene og nødetatene. Kartverket er ansvarlig for datagrunnlaget, dvs. stedsnavn og kart - samt teknologien bak.",
+          "section2": "Det er brukerens ansvar å kontrollere at det er korrekt hytte eller sted som vises på plakaten.",
+          "section3": "Kartverket tar ikke ansvar for mulige feil som skyldes brukeren, datagrunnlaget eller teknologien."
+        },
+        "accept": "Jeg forstår og godtar",
+        "reject": "Avbryt"
+      }
     }
   }
 }
