@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Icon,
   IconButton,
@@ -93,12 +94,13 @@ export const SearchComponent = () => {
         <Flex alignItems="center" gap={2}>
           {/* Kart-flis til venstre */}
 
-          <Box
+          <Button
             width="46px"
             height="44px"
             borderRadius={8}
             overflow="hidden"
             cursor="pointer"
+            padding={0}
             onMouseEnter={() => {
               iconHoverTimeoutRef.current = window.setTimeout(
                 () => setShowBackgroundSettings(true),
@@ -124,7 +126,7 @@ export const SearchComponent = () => {
               height="100%"
               objectFit="cover"
             />
-          </Box>
+          </Button>
 
           <Box position="relative" width="100%">
             <Search
