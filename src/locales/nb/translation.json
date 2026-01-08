@@ -448,5 +448,8 @@
     "item": {
       "fallbackMessage": "har ingen tegnforklaring"
     }
+  },
+  "printdialog": {
+    "heading": "Skriv ut"
   }
 }

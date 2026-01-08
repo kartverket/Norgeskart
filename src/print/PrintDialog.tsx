@@ -1,11 +1,13 @@
 import { Box, Flex, Heading, IconButton, Stack } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from './atoms';
 
 export const PrintDialog = () => {
   const [isPrintDialogOpen, setIsPrintDialogOpen] = useAtom(
     isPrintDialogOpenAtom,
   );
+  const { t } = useTranslation();
 
   if (!isPrintDialogOpen) {
     return null;
@@ -23,7 +25,7 @@ export const PrintDialog = () => {
       <Stack>
         <Flex justifyContent={'space-between'} alignItems="center">
           <Heading fontWeight="bold" size={'lg'}>
-            print dialog
+            {t('printdialog.heading')}
           </Heading>
           <IconButton
             onClick={() => setIsPrintDialogOpen(false)}

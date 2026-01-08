@@ -387,5 +387,8 @@
     "item": {
       "fallbackMessage": "har inge symbolforklaring."
     }
+  },
+  "printdialog": {
+    "heading": "Skriv ut"
   }
 }

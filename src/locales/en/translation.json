@@ -382,5 +382,8 @@
     "item": {
       "fallbackMessage": "has no legend"
     }
+  },
+  "printdialog": {
+    "heading": "Print"
   }
 }
