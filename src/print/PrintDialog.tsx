@@ -12,6 +12,7 @@ import {
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from './atoms';
+import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
 
 const printTabNames = [
   'extent',
@@ -74,7 +75,9 @@ export const PrintDialog = () => {
           <TabsContent value="extent">hei utsnitt</TabsContent>
           <TabsContent value="hiking">hei turkart</TabsContent>
           <TabsContent value="heightProfile">hei høydeprofil</TabsContent>
-          <TabsContent value="emergencyPoster">hei nødplakat</TabsContent>
+          <TabsContent value="emergencyPoster">
+            <EmergencyPosterSection />
+          </TabsContent>
         </Tabs>
       </Stack>
     </Box>
