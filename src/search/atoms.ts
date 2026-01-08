@@ -6,6 +6,7 @@ import {
   mapAtom,
   ProjectionIdentifier,
 } from '../map/atoms';
+import { isPrintDialogOpenAtom } from '../print/atoms';
 import {
   parseCoordinateInput,
   ParsedCoordinate,
@@ -237,6 +238,11 @@ export const selectedResultAtom = atom<SearchResult | null>(
   getInitialSelectedResult(),
 );
 
+export const selectedResultEffect = atomEffect((get, set) => {
+  get(selectedResultAtom);
+  set(isPrintDialogOpenAtom, false);
+});
+
 export const useResetSearchResults = () => {
   const setAddressResults = useSetAtom(addressResultsAtom);
   const setPlaceNameResults = useSetAtom(placeNameResultsAtom);
@@ -259,4 +265,5 @@ export const useSearchEffects = () => {
   useAtom(searchCoordinatesEffect);
   useAtom(searchQueryEffect);
   useAtom(placeNamePageEffet);
+  useAtom(selectedResultEffect);
 };
