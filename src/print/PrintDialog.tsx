@@ -39,6 +39,7 @@ export const PrintDialog = () => {
 
   return (
     <Box
+      id="print-dialog"
       backgroundColor="white"
       borderRadius={'16px'}
       p={4}
@@ -59,6 +60,7 @@ export const PrintDialog = () => {
             size={'sm'}
             variant="ghost"
             alignSelf={'flex-end'}
+            aria-label="close-print"
           />
         </Flex>
         <Tabs>

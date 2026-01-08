@@ -90,6 +90,7 @@ export const MapToolButtons = () => {
           }}
           icon={'print'}
           label={t('controller.print.text')}
+          ariaLabel="print"
         />
       )}
       <MapButton
@@ -112,8 +113,15 @@ interface MapButtonProps {
   icon: MaterialSymbol;
   label: string;
   active?: boolean;
+  ariaLabel?: string;
 }
-const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
+const MapButton = ({
+  onClick,
+  icon,
+  label,
+  active,
+  ariaLabel,
+}: MapButtonProps) => {
   return (
     <Button
       w={'fit-content'}
@@ -122,6 +130,7 @@ const MapButton = ({ onClick, icon, label, active }: MapButtonProps) => {
       colorPalette="green"
       py={{ base: 2, md: 8 }}
       backgroundColor={active ? '#D0ECD6' : ''}
+      aria-label={ariaLabel || label}
     >
       <VStack gap={{ base: 0, md: 1 }} align="center" justify="center">
         <Icon icon={icon} />
