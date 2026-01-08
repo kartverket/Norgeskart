@@ -409,6 +409,9 @@
         },
         "accept": "I understand and accept",
         "reject": "Cancel"
+      },
+      "inputform": {
+        "heading": "Click the map to set the location for the poster"
       }
     }
   }

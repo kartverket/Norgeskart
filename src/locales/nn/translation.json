@@ -414,6 +414,9 @@
         },
         "accept": "Eg skjønar og godtar",
         "reject": "Avbryt"
+      },
+      "inputform": {
+        "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for"
       }
     }
   }
