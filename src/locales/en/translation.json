@@ -334,7 +334,13 @@
       "meter": "Metre",
       "nauticalMile": "Nautical mile"
     },
-    "yes": "Yes"
+    "yes": "Yes",
+    "no": "No",
+    "in": "in",
+    "locations": {
+      "municipality": "municipality"
+    },
+    "cancel": "Cancel"
   },
   "tipsandtricks": {
     "heading": "Tips and tricks",
@@ -411,7 +417,24 @@
         "reject": "Cancel"
       },
       "inputform": {
-        "heading": "Click the map to set the location for the poster"
+        "heading": "Click the map to set the location for the poster",
+        "fields": {
+          "title": {
+            "label": "Give the location a name"
+          },
+          "place": {
+            "label": "Select right place name"
+          },
+          "road": {
+            "label": "The closest road is"
+          },
+          "isInfoCorrect": {
+            "label": "Is the above info correct?"
+          }
+        }
+      },
+      "buttons": {
+        "makePoster": "Create poster"
       }
     }
   }

@@ -1,4 +1,24 @@
-import { Heading, Stack } from '@kvib/react';
+import {
+  Button,
+  createListCollection,
+  FieldLabel,
+  FieldRoot,
+  Flex,
+  Heading,
+  Input,
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+  Separator,
+  Stack,
+  SwitchControl,
+  SwitchHiddenInput,
+  SwitchLabel,
+  SwitchRoot,
+  Text,
+} from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
@@ -14,6 +34,20 @@ export const InputForm = () => {
   const [clickedCoordinates, setClickedCoordinates] = useState<number[] | null>(
     null,
   );
+  const [placesNearby, setPlacesNearby] = useState<string[]>([
+    'Steinsåsen',
+    'Heggelia',
+    'Nordseter',
+  ]);
+
+  const [roadsNearby, setRoadsNearby] = useState<string[]>([
+    'Kranveien 24',
+    'Ubåtsvingen 1A',
+    'Tyholt Allé 14b',
+  ]);
+
+  const [municipalityName, setMunicipalityName] = useState<string>('Hole');
+  const [isInfoCorrect, setIsInfoCorrect] = useState<boolean>(false);
 
   const posterClickHandler = (event: Event | BaseEvent) => {
     if (event instanceof MapBrowserEvent) {
@@ -51,10 +85,89 @@ export const InputForm = () => {
   }, [clickedCoordinates]);
   return (
     <Stack>
-      <Heading size={'sm'}>
+      <Heading size={'md'}>
         {t('printdialog.emergencyPoster.inputform.heading')}
       </Heading>
-      {clickedCoordinates}
+      <Separator />
+      <FieldRoot orientation={'horizontal'}>
+        <FieldLabel>
+          {t('printdialog.emergencyPoster.inputform.fields.title.label')}
+        </FieldLabel>
+        <Input />
+      </FieldRoot>
+      <FieldRoot orientation={'horizontal'}>
+        <FieldLabel>
+          {t('printdialog.emergencyPoster.inputform.fields.place.label')}
+        </FieldLabel>
+        <SelectRoot
+          collection={createListCollection({
+            items: placesNearby,
+          })}
+          defaultValue={[placesNearby[0]]}
+        >
+          <SelectTrigger>
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent>
+            {placesNearby.map((item) => (
+              <SelectItem key={item} item={item}>
+                {item}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </FieldRoot>
+      <FieldRoot orientation={'horizontal'}>
+        <FieldLabel>
+          {t('printdialog.emergencyPoster.inputform.fields.road.label')}
+        </FieldLabel>
+        <SelectRoot
+          collection={createListCollection({
+            items: roadsNearby,
+          })}
+          defaultValue={[roadsNearby[0]]}
+        >
+          <SelectTrigger>
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent>
+            {roadsNearby.map((item) => (
+              <SelectItem key={item} item={item}>
+                {item}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </FieldRoot>
+      <Text>
+        {t('shared.in')} {municipalityName} {t('shared.locations.municipality')}
+      </Text>
+      <Separator />
+      <FieldRoot orientation={'horizontal'}>
+        <FieldLabel>
+          {t(
+            'printdialog.emergencyPoster.inputform.fields.isInfoCorrect.label',
+          )}
+        </FieldLabel>
+        <SwitchRoot
+          checked={isInfoCorrect}
+          onCheckedChange={(checked) => {
+            setIsInfoCorrect(checked.checked);
+          }}
+        >
+          <SwitchHiddenInput />
+          <SwitchLabel>
+            {isInfoCorrect ? t('shared.yes') : t('shared.no')}
+          </SwitchLabel>
+          <SwitchControl />
+        </SwitchRoot>
+      </FieldRoot>
+      <Flex w={'100%'} justifyContent={'space-between'}>
+        <Button variant="secondary">{t('shared.cancel')}</Button>
+        <Button disabled={!isInfoCorrect || !clickedCoordinates}>
+          {t('printdialog.emergencyPoster.buttons.makePoster')}
+        </Button>
+      </Flex>
     </Stack>
   );
 };

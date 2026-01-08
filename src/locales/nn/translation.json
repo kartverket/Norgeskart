@@ -339,7 +339,13 @@
       "meter": "Meter",
       "nauticalMile": "Nautisk mil"
     },
-    "yes": "Ja"
+    "yes": "Ja",
+    "no": "Nei",
+    "in": "i",
+    "locations": {
+      "municipality": "kommune"
+    },
+    "cancel": "Avbryt"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -416,7 +422,24 @@
         "reject": "Avbryt"
       },
       "inputform": {
-        "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for"
+        "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for",
+        "fields": {
+          "title": {
+            "label": "Gi punktet et namn"
+          },
+          "place": {
+            "label": "Vel riktig stadsnamn"
+          },
+          "road": {
+            "label": "Næraste veg er"
+          },
+          "isInfoCorrect": {
+            "label": "Stemmer informasjonen over?"
+          }
+        }
+      },
+      "buttons": {
+        "makePoster": "Lag plakat"
       }
     }
   }
