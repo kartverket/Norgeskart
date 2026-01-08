@@ -46,7 +46,7 @@ export const InputForm = () => {
     makerSource.clear();
     makerSource.addFeature(marker);
     return () => {
-      makerSource.removeFeature(marker);
+      makerSource.clear();
     };
   }, [clickedCoordinates]);
   return (
