@@ -384,6 +384,20 @@
     }
   },
   "printdialog": {
-    "heading": "Print"
+    "heading": "Print",
+    "tabs": {
+      "extent": {
+        "heading": "Extent"
+      },
+      "hiking": {
+        "heading": "Hiking map"
+      },
+      "heightProfile": {
+        "heading": "Height profile"
+      },
+      "emergencyPoster": {
+        "heading": "Emergency poster"
+      }
+    }
   }
 }

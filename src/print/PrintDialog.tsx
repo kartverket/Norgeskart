@@ -1,7 +1,26 @@
-import { Box, Flex, Heading, IconButton, Stack } from '@kvib/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  Stack,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from './atoms';
+
+const printTabNames = [
+  'extent',
+  'hiking',
+  'heightProfile',
+  'emergencyPoster',
+] as const;
+
+type PrintTabName = (typeof printTabNames)[number];
 
 export const PrintDialog = () => {
   const [isPrintDialogOpen, setIsPrintDialogOpen] = useAtom(
@@ -12,6 +31,12 @@ export const PrintDialog = () => {
   if (!isPrintDialogOpen) {
     return null;
   }
+  const tabsListConfig: { label: string; value: PrintTabName }[] =
+    printTabNames.map((tabName) => ({
+      label: t(`printdialog.tabs.${tabName}.heading`),
+      value: tabName,
+    }));
+
   return (
     <Box
       backgroundColor="white"
@@ -36,8 +61,20 @@ export const PrintDialog = () => {
             alignSelf={'flex-end'}
           />
         </Flex>
+        <Tabs>
+          <TabsList>
+            {tabsListConfig.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <TabsContent value="extent">hei utsnitt</TabsContent>
+          <TabsContent value="hiking">hei turkart</TabsContent>
+          <TabsContent value="heightProfile">hei høydeprofil</TabsContent>
+          <TabsContent value="emergencyPoster">hei nødplakat</TabsContent>
+        </Tabs>
       </Stack>
-      hei på deg
     </Box>
   );
 };

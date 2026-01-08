@@ -450,6 +450,20 @@
     }
   },
   "printdialog": {
-    "heading": "Skriv ut"
+    "heading": "Skriv ut",
+    "tabs": {
+      "extent": {
+        "heading": "Utsnitt"
+      },
+      "hiking": {
+        "heading": "Turkart"
+      },
+      "heightProfile": {
+        "heading": "Høydeprofil"
+      },
+      "emergencyPoster": {
+        "heading": "Nødplakat"
+      }
+    }
   }
 }
