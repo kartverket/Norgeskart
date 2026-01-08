@@ -1,5 +1,6 @@
 import { Grid, GridItem, HStack, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
+import { PrintDialog } from '../../print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from '../../search/atoms';
 import { useMapClickSearch } from '../../search/hooks';
 import { InfoBox } from '../../search/infobox/InfoBox';
@@ -103,6 +104,7 @@ export const MapOverlay = () => {
           zIndex={2}
         >
           <InfoBox />
+          <PrintDialog />
         </GridItem>
 
         <GridItem

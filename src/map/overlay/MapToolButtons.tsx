@@ -8,14 +8,16 @@ import {
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { mapToolAtom } from './atoms';
 
 export const MapToolButtons = () => {
   const { t } = useTranslation();
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
+  const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const isMobile = useIsMobileScreen();
   const posthog = usePostHog();
   const handleShareMapClick = () => {
@@ -26,10 +28,6 @@ export const MapToolButtons = () => {
         duration: 2000,
       });
     });
-  };
-
-  const handlePrintMapClick = () => {
-    window.print();
   };
 
   return (
@@ -87,7 +85,9 @@ export const MapToolButtons = () => {
 
       {!isMobile && (
         <MapButton
-          onClick={handlePrintMapClick}
+          onClick={() => {
+            setIsPrintDialogOpen((p) => !p);
+          }}
           icon={'print'}
           label={t('controller.print.text')}
         />
