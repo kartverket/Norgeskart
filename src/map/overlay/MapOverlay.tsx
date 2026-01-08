@@ -100,7 +100,7 @@ export const MapOverlay = () => {
             lg: '8 / span 5',
             xl: '9 / span 4',
           }}
-          gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 2' }}
+          gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
           zIndex={2}
         >
           <InfoBox />

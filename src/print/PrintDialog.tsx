@@ -64,7 +64,7 @@ export const PrintDialog = () => {
             aria-label="close-print"
           />
         </Flex>
-        <Tabs defaultValue={'extent'}>
+        <Tabs defaultValue={'extent'} lazyMount unmountOnExit>
           <TabsList>
             {tabsListConfig.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
