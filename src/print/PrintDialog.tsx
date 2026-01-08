@@ -64,7 +64,7 @@ export const PrintDialog = () => {
             aria-label="close-print"
           />
         </Flex>
-        <Tabs>
+        <Tabs defaultValue={'extent'}>
           <TabsList>
             {tabsListConfig.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
