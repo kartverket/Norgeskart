@@ -2,10 +2,7 @@
 
 Kildekode til norgeskart.no 2025. Enn så lenge WIP
 
-
 For endringslogg, se [wiki-siden](https://github.com/kartverket/Norgeskart/wiki/Endringslogg).
-
-
 ## Copyright
 
 The content of norgeskart.no and this repository is available under the following licenses:
