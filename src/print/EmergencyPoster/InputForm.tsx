@@ -24,7 +24,7 @@ import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getMarkerLayer } from '../../draw/drawControls/hooks/mapLayers';
+import { getPosterMarkerLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
 import { createMarkerFromCoordinate } from '../../search/searchmarkers/marker';
 
@@ -70,9 +70,9 @@ export const InputForm = () => {
     const marker = createMarkerFromCoordinate(
       clickedCoordinates[0],
       clickedCoordinates[1],
-      '/location/location_red.svg',
+      'yellow',
     );
-    const markerlayer = getMarkerLayer();
+    const markerlayer = getPosterMarkerLayer();
     const makerSource = markerlayer.getSource();
     if (!makerSource) {
       return;

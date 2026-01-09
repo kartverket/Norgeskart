@@ -22,6 +22,16 @@ export const getMarkerLayer = (): VectorLayer => {
     )[0] as unknown as VectorLayer;
 };
 
+export const getPosterMarkerLayer = (): VectorLayer => {
+  const map = getDefaultStore().get(mapAtom);
+  return map
+    .getLayers()
+    .getArray()
+    .filter(
+      (layer) => layer.get('id') === 'posterMarkerLayer',
+    )[0] as unknown as VectorLayer;
+};
+
 export const getPropertyGeometryLayer = (): VectorLayer | null => {
   const map = getDefaultStore().get(mapAtom);
   const layersMatching = map
