@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Icon,
   IconButton,
@@ -8,7 +9,7 @@ import {
   Spinner,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
 import { activeBackgroundLayerAtom } from '../map/layers/atoms.ts';
@@ -52,6 +53,8 @@ export const SearchComponent = () => {
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const settingsHoverTimeoutRef = useRef<number | null>(null);
+  const iconHoverTimeoutRef = useRef<number | null>(null);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
   );
@@ -63,9 +66,16 @@ export const SearchComponent = () => {
     setShowBackgroundSettings(false);
   };
 
-  const toggleBackgroundSettings = () => {
-    setShowBackgroundSettings((prev) => !prev);
-  };
+  const cancelTimeouts = useMemo(() => {
+    return () => {
+      if (settingsHoverTimeoutRef.current) {
+        clearTimeout(settingsHoverTimeoutRef.current);
+      }
+      if (iconHoverTimeoutRef.current) {
+        clearTimeout(iconHoverTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Flex
@@ -77,18 +87,36 @@ export const SearchComponent = () => {
       pt={3}
       maxH={'100%'}
       overflowY={'auto'}
+      maxW={'450px'}
     >
       {/* TOPP: kart-flis + søkefelt */}
-      <Box backgroundColor="#FFFF" p={2} borderRadius={10} maxWidth="450px">
+      <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
         <Flex alignItems="center" gap={2}>
           {/* Kart-flis til venstre */}
-          <Box
+
+          <Button
             width="46px"
             height="44px"
             borderRadius={8}
             overflow="hidden"
             cursor="pointer"
-            onClick={toggleBackgroundSettings}
+            padding={0}
+            onMouseEnter={() => {
+              iconHoverTimeoutRef.current = window.setTimeout(
+                () => setShowBackgroundSettings(true),
+                100,
+              );
+            }}
+            onMouseLeave={() => {
+              cancelTimeouts();
+              settingsHoverTimeoutRef.current = window.setTimeout(() => {
+                setShowBackgroundSettings(false);
+              }, 700);
+            }}
+            onClick={() => {
+              setShowBackgroundSettings(!showBackgroundSettings);
+              cancelTimeouts();
+            }}
             boxShadow="md"
           >
             <Image
@@ -98,7 +126,7 @@ export const SearchComponent = () => {
               height="100%"
               objectFit="cover"
             />
-          </Box>
+          </Button>
 
           <Box position="relative" width="100%">
             <Search
@@ -121,21 +149,26 @@ export const SearchComponent = () => {
           </Box>
         </Flex>
       </Box>
-      {showBackgroundSettings ? (
+
+      <SearchResults
+        hoveredResult={hoveredResult}
+        setHoveredResult={setHoveredResult}
+      />
+      {showBackgroundSettings && (
         <Box
-          bg="white"
-          borderRadius="md"
-          boxShadow="md"
-          maxWidth="450px"
-          py={2}
+          onMouseLeave={() => {
+            settingsHoverTimeoutRef.current = window.setTimeout(() => {
+              setShowBackgroundSettings(false);
+            }, 700);
+          }}
+          onMouseEnter={() => {
+            cancelTimeouts();
+          }}
         >
-          <BackgroundLayerSettings />
+          <BackgroundLayerSettings
+            onSelectComplete={() => setShowBackgroundSettings(false)}
+          />
         </Box>
-      ) : (
-        <SearchResults
-          hoveredResult={hoveredResult}
-          setHoveredResult={setHoveredResult}
-        />
       )}
     </Flex>
   );

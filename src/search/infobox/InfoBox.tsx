@@ -14,6 +14,7 @@ import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
+import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import {
   placesNearbyAtom,
@@ -31,13 +32,14 @@ export const InfoBox = () => {
   const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
   const placesNearby = useAtomValue(placesNearbyAtom);
   const { t } = useTranslation();
+  const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
 
   const onClose = useCallback(() => {
     setSelectedResult(null);
     setClickedCoordinate(null);
   }, [setSelectedResult, setClickedCoordinate]);
 
-  if (selectedResult === null) {
+  if (selectedResult === null || isPrintDialogOpen) {
     return null;
   }
   const inputCRS = getInputCRS(selectedResult);
@@ -51,7 +53,6 @@ export const InfoBox = () => {
     <Stack
       p={4}
       m="1"
-      ml={3}
       borderRadius={'16px'}
       bg="white"
       pointerEvents={'auto'}
