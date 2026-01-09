@@ -26,6 +26,7 @@ import { getEmergecyPosterInfoByCoordinates } from '../../search/searchApi';
 import { createMarkerFromCoordinate } from '../../search/searchmarkers/marker';
 import { PlaceSelector } from './PlaceSelector';
 import { RoadAddressSelection } from './RoadAddressSelection';
+import { createPosterUrl } from './utils';
 
 export const InputForm = () => {
   const { t } = useTranslation();
@@ -168,7 +169,18 @@ export const InputForm = () => {
       </FieldRoot>
       <Flex w={'100%'} justifyContent={'space-between'}>
         <Button variant="secondary">{t('shared.cancel')}</Button>
-        <Button disabled={!isInfoCorrect || !clickedCoordinates}>
+        <Button
+          disabled={!isInfoCorrect || !clickedCoordinates}
+          onClick={() => {
+            const lol = createPosterUrl(
+              customName,
+              clickedCoordinates!,
+              selectedRoad.current || '', //TODO putt i state din tulle bukk
+              selectedPlace.current || '',
+            );
+            console.log(lol);
+          }}
+        >
           {t('printdialog.emergencyPoster.buttons.makePoster')}
         </Button>
       </Flex>
