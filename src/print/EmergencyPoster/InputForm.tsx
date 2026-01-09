@@ -1,16 +1,10 @@
 import {
   Button,
-  createListCollection,
   FieldLabel,
   FieldRoot,
   Flex,
   Heading,
   Input,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
   Separator,
   Stack,
   SwitchControl,
@@ -19,14 +13,19 @@ import {
   SwitchRoot,
   Text,
 } from '@kvib/react';
+import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
-import { useEffect, useState } from 'react';
+import { transform } from 'ol/proj';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getPosterMarkerLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
+import { getEmergecyPosterInfoByCoordinates } from '../../search/searchApi';
 import { createMarkerFromCoordinate } from '../../search/searchmarkers/marker';
+import { PlaceSelector } from './PlaceSelector';
+import { RoadAddressSelection } from './RoadAddressSelection';
 
 export const InputForm = () => {
   const { t } = useTranslation();
@@ -34,19 +33,11 @@ export const InputForm = () => {
   const [clickedCoordinates, setClickedCoordinates] = useState<number[] | null>(
     null,
   );
-  const [placesNearby, setPlacesNearby] = useState<string[]>([
-    'Steinsåsen',
-    'Heggelia',
-    'Nordseter',
-  ]);
+  const [customName, setCustomName] = useState<string>('');
 
-  const [roadsNearby, setRoadsNearby] = useState<string[]>([
-    'Kranveien 24',
-    'Ubåtsvingen 1A',
-    'Tyholt Allé 14b',
-  ]);
+  const selectedRoad = useRef<string | null>(null);
+  const selectedPlace = useRef<string | null>(null);
 
-  const [municipalityName, setMunicipalityName] = useState<string>('Hole');
   const [isInfoCorrect, setIsInfoCorrect] = useState<boolean>(false);
 
   const posterClickHandler = (event: Event | BaseEvent) => {
@@ -83,6 +74,28 @@ export const InputForm = () => {
       makerSource.clear();
     };
   }, [clickedCoordinates]);
+
+  const emergenyPosterData = useQuery({
+    queryKey: ['emergencyPosterData', clickedCoordinates],
+    queryFn: async () => {
+      if (!clickedCoordinates) {
+        return null;
+      }
+      const transformedCoordinates = transform(
+        clickedCoordinates,
+        map.getView().getProjection(),
+        'EPSG:4326',
+      );
+
+      const response = await getEmergecyPosterInfoByCoordinates(
+        transformedCoordinates[0],
+        transformedCoordinates[1],
+      );
+
+      return response;
+    },
+  });
+
   return (
     <Stack>
       <Heading size={'md'}>
@@ -93,54 +106,45 @@ export const InputForm = () => {
         <FieldLabel>
           {t('printdialog.emergencyPoster.inputform.fields.title.label')}
         </FieldLabel>
-        <Input />
+        <Input
+          value={customName}
+          onChange={(s) => {
+            setCustomName(s.target.value);
+          }}
+        />
       </FieldRoot>
       <FieldRoot orientation={'horizontal'}>
         <FieldLabel>
           {t('printdialog.emergencyPoster.inputform.fields.place.label')}
         </FieldLabel>
-        <SelectRoot
-          collection={createListCollection({
-            items: placesNearby,
-          })}
-          defaultValue={[placesNearby[0]]}
-        >
-          <SelectTrigger>
-            <SelectValueText />
-          </SelectTrigger>
-          <SelectContent>
-            {placesNearby.map((item) => (
-              <SelectItem key={item} item={item}>
-                {item}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
+        <PlaceSelector
+          coordinates={clickedCoordinates}
+          range={1500}
+          onSelect={(s) => {
+            selectedPlace.current = s;
+            setCustomName(s);
+          }}
+          onLoadComplete={(s) => {
+            selectedPlace.current = s;
+            setCustomName(s);
+          }}
+        />
       </FieldRoot>
       <FieldRoot orientation={'horizontal'}>
         <FieldLabel>
           {t('printdialog.emergencyPoster.inputform.fields.road.label')}
         </FieldLabel>
-        <SelectRoot
-          collection={createListCollection({
-            items: roadsNearby,
-          })}
-          defaultValue={[roadsNearby[0]]}
-        >
-          <SelectTrigger>
-            <SelectValueText />
-          </SelectTrigger>
-          <SelectContent>
-            {roadsNearby.map((item) => (
-              <SelectItem key={item} item={item}>
-                {item}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
+        <RoadAddressSelection
+          posterData={emergenyPosterData}
+          onSelect={(s) => {
+            selectedRoad.current = s;
+          }}
+        />
       </FieldRoot>
       <Text>
-        {t('shared.in')} {municipalityName} {t('shared.locations.municipality')}
+        {emergenyPosterData.isSuccess
+          ? `${t('shared.in')} ${emergenyPosterData.data?.kommune} ${t('shared.locations.municipality')}`
+          : ''}
       </Text>
       <Separator />
       <FieldRoot orientation={'horizontal'}>
