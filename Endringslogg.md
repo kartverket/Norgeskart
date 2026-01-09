@@ -4,7 +4,7 @@ Alle vesentlige endringer for norgeskart vil bli dokumentert i denne filen. Alle
 Sakene i parentes er i dev miljøet og skal bli flyttet til produksjon i løpet av den påfølgende uken.
 
 ## [Unreleased] – Uke 2 (2026-01-08 – 2026-01-14)
-- (TNT-436: Added linken til status.kartverket under (info/hjelp))
+- (TNT-436: Lagt til lenke til status.kartverket under (info/hjelp))
 - (TNT-428: Fikset: Rød pin blir låst når bakgrunnskart boksen er åpen)
 - (TNT-437: Utvide venstre panel til full høyde)
 - (TNT-433: Kartvelger dukker opp så fort markøren er over, ingen klikk nødvendig.)
