@@ -14,11 +14,42 @@ const env = getEnv();
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${query}&treffPerSide=100&fuzzy=true`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av adresser');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(
+      `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`,
+    );
+    if (!res.ok) {
+      console.warn(`API failed [addresses]: ${res.status} for "${query}"`);
+      return {
+        adresser: [],
+        metadata: {
+          side: 1,
+          totaltAntallTreff: 0,
+          treffPerSide: 100,
+          viserFra: 0,
+          viserTil: 0,
+          sokeStreng: query,
+          utkoordsys: 4258,
+        },
+      };
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [addresses]: ${query}`, error);
+    return {
+      adresser: [],
+      metadata: {
+        side: 1,
+        totaltAntallTreff: 0,
+        treffPerSide: 100,
+        viserFra: 0,
+        viserTil: 0,
+        sokeStreng: query,
+        utkoordsys: 4258,
+      },
+    };
+  }
 };
 
 export const getAdressesByLocation = async (
@@ -38,11 +69,42 @@ export const getPlaceNames = async (
   query: string,
   page: number,
 ): Promise<PlaceNameApiResponse> => {
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${query}*&treffPerSide=15&side=${page}`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(
+      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*&treffPerSide=15&side=${page}`,
+    );
+    if (!res.ok) {
+      console.warn(`API failed [placeNames]: ${res.status} for "${query}"`);
+      return {
+        navn: [],
+        metadata: {
+          side: page,
+          totaltAntallTreff: 0,
+          treffPerSide: 15,
+          viserFra: 0,
+          viserTil: 0,
+          sokeStreng: query,
+          utkoordsys: 25833,
+        },
+      };
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [placeNames]: ${query}`, error);
+    return {
+      navn: [],
+      metadata: {
+        side: page,
+        totaltAntallTreff: 0,
+        treffPerSide: 15,
+        viserFra: 0,
+        viserTil: 0,
+        sokeStreng: query,
+        utkoordsys: 25833,
+      },
+    };
+  }
 };
 
 export const getPlaceNamesByLocation = async (
@@ -60,15 +122,33 @@ export const getPlaceNamesByLocation = async (
 };
 
 export const getRoads = async (query: string): Promise<Road[]> => {
-  const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${query}`);
-  if (!res.ok) throw new Error('Feil ved henting av veg');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${encodedQuery}`);
+    if (!res.ok) {
+      console.warn(`API failed [roads]: ${res.status} for "${query}"`);
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [roads]: ${query}`, error);
+    return [];
+  }
 };
 
 export const getProperties = async (query: string): Promise<Property[]> => {
-  const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${query}`);
-  if (!res.ok) throw new Error('Feil ved henting av eiendom');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${encodedQuery}`);
+    if (!res.ok) {
+      console.warn(`API failed [properties]: ${res.status} for "${query}"`);
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [properties]: ${query}`, error);
+    return [];
+  }
 };
 
 export const getElevation = async (x: number, y: number) => {
