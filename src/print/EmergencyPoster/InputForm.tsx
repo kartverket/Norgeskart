@@ -14,7 +14,7 @@ import {
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
-import { useAtomValue } from 'jotai';
+import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import BaseEvent from 'ol/events/Event';
@@ -23,9 +23,11 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getPosterMarkerLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
+import { selectedResultAtom } from '../../search/atoms';
 import { getEmergecyPosterInfoByCoordinates } from '../../search/searchApi';
 import { createMarkerFromCoordinate } from '../../search/searchmarkers/marker';
 import { downloadFile } from '../../shared/utils/fileUtils';
+import { isPrintDialogOpenAtom } from '../atoms';
 import { PlaceSelector } from './PlaceSelector';
 import { RoadAddressSelection } from './RoadAddressSelection';
 import { createPosterUrl } from './utils';
@@ -33,8 +35,15 @@ import { createPosterUrl } from './utils';
 export const InputForm = () => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
+  const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const [clickedCoordinates, setClickedCoordinates] =
-    useState<Coordinate | null>(null);
+    useState<Coordinate | null>(() => {
+      const selectedResult = getDefaultStore().get(selectedResultAtom);
+      if (selectedResult) {
+        return [selectedResult.lon, selectedResult.lat];
+      }
+      return null;
+    });
   const [customName, setCustomName] = useState<string>('');
 
   const [selectedRoad, setSelectedRoad] = useState<string | null>(null);
@@ -169,7 +178,14 @@ export const InputForm = () => {
         </SwitchRoot>
       </FieldRoot>
       <Flex w={'100%'} justifyContent={'space-between'}>
-        <Button variant="secondary">{t('shared.cancel')}</Button>
+        <Button
+          onClick={() => {
+            setIsPrintDialogOpen(false);
+          }}
+          variant="secondary"
+        >
+          {t('shared.cancel')}
+        </Button>
         <Button
           disabled={!isInfoCorrect || !clickedCoordinates}
           onClick={() => {
