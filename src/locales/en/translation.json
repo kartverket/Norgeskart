@@ -334,7 +334,13 @@
       "meter": "Metre",
       "nauticalMile": "Nautical mile"
     },
-    "yes": "Yes"
+    "yes": "Yes",
+    "no": "No",
+    "in": "in",
+    "locations": {
+      "municipality": "municipality"
+    },
+    "cancel": "Cancel"
   },
   "tipsandtricks": {
     "heading": "Tips and tricks",
@@ -397,6 +403,41 @@
       },
       "emergencyPoster": {
         "heading": "Emergency poster"
+      }
+    },
+    "emergencyPoster": {
+      "disclaimer": {
+        "heading": "The users responsibility",
+        "sections": {
+          "section1": "The emergency poster is developed in collaboration with the Joint Rescue centers and emergency services. Kartverket is responsible for the data, ie, place names and maps - as well as the technology.",
+          "section2": "It is the user's responsibility to verify that it is the correct cabin or location shown on the poster.",
+          "section3": "Kartverket assumes no responsibility for any errors caused by user, data or technology."
+        },
+        "accept": "I understand and accept",
+        "reject": "Cancel"
+      },
+      "inputform": {
+        "heading": "Click the map to set the location for the poster",
+        "fields": {
+          "title": {
+            "label": "Give the location a name"
+          },
+          "place": {
+            "label": "Select right place name"
+          },
+          "road": {
+            "label": "The closest road is"
+          },
+          "isInfoCorrect": {
+            "label": "Is the above info correct?"
+          }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Could not create the poster"
+        }
+      },
+      "buttons": {
+        "makePoster": "Create poster"
       }
     }
   }

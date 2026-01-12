@@ -16,6 +16,7 @@ import { drawActionsAtom } from '../settings/draw/drawActions/atoms';
 import { Actions } from './Actions';
 import { DrawLayer } from './DrawLayer';
 import { Layers } from './Layers';
+import { Print } from './Print';
 import { Selected } from './Selected';
 
 export const Debug = () => {
@@ -106,6 +107,7 @@ export const Debug = () => {
             <TabsTrigger value="selected">Selected</TabsTrigger>
             <TabsTrigger value="drawLayer">Draw Layer</TabsTrigger>
             <TabsTrigger value="themeLayers">Theme Layers</TabsTrigger>
+            <TabsTrigger value="print">Print</TabsTrigger>
           </TabsList>
           <TabsContent value="actions">
             <Actions />
@@ -118,6 +120,9 @@ export const Debug = () => {
           </TabsContent>
           <TabsContent value="themeLayers">
             <Layers />
+          </TabsContent>
+          <TabsContent value="print">
+            <Print />
           </TabsContent>
         </Tabs>
       </Box>

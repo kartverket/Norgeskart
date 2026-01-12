@@ -339,7 +339,13 @@
       "meter": "Meter",
       "nauticalMile": "Nautisk mil"
     },
-    "yes": "Ja"
+    "yes": "Ja",
+    "no": "Nei",
+    "in": "i",
+    "locations": {
+      "municipality": "kommune"
+    },
+    "cancel": "Avbryt"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -402,6 +408,41 @@
       },
       "emergencyPoster": {
         "heading": "Nødplakat"
+      }
+    },
+    "emergencyPoster": {
+      "disclaimer": {
+        "heading": "Brukarens ansvar",
+        "sections": {
+          "section1": "Nødplakaten er utvikla i samarbeid med Hovudredningsentralane og nødetatane. Kartverket er ansvarleg for datagrunnlaget, dvs. stadnamn og kart - samt teknologien bak.",
+          "section2": "Brukaren har ansvar å kontrollere at det er korrekt hytte eller stad som blir vist på plakaten.",
+          "section3": "Kartverket tar ikkje ansvar for moglege feil som skuldast brukaren, datagrunnlaget eller teknologien."
+        },
+        "accept": "Eg skjønar og godtar",
+        "reject": "Avbryt"
+      },
+      "inputform": {
+        "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for",
+        "fields": {
+          "title": {
+            "label": "Gi punktet et namn"
+          },
+          "place": {
+            "label": "Vel riktig stadsnamn"
+          },
+          "road": {
+            "label": "Næraste veg er"
+          },
+          "isInfoCorrect": {
+            "label": "Stemmer informasjonen over?"
+          }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Kunne ikkje lage nødplakat"
+        }
+      },
+      "buttons": {
+        "makePoster": "Lag plakat"
       }
     }
   }
