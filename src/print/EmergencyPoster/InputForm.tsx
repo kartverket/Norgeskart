@@ -13,6 +13,7 @@ import {
   SwitchRoot,
   Text,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useQuery } from '@tanstack/react-query';
 import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
@@ -45,11 +46,11 @@ export const InputForm = () => {
       return null;
     });
   const [customName, setCustomName] = useState<string>('');
-
   const [selectedRoad, setSelectedRoad] = useState<string | null>(null);
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
-
   const [isInfoCorrect, setIsInfoCorrect] = useState<boolean>(false);
+
+  const posthog = usePostHog();
 
   const posterClickHandler = (event: Event | BaseEvent) => {
     if (event instanceof MapBrowserEvent) {
@@ -199,15 +200,23 @@ export const InputForm = () => {
                 ? `${emergenyPosterData.data.matrikkelnr || ''} i ${emergenyPosterData.data.kommune || ''}`
                 : '',
             );
+
             if (!downloadLink) {
               alert(
                 t(
                   'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                 ),
               );
+              posthog.capture('print_emergency_poster_created', {
+                success: false,
+              });
               return;
             }
+
             downloadFile(downloadLink, customName + '_emergency_poster.pdf');
+            posthog.capture('print_emergency_poster_created', {
+              success: true,
+            });
           }}
         >
           {t('printdialog.emergencyPoster.buttons.makePoster')}
