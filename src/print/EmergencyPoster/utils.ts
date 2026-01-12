@@ -10,6 +10,7 @@ export const createPosterUrl = (
   projectionCoodrdinates: string,
   streetName: string,
   placeName: string,
+  cadastreString: string,
 ) => {
   const params = new URLSearchParams();
   const [position1, position2] = createPositionString(
@@ -31,6 +32,7 @@ export const createPosterUrl = (
       projectionCoodrdinates,
     ),
   );
+  params.append('matrikkel', cadastreString);
   params.append(
     'utm',
     formatToNorwegianUTMString(coordinates, projectionCoodrdinates),

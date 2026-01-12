@@ -179,6 +179,9 @@ export const InputForm = () => {
               map.getView().getProjection().getCode(),
               selectedRoad || '',
               selectedPlace || '',
+              emergenyPosterData.data
+                ? `${emergenyPosterData.data.matrikkelnr || ''} i ${emergenyPosterData.data.kommune || ''}`
+                : '',
             );
             downloadFile(downloadLink, customName + '_emergency_poster.pdf');
           }}
