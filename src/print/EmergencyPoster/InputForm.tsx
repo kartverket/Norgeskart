@@ -18,12 +18,13 @@ import { useAtomValue } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import BaseEvent from 'ol/events/Event';
 import { transform } from 'ol/proj';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getPosterMarkerLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
 import { getEmergecyPosterInfoByCoordinates } from '../../search/searchApi';
 import { createMarkerFromCoordinate } from '../../search/searchmarkers/marker';
+import { downloadFile } from '../../shared/utils/fileUtils';
 import { PlaceSelector } from './PlaceSelector';
 import { RoadAddressSelection } from './RoadAddressSelection';
 import { createPosterUrl } from './utils';
@@ -36,8 +37,8 @@ export const InputForm = () => {
   );
   const [customName, setCustomName] = useState<string>('');
 
-  const selectedRoad = useRef<string | null>(null);
-  const selectedPlace = useRef<string | null>(null);
+  const [selectedRoad, setSelectedRoad] = useState<string | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
 
   const [isInfoCorrect, setIsInfoCorrect] = useState<boolean>(false);
 
@@ -122,11 +123,11 @@ export const InputForm = () => {
           coordinates={clickedCoordinates}
           range={1500}
           onSelect={(s) => {
-            selectedPlace.current = s;
+            setSelectedPlace(s);
             setCustomName(s);
           }}
           onLoadComplete={(s) => {
-            selectedPlace.current = s;
+            setSelectedPlace(s);
             setCustomName(s);
           }}
         />
@@ -138,7 +139,7 @@ export const InputForm = () => {
         <RoadAddressSelection
           posterData={emergenyPosterData}
           onSelect={(s) => {
-            selectedRoad.current = s;
+            setSelectedRoad(s);
           }}
         />
       </FieldRoot>
@@ -172,13 +173,13 @@ export const InputForm = () => {
         <Button
           disabled={!isInfoCorrect || !clickedCoordinates}
           onClick={() => {
-            const lol = createPosterUrl(
+            const downloadLink = createPosterUrl(
               customName,
               clickedCoordinates!,
-              selectedRoad.current || '', //TODO putt i state din tulle bukk
-              selectedPlace.current || '',
+              selectedRoad || '',
+              selectedPlace || '',
             );
-            console.log(lol);
+            downloadFile(downloadLink, customName + '_emergency_poster.pdf');
           }}
         >
           {t('printdialog.emergencyPoster.buttons.makePoster')}
