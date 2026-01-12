@@ -436,6 +436,9 @@
           "isInfoCorrect": {
             "label": "Stemmer informasjonen over?"
           }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Kunne ikkje lage nødplakat"
         }
       },
       "buttons": {

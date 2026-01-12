@@ -1,5 +1,7 @@
+import { getDefaultStore } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
 import { transform } from 'ol/proj';
+import { mapAtom } from '../../map/atoms';
 import { formatToNorwegianUTMString } from './utmStringUtils';
 
 const BASE_URL = 'https://nodplakat.norgeskart.no/fop2/fop';
@@ -23,7 +25,11 @@ export const createPosterUrl = (
   params.append('position2', position2); //TODO: fix at dette skal være på norsk
   params.append('street', encodeURIComponent(streetName));
   params.append('place', placeName);
-  params.append('map', encodeURIComponent(createMapUrl(coordinates, 16)));
+  const mapUrl = createMapUrl(coordinates);
+  if (!mapUrl) {
+    return null;
+  }
+  params.append('map', encodeURIComponent(mapUrl));
   params.append(
     'posDez',
     createDegreesPositionText(
@@ -42,23 +48,35 @@ export const createPosterUrl = (
   return `${BASE_URL}?${params.toString()}`;
 };
 
-const MAP_WIDTH_M = 1145; // Width of the map in meters for the emergency poster
-const MAP_HEIGHT_M = 660; // Height of the map in meters for the emergency poster
-const createMapUrl = (coordinates: number[], zoomLevel: number) => {
+const hw_ratio = 1145 / 660; // Width / Height
+const createMapUrl = (coordinates: Coordinate) => {
+  const store = getDefaultStore();
+  const resolution = store.get(mapAtom).getView().getResolution();
+  if (!resolution) {
+    return;
+  }
+  const crs =
+    store.get(mapAtom).getView().getProjection().getCode() || 'EPSG:25833';
+  const currentMapHeight = resolution * window.innerHeight;
+  const currentMapWidth = Math.round(currentMapHeight * hw_ratio);
+
   const baseUrl = 'https://wms.geonorge.no/skwms1/wms.topo';
   const params = new URLSearchParams();
   params.append('SERVICE', 'WMS');
   params.append('VERSION', '1.3.0');
   params.append('REQUEST', 'GetMap');
   params.append('LAYERS', 'topo');
-  params.append('WIDTH', MAP_WIDTH_M.toString());
-  params.append('HEIGHT', MAP_HEIGHT_M.toString());
-  params.append('CRS', 'EPSG:25833');
+  params.append('WIDTH', currentMapWidth.toString());
+  params.append('HEIGHT', currentMapHeight.toString());
+  params.append('CRS', crs);
 
-  params.append(
-    'BBOX',
-    `${coordinates[0] - MAP_WIDTH_M / 2},${coordinates[1] - MAP_HEIGHT_M / 2},${coordinates[0] + MAP_WIDTH_M / 2},${coordinates[1] + MAP_HEIGHT_M / 2}`,
-  );
+  let bboxParam = '';
+  bboxParam += `${coordinates[0] - Math.ceil(currentMapWidth / 2)},`;
+  bboxParam += `${coordinates[1] - Math.ceil(currentMapHeight / 2)},`;
+  bboxParam += `${coordinates[0] + Math.ceil(currentMapWidth / 2)},`;
+  bboxParam += `${coordinates[1] + Math.ceil(currentMapHeight / 2)}`;
+
+  params.append('BBOX', bboxParam);
   params.append('FORMAT', 'image/jpeg');
 
   return `${baseUrl}?${params.toString()}`;

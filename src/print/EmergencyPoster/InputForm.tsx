@@ -183,6 +183,14 @@ export const InputForm = () => {
                 ? `${emergenyPosterData.data.matrikkelnr || ''} i ${emergenyPosterData.data.kommune || ''}`
                 : '',
             );
+            if (!downloadLink) {
+              alert(
+                t(
+                  'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
+                ),
+              );
+              return;
+            }
             downloadFile(downloadLink, customName + '_emergency_poster.pdf');
           }}
         >

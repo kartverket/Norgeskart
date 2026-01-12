@@ -497,6 +497,9 @@
           "isInfoCorrect": {
             "label": "Stemmer informasjonen over?"
           }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Kunne ikke lage nødplakat"
         }
       },
       "buttons": {

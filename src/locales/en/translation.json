@@ -431,6 +431,9 @@
           "isInfoCorrect": {
             "label": "Is the above info correct?"
           }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Could not create the poster"
         }
       },
       "buttons": {
