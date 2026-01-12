@@ -18,8 +18,8 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { mapAtom } from '../../map/atoms';
 import { printFormatAtom, printOrientationAtom } from '../atoms';
-import { getDpiMetrics } from '../getDpiMetrics';
-import { useDraggableOverlay } from '../useDraggableOverlay';
+import { getDpiMetrics } from './getDpiMetrics';
+import { useDraggableOverlay } from './useDraggableOverlay';
 
 export const PrintExtentTab = () => {
   const map = useAtomValue(mapAtom);
