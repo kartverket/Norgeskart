@@ -1,4 +1,4 @@
-import { Grid, GridItem, HStack, useBreakpointValue } from '@kvib/react';
+import { Flex, Grid, GridItem, HStack, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { PrintDialog } from '../../print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from '../../search/atoms';
@@ -103,8 +103,10 @@ export const MapOverlay = () => {
           gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
           zIndex={2}
         >
-          <InfoBox />
-          <PrintDialog />
+          <Flex w={'100%'} justifyContent={'flex-end'}>
+            <InfoBox />
+            <PrintDialog />
+          </Flex>
         </GridItem>
 
         <GridItem

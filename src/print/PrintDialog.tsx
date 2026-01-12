@@ -48,6 +48,7 @@ export const PrintDialog = () => {
       pointerEvents={'auto'}
       maxH={'100%'}
       overflowY={'auto'}
+      w={{ base: '100%', md: '500px' }}
     >
       <Stack>
         <Flex justifyContent={'space-between'} alignItems="center">

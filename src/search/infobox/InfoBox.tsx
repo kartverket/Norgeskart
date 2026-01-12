@@ -58,6 +58,7 @@ export const InfoBox = () => {
       pointerEvents={'auto'}
       overflowY={'hidden'}
       maxHeight={'100%'}
+      w={'100%'}
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading fontWeight="bold" size={'lg'}>
