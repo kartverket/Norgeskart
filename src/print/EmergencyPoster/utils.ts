@@ -1,10 +1,11 @@
 import { getDefaultStore } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
 import { transform } from 'ol/proj';
+import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
 import { formatToNorwegianUTMString } from './utmStringUtils';
 
-const BASE_URL = 'https://nodplakat.norgeskart.no/fop2/fop';
+const env = getEnv();
 
 export const createPosterUrl = (
   locationName: string,
@@ -44,7 +45,7 @@ export const createPosterUrl = (
     formatToNorwegianUTMString(coordinates, projectionCoodrdinates),
   );
 
-  return `${BASE_URL}?${params.toString()}`;
+  return `${env.emergencyPosterBaseUrl}?${params.toString()}`;
 };
 
 const hw_ratio = 1145 / 660; // Width / Height, magic numbers
@@ -115,7 +116,7 @@ const decimalToDMS = (dec: number) => {
   const abs = Math.abs(dec);
 
   let deg = Math.floor(abs);
-  let minFloat = (abs - deg) * 60;
+  const minFloat = (abs - deg) * 60;
   let min = Math.floor(minFloat);
   let sec = (minFloat - min) * 60;
 

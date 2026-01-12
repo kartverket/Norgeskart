@@ -11,7 +11,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { getDefaultStore } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
-import { mapAtom } from '../../map/atoms';
+import { mapAtom, ProjectionIdentifier } from '../../map/atoms';
 import { getPlaceNamesByLocation } from '../../search/searchApi';
 import { Place } from '../../types/searchTypes';
 
@@ -36,7 +36,7 @@ export const PlaceSelector = ({
         .get(mapAtom)
         .getView()
         .getProjection()
-        .getCode() as any;
+        .getCode() as ProjectionIdentifier;
       const response = await getPlaceNamesByLocation(
         coordinates[0],
         coordinates[1],
