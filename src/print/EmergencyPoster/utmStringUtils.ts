@@ -58,25 +58,24 @@ export interface FormattedUtm {
 
 /* ------------------------------ Helper logic ------------------------------ */
 
-function normalizeLon(lon: number): number {
-  return ((((lon + 180) % 360) + 360) % 360) - 180; // [-180, 180)
-}
+const normalizeLon = (lon: number): number =>
+  ((((lon + 180) % 360) + 360) % 360) - 180; // [-180, 180)
 
-export function utmZoneFromLongitude(lon: number): number {
+const utmZoneFromLongitude = (lon: number): number => {
   const normalized = normalizeLon(lon);
   return Math.floor((normalized + 180) / 6) + 1; // 1..60
-}
+};
 
 /** Latitude band letter for UTM/MGRS. Returns '' if outside [-80, 84]. */
-export function utmLatBand(lat: number): UtmBand {
+const utmLatBand = (lat: number): UtmBand => {
   const bands = 'CDEFGHJKLMNPQRSTUVWX'; // 20 letters
   if (lat < -80 || lat > 84) return '';
   const idx = Math.floor((lat + 80) / 8);
   return bands[idx] as UtmBand;
-}
+};
 
 /** Apply Norway & Svalbard exceptions for GZD (zone number may be overridden) */
-export function utmZoneWithExceptions(lon: number, lat: number): number {
+const utmZoneWithExceptions = (lon: number, lat: number): number => {
   let zone = utmZoneFromLongitude(lon);
 
   // Norway exception: 56N–64N and 3E–12E => force zone 32
@@ -93,30 +92,30 @@ export function utmZoneWithExceptions(lon: number, lat: number): number {
   }
 
   return zone;
-}
+};
 
 /** Compute UTM info (zone, band, hemisphere, EPSG) from lon/lat. */
-export function utmInfoFromLonLat(lon: number, lat: number): UtmInfo {
+const utmInfoFromLonLat = (lon: number, lat: number): UtmInfo => {
   const zone = utmZoneWithExceptions(lon, lat);
   const band = utmLatBand(lat);
   const hemisphere: Hemisphere = lat >= 0 ? ('N' as const) : ('S' as const);
   const epsg = hemisphere === 'N' ? 32600 + zone : 32700 + zone;
   return { zone, band, hemisphere, epsg };
-}
+};
 
 /* --------------------------- Formatting utilities ------------------------- */
 
-function roundTo(value: number, decimals: number): number {
+const roundTo = (value: number, decimals: number): number => {
   if (!decimals) return Math.round(value);
   const f = Math.pow(10, decimals);
   return Math.round(value * f) / f;
-}
+};
 
-function formatNumber(
+const formatNumber = (
   value: number,
   decimals: 0 | 1 | 2 | 3,
   thousands: boolean,
-): string {
+): string => {
   if (!thousands) {
     return value.toFixed(decimals).replace(/^-0(\.0+)?$/, '0');
   }
@@ -125,7 +124,7 @@ function formatNumber(
   const parts = value.toFixed(decimals).split('.');
   const intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '\u202F');
   return parts.length === 2 ? `${intPart}.${parts[1]}` : intPart;
-}
+};
 
 /* --------------------------- Main formatting API -------------------------- */
 
@@ -137,33 +136,24 @@ function formatNumber(
  * - If input CRS is UTM (EPSG:326xx/327xx), the function still computes canonical zone/band from WGS84.
  * - decimals default to 0; thousands default to false.
  */
-export function formatToNorwegianUTMString(
-  coord: Coordinate,
-  sourceCRS: string,
-): string;
-export function formatToNorwegianUTMString(
-  coord: Coordinate,
-  sourceCRS: string,
-  options: FormatOptions,
-): string;
-export function formatToNorwegianUTMString(
+export const formatToNorwegianUTMString = (
   coord: Coordinate,
   sourceCRS: string,
   options: FormatOptions = {},
-): string {
+): string => {
   const { label } = formatToNorwegianUTM(coord, sourceCRS, options);
   return label;
-}
+};
 
 /**
  * Same as `formatToNorwegianUTMString`, but returns a structured result with
  * both numeric values and the final string.
  */
-export function formatToNorwegianUTM(
+export const formatToNorwegianUTM = (
   coord: Coordinate,
   sourceCRS: string,
   options: FormatOptions = {},
-): FormattedUtm {
+): FormattedUtm => {
   const { decimals = 0, thousands = false, forceEpsg } = options;
 
   // 1) Transform to lon/lat (EPSG:4326)
@@ -202,4 +192,4 @@ export function formatToNorwegianUTM(
     northingStr,
     label,
   };
-}
+};
