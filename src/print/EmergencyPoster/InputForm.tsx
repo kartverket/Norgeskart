@@ -16,6 +16,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { MapBrowserEvent } from 'ol';
+import { Coordinate } from 'ol/coordinate';
 import BaseEvent from 'ol/events/Event';
 import { transform } from 'ol/proj';
 import { useEffect, useState } from 'react';
@@ -32,9 +33,8 @@ import { createPosterUrl } from './utils';
 export const InputForm = () => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
-  const [clickedCoordinates, setClickedCoordinates] = useState<number[] | null>(
-    null,
-  );
+  const [clickedCoordinates, setClickedCoordinates] =
+    useState<Coordinate | null>(null);
   const [customName, setCustomName] = useState<string>('');
 
   const [selectedRoad, setSelectedRoad] = useState<string | null>(null);
@@ -176,6 +176,7 @@ export const InputForm = () => {
             const downloadLink = createPosterUrl(
               customName,
               clickedCoordinates!,
+              map.getView().getProjection().getCode(),
               selectedRoad || '',
               selectedPlace || '',
             );
