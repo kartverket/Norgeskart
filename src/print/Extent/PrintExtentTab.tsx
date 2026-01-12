@@ -16,10 +16,10 @@ import {
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
-import { mapAtom } from '../map/atoms';
-import { printFormatAtom, printOrientationAtom } from './atoms';
-import { useDraggableOverlay } from './hooks/useDraggableOverlay';
-import { getDpiMetrics } from './utils/getDpiMetrics';
+import { mapAtom } from '../../map/atoms';
+import { printFormatAtom, printOrientationAtom } from '../atoms';
+import { getDpiMetrics } from '../getDpiMetrics';
+import { useDraggableOverlay } from '../useDraggableOverlay';
 
 export const PrintExtentTab = () => {
   const map = useAtomValue(mapAtom);
@@ -35,9 +35,7 @@ export const PrintExtentTab = () => {
   const layout = `${format} ${orientation === 'portrait' ? 'Portrait' : 'Landscape'}`;
 
   const { overlayWidth, overlayHeight } = getDpiMetrics(layout);
-  // const { generate, loading } = useGenerateMapPdf(layout);
 
-  // Create overlay inside map viewport
   useEffect(() => {
     if (!map) return;
 
@@ -97,6 +95,25 @@ export const PrintExtentTab = () => {
     setOverlayPosition,
   });
 
+  const getSelectedExtent = () => {
+    if (!map) return null;
+    const topLeft = map.getCoordinateFromPixel([
+      overlayPosition.x,
+      overlayPosition.y,
+    ]);
+    const bottomRight = map.getCoordinateFromPixel([
+      overlayPosition.x + overlayWidth,
+      overlayPosition.y + overlayHeight,
+    ]);
+    if (!topLeft || !bottomRight) return null;
+    return [topLeft[0], bottomRight[1], bottomRight[0], topLeft[1]];
+  };
+
+  const handlePrint = async () => {
+    const extent = getSelectedExtent();
+    console.log('Valgt extent:', extent);
+  };
+
   return (
     <>
       <SelectRoot
@@ -138,7 +155,7 @@ export const PrintExtentTab = () => {
       </Box>
       <Text mt={4}>Plasser det oransje feltet i området du vil skrive ut</Text>
       <HStack mt={4}>
-        <Button>Hent kartet</Button>
+        <Button onClick={handlePrint}>Hent kartet</Button>
         <Button variant="outline">Avbryt</Button>
       </HStack>
     </>

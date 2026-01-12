@@ -1,7 +1,8 @@
+import { Map } from 'ol';
 import { useEffect } from 'react';
 
 export interface UseDraggableOverlayProps {
-  map: any;
+  map: Map;
   overlayRef: React.RefObject<HTMLDivElement | null>;
   overlayWidth: number;
   overlayHeight: number;
