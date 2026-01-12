@@ -21,8 +21,8 @@ export const createPosterUrl = (
     projectionCoodrdinates,
   );
   params.append('locationName', encodeURIComponent(locationName));
-  params.append('position1', position1); //TODO: fix at dette skal være på norsk
-  params.append('position2', position2); //TODO: fix at dette skal være på norsk
+  params.append('position1', position1);
+  params.append('position2', position2);
   params.append('street', encodeURIComponent(streetName));
   params.append('place', placeName);
   const mapUrl = createMapUrl(coordinates);
@@ -44,11 +44,10 @@ export const createPosterUrl = (
     formatToNorwegianUTMString(coordinates, projectionCoodrdinates),
   );
 
-  //TODO: missing matrikk, utm posDez
   return `${BASE_URL}?${params.toString()}`;
 };
 
-const hw_ratio = 1145 / 660; // Width / Height
+const hw_ratio = 1145 / 660; // Width / Height, magic numbers
 const createMapUrl = (coordinates: Coordinate) => {
   const store = getDefaultStore();
   const resolution = store.get(mapAtom).getView().getResolution();
@@ -94,10 +93,6 @@ const createPositionString = (
     `${pos1DMS.deg} grader ${pos1DMS.min} minutter ${Math.round(pos1DMS.sec)} sekunder nord`,
     `${pos2DMS.deg} grader ${pos2DMS.min} minutter ${Math.round(pos2DMS.sec)} sekunder øst`,
   ];
-};
-
-const createUTMPostionText = () => {
-  return 'UTM-posisjon: (kommer senere)';
 };
 
 const createDegreesPositionText = (
