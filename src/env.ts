@@ -9,6 +9,9 @@ type layerProviderParameters = {
   geoNorgeWMS: {
     baseUrl: string;
   };
+  kartverketTopoWMS?: {
+    baseUrl: string;
+  };
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -37,6 +40,9 @@ const LOCAL_ENV: Env = {
     geoNorgeWMS: {
       baseUrl: 'https://wms.geonorge.no/skwms1/wms',
     },
+    kartverketTopoWMS: {
+      baseUrl: 'https://kart.atgcp1-dev.kartverket-intern.cloud/topo/v1/ows',
+    },
   },
   envName: 'local',
   emergencyPosterBaseUrl: 'https://nodplakat.norgeskart.no/fop2/fop',
@@ -57,6 +63,9 @@ const DEV_ENV: Env = {
     },
     geoNorgeWMS: {
       baseUrl: 'https://wms.geonorge.no/skwms1/wms',
+    },
+    kartverketTopoWMS: {
+      baseUrl: 'https://kart.atgcp1-dev.kartverket-intern.cloud/topo/v1/ows',
     },
   },
   envName: 'dev',

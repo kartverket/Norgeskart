@@ -16,6 +16,7 @@ export const mapLegacyBackgroundLayerId = (
     '1002': 'Nibcache_UTM33_EUREF89_v2',
     '1009': 'oceanicelectronic',
     '10088': 'sjokartraster',
+    '1005': 'topo_2025',
   };
 
   return legacyIdMap[layerId] || null;

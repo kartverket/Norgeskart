@@ -3,6 +3,7 @@ import { usePostHog } from '@posthog/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getEnv } from '../../env';
 import { getBackgroundLayerImageName, mapAtom } from '../../map/atoms';
 import { activeBackgroundLayerAtom } from '../../map/layers/atoms.ts';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
@@ -17,14 +18,15 @@ import { getUrlParameter } from '../../shared/utils/urlUtils';
 // Prioritetskart for sortering
 const layerPriorityMap = new Map<BackgroundLayerName, number>([
   ['topo', 1],
-  ['topograatone', 2],
-  ['toporaster', 3],
-  ['sjokartraster', 4],
-  ['oceanicelectronic', 5],
-  ['Nibcache_web_mercator_v2', 6],
-  ['Nibcache_UTM32_EUREF89_v2', 7],
-  ['Nibcache_UTM33_EUREF89_v2', 8],
-  ['Nibcache_UTM35_EUREF89_v2', 8],
+  ['topo_2025', 2],
+  ['topograatone', 3],
+  ['toporaster', 4],
+  ['sjokartraster', 5],
+  ['oceanicelectronic', 6],
+  ['Nibcache_web_mercator_v2', 7],
+  ['Nibcache_UTM32_EUREF89_v2', 8],
+  ['Nibcache_UTM33_EUREF89_v2', 9],
+  ['Nibcache_UTM35_EUREF89_v2', 9],
 ]);
 
 const layerPrioritySort = (
@@ -160,6 +162,15 @@ export const BackgroundLayerSettings = ({
     value: 'oceanicelectronic' as WMSLayerName,
     label: t(`map.settings.layers.mapNames.backgroundMaps.oceanicelectronic`),
   });
+
+  // Only add topo_2025 if the WMS service is configured (dev/local only)
+  const ENV = getEnv();
+  if (ENV.layerProviderParameters.kartverketTopoWMS) {
+    avaiableLayers.push({
+      value: 'topo_2025' as WMSLayerName,
+      label: t(`map.settings.layers.mapNames.backgroundMaps.topo_2025`),
+    });
+  }
 
   const sortedLayers = avaiableLayers.sort(layerPrioritySort);
 
