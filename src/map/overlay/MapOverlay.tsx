@@ -81,7 +81,7 @@ export const MapOverlay = () => {
             base: '1 / span 12',
             md: '1 / span 6',
             lg: '1 / span 4',
-            xl: '1 / span 3',
+            xl: '1 / span 2',
           }}
           gridRow={{ base: '4 / span 2', md: '1 / span 4' }}
           zIndex={1}
