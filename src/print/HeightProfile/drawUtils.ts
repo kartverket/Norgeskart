@@ -1,8 +1,10 @@
 import { getDefaultStore } from 'jotai';
-import Draw from 'ol/interaction/Draw';
+import { LineString } from 'ol/geom';
+import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import { mapAtom } from '../../map/atoms';
+import { profileLineAtom } from './atoms';
 
 const LAYER_ID = 'heightProfileDrawLayer';
 
@@ -24,6 +26,16 @@ export const addDrawInteractionToMap = () => {
 
   drawInteraction.on('drawstart', () => {
     drawLayer.getSource()?.clear();
+  });
+
+  drawInteraction.on('drawend', (e: DrawEvent) => {
+    console.log('hi there ');
+    const store = getDefaultStore();
+
+    const geometry = e.feature.getGeometry();
+    if (!geometry) return;
+    if (!(geometry instanceof LineString)) return;
+    store.set(profileLineAtom, geometry);
   });
   map.addInteraction(drawInteraction);
 };
