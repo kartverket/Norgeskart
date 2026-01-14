@@ -17,13 +17,13 @@ import {
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { mapAtom } from '../../map/atoms';
-import { printFormatAtom, printOrientationAtom } from '../atoms';
-import { getDpiMetrics } from './getDpiMetrics';
-import { useDraggableOverlay } from './useDraggableOverlay';
-import { generateMapPdf } from './generateMapPdf';
-import { useBackgoundLayers } from '../../map/layers/backgroundLayers';
 import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
+import { useBackgoundLayers } from '../../map/layers/backgroundLayers';
+import { printFormatAtom, printOrientationAtom } from '../atoms';
+import { generateMapPdf } from './generateMapPdf';
+import { getDpiMetrics } from './getDpiMetrics';
+import { useDraggableOverlay } from './useDraggableOverlay';
 
 export const PrintExtentTab = () => {
   const map = useAtomValue(mapAtom);
@@ -42,7 +42,9 @@ export const PrintExtentTab = () => {
   const { overlayWidth, overlayHeight } = getDpiMetrics(layout);
 
   // Hent bakgrunnslag og laginfo via hooks
-  const backgroundLayer = useAtomValue(activeBackgroundLayerAtom) as BackgroundLayerName;
+  const backgroundLayer = useAtomValue(
+    activeBackgroundLayerAtom,
+  ) as BackgroundLayerName;
   const { getBackgroundLayer } = useBackgoundLayers();
   const layerInfo = getBackgroundLayer(backgroundLayer);
 
@@ -103,7 +105,6 @@ export const PrintExtentTab = () => {
   });
 
   const handlePrint = async () => {
-
     await generateMapPdf({
       map,
       overlayRef,
