@@ -15,8 +15,10 @@ interface GenerateMapPdfProps {
   t: (key: string) => string;
   currentLayout: string;
   backgroundLayer: BackgroundLayerName;
-  layerInfo: any;
 }
+
+
+
 
 export const generateMapPdf = async ({
   map,
@@ -25,7 +27,6 @@ export const generateMapPdf = async ({
   t,
   currentLayout,
   backgroundLayer,
-  layerInfo,
 }: GenerateMapPdfProps) => {
   if (!map || !overlayRef.current) return;
 
@@ -38,13 +39,10 @@ export const generateMapPdf = async ({
     const centerY = overlayRect.top - mapRect.top + overlayRect.height / 2;
     const [lon, lat] = map.getCoordinateFromPixel([centerX, centerY]);
     const sourceProjection = map.getView().getProjection().getCode();
-    const layerMatrixSet = layerInfo.getSource?.()?.getMatrixSet?.();
 
-    const baseURL =
-      layerInfo?.getSource?.()?.getUrls?.()?.[0] ||
-      layerInfo?.getSource?.()?.getUrl?.() ||
-      layerInfo?.urls ||
-      '';
+
+    const baseURL = 'https://cache.kartverket.no/v1/service';
+    const matrixSet = 'utm33n';
 
     const targetProjection = 'EPSG:25833';
     const [convertedLon, convertedLat] = transform(
@@ -64,7 +62,6 @@ export const generateMapPdf = async ({
     };
     const api_layout = layoutMap[currentLayout] || '1_A4_portrait';
 
-    console.log('matrixset: ', layerMatrixSet);
 
     const payload: Payload = {
       attributes: {
@@ -86,7 +83,7 @@ export const generateMapPdf = async ({
               dimensions: null,
               requestEncoding: 'KVP',
               dimensionParams: {},
-              matrixSet: layerMatrixSet,
+              matrixSet: matrixSet,
               matrices: [
                 //husk å ta ut disse i en egen
                 {
