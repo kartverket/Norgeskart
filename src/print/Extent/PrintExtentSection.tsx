@@ -41,7 +41,6 @@ export const PrintExtentSection = () => {
   const backgroundLayer = useAtomValue(activeBackgroundLayerAtom);
 
   const handlePrint = async () => {
-
     await generateMapPdf({
       map,
       overlayRef,
@@ -54,7 +53,12 @@ export const PrintExtentSection = () => {
 
   return (
     <>
-      <PrintExtentOverlay map={map} overlayWidth={overlayWidth} overlayHeight={overlayHeight} overlayRef={overlayRef} />
+      <PrintExtentOverlay
+        map={map}
+        overlayWidth={overlayWidth}
+        overlayHeight={overlayHeight}
+        overlayRef={overlayRef}
+      />
       <SelectRoot
         collection={createListCollection({ items: formatOptions })}
         value={[format]}

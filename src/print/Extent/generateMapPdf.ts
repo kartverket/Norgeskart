@@ -38,7 +38,6 @@ export const generateMapPdf = async ({
     const [lon, lat] = map.getCoordinateFromPixel([centerX, centerY]);
     const sourceProjection = map.getView().getProjection().getCode();
 
-
     const baseURL = 'https://cache.kartverket.no/v1/service';
     const matrixSet = 'utm33n';
 
