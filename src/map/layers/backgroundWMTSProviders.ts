@@ -156,9 +156,9 @@ const WMTSAtom = atom(async () => {
             if (options != null) {
               const wmts = isNorgeIBilderLayer(layer)
                 ? new WMTS({
-                    ...options,
-                    tileLoadFunction: nibTileLoadFunction,
-                  })
+                  ...options,
+                  tileLoadFunction: nibTileLoadFunction,
+                })
                 : new WMTS({ ...options });
               layersForProjection.set(layer, wmts);
             }

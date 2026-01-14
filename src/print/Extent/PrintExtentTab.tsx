@@ -20,6 +20,10 @@ import { mapAtom } from '../../map/atoms';
 import { printFormatAtom, printOrientationAtom } from '../atoms';
 import { getDpiMetrics } from './getDpiMetrics';
 import { useDraggableOverlay } from './useDraggableOverlay';
+import { generateMapPdf } from './generateMapPdf';
+import { useBackgoundLayers } from '../../map/layers/backgroundLayers';
+import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
+import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 
 export const PrintExtentTab = () => {
   const map = useAtomValue(mapAtom);
@@ -32,9 +36,15 @@ export const PrintExtentTab = () => {
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
+  const [loading, setLoading] = useState(false);
   const layout = `${format} ${orientation === 'portrait' ? 'Portrait' : 'Landscape'}`;
 
   const { overlayWidth, overlayHeight } = getDpiMetrics(layout);
+
+  // Hent bakgrunnslag og laginfo via hooks
+  const backgroundLayer = useAtomValue(activeBackgroundLayerAtom) as BackgroundLayerName;
+  const { getBackgroundLayer } = useBackgoundLayers();
+  const layerInfo = getBackgroundLayer(backgroundLayer);
 
   useEffect(() => {
     if (!map) return;
@@ -64,7 +74,6 @@ export const PrintExtentTab = () => {
     return () => overlay.remove();
   }, [map, overlayWidth, overlayHeight]);
 
-  // Update overlay size on layout change
   useEffect(() => {
     if (!overlayRef.current || !map) return;
 
@@ -78,7 +87,6 @@ export const PrintExtentTab = () => {
     });
   }, [layout, overlayWidth, overlayHeight, map]);
 
-  // Apply overlay position
   useEffect(() => {
     if (overlayRef.current) {
       overlayRef.current.style.top = `${overlayPosition.y}px`;
@@ -86,7 +94,6 @@ export const PrintExtentTab = () => {
     }
   }, [overlayPosition]);
 
-  // Enable dragging
   useDraggableOverlay({
     map,
     overlayRef,
@@ -95,23 +102,17 @@ export const PrintExtentTab = () => {
     setOverlayPosition,
   });
 
-  const getSelectedExtent = () => {
-    if (!map) return null;
-    const topLeft = map.getCoordinateFromPixel([
-      overlayPosition.x,
-      overlayPosition.y,
-    ]);
-    const bottomRight = map.getCoordinateFromPixel([
-      overlayPosition.x + overlayWidth,
-      overlayPosition.y + overlayHeight,
-    ]);
-    if (!topLeft || !bottomRight) return null;
-    return [topLeft[0], bottomRight[1], bottomRight[0], topLeft[1]];
-  };
-
   const handlePrint = async () => {
-    const extent = getSelectedExtent();
-    console.log('Valgt extent:', extent);
+
+    await generateMapPdf({
+      map,
+      overlayRef,
+      setLoading,
+      t: (key) => key, // evt. bruk din oversetter
+      currentLayout: layout,
+      backgroundLayer,
+      layerInfo,
+    });
   };
 
   return (
