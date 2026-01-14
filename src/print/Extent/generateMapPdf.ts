@@ -7,6 +7,7 @@ import {
   requestPdfGeneration,
 } from '../../api/printApi';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
+import { getScaleFromResolution } from '../../map/mapScale';
 
 interface GenerateMapPdfProps {
   map: Map;
@@ -16,9 +17,6 @@ interface GenerateMapPdfProps {
   currentLayout: string;
   backgroundLayer: BackgroundLayerName;
 }
-
-
-
 
 export const generateMapPdf = async ({
   map,
@@ -62,6 +60,9 @@ export const generateMapPdf = async ({
     };
     const api_layout = layoutMap[currentLayout] || '1_A4_portrait';
 
+    const resolution = map.getView().getResolution();
+    const scale = resolution ? getScaleFromResolution(resolution, map) : 25000;
+
 
     const payload: Payload = {
       attributes: {
@@ -70,7 +71,7 @@ export const generateMapPdf = async ({
           projection: sourceProjection,
           dpi: 128,
           rotation: rotationDegrees,
-          scale: 10000,
+          scale: scale,
           layers: [
             {
               baseURL: baseURL,
@@ -224,7 +225,7 @@ export const generateMapPdf = async ({
           ],
         },
         pos: `${convertedLon.toFixed(2)}, ${convertedLat.toFixed(2)}`,
-        scale_string: `1: 25000`,
+        scale_string: `1: ${scale}`,
       },
       layout: api_layout,
       outputFormat: 'pdf',
