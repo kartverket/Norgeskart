@@ -62,6 +62,7 @@ export const generateMapPdf = async ({
 
     const resolution = map.getView().getResolution();
     const scale = resolution ? getScaleFromResolution(resolution, map) : 25000;
+    const roundedScale = Math.round(scale);
 
     const payload: Payload = {
       attributes: {
@@ -70,7 +71,7 @@ export const generateMapPdf = async ({
           projection: sourceProjection,
           dpi: 128,
           rotation: rotationDegrees,
-          scale: scale,
+          scale: roundedScale,
           layers: [
             {
               baseURL: baseURL,
