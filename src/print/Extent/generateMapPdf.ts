@@ -63,7 +63,6 @@ export const generateMapPdf = async ({
     const resolution = map.getView().getResolution();
     const scale = resolution ? getScaleFromResolution(resolution, map) : 25000;
 
-
     const payload: Payload = {
       attributes: {
         map: {
@@ -86,7 +85,7 @@ export const generateMapPdf = async ({
               dimensionParams: {},
               matrixSet: matrixSet,
               matrices: [
-                //husk å ta ut disse i en egen
+                //gjerne ta dette ut i noe eget
                 {
                   identifier: '0',
                   scaleDenominator: 77371428.57142858,
@@ -234,8 +233,6 @@ export const generateMapPdf = async ({
 
     const result = await requestPdfGeneration(payload);
     const downloadURL = await pollPdfStatus(result.statusURL);
-
-    console.log('result', result);
 
     if (downloadURL) {
       window.open(downloadURL, '_blank');

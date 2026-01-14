@@ -16,7 +16,7 @@ import { mapToolAtom } from '../map/overlay/atoms';
 import { isPrintDialogOpenAtom } from './atoms';
 import { ElevationProfileSection } from './ElevationProfile/ElevationProfileSection';
 import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
-import { PrintExtentTab } from './Extent/PrintExtentTab';
+import { PrintExtentSection } from './Extent/PrintExtentSection';
 
 const printTabNames = [
   'extent',
@@ -96,7 +96,7 @@ export const PrintDialog = () => {
             )}
           </TabsList>
           <TabsContent value="extent">
-            <PrintExtentTab />
+            <PrintExtentSection />
           </TabsContent>
           <TabsContent value="hiking">hei turkart</TabsContent>
           <TabsContent value="elevationProfile">
