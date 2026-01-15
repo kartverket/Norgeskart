@@ -18,7 +18,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       id: 'ecoKvFirst',
       name: {
         nb: 'Økonomisk Kartverket 1. utgave',
-        nn: 'Økonomisk Kartverket 1. utgave',
+        nn: 'Økonomisk kartverk 1. utgåve',
         en: 'Economic chart 1st edition',
       },
       layers: 'n5raster_foerstegang_metadata,n5raster_foerstegang',

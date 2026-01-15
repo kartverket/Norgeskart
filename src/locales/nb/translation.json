@@ -98,7 +98,7 @@
     "municipality": "Kommune",
     "placeinfo": "Stedsnavnfakta",
     "propertyInfo": "Eiendomsinformasjon",
-    "roadName": "Veinavn",
+    "roadName": "Vegnavn",
     "utmCoordinates": "UTM-koordinater",
     "placesNearby": "Steder i nærheten"
   },
@@ -114,7 +114,7 @@
     "coordinate": "Koordinat",
     "place": "Stedsnavn",
     "property": "Eiendom",
-    "road": "Vei"
+    "road": "Veg"
   },
   "map": {
     "contextmenu": {
@@ -132,7 +132,7 @@
               "n50kartdata": "N50 kart",
               "sjo": "Sjøkart",
               "turruter": "Turruter",
-              "veger": "Veier og adresser"
+              "veger": "Veger og adresser"
             },
             "title": "Meld om en feil"
           },
@@ -295,7 +295,7 @@
           },
           "popover": {
             "title": "Koordinatreferansesystem",
-            "body": "Velg et koordinatreferansesystem. Forskjellige systemer har forskjellige nøyaktighet i deler av landet. Vi anbefaler UTM 33 hvis du er usikker."
+            "body": "Velg et koordinatreferansesystem. Forskjellige systemer har forskjellige nøyaktighet i ulike deler av landet. Vi anbefaler UTM 33 hvis du er usikker."
           }
         },
         "theme": {
