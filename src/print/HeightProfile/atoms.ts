@@ -24,7 +24,7 @@ export const profileEffect = atomEffect((get, set) => {
   const wkid = parseInt(mapProjection.replace('EPSG:', ''), 10);
 
   const featureLength = line.getLength();
-  const stepLength = Math.max(featureLength / 400, 10); // max 400 samples, min 10 meters, unsure if the api cares
+  const stepLength = Math.max(featureLength / 100, 10); // max 400 samples, min 10 meters, unsure if the api cares
 
   const lineCoordinates = line.getCoordinates();
   const body = new GPFeatureRecordSetLayer([lineCoordinates], wkid);

@@ -6,6 +6,7 @@ import {
   addDrawInteractionToMap,
   removeDrawInteractionFromMap,
 } from './drawUtils';
+import { HeightProfileChart } from './HeightProfileChart';
 
 export const HeightProfileSection = () => {
   useAtom(profileEffect);
@@ -15,5 +16,10 @@ export const HeightProfileSection = () => {
       removeDrawInteractionFromMap();
     };
   }, []);
-  return <Stack>Hei på deg høydeprofil!</Stack>;
+  return (
+    <Stack>
+      Hei på deg høydeprofil!
+      <HeightProfileChart />
+    </Stack>
+  );
 };
