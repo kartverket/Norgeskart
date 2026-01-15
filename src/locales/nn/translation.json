@@ -21,7 +21,7 @@
     }
   },
   "draw": {
-    "begin": "Tekne på kartet",
+    "begin": "Teikne på kartet",
     "clear": "Fjern teikning",
     "close": "Lukk",
     "confrimClear": "Er du sikker?",
@@ -46,7 +46,7 @@
         }
       },
       "toolSelect": {
-        "placeholder": "Velg teknemåte"
+        "placeholder": "Velg teiknemåte"
       }
     },
     "deleteSelection": "Fjern valgte",
@@ -55,7 +55,7 @@
     "size": {
       "label": "Storleik"
     },
-    "tabHeading": "Tekne og måle",
+    "tabHeading": "Teikna og måla",
     "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {
@@ -124,7 +124,7 @@
             "category": {
               "label": "Vel kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. el frå kategoriane under for å opna Rett i kartet i nytt vindauga.",
+            "description": "Meld om feil i kart på rettikartet.no. vel frå kategoriane under for å opna Rett i kartet i nytt vindauga.",
             "link": {
               "label": "Åpne rettikartet.no i ei ny fane"
             },
