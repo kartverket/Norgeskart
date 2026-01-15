@@ -8,7 +8,7 @@
       "text": "Print"
     },
     "draw": {
-      "text": "Tekne og måle",
+      "text": "Teikna og måla",
       "mobiletext": "Verktøy"
     },
     "settings": {
@@ -37,7 +37,7 @@
         "tooltip": {
           "circle": "Sirkel",
           "edit": "Endre og flytt",
-          "linestring": "Linjesegmet",
+          "linestring": "Linjesegment",
           "movedown": "Flytt ned",
           "moveup": "Flytt ned",
           "point": "Punkt",
@@ -70,12 +70,12 @@
       "label": "Velg filformat",
       "placeholder": "Vel format"
     },
-    "heading": "Eksport av tekning"
+    "heading": "Eksport av teikning"
   },
   "infoBox": {
     "address": "Adresse",
     "cadastralIdentifier": "Gards- og bruksnummer",
-    "coordinateInfo": "Sjå koordinater",
+    "coordinateInfo": "Sjå koordinatar",
     "coordinateSection": {
       "copy": {
         "label": "Kopier koordinatar",
@@ -84,16 +84,16 @@
         }
       },
       "differentCrs": "Vis i",
-      "east": "Øst",
-      "north": "Nord"
+      "east": "aust",
+      "north": "nord"
     },
     "coordinateSystem": "Koordinatsystem",
     "decimalDegrees": "Desimalgradar",
     "emergencyPoster": "Lag nødplakat",
-    "heightEstimatedByInterpolation": "Høgde:",
+    "heightEstimatedByInterpolation": "Høgd:",
     "in": "i",
     "makeMap": "Lag turkart",
-    "metersAboveSeaLevel": "moh",
+    "metersAboveSeaLevel": "moh.",
     "metersAboveSeaLevelTooltip": "Meter over havet, estimert ved interpolasjon",
     "municipality": "Kommune",
     "placeInfo": "Sjå fakta om stadnamnet",
@@ -124,7 +124,7 @@
             "category": {
               "label": "Vel kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. Vel fra kategoriene under for å åpne rettikartet i nytt vindu.",
+            "description": "Meld om feil i kart på rettikartet.no. el frå kategoriane under for å opna Rett i kartet i nytt vindauga.",
             "link": {
               "label": "Åpne rettikartet.no i ei ny fane"
             },
@@ -132,7 +132,7 @@
               "n50kartdata": "N50 kart",
               "sjo": "Sjøkart",
               "turruter": "Turrutar",
-              "veger": "Veger og adressar"
+              "veger": "Vegar og adresser"
             },
             "title": "Meld om en feil"
           },
@@ -162,7 +162,7 @@
             "sjokartraster": "Sjøkart papir",
             "topo": "Topo",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografisk, gråtone",
+            "topograatone": "Topografisk gråtone",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
           },
@@ -220,7 +220,7 @@
           "placeholder": "Vel",
           "projections": {
             "epsg25833": {
-              "displayName": "UTM 33 (anbefalt)"
+              "displayName": "UTM 33 (tilrådd)"
             },
             "epsg25832": {
               "displayName": "UTM 32"
@@ -234,7 +234,7 @@
           },
           "popover": {
             "title": "Koordinatreferansesystem",
-            "body": "Vel eit koordinatreferansesystem. Dei har ulik nøyaktigheit i delar av landet. Vi anbefaler at du nyttar UTM 33 om du ikkje er sikker."
+            "body": "Vel eit koordinatreferansesystem. Dei har ulik nøyaktigheit i ulike delar av landet. Me tilrår at du nyttar UTM 33 om du ikkje er sikker."
           }
         },
         "theme": {
@@ -259,7 +259,7 @@
         "label": "Tilbakestill kartet til standard visning"
       },
       "rotateRight": {
-        "label": "Roter høger"
+        "label": "Roter høgre"
       },
       "myLocation": {
         "label": "Gå til min posisjon"
@@ -286,8 +286,8 @@
   },
   "privacyAndContact": {
     "contactUs": "Kontakt",
-    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
-    "infoText": "Les korleis vi tek vare på personopplysningar i Kartverket si",
+    "dialogContent": "Me tek gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
+    "infoText": "Les korleis me tek vare på personopplysningar i Kartverket si",
     "privacyPolicy": "Personvernerklæring ",
     "sendEmail": "Send e-post",
     "privacy": "Personvern",
@@ -314,7 +314,7 @@
         "tooltip": "Skriv ut"
       },
       "shareMap": {
-        "success": "Lenka er kopiert til utklippstavla",
+        "success": "Lenkja er kopiert til utklippstavla",
         "tooltip": "Del kartet"
       }
     },
@@ -355,7 +355,7 @@
   "toolbar": {
     "reportError": {
       "label": "Feil i kartet?",
-      "tooltip": "Rapporter feil eller mangler i kartet."
+      "tooltip": "Rapporter feil eller manglar i kartet."
     },
     "scale": {
       "tooltip": "Vel målestokk"
