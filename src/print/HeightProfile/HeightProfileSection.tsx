@@ -1,8 +1,13 @@
 import { Heading, Stack, Text } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { profileEffect } from './atoms';
+import {
+  profileEffect,
+  profileJobStatusAtom,
+  profileLineAtom,
+  profileResponseAtom,
+} from './atoms';
 import {
   addDrawInteractionToMap,
   removeDrawInteractionFromMap,
@@ -12,11 +17,17 @@ import { HeightProfileExport } from './HeightProfileExport';
 
 export const HeightProfileSection = () => {
   useAtom(profileEffect);
+  const setprofileLine = useSetAtom(profileLineAtom);
+  const setprofileResponse = useSetAtom(profileResponseAtom);
+  const setprofileJobStatus = useSetAtom(profileJobStatusAtom);
   const { t } = useTranslation();
   useEffect(() => {
     addDrawInteractionToMap();
     return () => {
       removeDrawInteractionFromMap();
+      setprofileLine(null);
+      setprofileResponse(null);
+      setprofileJobStatus('notStarted');
     };
   }, []);
   return (
