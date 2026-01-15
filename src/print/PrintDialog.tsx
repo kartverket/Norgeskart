@@ -17,6 +17,7 @@ import { isPrintDialogOpenAtom } from './atoms';
 import { ElevationProfileSection } from './ElevationProfile/ElevationProfileSection';
 import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
 import { ExtentSection } from './Extent/ExtentSection';
+import { HikingMapSection } from './HikingMap/HikingMapSection';
 
 const printTabNames = [
   'extent',
@@ -98,7 +99,9 @@ export const PrintDialog = () => {
           <TabsContent value="extent">
             <ExtentSection />
           </TabsContent>
-          <TabsContent value="hiking">hei turkart</TabsContent>
+          <TabsContent value="hiking">
+            <HikingMapSection />
+          </TabsContent>
           <TabsContent value="elevationProfile">
             <ElevationProfileSection />
           </TabsContent>

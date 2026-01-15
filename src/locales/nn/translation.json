@@ -424,6 +424,32 @@
         "xAxis": "Avstand [m]",
         "yAxis": "Høyde [m]"
       }
+    },
+    "hikingMap": {
+      "heading": "Vel målestokk og gi kartet ditt eit namn",
+      "fields": {
+        "scale": {
+          "label": "Målestokk"
+        },
+        "mapName": {
+          "label": "Namn på kartet",
+          "placeholder": "Mitt turkart"
+        },
+        "includeLegend": {
+          "label": "teknforklaring"
+        },
+        "includeSweeden": {
+          "label": "kart inn i Sverige (50km)"
+        },
+        "includeCompassInstructions": {
+          "label": "minikurs i kompassbruk"
+        }
+      },
+      "overlayinstructions": "Plasser det oransje feltet i området du vil skrive ut ",
+      "buttons": {
+        "generate": "Lag turkart",
+        "cancel": "Avbryt"
+      }
     }
   },
   "printExtent": {
