@@ -17,8 +17,8 @@ export const submitHeightProfileRequest = async (
   const bodyData = {
     f: 'json',
     polyline: JSON.stringify(polyline),
-    dem: 'DTM',
-    sampleDistance: sampleDistance.toString(),
+    dem: 'DOM',
+    sample_distance: sampleDistance.toString(),
   };
   const body = new URLSearchParams(bodyData);
 
