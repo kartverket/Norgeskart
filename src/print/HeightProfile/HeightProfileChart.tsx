@@ -1,4 +1,4 @@
-import { Alert, Spinner } from '@kvib/react';
+import { Alert, Flex, Spinner, Text } from '@kvib/react';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -9,6 +9,7 @@ import {
 } from 'chart.js';
 import { useAtomValue } from 'jotai';
 import { Line } from 'react-chartjs-2';
+import { useTranslation } from 'react-i18next';
 import {
   profileJobStatusAtom,
   profileResponseAtom,
@@ -19,17 +20,23 @@ export const HeightProfileChart = () => {
   const heightProfile = useAtomValue(profileResponseAtom);
   const profileJobStatus = useAtomValue(profileJobStatusAtom);
   const sampleDistance = useAtomValue(profileSampleDistanceAtom);
+  const { t } = useTranslation();
   if (profileJobStatus === 'notStarted') {
     return null;
   }
   if (profileJobStatus === 'running') {
-    return <Spinner />;
+    return (
+      <Flex>
+        <Spinner />
+        <Text ml="2">{t('printdialog.heightProfile.jobRunning')}</Text>
+      </Flex>
+    );
   }
 
   if (profileJobStatus === 'failed') {
     return (
       <Alert status="error">
-        <div>Failed to load height profile data. Please try again later.</div>
+        <Text>{t('printdialog.heightProfile.jobError ')}</Text>
       </Alert>
     );
   }

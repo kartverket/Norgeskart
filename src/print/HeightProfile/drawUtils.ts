@@ -3,6 +3,7 @@ import { LineString } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
+import { Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../map/atoms';
 import { profileLineAtom } from './atoms';
 
@@ -24,12 +25,20 @@ export const addDrawInteractionToMap = () => {
     type: 'LineString',
   });
 
+  drawLayer.setStyle(
+    new Style({
+      stroke: new Stroke({
+        color: '#ff0000',
+        width: 4,
+      }),
+    }),
+  );
+
   drawInteraction.on('drawstart', () => {
     drawLayer.getSource()?.clear();
   });
 
   drawInteraction.on('drawend', (e: DrawEvent) => {
-    console.log('hi there ');
     const store = getDefaultStore();
 
     const geometry = e.feature.getGeometry();
