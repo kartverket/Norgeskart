@@ -23,7 +23,7 @@ const isProjectNameAndCategoryIdMatch = (
     case 'seeiendom':
       return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
     case 'ssr':
-      return ['placeNames', 'historicalPlaceNames'].includes(layerCategoryId);
+      return ['placeNames'].includes(layerCategoryId);
     case 'tilgjengelighet':
       return ['tilgjengelighet'].includes(layerCategoryId);
     case 'fastmerker':
