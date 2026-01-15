@@ -2,7 +2,7 @@ export class GPFeatureRecordSetLayer {
   gepmetryType: string;
   spatialReference: { wkid: number };
   features: Array<{
-    attributes: {};
+    attributes: object;
     geometry: {
       paths: number[][][];
     };
@@ -64,7 +64,7 @@ export type JobResultResponse = {
     displayFieldName: string;
     exceededTransferLimit: boolean;
     features: Array<{
-      attributes: { [key: string]: any };
+      attributes: { [key: string]: unknown };
       geometry: { x: number; y: number; z?: number; m?: number };
     }>;
   };
