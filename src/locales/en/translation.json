@@ -439,6 +439,17 @@
       "buttons": {
         "makePoster": "Create poster"
       }
+    },
+    "heightProfile": {
+      "heading": "Draw a line to create a height profile",
+      "infotext": "Start creating a height profile by clicking the map to place the first point and double click to finish.",
+      "jobError": "Failed to load height profile data.",
+      "jobRunning": "Creating profile",
+      "buttons": {
+        "exportCsv": {
+          "label": "Export as CSV"
+        }
+      }
     }
   }
 }
