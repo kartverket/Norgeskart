@@ -9,8 +9,9 @@ import {
   TabsList,
   TabsTrigger,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { mapToolAtom } from '../map/overlay/atoms';
 import { isPrintDialogOpenAtom } from './atoms';
 import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
 import { HeightProfileSection } from './HeightProfile/HeightProfileSection';
@@ -25,6 +26,7 @@ const printTabNames = [
 type PrintTabName = (typeof printTabNames)[number];
 
 export const PrintDialog = () => {
+  const currentMapTool = useAtomValue(mapToolAtom);
   const [isPrintDialogOpen, setIsPrintDialogOpen] = useAtom(
     isPrintDialogOpenAtom,
   );
@@ -69,7 +71,13 @@ export const PrintDialog = () => {
         <Tabs defaultValue={'extent'} lazyMount unmountOnExit>
           <TabsList>
             {tabsListConfig.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                disabled={
+                  tab.value === 'heightProfile' && currentMapTool === 'draw'
+                }
+              >
                 {tab.label}
               </TabsTrigger>
             ))}
