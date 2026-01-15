@@ -1,6 +1,7 @@
-import { Stack } from '@kvib/react';
+import { Heading, Stack, Text } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { profileEffect } from './atoms';
 import {
   addDrawInteractionToMap,
@@ -10,6 +11,7 @@ import { HeightProfileChart } from './HeightProfileChart';
 
 export const HeightProfileSection = () => {
   useAtom(profileEffect);
+  const { t } = useTranslation();
   useEffect(() => {
     addDrawInteractionToMap();
     return () => {
@@ -18,7 +20,8 @@ export const HeightProfileSection = () => {
   }, []);
   return (
     <Stack>
-      Hei på deg høydeprofil!
+      <Heading size={'md'}>{t('printdialog.heightProfile.heading')}</Heading>
+      <Text>{t('printdialog.heightProfile.infotext')}</Text>
       <HeightProfileChart />
     </Stack>
   );

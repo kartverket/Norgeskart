@@ -13,12 +13,23 @@ import {
 import { mapAtom } from '../../map/atoms';
 import { getSamleDistance } from './utils';
 
+export type ProfileJobStatus =
+  | 'notStarted'
+  | 'running'
+  | 'succeeded'
+  | 'failed';
+
 export const profileLineAtom = atom<LineString | null>(null);
 export const profileResponseAtom = atom<JobResultResponse | null>(null);
+export const profileJobStatusAtom = atom<string | null>(null);
+export const profileSampleDistanceAtom = atom<number>(10);
 
 export const profileEffect = atomEffect((get, set) => {
   const line = get(profileLineAtom);
-  if (line === null) return;
+  if (line === null) {
+    set(profileJobStatusAtom, 'notStarted');
+    return;
+  }
   const store = getDefaultStore();
 
   const mapProjection = store.get(mapAtom).getView().getProjection().getCode();
@@ -26,12 +37,14 @@ export const profileEffect = atomEffect((get, set) => {
 
   const featureLength = line.getLength();
   const stepLength = getSamleDistance(featureLength);
+  set(profileSampleDistanceAtom, stepLength);
 
   const lineCoordinates = line.getCoordinates();
   const body = new GPFeatureRecordSetLayer([lineCoordinates], wkid);
 
   const effect = async () => {
     const submitResponse = await submitHeightProfileRequest(body, stepLength);
+    set(profileJobStatusAtom, 'running');
 
     while (true) {
       const status = await getHeightProfileJobStatus(submitResponse.jobId);
@@ -41,21 +54,19 @@ export const profileEffect = atomEffect((get, set) => {
           submitResponse.jobId,
           'output_points',
         );
-        console.log('Profile result:', result);
         set(profileResponseAtom, result);
+        set(profileJobStatusAtom, 'succeeded');
 
         break;
       } else if (status.jobStatus === 'esriJobFailed') {
+        set(profileJobStatusAtom, 'failed');
         console.error('Job failed:', status);
         break;
       } else {
-        console.log('Job status:', status.jobStatus);
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     }
   };
   set(profileResponseAtom, null);
   effect();
-
-  console.log('Profile line changed:', line);
 });

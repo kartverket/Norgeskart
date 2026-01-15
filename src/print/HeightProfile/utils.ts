@@ -11,7 +11,7 @@ export type SampleDistance =
   | 10000
   | 100000;
 
-const maxSamples = 400;
+const maxSamples = 200;
 
 export const getSamleDistance = (featureLength: number): SampleDistance => {
   const rawDistance = featureLength / maxSamples;

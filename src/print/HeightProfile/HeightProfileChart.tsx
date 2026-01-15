@@ -1,3 +1,4 @@
+import { Alert, Spinner } from '@kvib/react';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -8,10 +9,30 @@ import {
 } from 'chart.js';
 import { useAtomValue } from 'jotai';
 import { Line } from 'react-chartjs-2';
-import { profileResponseAtom } from './atoms';
+import {
+  profileJobStatusAtom,
+  profileResponseAtom,
+  profileSampleDistanceAtom,
+} from './atoms';
 
 export const HeightProfileChart = () => {
   const heightProfile = useAtomValue(profileResponseAtom);
+  const profileJobStatus = useAtomValue(profileJobStatusAtom);
+  const sampleDistance = useAtomValue(profileSampleDistanceAtom);
+  if (profileJobStatus === 'notStarted') {
+    return null;
+  }
+  if (profileJobStatus === 'running') {
+    return <Spinner />;
+  }
+
+  if (profileJobStatus === 'failed') {
+    return (
+      <Alert status="error">
+        <div>Failed to load height profile data. Please try again later.</div>
+      </Alert>
+    );
+  }
   if (!heightProfile) {
     return null;
   }
@@ -19,11 +40,9 @@ export const HeightProfileChart = () => {
   const labels: number[] = [];
 
   const plotData = heightProfile.value.features.map((feature, i) => {
-    labels.push(i);
+    labels.push(i * sampleDistance);
     return feature.attributes.Z as number | null;
   });
-
-  console.log('plotData', plotData);
 
   ChartJS.register(
     LineElement,
