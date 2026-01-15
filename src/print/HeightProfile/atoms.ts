@@ -11,6 +11,7 @@ import {
   JobResultResponse,
 } from '../../api/heightData/types';
 import { mapAtom } from '../../map/atoms';
+import { disableDrawInteraction, enableDrawInteraction } from './drawUtils';
 import { getSamleDistance } from './utils';
 
 export type ProfileJobStatus =
@@ -45,7 +46,7 @@ export const profileEffect = atomEffect((get, set) => {
   const effect = async () => {
     const submitResponse = await submitHeightProfileRequest(body, stepLength);
     set(profileJobStatusAtom, 'running');
-
+    disableDrawInteraction();
     while (true) {
       const status = await getHeightProfileJobStatus(submitResponse.jobId);
       if (status.jobStatus === 'esriJobSucceeded') {
@@ -66,6 +67,7 @@ export const profileEffect = atomEffect((get, set) => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     }
+    enableDrawInteraction();
   };
   set(profileResponseAtom, null);
   effect();

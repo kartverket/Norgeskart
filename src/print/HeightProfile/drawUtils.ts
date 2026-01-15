@@ -62,3 +62,23 @@ export const removeDrawInteractionFromMap = () => {
     map.removeInteraction(drawInteraction);
   }
 };
+
+export const disableDrawInteraction = () => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const drawInteraction = map
+    .getInteractions()
+    .getArray()
+    .find((interaction) => interaction instanceof Draw) as Draw | undefined;
+  drawInteraction?.setActive(false);
+};
+
+export const enableDrawInteraction = () => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const drawInteraction = map
+    .getInteractions()
+    .getArray()
+    .find((interaction) => interaction instanceof Draw) as Draw | undefined;
+  drawInteraction?.setActive(true);
+};
