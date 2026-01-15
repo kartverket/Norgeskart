@@ -510,7 +510,12 @@
       "heading": "Tegn en linje for å lage en høydeprofil",
       "infotext": "Opprett en høydeprofil ved å klikke i kartet for å plassere det første punktet og dobbelklikk for å avslutte.",
       "jobError": "Kunne ikke lage høydeprofil",
-      "jobRunning": "Lager profil"
+      "jobRunning": "Lager profil",
+      "buttons": {
+        "exportCsv": {
+          "label": "Eksporter som CSV"
+        }
+      }
     }
   }
 }

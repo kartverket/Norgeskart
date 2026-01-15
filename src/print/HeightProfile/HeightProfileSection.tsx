@@ -8,6 +8,7 @@ import {
   removeDrawInteractionFromMap,
 } from './drawUtils';
 import { HeightProfileChart } from './HeightProfileChart';
+import { HeightProfileExport } from './HeightProfileExport';
 
 export const HeightProfileSection = () => {
   useAtom(profileEffect);
@@ -23,6 +24,7 @@ export const HeightProfileSection = () => {
       <Heading size={'md'}>{t('printdialog.heightProfile.heading')}</Heading>
       <Text>{t('printdialog.heightProfile.infotext')}</Text>
       <HeightProfileChart />
+      <HeightProfileExport />
     </Stack>
   );
 };
