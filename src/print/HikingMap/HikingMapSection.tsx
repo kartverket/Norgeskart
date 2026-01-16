@@ -14,11 +14,19 @@ import {
   VStack,
 } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
+import { Feature } from 'ol';
+import { Polygon } from 'ol/geom';
+import { Select, Translate } from 'ol/interaction';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
 
 const MapScaleOptions = ['1 : 25 000', '1 : 50 000'] as const;
+
+const x_extent = 500;
+const y_extent = 640;
 
 type HikingMapSacles = (typeof MapScaleOptions)[number];
 export const HikingMapSection = () => {
@@ -32,17 +40,89 @@ export const HikingMapSection = () => {
   const { t } = useTranslation();
 
   const listener = useCallback((e: any) => {
-    console.log('center', e);
+    const store = getDefaultStore();
+    const map = store.get(mapAtom);
+    const layer = map
+      .getLayers()
+      .getArray()
+      .filter((layer: any) => {
+        return layer.get('id') === 'hikingMapOverlayLayer';
+      })[0] as VectorLayer;
+    const features = layer.getSource()?.getFeatures() as Feature[];
+    //
+    const feature = features[0];
+
+    feature.setGeometry(
+      new Polygon([
+        [
+          [
+            e.target.getCenter()[0] - x_extent / 2,
+            e.target.getCenter()[1] - y_extent / 2,
+          ],
+          [
+            e.target.getCenter()[0] - x_extent / 2,
+            e.target.getCenter()[1] + y_extent / 2,
+          ],
+          [
+            e.target.getCenter()[0] + x_extent / 2,
+            e.target.getCenter()[1] + y_extent / 2,
+          ],
+          [
+            e.target.getCenter()[0] + x_extent / 2,
+            e.target.getCenter()[1] - y_extent / 2,
+          ],
+          [
+            e.target.getCenter()[0] - x_extent / 2,
+            e.target.getCenter()[1] - y_extent / 2,
+          ],
+        ],
+      ]),
+    );
   }, []);
 
   useEffect(() => {
+    const overlayLayer = new VectorLayer({
+      source: new VectorSource(),
+      properties: { id: 'hikingMapOverlayLayer' },
+    });
+
     const store = getDefaultStore();
     const map = store.get(mapAtom);
     const view = map.getView();
+
+    const maxX = view.getCenter()?.[0]! + x_extent / 2;
+    const minX = view.getCenter()?.[0]! - x_extent / 2;
+    const maxY = view.getCenter()?.[1]! + y_extent / 2;
+    const minY = view.getCenter()?.[1]! - y_extent / 2;
+
+    //create rectangle overlay on map
+    map.addLayer(overlayLayer);
+    const overlayFeature = new Feature({
+      geometry: new Polygon([
+        [
+          [minX, minY],
+          [minX, maxY],
+          [maxX, maxY],
+          [maxX, minY],
+          [minX, minY],
+        ],
+      ]),
+    });
     view.addEventListener('change', listener);
+    overlayLayer.getSource()?.addFeature(overlayFeature);
+    const selectInteraction = new Select({
+      layers: [overlayLayer],
+    });
+    const translateInteraction = new Translate({
+      features: selectInteraction.getFeatures(),
+    });
+    map.addInteraction(selectInteraction);
+    map.addInteraction(translateInteraction);
 
     return () => {
       view.removeEventListener('change', listener);
+      overlayLayer.getSource()?.clear();
+      map.removeLayer(overlayLayer);
     };
   }, []);
 
