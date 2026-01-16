@@ -457,7 +457,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '6_t_HC_parkering_r',
       name: {
         nb: 'HC-parkering',
-        nn: 'Handikapparkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 't_HC_parkering_r',
@@ -509,7 +509,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '9_t_HC_parkering_el',
       name: {
         nb: 'HC-parkering',
-        nn: 'Handikapparkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 't_HC_parkering_el',
@@ -561,7 +561,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '8_t_HC_parkering',
       name: {
         nb: 'HC-parkering',
-        nn: 'Handikapparkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 't_HC_parkering',
@@ -704,7 +704,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '5_hc_parkering_friluft_01',
       name: {
         nb: 'HC-parkering',
-        nn: 'Handikapparkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 'hc_parkering_friluft_01',
@@ -834,7 +834,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '7_hc_parkering_friluft_02',
       name: {
         nb: 'HC-parkering',
-        nn: 'Handikapparkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 'hc_parkering_friluft_02',
@@ -977,7 +977,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '3_hc_parkering_friluft_03',
       name: {
         nb: 'HC-parkering',
-        nn: 'Handikapparkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 'hc_parkering_friluft_03',

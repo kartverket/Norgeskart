@@ -174,8 +174,8 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
     {
       id: 'nivBenchmarks',
       name: {
-        nb: 'Niv. fastmerker',
-        nn: 'Niv. fastmerke',
+        nb: 'Nivellementsfastmerker',
+        nn: 'Nivellementsfastmerke',
         en: 'Height benchmarks',
       },
       layers: 'Niv_fastmerker',

@@ -160,54 +160,6 @@
             "topograatone": "Topografic, grayscale",
             "topoProd": "Topographic",
             "toporaster": "Paper map"
-          },
-          "themeMaps": {
-            "outdoorsLife": {
-              "subThemes": {
-                "norwayFacts": {
-                  "heading": "Facts about Norway",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarka border"
-                  }
-                },
-                "trails": {
-                  "heading": "Trails",
-                  "layers": {
-                    "bikeTrails": "Bike trails",
-                    "hikingTrails": "Hiking trails",
-                    "routeInfoPoints": "Route info points",
-                    "skiingTrails": "Skiing trails",
-                    "waterTrails": "Paddle routes"
-                  }
-                }
-              },
-              "themeName": "Outdoor recreation"
-            },
-            "property": {
-              "subThemes": {
-                "matrikkeldata": {
-                  "heading": "Select cadastral data",
-                  "layers": {
-                    "adresses": "Adresses",
-                    "buildings": "Buildings",
-                    "parcels": "Plots and parcels"
-                  }
-                }
-              },
-              "themeName": "Properties"
-            },
-            "locations": {
-              "themeName": "Location names",
-              "subThemes": {
-                "historicalMaps": {
-                  "heading": "Historical maps",
-                  "layers": {
-                    "economicMapFirstEdition": "Economic Mapping Authority 1. edition",
-                    "amtMap": "Amt maps"
-                  }
-                }
-              }
-            }
           }
         },
         "projection": {
