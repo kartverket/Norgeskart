@@ -46,7 +46,7 @@
         }
       },
       "toolSelect": {
-        "placeholder": "Velg teiknemåte"
+        "placeholder": "Vel teiknemåte"
       }
     },
     "deleteSelection": "Fjern valgte",
@@ -67,7 +67,7 @@
   },
   "export": {
     "format": {
-      "label": "Velg filformat",
+      "label": "Vel filformat",
       "placeholder": "Vel format"
     },
     "heading": "Eksport av teikning"
@@ -103,7 +103,7 @@
     "placesNearby": "Stader i nærleiken"
   },
   "languageSelector": {
-    "chooseLanguage": "Velg språk",
+    "chooseLanguage": "Vel språk",
     "english": "English",
     "norwegianBokmaal": "Norsk bokmål",
     "norwegianNynorsk": "Norsk nynorsk",
@@ -134,7 +134,7 @@
               "turruter": "Turrutar",
               "veger": "Vegar og adresser"
             },
-            "title": "Meld om en feil"
+            "title": "Meld om ein feil"
           },
           "label": "Meld om feil",
           "tooltip": "Gå til RettIKartet.no"
@@ -293,7 +293,7 @@
     "privacy": "Personvern",
     "status": {
       "heading": "Status",
-      "infoText": "Sjå status for våre tjenester ved å nytte lenka"
+      "infoText": "Sjå status for tenestene våre med å nytta lenkja"
     }
   },
   "propertyInfo": {
@@ -372,8 +372,8 @@
     }
   },
   "cookieDialog": {
-    "heading": "Vi nytter informasjonskapsler",
-    "body": "Vi gjør det for å gi deg ei betre oppleving. Ved å trykke 'OK' godtar du nyttinga av cookies.",
+    "heading": "Me brukar informasjonskapslar",
+    "body": "Me gjer dette for å gje deg ei betre oppleving. Med å trykkja på 'OK' godtek du bruken av cookies.",
     "buttons": {
       "accept": "OK",
       "reject": "Avslå"
@@ -422,7 +422,7 @@
         "reject": "Avbryt"
       },
       "inputform": {
-        "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for",
+        "heading": "Klikk i kartet for å vele stedet nødplakaten skal være for",
         "fields": {
           "title": {
             "label": "Gi punktet et namn"
