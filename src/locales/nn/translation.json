@@ -165,54 +165,6 @@
             "topograatone": "Topografisk gråtone",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
-          },
-          "themeMaps": {
-            "outdoorsLife": {
-              "subThemes": {
-                "norwayFacts": {
-                  "heading": "Fakta om Noreg",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarkagrense"
-                  }
-                },
-                "trails": {
-                  "heading": "Ruter",
-                  "layers": {
-                    "bikeTrails": "Sykkelruter",
-                    "hikingTrails": "Fotruter",
-                    "routeInfoPoints": "Ruteinfopunkt",
-                    "skiingTrails": "Skiruter",
-                    "waterTrails": "Padleruter"
-                  }
-                }
-              },
-              "themeName": "Friluftsliv"
-            },
-            "property": {
-              "subThemes": {
-                "matrikkeldata": {
-                  "heading": "Vel matrikkedata",
-                  "layers": {
-                    "adresses": "Adressar",
-                    "buildings": "Bygg",
-                    "parcels": "Teigar og grensar"
-                  }
-                }
-              },
-              "themeName": "Eigedom"
-            },
-            "locations": {
-              "themeName": "Stadnamn",
-              "subThemes": {
-                "historicalMaps": {
-                  "heading": "Historiske kart",
-                  "layers": {
-                    "economicMapFirstEdition": "Økonomisk Kartverk 1. utg",
-                    "amtMap": "Amtskart"
-                  }
-                }
-              }
-            }
           }
         },
         "projection": {
