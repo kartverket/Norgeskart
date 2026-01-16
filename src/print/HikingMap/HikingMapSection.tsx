@@ -13,8 +13,10 @@ import {
   Stack,
   VStack,
 } from '@kvib/react';
-import { useState } from 'react';
+import { getDefaultStore } from 'jotai';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { mapAtom } from '../../map/atoms';
 
 const MapScaleOptions = ['1 : 25 000', '1 : 50 000'] as const;
 
@@ -28,6 +30,22 @@ export const HikingMapSection = () => {
   const [includeCompassInstructions, setIncludeCompassInstructions] =
     useState<boolean>(false);
   const { t } = useTranslation();
+
+  const listener = useCallback((e: any) => {
+    console.log('center', e);
+  }, []);
+
+  useEffect(() => {
+    const store = getDefaultStore();
+    const map = store.get(mapAtom);
+    const view = map.getView();
+    view.addEventListener('change', listener);
+
+    return () => {
+      view.removeEventListener('change', listener);
+    };
+  }, []);
+
   return (
     <Stack>
       <Heading size={'md'}>{t('printdialog.hikingMap.heading')}</Heading>
