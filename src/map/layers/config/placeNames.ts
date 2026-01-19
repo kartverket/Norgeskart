@@ -3,14 +3,13 @@ import { ThemeLayerConfig } from '../../../api/themeLayerConfigApi';
 export const placeNamesConfig: ThemeLayerConfig = {
   categories: [
     {
-      id: 'historicalPlaceNames',
+      id: 'placeNames',
       groupid: 2,
       name: {
-        nb: 'Historiske kart',
-        nn: 'Historiske kart',
-        en: 'Historical maps',
+        nb: 'Stedsnavn',
+        nn: 'Stadsnamn',
+        en: 'Place Names',
       },
-      parentId: 'placeNames',
     },
   ],
   layers: [
@@ -22,7 +21,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
         en: 'Economic chart 1st edition',
       },
       layers: 'n5raster_foerstegang_metadata,n5raster_foerstegang',
-      categoryId: 'historicalPlaceNames',
+      categoryId: 'placeNames',
       groupid: 2,
       legacyId: '1011',
       queryable: true,
@@ -36,7 +35,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
         en: 'Amt charts',
       },
       layers: 'amt1',
-      categoryId: 'historicalPlaceNames',
+      categoryId: 'placeNames',
       groupid: 2,
       legacyId: '1012',
       queryable: false,

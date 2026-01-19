@@ -165,115 +165,6 @@
             "topograatone": "Topografisk, gråtone",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
-          },
-          "themeMaps": {
-            "outdoorsLife": {
-              "subThemes": {
-                "norwayFacts": {
-                  "heading": "Fakta om Norge",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarkagrense"
-                  }
-                },
-                "trails": {
-                  "heading": "Ruter",
-                  "layers": {
-                    "bikeTrails": "Sykkelruter",
-                    "hikingTrails": "Fotruter",
-                    "routeInfoPoints": "Ruteinfopunkt",
-                    "skiingTrails": "Skiruter",
-                    "waterTrails": "Padleruter"
-                  }
-                },
-                "routeTypes": {
-                  "heading": "Fotrutetype",
-                  "layers": {
-                    "historicalRoute": "Historisk ferdselsrute",
-                    "coastalTrail": "Kyststi",
-                    "culturalTrail": "Kultursti",
-                    "natureTrail": "Natursti",
-                    "trimTrack": "Trimløype",
-                    "footRouteTypeNotSpecified": "Fotrute type ikke angitt"
-                  }
-                },
-                "skiRoutePreparation": {
-                  "heading": "Skiløypepreparering",
-                  "layers": {
-                    "machinePrepared": "Maskinpreparert",
-                    "snowmobile": "Snøskuter",
-                    "unprepared": "Upreparert",
-                    "preparationNotSpecified": "Preparering ikke angitt"
-                  }
-                }
-              },
-              "themeName": "Friluftsliv"
-            },
-            "property": {
-              "subThemes": {
-                "matrikkeldata": {
-                  "heading": "Velg matrikkeldata",
-                  "layers": {
-                    "adresses": "Adresser",
-                    "buildings": "Bygninger",
-                    "parcels": "Teiger og grenser"
-                  }
-                }
-              },
-              "themeName": "Eiendom"
-            },
-            "locations": {
-              "themeName": "Stedsnavn",
-              "subThemes": {
-                "historicalMaps": {
-                  "heading": "Historiske kart",
-                  "layers": {
-                    "economicMapFirstEdition": "Økonomisk Kartverk 1. utg",
-                    "amtMap": "Amtskart"
-                  }
-                },
-                "placeNames": {
-                  "heading": "Stedsnavn (SSR)",
-                  "layers": {
-                    "norwegianPlaceNames": "Norsk",
-                    "luleSamiPlaceNames": "Lulesamisk",
-                    "northernSamiPlaceNames": "Nordsamisk",
-                    "skoltSamiPlaceNames": "Skoltesamisk",
-                    "southernSamiPlaceNames": "Sørsamisk",
-                    "kvenPlaceNames": "Kvensk",
-                    "otherPlaceNames": "Andre"
-                  }
-                }
-              }
-            },
-            "benchmarks": {
-              "themeName": "Fastmerker",
-              "subThemes": {
-                "geodesy": {
-                  "heading": "Geodetiske punkter",
-                  "layers": {
-                    "nivBenchmarks": "Niv. fastmerker",
-                    "landNetPoints": "Landsnettpunkter",
-                    "primaryNetPoints": "Stamnettpunkter",
-                    "triangulationPoints": "Trekantpunkter"
-                  }
-                }
-              }
-            },
-            "nrl": {
-              "themeName": "Luftfartshinder (NRL)",
-              "subThemes": {
-                "obstacles": {
-                  "heading": "Luftfartshinder",
-                  "layers": {
-                    "nrlArea": "NRL Flate",
-                    "nrlLine": "NRL Linje",
-                    "nrlAirspan": "NRL Luftspenn",
-                    "nrlMast": "NRL Mast",
-                    "nrlPoint": "NRL Punkt"
-                  }
-                }
-              }
-            }
           }
         },
         "projection": {
@@ -434,7 +325,7 @@
   },
   "cookieDialog": {
     "heading": "Vi bruker informasjonskapsler",
-    "body": "Vi gjør dett for å gi deg en bedre opplevelse. Ved å trykke på 'OK' godtar du bruk av cookies.",
+    "body": "Vi gjør dette for å gi deg en bedre opplevelse. Ved å trykke på 'OK' godtar du bruk av cookies.",
     "buttons": {
       "accept": "OK",
       "reject": "Avslå"
