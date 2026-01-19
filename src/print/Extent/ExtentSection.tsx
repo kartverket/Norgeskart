@@ -22,9 +22,9 @@ import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
 import { printFormatAtom, printOrientationAtom } from '../atoms';
 import { generateMapPdf } from './generateMapPdf';
 import { getPrintDimensions, PrintLayout } from './getPrintDimensions';
-import { PrintExtentOverlay } from './ExtentOverlay';
+import { ExtentOverlay } from './ExtentOverlay';
 
-export const PrintExtentSection = () => {
+export const ExtentSection = () => {
   const map = useAtomValue(mapAtom);
   const [format, setFormat] = useAtom(printFormatAtom);
   const [orientation, setOrientation] = useAtom(printOrientationAtom);
@@ -54,7 +54,7 @@ export const PrintExtentSection = () => {
 
   return (
     <>
-      <PrintExtentOverlay
+      <ExtentOverlay
         map={map}
         overlayWidth={overlayWidthPx}
         overlayHeight={overlayHeightPx}

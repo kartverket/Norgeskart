@@ -2,19 +2,19 @@ import { Map } from 'ol';
 import { useEffect, useState } from 'react';
 import { useDraggableOverlay } from './useDraggableOverlay';
 
-type PrintExtentOverlayProps = {
+type ExtentOverlayProps = {
   map: Map;
   overlayWidth: number;
   overlayHeight: number;
   overlayRef: React.RefObject<HTMLDivElement | null>;
 };
 
-export const PrintExtentOverlay = ({
+export const ExtentOverlay = ({
   map,
   overlayWidth,
   overlayHeight,
   overlayRef,
-}: PrintExtentOverlayProps) => {
+}: ExtentOverlayProps) => {
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
