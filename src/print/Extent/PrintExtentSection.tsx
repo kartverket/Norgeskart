@@ -11,6 +11,7 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Spinner,
   Stack,
   Text,
 } from '@kvib/react';
@@ -98,6 +99,7 @@ export const PrintExtentSection = () => {
       </Box>
       <Text mt={4}>Plasser det oransje feltet i området du vil skrive ut</Text>
       <HStack mt={4}>
+        {loading && <Spinner />}
         <Button onClick={handlePrint}>Hent kartet</Button>
         <Button variant="outline">Avbryt</Button>
       </HStack>
