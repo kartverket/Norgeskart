@@ -16,7 +16,7 @@ import { mapToolAtom } from '../map/overlay/atoms';
 import { isPrintDialogOpenAtom } from './atoms';
 import { ElevationProfileSection } from './ElevationProfile/ElevationProfileSection';
 import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
-import { PrintExtentSection } from './Extent/PrintExtentSection';
+import { PrintExtentSection } from './Extent/ExtentSection';
 
 const printTabNames = [
   'extent',
