@@ -94,13 +94,15 @@ const useMapSettings = () => {
     return getMapProjection().getCode() as ProjectionIdentifier;
   };
 
-  const setBackgroundLayer = (backgroundLayerName: BackgroundLayerName) => {
+  const setBackgroundLayer = async (
+    backgroundLayerName: BackgroundLayerName,
+  ) => {
     if (backgroundLayerState !== 'hasData') {
       console.warn('Background layers are not loaded yet');
       return;
     }
 
-    let layerToAdd = getBackgroundLayer(backgroundLayerName);
+    let layerToAdd = await getBackgroundLayer(backgroundLayerName);
     let actualLayerName = backgroundLayerName;
 
     // If requested layer is not available, fall back to default
@@ -108,7 +110,7 @@ const useMapSettings = () => {
       console.warn(
         `Background layer ${backgroundLayerName} is not available for current projection, falling back to ${DEFAULT_BACKGROUND_LAYER}`,
       );
-      layerToAdd = getBackgroundLayer(DEFAULT_BACKGROUND_LAYER);
+      layerToAdd = await getBackgroundLayer(DEFAULT_BACKGROUND_LAYER);
       actualLayerName = DEFAULT_BACKGROUND_LAYER;
 
       if (layerToAdd == null) {
@@ -150,7 +152,7 @@ const useMapSettings = () => {
     });
   };
 
-  const setProjection = (projectionId: ProjectionIdentifier) => {
+  const setProjection = async (projectionId: ProjectionIdentifier) => {
     const projection = getProjection(projectionId)!;
     if (WMTSloadable.state !== 'hasData') {
       console.warn('WMTS data is not loaded yet');
@@ -209,7 +211,7 @@ const useMapSettings = () => {
     });
 
     map.setView(newView);
-    setBackgroundLayer(backgroundLayerUrlParam);
+    await setBackgroundLayer(backgroundLayerUrlParam);
     const themeLayerNames = getListUrlParameter('themeLayers');
     if (themeLayerNames) {
       themeLayerNames.forEach((layerName) => {

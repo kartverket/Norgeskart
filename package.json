@@ -29,6 +29,7 @@
     "jotai": "^2.16.2",
     "jotai-effect": "^2.2.3",
     "ol": "^10.7.0",
+    "ol-mapbox-style": "^13.2.0",
     "posthog-js": "^1.318.2",
     "proj4": "^2.20.2",
     "react": "^19.2.1",

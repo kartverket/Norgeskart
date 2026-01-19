@@ -59,6 +59,8 @@ export const getBackgroundLayerImageName = (
     case 'Nibcache_UTM33_EUREF89_v2':
     case 'Nibcache_UTM35_EUREF89_v2':
       return 'Nibcache_web_mercator_v2';
+    case 'nautical-background':
+      return 'sjokartraster'; // Use nautical chart image for nautical background for now
     default:
       return layerName;
   }

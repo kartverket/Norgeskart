@@ -20,11 +20,12 @@ const layerPriorityMap = new Map<BackgroundLayerName, number>([
   ['topograatone', 2],
   ['toporaster', 3],
   ['sjokartraster', 4],
-  ['oceanicelectronic', 5],
-  ['Nibcache_web_mercator_v2', 6],
-  ['Nibcache_UTM32_EUREF89_v2', 7],
-  ['Nibcache_UTM33_EUREF89_v2', 8],
-  ['Nibcache_UTM35_EUREF89_v2', 8],
+  ['nautical-background', 5],
+  ['oceanicelectronic', 6],
+  ['Nibcache_web_mercator_v2', 7],
+  ['Nibcache_UTM32_EUREF89_v2', 8],
+  ['Nibcache_UTM33_EUREF89_v2', 9],
+  ['Nibcache_UTM35_EUREF89_v2', 10],
 ]);
 
 const layerPrioritySort = (
@@ -159,6 +160,12 @@ export const BackgroundLayerSettings = ({
   avaiableLayers.push({
     value: 'oceanicelectronic' as WMSLayerName,
     label: t(`map.settings.layers.mapNames.backgroundMaps.oceanicelectronic`),
+  });
+
+  // Add vector tile layers
+  avaiableLayers.push({
+    value: 'nautical-background',
+    label: t(`map.settings.layers.mapNames.backgroundMaps.nautical-background`),
   });
 
   const sortedLayers = avaiableLayers.sort(layerPrioritySort);
