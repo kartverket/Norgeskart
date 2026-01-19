@@ -21,6 +21,12 @@ route {
                 font-src 'self' fonts.gstatic.com;
         "
         header Permissions-Policy "geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), accelerometer=(), camera=()"
+        
+        handle /api/styles/* {
+                reverse_proxy https://dnl.kartverket.no {
+                        header_up Host {upstream_hostport}
+                }
+        }
 }
 
 root * /var/www

@@ -13,7 +13,7 @@ type VectorTileProvider = {
 const vectorTileProviders: Record<VectorTileLayerName, VectorTileProvider> = {
   'nautical-background': {
     name: 'nautical-background',
-    styleUrl: 'https://dnl.kartverket.no/api/styles/nautisk-bakgrunnskart.json',
+    styleUrl: '/api/styles/nautisk-bakgrunnskart.json',
     description: 'Nautical background map with vector tiles',
   },
 };
