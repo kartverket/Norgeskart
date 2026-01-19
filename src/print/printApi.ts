@@ -81,7 +81,6 @@ export const pollPdfStatus = async (
       const data: PdfStatusResponse = await response.json();
 
       if (data.status === 'finished' && data.downloadURL) {
-        // Return the full download URL instead of opening window here
         return `${baseURL}/${data.downloadURL}`;
       }
     } catch (error) {

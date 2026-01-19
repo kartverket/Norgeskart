@@ -28,7 +28,7 @@ export const PrintExtentOverlay = ({
     overlay.style.border = '2px dashed rgba(0,0,0,0.5)';
     overlay.style.backgroundColor = '#FF770082';
     overlay.style.cursor = 'move';
-    overlay.style.zIndex = '999';
+    overlay.style.zIndex = '5';
     overlay.style.pointerEvents = 'auto';
     overlay.style.userSelect = 'none';
     overlay.style.width = `${overlayWidth}px`;
@@ -72,7 +72,5 @@ export const PrintExtentOverlay = ({
     overlayHeight,
     setOverlayPosition,
   });
-
-  // Return nothing, overlay is managed in DOM
   return null;
 };

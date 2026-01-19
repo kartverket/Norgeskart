@@ -20,7 +20,7 @@ import { mapAtom } from '../../map/atoms';
 import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
 import { printFormatAtom, printOrientationAtom } from '../atoms';
 import { generateMapPdf } from './generateMapPdf';
-import { getDpiMetrics } from './getDpiMetrics';
+import { getPrintDimensions, PrintLayout } from './getPrintDimensions';
 import { PrintExtentOverlay } from './PrintExtentOverlay';
 
 export const PrintExtentSection = () => {
@@ -34,10 +34,10 @@ export const PrintExtentSection = () => {
 
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
-  const layout = `${format} ${orientation === 'portrait' ? 'Portrait' : 'Landscape'}`;
+  const layout =
+    `${format} ${orientation === 'portrait' ? 'Portrait' : 'Landscape'}` as PrintLayout;
 
-  const { overlayWidth, overlayHeight } = getDpiMetrics(layout);
-
+  const { overlayWidthPx, overlayHeightPx } = getPrintDimensions(layout);
   const backgroundLayer = useAtomValue(activeBackgroundLayerAtom);
 
   const handlePrint = async () => {
@@ -55,8 +55,8 @@ export const PrintExtentSection = () => {
     <>
       <PrintExtentOverlay
         map={map}
-        overlayWidth={overlayWidth}
-        overlayHeight={overlayHeight}
+        overlayWidth={overlayWidthPx}
+        overlayHeight={overlayHeightPx}
         overlayRef={overlayRef}
       />
       <SelectRoot

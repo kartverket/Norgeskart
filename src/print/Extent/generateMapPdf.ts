@@ -1,13 +1,9 @@
 import { toaster } from '@kvib/react';
 import Map from 'ol/Map';
 import { transform } from 'ol/proj';
-import {
-  Payload,
-  pollPdfStatus,
-  requestPdfGeneration,
-} from '../../api/printApi';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { getScaleFromResolution } from '../../map/mapScale';
+import { Payload, pollPdfStatus, requestPdfGeneration } from '../printApi';
 
 interface GenerateMapPdfProps {
   map: Map;
@@ -61,7 +57,6 @@ export const generateMapPdf = async ({
 
     const resolution = map.getView().getResolution();
     const scale = resolution ? getScaleFromResolution(resolution, map) : 25000;
-    const roundedScale = Math.round(scale);
 
     const payload: Payload = {
       attributes: {
@@ -70,7 +65,7 @@ export const generateMapPdf = async ({
           projection: sourceProjection,
           dpi: 128,
           rotation: rotationDegrees,
-          scale: roundedScale,
+          scale: scale,
           layers: [
             {
               baseURL: baseURL,
@@ -237,7 +232,7 @@ export const generateMapPdf = async ({
     if (downloadURL) {
       window.open(downloadURL, '_blank');
       // toaster.create({ title: t('printMap.printSuccess'), type: 'success' });
-      toaster.create({ title: 'print sucess', type: 'success' });
+      toaster.create({ title: 'print success', type: 'success' });
     } else {
       // toaster.create({ title: t('printMap.printError'), type: 'error' });
       toaster.create({ title: 'print error', type: 'error' });
