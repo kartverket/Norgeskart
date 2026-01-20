@@ -17,15 +17,17 @@ import {
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
 import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
 import { printFormatAtom, printOrientationAtom } from '../atoms';
+import { ExtentOverlay } from './ExtentOverlay';
 import { generateMapPdf } from './generateMapPdf';
 import { getPrintDimensions, PrintLayout } from './getPrintDimensions';
-import { ExtentOverlay } from './ExtentOverlay';
 
 export const ExtentSection = () => {
   const map = useAtomValue(mapAtom);
+  const { t } = useTranslation();
   const [format, setFormat] = useAtom(printFormatAtom);
   const [orientation, setOrientation] = useAtom(printOrientationAtom);
   const formatOptions = [
@@ -60,6 +62,7 @@ export const ExtentSection = () => {
         overlayHeight={overlayHeightPx}
         overlayRef={overlayRef}
       />
+      <Text>{t('printExtent.label')}</Text>
       <SelectRoot
         collection={createListCollection({ items: formatOptions })}
         value={[format]}
@@ -70,17 +73,19 @@ export const ExtentSection = () => {
           }
         }}
       >
-        <SelectLabel>Velg format</SelectLabel>
-        <SelectTrigger>
-          <SelectValueText />
-        </SelectTrigger>
-        <SelectContent>
-          {formatOptions.map((format) => (
-            <SelectItem key={format.value} item={format.value}>
-              {format.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
+        <HStack gap={4} mt={4}>
+          <SelectLabel>{t('printExtent.placeholder')}</SelectLabel>
+          <SelectTrigger width="180px">
+            <SelectValueText />
+          </SelectTrigger>
+          <SelectContent>
+            {formatOptions.map((format) => (
+              <SelectItem key={format.value} item={format.value}>
+                {format.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </HStack>
       </SelectRoot>
       <Box mt={4} mb={6}>
         <RadioGroup
@@ -92,16 +97,20 @@ export const ExtentSection = () => {
           }}
         >
           <Stack gap={4}>
-            <Radio value="portrait">Stående</Radio>
-            <Radio value="landscape">Liggende</Radio>
+            <Radio value="portrait">
+              {t('printExtent.orientation.portrait')}
+            </Radio>
+            <Radio value="landscape">
+              {t('printExtent.orientation.landscape')}
+            </Radio>
           </Stack>
         </RadioGroup>
       </Box>
-      <Text mt={4}>Plasser det oransje feltet i området du vil skrive ut</Text>
+      <Text mt={4}>{t('printExtent.description')}</Text>
       <HStack mt={4}>
         {loading && <Spinner />}
-        <Button onClick={handlePrint}>Hent kartet</Button>
-        <Button variant="outline">Avbryt</Button>
+        <Button onClick={handlePrint}>{t('printExtent.button.print')}</Button>
+        <Button variant="outline">{t('shared.cancel')}</Button>
       </HStack>
     </>
   );

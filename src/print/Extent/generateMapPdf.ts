@@ -231,15 +231,19 @@ export const generateMapPdf = async ({
 
     if (downloadURL) {
       window.open(downloadURL, '_blank');
-      // toaster.create({ title: t('printMap.printSuccess'), type: 'success' });
-      toaster.create({ title: 'print success', type: 'success' });
+      toaster.create({
+        title: t('printExtent.toast.success'),
+        type: 'success',
+      });
     } else {
-      // toaster.create({ title: t('printMap.printError'), type: 'error' });
-      toaster.create({ title: 'print error', type: 'error' });
+      toaster.create({ title: t('printExtent.toast.error'), type: 'error' });
     }
   } catch (err) {
-    console.error('printMap.printError', err);
-    // toaster.create({ title: t('printMap.printError'), description: String(err), type: 'error' });
+    toaster.create({
+      title: t('printExtent.toast.error'),
+      description: String(err),
+      type: 'error',
+    });
   } finally {
     setLoading(false);
   }
