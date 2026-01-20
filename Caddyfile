@@ -23,8 +23,16 @@ route {
         header Permissions-Policy "geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), accelerometer=(), camera=()"
         
         handle /api/styles/* {
+                @options method OPTIONS
+                handle @options {
+                        header Access-Control-Allow-Origin "*"
+                        header Access-Control-Allow-Methods "GET, OPTIONS"
+                        header Access-Control-Allow-Headers "*"
+                        respond 204
+                }
                 reverse_proxy https://dnl.kartverket.no {
                         header_up Host dnl.kartverket.no
+                        header_down Access-Control-Allow-Origin "*"
                 }
         }
 }
