@@ -47,7 +47,8 @@
       },
       "toolSelect": {
         "placeholder": "Velg tegnemåte"
-      }
+      },
+      "color": "Farger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
