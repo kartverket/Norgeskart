@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag",
-      "mobiletext": "Lag"
+      "openText": "Temakart",
+      "mobiletext": "Temakart"
     },
     "print": {
       "text": "Print"

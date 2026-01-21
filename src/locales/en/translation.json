@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Maplayers",
-      "mobiletext": "Layers"
+      "openText": "Thematic map",
+      "mobiletext": "Thematics"
     },
     "print": {
       "text": "Print"
