@@ -86,8 +86,8 @@ export const MapOverlay = () => {
           }}
           gridRow={{ base: '2 / span 4', md: '1 / span 4' }}
           zIndex={1}
-          alignItems="flex-end"
-          display="flex"
+          alignItems={{base:'flex-end', md:'stretch'}}
+          display={{base: "flex", md:'block'}}
         >
           <MapToolCards
             currentMapTool={currentMapTool}
