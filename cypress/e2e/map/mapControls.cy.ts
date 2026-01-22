@@ -16,11 +16,13 @@ describe('Map Controls', () => {
     });
 
     it('should display all main control buttons', () => {
-       cy.get('button[aria-label="Zoom inn"]').should('be.visible');
+      cy.get('button[aria-label="Zoom inn"]').should('be.visible');
       cy.get('button[aria-label="Zoom ut"]').should('be.visible');
       cy.get('button[aria-label="Roter venstre"]').should('be.visible');
       cy.get('button[aria-label="Roter høyre"]').should('be.visible');
-      cy.get('button[aria-label="Tilbakestill kartet til standard visning"]').should('be.visible');
+      cy.get(
+        'button[aria-label="Tilbakestill kartet til standard visning"]',
+      ).should('be.visible');
       cy.get('button[aria-label="Gå til min posisjon"]').should('be.visible');
     });
   });
@@ -58,12 +60,13 @@ describe('Map Controls', () => {
     });
 
     it('should reset orientation when navigation button is clicked', () => {
-      // First rotate the map
       cy.get('button[aria-label="Roter venstre"]').click();
       cy.wait(200);
-      
+
       // Then reset orientation
-      cy.get('button[aria-label="Tilbakestill kartet til standard visning"]').click();
+      cy.get(
+        'button[aria-label="Tilbakestill kartet til standard visning"]',
+      ).click();
       cy.get('#map').should('be.visible');
     });
 
@@ -83,7 +86,7 @@ describe('Map Controls', () => {
     });
 
     it('should be clickable without errors', () => {
-      // Note: Actual geolocation may fail in test environment, 
+      // Note: Actual geolocation may fail in test environment,
       // but button should be clickable
       cy.get('button[aria-label="Gå til min posisjon"]').click();
       cy.get('#map').should('be.visible');
@@ -106,7 +109,9 @@ describe('Map Controls', () => {
       cy.get('button[aria-label="Zoom inn"]').click().click();
       cy.get('button[aria-label="Zoom ut"]').click();
       cy.get('button[aria-label="Roter venstre"]').click();
-      cy.get('button[aria-label="Tilbakestill kartet til standard visning"]').click();
+      cy.get(
+        'button[aria-label="Tilbakestill kartet til standard visning"]',
+      ).click();
       cy.get('#map').should('be.visible');
     });
 
@@ -116,7 +121,7 @@ describe('Map Controls', () => {
         .parent()
         .parent()
         .should('be.visible');
-      
+
       cy.get('button[aria-label="Roter venstre"]').click();
       cy.get('button[aria-label="Zoom inn"]')
         .parent()
@@ -130,12 +135,12 @@ describe('Map Controls', () => {
       cy.viewport(375, 667); // iPhone SE size
       cy.visit('http://localhost:3000');
       cy.get('#map').should('be.visible');
-      
+
       // On mobile, zoom and rotation buttons should be hidden
       cy.get('button[aria-label="Gå til min posisjon"]').should('be.visible');
-      
+
       // These should not exist on mobile
-      // Todo: What to check for non-existence of elements ? 
+      // Todo: What to check for non-existence of elements ?
       // cy.get('button[aria-label="Zoom inn"]').should('not.exist');
       // cy.get('button[aria-label="Roter venstre"]').should('not.exist');
     });
@@ -145,7 +150,9 @@ describe('Map Controls', () => {
       cy.get('button[aria-label="Zoom ut"]').should('be.visible');
       cy.get('button[aria-label="Roter venstre"]').should('be.visible');
       cy.get('button[aria-label="Roter høyre"]').should('be.visible');
-      cy.get('button[aria-label="Tilbakestill kartet til standard visning"]').should('be.visible');
+      cy.get(
+        'button[aria-label="Tilbakestill kartet til standard visning"]',
+      ).should('be.visible');
     });
   });
 
