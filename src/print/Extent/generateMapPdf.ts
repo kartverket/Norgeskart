@@ -4,34 +4,32 @@ import { transform } from 'ol/proj';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { getScaleFromResolution } from '../../map/mapScale';
 import { Payload, pollPdfStatus, requestPdfGeneration } from '../printApi';
+import { PrintLayout } from './usePrintCapabilities';
 
 interface GenerateMapPdfProps {
   map: Map;
-  overlayRef: React.RefObject<HTMLDivElement | null>;
   setLoading: (value: boolean) => void;
   t: (key: string) => string;
-  currentLayout: string;
+  layout: PrintLayout;
   backgroundLayer: BackgroundLayerName;
+  extent: number[];
 }
 
 export const generateMapPdf = async ({
   map,
-  overlayRef,
   setLoading,
   t,
-  currentLayout,
+  layout,
   backgroundLayer,
+  extent,
 }: GenerateMapPdfProps) => {
-  if (!map || !overlayRef.current) return;
+  if (!map) return;
 
   setLoading(true);
 
   try {
-    const overlayRect = overlayRef.current.getBoundingClientRect();
-    const mapRect = map.getViewport().getBoundingClientRect();
-    const centerX = overlayRect.left - mapRect.left + overlayRect.width / 2;
-    const centerY = overlayRect.top - mapRect.top + overlayRect.height / 2;
-    const [lon, lat] = map.getCoordinateFromPixel([centerX, centerY]);
+    const center = [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2];
+    const [lon, lat] = center;
     const sourceProjection = map.getView().getProjection().getCode();
 
     const baseURL = 'https://cache.kartverket.no/v1/service';
@@ -53,7 +51,7 @@ export const generateMapPdf = async ({
       'A3 Portrait': '3_A3_portrait',
       'A3 Landscape': '4_A3_landscape',
     };
-    const api_layout = layoutMap[currentLayout] || '1_A4_portrait';
+    const api_layout = layoutMap[layout.name] || '1_A4_portrait';
 
     const resolution = map.getView().getResolution();
     const scale = resolution ? getScaleFromResolution(resolution, map) : 25000;
@@ -241,7 +239,6 @@ export const generateMapPdf = async ({
   } catch (err) {
     toaster.create({
       title: t('printExtent.toast.error'),
-      description: String(err),
       type: 'error',
     });
   } finally {

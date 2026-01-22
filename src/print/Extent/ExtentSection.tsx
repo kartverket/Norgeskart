@@ -15,53 +15,91 @@ import {
   Stack,
   Text,
 } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
-import { useRef, useState } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
 import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
-import { printFormatAtom, printOrientationAtom } from '../atoms';
-import { ExtentOverlay } from './ExtentOverlay';
+import { PrintBox } from './PrintBox';
+import {
+  printBoxCenterAtom,
+  printBoxExtentAtom,
+  printBoxExtentEffect,
+  printBoxLayoutAtom,
+} from './atoms';
 import { generateMapPdf } from './generateMapPdf';
-import { getPrintDimensions, PrintLayout } from './getPrintDimensions';
+import { usePrintCapabilities } from './usePrintCapabilities';
 
 export const ExtentSection = () => {
-  const map = useAtomValue(mapAtom);
   const { t } = useTranslation();
-  const [format, setFormat] = useAtom(printFormatAtom);
-  const [orientation, setOrientation] = useAtom(printOrientationAtom);
-  const formatOptions = [
-    { value: 'A4', label: 'A4' },
-    { value: 'A3', label: 'A3' },
-  ];
-
-  const overlayRef = useRef<HTMLDivElement | null>(null);
-  const [loading, setLoading] = useState(false);
-  const layout =
-    `${format} ${orientation === 'portrait' ? 'Portrait' : 'Landscape'}` as PrintLayout;
-
-  const { overlayWidthPx, overlayHeightPx } = getPrintDimensions(layout);
+  const layouts = usePrintCapabilities();
+  const map = useAtomValue(mapAtom);
   const backgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const setPrintBoxCenter = useSetAtom(printBoxCenterAtom);
+  const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
+  const printBoxExtent = useAtomValue(printBoxExtentAtom);
+  useAtom(printBoxExtentEffect);
+  const [format, setFormat] = useState('');
+  const [orientation, setOrientation] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const formatOptions = Array.from(
+    new Set(layouts.map((l) => (l.name.match(/A\d/) || [])[0])),
+  )
+    .filter(Boolean)
+    .map((f) => ({ value: f, label: f }));
+
+  const orientationOptions = Array.from(
+    new Set(
+      layouts.map((l) =>
+        l.name.toLowerCase().includes('portrait') ? 'portrait' : 'landscape',
+      ),
+    ),
+  );
+
+  const selectedLayout = layouts.find(
+    (l) =>
+      l.name.toLowerCase().includes(format.toLowerCase()) &&
+      l.name.toLowerCase().includes(orientation),
+  );
+
+  useEffect(() => {
+    if (layouts.length) {
+      setFormat(formatOptions[0]?.value || '');
+      setOrientation(orientationOptions[0] || '');
+    }
+  }, [layouts]);
+
+  useEffect(() => {
+    if (!map) return;
+    const center = map.getView().getCenter();
+    if (center) setPrintBoxCenter(center as [number, number]);
+  }, [map, setPrintBoxCenter]);
+
+  const dpi = 128;
+
+  useEffect(() => {
+    if (!selectedLayout?.width || !selectedLayout?.height) return;
+    const widthMm = (selectedLayout.width / dpi) * 25.4;
+    const heightMm = (selectedLayout.height / dpi) * 25.4;
+    setPrintBoxLayout({ widthMm, heightMm });
+  }, [selectedLayout, setPrintBoxLayout]);
 
   const handlePrint = async () => {
+    if (!selectedLayout || !printBoxExtent) return;
     await generateMapPdf({
       map,
-      overlayRef,
       setLoading,
-      t: (key) => key,
-      currentLayout: layout,
+      t,
+      layout: selectedLayout,
       backgroundLayer,
+      extent: printBoxExtent,
     });
   };
 
   return (
     <>
-      <ExtentOverlay
-        map={map}
-        overlayWidth={overlayWidthPx}
-        overlayHeight={overlayHeightPx}
-        overlayRef={overlayRef}
-      />
+      <PrintBox map={map} />
       <Text>{t('printExtent.label')}</Text>
       <SelectRoot
         collection={createListCollection({ items: formatOptions })}
