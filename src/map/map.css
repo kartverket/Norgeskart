@@ -6,6 +6,16 @@
   left: auto;
 }
 
+/* Mobile: center scale line above toolbar */
+@media (max-width: 768px) {
+  .ol-scale-line {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 70px;
+  }
+}
+
 .ol-scale-line-inner {
   border: 2px solid #333;
   border-top: none;
