@@ -16,11 +16,43 @@ describe('Coordinate Search', () => {
       cy.contains('10.74609').should('be.visible');
     });
 
+    it('should handle coordinates without space after comma', () => {
+      const coordinates = '60,10';
+
+      getSearchInput().type(coordinates);
+      cy.contains('60').should('be.visible');
+      cy.contains('10').should('be.visible');
+    });
+
     it('should handle coordinates with European decimal separators', () => {
       const coordinates = '60,135106, 10,618917';
 
       getSearchInput().type(coordinates);
       cy.contains('60.135').should('be.visible');
+    });
+
+    it('should handle European decimals without spaces between coordinates', () => {
+      const coordinates = '60,135106,10,618917';
+
+      getSearchInput().type(coordinates);
+      cy.contains('60.135').should('be.visible');
+      cy.contains('10.618').should('be.visible');
+    });
+
+    it('should handle short European decimals with space', () => {
+      const coordinates = '60,13, 10,61';
+
+      getSearchInput().type(coordinates);
+      cy.contains('60.13').should('be.visible');
+      cy.contains('10.61').should('be.visible');
+    });
+
+    it('should handle short European decimals without space', () => {
+      const coordinates = '60,13,10,61';
+
+      getSearchInput().type(coordinates);
+      cy.contains('60.13').should('be.visible');
+      cy.contains('10.61').should('be.visible');
     });
 
     it('should handle coordinates with degree symbols', () => {
