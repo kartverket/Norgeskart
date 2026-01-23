@@ -80,7 +80,9 @@ export const InfoBox = () => {
           multiple
           defaultValue={['placeInfo', 'propertyInfo']}
         >
-          {['Property', 'Coordinate'].includes(selectedResult.type) && (
+          {['Property', 'Coordinate', 'Address'].includes(
+            selectedResult.type,
+          ) && (
             <PropertyInfo
               lon={selectedResult.lon}
               lat={selectedResult.lat}
