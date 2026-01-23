@@ -41,7 +41,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       id: 'buildings',
       name: {
         nb: 'Bygninger',
-        nn: 'Bygninger',
+        nn: 'Bygningar',
         en: 'Buildings',
       },
       layers: 'matrikkel:BYGNINGWFS',

@@ -174,8 +174,8 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
     {
       id: 'nivBenchmarks',
       name: {
-        nb: 'Niv. fastmerker',
-        nn: 'Niv. fastmerke',
+        nb: 'Nivellementsfastmerker',
+        nn: 'Nivellementsfastmerke',
         en: 'Height benchmarks',
       },
       layers: 'Niv_fastmerker',
@@ -188,7 +188,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
       id: 'landNetPoints',
       name: {
         nb: 'Landsnettpunkter',
-        nn: 'Landsnettspunkt',
+        nn: 'Landsnettpunkt',
         en: 'National network points',
       },
       layers: 'Landsnettpunkt',
@@ -202,7 +202,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
       id: 'primaryNetPoints',
       name: {
         nb: 'Stamnettpunkter',
-        nn: 'Stamnettspunkt',
+        nn: 'Stamnettpunkt',
         en: 'Primary network points',
       },
       layers: 'Stamnettpunkt',
@@ -216,7 +216,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
       id: 'triangulationPoints',
       name: {
         nb: 'Trekantpunkter',
-        nn: 'Trekantspunkt',
+        nn: 'Trekantpunkt',
         en: 'Triangulation points',
       },
       layers: 'Trekantpunkt',

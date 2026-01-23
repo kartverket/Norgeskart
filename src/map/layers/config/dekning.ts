@@ -51,7 +51,7 @@ export const dekningConfig: ThemeLayerConfig = {
       id: 'norge_1_50000',
       name: {
         nb: 'Norge 1:50 000',
-        nn: 'Noreg 1:50 000',
+        nn: 'Norge 1:50 000',
         en: 'Norway 1:50,000',
       },
       type: 'geojson',
@@ -86,7 +86,7 @@ export const dekningConfig: ThemeLayerConfig = {
       id: 'overseilingskart',
       name: {
         nb: 'Overseilingskart',
-        nn: 'Overseilingskart',
+        nn: 'Overseglingskart',
         en: 'General nautical chart',
       },
       type: 'geojson',

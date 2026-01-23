@@ -3,6 +3,7 @@ import { getEnv } from '../env.ts';
 import { ProjectionIdentifier } from '../map/atoms.ts';
 import {
   AddressApiResponse,
+  EmergencyPosterResponse,
   PlaceNameApiResponse,
   PlaceNamePointApiResponse,
   Property,
@@ -156,6 +157,15 @@ export const getElevation = async (x: number, y: number) => {
     `https://hoydedata.no/arcgis/rest/services/NHM_DTM_TOPOBATHY_25833/ImageServer/identify?f=json&geometry=${x},${y}&geometryType=esriGeometryPoint&sr=25833&returnGeometry=false&returnCatalogItems=false`,
   );
   if (!res.ok) throw new Error('Feil ved henting av høyde');
+  return res.json();
+};
+
+export const getEmergecyPosterInfoByCoordinates = async (
+  lat: number,
+  lon: number,
+): Promise<EmergencyPosterResponse> => {
+  const res = await fetch(`${env.apiUrl}/emergencyPoster/${lat}/${lon}`);
+  if (!res.ok) throw new Error('Feil ved henting av informasjon for nødplakat');
   return res.json();
 };
 

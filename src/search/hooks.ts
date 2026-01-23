@@ -5,6 +5,7 @@ import { Geometry } from 'ol/geom';
 import { useCallback, useEffect } from 'react';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms';
+import { isPrintDialogOpenAtom } from '../print/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
 import { SearchResult } from '../types/searchTypes';
 import { searchCoordinatesAtom, selectedResultAtom } from './atoms';
@@ -71,8 +72,13 @@ export const useMapClickSearch = () => {
 
   const mapClickHandler = useCallback(
     (e: Event | BaseEvent) => {
-      const isContextMenuOpen = getDefaultStore().get(mapContextIsOpenAtom);
+      const store = getDefaultStore();
+      const isContextMenuOpen = store.get(mapContextIsOpenAtom);
       if (isContextMenuOpen) {
+        return;
+      }
+      const isPrintDialogOpen = store.get(isPrintDialogOpenAtom);
+      if (isPrintDialogOpen) {
         return;
       }
       if (e instanceof MapBrowserEvent) {

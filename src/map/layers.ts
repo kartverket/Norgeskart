@@ -17,6 +17,7 @@ export type MapLayers = {
   drawLayer: MapLayer;
   drawOverlayLayer: MapLayer;
   markerLayer: MapLayer;
+  posterMarkerLayer: MapLayer;
   clusterLayer: MapLayer;
   propertyGeometryLayer: MapLayer;
 };
@@ -46,6 +47,15 @@ const mapLayers: MapLayers = {
         zIndex: 6,
         source: new VectorSource({ wrapX: false }),
         properties: { id: 'markerLayer' },
+      });
+    },
+  },
+  posterMarkerLayer: {
+    getLayer: () => {
+      return new VectorLayer({
+        zIndex: 6,
+        source: new VectorSource({ wrapX: false }),
+        properties: { id: 'posterMarkerLayer' },
       });
     },
   },

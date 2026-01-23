@@ -160,54 +160,6 @@
             "topograatone": "Topografic, grayscale",
             "topoProd": "Topographic",
             "toporaster": "Paper map"
-          },
-          "themeMaps": {
-            "outdoorsLife": {
-              "subThemes": {
-                "norwayFacts": {
-                  "heading": "Facts about Norway",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarka border"
-                  }
-                },
-                "trails": {
-                  "heading": "Trails",
-                  "layers": {
-                    "bikeTrails": "Bike trails",
-                    "hikingTrails": "Hiking trails",
-                    "routeInfoPoints": "Route info points",
-                    "skiingTrails": "Skiing trails",
-                    "waterTrails": "Paddle routes"
-                  }
-                }
-              },
-              "themeName": "Outdoor recreation"
-            },
-            "property": {
-              "subThemes": {
-                "matrikkeldata": {
-                  "heading": "Select cadastral data",
-                  "layers": {
-                    "adresses": "Adresses",
-                    "buildings": "Buildings",
-                    "parcels": "Plots and parcels"
-                  }
-                }
-              },
-              "themeName": "Properties"
-            },
-            "locations": {
-              "themeName": "Location names",
-              "subThemes": {
-                "historicalMaps": {
-                  "heading": "Historical maps",
-                  "layers": {
-                    "economicMapFirstEdition": "Economic Mapping Authority 1. edition",
-                    "amtMap": "Amt maps"
-                  }
-                }
-              }
-            }
           }
         },
         "projection": {
@@ -334,7 +286,13 @@
       "meter": "Metre",
       "nauticalMile": "Nautical mile"
     },
-    "yes": "Yes"
+    "yes": "Yes",
+    "no": "No",
+    "in": "in",
+    "locations": {
+      "municipality": "municipality"
+    },
+    "cancel": "Cancel"
   },
   "tipsandtricks": {
     "heading": "Tips and tricks",
@@ -397,6 +355,52 @@
       },
       "emergencyPoster": {
         "heading": "Emergency poster"
+      }
+    },
+    "emergencyPoster": {
+      "disclaimer": {
+        "heading": "The users responsibility",
+        "sections": {
+          "section1": "The emergency poster is developed in collaboration with the Joint Rescue centers and emergency services. Kartverket is responsible for the data, ie, place names and maps - as well as the technology.",
+          "section2": "It is the user's responsibility to verify that it is the correct cabin or location shown on the poster.",
+          "section3": "Kartverket assumes no responsibility for any errors caused by user, data or technology."
+        },
+        "accept": "I understand and accept",
+        "reject": "Cancel"
+      },
+      "inputform": {
+        "heading": "Click the map to set the location for the poster",
+        "fields": {
+          "title": {
+            "label": "Give the location a name"
+          },
+          "place": {
+            "label": "Select right place name"
+          },
+          "road": {
+            "label": "The closest road is"
+          },
+          "isInfoCorrect": {
+            "label": "Is the above info correct?"
+          }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Could not create the poster"
+        }
+      },
+      "buttons": {
+        "makePoster": "Create poster"
+      }
+    },
+    "heightProfile": {
+      "heading": "Draw a line to create a height profile",
+      "infotext": "Start creating a height profile by clicking the map to place the first point and double click to finish.",
+      "jobError": "Failed to load height profile data.",
+      "jobRunning": "Creating profile",
+      "buttons": {
+        "exportCsv": {
+          "label": "Export as CSV"
+        }
       }
     }
   }

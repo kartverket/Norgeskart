@@ -7,7 +7,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 11,
       name: {
         nb: 'Tilgjengelighet',
-        nn: 'Tilgjenge',
+        nn: 'Tilgjengelegheit',
         en: 'Accessibility',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.tilgjengelighet3',
@@ -105,7 +105,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
         },
         {
           name: 'veitype',
-          alias: 'Veitype',
+          alias: 'Vegtype',
         },
         {
           name: 'spesialfotrutetype',
@@ -300,7 +300,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
         },
         {
           name: 'turvei',
-          alias: 'Turvei',
+          alias: 'Turveg',
         },
         {
           name: 'baderampe',
@@ -374,8 +374,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: 'accessibilityVillageSight',
       groupid: 8,
       name: {
-        nb: 'Tettsted - Syn',
-        nn: 'Tettstad - Syn',
+        nb: 'Tettsted - Synshemninger',
+        nn: 'Tettstad - Synshemmingar',
         en: 'Village - Sight',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.tilgjengelighet3',
@@ -430,8 +430,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '6_t_parkeringsomrade_r',
       name: {
-        nb: 'Parkerings område',
-        nn: 'Parkerings område',
+        nb: 'Parkeringsområde',
+        nn: 'Parkeringsområde',
         en: 'Parking area',
       },
       layers: 't_parkeringsomrade_r',
@@ -443,8 +443,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '6_t_vei_r',
       name: {
-        nb: 'Vei',
-        nn: 'Vei',
+        nb: 'Veg',
+        nn: 'Veg',
         en: 'Road',
       },
       layers: 't_vei_r',
@@ -457,7 +457,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '6_t_HC_parkering_r',
       name: {
         nb: 'HC-parkering',
-        nn: 'HC-parkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 't_HC_parkering_r',
@@ -482,8 +482,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '9_t_parkeringsomrade_el',
       name: {
-        nb: 'Parkerings område',
-        nn: 'Parkerings område',
+        nb: 'Parkeringsområde',
+        nn: 'Parkeringsområde',
         en: 'Parking area',
       },
       layers: 't_parkeringsomrade_el',
@@ -495,8 +495,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '9_t_vei_el',
       name: {
-        nb: 'Vei',
-        nn: 'Vei',
+        nb: 'Veg',
+        nn: 'Veg',
         en: 'Road',
       },
       layers: 't_vei_el',
@@ -509,7 +509,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '9_t_HC_parkering_el',
       name: {
         nb: 'HC-parkering',
-        nn: 'HC-parkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 't_HC_parkering_el',
@@ -534,8 +534,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '8_t_parkeringsomrade',
       name: {
-        nb: 'Parkerings område',
-        nn: 'Parkerings område',
+        nb: 'Parkeringsområde',
+        nn: 'Parkeringsområde',
         en: 'Parking area',
       },
       layers: 't_parkeringsomrade',
@@ -547,8 +547,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '8_t_vei',
       name: {
-        nb: 'Vei',
-        nn: 'Vei',
+        nb: 'Veg',
+        nn: 'Veg',
         en: 'Road',
       },
       layers: 't_vei',
@@ -561,7 +561,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '8_t_HC_parkering',
       name: {
         nb: 'HC-parkering',
-        nn: 'HC-parkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 't_HC_parkering',
@@ -587,7 +587,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '5_statlig_sikra_polygon_01',
       name: {
         nb: 'Statlig sikra',
-        nn: 'Statlig sikra',
+        nn: 'Statleg sikra',
         en: 'Secured by the state ',
       },
       layers: 'statlig_sikra_polygon_01',
@@ -613,7 +613,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '5_parkeringsomrader_friluft_01',
       name: {
         nb: 'Parkeringsområder',
-        nn: 'Parkeringsområder',
+        nn: 'Parkeringsområde',
         en: 'Parking areas',
       },
       layers: 'parkeringsomrader_friluft_01',
@@ -625,8 +625,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '5_turvei_01',
       name: {
-        nb: 'Turvei',
-        nn: 'Turvei',
+        nb: 'Turveg',
+        nn: 'Turveg',
         en: 'Hiking path',
       },
       layers: 'turvei_01',
@@ -651,8 +651,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '5_gapahukhytte_01',
       name: {
-        nb: 'Gapahukhytte',
-        nn: 'Gapahukhytte',
+        nb: 'Gapahuk',
+        nn: 'Gapahuk',
         en: 'Lean-to shelter',
       },
       layers: 'gapahukhytte_01',
@@ -704,7 +704,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '5_hc_parkering_friluft_01',
       name: {
         nb: 'HC-parkering',
-        nn: 'HC-parkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 'hc_parkering_friluft_01',
@@ -730,7 +730,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '7_statlig_sikra_polygon_02',
       name: {
         nb: 'Statlig sikra',
-        nn: 'Statlig sikra',
+        nn: 'Statleg sikra',
         en: 'Secured by the state ',
       },
       layers: 'statlig_sikra_polygon_02',
@@ -756,7 +756,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '7_parkeringsomrader_friluft_02',
       name: {
         nb: 'Parkeringsområder',
-        nn: 'Parkeringsområder',
+        nn: 'Parkeringsområde',
         en: 'Parking areas',
       },
       layers: 'parkeringsomrader_friluft_02',
@@ -768,8 +768,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '7_turvei_02',
       name: {
-        nb: 'Turvei',
-        nn: 'Turvei',
+        nb: 'Turveg',
+        nn: 'Turveg',
         en: 'Hiking path',
       },
       layers: 'turvei_02',
@@ -781,8 +781,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '7_turisthytte_02',
       name: {
-        nb: 'turisthytte',
-        nn: 'turisthytte',
+        nb: 'Turisthytte',
+        nn: 'Turisthytte',
         en: 'Tourist cabin',
       },
       layers: 'turisthytte_02',
@@ -794,8 +794,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '7_gapahukhytte_02',
       name: {
-        nb: 'Gapahukhytte',
-        nn: 'Gapahukhytte',
+        nb: 'Gapahuk',
+        nn: 'Gapahuk',
         en: 'Lean-to shelter',
       },
       layers: 'gapahukhytte_02',
@@ -834,7 +834,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '7_hc_parkering_friluft_02',
       name: {
         nb: 'HC-parkering',
-        nn: 'HC-parkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 'hc_parkering_friluft_02',
@@ -860,7 +860,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '3_statlig_sikra_polygon_03',
       name: {
         nb: 'Statlig sikra',
-        nn: 'Statlig sikra',
+        nn: 'Statleg sikra',
         en: 'Secured by the state ',
       },
       layers: 'statlig_sikra_polygon_03',
@@ -886,7 +886,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '3_parkeringsomrader_friluft_03',
       name: {
         nb: 'Parkeringsområder',
-        nn: 'Parkeringsområder',
+        nn: 'Parkeringsområde',
         en: 'Parking areas',
       },
       layers: 'parkeringsomrader_friluft_03',
@@ -898,8 +898,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '3_turvei_03',
       name: {
-        nb: 'Turvei',
-        nn: 'Turvei',
+        nb: 'Turveg',
+        nn: 'Turveg',
         en: 'Hiking path',
       },
       layers: 'turvei_03',
@@ -924,8 +924,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
     {
       id: '3_gapahukhytte_03',
       name: {
-        nb: 'Gapahukhytte',
-        nn: 'Gapahukhytte',
+        nb: 'Gapahuk',
+        nn: 'Gapahuk',
         en: 'Lean-to shelter',
       },
       layers: 'gapahukhytte_03',
@@ -977,7 +977,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '3_hc_parkering_friluft_03',
       name: {
         nb: 'HC-parkering',
-        nn: 'HC-parkering',
+        nn: 'Handikapp-parkering  ',
         en: 'HC-parking',
       },
       layers: 'hc_parkering_friluft_03',
@@ -1016,7 +1016,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       id: '10_sittegruppebenk',
       name: {
         nb: 'Sittegruppebenk',
-        nn: 'Sittegruppebenk',
+        nn: 'Sitjegruppebenk',
         en: 'Seating',
       },
       layers: 'sittegruppebenk',

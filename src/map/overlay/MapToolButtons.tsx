@@ -8,7 +8,7 @@ import {
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
@@ -19,6 +19,7 @@ export const MapToolButtons = () => {
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const isMobile = useIsMobileScreen();
+  const isPrintDialogOpenDisabled = useAtomValue(isPrintDialogOpenAtom);
   const posthog = usePostHog();
   const handleShareMapClick = () => {
     const url = window.location.href;
@@ -51,6 +52,7 @@ export const MapToolButtons = () => {
           isMobile ? t('controller.draw.mobiletext') : t('controller.draw.text')
         }
         active={currentMapTool === 'draw'}
+        disabled={isPrintDialogOpenDisabled}
       />
       <MapButton
         onClick={() => {
@@ -114,6 +116,7 @@ interface MapButtonProps {
   label: string;
   active?: boolean;
   ariaLabel?: string;
+  disabled?: boolean;
 }
 const MapButton = ({
   onClick,
@@ -121,9 +124,11 @@ const MapButton = ({
   label,
   active,
   ariaLabel,
+  disabled,
 }: MapButtonProps) => {
   return (
     <Button
+      disabled={disabled}
       w={'fit-content'}
       onClick={onClick}
       variant="ghost"

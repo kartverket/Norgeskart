@@ -1,7 +1,7 @@
 import { Feature } from 'ol';
 import { FeatureLike } from 'ol/Feature';
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style';
-import { createMarkerStyle, LOCATION_BLUE_SVG } from './marker';
+import { createMarkerStyle } from './marker';
 
 export const clusterStyle = (
   feature: FeatureLike,
@@ -42,5 +42,5 @@ export const clusterStyle = (
     if (style) return style;
   }
 
-  return createMarkerStyle(LOCATION_BLUE_SVG);
+  return createMarkerStyle('blue');
 };

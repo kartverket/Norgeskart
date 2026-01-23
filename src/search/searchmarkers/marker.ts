@@ -5,12 +5,9 @@ import { Icon, Style } from 'ol/style';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
 
-type MarkerIcon = '/location/location_red.svg' | '/location/location_blue.svg';
+type MakrerColor = 'red' | 'blue' | 'yellow';
 
-export const LOCATION_RED_SVG: MarkerIcon = '/location/location_red.svg';
-export const LOCATION_BLUE_SVG: MarkerIcon = '/location/location_blue.svg';
-
-export const createMarkerStyle = (iconSrc: MarkerIcon): Style => {
+export const createMarkerStyle = (iconSrc: string): Style => {
   return new Style({
     image: new Icon({
       src: iconSrc,
@@ -22,9 +19,10 @@ export const createMarkerStyle = (iconSrc: MarkerIcon): Style => {
 
 export const createMarker = (
   res: SearchResult,
-  iconSrc: MarkerIcon,
+  markerColor: MakrerColor,
   map: Map,
 ): Feature => {
+  const iconSrc = `/location/location_${markerColor}.svg`;
   const marker = new Feature({
     geometry: new Point(
       transform(
@@ -35,6 +33,20 @@ export const createMarker = (
     ),
   });
   marker.setProperties({ searchResult: res });
+  marker.setStyle(createMarkerStyle(iconSrc));
+  return marker;
+};
+
+export const createMarkerFromCoordinate = (
+  lon: number,
+  lat: number,
+  markerColor: MakrerColor,
+): Feature => {
+  const marker = new Feature({
+    geometry: new Point([lon, lat]),
+  });
+  const iconSrc = `/location/location_${markerColor}.svg`;
+  marker.set('isMarker', true);
   marker.setStyle(createMarkerStyle(iconSrc));
   return marker;
 };
