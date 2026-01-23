@@ -34,12 +34,33 @@ const normalizeDirections = (input: string): string => {
 };
 
 const normalizeDecimalSeparators = (input: string): string => {
-  let result = input;
-  // Pattern: digit,digits followed by ", " or end of string or space+digit
-  // This catches European decimals like "60,135106, 10,618917"
-  result = result.replace(/(\d),(\d+)(?=,\s|\s|$)/g, '$1.$2');
+  // Convert European decimal separators (comma) to dots
+  // Examples: "60,135106, 10,618917" → "60.135106, 10.618917"
+  //           "60,13, 10,61" → "60.13, 10.61"
+  //           "60,13,10,61" → "60.13,10.61"
+  // But preserve "60,10" as two separate coordinates (not 60.10)
 
-  return result;
+  // Count short decimal patterns (1-2 digits after comma)
+  const shortPatterns = input.match(/\d,\d{1,2}(?=,|;|\s|$)/g) || [];
+  const hasMultipleShortPatterns = shortPatterns.length >= 2;
+
+  return input.replace(/(\d),(\d+)/g, (match, before, after, offset, str) => {
+    // 3+ digits after comma = definitely European decimal (e.g., 60,135106)
+    if (after.length >= 3) {
+      return `${before}.${after}`;
+    }
+    // 1-2 digits: convert if multiple short patterns exist (e.g., "60,13,10,61")
+    if (hasMultipleShortPatterns) {
+      return `${before}.${after}`;
+    }
+    // Single short pattern: only convert if followed by delimiter+digit (next coord coming)
+    const rest = str.slice(offset + match.length);
+    if (/^[,;]\s*\d|^\s+\d/.test(rest)) {
+      return `${before}.${after}`;
+    }
+    // Otherwise keep as-is (e.g., "60,10" alone = two coordinates)
+    return match;
+  });
 };
 
 /**
