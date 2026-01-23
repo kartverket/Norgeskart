@@ -137,11 +137,12 @@ export const getRoads = async (query: string): Promise<Road[]> => {
   }
 };
 
+// Pattern: kommunenr/gnr/bnr or kommunenr/gnr/bnr/festenr
+// kommunenr is 4 digits, gnr and bnr are 1-5 digits
+const SLASH_ONLY_PATTERN = /^(\d{4})\/(\d{1,5})\/(\d{1,5})(\/\d{1,5})?$/;
+
 const normalizePropertyQuery = (query: string): string => {
-  // Pattern: kommunenr/gnr/bnr or kommunenr/gnr/bnr/festenr
-  // kommunenr is 4 digits, gnr and bnr are 1-5 digits
-  const slashOnlyPattern = /^(\d{4})\/(\d{1,5})\/(\d{1,5})(\/\d{1,5})?$/;
-  const match = query.match(slashOnlyPattern);
+  const match = query.match(SLASH_ONLY_PATTERN);
 
   if (match) {
     const kommunenr = match[1];
