@@ -1,20 +1,19 @@
 /* --- Scale & Mouse Position --- */
-.ol-scale-bar {
+.ol-scale-line {
   position: absolute;
-  left: 120px;
-  bottom: 35px;
+  right: 10px;
+  bottom: 48px;
+  left: auto;
 }
 
-.ol-scale-line-bar {
-  font-size: 24px;
-}
-
-.ol-scale-text {
-  font-size: 14px;
-}
-
-.ol-scale-step-text {
+.ol-scale-line-inner {
+  border: 2px solid #333;
+  border-top: none;
+  color: #333;
   font-size: 12px;
+  text-align: center;
+  background: rgba(233, 229, 229, 0.7);
+  padding: 2px 5px;
 }
 
 .ol-mouse-position {

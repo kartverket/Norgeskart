@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 import { View } from 'ol';
-import { defaults as defaultControls } from 'ol/control/defaults.js';
+import { defaults as defaultControls, ScaleLine } from 'ol/control';
 import Map from 'ol/Map';
 import { get as getProjection } from 'ol/proj';
 
@@ -116,7 +116,10 @@ const getInitialMapView = () => {
 
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
-    controls: defaultControls({ zoom: false }).extend([new ControlPortal()]),
+    controls: defaultControls({ zoom: false }).extend([
+      new ControlPortal(),
+      new ScaleLine({ minWidth: 100 }),
+    ]),
   });
 
   map.addLayer(mapLayers.markerLayer.getLayer());
