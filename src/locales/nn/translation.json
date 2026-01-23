@@ -21,7 +21,7 @@
     }
   },
   "draw": {
-    "begin": "Tekne på kartet",
+    "begin": "Teikne på kartet",
     "clear": "Fjern teikning",
     "close": "Lukk",
     "confrimClear": "Er du sikker?",
@@ -46,7 +46,7 @@
         }
       },
       "toolSelect": {
-        "placeholder": "Velg teknemåte"
+        "placeholder": "Vel teiknemåte"
       }
     },
     "deleteSelection": "Fjern valgte",
@@ -55,7 +55,7 @@
     "size": {
       "label": "Storleik"
     },
-    "tabHeading": "Tekne og måle",
+    "tabHeading": "Teikna og måla",
     "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {
@@ -67,7 +67,7 @@
   },
   "export": {
     "format": {
-      "label": "Velg filformat",
+      "label": "Vel filformat",
       "placeholder": "Vel format"
     },
     "heading": "Eksport av teikning"
@@ -103,7 +103,7 @@
     "placesNearby": "Stader i nærleiken"
   },
   "languageSelector": {
-    "chooseLanguage": "Velg språk",
+    "chooseLanguage": "Vel språk",
     "english": "English",
     "norwegianBokmaal": "Norsk bokmål",
     "norwegianNynorsk": "Norsk nynorsk",
@@ -124,7 +124,7 @@
             "category": {
               "label": "Vel kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. el frå kategoriane under for å opna Rett i kartet i nytt vindauga.",
+            "description": "Meld om feil i kart på rettikartet.no. vel frå kategoriane under for å opna Rett i kartet i nytt vindauga.",
             "link": {
               "label": "Åpne rettikartet.no i ei ny fane"
             },
@@ -134,7 +134,7 @@
               "turruter": "Turrutar",
               "veger": "Vegar og adresser"
             },
-            "title": "Meld om en feil"
+            "title": "Meld om ein feil"
           },
           "label": "Meld om feil",
           "tooltip": "Gå til RettIKartet.no"
@@ -165,54 +165,6 @@
             "topograatone": "Topografisk gråtone",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
-          },
-          "themeMaps": {
-            "outdoorsLife": {
-              "subThemes": {
-                "norwayFacts": {
-                  "heading": "Fakta om Noreg",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarkagrense"
-                  }
-                },
-                "trails": {
-                  "heading": "Ruter",
-                  "layers": {
-                    "bikeTrails": "Sykkelruter",
-                    "hikingTrails": "Fotruter",
-                    "routeInfoPoints": "Ruteinfopunkt",
-                    "skiingTrails": "Skiruter",
-                    "waterTrails": "Padleruter"
-                  }
-                }
-              },
-              "themeName": "Friluftsliv"
-            },
-            "property": {
-              "subThemes": {
-                "matrikkeldata": {
-                  "heading": "Vel matrikkedata",
-                  "layers": {
-                    "adresses": "Adressar",
-                    "buildings": "Bygg",
-                    "parcels": "Teigar og grensar"
-                  }
-                }
-              },
-              "themeName": "Eigedom"
-            },
-            "locations": {
-              "themeName": "Stadnamn",
-              "subThemes": {
-                "historicalMaps": {
-                  "heading": "Historiske kart",
-                  "layers": {
-                    "economicMapFirstEdition": "Økonomisk Kartverk 1. utg",
-                    "amtMap": "Amtskart"
-                  }
-                }
-              }
-            }
           }
         },
         "projection": {
@@ -293,7 +245,7 @@
     "privacy": "Personvern",
     "status": {
       "heading": "Status",
-      "infoText": "Sjå status for våre tjenester ved å nytte lenka"
+      "infoText": "Sjå status for tenestene våre med å nytta lenkja"
     }
   },
   "propertyInfo": {
@@ -372,8 +324,8 @@
     }
   },
   "cookieDialog": {
-    "heading": "Vi nytter informasjonskapsler",
-    "body": "Vi gjør det for å gi deg ei betre oppleving. Ved å trykke 'OK' godtar du nyttinga av cookies.",
+    "heading": "Me brukar informasjonskapslar",
+    "body": "Me gjer dette for å gje deg ei betre oppleving. Med å trykkja på 'OK' godtek du bruken av cookies.",
     "buttons": {
       "accept": "OK",
       "reject": "Avslå"
@@ -422,7 +374,7 @@
         "reject": "Avbryt"
       },
       "inputform": {
-        "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for",
+        "heading": "Klikk i kartet for å vele stedet nødplakaten skal være for",
         "fields": {
           "title": {
             "label": "Gi punktet et namn"
