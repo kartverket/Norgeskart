@@ -137,9 +137,29 @@ export const getRoads = async (query: string): Promise<Road[]> => {
   }
 };
 
+const normalizePropertyQuery = (query: string): string => {
+  // Pattern: kommunenr/gnr/bnr or kommunenr/gnr/bnr/festenr
+  // kommunenr is 4 digits, gnr and bnr are 1-5 digits
+  const slashOnlyPattern = /^(\d{4})\/(\d{1,5})\/(\d{1,5})(\/\d{1,5})?$/;
+  const match = query.match(slashOnlyPattern);
+
+  if (match) {
+    const kommunenr = match[1];
+    const gnr = match[2];
+    const bnr = match[3];
+    const festenr = match[4] || '';
+
+    // Convert to expected format: kommunenr-gnr/bnr(/festenr)
+    return `${kommunenr}-${gnr}/${bnr}${festenr}`;
+  }
+
+  return query;
+};
+
 export const getProperties = async (query: string): Promise<Property[]> => {
   try {
-    const encodedQuery = encodeURIComponent(query);
+    const normalizedQuery = normalizePropertyQuery(query);
+    const encodedQuery = encodeURIComponent(normalizedQuery);
     const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${encodedQuery}`);
     if (!res.ok) {
       console.warn(`API failed [properties]: ${res.status} for "${query}"`);
