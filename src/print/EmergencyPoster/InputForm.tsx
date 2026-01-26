@@ -73,7 +73,7 @@ export const InputForm = () => {
     const marker = createMarkerFromCoordinate(
       clickedCoordinates[0],
       clickedCoordinates[1],
-      'yellow',
+      'orange',
     );
     const markerlayer = getPosterMarkerLayer();
     const makerSource = markerlayer.getSource();
