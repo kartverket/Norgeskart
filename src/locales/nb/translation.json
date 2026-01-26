@@ -25,6 +25,10 @@
     "clear": "Fjern tegning",
     "close": "Lukk",
     "confrimClear": "Er du sikker?",
+    "privacyNotice": {
+      "title": "Lagring av tegning",
+      "message": "Når du lagrer en tegning, lagres det i 2 år på Kartverkets servere. Alle med lenken kan se tegningen. For å slette tegninger kontakt post@kartverket.no."
+    },
     "controls": {
       "colorBackground": "Bakgrunn",
       "colorFill": "Fyll",

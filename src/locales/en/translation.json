@@ -23,6 +23,10 @@
   "draw": {
     "begin": "Draw on map",
     "clear": "Clear drawing",
+    "privacyNotice": {
+      "title": "Drawing storage",
+      "message": "When you save a drawing, it is stored for 2 years on Kartverket's servers. Anyone with the link can view the drawing. To delete drawings, contact post@kartverket.no."
+    },
     "close": "Close",
     "confrimClear": "Are you sure?",
     "controls": {

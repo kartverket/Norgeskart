@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   ButtonGroup,
   IconButton,
@@ -101,6 +102,9 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
+      <Alert status="info" title={t('draw.privacyNotice.title')} mb={3}>
+        {t('draw.privacyNotice.message')}
+      </Alert>
       <ButtonGroup>
         <IconButton
           variant="ghost"

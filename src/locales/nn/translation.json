@@ -24,8 +24,10 @@
     "begin": "Teikne på kartet",
     "clear": "Fjern teikning",
     "close": "Lukk",
-    "confrimClear": "Er du sikker?",
-    "controls": {
+    "confrimClear": "Er du sikker?",    "privacyNotice": {
+      "title": "Lagring av teikning",
+      "message": "Når du lagrar ei teikning, lagrast det i 2 år på Kartverkets tenarar. Alle med lenka kan sjå teikninga. For å slette teikningar kontakt post@kartverket.no."
+    },    "controls": {
       "colorBackground": "Bakgrunn",
       "colorFill": "Fyll",
       "colorPoint": "Punkt",
