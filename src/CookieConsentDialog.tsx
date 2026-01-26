@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, Stack, Text } from '@kvib/react';
+import { Box, Button, Heading, HStack, Link, Stack, Text } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -43,21 +43,49 @@ export const CookieConsentDialog = () => {
       left={{ base: '50%', md: '32px' }}
       transform={{ base: 'translateX(-50%)', md: 'none' }}
       bg={'white'}
-      maxW={'300px'}
+      maxW={{ base: '320px', md: '380px' }}
       padding={4}
       boxShadow={'md'}
       borderRadius={'md'}
+      zIndex={'modal'}
     >
-      <Stack>
+      <Stack gap={3}>
         <Heading as="h4" size="md">
           {t('cookieDialog.heading')}
         </Heading>
-        <Text>{t('cookieDialog.body')}</Text>
-        <HStack justifyContent={'space-between'}>
-          <Button colorPalette="red" onClick={handleDisableCookies}>
+        <Text fontSize="sm">{t('cookieDialog.body')}</Text>
+        
+        <Box fontSize="xs" color="gray.600">
+          <Text fontWeight="semibold" mb={1}>{t('cookieDialog.whatWeCollect')}</Text>
+          <Text>• {t('cookieDialog.analytics')}</Text>
+          <Text>• {t('cookieDialog.noPersonalData')}</Text>
+          <Text mt={2}>{t('cookieDialog.rejectInfo')}</Text>
+        </Box>
+        
+        <Link
+          href="https://www.kartverket.no/om-kartverket/personvern"
+          target="_blank"
+          colorPalette="green"
+          fontSize="xs"
+          variant="underline"
+        >
+          {t('cookieDialog.privacyPolicy')}
+        </Link>
+        
+        <HStack justifyContent={'space-between'} mt={2}>
+          <Button 
+            colorPalette="gray" 
+            variant="outline"
+            onClick={handleDisableCookies}
+            size="sm"
+          >
             {t('cookieDialog.buttons.reject')}
           </Button>
-          <Button colorPalette="green" onClick={handleEnableCookies}>
+          <Button 
+            colorPalette="green" 
+            onClick={handleEnableCookies}
+            size="sm"
+          >
             {t('cookieDialog.buttons.accept')}
           </Button>
         </HStack>

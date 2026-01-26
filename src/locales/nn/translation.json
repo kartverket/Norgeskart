@@ -325,10 +325,15 @@
   },
   "cookieDialog": {
     "heading": "Me brukar informasjonskapslar",
-    "body": "Me gjer dette for å gje deg ei betre oppleving. Med å trykkja på 'OK' godtek du bruken av cookies.",
+    "body": "Norgeskart brukar PostHog-analyse for å forstå korleis brukarar navigerer og brukar kartet. Dette hjelper oss å forbetre tenesta.",
+    "whatWeCollect": "Kva vi samlar inn:",
+    "analytics": "Anonymisert statistikk om sidevisningar og klikk",
+    "noPersonalData": "Ingen personleg identifiserbar informasjon",
+    "rejectInfo": "Dersom du avslår blir data lagra i nettlesaren i staden for informasjonskapslar.",
+    "privacyPolicy": "Les meir i Kartverkets personvernerklæring",
     "buttons": {
-      "accept": "OK",
-      "reject": "Avslå"
+      "accept": "Godta analyse",
+      "reject": "Berre nødvendige"
     }
   },
   "info": {

@@ -320,10 +320,15 @@
   },
   "cookieDialog": {
     "heading": "We're using cookies ",
-    "body": "We do this to give you a better experience. By pressing 'OK' you accept the use of cookies.",
+    "body": "Norgeskart uses PostHog analytics to understand how users navigate and use the map. This helps us improve the service.",
+    "whatWeCollect": "What we collect:",
+    "analytics": "Anonymized statistics about page views and clicks",
+    "noPersonalData": "No personally identifiable information",
+    "rejectInfo": "If you decline, data is stored in your browser instead of cookies.",
+    "privacyPolicy": "Read more in the Norwegian Mapping Authority's privacy policy",
     "buttons": {
-      "accept": "OK",
-      "reject": "Deny"
+      "accept": "Accept analytics",
+      "reject": "Essential only"
     }
   },
   "info": {
