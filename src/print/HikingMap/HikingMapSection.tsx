@@ -10,6 +10,7 @@ import {
   Radio,
   RadioGroup,
   Separator,
+  Spinner,
   Stack,
   VStack,
 } from '@kvib/react';
@@ -19,14 +20,30 @@ import { Polygon } from 'ol/geom';
 import { Select, Translate } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { createHikingMap } from '../../api/hikingMap/hikingMapApi';
 import { mapAtom } from '../../map/atoms';
 
 const MapScaleOptions = ['1 : 25 000', '1 : 50 000'] as const;
 
-const x_extent = 500;
-const y_extent = 640;
+const xExtent1_25k = 18_000; // TODO: fix these
+const yExtent1_25k = 18_000;
+const getOverlayFeature = (): Feature | null => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const overlayLayer = map
+    .getLayers()
+    .getArray()
+    .find(
+      (layer) => layer.get('id') === 'hikingMapOverlayLayer',
+    ) as unknown as VectorLayer;
+
+  console.log(overlayLayer);
+  const features = overlayLayer.getSource()?.getFeatures();
+  console.log(features);
+  return features ? features[0] : null;
+};
 
 type HikingMapSacles = (typeof MapScaleOptions)[number];
 export const HikingMapSection = () => {
@@ -35,50 +52,10 @@ export const HikingMapSection = () => {
   const [mapName, setMapName] = useState<string>('');
   const [includeLegend, setIncludeLegend] = useState<boolean>(false);
   const [includeSweeden, setIncludeSweeden] = useState<boolean>(false);
+  const [printLoading, setPrintLoading] = useState<boolean>(false);
   const [includeCompassInstructions, setIncludeCompassInstructions] =
     useState<boolean>(false);
   const { t } = useTranslation();
-
-  const listener = useCallback((e: any) => {
-    const store = getDefaultStore();
-    const map = store.get(mapAtom);
-    const layer = map
-      .getLayers()
-      .getArray()
-      .filter((layer: any) => {
-        return layer.get('id') === 'hikingMapOverlayLayer';
-      })[0] as VectorLayer;
-    const features = layer.getSource()?.getFeatures() as Feature[];
-    //
-    const feature = features[0];
-
-    feature.setGeometry(
-      new Polygon([
-        [
-          [
-            e.target.getCenter()[0] - x_extent / 2,
-            e.target.getCenter()[1] - y_extent / 2,
-          ],
-          [
-            e.target.getCenter()[0] - x_extent / 2,
-            e.target.getCenter()[1] + y_extent / 2,
-          ],
-          [
-            e.target.getCenter()[0] + x_extent / 2,
-            e.target.getCenter()[1] + y_extent / 2,
-          ],
-          [
-            e.target.getCenter()[0] + x_extent / 2,
-            e.target.getCenter()[1] - y_extent / 2,
-          ],
-          [
-            e.target.getCenter()[0] - x_extent / 2,
-            e.target.getCenter()[1] - y_extent / 2,
-          ],
-        ],
-      ]),
-    );
-  }, []);
 
   useEffect(() => {
     const overlayLayer = new VectorLayer({
@@ -86,17 +63,20 @@ export const HikingMapSection = () => {
       properties: { id: 'hikingMapOverlayLayer' },
     });
 
+    const xExtent =
+      selectedScale === '1 : 25 000' ? xExtent1_25k : xExtent1_25k * 2;
+    const yExtent =
+      selectedScale === '1 : 25 000' ? yExtent1_25k : yExtent1_25k * 2;
+
     const store = getDefaultStore();
     const map = store.get(mapAtom);
     const view = map.getView();
 
-    const maxX = view.getCenter()?.[0]! + x_extent / 2;
-    const minX = view.getCenter()?.[0]! - x_extent / 2;
-    const maxY = view.getCenter()?.[1]! + y_extent / 2;
-    const minY = view.getCenter()?.[1]! - y_extent / 2;
+    const maxX = view.getCenter()?.[0]! + xExtent / 2;
+    const minX = view.getCenter()?.[0]! - xExtent / 2;
+    const maxY = view.getCenter()?.[1]! + yExtent / 2;
+    const minY = view.getCenter()?.[1]! - yExtent / 2;
 
-    //create rectangle overlay on map
-    map.addLayer(overlayLayer);
     const overlayFeature = new Feature({
       geometry: new Polygon([
         [
@@ -108,8 +88,10 @@ export const HikingMapSection = () => {
         ],
       ]),
     });
-    view.addEventListener('change', listener);
-    overlayLayer.getSource()?.addFeature(overlayFeature);
+
+    overlayLayer.getSource()?.addFeature(overlayFeature); //create rectangle overlay on map
+    map.addLayer(overlayLayer);
+
     const selectInteraction = new Select({
       layers: [overlayLayer],
     });
@@ -120,11 +102,37 @@ export const HikingMapSection = () => {
     map.addInteraction(translateInteraction);
 
     return () => {
-      view.removeEventListener('change', listener);
       overlayLayer.getSource()?.clear();
       map.removeLayer(overlayLayer);
     };
-  }, []);
+  }, [selectedScale]);
+
+  const printHikingMap = async () => {
+    console.log('hi there');
+    setPrintLoading(true);
+    const overlayFeature = getOverlayFeature();
+    console.log(overlayFeature);
+    if (!overlayFeature) {
+      setPrintLoading(false);
+      return;
+    }
+    const geometry = overlayFeature.getGeometry() as Polygon;
+    const extent = geometry.getExtent();
+    const res = await createHikingMap(
+      includeLegend,
+      includeSweeden,
+      includeCompassInstructions,
+      [extent[0], extent[2], extent[3], extent[1]],
+      [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
+      selectedScale === '1 : 25 000' ? '25000' : '50000',
+      mapName,
+    );
+
+    console.log(res);
+    //sleep for 2 seconds to simulate loading
+
+    setPrintLoading(false);
+  };
 
   return (
     <Stack>
@@ -228,7 +236,13 @@ export const HikingMapSection = () => {
         {t('printdialog.hikingMap.overlayinstructions')}
       </Heading>
       <ButtonGroup w={'100%'} justifyContent={'space-between'}>
-        <Button>{t('printdialog.hikingMap.buttons.generate')}</Button>
+        <Button onClick={() => printHikingMap()} disabled={printLoading}>
+          {printLoading ? (
+            <Spinner />
+          ) : (
+            t('printdialog.hikingMap.buttons.generate')
+          )}
+        </Button>
         <Button variant="secondary">
           {t('printdialog.hikingMap.buttons.cancel')}
         </Button>
