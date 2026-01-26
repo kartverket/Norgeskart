@@ -328,7 +328,7 @@
     "whatWeCollect": "What we collect:",
     "analytics": "Anonymized statistics about page views and clicks",
     "noPersonalData": "No personally identifiable information",
-    "rejectInfo": "If you decline, data is stored in your browser instead of cookies.",
+    "rejectInfo": "If you decline, no analytics data will be collected.",
     "privacyPolicy": "Read more in the Norwegian Mapping Authority's privacy policy",
     "buttons": {
       "accept": "Accept analytics",

@@ -331,7 +331,7 @@
     "whatWeCollect": "Kva vi samlar inn:",
     "analytics": "Anonymisert statistikk om sidevisningar og klikk",
     "noPersonalData": "Ingen personleg identifiserbar informasjon",
-    "rejectInfo": "Dersom du avslår blir data lagra i nettlesaren i staden for informasjonskapslar.",
+    "rejectInfo": "Dersom du avslår blir ingen analysedata samla inn.",
     "privacyPolicy": "Les meir i Kartverkets personvernerklæring",
     "buttons": {
       "accept": "Godta analyse",
