@@ -55,8 +55,6 @@ const createMapUrl = (coordinates: Coordinate) => {
   if (!resolution) {
     return;
   }
-  const crs =
-    store.get(mapAtom).getView().getProjection().getCode() || 'EPSG:25833';
   const currentMapHeight = resolution * window.innerHeight;
   const currentMapWidth = Math.round(currentMapHeight * hw_ratio);
 
@@ -68,7 +66,7 @@ const createMapUrl = (coordinates: Coordinate) => {
   params.append('LAYERS', 'topo');
   params.append('WIDTH', currentMapWidth.toString());
   params.append('HEIGHT', currentMapHeight.toString());
-  params.append('CRS', crs);
+  params.append('CRS', 'EPSG:32633');
 
   let bboxParam = '';
   bboxParam += `${coordinates[0] - Math.ceil(currentMapWidth / 2)},`;
@@ -78,8 +76,9 @@ const createMapUrl = (coordinates: Coordinate) => {
 
   params.append('BBOX', bboxParam);
   params.append('FORMAT', 'image/jpeg');
+  const url = `${baseUrl}?${params.toString()}`;
 
-  return `${baseUrl}?${params.toString()}`;
+  return url;
 };
 
 const createPositionString = (
