@@ -1,9 +1,14 @@
 import { Button, ButtonGroup } from '@kvib/react';
+import { Chart as ChartJS } from 'chart.js';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { profileResponseAtom } from './atoms';
 
-export const HeightProfileExport = () => {
+export const HeightProfileExport = ({
+  chartRef,
+}: {
+  chartRef: React.RefObject<ChartJS<'line'> | null>;
+}) => {
   const profileData = useAtomValue(profileResponseAtom);
   const { t } = useTranslation();
   if (profileData === null) {
@@ -27,10 +32,39 @@ export const HeightProfileExport = () => {
     link.click();
     document.body.removeChild(link);
   };
+
+  const downloadChart = (format: 'png' | 'jpeg' = 'png') => {
+    const chart = chartRef.current;
+    if (!chart) return;
+
+    const canvas = chart.canvas;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Fill with white background
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+
+    const mime = format === 'png' ? 'image/png' : 'image/jpeg';
+    const quality = format === 'jpeg' ? 0.92 : undefined; // JPEG quality
+    const url = chart.toBase64Image(mime, quality);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `height-profile.${format}`;
+    link.click();
+  };
+
   return (
     <ButtonGroup>
       <Button onClick={() => exportAsCSV()}>
         {t('printdialog.heightProfile.buttons.exportCsv.label')}
+      </Button>
+      <Button onClick={() => downloadChart('png')}>
+        {t('printdialog.heightProfile.buttons.exportPng.label')}
       </Button>
     </ButtonGroup>
   );

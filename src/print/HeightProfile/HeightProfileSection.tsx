@@ -1,6 +1,7 @@
 import { Heading, Stack, Text } from '@kvib/react';
+import { Chart as ChartJS } from 'chart.js';
 import { getDefaultStore, useAtom } from 'jotai';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   profileEffect,
@@ -18,6 +19,7 @@ import { HeightProfileExport } from './HeightProfileExport';
 export const HeightProfileSection = () => {
   useAtom(profileEffect);
   const { t } = useTranslation();
+  const chartRef = useRef<ChartJS<'line'> | null>(null);
   useEffect(() => {
     addDrawInteractionToMap();
     return () => {
@@ -32,8 +34,8 @@ export const HeightProfileSection = () => {
     <Stack>
       <Heading size={'md'}>{t('printdialog.heightProfile.heading')}</Heading>
       <Text>{t('printdialog.heightProfile.infotext')}</Text>
-      <HeightProfileChart />
-      <HeightProfileExport />
+      <HeightProfileChart chartRef={chartRef} />
+      <HeightProfileExport chartRef={chartRef} />
     </Stack>
   );
 };

@@ -400,6 +400,12 @@
       "buttons": {
         "exportCsv": {
           "label": "Export as CSV"
+        },
+        "exportPng": {
+          "label": "Download as PNG"
+        },
+        "exportJpeg": {
+          "label": "Download as JPEG"
         }
       }
     }
