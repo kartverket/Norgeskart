@@ -203,7 +203,7 @@
         "label": "Rotate left"
       },
       "orientation": {
-        "label": "Reset the map to standard view"
+        "label": "Reset the map orientation"
       },
       "rotateRight": {
         "label": "Rotate right"

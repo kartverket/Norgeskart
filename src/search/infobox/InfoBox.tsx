@@ -75,11 +75,7 @@ export const InfoBox = () => {
       </Flex>
       <InfoBoxPreamble result={selectedResult} x={x} y={y} />
       <Box overflowY="auto" overflowX="auto" maxHeight="80%">
-        <AccordionRoot
-          collapsible
-          multiple
-          defaultValue={['placeInfo', 'propertyInfo']}
-        >
+        <AccordionRoot collapsible multiple defaultValue={[]}>
           {['Property', 'Coordinate', 'Address'].includes(
             selectedResult.type,
           ) && (

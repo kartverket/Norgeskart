@@ -11,6 +11,7 @@ import {
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { getEnvName } from '../env';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { isPrintDialogOpenAtom } from './atoms';
 import { ElevationProfileSection } from './ElevationProfile/ElevationProfileSection';
@@ -24,6 +25,8 @@ const printTabNames = [
 ] as const;
 
 type PrintTabName = (typeof printTabNames)[number];
+
+const envName = getEnvName();
 
 export const PrintDialog = () => {
   const currentMapTool = useAtomValue(mapToolAtom);
@@ -68,19 +71,28 @@ export const PrintDialog = () => {
             aria-label="close-print"
           />
         </Flex>
-        <Tabs defaultValue={'extent'} lazyMount unmountOnExit>
+        <Tabs
+          defaultValue={envName == 'prod' ? 'elevationProfile' : 'extent'}
+          lazyMount
+          unmountOnExit
+        >
           <TabsList>
-            {tabsListConfig.map((tab) => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                disabled={
-                  tab.value === 'elevationProfile' && currentMapTool === 'draw'
-                }
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
+            {tabsListConfig.map((tab) =>
+              envName !== 'prod' ||
+              tab.value === 'emergencyPoster' ||
+              tab.value === 'elevationProfile' ? (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  disabled={
+                    tab.value === 'elevationProfile' &&
+                    currentMapTool === 'draw'
+                  }
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ) : null,
+            )}
           </TabsList>
           <TabsContent value="extent">hei utsnitt</TabsContent>
           <TabsContent value="hiking">hei turkart</TabsContent>

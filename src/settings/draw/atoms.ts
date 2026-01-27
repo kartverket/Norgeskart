@@ -255,9 +255,12 @@ export const clearInteractions = () => {
       const features = interaction.getFeatures();
       map.removeInteraction(interaction);
       features.forEach(handleFeatureSelectDone);
-      continue;
+
+      map.removeInteraction(interaction);
     }
-    map.removeInteraction(interaction);
+    if (interaction instanceof Draw || interaction instanceof Translate) {
+      map.removeInteraction(interaction);
+    }
   }
 };
 
