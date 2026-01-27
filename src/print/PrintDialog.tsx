@@ -13,13 +13,13 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { isPrintDialogOpenAtom } from './atoms';
+import { ElevationProfileSection } from './ElevationProfile/ElevationProfileSection';
 import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
-import { HeightProfileSection } from './HeightProfile/HeightProfileSection';
 
 const printTabNames = [
   'extent',
   'hiking',
-  'heightProfile',
+  'elevationProfile',
   'emergencyPoster',
 ] as const;
 
@@ -75,7 +75,7 @@ export const PrintDialog = () => {
                 key={tab.value}
                 value={tab.value}
                 disabled={
-                  tab.value === 'heightProfile' && currentMapTool === 'draw'
+                  tab.value === 'elevationProfile' && currentMapTool === 'draw'
                 }
               >
                 {tab.label}
@@ -84,8 +84,8 @@ export const PrintDialog = () => {
           </TabsList>
           <TabsContent value="extent">hei utsnitt</TabsContent>
           <TabsContent value="hiking">hei turkart</TabsContent>
-          <TabsContent value="heightProfile">
-            <HeightProfileSection />
+          <TabsContent value="elevationProfile">
+            <ElevationProfileSection />
           </TabsContent>
           <TabsContent value="emergencyPoster">
             <EmergencyPosterSection />

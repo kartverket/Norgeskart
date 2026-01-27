@@ -7,7 +7,7 @@ import { Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../map/atoms';
 import { profileLineAtom } from './atoms';
 
-const LAYER_ID = 'heightProfileDrawLayer';
+const LAYER_ID = 'elevationProfileDrawLayer';
 
 export const addDrawInteractionToMap = () => {
   const store = getDefaultStore();

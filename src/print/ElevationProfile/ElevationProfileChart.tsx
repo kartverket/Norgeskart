@@ -11,28 +11,29 @@ import { useAtomValue } from 'jotai';
 import { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+import { ElevationProfileFeature } from '../../api/heightData/types';
 import {
   profileJobStatusAtom,
   profileResponseAtom,
   profileSampleDistanceAtom,
 } from './atoms';
 
-export type HeightProfilePrintFormat = 'jpg' | 'png';
+export type ElevationProfilePrintFormat = 'jpg' | 'png';
 ChartJS.register(LineElement, PointElement, LinearScale, Title, CategoryScale);
 
-export const HeightProfileChart = ({
+export const ElevationProfileChart = ({
   chartRef,
 }: {
   chartRef: React.RefObject<ChartJS<'line'> | null>;
 }) => {
-  const heightProfile = useAtomValue(profileResponseAtom);
+  const elevationProfile = useAtomValue(profileResponseAtom);
   const profileJobStatus = useAtomValue(profileJobStatusAtom);
   const sampleDistance = useAtomValue(profileSampleDistanceAtom);
   const { t } = useTranslation();
 
   const { data, options } = useMemo(() => {
     const labels: number[] = [];
-    if (!heightProfile) {
+    if (!elevationProfile) {
       return {
         data: {
           labels: [],
@@ -41,8 +42,8 @@ export const HeightProfileChart = ({
         options: {},
       };
     }
-    const plotData = heightProfile.value.features.map(
-      (feature: any, i: number) => {
+    const plotData = elevationProfile.value.features.map(
+      (feature: ElevationProfileFeature, i: number) => {
         labels.push(i * sampleDistance);
         return feature?.attributes?.Z ?? null;
       },
@@ -53,7 +54,7 @@ export const HeightProfileChart = ({
         labels,
         datasets: [
           {
-            label: 'Height Profile',
+            label: 'Elevation Profile',
             data: plotData,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
@@ -69,7 +70,7 @@ export const HeightProfileChart = ({
         plugins: {
           title: {
             display: true,
-            text: t('printdialog.heightProfile.chartLabels.title'),
+            text: t('printdialog.elevationProfile.chartLabels.title'),
           },
           legend: {
             display: true,
@@ -79,19 +80,19 @@ export const HeightProfileChart = ({
           x: {
             title: {
               display: true,
-              text: t('printdialog.heightProfile.chartLabels.xAxis'),
+              text: t('printdialog.elevationProfile.chartLabels.xAxis'),
             },
           },
           y: {
             title: {
               display: true,
-              text: t('printdialog.heightProfile.chartLabels.yAxis'),
+              text: t('printdialog.elevationProfile.chartLabels.yAxis'),
             },
           },
         },
       } as const,
     };
-  }, [heightProfile, sampleDistance, t]);
+  }, [elevationProfile, sampleDistance, t]);
 
   if (profileJobStatus === 'notStarted') {
     return null;
@@ -100,7 +101,7 @@ export const HeightProfileChart = ({
     return (
       <Flex>
         <Spinner />
-        <Text ml="2">{t('printdialog.heightProfile.jobRunning')}</Text>
+        <Text ml="2">{t('printdialog.elevationProfile.jobRunning')}</Text>
       </Flex>
     );
   }
@@ -108,11 +109,11 @@ export const HeightProfileChart = ({
   if (profileJobStatus === 'failed') {
     return (
       <Alert status="error">
-        <Text>{t('printdialog.heightProfile.jobError ')}</Text>
+        <Text>{t('printdialog.elevationProfile.jobError ')}</Text>
       </Alert>
     );
   }
-  if (!heightProfile) {
+  if (!elevationProfile) {
     return null;
   }
 

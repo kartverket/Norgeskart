@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { profileResponseAtom } from './atoms';
 
-export const HeightProfileExport = ({
+export const ElevationProfileExport = ({
   chartRef,
 }: {
   chartRef: React.RefObject<ChartJS<'line'> | null>;
@@ -61,10 +61,10 @@ export const HeightProfileExport = ({
   return (
     <ButtonGroup justify="space-around">
       <Button onClick={() => exportAsCSV()}>
-        {t('printdialog.heightProfile.buttons.exportCsv.label')}
+        {t('printdialog.elevationProfile.buttons.exportCsv.label')}
       </Button>
       <Button onClick={() => downloadChart('png')}>
-        {t('printdialog.heightProfile.buttons.exportPng.label')}
+        {t('printdialog.elevationProfile.buttons.exportPng.label')}
       </Button>
     </ButtonGroup>
   );

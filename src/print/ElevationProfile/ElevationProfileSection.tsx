@@ -13,10 +13,10 @@ import {
   addDrawInteractionToMap,
   removeDrawInteractionFromMap,
 } from './drawUtils';
-import { HeightProfileChart } from './HeightProfileChart';
-import { HeightProfileExport } from './HeightProfileExport';
+import { ElevationProfileChart } from './ElevationProfileChart';
+import { ElevationProfileExport } from './ElevationProfileExport';
 
-export const HeightProfileSection = () => {
+export const ElevationProfileSection = () => {
   useAtom(profileEffect);
   const { t } = useTranslation();
   const chartRef = useRef<ChartJS<'line'> | null>(null);
@@ -32,10 +32,10 @@ export const HeightProfileSection = () => {
   }, []);
   return (
     <Stack>
-      <Heading size={'md'}>{t('printdialog.heightProfile.heading')}</Heading>
-      <Text>{t('printdialog.heightProfile.infotext')}</Text>
-      <HeightProfileChart chartRef={chartRef} />
-      <HeightProfileExport chartRef={chartRef} />
+      <Heading size={'md'}>{t('printdialog.elevationProfile.heading')}</Heading>
+      <Text>{t('printdialog.elevationProfile.infotext')}</Text>
+      <ElevationProfileChart chartRef={chartRef} />
+      <ElevationProfileExport chartRef={chartRef} />
     </Stack>
   );
 };
