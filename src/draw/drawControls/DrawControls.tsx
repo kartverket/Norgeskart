@@ -1,4 +1,4 @@
-import { Button, HStack, VStack } from '@kvib/react';
+import { Button, Heading, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -23,12 +23,13 @@ export const DrawControls = () => {
   useAtom(distanceUnitAtomEffect);
 
   return (
-    <VStack alignItems={'flex-start'} width={'100%'}>
-      <DrawToolSelector />
+    <VStack alignItems={'flex-start'} width={'100%'} padding={.5}>
+      <DrawToolSelector/>
       {drawType === 'Text' && <TextStyleControl />}
+      <Heading size="md">Faktiske tegneting(dev)</Heading>
       <EditControls />
-      <HStack>
-        <ColorControls />
+      <HStack width="100%" paddingTop={"4"}>
+        <ColorControls/>
         {drawType === 'Point' && <PointStyleSelector />}
       </HStack>
       {isMobile && drawType == 'Move' && (

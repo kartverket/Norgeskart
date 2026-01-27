@@ -26,7 +26,7 @@ export const ColorControls = () => {
   const { t } = useTranslation();
 
   return (
-    <VStack gap="2" align="stretch">
+    <VStack align="stretch" width="100%">
       <Text fontWeight="semibold">{t('draw.controls.color')}</Text>
 
       <ColorRow
@@ -88,7 +88,6 @@ const ColorRow = ({
         </ColorPickerTrigger>
       </ColorPickerControl>
 
-      {/* Popup */}
       <ColorPickerContent>
         <ColorPickerArea />
         <ColorPickerSliders />

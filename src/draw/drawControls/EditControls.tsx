@@ -67,8 +67,8 @@ export const EditControls = () => {
           onClick={() => {
             moveSelectedUp();
           }}
-          icon={'move_up'}
-          variant="ghost"
+          icon={'arrow_cool_down'}
+          variant="plain"
         />
       </Tooltip>
       <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
@@ -76,7 +76,7 @@ export const EditControls = () => {
           onClick={() => {
             moveSelectedDown();
           }}
-          icon={'move_down'}
+          icon={'arrow_warm_up'}
           variant="ghost"
         />
       </Tooltip>
