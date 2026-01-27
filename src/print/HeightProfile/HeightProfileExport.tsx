@@ -59,7 +59,7 @@ export const HeightProfileExport = ({
   };
 
   return (
-    <ButtonGroup>
+    <ButtonGroup justify="space-around">
       <Button onClick={() => exportAsCSV()}>
         {t('printdialog.heightProfile.buttons.exportCsv.label')}
       </Button>

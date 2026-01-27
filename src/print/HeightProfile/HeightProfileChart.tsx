@@ -69,23 +69,23 @@ export const HeightProfileChart = ({
         plugins: {
           title: {
             display: true,
-            text: t('printdialog.heightProfile.title') || 'Height Profile',
+            text: t('printdialog.heightProfile.chartLabels.title'),
           },
           legend: {
-            display: false,
+            display: true,
           },
         },
         scales: {
           x: {
             title: {
               display: true,
-              text: t('printdialog.heightProfile.distance') || 'Distance (m)',
+              text: t('printdialog.heightProfile.chartLabels.xAxis'),
             },
           },
           y: {
             title: {
               display: true,
-              text: t('printdialog.heightProfile.elevation') || 'Elevation (m)',
+              text: t('printdialog.heightProfile.chartLabels.yAxis'),
             },
           },
         },
@@ -116,11 +116,10 @@ export const HeightProfileChart = ({
     return null;
   }
 
-  // Build labels & data only when inputs change
-
   return (
     <Line
       data={data}
+      options={options}
       ref={(c) => {
         chartRef.current = c as unknown as ChartJS<'line'> | null;
       }}

@@ -412,6 +412,11 @@
         "exportJpeg": {
           "label": "Last ned som JPEG"
         }
+      },
+      "chartLabels": {
+        "title": "Høydeprofil",
+        "xAxis": "Avstand [m]",
+        "yAxis": "Høyde [m]"
       }
     }
   }
