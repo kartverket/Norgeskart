@@ -355,7 +355,7 @@
       "hiking": {
         "heading": "Turkart"
       },
-      "heightProfile": {
+      "elevationProfile": {
         "heading": "Høydeprofil"
       },
       "emergencyPoster": {
@@ -397,15 +397,26 @@
         "makePoster": "Lag plakat"
       }
     },
-    "heightProfile": {
+    "elevationProfile": {
       "heading": "Tekn ei linje for å lage ei høydeprofil",
       "infotext": "Opprett ei høydeprofil ved å klikke i kartet for å plassere det fyste punktet og dobbelklikk for å avslutte.",
       "jobError": "Kunne ikkje lage høgdeprofil",
       "jobRunning": "Lager profil",
       "buttons": {
         "exportCsv": {
-          "label": "Eksporter som CSV"
+          "label": "Last ned som CSV"
+        },
+        "exportPng": {
+          "label": "Last ned som PNG"
+        },
+        "exportJpeg": {
+          "label": "Last ned som JPEG"
         }
+      },
+      "chartLabels": {
+        "title": "Høydeprofil",
+        "xAxis": "Avstand [m]",
+        "yAxis": "Høyde [m]"
       }
     }
   }

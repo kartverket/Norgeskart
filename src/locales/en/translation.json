@@ -350,7 +350,7 @@
       "hiking": {
         "heading": "Hiking map"
       },
-      "heightProfile": {
+      "elevationProfile": {
         "heading": "Height profile"
       },
       "emergencyPoster": {
@@ -392,7 +392,7 @@
         "makePoster": "Create poster"
       }
     },
-    "heightProfile": {
+    "elevationProfile": {
       "heading": "Draw a line to create a height profile",
       "infotext": "Start creating a height profile by clicking the map to place the first point and double click to finish.",
       "jobError": "Failed to load height profile data.",
@@ -400,7 +400,18 @@
       "buttons": {
         "exportCsv": {
           "label": "Export as CSV"
+        },
+        "exportPng": {
+          "label": "Download as PNG"
+        },
+        "exportJpeg": {
+          "label": "Download as JPEG"
         }
+      },
+      "chartLabels": {
+        "title": "elevationProfile",
+        "xAxis": "Distance [m]",
+        "yAxis": "Elevation [m]"
       }
     }
   }

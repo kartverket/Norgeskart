@@ -57,16 +57,18 @@ export type JobStatusResponse = {
   };
 };
 
+export type ElevationProfileFeature = {
+  attributes: { [key: string]: unknown };
+  geometry: { x: number; y: number; z?: number; m?: number };
+};
+
 export type JobResultResponse = {
   dataType: string;
   paramName: OutputType;
   value: {
     displayFieldName: string;
     exceededTransferLimit: boolean;
-    features: Array<{
-      attributes: { [key: string]: unknown };
-      geometry: { x: number; y: number; z?: number; m?: number };
-    }>;
+    features: Array<ElevationProfileFeature>;
   };
   fields: Array<{
     name: string;
