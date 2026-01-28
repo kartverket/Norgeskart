@@ -29,7 +29,7 @@
     "jotai": "^2.16.2",
     "jotai-effect": "^2.2.3",
     "ol": "^10.7.0",
-    "posthog-js": "^1.318.2",
+    "posthog-js": "^1.335.5",
     "proj4": "^2.20.2",
     "react": "^19.2.1",
     "react-chartjs-2": "^5.3.1",
