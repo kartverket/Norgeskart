@@ -35,6 +35,7 @@ export const InputForm = ({
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
+  const [customNameChanged, setCustomNameChanged] = useState(false);
 
   const [customName, setCustomName] = useState<string>('');
   const [selectedRoad, setSelectedRoad] = useState<string | null>(
@@ -55,6 +56,9 @@ export const InputForm = ({
           value={customName}
           onChange={(s) => {
             setCustomName(s.target.value);
+            if (!customNameChanged) {
+              setCustomNameChanged(true);
+            }
           }}
         />
       </FieldRoot>
@@ -67,11 +71,15 @@ export const InputForm = ({
           range={1500}
           onSelect={(s) => {
             setSelectedPlace(s);
-            setCustomName(s);
+            if (!customNameChanged) {
+              setCustomName(s);
+            }
           }}
           onLoadComplete={(s) => {
             setSelectedPlace(s);
-            setCustomName(s);
+            if (!customNameChanged) {
+              setCustomName(s);
+            }
           }}
         />
       </FieldRoot>
