@@ -75,20 +75,24 @@ export const InputForm = ({
           }}
         />
       </FieldRoot>
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
-          {t('printdialog.emergencyPoster.inputform.fields.road.label')}
-        </FieldLabel>
-        <RoadAddressSelection
-          posterData={emergenyPosterData}
-          onSelect={(s) => {
-            setSelectedRoad(s);
-          }}
-        />
-      </FieldRoot>
-      <Text>
-        {`${t('shared.in')} ${emergenyPosterData.kommune} ${t('shared.locations.municipality')}`}
-      </Text>
+      {emergenyPosterData.vegliste.length > 0 && (
+        <>
+          <FieldRoot orientation={'horizontal'}>
+            <FieldLabel>
+              {t('printdialog.emergencyPoster.inputform.fields.road.label')}
+            </FieldLabel>
+            <RoadAddressSelection
+              posterData={emergenyPosterData}
+              onSelect={(s) => {
+                setSelectedRoad(s);
+              }}
+            />
+          </FieldRoot>
+          <Text>
+            {`${t('shared.in')} ${emergenyPosterData.kommune} ${t('shared.locations.municipality')}`}
+          </Text>
+        </>
+      )}
       <Separator />
       <FieldRoot orientation={'horizontal'}>
         <FieldLabel>
