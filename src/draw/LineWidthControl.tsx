@@ -25,7 +25,7 @@ export const LineWidthControl = () => {
   }
 
   return (
-    <VStack align="stretch" gap="2">
+    <VStack align="stretch" paddingTop={3}>
       <Text fontWeight="semibold">{t('draw.size.label')}</Text>
 
       <HStack gap="2">

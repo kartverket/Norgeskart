@@ -1,4 +1,4 @@
-import { Button, Heading, HStack, VStack } from '@kvib/react';
+import { Heading, HStack, IconButton, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -23,17 +23,25 @@ export const DrawControls = () => {
   useAtom(distanceUnitAtomEffect);
 
   return (
-    <VStack alignItems={'flex-start'} width={'100%'} padding={.5}>
-      <DrawToolSelector/>
+    <VStack alignItems={'flex-start'} width={'100%'} padding={0.5}>
+      <DrawToolSelector />
       {drawType === 'Text' && <TextStyleControl />}
       <Heading size="md">Faktiske tegneting(dev)</Heading>
       <EditControls />
-      <HStack width="100%" paddingTop={"4"}>
-        <ColorControls/>
+      <HStack width="100%">
+        <ColorControls />
         {drawType === 'Point' && <PointStyleSelector />}
       </HStack>
       {isMobile && drawType == 'Move' && (
-        <Button onClick={deleteSelected}>{t('draw.deleteSelection')}</Button>
+        <IconButton
+          onClick={deleteSelected}
+          colorPalette="red"
+          icon="delete"
+          size="md"
+          variant="ghost"
+        />
+
+        // <Button onClick={deleteSelected} size="sm" >{t('draw.deleteSelection')}</Button>
       )}
       <LineWidthControl />
       <MeasurementControls />

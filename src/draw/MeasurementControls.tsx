@@ -1,5 +1,8 @@
 import {
+  Button,
   createListCollection,
+  Group,
+  Heading,
   HStack,
   SelectContent,
   SelectItem,
@@ -10,6 +13,7 @@ import {
   SwitchHiddenInput,
   SwitchLabel,
   SwitchRoot,
+  VStack,
 } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
@@ -29,44 +33,60 @@ export const MeasurementControls = () => {
 
   const [showMeasurements, setShowMeasurements] = useAtom(showMeasurementsAtom);
   return (
-    <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
-      <SwitchRoot
-        checked={showMeasurements}
-        onCheckedChange={(e) => {
-          setShowMeasurements(e.checked);
-        }}
-        w={'50%'}
-      >
-        <SwitchHiddenInput />
-        <SwitchControl />
-        <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
-      </SwitchRoot>
-      {showMeasurements && (
-        <SelectRoot
-          value={[distanceUnit]}
-          collection={createListCollection({
-            items: measurementUnitCollection,
-          })}
-          defaultValue={[measurementUnitCollection[0].value]}
+    <>
+      <VStack align="flex-start" paddingTop={3}>
+        <Heading size="md" textAlign="center">
+          {t('draw.controls.showMeasurements')}
+        </Heading>
+        <Group attached>
+          <Button size="sm" variant="outline">
+            Meter[m]
+          </Button>
+          <Button size="sm" variant="outline">
+            Nautiske mil[NM]
+          </Button>
+        </Group>
+      </VStack>
+
+      <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
+        <SwitchRoot
+          checked={showMeasurements}
+          onCheckedChange={(e) => {
+            setShowMeasurements(e.checked);
+          }}
+          w={'50%'}
         >
-          <SelectTrigger>
-            <SelectValueText />
-          </SelectTrigger>
-          <SelectContent>
-            {measurementUnitCollection.map((item) => (
-              <SelectItem
-                key={item.value}
-                item={item.value}
-                onClick={() => {
-                  setDistanceUnit(item.value);
-                }}
-              >
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
-      )}
-    </HStack>
+          <SwitchHiddenInput />
+          <SwitchControl />
+          <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
+        </SwitchRoot>
+        {showMeasurements && (
+          <SelectRoot
+            value={[distanceUnit]}
+            collection={createListCollection({
+              items: measurementUnitCollection,
+            })}
+            defaultValue={[measurementUnitCollection[0].value]}
+          >
+            <SelectTrigger>
+              <SelectValueText />
+            </SelectTrigger>
+            <SelectContent>
+              {measurementUnitCollection.map((item) => (
+                <SelectItem
+                  key={item.value}
+                  item={item.value}
+                  onClick={() => {
+                    setDistanceUnit(item.value);
+                  }}
+                >
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+        )}
+      </HStack>
+    </>
   );
 };

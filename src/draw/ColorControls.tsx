@@ -1,23 +1,22 @@
 import {
   Box,
-  HStack,
-  VStack,
-  Text,
-  Icon,
-  Spacer,
   ColorPicker,
   ColorPickerArea,
   ColorPickerContent,
   ColorPickerControl,
   ColorPickerSliders,
   ColorPickerTrigger,
+  HStack,
+  Icon,
   parseColor,
+  Spacer,
+  Text,
+  VStack,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { primaryColorAtom, secondaryColorAtom } from '../settings/draw/atoms';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
-
 
 export const ColorControls = () => {
   const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
@@ -26,7 +25,7 @@ export const ColorControls = () => {
   const { t } = useTranslation();
 
   return (
-    <VStack align="stretch" width="100%">
+    <VStack align="stretch" width="100%" paddingTop={3}>
       <Text fontWeight="semibold">{t('draw.controls.color')}</Text>
 
       <ColorRow
@@ -67,9 +66,9 @@ const ColorRow = ({
             role="button"
             tabIndex={0}
             align="center"
-            py="2"
+            py={1}
             borderWidth="1px"
-            borderRadius="md"
+            borderRadius="lg"
             bg="white"
             cursor="pointer"
             _hover={{ bg: 'gray.50' }}
@@ -77,12 +76,12 @@ const ColorRow = ({
             <Swatch color={color} />
             <Text>{label}</Text>
             <Spacer />
-           <Icon
+            <Icon
               color="colorPalette.500"
               grade={0}
               icon="chevron_right"
-              size={24}
-              weight={400}
+              size={28}
+              weight={300}
             />
           </HStack>
         </ColorPickerTrigger>
@@ -99,8 +98,8 @@ const ColorRow = ({
 const Swatch = ({ color }: { color: string }) => {
   return (
     <Box
-      w="20px"
-      h="20px"
+      w="25px"
+      h="25px"
       borderRadius="sm"
       borderWidth="1px"
       style={{ background: color }}
@@ -115,14 +114,20 @@ const useColorLabels = () => {
 
   switch (drawType) {
     case 'Text':
-      return { primaryLabel: t(p + 'colorText'), secondaryLabel: t(p + 'colorBackground') };
+      return {
+        primaryLabel: t(p + 'colorText'),
+        secondaryLabel: t(p + 'colorBackground'),
+      };
     case 'Point':
       return { primaryLabel: t(p + 'colorPoint'), secondaryLabel: null };
     case 'LineString':
       return { primaryLabel: t(p + 'colorStroke'), secondaryLabel: null };
     case 'Polygon':
     case 'Circle':
-      return { primaryLabel: t(p + 'colorStroke'), secondaryLabel: t(p + 'colorFill') };
+      return {
+        primaryLabel: t(p + 'colorStroke'),
+        secondaryLabel: t(p + 'colorFill'),
+      };
     default:
       return { primaryLabel: 'Primary', secondaryLabel: 'Secondary' };
   }

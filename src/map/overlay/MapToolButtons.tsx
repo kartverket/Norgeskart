@@ -35,7 +35,7 @@ export const MapToolButtons = () => {
     <HStack
       align="flex-end"
       justify="space-between"
-      overflowX={{base:"auto", md:"none"}}
+      overflowX={{ base: 'auto', md: 'none' }}
       bg="#FFFF"
       borderRadius={{ base: '', md: 'lg' }}
       py={{ base: 3, md: 2 }}

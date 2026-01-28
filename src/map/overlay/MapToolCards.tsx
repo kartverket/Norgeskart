@@ -53,7 +53,7 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
     <VStack
       width="100%"
-      maxWidth={{base:'100%', md:"365px"}}
+      maxWidth={{ base: '100%', md: '365px' }}
       maxHeight="100%"
       pointerEvents="auto"
       bg="#FFFF"
