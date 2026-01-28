@@ -96,17 +96,6 @@ export const MapToolButtons = () => {
           ariaLabel="print"
         />
       )}
-      <MapButton
-        onClick={() => {
-          setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
-        }}
-        icon={'settings'}
-        label={
-          isMobile
-            ? t('controller.settings.mobiletext')
-            : t('controller.settings.text')
-        }
-      />
     </HStack>
   );
 };

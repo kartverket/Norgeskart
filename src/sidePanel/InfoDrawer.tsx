@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import PrivacyPolicy from './PrivacyPolicyAndContact';
 
 import { Tip, unwrapJsonModule } from '../types/tips';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   nb: () =>
@@ -131,6 +132,7 @@ export const InfoDrawer = () => {
         </CollapsibleContent>
       </Collapsible>
       <PrivacyPolicy />
+      <LanguageSwitcher />
     </SimpleGrid>
   );
 };
