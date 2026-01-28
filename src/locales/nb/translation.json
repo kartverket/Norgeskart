@@ -32,7 +32,7 @@
       "colorStroke": "Omriss",
       "colorText": "Tekst",
       "pointType": "Punkttype",
-      "showMeasurements": "Vis mål",
+      "showMeasurements": "Vis mål i kartet",
       "tool": {
         "tooltip": {
           "circle": "Sirkel",
@@ -54,7 +54,7 @@
     "end": "Ferdig",
     "save": "Lagre",
     "size": {
-      "label": "Størrelse"
+      "label": "Elementstørrelse"
     },
     "tabHeading": "Velg tegnetype(dev)",
     "textInputLabel": "Skriv inn tekst",
@@ -64,7 +64,8 @@
       }
     },
     "tools": "Tegneverktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjør om"
   },
   "export": {
     "format": {

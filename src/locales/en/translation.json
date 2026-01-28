@@ -32,7 +32,7 @@
       "colorStroke": "Stroke",
       "colorText": "Text",
       "pointType": "Select icon",
-      "showMeasurements": "Show measurements",
+      "showMeasurements": "Show measurements on map",
       "tool": {
         "tooltip": {
           "circle": "Circle",
@@ -54,12 +54,13 @@
     "end": "Done",
     "save": "Save",
     "size": {
-      "label": "Size"
+      "label": "Element size"
     },
     "tabHeading": "Draw and measure",
     "textInputLabel": "Enter text",
     "tools": "Tools",
-    "yesClear": "Yes clear"
+    "yesClear": "Yes clear",
+    "redoundo": "Undo / Redo "
   },
   "export": {
     "format": {

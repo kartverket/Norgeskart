@@ -52,7 +52,7 @@ export const ExportControls = () => {
   return (
     <VStack alignItems="flex-start">
       <Heading size={'md'} as="h3">
-        {t('export.heading')}
+        Velg filformat for eksport av tegning
       </Heading>
 
       <HStack

@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  Heading,
   IconButton,
   PopoverArrow,
   PopoverBody,
@@ -101,6 +102,9 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
+      <Heading size="md" marginTop={2}>
+        {t('draw.redoundo')}
+      </Heading>
       <ButtonGroup>
         <IconButton
           variant="ghost"
@@ -117,38 +121,41 @@ export const DrawControlFooter = () => {
           />
         )}
       </ButtonGroup>
+      <Heading size="md" marginTop={2}>
+        Handlinger
+      </Heading>
       <ButtonGroup>
         <PopoverRoot
           open={clearPopoverOpen}
           onOpenChange={(e) => setClearPopoverOpen(e.open)}
         >
           <PopoverTrigger asChild>
-            <Button size="sm" colorPalette={'red'}>
+            <IconButton size="sm" colorPalette={'red'} icon={'delete'}>
               {t('draw.clear')}
-            </Button>
+            </IconButton>
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent width="145px">
             <PopoverArrow />
             <PopoverBody>
               <PopoverTitle fontWeight="bold">
                 {t('draw.confrimClear')}
               </PopoverTitle>
-
               <Button
                 onClick={() => {
                   setClearPopoverOpen(false);
                   clearDrawing();
                 }}
                 colorPalette={'red'}
+                marginTop={2}
               >
                 {t('shared.yes')}
               </Button>
             </PopoverBody>
           </PopoverContent>
         </PopoverRoot>
-        <Button size="sm" onClick={onSaveFeatures}>
+        <IconButton size="sm" onClick={onSaveFeatures} icon={'save'}>
           {t('draw.save')}
-        </Button>
+        </IconButton>
       </ButtonGroup>
     </>
   );

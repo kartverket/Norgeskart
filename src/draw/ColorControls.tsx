@@ -25,22 +25,27 @@ export const ColorControls = () => {
   const { t } = useTranslation();
 
   return (
-    <VStack align="stretch" width="100%" paddingTop={3}>
+    <VStack align="stretch" w="100%" mt={2}>
       <Text fontWeight="semibold">{t('draw.controls.color')}</Text>
+      <HStack w="100%" align="stretch">
+        <Box flex="1">
+          <ColorRow
+            label={primaryLabel}
+            color={primaryColor}
+            onSetColor={setPrimaryColor}
+          />
+        </Box>
 
-      <ColorRow
-        label={primaryLabel}
-        color={primaryColor}
-        onSetColor={setPrimaryColor}
-      />
-
-      {secondaryLabel && (
-        <ColorRow
-          label={secondaryLabel}
-          color={secondaryColor}
-          onSetColor={setSecondaryColor}
-        />
-      )}
+        {secondaryLabel && (
+          <Box flex="1">
+            <ColorRow
+              label={secondaryLabel}
+              color={secondaryColor}
+              onSetColor={setSecondaryColor}
+            />
+          </Box>
+        )}
+      </HStack>
     </VStack>
   );
 };

@@ -61,7 +61,7 @@ export const EditControls = () => {
     return null;
   }
   return (
-    <HStack>
+    <HStack marginTop={2}>
       <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
         <IconButton
           onClick={() => {

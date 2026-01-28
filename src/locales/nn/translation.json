@@ -64,7 +64,8 @@
       }
     },
     "tools": "Verktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjer om"
   },
   "export": {
     "format": {

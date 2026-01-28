@@ -1,92 +1,50 @@
-import {
-  Button,
-  createListCollection,
-  Group,
-  Heading,
-  HStack,
-  SelectContent,
-  SelectItem,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-  SwitchControl,
-  SwitchHiddenInput,
-  SwitchLabel,
-  SwitchRoot,
-  VStack,
-} from '@kvib/react';
-import { t } from 'i18next';
+import { Button, Group, Heading, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import {
   DistanceUnit,
   distanceUnitAtom,
   showMeasurementsAtom,
 } from '../settings/draw/atoms';
 
-const measurementUnitCollection: { value: DistanceUnit; label: string }[] = [
-  { value: 'm', label: `${t('shared.units.meter')} [m]` },
-  { value: 'NM', label: `${t('shared.units.nauticalMile')} [NM]` },
-];
-
 export const MeasurementControls = () => {
+  const { t } = useTranslation();
   const [distanceUnit, setDistanceUnit] = useAtom(distanceUnitAtom);
-
   const [showMeasurements, setShowMeasurements] = useAtom(showMeasurementsAtom);
-  return (
-    <>
-      <VStack align="flex-start" paddingTop={3}>
-        <Heading size="md" textAlign="center">
-          {t('draw.controls.showMeasurements')}
-        </Heading>
-        <Group attached>
-          <Button size="sm" variant="outline">
-            Meter[m]
-          </Button>
-          <Button size="sm" variant="outline">
-            Nautiske mil[NM]
-          </Button>
-        </Group>
-      </VStack>
 
-      <HStack width={'100%'} justifyContent={'space-between'} h={'40px'}>
-        <SwitchRoot
-          checked={showMeasurements}
-          onCheckedChange={(e) => {
-            setShowMeasurements(e.checked);
-          }}
-          w={'50%'}
-        >
-          <SwitchHiddenInput />
-          <SwitchControl />
-          <SwitchLabel>{t('draw.controls.showMeasurements')}</SwitchLabel>
-        </SwitchRoot>
-        {showMeasurements && (
-          <SelectRoot
-            value={[distanceUnit]}
-            collection={createListCollection({
-              items: measurementUnitCollection,
-            })}
-            defaultValue={[measurementUnitCollection[0].value]}
+  const units: { value: DistanceUnit; label: string }[] = [
+    { value: 'm', label: `${t('shared.units.meter')} [m]` },
+    { value: 'NM', label: `${t('shared.units.nauticalMile')} [NM]` },
+  ];
+
+  const isActive = (u: DistanceUnit) => showMeasurements && distanceUnit === u;
+
+  const onPick = (u: DistanceUnit) => {
+    if (isActive(u)) {
+      setShowMeasurements(false);
+      return;
+    }
+
+    setDistanceUnit(u);
+    setShowMeasurements(true);
+  };
+
+  return (
+    <VStack align="flex-start" mt={2} w="100%">
+      <Heading size="md">{t('draw.controls.showMeasurements')}</Heading>
+
+      <Group attached>
+        {units.map((u) => (
+          <Button
+            key={u.value}
+            size="sm"
+            variant={isActive(u.value) ? 'solid' : 'outline'}
+            onClick={() => onPick(u.value)}
           >
-            <SelectTrigger>
-              <SelectValueText />
-            </SelectTrigger>
-            <SelectContent>
-              {measurementUnitCollection.map((item) => (
-                <SelectItem
-                  key={item.value}
-                  item={item.value}
-                  onClick={() => {
-                    setDistanceUnit(item.value);
-                  }}
-                >
-                  {item.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
-        )}
-      </HStack>
-    </>
+            {u.label}
+          </Button>
+        ))}
+      </Group>
+    </VStack>
   );
 };
