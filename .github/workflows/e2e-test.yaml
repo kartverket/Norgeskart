@@ -28,7 +28,7 @@ jobs:
           run: |
             npx playwright install-deps
         - name: Cypress run
-          uses: cypress-io/github-action@v6
+          uses: cypress-io/github-action@v7
           with:
             start: npm run dev
             browser: ${{ matrix.browser }}
