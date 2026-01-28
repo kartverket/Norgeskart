@@ -3,6 +3,7 @@ import { Coordinate } from 'ol/coordinate';
 import { transform } from 'ol/proj';
 import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
+import { boundNumber } from '../../shared/utils/numberUtils';
 import { formatToNorwegianUTMString } from './utmStringUtils';
 
 const env = getEnv();
@@ -55,7 +56,12 @@ const createMapUrl = (coordinates: Coordinate) => {
   if (!resolution) {
     return;
   }
-  const currentMapHeight = resolution * window.innerHeight;
+  const currentMapHeight = boundNumber(
+    resolution * window.innerHeight,
+    500,
+    4500,
+  ); // Max 4500 or poster will be blank, min 500 to avoid too small images
+
   const currentMapWidth = Math.round(currentMapHeight * hw_ratio);
 
   const baseUrl = 'https://wms.geonorge.no/skwms1/wms.topo';
