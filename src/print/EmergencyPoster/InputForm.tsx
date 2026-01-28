@@ -25,6 +25,7 @@ import { PlaceSelector } from './PlaceSelector';
 import { RoadAddressSelection } from './RoadAddressSelection';
 import { createPosterUrl } from './utils';
 
+const LABEL_WIDTH = '40%';
 export const InputForm = ({
   clickedCoordinates,
   emergenyPosterData,
@@ -47,9 +48,9 @@ export const InputForm = ({
   const posthog = usePostHog();
 
   return (
-    <Stack>
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+    <Stack gap={3}>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={LABEL_WIDTH}>
           {t('printdialog.emergencyPoster.inputform.fields.title.label')}
         </FieldLabel>
         <Input
@@ -60,10 +61,11 @@ export const InputForm = ({
               setCustomNameChanged(true);
             }
           }}
+          borderRadius={0}
         />
       </FieldRoot>
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={LABEL_WIDTH}>
           {t('printdialog.emergencyPoster.inputform.fields.place.label')}
         </FieldLabel>
         <PlaceSelector
@@ -85,8 +87,8 @@ export const InputForm = ({
       </FieldRoot>
       {emergenyPosterData.vegliste.length > 0 && (
         <>
-          <FieldRoot orientation={'horizontal'}>
-            <FieldLabel>
+          <FieldRoot orientation={'horizontal'} display={'flex'}>
+            <FieldLabel flexBasis={LABEL_WIDTH}>
               {t('printdialog.emergencyPoster.inputform.fields.road.label')}
             </FieldLabel>
             <RoadAddressSelection
@@ -102,8 +104,8 @@ export const InputForm = ({
         </>
       )}
       <Separator />
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={'80%'}>
           {t(
             'printdialog.emergencyPoster.inputform.fields.isInfoCorrect.label',
           )}
