@@ -372,13 +372,13 @@
         "heading": "Click the map to set the location for the poster",
         "fields": {
           "title": {
-            "label": "Give the location a name"
+            "label": "Poster title"
           },
           "place": {
-            "label": "Select right place name"
+            "label": "Select nearest location"
           },
           "road": {
-            "label": "The closest road is"
+            "label": "Select nearest address"
           },
           "isInfoCorrect": {
             "label": "Is the above info correct?"
