@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@kvib/react": "^6.2.1",
-    "@posthog/react": "^1.5.2",
+    "@posthog/react": "^1.7.0",
     "@tanstack/react-query": "^5.90.20",
     "@types/geojson": "^7946.0.16",
     "chart.js": "^4.5.1",
