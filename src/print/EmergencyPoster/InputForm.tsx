@@ -25,6 +25,7 @@ import { PlaceSelector } from './PlaceSelector';
 import { RoadAddressSelection } from './RoadAddressSelection';
 import { createPosterUrl } from './utils';
 
+const LABEL_WIDTH = '40%';
 export const InputForm = ({
   clickedCoordinates,
   emergenyPosterData,
@@ -35,6 +36,7 @@ export const InputForm = ({
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
+  const [customNameChanged, setCustomNameChanged] = useState(false);
 
   const [customName, setCustomName] = useState<string>('');
   const [selectedRoad, setSelectedRoad] = useState<string | null>(
@@ -46,20 +48,24 @@ export const InputForm = ({
   const posthog = usePostHog();
 
   return (
-    <Stack>
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+    <Stack gap={3}>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={LABEL_WIDTH}>
           {t('printdialog.emergencyPoster.inputform.fields.title.label')}
         </FieldLabel>
         <Input
           value={customName}
           onChange={(s) => {
             setCustomName(s.target.value);
+            if (!customNameChanged) {
+              setCustomNameChanged(true);
+            }
           }}
+          borderRadius={0}
         />
       </FieldRoot>
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={LABEL_WIDTH}>
           {t('printdialog.emergencyPoster.inputform.fields.place.label')}
         </FieldLabel>
         <PlaceSelector
@@ -67,31 +73,39 @@ export const InputForm = ({
           range={1500}
           onSelect={(s) => {
             setSelectedPlace(s);
-            setCustomName(s);
+            if (!customNameChanged) {
+              setCustomName(s);
+            }
           }}
           onLoadComplete={(s) => {
             setSelectedPlace(s);
-            setCustomName(s);
+            if (!customNameChanged) {
+              setCustomName(s);
+            }
           }}
         />
       </FieldRoot>
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
-          {t('printdialog.emergencyPoster.inputform.fields.road.label')}
-        </FieldLabel>
-        <RoadAddressSelection
-          posterData={emergenyPosterData}
-          onSelect={(s) => {
-            setSelectedRoad(s);
-          }}
-        />
-      </FieldRoot>
-      <Text>
-        {`${t('shared.in')} ${emergenyPosterData.kommune} ${t('shared.locations.municipality')}`}
-      </Text>
+      {emergenyPosterData.vegliste.length > 0 && (
+        <>
+          <FieldRoot orientation={'horizontal'} display={'flex'}>
+            <FieldLabel flexBasis={LABEL_WIDTH}>
+              {t('printdialog.emergencyPoster.inputform.fields.road.label')}
+            </FieldLabel>
+            <RoadAddressSelection
+              posterData={emergenyPosterData}
+              onSelect={(s) => {
+                setSelectedRoad(s);
+              }}
+            />
+          </FieldRoot>
+          <Text>
+            {`${t('shared.in')} ${emergenyPosterData.kommune} ${t('shared.locations.municipality')}`}
+          </Text>
+        </>
+      )}
       <Separator />
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={'80%'}>
           {t(
             'printdialog.emergencyPoster.inputform.fields.isInfoCorrect.label',
           )}
