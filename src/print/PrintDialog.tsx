@@ -82,7 +82,8 @@ export const PrintDialog = () => {
             {tabsListConfig.map((tab) =>
               envName !== 'prod' ||
               tab.value === 'emergencyPoster' ||
-              tab.value === 'elevationProfile' ? (
+              tab.value === 'elevationProfile' ||
+              tab.value === 'hiking' ? (
                 <TabsTrigger
                   key={tab.value}
                   value={tab.value}
