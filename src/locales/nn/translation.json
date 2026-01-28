@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Del kart",
       "mobiletext": "Del"
+    },
+    "help": {
+      "mobiletext": "Hjelp"
     }
   },
   "draw": {

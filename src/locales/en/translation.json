@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Share map",
       "mobiletext": "Share"
+    },
+    "help": {
+      "mobiletext": "Help"
     }
   },
   "draw": {

@@ -72,7 +72,7 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'info' ? null : 'info');
         }}
         icon={'info'}
-        label={isMobile ? t('info.settings.base') : t('info.settings.text')}
+        label={t('controller.help.mobiletext')}
         active={currentMapTool === 'info'}
       />
 
