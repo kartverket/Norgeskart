@@ -24,7 +24,11 @@ import { Fill, Stroke, Style } from 'ol/style';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createHikingMap } from '../../api/hikingMap/hikingMapApi';
+import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
+import { downloadFile } from '../../shared/utils/fileUtils';
+
+const env = getEnv();
 
 const MapScaleOptions = ['1 : 25 000', '1 : 50 000'] as const;
 
@@ -132,7 +136,10 @@ export const HikingMapSection = () => {
       mapName,
     );
 
-    console.log(res);
+    if (res.linkPdf) {
+      const fullLink = env.apiUrl + '/nkprint/' + res.linkPdf;
+      downloadFile(fullLink, 'hiking-map.pdf');
+    }
     //sleep for 2 seconds to simulate loading
 
     setPrintLoading(false);
