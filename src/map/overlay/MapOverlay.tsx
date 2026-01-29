@@ -106,7 +106,7 @@ export const MapOverlay = () => {
           gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
           zIndex={2}
         >
-          <Flex w={'100%'} justifyContent={'flex-end'}>
+          <Flex maxHeight={'100%'} w={'100%'} justifyContent={'flex-end'}>
             <InfoBox />
             <PrintDialog />
           </Flex>
