@@ -24,7 +24,6 @@ export const DrawControls = () => {
     <VStack alignItems={'flex-start'} width={'100%'} padding={0.5}>
       <DrawToolSelector />
       {drawType === 'Text' && <TextStyleControl />}
-      <EditControls />
       <HStack width="100%">
         <ColorControls />
         {drawType === 'Point' && <PointStyleSelector />}
@@ -40,6 +39,7 @@ export const DrawControls = () => {
         // <Button onClick={deleteSelected} size="sm" >{t('draw.deleteSelection')}</Button>
       )}
       <LineWidthControl />
+      <EditControls />
       <MeasurementControls />
       <DrawControlFooter />
     </VStack>
