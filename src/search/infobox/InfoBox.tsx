@@ -62,7 +62,7 @@ export const InfoBox = () => {
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading fontWeight="bold" size={'lg'}>
-          {selectedResult.name}
+          {selectedResult.type !== 'Coordinate' && selectedResult.name}
         </Heading>
         <IconButton
           onClick={onClose}
