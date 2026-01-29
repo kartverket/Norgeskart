@@ -438,12 +438,16 @@
         },
         "includeCompassInstructions": {
           "label": "crash course in compass usage"
-        }
+        },
+        "heading": "Include"
       },
       "overlayinstructions": "Place the orange overlay where you want the map",
       "buttons": {
         "generate": "Make map",
         "cancel": "Cancel"
+      },
+      "errors": {
+        "generateFailed": "Print failed"
       }
     }
   },

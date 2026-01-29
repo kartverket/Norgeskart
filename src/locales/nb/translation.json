@@ -443,12 +443,16 @@
         },
         "includeCompassInstructions": {
           "label": "minikurs i kompassbruk"
-        }
+        },
+        "heading": "Ta med"
       },
       "overlayinstructions": "Plasser det oransje feltet i området du vil skrive ut",
       "buttons": {
         "generate": "Lag turkart",
         "cancel": "Avbryt"
+      },
+      "errors": {
+        "generateFailed": "Utskrift feilet"
       }
     }
   },
