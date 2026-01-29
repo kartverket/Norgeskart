@@ -17,9 +17,10 @@ import {
 import { getDefaultStore } from 'jotai';
 import { Feature } from 'ol';
 import { Polygon } from 'ol/geom';
-import { Select, Translate } from 'ol/interaction';
+import { Translate } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import { Fill, Stroke, Style } from 'ol/style';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createHikingMap } from '../../api/hikingMap/hikingMapApi';
@@ -88,22 +89,25 @@ export const HikingMapSection = () => {
         ],
       ]),
     });
+    overlayFeature.setStyle(
+      new Style({
+        stroke: new Stroke({ color: 'white', width: 2 }),
+        fill: new Fill({ color: 'rgba(253, 143, 0, 0.5)' }),
+      }),
+    );
 
     overlayLayer.getSource()?.addFeature(overlayFeature); //create rectangle overlay on map
     map.addLayer(overlayLayer);
 
-    const selectInteraction = new Select({
-      layers: [overlayLayer],
-    });
     const translateInteraction = new Translate({
-      features: selectInteraction.getFeatures(),
+      features: overlayLayer.getSource()?.getFeaturesCollection()!,
     });
-    map.addInteraction(selectInteraction);
     map.addInteraction(translateInteraction);
 
     return () => {
       overlayLayer.getSource()?.clear();
       map.removeLayer(overlayLayer);
+      map.removeInteraction(translateInteraction);
     };
   }, [selectedScale]);
 
