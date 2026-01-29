@@ -1,6 +1,11 @@
 import {
   Button,
   ButtonGroup,
+  Dialog,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogTrigger,
   Heading,
   IconButton,
   PopoverArrow,
@@ -25,6 +30,7 @@ import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
+import { ExportControls } from './export/ExportControls';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
@@ -130,7 +136,13 @@ export const DrawControlFooter = () => {
           onOpenChange={(e) => setClearPopoverOpen(e.open)}
         >
           <PopoverTrigger asChild>
-            <IconButton size="sm" colorPalette={'red'} icon={'delete'}>
+            <IconButton
+              size="lg"
+              variant="ghost"
+              iconFill
+              colorPalette={'red'}
+              icon={'delete'}
+            >
               {t('draw.clear')}
             </IconButton>
           </PopoverTrigger>
@@ -153,9 +165,30 @@ export const DrawControlFooter = () => {
             </PopoverBody>
           </PopoverContent>
         </PopoverRoot>
-        <IconButton size="sm" onClick={onSaveFeatures} icon={'save'}>
+        <IconButton
+          size="lg"
+          variant="ghost"
+          iconFill
+          onClick={onSaveFeatures}
+          icon={'save'}
+        >
           {t('draw.save')}
         </IconButton>
+
+        <Dialog placement={'center'} motionPreset="slide-in-left">
+          <DialogTrigger asChild>
+            <IconButton icon={'share'} variant="ghost">
+              Open Dialog
+            </IconButton>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogBody>
+              <ExportControls></ExportControls>
+            </DialogBody>
+
+            <DialogCloseTrigger />
+          </DialogContent>
+        </Dialog>
       </ButtonGroup>
     </>
   );
