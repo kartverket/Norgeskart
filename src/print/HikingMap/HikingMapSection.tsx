@@ -54,9 +54,7 @@ const getOverlayFeature = (): Feature | null => {
       (layer) => layer.get('id') === 'hikingMapOverlayLayer',
     ) as unknown as VectorLayer;
 
-  console.log(overlayLayer);
   const features = overlayLayer.getSource()?.getFeatures();
-  console.log(features);
   return features ? features[0] : null;
 };
 
@@ -163,7 +161,6 @@ export const HikingMapSection = () => {
     map.addInteraction(translateInteraction);
 
     return () => {
-      console.log('byt bye ');
       overlayLayer
         .getSource()
         ?.getFeatures()
