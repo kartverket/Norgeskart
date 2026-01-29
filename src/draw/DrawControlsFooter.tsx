@@ -1,6 +1,12 @@
 import {
   Button,
   ButtonGroup,
+  Dialog,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogTrigger,
+  Heading,
   IconButton,
   PopoverArrow,
   PopoverBody,
@@ -24,6 +30,7 @@ import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
+import { ExportControls } from './export/ExportControls';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
@@ -101,6 +108,9 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
+      <Heading size="md" marginTop={2}>
+        {t('draw.redoundo')}
+      </Heading>
       <ButtonGroup>
         <IconButton
           variant="ghost"
@@ -117,38 +127,68 @@ export const DrawControlFooter = () => {
           />
         )}
       </ButtonGroup>
+      <Heading size="md" marginTop={2}>
+        Handlinger
+      </Heading>
       <ButtonGroup>
         <PopoverRoot
           open={clearPopoverOpen}
           onOpenChange={(e) => setClearPopoverOpen(e.open)}
         >
           <PopoverTrigger asChild>
-            <Button size="sm" colorPalette={'red'}>
+            <IconButton
+              size="lg"
+              variant="ghost"
+              iconFill
+              colorPalette={'red'}
+              icon={'delete'}
+            >
               {t('draw.clear')}
-            </Button>
+            </IconButton>
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent width="145px">
             <PopoverArrow />
             <PopoverBody>
               <PopoverTitle fontWeight="bold">
                 {t('draw.confrimClear')}
               </PopoverTitle>
-
               <Button
                 onClick={() => {
                   setClearPopoverOpen(false);
                   clearDrawing();
                 }}
                 colorPalette={'red'}
+                marginTop={2}
               >
                 {t('shared.yes')}
               </Button>
             </PopoverBody>
           </PopoverContent>
         </PopoverRoot>
-        <Button size="sm" onClick={onSaveFeatures}>
+        <IconButton
+          size="lg"
+          variant="ghost"
+          iconFill
+          onClick={onSaveFeatures}
+          icon={'save'}
+        >
           {t('draw.save')}
-        </Button>
+        </IconButton>
+
+        <Dialog placement={'center'} motionPreset="slide-in-left">
+          <DialogTrigger asChild>
+            <IconButton icon={'download'} variant="ghost">
+              Open Dialog
+            </IconButton>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogBody>
+              <ExportControls></ExportControls>
+            </DialogBody>
+
+            <DialogCloseTrigger />
+          </DialogContent>
+        </Dialog>
       </ButtonGroup>
     </>
   );

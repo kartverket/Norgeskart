@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag",
-      "mobiletext": "Lag"
+      "openText": "Temakart",
+      "mobiletext": "Temakart"
     },
     "print": {
       "text": "Print"
@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Del kart",
       "mobiletext": "Del"
+    },
+    "help": {
+      "mobiletext": "Hjelp"
     }
   },
   "draw": {
@@ -47,7 +50,8 @@
       },
       "toolSelect": {
         "placeholder": "Vel teiknemåte"
-      }
+      },
+      "color": "Farger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -63,7 +67,8 @@
       }
     },
     "tools": "Verktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjer om"
   },
   "export": {
     "format": {

@@ -35,6 +35,7 @@ export const MapToolButtons = () => {
     <HStack
       align="flex-end"
       justify="space-between"
+      overflowX={{ base: 'auto', md: 'none' }}
       bg="#FFFF"
       borderRadius={{ base: '', md: 'lg' }}
       py={{ base: 3, md: 2 }}
@@ -71,7 +72,7 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'info' ? null : 'info');
         }}
         icon={'info'}
-        label={isMobile ? t('info.settings.base') : t('info.settings.text')}
+        label={t('controller.help.mobiletext')}
         active={currentMapTool === 'info'}
       />
 
@@ -95,17 +96,6 @@ export const MapToolButtons = () => {
           ariaLabel="print"
         />
       )}
-      <MapButton
-        onClick={() => {
-          setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
-        }}
-        icon={'settings'}
-        label={
-          isMobile
-            ? t('controller.settings.mobiletext')
-            : t('controller.settings.text')
-        }
-      />
     </HStack>
   );
 };

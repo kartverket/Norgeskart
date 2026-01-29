@@ -46,6 +46,7 @@ export const PointStyleSelector = () => {
   return (
     <SelectRoot
       w={'80px'}
+      marginTop={4}
       collection={iconsCollection}
       value={pointIcon ? [pointIcon] : []}
     >
