@@ -11,7 +11,9 @@ interface Matrix {
   matrixSize: [number, number];
 }
 
-interface Layer {
+export type Layer = WmtsLayer | GeoJsonLayer;
+
+export interface WmtsLayer {
   baseURL: string;
   customParams: { TRANSPARENT: string };
   style: string;
@@ -24,6 +26,14 @@ interface Layer {
   dimensionParams: Record<string, unknown>;
   matrixSet: string;
   matrices: Matrix[];
+}
+
+export interface GeoJsonLayer {
+  type: 'geojson';
+  name: string;
+  opacity: number;
+  style: object;
+  geoJson: object;
 }
 
 interface MapAttributes {

@@ -76,13 +76,13 @@ export const ExtentSection = () => {
     if (center) setPrintBoxCenter(center as [number, number]);
   }, [map, setPrintBoxCenter]);
 
-  const dpi = 128;
-
   useEffect(() => {
-    if (!selectedLayout?.width || !selectedLayout?.height) return;
-    const widthMm = (selectedLayout.width / dpi) * 25.4;
-    const heightMm = (selectedLayout.height / dpi) * 25.4;
-    setPrintBoxLayout({ widthMm, heightMm });
+    if (!selectedLayout) return;
+    const widthPx = selectedLayout?.width;
+    const heightPx = selectedLayout?.height;
+    if (widthPx && heightPx) {
+      setPrintBoxLayout({ widthPx, heightPx });
+    }
   }, [selectedLayout, setPrintBoxLayout]);
 
   const handlePrint = async () => {
