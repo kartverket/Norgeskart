@@ -1,15 +1,15 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag",
-      "mobiletext": "Lag"
+      "openText": "Temakart",
+      "mobiletext": "Temakart"
     },
     "print": {
       "text": "Print"
     },
     "draw": {
       "text": "Tegne og måle",
-      "mobiletext": "Verktøy"
+      "mobiletext": "Tegne og måle"
     },
     "settings": {
       "mobiletext": "Innstillinger",
@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Del kart",
       "mobiletext": "Del"
+    },
+    "help": {
+      "mobiletext": "Hjelp"
     }
   },
   "draw": {
@@ -32,7 +35,7 @@
       "colorStroke": "Omriss",
       "colorText": "Tekst",
       "pointType": "Punkttype",
-      "showMeasurements": "Vis mål",
+      "showMeasurements": "Vis mål i kartet",
       "tool": {
         "tooltip": {
           "circle": "Sirkel",
@@ -47,15 +50,16 @@
       },
       "toolSelect": {
         "placeholder": "Velg tegnemåte"
-      }
+      },
+      "color": "Farger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
     "save": "Lagre",
     "size": {
-      "label": "Størrelse"
+      "label": "Elementstørrelse"
     },
-    "tabHeading": "Tegne og måle",
+    "tabHeading": "Velg tegnetype(dev)",
     "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {
@@ -63,7 +67,8 @@
       }
     },
     "tools": "Tegneverktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjør om"
   },
   "export": {
     "format": {
