@@ -1,12 +1,4 @@
-import {
-  Button,
-  Group,
-  Heading,
-  HStack,
-  IconButton,
-  Text,
-  VStack,
-} from '@kvib/react';
+import { Button, Group, Heading, HStack, VStack } from '@kvib/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrawSettings } from '../drawControls/hooks/drawSettings';
@@ -63,16 +55,16 @@ export const ExportControls = () => {
         })}
       </Group>
 
-      <HStack>
-        <Text textStyle="md">Last ned valgt filformat - ({exportFormat})</Text>
-        <IconButton
-          icon={'download'}
-          variant="ghost"
+      <HStack mt={8}>
+        <Button
+          colorPalette="green"
+          leftIcon="download"
           size="lg"
+          variant="solid"
           onClick={handleExport}
         >
-          {t('shared.actions.download')}
-        </IconButton>
+          Last ned ({exportFormat})
+        </Button>
       </HStack>
     </VStack>
   );

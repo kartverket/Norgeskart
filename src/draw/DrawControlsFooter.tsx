@@ -177,7 +177,7 @@ export const DrawControlFooter = () => {
 
         <Dialog placement={'center'} motionPreset="slide-in-left">
           <DialogTrigger asChild>
-            <IconButton icon={'share'} variant="ghost">
+            <IconButton icon={'download'} variant="ghost">
               Open Dialog
             </IconButton>
           </DialogTrigger>
