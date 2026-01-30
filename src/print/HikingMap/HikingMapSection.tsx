@@ -42,8 +42,8 @@ const getRotationFromUtmZone = (zone: number): number => {
 
 const MapScaleOptions = ['1 : 25 000', '1 : 50 000'] as const;
 
-const xExtent1_25k = 18_000; // TODO: fix these
-const yExtent1_25k = 20_000;
+const xExtent1_25k = 17_800; // TODO: fix these
+const yExtent1_25k = 19_500;
 const getOverlayFeature = (): Feature | null => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
