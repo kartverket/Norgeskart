@@ -1,21 +1,50 @@
 import {
-  Heading,
+  IconButton,
   SelectContent,
   SelectItem,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
   createListCollection,
+  useSelectContext,
 } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 
-const LanguageSwitcher = () => {
-  const { i18n, t } = useTranslation();
+type LanguageSwitcherVariant = 'text' | 'icon';
+
+const TextTrigger = () => {
+  const { t } = useTranslation();
+  return (
+    <SelectTrigger>
+      <SelectValueText placeholder={t('languageSelector.chooseLanguage')} />
+    </SelectTrigger>
+  );
+};
+
+const IconTrigger = () => {
+  const select = useSelectContext();
+  return (
+    <IconButton
+      icon={'language'}
+      px="2"
+      size="sm"
+      w={'40px'}
+      {...select.getTriggerProps()}
+    />
+  );
+};
+
+export const LanguageSwitcher = ({
+  variant = 'text',
+}: {
+  variant?: LanguageSwitcherVariant;
+}) => {
+  const { i18n } = useTranslation();
 
   const languageOptions = [
-    { value: 'nb', label: t('languageSelector.norwegianBokmaal') },
-    { value: 'nn', label: t('languageSelector.norwegianNynorsk') },
-    { value: 'en', label: t('languageSelector.english') },
+    { value: 'nb', label: 'Norsk (bokmål)' },
+    { value: 'nn', label: 'Norsk (nynorsk)' },
+    { value: 'en', label: 'English' },
   ];
 
   const currentLanguage = i18n.language;
@@ -27,12 +56,23 @@ const LanguageSwitcher = () => {
   });
 
   return (
-    <SelectRoot collection={languageOptionCollection} value={[currentLanguage]}>
-      <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
-      <SelectTrigger>
-        <SelectValueText placeholder={t('languageSelector.chooseLanguage')} />
-      </SelectTrigger>
-      <SelectContent style={{ zIndex: 9999 }}>
+    <SelectRoot
+      collection={languageOptionCollection}
+      value={[currentLanguage]}
+      positioning={
+        variant === 'text'
+          ? undefined
+          : {
+              sameWidth: false,
+            }
+      }
+      width={variant === 'text' ? 'auto' : 'fit-content'}
+    >
+      {variant === 'text' ? <TextTrigger /> : <IconTrigger />}
+      <SelectContent
+        style={{ zIndex: 9999 }}
+        width={variant === 'text' ? 'auto' : 'fit-content'}
+      >
         {languageOptions.map((lang) => (
           <SelectItem
             key={lang.value}

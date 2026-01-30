@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   IconButton,
+  Separator,
   SwitchControl,
   SwitchHiddenInput,
   SwitchRoot,
@@ -13,6 +14,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import {
   displayCompassOverlayAtom,
   displayMapLegendAtom,
@@ -73,6 +75,8 @@ export const Toolbar = () => {
       p={2}
       zIndex={10}
       pointerEvents={'auto'}
+      overflow={'hidden'}
+      justify={'space-between'}
     >
       <Flex alignItems="center" flex="1">
         <Tooltip content={t('map.settings.compass.enabled')}>
@@ -132,6 +136,8 @@ export const Toolbar = () => {
             {t('toolbar.reportError.label')}
           </Button>
         </Tooltip>
+        <Separator orientation="vertical" mx={2} height="140%" />
+        <LanguageSwitcher variant="icon" />
       </Flex>
     </Flex>
   );

@@ -109,9 +109,6 @@
   },
   "languageSelector": {
     "chooseLanguage": "Vel språk",
-    "english": "English",
-    "norwegianBokmaal": "Norsk bokmål",
-    "norwegianNynorsk": "Norsk nynorsk",
     "tabHeading": "Språk"
   },
   "locationType": {
