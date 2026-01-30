@@ -448,6 +448,10 @@
       },
       "errors": {
         "generateFailed": "Print failed"
+      },
+      "popupblockedalert": {
+        "title": "Popup blocked",
+        "body": "Popups are blocked. Please unblock them and try again"
       }
     }
   },

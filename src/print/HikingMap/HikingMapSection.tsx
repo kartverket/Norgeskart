@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   ButtonGroup,
   Checkbox,
@@ -29,7 +30,6 @@ import { useTranslation } from 'react-i18next';
 import { createHikingMap } from '../../api/hikingMap/hikingMapApi';
 import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
-import { downloadFile } from '../../shared/utils/fileUtils';
 import { utmInfoFromLonLat } from '../EmergencyPoster/utmStringUtils';
 
 const env = getEnv();
@@ -110,6 +110,9 @@ export const HikingMapSection = () => {
   const previousZone = useRef<number | null>(null);
   const [includeCompassInstructions, setIncludeCompassInstructions] =
     useState<boolean>(false);
+  const [storedDownloadUrl, setStoredDownloadUrl] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     const overlayLayer = new VectorLayer({
@@ -183,19 +186,29 @@ export const HikingMapSection = () => {
     try {
       const geometry = overlayFeature.getGeometry() as Polygon;
       const extent = geometry.getExtent();
-      const res = await createHikingMap(
-        includeLegend,
-        includeSweeden,
-        includeCompassInstructions,
-        [extent[0], extent[2], extent[3], extent[1]],
-        [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
-        selectedScale === '1 : 25 000' ? '25000' : '50000',
-        encodeURIComponent(mapName),
-      );
+      let downloadLink = '';
+      if (storedDownloadUrl) {
+        downloadLink = storedDownloadUrl;
+      } else {
+        const res = await createHikingMap(
+          includeLegend,
+          includeSweeden,
+          includeCompassInstructions,
+          [extent[0], extent[2], extent[3], extent[1]],
+          [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
+          selectedScale === '1 : 25 000' ? '25000' : '50000',
+          encodeURIComponent(mapName),
+        );
+        downloadLink = env.apiUrl + '/nkprint/' + res.linkPdf;
+      }
 
-      if (res.linkPdf) {
-        const fullLink = env.apiUrl + '/nkprint/' + res.linkPdf;
-        downloadFile(fullLink, 'hiking-map.pdf');
+      if (downloadLink) {
+        const openRef = window.open(downloadLink, '_blank');
+        if (!openRef) {
+          setStoredDownloadUrl(downloadLink);
+        } else {
+          setStoredDownloadUrl(null);
+        }
       }
     } catch (error) {
       console.error('Error generating hiking map:', error);
@@ -308,6 +321,16 @@ export const HikingMapSection = () => {
         </VStack>
       </HStack>
       <Separator />
+      {storedDownloadUrl && (
+        <Alert
+          size="md"
+          status="info"
+          title={t('printdialog.hikingMap.popupblockedalert.title')}
+          variant="subtle"
+        >
+          {t('printdialog.hikingMap.popupblockedalert.body')}
+        </Alert>
+      )}
       <Heading size={'sm'}>
         {t('printdialog.hikingMap.overlayinstructions')}
       </Heading>

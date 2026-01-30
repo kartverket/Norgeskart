@@ -453,6 +453,10 @@
       },
       "errors": {
         "generateFailed": "Utskrift feilet"
+      },
+      "popupblockedalert": {
+        "title": "Popup blokkert",
+        "body": "Popup blokkert. Venligst fjerne blokkeringen og prøv igjen "
       }
     }
   },
