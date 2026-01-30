@@ -54,7 +54,9 @@ export const MapComponent = () => {
   useEffect(() => {
     if (mapRef.current) {
       setTargetElement(mapRef.current);
-      mapRef.current.focus();
+      if (document.activeElement === document.body) {
+        mapRef.current.focus();
+      }
     }
     return () => {
       setTargetElement(null);
