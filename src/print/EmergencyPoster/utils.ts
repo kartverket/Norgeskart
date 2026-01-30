@@ -77,11 +77,16 @@ const createMapUrl = (coordinates: Coordinate) => {
   params.append('HEIGHT', MAP_HEIGHT.toString());
   params.append('CRS', 'EPSG:32633');
 
+  const transformedCenter = transform(
+    coordinates,
+    store.get(mapAtom).getView().getProjection(),
+    'EPSG:32633',
+  );
   let bboxParam = '';
-  bboxParam += `${coordinates[0] - Math.ceil(currentMapWidth / 2)},`;
-  bboxParam += `${coordinates[1] - Math.ceil(currentMapHeight / 2)},`;
-  bboxParam += `${coordinates[0] + Math.ceil(currentMapWidth / 2)},`;
-  bboxParam += `${coordinates[1] + Math.ceil(currentMapHeight / 2)}`;
+  bboxParam += `${transformedCenter[0] - Math.ceil(currentMapWidth / 2)},`;
+  bboxParam += `${transformedCenter[1] - Math.ceil(currentMapHeight / 2)},`;
+  bboxParam += `${transformedCenter[0] + Math.ceil(currentMapWidth / 2)},`;
+  bboxParam += `${transformedCenter[1] + Math.ceil(currentMapHeight / 2)}`;
 
   params.append('BBOX', bboxParam);
   params.append('FORMAT', 'image/jpeg');
