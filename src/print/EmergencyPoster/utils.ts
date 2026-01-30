@@ -8,6 +8,9 @@ import { formatToNorwegianUTMString } from './utmStringUtils';
 
 const env = getEnv();
 
+const MAP_HEIGHT = 660;
+const MAP_WIDTH = 1145;
+
 export const createPosterUrl = (
   locationName: string,
   coordinates: Coordinate,
@@ -49,7 +52,7 @@ export const createPosterUrl = (
   return `${env.emergencyPosterBaseUrl}?${params.toString()}`;
 };
 
-const hw_ratio = 1145 / 660; // Width / Height, magic numbers
+const hw_ratio = MAP_WIDTH / MAP_HEIGHT; // Width / Height, magic numbers
 const createMapUrl = (coordinates: Coordinate) => {
   const store = getDefaultStore();
   const resolution = store.get(mapAtom).getView().getResolution();
@@ -70,15 +73,20 @@ const createMapUrl = (coordinates: Coordinate) => {
   params.append('VERSION', '1.3.0');
   params.append('REQUEST', 'GetMap');
   params.append('LAYERS', 'topo');
-  params.append('WIDTH', currentMapWidth.toString());
-  params.append('HEIGHT', currentMapHeight.toString());
+  params.append('WIDTH', MAP_WIDTH.toString());
+  params.append('HEIGHT', MAP_HEIGHT.toString());
   params.append('CRS', 'EPSG:32633');
 
+  const transformedCenter = transform(
+    coordinates,
+    store.get(mapAtom).getView().getProjection(),
+    'EPSG:32633',
+  );
   let bboxParam = '';
-  bboxParam += `${coordinates[0] - Math.ceil(currentMapWidth / 2)},`;
-  bboxParam += `${coordinates[1] - Math.ceil(currentMapHeight / 2)},`;
-  bboxParam += `${coordinates[0] + Math.ceil(currentMapWidth / 2)},`;
-  bboxParam += `${coordinates[1] + Math.ceil(currentMapHeight / 2)}`;
+  bboxParam += `${transformedCenter[0] - Math.ceil(currentMapWidth / 2)},`;
+  bboxParam += `${transformedCenter[1] - Math.ceil(currentMapHeight / 2)},`;
+  bboxParam += `${transformedCenter[0] + Math.ceil(currentMapWidth / 2)},`;
+  bboxParam += `${transformedCenter[1] + Math.ceil(currentMapHeight / 2)}`;
 
   params.append('BBOX', bboxParam);
   params.append('FORMAT', 'image/jpeg');
