@@ -48,13 +48,7 @@ export const DrawToolSelector = () => {
     },
   ];
   return (
-    <Flex
-      w="100%"
-      justifyContent={'space-between'}
-      padding={1}
-      boxShadow="sm"
-      borderRadius={5}
-    >
+    <Flex w="100%" justifyContent={'space-between'}>
       {drawTypeButtons.map((button) => (
         <DrawTypeButton
           key={button.value}
@@ -87,7 +81,7 @@ const DrawTypeButton = ({
       <IconButton
         variant={isCurrentTool ? 'solid' : 'ghost'}
         icon={icon}
-        size="sm"
+        size="xl"
         onClick={() => {
           if (isCurrentTool) {
             return;

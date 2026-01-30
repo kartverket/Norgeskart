@@ -1,4 +1,4 @@
-import { Box, HStack, Text, VStack } from '@kvib/react';
+import { Box, Heading, HStack, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { LineWidth, lineWidthAtom } from '../settings/draw/atoms';
@@ -25,10 +25,10 @@ export const LineWidthControl = () => {
   }
 
   return (
-    <VStack align="stretch" mt={2}>
-      <Text fontWeight="semibold">{t('draw.size.label')}</Text>
+    <VStack align="stretch">
+      <Heading size={{ base: 'sm', md: 'md' }}>{t('draw.size.label')}</Heading>
 
-      <HStack gap="2">
+      <HStack>
         {lineWidthCollection.map((item) => {
           const isSelected = lineWidth === item.value;
 
@@ -39,8 +39,8 @@ export const LineWidthControl = () => {
               onClick={() => setLineWidth(item.value)}
               aria-pressed={isSelected}
               aria-label={`${t('draw.size.label')} ${item.label}`}
-              w="32px"
-              h="32px"
+              w={{ base: '20px', md: '32px' }}
+              h={{ base: '20px', md: '32px' }}
               borderRadius="full"
               borderWidth="1px"
               display="inline-flex"
