@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MapTool } from '../../Layout';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapThemes } from '../../settings/map/MapThemes';
+import { useIsMobileScreen } from '../../shared/hooks';
 import { InfoDrawer } from '../../sidePanel/InfoDrawer';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
 
@@ -14,9 +15,15 @@ export const MapToolCards = ({
   onClose: () => void;
 }) => {
   const { t } = useTranslation();
+  const isMobile = useIsMobileScreen();
+
   if (currentMapTool === 'draw') {
     return (
-      <MapToolCard label={t('draw.tabHeading')} onClose={onClose}>
+      <MapToolCard
+        label={t('draw.tabHeading')}
+        onClose={onClose}
+        hideHeader={isMobile}
+      >
         <DrawSettings />
       </MapToolCard>
     );
@@ -48,8 +55,14 @@ interface MapToolCardProps {
   label: string;
   children: React.ReactNode | React.ReactNode[] | undefined;
   onClose: () => void;
+  hideHeader?: boolean;
 }
-const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
+const MapToolCard = ({
+  label,
+  children,
+  onClose,
+  hideHeader,
+}: MapToolCardProps) => {
   return (
     <VStack
       width="100%"
@@ -61,27 +74,28 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       p={4}
       m={{ base: 0, md: 1 }}
       mr={{ base: 0, md: 3 }}
-      borderRadius={'16px'}
+      borderRadius="16px"
       borderBottomLeftRadius={{ base: '0px', md: '16px' }}
       borderBottomRightRadius={{ base: '0px', md: '16px' }}
-      overflowY={'auto'}
+      overflowY="auto"
     >
-      <Flex justify="space-between" gap="2" w={'100%'}>
-        <Heading fontWeight="bold" mb={{ base: '0', md: '2' }} size={'lg'}>
-          {label}
-        </Heading>
-        <IconButton
-          variant="ghost"
-          icon="close"
-          aria-label="Lukk"
-          colorPalette="red"
-          onClick={() => {
-            onClose();
-          }}
-          size="sm"
-        />
-      </Flex>
-      <Box w={'100%'} overflowY={'auto'} maxHeight={'90%'}>
+      {!hideHeader && (
+        <Flex justify="space-between" gap="2" w="100%">
+          <Heading fontWeight="bold" mb={{ base: '0', md: '2' }} size="lg">
+            {label}
+          </Heading>
+          <IconButton
+            variant="ghost"
+            icon="close"
+            aria-label="Lukk"
+            colorPalette="red"
+            onClick={onClose}
+            size="sm"
+          />
+        </Flex>
+      )}
+
+      <Box w="100%" overflowY="auto" maxHeight="90%">
         {children}
       </Box>
     </VStack>
