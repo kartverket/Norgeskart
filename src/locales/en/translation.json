@@ -104,9 +104,6 @@
   },
   "languageSelector": {
     "chooseLanguage": "Select language",
-    "english": "English",
-    "norwegianBokmaal": "Norwegian bokmål",
-    "norwegianNynorsk": "Norwegian nynorsk",
     "tabHeading": "Language"
   },
   "locationType": {

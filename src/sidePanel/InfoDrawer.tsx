@@ -6,6 +6,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
+  Heading,
   Icon,
   Link,
   List,
@@ -132,6 +133,7 @@ export const InfoDrawer = () => {
         </CollapsibleContent>
       </Collapsible>
       <PrivacyPolicy />
+      <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
       <LanguageSwitcher />
     </SimpleGrid>
   );
