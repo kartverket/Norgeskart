@@ -1,10 +1,14 @@
+import { getDefaultStore } from 'jotai';
+import { transform } from 'ol/proj';
 import { getEnv } from '../../env';
+import { mapAtom } from '../../map/atoms';
+import { utmInfoFromLonLat } from '../../print/EmergencyPoster/utmStringUtils';
 
 const env = getEnv();
 
 type CreateHikingMapRequest = {
   map: {
-    bbox: [number, number, number, number];
+    bbox?: [number, number, number, number];
     center: [number, number];
     dpi: string;
     layers: Array<{
@@ -50,10 +54,27 @@ export const createHikingMap = async (
   scale: string,
   title: string,
 ) => {
+  const store = getDefaultStore();
+  const projectionCode =
+    store.get(mapAtom)?.getView().getProjection().getCode() || 'EPSG:25833';
+  const [lon, lat] = transform(center, projectionCode, 'EPSG:4326');
+  const utmInfo = utmInfoFromLonLat(lon, lat);
+  const transformedCenter = transform(center, projectionCode, 'EPSG:32636');
+  const transformedBbox = bbox.map((coord, index) => {
+    const x = index % 2 === 0 ? coord : bbox[index - 1];
+    const y = index % 2 === 1 ? coord : bbox[index + 1];
+    const [transformedX, transformedY] = transform(
+      [x, y],
+      projectionCode,
+      'EPSG:32636',
+    );
+    return index % 2 === 0 ? transformedX : transformedY;
+  }) as [number, number, number, number];
+
   const requestBody: CreateHikingMapRequest = {
     map: {
-      bbox: bbox,
-      center: center,
+      bbox: transformedBbox,
+      center: transformedCenter as [number, number],
       dpi: '300',
       layers: [
         {
@@ -67,8 +88,8 @@ export const createHikingMap = async (
           type: 'WMS',
         },
       ],
-      projection: 'EPSG:25833',
-      sone: '33',
+      projection: 'EPSG:32636',
+      sone: utmInfo.zone.toString(),
       biSone: '',
     },
     paging: 12,
