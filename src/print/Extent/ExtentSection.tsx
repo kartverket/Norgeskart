@@ -28,40 +28,25 @@ import {
   printBoxLayoutAtom,
 } from './atoms';
 import { generateMapPdf } from './generateMapPdf';
-import { usePrintCapabilities } from './usePrintCapabilities';
+import { PrintLayout, usePrintCapabilities } from './usePrintCapabilities';
 
 export const ExtentSection = () => {
   const { t } = useTranslation();
-  const layouts = usePrintCapabilities();
+  const layouts: PrintLayout[] = usePrintCapabilities();
   const map = useAtomValue(mapAtom);
   const backgroundLayer = useAtomValue(activeBackgroundLayerAtom);
   const setPrintBoxCenter = useSetAtom(printBoxCenterAtom);
   const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
   const printBoxExtent = useAtomValue(printBoxExtentAtom);
   useAtom(printBoxExtentEffect);
+
   const [format, setFormat] = useState('');
   const [orientation, setOrientation] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const formatOptions = Array.from(
-    new Set(layouts.map((l) => (l.name.match(/A\d/) || [])[0])),
-  )
-    .filter(Boolean)
-    .map((f) => ({ value: f, label: f }));
-
-  const orientationOptions = Array.from(
-    new Set(
-      layouts.map((l) =>
-        l.name.toLowerCase().includes('portrait') ? 'portrait' : 'landscape',
-      ),
-    ),
-  );
-
-  const selectedLayout = layouts.find(
-    (l) =>
-      l.name.toLowerCase().includes(format.toLowerCase()) &&
-      l.name.toLowerCase().includes(orientation),
-  );
+  const formatOptions = getFormatOptions(layouts);
+  const orientationOptions = getOrientationOptions(layouts);
+  const selectedLayout = getSelectedLayout(layouts, format, orientation)
 
   useEffect(() => {
     if (layouts.length) {
@@ -153,3 +138,30 @@ export const ExtentSection = () => {
     </>
   );
 };
+
+const getFormatOptions = (layouts: PrintLayout[]) => {
+  return Array.from(
+    new Set(layouts.map((l) => (l.name.match(/A\d/) || [])[0])),
+  )
+    .filter(Boolean)
+    .map((f) => ({ value: f, label: f }));
+};
+
+const getOrientationOptions = (layouts: PrintLayout[]) => {
+  return Array.from(
+    new Set(
+      layouts.map((l) =>
+        l.name.toLowerCase().includes('portrait') ? 'portrait' : 'landscape'
+      )
+    )
+  );
+};
+
+const getSelectedLayout = (layouts: PrintLayout[], format: string, orientation: string) => {
+  return layouts.find(
+    (l) =>
+      l.name.toLowerCase().includes(format.toLowerCase()) &&
+      l.name.toLowerCase().includes(orientation)
+  );
+};
+

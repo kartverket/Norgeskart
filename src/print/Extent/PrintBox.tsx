@@ -6,7 +6,7 @@ import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style } from 'ol/style';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { printBoxCenterAtom, printBoxExtentAtom } from './atoms';
 
 type PrintBoxProps = {
@@ -30,11 +30,10 @@ printBoxLayer.set('id', 'printBoxLayer');
 export const PrintBox = ({ map }: PrintBoxProps) => {
   const extent = useAtomValue(printBoxExtentAtom);
   const setCenter = useSetAtom(printBoxCenterAtom);
+  const translateRef = useRef<Translate | null>(null);
 
   useEffect(() => {
     if (!map || !extent) return;
-
-    map.addLayer(printBoxLayer);
 
     const coords = [
       [
@@ -64,10 +63,11 @@ export const PrintBox = ({ map }: PrintBoxProps) => {
       feature.setGeometry(new Polygon(coords));
     }
 
-    const translate = new Translate({ features: printBoxFeatures });
-    map.addInteraction(translate);
+    map.addLayer(printBoxLayer);
+    translateRef.current = new Translate({ features: printBoxFeatures });
+    map.addInteraction(translateRef.current);
 
-    translate.on('translateend', () => {
+    translateRef.current.on('translateend', () => {
       const geom = feature!.getGeometry() as Polygon;
       const newExtent = geom.getExtent();
       const newCenter: [number, number] = [
@@ -78,7 +78,10 @@ export const PrintBox = ({ map }: PrintBoxProps) => {
     });
 
     return () => {
-      map.removeInteraction(translate);
+      if (translateRef.current) {
+        map.removeInteraction(translateRef.current);
+        translateRef.current = null;
+      }
       map.removeLayer(printBoxLayer);
     };
   }, [map, extent, setCenter]);

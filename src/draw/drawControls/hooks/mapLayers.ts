@@ -53,3 +53,13 @@ export const getDrawOverlayLayer = (): VectorLayer => {
       (layer) => layer.get('id') === 'drawOverlayLayer',
     )[0] as unknown as VectorLayer;
 };
+
+export const getPrintBoxLayer = (): VectorLayer => {
+  const map = getDefaultStore().get(mapAtom);
+  return map
+    .getLayers()
+    .getArray()
+    .filter(
+      (layer) => layer.get('id') === 'printBoxLayer',
+    )[0] as unknown as VectorLayer;
+}
