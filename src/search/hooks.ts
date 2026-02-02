@@ -30,7 +30,7 @@ export const useMapClickSearch = () => {
     const hasMarkerFeature =
       features &&
       features.some((f) => {
-        return f.get('features').some((ff: Feature<Geometry>) => {
+        return f.get('features')?.some((ff: Feature<Geometry>) => {
           return ff.get('isMarker') === true;
         });
       });
