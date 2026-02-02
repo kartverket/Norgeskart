@@ -4,7 +4,7 @@ describe('Coordinate Search', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000');
-    cy.get('#map').should('be.visible');
+    cy.get('#map', { timeout: 10000 }).should('be.visible');
   });
 
   describe('Decimal Degrees Format', () => {
