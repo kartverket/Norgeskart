@@ -135,13 +135,27 @@ export const InputForm = ({
         <Button
           disabled={!isInfoCorrect || !clickedCoordinates}
           onClick={() => {
+            let roadString = '';
+            if (selectedRoad) {
+              roadString += selectedRoad;
+              if (emergenyPosterData.kommune != '') {
+                roadString += `i ${emergenyPosterData.kommune}`;
+              }
+            }
+            let cadastreString = '';
+            if (emergenyPosterData.matrikkelnr) {
+              cadastreString += emergenyPosterData.matrikkelnr;
+              if (emergenyPosterData.kommune != '') {
+                cadastreString += ` i ${emergenyPosterData.kommune}`;
+              }
+            }
             const downloadLink = createPosterUrl(
               customName,
               clickedCoordinates!,
               map.getView().getProjection().getCode(),
-              selectedRoad || '',
+              roadString,
               selectedPlace || '',
-              `${emergenyPosterData.matrikkelnr || ''} i ${emergenyPosterData.kommune || ''}`,
+              cadastreString,
             );
 
             if (!downloadLink) {
