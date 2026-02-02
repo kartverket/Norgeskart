@@ -331,12 +331,7 @@
   },
   "cookieDialog": {
     "heading": "Vi bruker informasjonskapsler",
-    "body": "Norgeskart bruker PostHog-analyse for å forstå hvordan brukere navigerer og bruker kartet. Dette hjelper oss å forbedre tjenesten.",
-    "whatWeCollect": "Hva vi samler inn:",
-    "analytics": "Anonymisert statistikk om sidevisninger og klikk",
-    "noPersonalData": "Ingen personlig identifiserbar informasjon",
-    "rejectInfo": "Hvis du avslår samles ingen analysedata inn.",
-    "privacyPolicy": "Les mer i Kartverkets personvernerklæring",
+    "body": "Norgeskart bruker informasjonskapsler (cookies) for å få nettsiden til å fungere og for å forstå hvordan tjenesten brukes, slik at vi kan forbedre den.\n\nVi bruker analyseverktøyet PostHog til å samle inn anonymisert bruksstatistikk, som for eksempel hvilke sider som besøkes og hvilke funksjoner som brukes. Opplysningene brukes kun til statistikk og tjenesteforbedring.\n\nDu kan når som helst endre eller trekke tilbake samtykket ditt under Hjelp - Personvern\n\nFeltet for tilbakemelding er et åpent fritekstfelt. Vi ber deg om å ikke skrive inn sensitive personopplysninger. Dersom du likevel oppgir personopplysninger, vil disse bli slettet så snart som mulig og ikke brukt videre.",
     "buttons": {
       "accept": "Godta",
       "reject": "Avslå"

@@ -325,13 +325,8 @@
     }
   },
   "cookieDialog": {
-    "heading": "We're using cookies ",
-    "body": "Norgeskart uses PostHog analytics to understand how users navigate and use the map. This helps us improve the service.",
-    "whatWeCollect": "What we collect:",
-    "analytics": "Anonymized statistics about page views and clicks",
-    "noPersonalData": "No personally identifiable information",
-    "rejectInfo": "If you decline, no analytics data will be collected.",
-    "privacyPolicy": "Read more in the Norwegian Mapping Authority's privacy policy",
+    "heading": "We're using cookies",
+    "body": "Norgeskart uses cookies to make the website work and to understand how the service is used, so that we can improve it.\n\nWe use the analytics tool PostHog to collect anonymized usage statistics, such as which pages are visited and which features are used. The information is used only for statistics and service improvement.\n\nYou can change or withdraw your consent at any time under Help - Privacy\n\nThe feedback field is an open text field. We ask you not to enter sensitive personal information. If you nevertheless provide personal information, it will be deleted as soon as possible and not used further.",
     "buttons": {
       "accept": "Accept",
       "reject": "Decline"
