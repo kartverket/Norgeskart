@@ -325,8 +325,8 @@
     }
   },
   "cookieDialog": {
-    "heading": "We're using cookies",
-    "body": "Norgeskart uses cookies to make the website work and to understand how the service is used, so that we can improve it.\n\nWe use the analytics tool PostHog to collect anonymized usage statistics, such as which pages are visited and which features are used. The information is used only for statistics and service improvement.\n\nYou can change or withdraw your consent at any time under Help - Privacy\n\nThe feedback field is an open text field. We ask you not to enter sensitive personal information. If you nevertheless provide personal information, it will be deleted as soon as possible and not used further.",
+    "heading": "We use cookies",
+    "body": "Norgeskart uses cookies to make the website work and to understand how the service is used, so that we can improve it.\n\nWe use the analytics tool PostHog to collect anonymized usage statistics, such as which pages are visited and which features are used. The information is only used for statistics and service improvement.\n\nYou can change or withdraw your consent at any time under Help – Privacy. \n\n The feedback field is an open free-text field. We ask you not to enter sensitive personal information. If you do provide personal information, it will be deleted as soon as possible and not used further.",
     "buttons": {
       "accept": "Accept",
       "reject": "Decline"
