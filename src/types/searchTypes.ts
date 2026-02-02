@@ -80,7 +80,7 @@ export type PlaceNameDetails = {
 
 export class Place {
   counties: County[];
-  municipalities: Municipality[];
+  municipalities?: Municipality[];
   placeType: string;
   placeNumber: number;
   name: string;
@@ -143,6 +143,13 @@ export type PlaceNameApiResponse = {
 export type PlaceNamePointApiResponse = {
   metadata: Metadata;
   navn: PlaceNamePoint[];
+};
+
+export type EmergencyPosterResponse = {
+  matrikkelnr: string;
+  kommune: string;
+  veg: string;
+  vegliste: string[];
 };
 
 export type Road = {

@@ -1,15 +1,15 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag",
-      "mobiletext": "Lag"
+      "openText": "Temakart",
+      "mobiletext": "Temakart"
     },
     "print": {
       "text": "Print"
     },
     "draw": {
       "text": "Tegne og måle",
-      "mobiletext": "Verktøy"
+      "mobiletext": "Tegne og måle"
     },
     "settings": {
       "mobiletext": "Innstillinger",
@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Del kart",
       "mobiletext": "Del"
+    },
+    "help": {
+      "mobiletext": "Hjelp"
     }
   },
   "draw": {
@@ -32,7 +35,7 @@
       "colorStroke": "Omriss",
       "colorText": "Tekst",
       "pointType": "Punkttype",
-      "showMeasurements": "Vis mål",
+      "showMeasurements": "Vis mål i kartet",
       "tool": {
         "tooltip": {
           "circle": "Sirkel",
@@ -47,15 +50,16 @@
       },
       "toolSelect": {
         "placeholder": "Velg tegnemåte"
-      }
+      },
+      "color": "Farger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
     "save": "Lagre",
     "size": {
-      "label": "Størrelse"
+      "label": "Elementstørrelse"
     },
-    "tabHeading": "Tegne og måle",
+    "tabHeading": "Velg tegnetype(dev)",
     "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {
@@ -63,7 +67,8 @@
       }
     },
     "tools": "Tegneverktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjør om"
   },
   "export": {
     "format": {
@@ -98,15 +103,12 @@
     "municipality": "Kommune",
     "placeinfo": "Stedsnavnfakta",
     "propertyInfo": "Eiendomsinformasjon",
-    "roadName": "Veinavn",
+    "roadName": "Vegnavn",
     "utmCoordinates": "UTM-koordinater",
     "placesNearby": "Steder i nærheten"
   },
   "languageSelector": {
     "chooseLanguage": "Velg språk",
-    "english": "English",
-    "norwegianBokmaal": "Norsk bokmål",
-    "norwegianNynorsk": "Norsk nynorsk",
     "tabHeading": "Språk"
   },
   "locationType": {
@@ -114,7 +116,7 @@
     "coordinate": "Koordinat",
     "place": "Stedsnavn",
     "property": "Eiendom",
-    "road": "Vei"
+    "road": "Veg"
   },
   "map": {
     "contextmenu": {
@@ -132,7 +134,7 @@
               "n50kartdata": "N50 kart",
               "sjo": "Sjøkart",
               "turruter": "Turruter",
-              "veger": "Veier og adresser"
+              "veger": "Veger og adresser"
             },
             "title": "Meld om en feil"
           },
@@ -165,115 +167,6 @@
             "topograatone": "Topografisk, gråtone",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
-          },
-          "themeMaps": {
-            "outdoorsLife": {
-              "subThemes": {
-                "norwayFacts": {
-                  "heading": "Fakta om Norge",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarkagrense"
-                  }
-                },
-                "trails": {
-                  "heading": "Ruter",
-                  "layers": {
-                    "bikeTrails": "Sykkelruter",
-                    "hikingTrails": "Fotruter",
-                    "routeInfoPoints": "Ruteinfopunkt",
-                    "skiingTrails": "Skiruter",
-                    "waterTrails": "Padleruter"
-                  }
-                },
-                "routeTypes": {
-                  "heading": "Fotrutetype",
-                  "layers": {
-                    "historicalRoute": "Historisk ferdselsrute",
-                    "coastalTrail": "Kyststi",
-                    "culturalTrail": "Kultursti",
-                    "natureTrail": "Natursti",
-                    "trimTrack": "Trimløype",
-                    "footRouteTypeNotSpecified": "Fotrute type ikke angitt"
-                  }
-                },
-                "skiRoutePreparation": {
-                  "heading": "Skiløypepreparering",
-                  "layers": {
-                    "machinePrepared": "Maskinpreparert",
-                    "snowmobile": "Snøskuter",
-                    "unprepared": "Upreparert",
-                    "preparationNotSpecified": "Preparering ikke angitt"
-                  }
-                }
-              },
-              "themeName": "Friluftsliv"
-            },
-            "property": {
-              "subThemes": {
-                "matrikkeldata": {
-                  "heading": "Velg matrikkeldata",
-                  "layers": {
-                    "adresses": "Adresser",
-                    "buildings": "Bygninger",
-                    "parcels": "Teiger og grenser"
-                  }
-                }
-              },
-              "themeName": "Eiendom"
-            },
-            "locations": {
-              "themeName": "Stedsnavn",
-              "subThemes": {
-                "historicalMaps": {
-                  "heading": "Historiske kart",
-                  "layers": {
-                    "economicMapFirstEdition": "Økonomisk Kartverk 1. utg",
-                    "amtMap": "Amtskart"
-                  }
-                },
-                "placeNames": {
-                  "heading": "Stedsnavn (SSR)",
-                  "layers": {
-                    "norwegianPlaceNames": "Norsk",
-                    "luleSamiPlaceNames": "Lulesamisk",
-                    "northernSamiPlaceNames": "Nordsamisk",
-                    "skoltSamiPlaceNames": "Skoltesamisk",
-                    "southernSamiPlaceNames": "Sørsamisk",
-                    "kvenPlaceNames": "Kvensk",
-                    "otherPlaceNames": "Andre"
-                  }
-                }
-              }
-            },
-            "benchmarks": {
-              "themeName": "Fastmerker",
-              "subThemes": {
-                "geodesy": {
-                  "heading": "Geodetiske punkter",
-                  "layers": {
-                    "nivBenchmarks": "Niv. fastmerker",
-                    "landNetPoints": "Landsnettpunkter",
-                    "primaryNetPoints": "Stamnettpunkter",
-                    "triangulationPoints": "Trekantpunkter"
-                  }
-                }
-              }
-            },
-            "nrl": {
-              "themeName": "Luftfartshinder (NRL)",
-              "subThemes": {
-                "obstacles": {
-                  "heading": "Luftfartshinder",
-                  "layers": {
-                    "nrlArea": "NRL Flate",
-                    "nrlLine": "NRL Linje",
-                    "nrlAirspan": "NRL Luftspenn",
-                    "nrlMast": "NRL Mast",
-                    "nrlPoint": "NRL Punkt"
-                  }
-                }
-              }
-            }
           }
         },
         "projection": {
@@ -295,7 +188,7 @@
           },
           "popover": {
             "title": "Koordinatreferansesystem",
-            "body": "Velg et koordinatreferansesystem. Forskjellige systemer har forskjellige nøyaktighet i deler av landet. Vi anbefaler UTM 33 hvis du er usikker."
+            "body": "Velg et koordinatreferansesystem. Forskjellige systemer har forskjellige nøyaktighet i ulike deler av landet. Vi anbefaler UTM 33 hvis du er usikker."
           }
         },
         "theme": {
@@ -317,7 +210,7 @@
         "label": "Roter venstre"
       },
       "orientation": {
-        "label": "Tilbakestill kartet til standard visning"
+        "label": "Rett opp kartet"
       },
       "rotateRight": {
         "label": "Roter høyre"
@@ -327,6 +220,9 @@
       },
       "fullscreen": {
         "label": "Bruk fullskjerm"
+      },
+      "symbols": {
+        "label": "Tegnforklaring"
       }
     }
   },
@@ -347,7 +243,12 @@
     "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
     "infoText": "Les hvordan vi tar vare på personopplysninger i Kartverkets",
     "privacyPolicy": "Personvernerklæring ",
-    "sendEmail": "Send e-post"
+    "sendEmail": "Send e-post",
+    "privacy": "Personvern",
+    "status": {
+      "heading": "Status",
+      "infoText": "Se status for våre tjenester ved å besøke lenken"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Gårdsnr.",
@@ -392,7 +293,13 @@
       "meter": "Meter",
       "nauticalMile": "Nautisk mil"
     },
-    "yes": "Ja"
+    "yes": "Ja",
+    "no": "Nei",
+    "in": "i",
+    "locations": {
+      "municipality": "kommune"
+    },
+    "cancel": "Avbryt"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -412,11 +319,15 @@
     },
     "coordinates": {
       "tooltip": "Pekerens koordinater"
+    },
+    "legend": {
+      "tooltip": "Vis symbolforklaring",
+      "label": "Tegnforklaring"
     }
   },
   "cookieDialog": {
     "heading": "Vi bruker informasjonskapsler",
-    "body": "Vi gjør dett for å gi deg en bedre opplevelse. Ved å trykke på 'OK' godtar du bruk av cookies.",
+    "body": "Vi gjør dette for å gi deg en bedre opplevelse. Ved å trykke på 'OK' godtar du bruk av cookies.",
     "buttons": {
       "accept": "OK",
       "reject": "Avslå"
@@ -426,6 +337,89 @@
     "settings": {
       "text": "Informasjon",
       "base": "Info"
+    }
+  },
+  "legend": {
+    "heading": {
+      "title": "Symbolforklaring",
+      "preamble": "Symbolforklaring for temakart"
+    },
+    "item": {
+      "fallbackMessage": "har ingen tegnforklaring"
+    }
+  },
+  "printdialog": {
+    "heading": "Skriv ut",
+    "tabs": {
+      "extent": {
+        "heading": "Utsnitt"
+      },
+      "hiking": {
+        "heading": "Turkart"
+      },
+      "elevationProfile": {
+        "heading": "Høydeprofil"
+      },
+      "emergencyPoster": {
+        "heading": "Nødplakat"
+      }
+    },
+    "emergencyPoster": {
+      "disclaimer": {
+        "heading": "Brukerens ansvar",
+        "sections": {
+          "section1": "Nødplakaten er utviklet i samarbeid med Hovedredningsentralene og nødetatene. Kartverket er ansvarlig for datagrunnlaget, dvs. stedsnavn og kart - samt teknologien bak.",
+          "section2": "Det er brukerens ansvar å kontrollere at det er korrekt hytte eller sted som vises på plakaten.",
+          "section3": "Kartverket tar ikke ansvar for mulige feil som skyldes brukeren, datagrunnlaget eller teknologien."
+        },
+        "accept": "Jeg forstår og godtar",
+        "reject": "Avbryt"
+      },
+      "inputform": {
+        "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for",
+        "fields": {
+          "title": {
+            "label": "Plakattittel"
+          },
+          "place": {
+            "label": "Velg nærmeste stedsnavn"
+          },
+          "road": {
+            "label": "Velg nærmeste addresse"
+          },
+          "isInfoCorrect": {
+            "label": "Stemmer informasjonen over?"
+          }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Kunne ikke lage nødplakat"
+        }
+      },
+      "buttons": {
+        "makePoster": "Lag plakat"
+      }
+    },
+    "elevationProfile": {
+      "heading": "Tegn en linje for å lage en høydeprofil",
+      "infotext": "Opprett en høydeprofil ved å klikke i kartet for å plassere det første punktet og dobbelklikk for å avslutte.",
+      "jobError": "Kunne ikke lage høydeprofil",
+      "jobRunning": "Lager profil",
+      "buttons": {
+        "exportCsv": {
+          "label": "Last ned som CSV"
+        },
+        "exportPng": {
+          "label": "Last ned som PNG"
+        },
+        "exportJpeg": {
+          "label": "Last ned som JPEG"
+        }
+      },
+      "chartLabels": {
+        "title": "Høydeprofil",
+        "xAxis": "Avstand [m]",
+        "yAxis": "Høyde [m]"
+      }
     }
   }
 }

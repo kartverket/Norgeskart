@@ -1,5 +1,6 @@
 import { KvibProvider, Toaster } from '@kvib/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import 'material-symbols/rounded.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';

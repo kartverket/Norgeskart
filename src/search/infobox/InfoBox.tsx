@@ -4,6 +4,7 @@ import {
   AccordionItemTrigger,
   AccordionRoot,
   Box,
+  Button,
   Flex,
   Heading,
   IconButton,
@@ -14,6 +15,11 @@ import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
+import {
+  isRettIKartetDialogOpenAtom,
+  rettIKartetCoordinatesAtom,
+} from '../../map/menu/dialogs/atoms';
+import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import {
   placesNearbyAtom,
@@ -31,13 +37,16 @@ export const InfoBox = () => {
   const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
   const placesNearby = useAtomValue(placesNearbyAtom);
   const { t } = useTranslation();
+  const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
+  const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
+  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
 
   const onClose = useCallback(() => {
     setSelectedResult(null);
     setClickedCoordinate(null);
   }, [setSelectedResult, setClickedCoordinate]);
 
-  if (selectedResult === null) {
+  if (selectedResult === null || isPrintDialogOpen) {
     return null;
   }
   const inputCRS = getInputCRS(selectedResult);
@@ -50,39 +59,51 @@ export const InfoBox = () => {
   return (
     <Stack
       p={4}
-      mt="3"
-      mr={{ base: '3', md: '3' }}
-      ml={{ base: '3', md: '0' }}
+      m="1"
       borderRadius={'16px'}
       bg="white"
       pointerEvents={'auto'}
-      position={'relative'}
-      zIndex={1}
+      overflowY={'hidden'}
+      maxHeight={'100%'}
+      w={'100%'}
     >
       <Flex justifyContent={'space-between'} alignItems="center">
-        <Heading size={'lg'}>{selectedResult.name}</Heading>
+        <Heading fontWeight="bold" size={'lg'}>
+          {selectedResult.type !== 'Coordinate' && selectedResult.name}
+        </Heading>
         <IconButton
           onClick={onClose}
           icon={'close'}
+          colorPalette="red"
+          size={'sm'}
           variant="ghost"
           alignSelf={'flex-end'}
         />
       </Flex>
       <InfoBoxPreamble result={selectedResult} x={x} y={y} />
-      <Box overflowY="auto" overflowX="hidden" maxHeight="50vh">
-        <AccordionRoot
-          collapsible
-          multiple
-          defaultValue={['placeInfo', 'propertyInfo']}
-        >
-          {['Property', 'Coordinate'].includes(selectedResult.type) && (
+      <Box overflowY="auto" overflowX="auto">
+        <AccordionRoot collapsible multiple defaultValue={[]}>
+          {['Property', 'Coordinate', 'Address'].includes(
+            selectedResult.type,
+          ) && (
             <PropertyInfo
               lon={selectedResult.lon}
               lat={selectedResult.lat}
               inputCRS={inputCRS}
             />
           )}
-          {selectedResult.type === 'Coordinate' && placesNearby.length > 0 && (
+
+          {selectedResult.type === 'Place' && (
+            <AccordionItem value="placeInfo">
+              <AccordionItemTrigger pl={0}>
+                {t('infoBox.placeinfo')}
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                <PlaceInfo place={selectedResult.place} />
+              </AccordionItemContent>
+            </AccordionItem>
+          )}
+          {placesNearby.length > 0 && (
             <AccordionItem value={'PlacesNearby'}>
               <AccordionItemTrigger pl={0}>
                 {t('infoBox.placesNearby')}
@@ -101,16 +122,6 @@ export const InfoBox = () => {
               </AccordionItemContent>
             </AccordionItem>
           )}
-          {selectedResult.type === 'Place' && (
-            <AccordionItem value="placeInfo">
-              <AccordionItemTrigger pl={0}>
-                {t('infoBox.placeinfo')}
-              </AccordionItemTrigger>
-              <AccordionItemContent>
-                <PlaceInfo place={selectedResult.place} />
-              </AccordionItemContent>
-            </AccordionItem>
-          )}
           <AccordionItem value="coordinateInfo">
             <AccordionItemTrigger pl={0}>
               {t('infoBox.coordinateInfo')}
@@ -126,6 +137,16 @@ export const InfoBox = () => {
           <FeatureInfoSection />
         </AccordionRoot>
       </Box>
+      <Button
+        variant="plain"
+        size="sm"
+        onClick={() => {
+          setRettIKartetCoordinates([selectedResult.lon, selectedResult.lat]);
+          setRettIKartetDialogOpen(true);
+        }}
+      >
+        {t('toolbar.reportError.label')}
+      </Button>
     </Stack>
   );
 };

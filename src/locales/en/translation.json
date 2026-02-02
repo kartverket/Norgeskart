@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Maplayers",
-      "mobiletext": "Layers"
+      "openText": "Thematic map",
+      "mobiletext": "Thematics"
     },
     "print": {
       "text": "Print"
@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Share map",
       "mobiletext": "Share"
+    },
+    "help": {
+      "mobiletext": "Help"
     }
   },
   "draw": {
@@ -32,7 +35,7 @@
       "colorStroke": "Stroke",
       "colorText": "Text",
       "pointType": "Select icon",
-      "showMeasurements": "Show measurements",
+      "showMeasurements": "Show measurements on map",
       "tool": {
         "tooltip": {
           "circle": "Circle",
@@ -47,18 +50,20 @@
       },
       "toolSelect": {
         "placeholder": "Select draw tool"
-      }
+      },
+      "color": "Colors"
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
     "save": "Save",
     "size": {
-      "label": "Size"
+      "label": "Element size"
     },
     "tabHeading": "Draw and measure",
     "textInputLabel": "Enter text",
     "tools": "Tools",
-    "yesClear": "Yes clear"
+    "yesClear": "Yes clear",
+    "redoundo": "Undo / Redo "
   },
   "export": {
     "format": {
@@ -99,9 +104,6 @@
   },
   "languageSelector": {
     "chooseLanguage": "Select language",
-    "english": "English",
-    "norwegianBokmaal": "Norwegian bokmål",
-    "norwegianNynorsk": "Norwegian nynorsk",
     "tabHeading": "Language"
   },
   "locationType": {
@@ -160,54 +162,6 @@
             "topograatone": "Topografic, grayscale",
             "topoProd": "Topographic",
             "toporaster": "Paper map"
-          },
-          "themeMaps": {
-            "outdoorsLife": {
-              "subThemes": {
-                "norwayFacts": {
-                  "heading": "Facts about Norway",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarka border"
-                  }
-                },
-                "trails": {
-                  "heading": "Trails",
-                  "layers": {
-                    "bikeTrails": "Bike trails",
-                    "hikingTrails": "Hiking trails",
-                    "routeInfoPoints": "Route info points",
-                    "skiingTrails": "Skiing trails",
-                    "waterTrails": "Paddle routes"
-                  }
-                }
-              },
-              "themeName": "Outdoor recreation"
-            },
-            "property": {
-              "subThemes": {
-                "matrikkeldata": {
-                  "heading": "Select cadastral data",
-                  "layers": {
-                    "adresses": "Adresses",
-                    "buildings": "Buildings",
-                    "parcels": "Plots and parcels"
-                  }
-                }
-              },
-              "themeName": "Properties"
-            },
-            "locations": {
-              "themeName": "Location names",
-              "subThemes": {
-                "historicalMaps": {
-                  "heading": "Historical maps",
-                  "layers": {
-                    "economicMapFirstEdition": "Economic Mapping Authority 1. edition",
-                    "amtMap": "Amt maps"
-                  }
-                }
-              }
-            }
           }
         },
         "projection": {
@@ -251,7 +205,7 @@
         "label": "Rotate left"
       },
       "orientation": {
-        "label": "Reset the map to standard view"
+        "label": "Reset the map orientation"
       },
       "rotateRight": {
         "label": "Rotate right"
@@ -261,6 +215,9 @@
       },
       "fullscreen": {
         "label": "Use fullscreen"
+      },
+      "symbols": {
+        "label": "Map legend"
       }
     }
   },
@@ -281,7 +238,12 @@
     "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
     "infoText": "Read how we protect personal data in the Norwegian Mapping Authority's",
     "privacyPolicy": "Privacy policy ",
-    "sendEmail": "Send e-mail"
+    "sendEmail": "Send e-mail",
+    "privacy": "Privacy",
+    "status": {
+      "heading": "Status",
+      "infoText": "See the status of our apps and services by following the link"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Holding nr.",
@@ -326,7 +288,13 @@
       "meter": "Metre",
       "nauticalMile": "Nautical mile"
     },
-    "yes": "Yes"
+    "yes": "Yes",
+    "no": "No",
+    "in": "in",
+    "locations": {
+      "municipality": "municipality"
+    },
+    "cancel": "Cancel"
   },
   "tipsandtricks": {
     "heading": "Tips and tricks",
@@ -346,6 +314,10 @@
     },
     "coordinates": {
       "tooltip": "Coordinates of the mouse pointer"
+    },
+    "legend": {
+      "tooltip": "Show map legend",
+      "label": "Map legend"
     }
   },
   "cookieDialog": {
@@ -360,6 +332,89 @@
     "settings": {
       "text": "Information",
       "base": "Info"
+    }
+  },
+  "legend": {
+    "heading": {
+      "title": "Map legend",
+      "preamble": "Legend for theme layers"
+    },
+    "item": {
+      "fallbackMessage": "has no legend"
+    }
+  },
+  "printdialog": {
+    "heading": "Print",
+    "tabs": {
+      "extent": {
+        "heading": "Extent"
+      },
+      "hiking": {
+        "heading": "Hiking map"
+      },
+      "elevationProfile": {
+        "heading": "Height profile"
+      },
+      "emergencyPoster": {
+        "heading": "Emergency poster"
+      }
+    },
+    "emergencyPoster": {
+      "disclaimer": {
+        "heading": "The users responsibility",
+        "sections": {
+          "section1": "The emergency poster is developed in collaboration with the Joint Rescue centers and emergency services. Kartverket is responsible for the data, ie, place names and maps - as well as the technology.",
+          "section2": "It is the user's responsibility to verify that it is the correct cabin or location shown on the poster.",
+          "section3": "Kartverket assumes no responsibility for any errors caused by user, data or technology."
+        },
+        "accept": "I understand and accept",
+        "reject": "Cancel"
+      },
+      "inputform": {
+        "heading": "Click the map to set the location for the poster",
+        "fields": {
+          "title": {
+            "label": "Poster title"
+          },
+          "place": {
+            "label": "Select nearest location"
+          },
+          "road": {
+            "label": "Select nearest address"
+          },
+          "isInfoCorrect": {
+            "label": "Is the above info correct?"
+          }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Could not create the poster"
+        }
+      },
+      "buttons": {
+        "makePoster": "Create poster"
+      }
+    },
+    "elevationProfile": {
+      "heading": "Draw a line to create a height profile",
+      "infotext": "Start creating a height profile by clicking the map to place the first point and double click to finish.",
+      "jobError": "Failed to load height profile data.",
+      "jobRunning": "Creating profile",
+      "buttons": {
+        "exportCsv": {
+          "label": "Export as CSV"
+        },
+        "exportPng": {
+          "label": "Download as PNG"
+        },
+        "exportJpeg": {
+          "label": "Download as JPEG"
+        }
+      },
+      "chartLabels": {
+        "title": "elevationProfile",
+        "xAxis": "Distance [m]",
+        "yAxis": "Elevation [m]"
+      }
     }
   }
 }

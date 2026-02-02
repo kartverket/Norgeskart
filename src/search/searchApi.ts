@@ -3,6 +3,7 @@ import { getEnv } from '../env.ts';
 import { ProjectionIdentifier } from '../map/atoms.ts';
 import {
   AddressApiResponse,
+  EmergencyPosterResponse,
   PlaceNameApiResponse,
   PlaceNamePointApiResponse,
   Property,
@@ -14,11 +15,42 @@ const env = getEnv();
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${query}&treffPerSide=100&fuzzy=true`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av adresser');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(
+      `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`,
+    );
+    if (!res.ok) {
+      console.warn(`API failed [addresses]: ${res.status} for "${query}"`);
+      return {
+        adresser: [],
+        metadata: {
+          side: 1,
+          totaltAntallTreff: 0,
+          treffPerSide: 100,
+          viserFra: 0,
+          viserTil: 0,
+          sokeStreng: query,
+          utkoordsys: 4258,
+        },
+      };
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [addresses]: ${query}`, error);
+    return {
+      adresser: [],
+      metadata: {
+        side: 1,
+        totaltAntallTreff: 0,
+        treffPerSide: 100,
+        viserFra: 0,
+        viserTil: 0,
+        sokeStreng: query,
+        utkoordsys: 4258,
+      },
+    };
+  }
 };
 
 export const getAdressesByLocation = async (
@@ -38,11 +70,42 @@ export const getPlaceNames = async (
   query: string,
   page: number,
 ): Promise<PlaceNameApiResponse> => {
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${query}*&treffPerSide=15&side=${page}`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(
+      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*&treffPerSide=15&side=${page}`,
+    );
+    if (!res.ok) {
+      console.warn(`API failed [placeNames]: ${res.status} for "${query}"`);
+      return {
+        navn: [],
+        metadata: {
+          side: page,
+          totaltAntallTreff: 0,
+          treffPerSide: 15,
+          viserFra: 0,
+          viserTil: 0,
+          sokeStreng: query,
+          utkoordsys: 25833,
+        },
+      };
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [placeNames]: ${query}`, error);
+    return {
+      navn: [],
+      metadata: {
+        side: page,
+        totaltAntallTreff: 0,
+        treffPerSide: 15,
+        viserFra: 0,
+        viserTil: 0,
+        sokeStreng: query,
+        utkoordsys: 25833,
+      },
+    };
+  }
 };
 
 export const getPlaceNamesByLocation = async (
@@ -60,15 +123,54 @@ export const getPlaceNamesByLocation = async (
 };
 
 export const getRoads = async (query: string): Promise<Road[]> => {
-  const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${query}`);
-  if (!res.ok) throw new Error('Feil ved henting av veg');
-  return res.json();
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${encodedQuery}`);
+    if (!res.ok) {
+      console.warn(`API failed [roads]: ${res.status} for "${query}"`);
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [roads]: ${query}`, error);
+    return [];
+  }
+};
+
+// Pattern: kommunenr/gnr/bnr or kommunenr/gnr/bnr/festenr
+// kommunenr is 4 digits, gnr and bnr are 1-5 digits
+const SLASH_ONLY_PATTERN = /^(\d{4})\/(\d{1,5})\/(\d{1,5})(\/\d{1,5})?$/;
+
+const normalizePropertyQuery = (query: string): string => {
+  const match = query.match(SLASH_ONLY_PATTERN);
+
+  if (match) {
+    const kommunenr = match[1];
+    const gnr = match[2];
+    const bnr = match[3];
+    const festenr = match[4] || '';
+
+    // Convert to expected format: kommunenr-gnr/bnr(/festenr)
+    return `${kommunenr}-${gnr}/${bnr}${festenr}`;
+  }
+
+  return query;
 };
 
 export const getProperties = async (query: string): Promise<Property[]> => {
-  const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${query}`);
-  if (!res.ok) throw new Error('Feil ved henting av eiendom');
-  return res.json();
+  try {
+    const normalizedQuery = normalizePropertyQuery(query);
+    const encodedQuery = encodeURIComponent(normalizedQuery);
+    const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${encodedQuery}`);
+    if (!res.ok) {
+      console.warn(`API failed [properties]: ${res.status} for "${query}"`);
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error(`Error [properties]: ${query}`, error);
+    return [];
+  }
 };
 
 export const getElevation = async (x: number, y: number) => {
@@ -76,6 +178,15 @@ export const getElevation = async (x: number, y: number) => {
     `https://hoydedata.no/arcgis/rest/services/NHM_DTM_TOPOBATHY_25833/ImageServer/identify?f=json&geometry=${x},${y}&geometryType=esriGeometryPoint&sr=25833&returnGeometry=false&returnCatalogItems=false`,
   );
   if (!res.ok) throw new Error('Feil ved henting av høyde');
+  return res.json();
+};
+
+export const getEmergecyPosterInfoByCoordinates = async (
+  lat: number,
+  lon: number,
+): Promise<EmergencyPosterResponse> => {
+  const res = await fetch(`${env.apiUrl}/emergencyPoster/${lat}/${lon}`);
+  if (!res.ok) throw new Error('Feil ved henting av informasjon for nødplakat');
   return res.json();
 };
 

@@ -2,14 +2,15 @@ import { getDefaultStore } from 'jotai';
 import { Feature } from 'ol';
 import { createEmpty, extend } from 'ol/extent';
 import { Point } from 'ol/geom';
-import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import Cluster from 'ol/source/Cluster';
 import VectorSource from 'ol/source/Vector';
+import { getMarkerLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
+import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { SearchResult } from '../../types/searchTypes';
 import { clusterStyle } from './cluster';
-import { createMarker, LOCATION_BLUE_SVG, LOCATION_RED_SVG } from './marker';
+import { createMarker } from './marker';
 import { clusterPopup } from './popup';
 
 const handleMarkerClick = (
@@ -64,14 +65,7 @@ export const updateSearchMarkers = (
   onResultClick: (res: SearchResult) => void,
 ) => {
   const map = getDefaultStore().get(mapAtom);
-  const markerLayer = map
-    .getLayers()
-    .getArray()
-    .find((layer) => layer.get('id') === 'markerLayer');
-
-  if (!markerLayer) return;
-
-  const vectorMarkerLayer = markerLayer as VectorLayer;
+  const markerLayer = getMarkerLayer();
 
   const markerSource = new VectorSource();
 
@@ -80,19 +74,15 @@ export const updateSearchMarkers = (
     source: markerSource,
   });
 
-  vectorMarkerLayer.setSource(clusterSource);
+  markerLayer.setSource(clusterSource);
 
-  vectorMarkerLayer.setStyle((feature) => clusterStyle(feature, hoveredResult));
+  markerLayer.setStyle((feature) => clusterStyle(feature, hoveredResult));
 
   markerSource.clear();
 
   if (selectedResult) {
     if (isFinite(selectedResult.lon) && isFinite(selectedResult.lat)) {
-      const selectedMarker = createMarker(
-        selectedResult,
-        LOCATION_RED_SVG,
-        map,
-      );
+      const selectedMarker = createMarker(selectedResult, 'red', map);
       markerSource.addFeature(selectedMarker);
     }
     if (selectedResult.type !== 'Coordinate') {
@@ -102,13 +92,21 @@ export const updateSearchMarkers = (
 
   searchResults.forEach((res) => {
     if (!isFinite(res.lon) || !isFinite(res.lat)) return;
+    // Skip if this result is the same as the selected result to avoid duplicate markers
+    if (
+      selectedResult &&
+      res.lon === selectedResult.lon &&
+      res.lat === selectedResult.lat
+    ) {
+      return;
+    }
 
     const isHovered =
       hoveredResult &&
       hoveredResult.lon === res.lon &&
       hoveredResult.lat === res.lat;
 
-    const iconSrc = isHovered ? LOCATION_RED_SVG : LOCATION_BLUE_SVG;
+    const iconSrc = isHovered ? 'red' : 'blue';
 
     const marker = createMarker(res, iconSrc, map);
     marker.setProperties({ isMarker: true });
@@ -118,6 +116,10 @@ export const updateSearchMarkers = (
   if (!map.get('markerClickHandler')) {
     map.set('markerClickHandler', true);
     map.on('singleclick', (evt) => {
+      const isPrintDialogOpen = getDefaultStore().get(isPrintDialogOpenAtom);
+      if (isPrintDialogOpen) {
+        return;
+      }
       map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         const featuresAtPixel = feature.get('features') as Feature[];
         if (!featuresAtPixel) {

@@ -1,17 +1,19 @@
 import { AccordionRoot, Box, Stack } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
 import { SearchResult } from '../../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
+  coordinateResultsAtom,
   searchQueryAtom,
   selectedResultAtom,
 } from '../atoms.ts';
 import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
+import { CoordinateResults } from './CoorResult.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
 import { PropertiesResults } from './PropertiesResults.tsx';
 import { RoadsResults } from './RoadsResults.tsx';
@@ -36,6 +38,18 @@ export const SearchResults = ({
     'properties',
     'addresses',
   ]);
+  const coord = useAtomValue(coordinateResultsAtom);
+  const coordResult: SearchResult | null = useMemo(() => {
+    return coord
+      ? {
+          type: 'Coordinate',
+          name: `Coordinate: ${coord.formattedString}`,
+          lat: coord.lat,
+          lon: coord.lon,
+          coordinate: coord,
+        }
+      : null;
+  }, [coord]);
 
   const allResults = useAtomValue(allSearchResultsAtom);
 
@@ -64,22 +78,29 @@ export const SearchResults = ({
 
   useEffect(() => {
     updateSearchMarkers(
-      allResults,
+      [...(coordResult ? [coordResult] : []), ...allResults],
       hoveredResult,
       selectedResult,
       handleSearchClick,
     );
-  }, [allResults, hoveredResult, selectedResult, handleSearchClick]);
+  }, [
+    allResults,
+    coordResult,
+    hoveredResult,
+    selectedResult,
+    handleSearchClick,
+  ]);
 
-  if (allResults.length === 0 && searchQuery !== '') {
-    return (
-      <Box p={4} bg="white" borderRadius={'16px'}>
-        {t('search.noResults')}
-      </Box>
-    );
-  }
-  if (allResults.length === 0) {
-    return null;
+  if (allResults.length === 0 && coordResult == null) {
+    if (searchQuery !== '') {
+      return (
+        <Box p={4} bg="white" borderRadius={'16px'} w="100%">
+          {t('search.noResults')}
+        </Box>
+      );
+    } else {
+      return null;
+    }
   }
 
   return (
@@ -88,7 +109,8 @@ export const SearchResults = ({
       p={4}
       bg="white"
       borderRadius={'16px'}
-      maxHeight="30vh"
+      maxH={'100%'}
+      overflowY={'auto'}
       display={'flex'}
       maxWidth={'450px'}
     >
@@ -102,30 +124,41 @@ export const SearchResults = ({
           borderRadius={10}
           variant={'plain'}
         >
-          <AddressesResults
-            handleSearchClick={handleSearchClick}
-            handleHover={handleHover}
-            setHoveredResult={setHoveredResult}
-            onTabClick={() => handleAccordionTabClick('addresses')}
-          />
-          <PlacesResult
-            handleSearchClick={handleSearchClick}
-            handleHover={handleHover}
-            setHoveredResult={setHoveredResult}
-            onTabClick={() => handleAccordionTabClick('places')}
-          />
-          <RoadsResults
-            handleSearchClick={handleSearchClick}
-            handleHover={handleHover}
-            setHoveredResult={setHoveredResult}
-            onTabClick={() => handleAccordionTabClick('roads')}
-          />
-          <PropertiesResults
-            handleSearchClick={handleSearchClick}
-            handleHover={handleHover}
-            setHoveredResult={setHoveredResult}
-            onTabClick={() => handleAccordionTabClick('properties')}
-          />
+          {coordResult != null ? (
+            <CoordinateResults
+              coordinateResult={coordResult}
+              setSelectedResult={handleSearchClick}
+              handleHover={handleHover}
+              setHoveredResult={setHoveredResult}
+            />
+          ) : (
+            <>
+              <AddressesResults
+                handleSearchClick={handleSearchClick}
+                handleHover={handleHover}
+                setHoveredResult={setHoveredResult}
+                onTabClick={() => handleAccordionTabClick('addresses')}
+              />
+              <PlacesResult
+                handleSearchClick={handleSearchClick}
+                handleHover={handleHover}
+                setHoveredResult={setHoveredResult}
+                onTabClick={() => handleAccordionTabClick('places')}
+              />
+              <RoadsResults
+                handleSearchClick={handleSearchClick}
+                handleHover={handleHover}
+                setHoveredResult={setHoveredResult}
+                onTabClick={() => handleAccordionTabClick('roads')}
+              />
+              <PropertiesResults
+                handleSearchClick={handleSearchClick}
+                handleHover={handleHover}
+                setHoveredResult={setHoveredResult}
+                onTabClick={() => handleAccordionTabClick('properties')}
+              />
+            </>
+          )}
         </AccordionRoot>
       </Box>
     </Stack>

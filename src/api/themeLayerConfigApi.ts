@@ -1,5 +1,12 @@
 import { atom } from 'jotai';
-import { loadable } from 'jotai/utils';
+import { dekningConfig } from '../map/layers/config/dekning';
+import { factsConfig } from '../map/layers/config/facts';
+import { fastmerkerLayerConfig } from '../map/layers/config/fastmerker';
+import { outdoorRecreationLayerConfig } from '../map/layers/config/outdoorRecreation';
+import { placeNamesConfig } from '../map/layers/config/placeNames';
+import { propertyInfoConfig } from '../map/layers/config/propertyInfo';
+import { tilgjengelighetConfig } from '../map/layers/config/tilgjengelighet';
+import { ThemeLayerName } from '../map/layers/themeWMS';
 
 export interface FieldConfig {
   name: string;
@@ -63,6 +70,7 @@ export interface ThemeLayerDefinition {
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];
+  useLegendGraphic?: boolean;
 }
 
 export interface ThemeLayerConfig {
@@ -70,33 +78,20 @@ export interface ThemeLayerConfig {
   layers: ThemeLayerDefinition[];
 }
 
-const CATEGORY_FILES = [
-  'outdoorRecreation',
-  //'placeNames',
-  'facts',
-  'tilgjengelighet',
-  'fastmerker',
-  //'nrl',
-  'dekning',
-];
-
-const themeLayerConfigAtom = atom<Promise<ThemeLayerConfig>>(async () => {
-  const configPromises = CATEGORY_FILES.map(async (categoryName) => {
-    const response = await fetch(`/config/categories/${categoryName}.json`);
-    if (!response.ok) {
-      throw new Error(
-        `Failed to load category config ${categoryName}: ${response.statusText}`,
-      );
-    }
-    return response.json() as Promise<ThemeLayerConfig>;
-  });
-
-  const configs = await Promise.all(configPromises);
-
+export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
   const mergedConfig: ThemeLayerConfig = {
     categories: [],
     layers: [],
   };
+  const configs: ThemeLayerConfig[] = [
+    propertyInfoConfig,
+    placeNamesConfig,
+    outdoorRecreationLayerConfig,
+    factsConfig,
+    tilgjengelighetConfig,
+    fastmerkerLayerConfig,
+    dekningConfig,
+  ];
 
   for (const config of configs) {
     mergedConfig.categories.push(...config.categories);
@@ -105,8 +100,6 @@ const themeLayerConfigAtom = atom<Promise<ThemeLayerConfig>>(async () => {
 
   return mergedConfig;
 });
-
-export const themeLayerConfigLoadableAtom = loadable(themeLayerConfigAtom);
 
 export const getThemeLayerById = (
   config: ThemeLayerConfig,
@@ -157,6 +150,48 @@ export const getEffectiveWmsUrl = (
   throw new Error(
     `No wmsUrl found for layer ${layer.id} in category ${layer.categoryId}`,
   );
+};
+
+export const getEffectiveLegendUrl = (
+  config: ThemeLayerConfig,
+  id: ThemeLayerName,
+): string | undefined => {
+  const layer = getThemeLayerById(config, id);
+
+  if (!layer) {
+    return undefined;
+  }
+  if (layer.legendUrl) {
+    return layer.legendUrl;
+  }
+  if (layer.type !== 'geojson') {
+    const wmsUrl = getEffectiveWmsUrl(config, layer);
+    return (
+      wmsUrl +
+      '?SERVICE=wms&REQUEST=GetStyles&VERSION=1.3.0&FORMAT=application/json&Layers=' +
+      layer.layers
+    );
+  }
+  return undefined;
+};
+
+export const getEffectiveLegendImageUrl = (
+  config: ThemeLayerConfig,
+  id: ThemeLayerName,
+) => {
+  const layer = getThemeLayerById(config, id);
+  if (!layer) {
+    return undefined;
+  }
+  if (layer.useLegendGraphic) {
+    const wmsUrl = getEffectiveWmsUrl(config, layer);
+    return (
+      wmsUrl +
+      '?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image/png&LAYER=' +
+      layer.layers
+    );
+  }
+  return undefined;
 };
 
 export const getMainCategories = (

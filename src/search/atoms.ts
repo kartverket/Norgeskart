@@ -6,7 +6,11 @@ import {
   mapAtom,
   ProjectionIdentifier,
 } from '../map/atoms';
-import { ParsedCoordinate } from '../shared/utils/coordinateParser';
+import { isPrintDialogOpenAtom } from '../print/atoms';
+import {
+  parseCoordinateInput,
+  ParsedCoordinate,
+} from '../shared/utils/coordinateParser';
 import {
   getUrlParameter,
   removeUrlParameter,
@@ -86,6 +90,7 @@ const performAddressSearch = async (
 };
 const searchQueryEffect = atomEffect((get, set) => {
   const searchQuery = get(searchQueryAtom);
+  const store = getDefaultStore();
 
   if (searchQuery) {
     setUrlParameter('sok', searchQuery);
@@ -99,10 +104,24 @@ const searchQueryEffect = atomEffect((get, set) => {
     set(roadResultsAtom, []);
     set(propertyResultsAtom, []);
     set(placeNameMetedataAtom, null);
+    set(coordinateResultsAtom, null);
   };
 
   if (searchQuery === '') {
     clearResults();
+    return;
+  }
+  const currentProjection = store
+    .get(mapAtom)
+    .getView()
+    .getProjection()
+    .getCode() as ProjectionIdentifier;
+  const parsedCoordinate = parseCoordinateInput(searchQuery, currentProjection);
+
+  set(coordinateResultsAtom, parsedCoordinate);
+  //Early return when coordinate found, no need to search then
+  if (parsedCoordinate !== null) {
+    set(searchPendingAtom, false);
     return;
   }
   set(searchPendingAtom, true);
@@ -115,41 +134,45 @@ const searchQueryEffect = atomEffect((get, set) => {
       getProperties(searchQuery),
     ]);
   };
-  fetchData().then((r) => {
-    const [addresResult, placeResult, roadsResult, propertiesResult] = r;
-    if (addresResult?.adresser) {
-      if (addresResult.adresser.length === 1) {
-        const onlyAddress = addresResult.adresser[0];
-        set(selectedResultAtom, addressToSearchResult(onlyAddress));
-        const mapView = getDefaultStore().get(mapAtom).getView();
-        mapView.setCenter(
-          transform(
-            [
-              onlyAddress.representasjonspunkt.lon,
-              onlyAddress.representasjonspunkt.lat,
-            ],
-            onlyAddress.representasjonspunkt.epsg,
-            mapView.getProjection().getCode(),
-          ),
-        );
-        mapView.setZoom(15);
+  fetchData()
+    .then((r) => {
+      const [addresResult, placeResult, roadsResult, propertiesResult] = r;
+      if (addresResult?.adresser) {
+        if (addresResult.adresser.length === 1) {
+          const onlyAddress = addresResult.adresser[0];
+          set(selectedResultAtom, addressToSearchResult(onlyAddress));
+          const mapView = getDefaultStore().get(mapAtom).getView();
+          mapView.setCenter(
+            transform(
+              [
+                onlyAddress.representasjonspunkt.lon,
+                onlyAddress.representasjonspunkt.lat,
+              ],
+              onlyAddress.representasjonspunkt.epsg,
+              mapView.getProjection().getCode(),
+            ),
+          );
+          mapView.setZoom(15);
+        }
+        set(addressResultsAtom, addresResult.adresser);
+      } else {
+        set(addressResultsAtom, []);
       }
-      set(addressResultsAtom, addresResult.adresser);
-    } else {
-      set(addressResultsAtom, []);
-    }
-    if (placeResult.navn) {
-      set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
-      set(placeNameMetedataAtom, placeResult.metadata);
-    }
-    if (roadsResult) {
-      set(roadResultsAtom, roadsResult);
-    }
-    if (propertiesResult) {
-      set(propertyResultsAtom, propertiesResult);
-    }
-    set(searchPendingAtom, false);
-  });
+      if (placeResult.navn) {
+        set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
+        set(placeNameMetedataAtom, placeResult.metadata);
+      }
+      if (roadsResult) {
+        set(roadResultsAtom, roadsResult);
+      }
+      if (propertiesResult) {
+        set(propertyResultsAtom, propertiesResult);
+      }
+      set(searchPendingAtom, false);
+    })
+    .finally(() => {
+      set(searchPendingAtom, false);
+    });
 });
 
 const placeNamePageEffet = atomEffect((get, set) => {
@@ -176,6 +199,7 @@ export const placeNameResultsAtom = atom<Place[]>([]);
 export const placeNameMetedataAtom = atom<Metadata | null>(null);
 export const roadResultsAtom = atom<Road[]>([]);
 export const propertyResultsAtom = atom<Property[]>([]);
+export const coordinateResultsAtom = atom<ParsedCoordinate | null>(null);
 export const placesNearbyAtom = atom<Place[]>([]); // For use in the infobox. Populated by coordinate search rather than text search.
 
 export const allSearchResultsAtom = atom((get) => {
@@ -214,6 +238,11 @@ export const selectedResultAtom = atom<SearchResult | null>(
   getInitialSelectedResult(),
 );
 
+export const selectedResultEffect = atomEffect((get, set) => {
+  get(selectedResultAtom);
+  set(isPrintDialogOpenAtom, false);
+});
+
 export const useResetSearchResults = () => {
   const setAddressResults = useSetAtom(addressResultsAtom);
   const setPlaceNameResults = useSetAtom(placeNameResultsAtom);
@@ -236,4 +265,5 @@ export const useSearchEffects = () => {
   useAtom(searchCoordinatesEffect);
   useAtom(searchQueryEffect);
   useAtom(placeNamePageEffet);
+  useAtom(selectedResultEffect);
 };

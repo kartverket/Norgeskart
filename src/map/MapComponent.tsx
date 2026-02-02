@@ -1,10 +1,10 @@
 import { Box, Text } from '@kvib/react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures } from '../api/nkApiClient.ts';
-import { themeLayerConfigLoadableAtom } from '../api/themeLayerConfigApi.ts';
+import { themeLayerConfigAtom } from '../api/themeLayerConfigApi.ts';
 import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import {
@@ -15,13 +15,14 @@ import {
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
 import { mapAtom, scaleAtom } from './atoms.ts';
+import { activeThemeLayersAtom, themeLayerEffect } from './layers/atoms.ts';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
   useBackgoundLayers,
 } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
-import { mapLegacyThemeLayerId, useThemeLayers } from './layers/themeLayers.ts';
+import { mapLegacyThemeLayerId } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
 import { getScaleFromResolution } from './mapScale.ts';
@@ -35,24 +36,27 @@ import { MapContextMenu } from './menu/MapContextMenu.tsx';
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { setBackgroundLayer } = useMapSettings();
-  const { addThemeLayerToMap } = useThemeLayers();
+  const setActiveThemeLayers = useSetAtom(activeThemeLayersAtom);
   const { backgroundLayerState } = useBackgoundLayers();
   const map = useAtomValue(mapAtom);
-  const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
+  const themeLayerConfig = useAtomValue(themeLayerConfigAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures } = useDrawSettings();
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
   const hasProcessedUrlRef = useRef(false);
-  const hasLoadedThemeLayersRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
   const setScale = useSetAtom(scaleAtom);
   const { setTargetElement } = useMap();
+  useAtom(themeLayerEffect);
 
   useEffect(() => {
     if (mapRef.current) {
       setTargetElement(mapRef.current);
+      if (document.activeElement === document.body) {
+        mapRef.current.focus();
+      }
     }
     return () => {
       setTargetElement(null);
@@ -67,24 +71,14 @@ export const MapComponent = () => {
    *
    * Timing is critical:
    * 1. Hash transition must happen BEFORE processing (enables proper URL operations)
-   * 2. Config must be loaded (needed for legacy ID mapping)
-   * 3. Background layers must be available (needed for layer activation)
-   * 4. Process only once per session (prevents re-running on URL updates)
+   * 2. Background layers must be available (needed for layer activation)
+   * 3. Process only once per session (prevents re-running on URL updates)
    *
    * The legacy 'layers' param contains both background (1001-1010) and theme (>1010) IDs.
    * The 'project' param filters which theme layers are valid for the current category.
    */
   useEffect(() => {
     if (!map) {
-      return;
-    }
-
-    if (configLoadable.state === 'hasError') {
-      hasProcessedUrlRef.current = true;
-      return;
-    }
-
-    if (configLoadable.state === 'loading') {
       return;
     }
 
@@ -145,7 +139,7 @@ export const MapComponent = () => {
       legacyThemeLayerIds.forEach((legacyId) => {
         const modernId = mapLegacyThemeLayerId(
           legacyId,
-          configLoadable,
+          themeLayerConfig,
           projectParam,
         );
         if (modernId && !newThemeLayers.includes(modernId)) {
@@ -157,33 +151,19 @@ export const MapComponent = () => {
         setUrlParameter('themeLayers', newThemeLayers.join(','));
       }
     }
+    const finalThemeLayerList = getListUrlParameter('themeLayers') || [];
+
+    setActiveThemeLayers(new Set(finalThemeLayerList as ThemeLayerName[]));
 
     setBackgroundLayer(finalLayerName);
     hasProcessedUrlRef.current = true;
   }, [
+    setActiveThemeLayers,
     setBackgroundLayer,
     map,
-    configLoadable,
+    themeLayerConfig,
     backgroundLayerState,
-    addThemeLayerToMap,
   ]);
-
-  useEffect(() => {
-    if (!map) {
-      return;
-    }
-    if (hasLoadedThemeLayersRef.current) {
-      return;
-    }
-    const themeLayers = getListUrlParameter('themeLayers');
-    if (!themeLayers) {
-      return;
-    }
-    themeLayers.forEach((layerName) => {
-      addThemeLayerToMap(layerName as ThemeLayerName);
-    });
-    hasLoadedThemeLayersRef.current = true;
-  }, [map, addThemeLayerToMap]);
 
   useEffect(() => {
     if (hasLoadedDrawingRef.current) {
@@ -203,8 +183,8 @@ export const MapComponent = () => {
   useEffect(() => {
     if (!map) return;
 
-    const view = map.getView();
     const updateScale = () => {
+      const view = map.getView();
       const resolution = view.getResolution();
 
       if (resolution) {
@@ -227,6 +207,7 @@ export const MapComponent = () => {
         <Box
           ref={mapRef}
           id="map"
+          tabIndex={0}
           style={{ width: '100%', height: '100vh' }}
           onContextMenu={(e) => {
             setXPos(e.clientX);

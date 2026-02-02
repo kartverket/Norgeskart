@@ -1,18 +1,6 @@
-import {
-  Button,
-  createListCollection,
-  Heading,
-  HStack,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-  VStack,
-} from '@kvib/react';
+import { Button, Group, Heading, HStack, VStack } from '@kvib/react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+//import { useTranslation } from 'react-i18next';
 import { useDrawSettings } from '../drawControls/hooks/drawSettings';
 import {
   handleGeoJsonExport,
@@ -22,14 +10,10 @@ import {
 
 const exportFormats = ['GeoJSON', 'GML', 'GPX'] as const;
 type ExportFormat = (typeof exportFormats)[number];
-const exportFormatsCollection = exportFormats.map((format) => ({
-  value: format,
-  label: format,
-}));
 
 export const ExportControls = () => {
   const { getDrawLayer } = useDrawSettings();
-  const { t } = useTranslation();
+  //const { t } = useTranslation();
   const [exportFormat, setExportFormat] = useState<ExportFormat>('GeoJSON');
 
   const handleExport = () => {
@@ -44,49 +28,44 @@ export const ExportControls = () => {
       case 'GPX':
         handleGPXExport(drawLayer);
         break;
-      default:
-        console.error('Unsupported export format:', exportFormat);
-        return;
     }
   };
+
   return (
-    <VStack alignItems="flex-start" w={'200px'}>
-      <Heading size={'lg'} as="h3">
-        {t('export.heading')}
+    <VStack alignItems="flex-start">
+      <Heading size="lg" as="h3" mb="3">
+        Velg filformat for eksport av tegning
       </Heading>
 
-      <HStack
-        w={'100%'}
-        justifyContent={'space-between'}
-        alignItems={'flex-end'}
-      >
-        <SelectRoot
-          collection={createListCollection({
-            items: exportFormatsCollection,
-          })}
-          value={[exportFormat]}
-          size="sm"
+      <Group attached>
+        {exportFormats.map((format) => {
+          const isActive = exportFormat === format;
+
+          return (
+            <Button
+              key={format}
+              size="md"
+              onClick={() => setExportFormat(format)}
+              variant={isActive ? 'solid' : 'outline'}
+              aria-pressed={isActive}
+            >
+              {format}
+            </Button>
+          );
+        })}
+      </Group>
+
+      <HStack mt={8}>
+        <Button
+          colorPalette="green"
+          leftIcon="download"
+          size="lg"
+          variant="solid"
+          onClick={handleExport}
         >
-          <SelectLabel>{t('export.format.label')}:</SelectLabel>
-          <SelectTrigger>
-            <SelectValueText placeholder={t('export.format.placeholder')} />
-          </SelectTrigger>
-          <SelectContent>
-            {exportFormatsCollection.map((item) => (
-              <SelectItem
-                key={item.value}
-                item={item.value}
-                onClick={() => setExportFormat(item.value as ExportFormat)}
-              >
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
+          Last ned ({exportFormat})
+        </Button>
       </HStack>
-      <Button size="sm" onClick={handleExport}>
-        {t('shared.actions.download')}
-      </Button>
     </VStack>
   );
 };

@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   IconButton,
+  Separator,
   SwitchControl,
   SwitchHiddenInput,
   SwitchRoot,
@@ -13,8 +14,11 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import {
   displayCompassOverlayAtom,
+  displayMapLegendAtom,
+  displayMapLegendControlAtom,
   mapAtom,
   scaleToResolutionEffect,
   useMagneticNorthAtom,
@@ -38,6 +42,8 @@ export const Toolbar = () => {
   const [displayCompassOverlay, setDisplayCompassOverlay] = useAtom(
     displayCompassOverlayAtom,
   );
+  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
+  const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
   const [mousePositionCoords, setMousePositionCoords] = useState<
     [number, number] | null
@@ -69,6 +75,8 @@ export const Toolbar = () => {
       p={2}
       zIndex={10}
       pointerEvents={'auto'}
+      overflow={'hidden'}
+      justify={'space-between'}
     >
       <Flex alignItems="center" flex="1">
         <Tooltip content={t('map.settings.compass.enabled')}>
@@ -106,6 +114,18 @@ export const Toolbar = () => {
         <ScaleSelector />
       </Flex>
       <Flex flex="1" justify="flex-end" alignItems="center">
+        {displayMapLegendControl && (
+          <Tooltip content={t('toolbar.legend.tooltip')}>
+            <Button
+              variant="plain"
+              color="white"
+              size="sm"
+              onClick={() => setDisplayMapLegend(true)}
+            >
+              {t('toolbar.legend.label')}
+            </Button>
+          </Tooltip>
+        )}
         <Tooltip content={t('toolbar.reportError.tooltip')}>
           <Button
             variant="plain"
@@ -116,6 +136,8 @@ export const Toolbar = () => {
             {t('toolbar.reportError.label')}
           </Button>
         </Tooltip>
+        <Separator orientation="vertical" mx={2} height="140%" />
+        <LanguageSwitcher variant="icon" />
       </Flex>
     </Flex>
   );

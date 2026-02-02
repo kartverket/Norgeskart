@@ -6,6 +6,8 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
+  Heading,
+  Icon,
   Link,
   List,
   ListItem,
@@ -16,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PrivacyPolicy from './PrivacyPolicyAndContact';
 
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { Tip, unwrapJsonModule } from '../types/tips';
 
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
@@ -67,9 +70,18 @@ export const InfoDrawer = () => {
             cursor: 'pointer',
           }}
         >
-          {tipsOpen
-            ? t('tipsandtricks.headingOpen')
-            : t('tipsandtricks.headingClosed')}
+          {tipsOpen ? (
+            <>
+              {t('tipsandtricks.headingOpen')}
+              <Icon icon={'arrow_drop_up'} />
+            </>
+          ) : (
+            <>
+              {t('tipsandtricks.headingClosed')}
+              <Icon icon={'arrow_drop_down'} />
+            </>
+          )}
+          {}
         </CollapsibleTrigger>
         <CollapsibleContent>
           <Accordion collapsible multiple size="md" variant="outline">
@@ -121,6 +133,8 @@ export const InfoDrawer = () => {
         </CollapsibleContent>
       </Collapsible>
       <PrivacyPolicy />
+      <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
+      <LanguageSwitcher />
     </SimpleGrid>
   );
 };

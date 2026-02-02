@@ -1,55 +1,66 @@
-import { getDefaultStore, useAtomValue } from 'jotai';
-import TileLayer from 'ol/layer/Tile';
-import VectorLayer from 'ol/layer/Vector';
-import {
-  getThemeLayerById,
-  themeLayerConfigLoadableAtom,
-} from '../../api/themeLayerConfigApi';
-import {
-  addToUrlListParameter,
-  removeFromUrlListParameter,
-} from '../../shared/utils/urlUtils';
-import { mapAtom } from '../atoms';
-import {
-  featureInfoPanelOpenAtom,
-  featureInfoResultAtom,
-} from '../featureInfo/atoms';
-import {
-  createThemeLayerFromConfig,
-  getThemeWMSLayer,
-  ThemeLayerName,
-} from './themeWMS';
+import { useAtom, useAtomValue } from 'jotai';
+import { themeLayerConfigAtom } from '../../api/themeLayerConfigApi';
+import { activeThemeLayersAtom } from './atoms';
+import { ThemeLayerName } from './themeWMS';
 
 export const MAX_THEME_LAYERS = 10; // Maximum number of theme layers allowed on the map, what is a good number here?
 
+const isProjectNameAndCategoryIdMatch = (
+  projectName: string | undefined,
+  layerCategoryId: string | undefined,
+): boolean => {
+  if (!projectName) {
+    return true;
+  }
+  if (!layerCategoryId) {
+    return false;
+  }
+
+  const normalizedProjectName = projectName.toLocaleLowerCase().trim();
+  switch (normalizedProjectName) {
+    case 'norgeskart':
+      return ['facts', 'outdoorRecreation'].includes(layerCategoryId);
+    case 'seeiendom':
+      return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
+    case 'ssr':
+      return ['placeNames'].includes(layerCategoryId);
+    case 'tilgjengelighet':
+      return ['tilgjengelighet'].includes(layerCategoryId);
+    case 'fastmerker':
+      return ['fastmerker', 'benchmarks'].includes(layerCategoryId);
+    case 'dekning':
+      return ['dekning'].includes(layerCategoryId);
+  }
+  return false;
+};
+
 export const mapLegacyThemeLayerId = (
   legacyId: string,
-  configLoadable?: ReturnType<
-    typeof useAtomValue<typeof themeLayerConfigLoadableAtom>
-  >,
+  configLoadable?: ReturnType<typeof useAtomValue<typeof themeLayerConfigAtom>>,
   projectName?: string,
 ): string | undefined => {
-  if (configLoadable?.state === 'hasData') {
-    const normalizedProject = projectName?.toLowerCase();
+  if (!configLoadable) {
+    return undefined;
+  }
 
-    const layer = configLoadable.data.layers.find((l) => {
-      if (l.legacyId !== legacyId) return false;
+  const layer = configLoadable.layers.find((l) => {
+    if (l.legacyId !== legacyId) return false;
 
-      if (!normalizedProject) return true;
+    const layerCategory = configLoadable.categories.find(
+      (cat) => cat.id === l.categoryId,
+    );
 
-      const category = configLoadable.data.categories.find(
-        (cat) => cat.id === l.categoryId,
-      );
+    return (
+      isProjectNameAndCategoryIdMatch(projectName, layerCategory?.id) ||
+      isProjectNameAndCategoryIdMatch(
+        projectName,
+        layerCategory?.parentId || '',
+      )
+    );
+  });
 
-      return (
-        category?.id === normalizedProject ||
-        category?.parentId === normalizedProject
-      );
-    });
-
-    if (layer) {
-      return layer.id;
-    }
+  if (layer) {
+    return layer.id;
   }
 
   const legacyMap: Record<string, string> = {
@@ -79,104 +90,27 @@ export const parseLegacyLayersParameter = (
 };
 
 export const useThemeLayers = () => {
-  const map = useAtomValue(mapAtom);
-  const mapProjection = map.getView().getProjection().getCode();
-  const configLoadable = useAtomValue(themeLayerConfigLoadableAtom);
+  const [activeLayerSet, setActiveLayerSet] = useAtom(activeThemeLayersAtom);
 
   const addThemeLayerToMap = (layerName: ThemeLayerName): boolean => {
-    const layerExists = map
-      .getLayers()
-      .getArray()
-      .some((layer) => layer.get('id') === `theme.${layerName}`);
-    if (layerExists) {
-      console.warn('Layer already exists on map');
+    if (activeLayerSet.size >= MAX_THEME_LAYERS) {
       return false;
     }
-
-    const activeThemeLayers = map
-      .getLayers()
-      .getArray()
-      .filter((layer) => {
-        const id = layer.get('id');
-        return typeof id === 'string' && id.startsWith('theme.');
-      });
-
-    if (activeThemeLayers.length >= MAX_THEME_LAYERS) {
-      console.warn(
-        `Maximum theme layers limit (${MAX_THEME_LAYERS}) reached. Please deactivate some layers before adding more.`,
-      );
-      return false;
-    }
-
-    let layerToAdd: TileLayer | VectorLayer | null = getThemeWMSLayer(
-      layerName,
-      mapProjection,
-    );
-
-    if (!layerToAdd && configLoadable.state === 'hasData') {
-      const layerDef = getThemeLayerById(configLoadable.data, layerName);
-      if (layerDef) {
-        layerToAdd = createThemeLayerFromConfig(
-          configLoadable.data,
-          layerDef,
-          mapProjection,
-        );
-      }
-    }
-
-    if (!layerToAdd) {
-      console.warn(
-        `Could not create theme layer: ${layerName} for projection: ${mapProjection}`,
-      );
-      return false;
-    }
-    layerToAdd.setZIndex(10);
-    map.addLayer(layerToAdd);
-    addToUrlListParameter('themeLayers', layerName);
+    setActiveLayerSet((prev) => new Set(prev).add(layerName));
     return true;
   };
 
   const removeThemeLayerFromMap = (layerName: ThemeLayerName) => {
-    const layer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === `theme.${layerName}`);
-    if (layer) {
-      map.removeLayer(layer);
-
-      const store = getDefaultStore();
-      const currentResult = store.get(featureInfoResultAtom);
-      if (currentResult) {
-        const remainingLayers = currentResult.layers.filter(
-          (l) => l.layerId !== `theme.${layerName}`,
-        );
-        if (remainingLayers.length === 0) {
-          store.set(featureInfoResultAtom, null);
-          store.set(featureInfoPanelOpenAtom, false);
-        } else if (remainingLayers.length !== currentResult.layers.length) {
-          store.set(featureInfoResultAtom, {
-            ...currentResult,
-            layers: remainingLayers,
-          });
-        }
-      }
-    }
-    removeFromUrlListParameter('themeLayers', layerName);
-  };
-
-  const getActiveThemeLayerCount = (): number => {
-    return map
-      .getLayers()
-      .getArray()
-      .filter((layer) => {
-        const id = layer.get('id');
-        return typeof id === 'string' && id.startsWith('theme.');
-      }).length;
+    setActiveLayerSet((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(layerName);
+      return newSet;
+    });
   };
 
   return {
+    activeLayerSet,
     addThemeLayerToMap,
     removeThemeLayerFromMap,
-    getActiveThemeLayerCount,
   };
 };

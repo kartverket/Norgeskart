@@ -1,21 +1,10 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  SimpleGrid,
-  Text,
-  VStack,
-} from '@kvib/react';
+import { Box, Button, Image, SimpleGrid, Text, VStack } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  activeBackgroundLayerAtom,
-  getBackgroundLayerImageName,
-  mapAtom,
-} from '../../map/atoms';
+import { getBackgroundLayerImageName, mapAtom } from '../../map/atoms';
+import { activeBackgroundLayerAtom } from '../../map/layers/atoms.ts';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
@@ -94,7 +83,7 @@ const BackgroundLayerGrid = ({
   currentLayer: BackgroundLayerName;
   setLayer: (layer: BackgroundLayerName) => void;
 }) => (
-  <SimpleGrid columns={2} justifyItems="center" gap={0}>
+  <SimpleGrid columns={2} justifyItems="center" gap={0} w={'inherit'}>
     {layers.map((layer) => (
       <LayerCard
         key={layer.value}
@@ -107,7 +96,11 @@ const BackgroundLayerGrid = ({
   </SimpleGrid>
 );
 
-export const BackgroundLayerSettings = () => {
+export const BackgroundLayerSettings = ({
+  onSelectComplete,
+}: {
+  onSelectComplete: () => void;
+}) => {
   const { t } = useTranslation();
   const { setBackgroundLayer, getMapProjectionCode } = useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
@@ -175,17 +168,16 @@ export const BackgroundLayerSettings = () => {
     setBackgroundLayer(layer);
     setCurrentLayer(layer);
     setActiveBackgroundLayer(layer);
+    onSelectComplete();
   };
 
   return (
-    <Flex flexDir="column">
-      <Box position="relative" backgroundColor="#FFFF" borderRadius={10}>
-        <BackgroundLayerGrid
-          layers={sortedLayers}
-          currentLayer={currentLayer}
-          setLayer={handleSetLayer}
-        />
-      </Box>
-    </Flex>
+    <Box backgroundColor="#FFFF" p={2} borderRadius={10} w={'100%'}>
+      <BackgroundLayerGrid
+        layers={sortedLayers}
+        currentLayer={currentLayer}
+        setLayer={handleSetLayer}
+      />
+    </Box>
   );
 };

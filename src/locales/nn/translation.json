@@ -1,14 +1,14 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag",
-      "mobiletext": "Lag"
+      "openText": "Temakart",
+      "mobiletext": "Temakart"
     },
     "print": {
       "text": "Print"
     },
     "draw": {
-      "text": "Tekne og måle",
+      "text": "Teikna og måla",
       "mobiletext": "Verktøy"
     },
     "settings": {
@@ -18,10 +18,13 @@
     "sharemap": {
       "text": "Del kart",
       "mobiletext": "Del"
+    },
+    "help": {
+      "mobiletext": "Hjelp"
     }
   },
   "draw": {
-    "begin": "Tekne på kartet",
+    "begin": "Teikne på kartet",
     "clear": "Fjern teikning",
     "close": "Lukk",
     "confrimClear": "Er du sikker?",
@@ -37,7 +40,7 @@
         "tooltip": {
           "circle": "Sirkel",
           "edit": "Endre og flytt",
-          "linestring": "Linjesegmet",
+          "linestring": "Linjesegment",
           "movedown": "Flytt ned",
           "moveup": "Flytt ned",
           "point": "Punkt",
@@ -46,8 +49,9 @@
         }
       },
       "toolSelect": {
-        "placeholder": "Velg teknemåte"
-      }
+        "placeholder": "Vel teiknemåte"
+      },
+      "color": "Farger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -55,7 +59,7 @@
     "size": {
       "label": "Storleik"
     },
-    "tabHeading": "Tekne og måle",
+    "tabHeading": "Teikna og måla",
     "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {
@@ -63,19 +67,20 @@
       }
     },
     "tools": "Verktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjer om"
   },
   "export": {
     "format": {
-      "label": "Velg filformat",
+      "label": "Vel filformat",
       "placeholder": "Vel format"
     },
-    "heading": "Eksport av tekning"
+    "heading": "Eksport av teikning"
   },
   "infoBox": {
     "address": "Adresse",
     "cadastralIdentifier": "Gards- og bruksnummer",
-    "coordinateInfo": "Sjå koordinater",
+    "coordinateInfo": "Sjå koordinatar",
     "coordinateSection": {
       "copy": {
         "label": "Kopier koordinatar",
@@ -84,16 +89,16 @@
         }
       },
       "differentCrs": "Vis i",
-      "east": "Øst",
-      "north": "Nord"
+      "east": "aust",
+      "north": "nord"
     },
     "coordinateSystem": "Koordinatsystem",
     "decimalDegrees": "Desimalgradar",
     "emergencyPoster": "Lag nødplakat",
-    "heightEstimatedByInterpolation": "Høgde:",
+    "heightEstimatedByInterpolation": "Høgd:",
     "in": "i",
     "makeMap": "Lag turkart",
-    "metersAboveSeaLevel": "moh",
+    "metersAboveSeaLevel": "moh.",
     "metersAboveSeaLevelTooltip": "Meter over havet, estimert ved interpolasjon",
     "municipality": "Kommune",
     "placeInfo": "Sjå fakta om stadnamnet",
@@ -103,10 +108,7 @@
     "placesNearby": "Stader i nærleiken"
   },
   "languageSelector": {
-    "chooseLanguage": "Velg språk",
-    "english": "English",
-    "norwegianBokmaal": "Norsk bokmål",
-    "norwegianNynorsk": "Norsk nynorsk",
+    "chooseLanguage": "Vel språk",
     "tabHeading": "Språk"
   },
   "locationType": {
@@ -124,7 +126,7 @@
             "category": {
               "label": "Vel kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. Vel fra kategoriene under for å åpne rettikartet i nytt vindu.",
+            "description": "Meld om feil i kart på rettikartet.no. vel frå kategoriane under for å opna Rett i kartet i nytt vindauga.",
             "link": {
               "label": "Åpne rettikartet.no i ei ny fane"
             },
@@ -132,9 +134,9 @@
               "n50kartdata": "N50 kart",
               "sjo": "Sjøkart",
               "turruter": "Turrutar",
-              "veger": "Veger og adressar"
+              "veger": "Vegar og adresser"
             },
-            "title": "Meld om en feil"
+            "title": "Meld om ein feil"
           },
           "label": "Meld om feil",
           "tooltip": "Gå til RettIKartet.no"
@@ -162,57 +164,9 @@
             "sjokartraster": "Sjøkart papir",
             "topo": "Topo",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografisk, gråtone",
+            "topograatone": "Topografisk gråtone",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
-          },
-          "themeMaps": {
-            "outdoorsLife": {
-              "subThemes": {
-                "norwayFacts": {
-                  "heading": "Fakta om Noreg",
-                  "layers": {
-                    "osloMarkaBorder": "Oslomarkagrense"
-                  }
-                },
-                "trails": {
-                  "heading": "Ruter",
-                  "layers": {
-                    "bikeTrails": "Sykkelruter",
-                    "hikingTrails": "Fotruter",
-                    "routeInfoPoints": "Ruteinfopunkt",
-                    "skiingTrails": "Skiruter",
-                    "waterTrails": "Padleruter"
-                  }
-                }
-              },
-              "themeName": "Friluftsliv"
-            },
-            "property": {
-              "subThemes": {
-                "matrikkeldata": {
-                  "heading": "Vel matrikkedata",
-                  "layers": {
-                    "adresses": "Adressar",
-                    "buildings": "Bygg",
-                    "parcels": "Teigar og grensar"
-                  }
-                }
-              },
-              "themeName": "Eigedom"
-            },
-            "locations": {
-              "themeName": "Stadnamn",
-              "subThemes": {
-                "historicalMaps": {
-                  "heading": "Historiske kart",
-                  "layers": {
-                    "economicMapFirstEdition": "Økonomisk Kartverk 1. utg",
-                    "amtMap": "Amtskart"
-                  }
-                }
-              }
-            }
           }
         },
         "projection": {
@@ -220,7 +174,7 @@
           "placeholder": "Vel",
           "projections": {
             "epsg25833": {
-              "displayName": "UTM 33 (anbefalt)"
+              "displayName": "UTM 33 (tilrådd)"
             },
             "epsg25832": {
               "displayName": "UTM 32"
@@ -234,7 +188,7 @@
           },
           "popover": {
             "title": "Koordinatreferansesystem",
-            "body": "Vel eit koordinatreferansesystem. Dei har ulik nøyaktigheit i delar av landet. Vi anbefaler at du nyttar UTM 33 om du ikkje er sikker."
+            "body": "Vel eit koordinatreferansesystem. Dei har ulik nøyaktigheit i ulike delar av landet. Me tilrår at du nyttar UTM 33 om du ikkje er sikker."
           }
         },
         "theme": {
@@ -256,16 +210,19 @@
         "label": "Roter venstre"
       },
       "orientation": {
-        "label": "Tilbakestill kartet til standard visning"
+        "label": "Rett opp kartet"
       },
       "rotateRight": {
-        "label": "Roter høger"
+        "label": "Roter høgre"
       },
       "myLocation": {
         "label": "Gå til min posisjon"
       },
       "fullscreen": {
         "label": "Bruk fullskjerm"
+      },
+      "symbols": {
+        "label": "Teknforklaring"
       }
     }
   },
@@ -283,10 +240,15 @@
   },
   "privacyAndContact": {
     "contactUs": "Kontakt",
-    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
-    "infoText": "Les korleis vi tek vare på personopplysningar i Kartverket si",
+    "dialogContent": "Me tek gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
+    "infoText": "Les korleis me tek vare på personopplysningar i Kartverket si",
     "privacyPolicy": "Personvernerklæring ",
-    "sendEmail": "Send e-post"
+    "sendEmail": "Send e-post",
+    "privacy": "Personvern",
+    "status": {
+      "heading": "Status",
+      "infoText": "Sjå status for tenestene våre med å nytta lenkja"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Gardsnr.",
@@ -306,7 +268,7 @@
         "tooltip": "Skriv ut"
       },
       "shareMap": {
-        "success": "Lenka er kopiert til utklippstavla",
+        "success": "Lenkja er kopiert til utklippstavla",
         "tooltip": "Del kartet"
       }
     },
@@ -331,7 +293,13 @@
       "meter": "Meter",
       "nauticalMile": "Nautisk mil"
     },
-    "yes": "Ja"
+    "yes": "Ja",
+    "no": "Nei",
+    "in": "i",
+    "locations": {
+      "municipality": "kommune"
+    },
+    "cancel": "Avbryt"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -341,7 +309,7 @@
   "toolbar": {
     "reportError": {
       "label": "Feil i kartet?",
-      "tooltip": "Rapporter feil eller mangler i kartet."
+      "tooltip": "Rapporter feil eller manglar i kartet."
     },
     "scale": {
       "tooltip": "Vel målestokk"
@@ -351,11 +319,15 @@
     },
     "coordinates": {
       "tooltip": "Pekerens koordinatar"
+    },
+    "legend": {
+      "tooltip": "Vis symbolforklaring",
+      "label": "Teknforklaring"
     }
   },
   "cookieDialog": {
-    "heading": "Vi nytter informasjonskapsler",
-    "body": "Vi gjør det for å gi deg ei betre oppleving. Ved å trykke 'OK' godtar du nyttinga av cookies.",
+    "heading": "Me brukar informasjonskapslar",
+    "body": "Me gjer dette for å gje deg ei betre oppleving. Med å trykkja på 'OK' godtek du bruken av cookies.",
     "buttons": {
       "accept": "OK",
       "reject": "Avslå"
@@ -365,6 +337,89 @@
     "settings": {
       "text": "Informasjon",
       "base": "Info"
+    }
+  },
+  "legend": {
+    "heading": {
+      "title": "Symbolforklaring",
+      "preamble": "Symbolforklaring for temakart "
+    },
+    "item": {
+      "fallbackMessage": "har inge symbolforklaring."
+    }
+  },
+  "printdialog": {
+    "heading": "Skriv ut",
+    "tabs": {
+      "extent": {
+        "heading": "Utsnitt"
+      },
+      "hiking": {
+        "heading": "Turkart"
+      },
+      "elevationProfile": {
+        "heading": "Høydeprofil"
+      },
+      "emergencyPoster": {
+        "heading": "Nødplakat"
+      }
+    },
+    "emergencyPoster": {
+      "disclaimer": {
+        "heading": "Brukarens ansvar",
+        "sections": {
+          "section1": "Nødplakaten er utvikla i samarbeid med Hovudredningsentralane og nødetatane. Kartverket er ansvarleg for datagrunnlaget, dvs. stadnamn og kart - samt teknologien bak.",
+          "section2": "Brukaren har ansvar å kontrollere at det er korrekt hytte eller stad som blir vist på plakaten.",
+          "section3": "Kartverket tar ikkje ansvar for moglege feil som skuldast brukaren, datagrunnlaget eller teknologien."
+        },
+        "accept": "Eg skjønar og godtar",
+        "reject": "Avbryt"
+      },
+      "inputform": {
+        "heading": "Klikk i kartet for å vele stedet nødplakaten skal være for",
+        "fields": {
+          "title": {
+            "label": "Plakattittel"
+          },
+          "place": {
+            "label": "Vel næreste stedsnamn"
+          },
+          "road": {
+            "label": "Vel næreste addresse"
+          },
+          "isInfoCorrect": {
+            "label": "Stemmer informasjonen over?"
+          }
+        },
+        "errors": {
+          "couldNotCreatePosterUrl": "Kunne ikkje lage nødplakat"
+        }
+      },
+      "buttons": {
+        "makePoster": "Lag plakat"
+      }
+    },
+    "elevationProfile": {
+      "heading": "Tekn ei linje for å lage ei høydeprofil",
+      "infotext": "Opprett ei høydeprofil ved å klikke i kartet for å plassere det fyste punktet og dobbelklikk for å avslutte.",
+      "jobError": "Kunne ikkje lage høgdeprofil",
+      "jobRunning": "Lager profil",
+      "buttons": {
+        "exportCsv": {
+          "label": "Last ned som CSV"
+        },
+        "exportPng": {
+          "label": "Last ned som PNG"
+        },
+        "exportJpeg": {
+          "label": "Last ned som JPEG"
+        }
+      },
+      "chartLabels": {
+        "title": "Høydeprofil",
+        "xAxis": "Avstand [m]",
+        "yAxis": "Høyde [m]"
+      }
     }
   }
 }

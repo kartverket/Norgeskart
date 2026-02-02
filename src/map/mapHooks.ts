@@ -198,7 +198,7 @@ const useMapSettings = () => {
       minZoom: oldView.getMinZoom(),
       maxZoom: oldView.getMaxZoom(),
       projection: projection,
-      constrainResolution: true,
+      constrainResolution: false,
       extent: projection.getExtent(),
     });
     oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {

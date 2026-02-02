@@ -24,7 +24,7 @@ const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
     case 'Place':
       return (
         <Text>
-          {`${t('search.placeName')} ${t('infoBox.in')} ${result.place.municipalities.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`}
+          {`${t('search.placeName')} ${result.place.municipalities != null && `${t('infoBox.in')} ${result.place.municipalities.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`}`}
         </Text>
       );
 

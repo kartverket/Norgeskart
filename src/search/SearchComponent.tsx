@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Icon,
   IconButton,
@@ -7,34 +8,19 @@ import {
   Search,
   Spinner,
 } from '@kvib/react';
-import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { Feature, MapBrowserEvent } from 'ol';
-import BaseEvent from 'ol/events/Event';
-import { Geometry } from 'ol/geom';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  activeBackgroundLayerAtom,
-  getBackgroundLayerImageName,
-  mapAtom,
-  ProjectionIdentifier,
-} from '../map/atoms';
-import { mapContextIsOpenAtom } from '../map/menu/atoms.ts';
+import { getBackgroundLayerImageName } from '../map/atoms';
+import { activeBackgroundLayerAtom } from '../map/layers/atoms.ts';
 import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
-import {
-  parseCoordinateInput,
-  ParsedCoordinate,
-} from '../shared/utils/coordinateParser.ts';
 import { SearchResult } from '../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
-  searchCoordinatesAtom,
   searchPendingAtom,
   searchQueryAtom,
-  selectedResultAtom,
   useResetSearchResults,
 } from './atoms.ts';
-import { CoordinateResults } from './results/CoordinateResults.tsx';
 import { SearchResults } from './results/SearchResults.tsx';
 
 const SearchIcon = () => {
@@ -63,39 +49,16 @@ const SearchIcon = () => {
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
-  const setSelectedResult = useSetAtom(selectedResultAtom);
-  const setSearchCoordinates = useSetAtom(searchCoordinatesAtom);
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
-  const map = useAtomValue(mapAtom);
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const settingsHoverTimeoutRef = useRef<number | null>(null);
+  const iconHoverTimeoutRef = useRef<number | null>(null);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
   );
   const backgroundImageUrl = `/backgroundlayerImages/${backgroundImageName}.png`;
-  const currentProjection = useMemo<ProjectionIdentifier>(() => {
-    return map.getView().getProjection().getCode() as ProjectionIdentifier;
-  }, [map]);
-
-  // Detect if search query is a coordinate, using current projection as fallback
-  const coordinateResult = useMemo<SearchResult | null>(() => {
-    const parsedCoordinate = parseCoordinateInput(
-      searchQuery,
-      currentProjection,
-    );
-    if (parsedCoordinate == null) {
-      return null;
-    }
-
-    return {
-      lon: parsedCoordinate.lon,
-      lat: parsedCoordinate.lat,
-      name: parsedCoordinate.formattedString,
-      type: 'Coordinate',
-      coordinate: parsedCoordinate,
-    };
-  }, [searchQuery, currentProjection]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -103,87 +66,16 @@ export const SearchComponent = () => {
     setShowBackgroundSettings(false);
   };
 
-  const toggleBackgroundSettings = () => {
-    setShowBackgroundSettings((prev) => !prev);
-  };
-
-  //I hate this function
-  const isClusterClick = useCallback((e: MapBrowserEvent): boolean => {
-    const map = getDefaultStore().get(mapAtom);
-    const features = map.getFeaturesAtPixel(e.pixel);
-    // Check if the click is on a cluster
-    const isCluster =
-      features &&
-      features.length === 1 &&
-      features[0].get('features') &&
-      Array.isArray(features[0].get('features')) &&
-      features[0].get('features').length > 1;
-
-    const hasMarkerFeature =
-      features &&
-      features.some((f) => {
-        return f.get('features').some((ff: Feature<Geometry>) => {
-          return ff.get('isMarker') === true;
-        });
-      });
-
-    return isCluster || hasMarkerFeature;
-  }, []);
-
-  const handlePositionClick = useCallback(
-    (e: MapBrowserEvent) => {
-      const map = getDefaultStore().get(mapAtom);
-      const coordinate = e.coordinate;
-      const projection = map.getView().getProjection().getCode();
-      setSearchCoordinates({
-        x: coordinate[0],
-        y: coordinate[1],
-        projection: projection as ProjectionIdentifier,
-      });
-
-      const parsedCoordinate: ParsedCoordinate = {
-        lat: coordinate[0],
-        lon: coordinate[1],
-        projection: projection as ProjectionIdentifier,
-        formattedString: `${coordinate[0].toFixed(2)}, ${coordinate[1].toFixed(2)} @ ${projection.split(':')[1]}`,
-        inputFormat: 'utm',
-      };
-
-      setSelectedResult({
-        lon: coordinate[0],
-        lat: coordinate[1],
-        name: parsedCoordinate.formattedString,
-        type: 'Coordinate',
-        coordinate: parsedCoordinate,
-      });
-    },
-    [setSearchCoordinates, setSelectedResult],
-  );
-
-  const mapClickHandler = useCallback(
-    (e: Event | BaseEvent) => {
-      const isContextMenuOpen = getDefaultStore().get(mapContextIsOpenAtom);
-      if (isContextMenuOpen) {
-        return;
-      }
-      if (e instanceof MapBrowserEvent) {
-        const isClickClusterClick = isClusterClick(e);
-
-        if (isClickClusterClick) {
-          return;
-        }
-        handlePositionClick(e);
-      }
-    },
-    [handlePositionClick, isClusterClick],
-  );
-  useEffect(() => {
-    const map = getDefaultStore().get(mapAtom);
-    map.addEventListener('click', mapClickHandler);
+  const cancelTimeouts = useMemo(() => {
     return () => {
-      map.removeEventListener('click', mapClickHandler);
+      if (settingsHoverTimeoutRef.current) {
+        clearTimeout(settingsHoverTimeoutRef.current);
+      }
+      if (iconHoverTimeoutRef.current) {
+        clearTimeout(iconHoverTimeoutRef.current);
+      }
     };
-  }, [mapClickHandler]);
+  }, []);
 
   return (
     <Flex
@@ -193,18 +85,38 @@ export const SearchComponent = () => {
       pointerEvents={'auto'}
       px={3}
       pt={3}
+      maxH={'100%'}
+      overflowY={'auto'}
+      maxW={'450px'}
     >
       {/* TOPP: kart-flis + søkefelt */}
-      <Box backgroundColor="#FFFF" p={2} borderRadius={10} maxWidth="450px">
+      <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
         <Flex alignItems="center" gap={2}>
           {/* Kart-flis til venstre */}
-          <Box
+
+          <Button
             width="46px"
             height="44px"
             borderRadius={8}
             overflow="hidden"
             cursor="pointer"
-            onClick={toggleBackgroundSettings}
+            padding={0}
+            onMouseEnter={() => {
+              iconHoverTimeoutRef.current = window.setTimeout(
+                () => setShowBackgroundSettings(true),
+                100,
+              );
+            }}
+            onMouseLeave={() => {
+              cancelTimeouts();
+              settingsHoverTimeoutRef.current = window.setTimeout(() => {
+                setShowBackgroundSettings(false);
+              }, 700);
+            }}
+            onClick={() => {
+              setShowBackgroundSettings(!showBackgroundSettings);
+              cancelTimeouts();
+            }}
             boxShadow="md"
           >
             <Image
@@ -214,7 +126,7 @@ export const SearchComponent = () => {
               height="100%"
               objectFit="cover"
             />
-          </Box>
+          </Button>
 
           <Box position="relative" width="100%">
             <Search
@@ -237,28 +149,26 @@ export const SearchComponent = () => {
           </Box>
         </Flex>
       </Box>
-      {showBackgroundSettings ? (
+
+      <SearchResults
+        hoveredResult={hoveredResult}
+        setHoveredResult={setHoveredResult}
+      />
+      {showBackgroundSettings && (
         <Box
-          bg="white"
-          borderRadius="md"
-          boxShadow="md"
-          maxWidth="450px"
-          py={2}
+          onMouseLeave={() => {
+            settingsHoverTimeoutRef.current = window.setTimeout(() => {
+              setShowBackgroundSettings(false);
+            }, 700);
+          }}
+          onMouseEnter={() => {
+            cancelTimeouts();
+          }}
         >
-          <BackgroundLayerSettings />
+          <BackgroundLayerSettings
+            onSelectComplete={() => setShowBackgroundSettings(false)}
+          />
         </Box>
-      ) : coordinateResult ? (
-        <CoordinateResults
-          coordinateResult={coordinateResult}
-          setSelectedResult={setSelectedResult}
-          hoveredResult={hoveredResult}
-          setHoveredResult={setHoveredResult}
-        />
-      ) : (
-        <SearchResults
-          hoveredResult={hoveredResult}
-          setHoveredResult={setHoveredResult}
-        />
       )}
     </Flex>
   );
