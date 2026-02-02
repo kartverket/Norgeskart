@@ -338,7 +338,7 @@
     "rejectInfo": "Hvis du avslår samles ingen analysedata inn.",
     "privacyPolicy": "Les mer i Kartverkets personvernerklæring",
     "buttons": {
-      "accept": "Godta analyse",
+      "accept": "Godta",
       "reject": "Avslå"
     }
   },

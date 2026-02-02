@@ -333,7 +333,7 @@
     "rejectInfo": "If you decline, no analytics data will be collected.",
     "privacyPolicy": "Read more in the Norwegian Mapping Authority's privacy policy",
     "buttons": {
-      "accept": "Accept analytics",
+      "accept": "Accept",
       "reject": "Decline"
     }
   },

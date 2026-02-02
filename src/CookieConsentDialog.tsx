@@ -74,7 +74,6 @@ export const CookieConsentDialog = () => {
         
         <HStack justifyContent={'space-between'} mt={2}>
           <Button 
-            colorPalette="gray" 
             variant="outline"
             onClick={handleDisableCookies}
             size="sm"
@@ -82,7 +81,7 @@ export const CookieConsentDialog = () => {
             {t('cookieDialog.buttons.reject')}
           </Button>
           <Button 
-            colorPalette="green" 
+            variant="outline"
             onClick={handleEnableCookies}
             size="sm"
           >
