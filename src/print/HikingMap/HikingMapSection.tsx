@@ -30,13 +30,15 @@ import { useTranslation } from 'react-i18next';
 import { createHikingMap } from '../../api/hikingMap/hikingMapApi';
 import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
+import { useMapSettings } from '../../map/mapHooks';
+import { getUrlParameter } from '../../shared/utils/urlUtils';
 import { utmInfoFromLonLat } from '../EmergencyPoster/utmStringUtils';
 
 const env = getEnv();
 
 const getRotationFromUtmZone = (zone: number): number => {
   // UTM zone 33 is the central meridian for Norway
-  const centralMeridian = (zone - 33) * 6 - 180 + 3;
+  const centralMeridian = (zone - 33) * 5;
   return centralMeridian * (Math.PI / 180); // Convert degrees to radians and negate for map rotation
 };
 
@@ -108,15 +110,26 @@ export const HikingMapSection = () => {
   const [includeSweeden, setIncludeSweeden] = useState<boolean>(false);
   const [printLoading, setPrintLoading] = useState<boolean>(false);
   const previousZone = useRef<number | null>(null);
+  const hasChangedBackground = useRef(false);
   const [includeCompassInstructions, setIncludeCompassInstructions] =
     useState<boolean>(false);
   const [storedDownloadUrl, setStoredDownloadUrl] = useState<string | null>(
     null,
   );
 
+  const { setBackgroundLayer } = useMapSettings();
+  useEffect(() => {
+    const activeBackground = getUrlParameter('backgroundLayer');
+    if (activeBackground != 'toporaster' && !hasChangedBackground.current) {
+      setBackgroundLayer('toporaster');
+    }
+    hasChangedBackground.current = true;
+  }, [setBackgroundLayer]);
+
   useEffect(() => {
     const overlayLayer = new VectorLayer({
       source: new VectorSource(),
+      zIndex: 1000,
       properties: { id: 'hikingMapOverlayLayer' },
     });
 
