@@ -142,7 +142,7 @@ export const MapOverlay = () => {
           alignContent="end"
           gridRow={{ base: 4, md: '3 / span 3' }}
           gridColumn={'12 / span 3'}
-          mb={{ base: 3, md: 4 }}
+          mb={{ base: 3, md: 16 }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
