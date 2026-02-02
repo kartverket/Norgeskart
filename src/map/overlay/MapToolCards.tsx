@@ -53,6 +53,8 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
   return (
     <VStack
       width="100%"
+      maxWidth={{ base: '100%', md: '425px' }}
+      maxHeight="100%"
       pointerEvents="auto"
       bg="#FFFF"
       shadow="lg"
@@ -63,7 +65,6 @@ const MapToolCard = ({ label, children, onClose }: MapToolCardProps) => {
       borderBottomLeftRadius={{ base: '0px', md: '16px' }}
       borderBottomRightRadius={{ base: '0px', md: '16px' }}
       overflowY={'auto'}
-      maxHeight="100%"
     >
       <Flex justify="space-between" gap="2" w={'100%'}>
         <Heading fontWeight="bold" mb={{ base: '0', md: '2' }} size={'lg'}>

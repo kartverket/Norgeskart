@@ -244,29 +244,35 @@ const setDisplayInteractiveMeasurementForDrawInteraction = (
     drawInteraction.un('drawend', drawEndMesurmentListener);
   }
 };
+
+export const clearInteractions = () => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const interactions = map.getInteractions().getArray();
+
+  for (const interaction of interactions) {
+    if (interaction instanceof Select) {
+      const features = interaction.getFeatures();
+      map.removeInteraction(interaction);
+      features.forEach(handleFeatureSelectDone);
+
+      map.removeInteraction(interaction);
+    }
+    if (interaction instanceof Draw || interaction instanceof Translate) {
+      map.removeInteraction(interaction);
+    }
+  }
+};
+
 export const drawTypeEffect = atomEffect((get) => {
   const drawType = get(drawTypeAtom);
   const measurementEnabled = get(showMeasurementsAtom);
   const store = getDefaultStore();
-  const draw = getDrawInteraction();
-  const select = getSelectInteraction();
-  const translate = getTranslateInteraction();
   const map = store.get(mapAtom);
   const drawLayer = getDrawLayer();
 
   //Cleanup existing interactions
-  if (select) {
-    const features = select.getFeatures();
-    map.removeInteraction(select);
-    features.forEach(handleFeatureSelectDone);
-  }
-  if (translate) {
-    map.removeInteraction(translate);
-  }
-
-  if (draw) {
-    map.removeInteraction(draw);
-  }
+  clearInteractions();
 
   switch (drawType) {
     case null:

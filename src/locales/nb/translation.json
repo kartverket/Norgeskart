@@ -1,15 +1,15 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag",
-      "mobiletext": "Lag"
+      "openText": "Temakart",
+      "mobiletext": "Temakart"
     },
     "print": {
       "text": "Print"
     },
     "draw": {
       "text": "Tegne og måle",
-      "mobiletext": "Verktøy"
+      "mobiletext": "Tegne og måle"
     },
     "settings": {
       "mobiletext": "Innstillinger",
@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Del kart",
       "mobiletext": "Del"
+    },
+    "help": {
+      "mobiletext": "Hjelp"
     }
   },
   "draw": {
@@ -36,7 +39,7 @@
       "colorStroke": "Omriss",
       "colorText": "Tekst",
       "pointType": "Punkttype",
-      "showMeasurements": "Vis mål",
+      "showMeasurements": "Vis mål i kartet",
       "tool": {
         "tooltip": {
           "circle": "Sirkel",
@@ -51,15 +54,16 @@
       },
       "toolSelect": {
         "placeholder": "Velg tegnemåte"
-      }
+      },
+      "color": "Farger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
     "save": "Lagre",
     "size": {
-      "label": "Størrelse"
+      "label": "Elementstørrelse"
     },
-    "tabHeading": "Tegne og måle",
+    "tabHeading": "Velg tegnetype(dev)",
     "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {
@@ -67,7 +71,8 @@
       }
     },
     "tools": "Tegneverktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjør om"
   },
   "export": {
     "format": {
@@ -108,9 +113,6 @@
   },
   "languageSelector": {
     "chooseLanguage": "Velg språk",
-    "english": "English",
-    "norwegianBokmaal": "Norsk bokmål",
-    "norwegianNynorsk": "Norsk nynorsk",
     "tabHeading": "Språk"
   },
   "locationType": {
@@ -212,7 +214,7 @@
         "label": "Roter venstre"
       },
       "orientation": {
-        "label": "Tilbakestill kartet til standard visning"
+        "label": "Rett opp kartet"
       },
       "rotateRight": {
         "label": "Roter høyre"
@@ -364,7 +366,7 @@
       "hiking": {
         "heading": "Turkart"
       },
-      "heightProfile": {
+      "elevationProfile": {
         "heading": "Høydeprofil"
       },
       "emergencyPoster": {
@@ -386,13 +388,13 @@
         "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for",
         "fields": {
           "title": {
-            "label": "Gi punktet et navn"
+            "label": "Plakattittel"
           },
           "place": {
-            "label": "Velg riktig stedsnavn"
+            "label": "Velg nærmeste stedsnavn"
           },
           "road": {
-            "label": "Nærmeste vei er"
+            "label": "Velg nærmeste addresse"
           },
           "isInfoCorrect": {
             "label": "Stemmer informasjonen over?"
@@ -406,15 +408,26 @@
         "makePoster": "Lag plakat"
       }
     },
-    "heightProfile": {
+    "elevationProfile": {
       "heading": "Tegn en linje for å lage en høydeprofil",
       "infotext": "Opprett en høydeprofil ved å klikke i kartet for å plassere det første punktet og dobbelklikk for å avslutte.",
       "jobError": "Kunne ikke lage høydeprofil",
       "jobRunning": "Lager profil",
       "buttons": {
         "exportCsv": {
-          "label": "Eksporter som CSV"
+          "label": "Last ned som CSV"
+        },
+        "exportPng": {
+          "label": "Last ned som PNG"
+        },
+        "exportJpeg": {
+          "label": "Last ned som JPEG"
         }
+      },
+      "chartLabels": {
+        "title": "Høydeprofil",
+        "xAxis": "Avstand [m]",
+        "yAxis": "Høyde [m]"
       }
     }
   }

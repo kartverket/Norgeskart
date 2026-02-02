@@ -35,6 +35,7 @@ export const MapToolButtons = () => {
     <HStack
       align="flex-end"
       justify="space-between"
+      overflowX={{ base: 'auto', md: 'none' }}
       bg="#FFFF"
       borderRadius={{ base: '', md: 'lg' }}
       py={{ base: 3, md: 2 }}
@@ -42,18 +43,6 @@ export const MapToolButtons = () => {
       mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
     >
-      <MapButton
-        onClick={() => {
-          posthog.capture('map_draw_button_clicked');
-          setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
-        }}
-        icon={'edit'}
-        label={
-          isMobile ? t('controller.draw.mobiletext') : t('controller.draw.text')
-        }
-        active={currentMapTool === 'draw'}
-        disabled={isPrintDialogOpenDisabled}
-      />
       <MapButton
         onClick={() => {
           setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
@@ -68,13 +57,16 @@ export const MapToolButtons = () => {
       />
       <MapButton
         onClick={() => {
-          setCurrentMapTool(currentMapTool === 'info' ? null : 'info');
+          posthog.capture('map_draw_button_clicked');
+          setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
-        icon={'info'}
-        label={isMobile ? t('info.settings.base') : t('info.settings.text')}
-        active={currentMapTool === 'info'}
+        icon={'edit'}
+        label={
+          isMobile ? t('controller.draw.mobiletext') : t('controller.draw.text')
+        }
+        active={currentMapTool === 'draw'}
+        disabled={isPrintDialogOpenDisabled}
       />
-
       <MapButton
         onClick={handleShareMapClick}
         icon={'share'}
@@ -84,7 +76,6 @@ export const MapToolButtons = () => {
             : t('controller.sharemap.text')
         }
       />
-
       {!isMobile && (
         <MapButton
           onClick={() => {
@@ -97,14 +88,11 @@ export const MapToolButtons = () => {
       )}
       <MapButton
         onClick={() => {
-          setCurrentMapTool(currentMapTool === 'settings' ? null : 'settings');
+          setCurrentMapTool(currentMapTool === 'info' ? null : 'info');
         }}
-        icon={'settings'}
-        label={
-          isMobile
-            ? t('controller.settings.mobiletext')
-            : t('controller.settings.text')
-        }
+        icon={'help'}
+        label={t('controller.help.mobiletext')}
+        active={currentMapTool === 'info'}
       />
     </HStack>
   );

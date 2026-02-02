@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Maplayers",
-      "mobiletext": "Layers"
+      "openText": "Thematic map",
+      "mobiletext": "Thematics"
     },
     "print": {
       "text": "Print"
@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Share map",
       "mobiletext": "Share"
+    },
+    "help": {
+      "mobiletext": "Help"
     }
   },
   "draw": {
@@ -36,7 +39,7 @@
       "colorStroke": "Stroke",
       "colorText": "Text",
       "pointType": "Select icon",
-      "showMeasurements": "Show measurements",
+      "showMeasurements": "Show measurements on map",
       "tool": {
         "tooltip": {
           "circle": "Circle",
@@ -51,18 +54,20 @@
       },
       "toolSelect": {
         "placeholder": "Select draw tool"
-      }
+      },
+      "color": "Colors"
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
     "save": "Save",
     "size": {
-      "label": "Size"
+      "label": "Element size"
     },
     "tabHeading": "Draw and measure",
     "textInputLabel": "Enter text",
     "tools": "Tools",
-    "yesClear": "Yes clear"
+    "yesClear": "Yes clear",
+    "redoundo": "Undo / Redo "
   },
   "export": {
     "format": {
@@ -103,9 +108,6 @@
   },
   "languageSelector": {
     "chooseLanguage": "Select language",
-    "english": "English",
-    "norwegianBokmaal": "Norwegian bokmål",
-    "norwegianNynorsk": "Norwegian nynorsk",
     "tabHeading": "Language"
   },
   "locationType": {
@@ -207,7 +209,7 @@
         "label": "Rotate left"
       },
       "orientation": {
-        "label": "Reset the map to standard view"
+        "label": "Reset the map orientation"
       },
       "rotateRight": {
         "label": "Rotate right"
@@ -359,7 +361,7 @@
       "hiking": {
         "heading": "Hiking map"
       },
-      "heightProfile": {
+      "elevationProfile": {
         "heading": "Height profile"
       },
       "emergencyPoster": {
@@ -381,13 +383,13 @@
         "heading": "Click the map to set the location for the poster",
         "fields": {
           "title": {
-            "label": "Give the location a name"
+            "label": "Poster title"
           },
           "place": {
-            "label": "Select right place name"
+            "label": "Select nearest location"
           },
           "road": {
-            "label": "The closest road is"
+            "label": "Select nearest address"
           },
           "isInfoCorrect": {
             "label": "Is the above info correct?"
@@ -401,7 +403,7 @@
         "makePoster": "Create poster"
       }
     },
-    "heightProfile": {
+    "elevationProfile": {
       "heading": "Draw a line to create a height profile",
       "infotext": "Start creating a height profile by clicking the map to place the first point and double click to finish.",
       "jobError": "Failed to load height profile data.",
@@ -409,7 +411,18 @@
       "buttons": {
         "exportCsv": {
           "label": "Export as CSV"
+        },
+        "exportPng": {
+          "label": "Download as PNG"
+        },
+        "exportJpeg": {
+          "label": "Download as JPEG"
         }
+      },
+      "chartLabels": {
+        "title": "elevationProfile",
+        "xAxis": "Distance [m]",
+        "yAxis": "Elevation [m]"
       }
     }
   }

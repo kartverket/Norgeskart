@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag",
-      "mobiletext": "Lag"
+      "openText": "Temakart",
+      "mobiletext": "Temakart"
     },
     "print": {
       "text": "Print"
@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Del kart",
       "mobiletext": "Del"
+    },
+    "help": {
+      "mobiletext": "Hjelp"
     }
   },
   "draw": {
@@ -49,7 +52,8 @@
       },
       "toolSelect": {
         "placeholder": "Vel teiknemåte"
-      }
+      },
+      "color": "Farger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -65,7 +69,8 @@
       }
     },
     "tools": "Verktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjer om"
   },
   "export": {
     "format": {
@@ -106,9 +111,6 @@
   },
   "languageSelector": {
     "chooseLanguage": "Vel språk",
-    "english": "English",
-    "norwegianBokmaal": "Norsk bokmål",
-    "norwegianNynorsk": "Norsk nynorsk",
     "tabHeading": "Språk"
   },
   "locationType": {
@@ -210,7 +212,7 @@
         "label": "Roter venstre"
       },
       "orientation": {
-        "label": "Tilbakestill kartet til standard visning"
+        "label": "Rett opp kartet"
       },
       "rotateRight": {
         "label": "Roter høgre"
@@ -362,7 +364,7 @@
       "hiking": {
         "heading": "Turkart"
       },
-      "heightProfile": {
+      "elevationProfile": {
         "heading": "Høydeprofil"
       },
       "emergencyPoster": {
@@ -384,13 +386,13 @@
         "heading": "Klikk i kartet for å vele stedet nødplakaten skal være for",
         "fields": {
           "title": {
-            "label": "Gi punktet et namn"
+            "label": "Plakattittel"
           },
           "place": {
-            "label": "Vel riktig stadsnamn"
+            "label": "Vel næreste stedsnamn"
           },
           "road": {
-            "label": "Næraste veg er"
+            "label": "Vel næreste addresse"
           },
           "isInfoCorrect": {
             "label": "Stemmer informasjonen over?"
@@ -404,15 +406,26 @@
         "makePoster": "Lag plakat"
       }
     },
-    "heightProfile": {
+    "elevationProfile": {
       "heading": "Tekn ei linje for å lage ei høydeprofil",
       "infotext": "Opprett ei høydeprofil ved å klikke i kartet for å plassere det fyste punktet og dobbelklikk for å avslutte.",
       "jobError": "Kunne ikkje lage høgdeprofil",
       "jobRunning": "Lager profil",
       "buttons": {
         "exportCsv": {
-          "label": "Eksporter som CSV"
+          "label": "Last ned som CSV"
+        },
+        "exportPng": {
+          "label": "Last ned som PNG"
+        },
+        "exportJpeg": {
+          "label": "Last ned som JPEG"
         }
+      },
+      "chartLabels": {
+        "title": "Høydeprofil",
+        "xAxis": "Avstand [m]",
+        "yAxis": "Høyde [m]"
       }
     }
   }

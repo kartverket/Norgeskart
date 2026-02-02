@@ -4,6 +4,7 @@ import {
   AccordionItemTrigger,
   AccordionRoot,
   Box,
+  Button,
   Flex,
   Heading,
   IconButton,
@@ -14,6 +15,10 @@ import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProjectionIdentifier } from '../../map/atoms';
+import {
+  isRettIKartetDialogOpenAtom,
+  rettIKartetCoordinatesAtom,
+} from '../../map/menu/dialogs/atoms';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import {
@@ -33,6 +38,8 @@ export const InfoBox = () => {
   const placesNearby = useAtomValue(placesNearbyAtom);
   const { t } = useTranslation();
   const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
+  const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
+  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
 
   const onClose = useCallback(() => {
     setSelectedResult(null);
@@ -62,7 +69,7 @@ export const InfoBox = () => {
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading fontWeight="bold" size={'lg'}>
-          {selectedResult.name}
+          {selectedResult.type !== 'Coordinate' && selectedResult.name}
         </Heading>
         <IconButton
           onClick={onClose}
@@ -74,12 +81,8 @@ export const InfoBox = () => {
         />
       </Flex>
       <InfoBoxPreamble result={selectedResult} x={x} y={y} />
-      <Box overflowY="auto" overflowX="auto" maxHeight="80%">
-        <AccordionRoot
-          collapsible
-          multiple
-          defaultValue={['placeInfo', 'propertyInfo']}
-        >
+      <Box overflowY="auto" overflowX="auto">
+        <AccordionRoot collapsible multiple defaultValue={[]}>
           {['Property', 'Coordinate', 'Address'].includes(
             selectedResult.type,
           ) && (
@@ -134,6 +137,16 @@ export const InfoBox = () => {
           <FeatureInfoSection />
         </AccordionRoot>
       </Box>
+      <Button
+        variant="plain"
+        size="sm"
+        onClick={() => {
+          setRettIKartetCoordinates([selectedResult.lon, selectedResult.lat]);
+          setRettIKartetDialogOpen(true);
+        }}
+      >
+        {t('toolbar.reportError.label')}
+      </Button>
     </Stack>
   );
 };

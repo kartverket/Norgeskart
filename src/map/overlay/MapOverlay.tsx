@@ -82,9 +82,12 @@ export const MapOverlay = () => {
             md: '1 / span 6',
             lg: '1 / span 4',
             xl: '1 / span 3',
+            '2xl': '1 / span 2',
           }}
-          gridRow={{ base: '4 / span 2', md: '1 / span 4' }}
+          gridRow={{ base: '2 / span 4', md: '1 / span 4' }}
           zIndex={1}
+          alignItems={{ base: 'flex-end', md: 'stretch' }}
+          display={{ base: 'flex', md: 'block' }}
         >
           <MapToolCards
             currentMapTool={currentMapTool}
@@ -96,14 +99,14 @@ export const MapOverlay = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '7 / span 6',
-            lg: '8 / span 5',
-            xl: '9 / span 4',
+            md: '8 / span 5',
+            lg: '9 / span 4',
+            xl: '10 / span 3',
           }}
           gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
           zIndex={2}
         >
-          <Flex w={'100%'} justifyContent={'flex-end'}>
+          <Flex maxHeight={'100%'} w={'100%'} justifyContent={'flex-end'}>
             <InfoBox />
             <PrintDialog />
           </Flex>
@@ -139,7 +142,7 @@ export const MapOverlay = () => {
           alignContent="end"
           gridRow={{ base: 4, md: '3 / span 3' }}
           gridColumn={'12 / span 3'}
-          mb={{ base: 3, md: 4 }}
+          mb={{ base: 3, md: 16 }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
