@@ -54,9 +54,7 @@ export const MapComponent = () => {
   useEffect(() => {
     if (mapRef.current) {
       setTargetElement(mapRef.current);
-      if (document.activeElement === document.body) {
-        mapRef.current.focus();
-      }
+      mapRef.current.focus();
     }
     return () => {
       setTargetElement(null);
@@ -209,6 +207,12 @@ export const MapComponent = () => {
           id="map"
           tabIndex={0}
           style={{ width: '100%', height: '100vh' }}
+          onMouseEnter={() => {
+            mapRef.current?.focus();
+          }}
+          onMouseDown={() => {
+            mapRef.current?.focus();
+          }}
           onContextMenu={(e) => {
             setXPos(e.clientX);
             setYPos(e.clientY);
