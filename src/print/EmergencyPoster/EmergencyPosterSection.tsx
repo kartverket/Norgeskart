@@ -1,8 +1,8 @@
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
 import { isPrintDialogOpenAtom } from '../atoms';
+import { ClickWrapper } from './ClickWrapper';
 import { Disclaimer } from './Disclaimer';
-import { InputForm } from './InputForm';
 
 export const EmergencyPosterSection = () => {
   const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
@@ -15,5 +15,5 @@ export const EmergencyPosterSection = () => {
       />
     );
   }
-  return <InputForm />;
+  return <ClickWrapper />;
 };
