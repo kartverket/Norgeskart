@@ -59,14 +59,16 @@ export const createHikingMap = async (
     store.get(mapAtom)?.getView().getProjection().getCode() || 'EPSG:25833';
   const [lon, lat] = transform(center, projectionCode, 'EPSG:4326');
   const utmInfo = utmInfoFromLonLat(lon, lat);
-  const transformedCenter = transform(center, projectionCode, 'EPSG:32636');
+  const projectionToUse = `EPSG:326${utmInfo.zone.toString().padStart(2, '0')}`;
+
+  const transformedCenter = transform(center, projectionCode, projectionToUse);
   const transformedBbox = bbox.map((coord, index) => {
     const x = index % 2 === 0 ? coord : bbox[index - 1];
     const y = index % 2 === 1 ? coord : bbox[index + 1];
     const [transformedX, transformedY] = transform(
       [x, y],
       projectionCode,
-      'EPSG:32636',
+      projectionToUse,
     );
     return index % 2 === 0 ? transformedX : transformedY;
   }) as [number, number, number, number];
@@ -88,8 +90,8 @@ export const createHikingMap = async (
           type: 'WMS',
         },
       ],
-      projection: 'EPSG:32636',
-      sone: utmInfo.zone.toString(),
+      projection: projectionToUse,
+      sone: utmInfo.zone.toString() + utmInfo.band,
       biSone: '',
     },
     paging: 12,
