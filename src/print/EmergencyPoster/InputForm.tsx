@@ -139,7 +139,7 @@ export const InputForm = ({
             if (selectedRoad) {
               roadString += selectedRoad;
               if (emergenyPosterData.kommune != '') {
-                roadString += `i ${emergenyPosterData.kommune}`;
+                roadString += ` i ${emergenyPosterData.kommune}`;
               }
             }
             let cadastreString = '';
