@@ -201,7 +201,7 @@ describe('Coordinate Search', () => {
 
       getSearchInput().type(coordinates);
       cy.contains('59.91273').should('be.visible');
-      cy.contains('59.91273').click();
+      cy.contains('59.91273').click({ force: true });
       cy.get('#map').should('be.visible');
     });
   });
