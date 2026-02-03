@@ -17,13 +17,13 @@ import {
   VStack,
 } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
-import { Feature } from 'ol';
+import { Feature, Overlay } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import { Polygon } from 'ol/geom';
 import { Translate } from 'ol/interaction';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
-import { transform } from 'ol/proj';
+import { getPointResolution, transform } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style } from 'ol/style';
 import { useEffect, useRef, useState } from 'react';
@@ -150,6 +150,61 @@ export const HikingMapSection = () => {
     const translateInteraction = new Translate({
       features: featuresForTranslation || undefined,
     });
+
+    const centerMarker = document.createElement('div');
+    centerMarker.className = 'hiking-map-overlay';
+    for (let i = 0; i < 3 * 4; i++) {
+      centerMarker.appendChild(document.createElement('div'));
+    }
+
+    // Create the overlay and position it using viewport coordinates
+    const overlay = new Overlay({
+      element: centerMarker,
+      positioning: 'center-center',
+      stopEvent: false,
+      id: 'hikingMapCenterOverlay',
+    });
+
+    // Add to map
+    map.addOverlay(overlay);
+
+    // Set overlay to map viewport center on each render
+    map.on('postrender', () => {
+      const size = map.getSize();
+      if (!size) {
+        return;
+      }
+      const center = map.getCoordinateFromPixel([size[0] / 2, size[1] / 2]);
+      overlay.setPosition(center);
+
+      const projection = map.getView().getProjection();
+      if (!projection) {
+        return;
+      }
+
+      const resolution = map.getView().getResolution();
+      if (!resolution) {
+        return;
+      }
+
+      const centerResolution = getPointResolution(
+        projection,
+        resolution,
+        center,
+      );
+
+      centerMarker.style.width = `${(xExtent1_25k * (selectedScale === '1 : 25 000' ? 1 : 2)) / centerResolution}px`;
+      centerMarker.style.height = `${(yExtent1_25k * (selectedScale === '1 : 25 000' ? 1 : 2)) / centerResolution}px`;
+
+      const latLonCenter = transform(center, projection.getCode(), 'EPSG:4326');
+      const utmInfo = utmInfoFromLonLat(latLonCenter[0], latLonCenter[1]);
+
+      const rotation = getRotationFromUtmZone(utmInfo.zone);
+      centerMarker.style.transform = `rotate(${
+        (rotation - map.getView().getRotation()!) * -1
+      }rad)`;
+    });
+
     translateInteraction.on('translateend', (e) => {
       if (e instanceof TranslateEvent) {
         const feature = e.features.getArray()[0];
@@ -185,6 +240,7 @@ export const HikingMapSection = () => {
         });
       map.removeLayer(overlayLayer);
       map.removeInteraction(translateInteraction);
+      map.removeOverlay(overlay);
     };
   }, [selectedScale]);
 
