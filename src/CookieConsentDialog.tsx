@@ -56,20 +56,12 @@ export const CookieConsentDialog = () => {
         <Text fontSize="sm" whiteSpace="pre-line">
           {t('cookieDialog.body')}
         </Text>
-        
+
         <HStack justifyContent={'space-between'} mt={2}>
-          <Button 
-            variant="outline"
-            onClick={handleDisableCookies}
-            size="sm"
-          >
+          <Button variant="outline" onClick={handleDisableCookies} size="sm">
             {t('cookieDialog.buttons.reject')}
           </Button>
-          <Button 
-            variant="outline"
-            onClick={handleEnableCookies}
-            size="sm"
-          >
+          <Button variant="outline" onClick={handleEnableCookies} size="sm">
             {t('cookieDialog.buttons.accept')}
           </Button>
         </HStack>
