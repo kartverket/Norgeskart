@@ -34,6 +34,7 @@ import { mapAtom } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
 import { utmInfoFromLonLat } from '../EmergencyPoster/utmStringUtils';
+import { createMultiPolygonGridFromExtent } from './utils';
 
 const env = getEnv();
 
@@ -45,7 +46,7 @@ const getRotationFromUtmZone = (zone: number): number => {
 
 const MapScaleOptions = ['1 : 25 000', '1 : 50 000'] as const;
 
-const xExtent1_25k = 17_800; // TODO: fix these
+const xExtent1_25k = 17_800;
 const yExtent1_25k = 19_500;
 const getOverlayFeature = (): Feature | null => {
   const store = getDefaultStore();
@@ -73,15 +74,13 @@ const generateOverlayFeture = (center: Coordinate, scale: HikingMapSacles) => {
   const maxY = center[1]! + yExtent / 2;
   const minY = center[1]! - yExtent / 2;
   const overlayFeature = new Feature({});
-  const geometry = new Polygon([
-    [
-      [minX, minY],
-      [minX, maxY],
-      [maxX, maxY],
-      [maxX, minY],
-      [minX, minY],
-    ],
-  ]);
+
+  const geometry = createMultiPolygonGridFromExtent(
+    [minX, minY],
+    [maxX, maxY],
+    3,
+    4,
+  );
   overlayFeature.setStyle(
     new Style({
       stroke: new Stroke({ color: 'white', width: 2 }),
