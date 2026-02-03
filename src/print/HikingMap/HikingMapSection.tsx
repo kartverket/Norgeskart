@@ -3,6 +3,7 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
+  FieldHelperText,
   FieldLabel,
   FieldRoot,
   Heading,
@@ -264,17 +265,22 @@ export const HikingMapSection = () => {
         display={'flex'}
         flexDirection={'row'}
         justifyContent={'space-between'}
-        alignItems={'center'}
+        alignItems={'flex-start'}
       >
         <FieldLabel>
           {t('printdialog.hikingMap.fields.mapName.label')}
         </FieldLabel>
-        <Input
-          placeholder={t('printdialog.hikingMap.fields.mapName.placeholder')}
-          type="text"
-          value={mapName}
-          onChange={(e) => setMapName(e.target.value)}
-        />
+        <Stack>
+          <Input
+            placeholder={t('printdialog.hikingMap.fields.mapName.placeholder')}
+            type="text"
+            value={mapName}
+            onChange={(e) => setMapName(e.target.value)}
+          />
+          <FieldHelperText>
+            {t('printdialog.hikingMap.fields.mapName.helpertext')}
+          </FieldHelperText>
+        </Stack>
       </FieldRoot>
       <Separator />
       <HStack w={'100%'} justifyContent={'space-between'} gap={4}>

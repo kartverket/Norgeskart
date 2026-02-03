@@ -433,7 +433,8 @@
         },
         "mapName": {
           "label": "Namn på kartet",
-          "placeholder": "Mitt turkart"
+          "placeholder": "Mitt turkart",
+          "helpertext": "Kun a-z og tall"
         },
         "includeLegend": {
           "label": "teknforklaring"

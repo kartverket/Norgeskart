@@ -428,7 +428,8 @@
         },
         "mapName": {
           "label": "Name on map",
-          "placeholder": "My hiking map"
+          "placeholder": "My hiking map",
+          "helpertext": "Only a-z and numbers"
         },
         "includeLegend": {
           "label": "map legend"
