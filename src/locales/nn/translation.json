@@ -28,6 +28,10 @@
     "clear": "Fjern teikning",
     "close": "Lukk",
     "confrimClear": "Er du sikker?",
+    "privacyNotice": {
+      "title": "Lagring av teikning",
+      "message": "Når du lagrar ei teikning, lagrast det i 2 år på Kartverkets tenarar. Alle med lenka kan sjå teikninga. For å slette teikningar kontakt post@kartverket.no."
+    },
     "controls": {
       "colorBackground": "Bakgrunn",
       "colorFill": "Fyll",
@@ -327,9 +331,9 @@
   },
   "cookieDialog": {
     "heading": "Me brukar informasjonskapslar",
-    "body": "Me gjer dette for å gje deg ei betre oppleving. Med å trykkja på 'OK' godtek du bruken av cookies.",
+    "body": "Norgeskart brukar informasjonskapslar (cookies) for at nettsida skal fungere, og for å forstå korleis tenesta blir brukt, slik at vi kan forbetre ho.\n\nVi brukar analyseverktøyet PostHog til å samle inn anonymisert bruksstatistikk, som til dømes kva sider som blir besøkte og kva funksjonar som blir brukt. Opplysningane blir berre nytta til statistikk og forbetring av tenesta.\n\nDu kan når som helst endre eller trekkje tilbake samtykket ditt under Hjelp – Personvern.\n\nFeltet for tilbakemelding er eit ope fritekstfelt. Vi ber deg om å ikkje skrive inn sensitive personopplysningar. Dersom du likevel oppgir personopplysningar, vil desse bli slette så snart som mogleg og ikkje brukte vidare.",
     "buttons": {
-      "accept": "OK",
+      "accept": "Godta",
       "reject": "Avslå"
     }
   },

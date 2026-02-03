@@ -43,21 +43,25 @@ export const CookieConsentDialog = () => {
       left={{ base: '50%', md: '32px' }}
       transform={{ base: 'translateX(-50%)', md: 'none' }}
       bg={'white'}
-      maxW={'300px'}
+      maxW={{ base: '320px', md: '380px' }}
       padding={4}
       boxShadow={'md'}
       borderRadius={'md'}
+      zIndex={'modal'}
     >
-      <Stack>
+      <Stack gap={3}>
         <Heading as="h4" size="md">
           {t('cookieDialog.heading')}
         </Heading>
-        <Text>{t('cookieDialog.body')}</Text>
-        <HStack justifyContent={'space-between'}>
-          <Button colorPalette="red" onClick={handleDisableCookies}>
+        <Text fontSize="sm" whiteSpace="pre-line">
+          {t('cookieDialog.body')}
+        </Text>
+
+        <HStack justifyContent={'space-between'} mt={2}>
+          <Button variant="outline" onClick={handleDisableCookies} size="sm">
             {t('cookieDialog.buttons.reject')}
           </Button>
-          <Button colorPalette="green" onClick={handleEnableCookies}>
+          <Button variant="outline" onClick={handleEnableCookies} size="sm">
             {t('cookieDialog.buttons.accept')}
           </Button>
         </HStack>
