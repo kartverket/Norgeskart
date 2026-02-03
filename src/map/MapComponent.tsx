@@ -54,9 +54,6 @@ export const MapComponent = () => {
   useEffect(() => {
     if (mapRef.current) {
       setTargetElement(mapRef.current);
-      if (document.activeElement === document.body) {
-        mapRef.current.focus();
-      }
     }
     return () => {
       setTargetElement(null);
@@ -207,7 +204,6 @@ export const MapComponent = () => {
         <Box
           ref={mapRef}
           id="map"
-          tabIndex={0}
           style={{ width: '100%', height: '100vh' }}
           onContextMenu={(e) => {
             setXPos(e.clientX);
