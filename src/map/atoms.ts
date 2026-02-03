@@ -120,6 +120,7 @@ export const mapAtom = atom<Map>(() => {
       new ControlPortal(),
       new ScaleLine({ minWidth: 100 }),
     ]),
+    keyboardEventTarget: document,
   });
 
   map.addLayer(mapLayers.markerLayer.getLayer());
