@@ -153,6 +153,7 @@ export const HikingMapSection = () => {
 
     try {
       const extent = overlayFootprint.extent;
+      setStoredDownloadUrl(null);
 
       const res = await createHikingMap(
         includeLegend,
@@ -164,7 +165,10 @@ export const HikingMapSection = () => {
         encodeURIComponent(mapName),
       );
       const downloadLink = env.apiUrl + '/nkprint/' + res.linkPdf;
-      setStoredDownloadUrl(downloadLink);
+      const openRes = window.open(downloadLink, '_blank');
+      if (openRes == null) {
+        setStoredDownloadUrl(downloadLink);
+      }
     } catch (error) {
       console.error('Error generating hiking map:', error);
       setGenerateButtonText(t('printdialog.hikingMap.errors.generateFailed'));
