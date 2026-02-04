@@ -37,16 +37,6 @@ const getFormatOptions = (layouts: PrintLayout[]) => {
     .map((f) => ({ value: f, label: f }));
 };
 
-const getOrientationOptions = (layouts: PrintLayout[]) => {
-  return Array.from(
-    new Set(
-      layouts.map((l) =>
-        l.name.toLowerCase().includes('portrait') ? 'portrait' : 'landscape',
-      ),
-    ),
-  );
-};
-
 const getSelectedLayout = (
   layouts: PrintLayout[],
   format: string,
@@ -70,20 +60,12 @@ export const ExtentSection = () => {
   const printBoxExtent = useAtomValue(printBoxExtentAtom);
   useAtom(printBoxExtentEffect);
 
-  const [format, setFormat] = useState('');
-  const [orientation, setOrientation] = useState('');
+  const [format, setFormat] = useState('A4');
+  const [orientation, setOrientation] = useState('portrait');
   const [loading, setLoading] = useState(false);
 
   const formatOptions = getFormatOptions(layouts);
-  const orientationOptions = getOrientationOptions(layouts);
   const selectedLayout = getSelectedLayout(layouts, format, orientation);
-
-  useEffect(() => {
-    if (layouts.length) {
-      setFormat(formatOptions[0]?.value || '');
-      setOrientation(orientationOptions[0] || '');
-    }
-  }, [layouts]);
 
   useEffect(() => {
     if (!map) return;
