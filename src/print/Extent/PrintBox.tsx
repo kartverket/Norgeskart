@@ -13,27 +13,22 @@ type PrintBoxProps = {
   map: Map;
 };
 
-const printBoxFeatures = new Collection<Feature<Polygon>>();
-
-const printBoxSource = new VectorSource({
-  features: printBoxFeatures,
-  wrapX: false,
-});
-
-const printBoxLayer = new VectorLayer({
-  source: printBoxSource,
-  zIndex: 5,
-});
-
-printBoxLayer.set('id', 'printBoxLayer');
-
 export const PrintBox = ({ map }: PrintBoxProps) => {
   const extent = useAtomValue(printBoxExtentAtom);
   const setCenter = useSetAtom(printBoxCenterAtom);
   const translateRef = useRef<Translate | null>(null);
+  const layerRef = useRef<VectorLayer | null>(null);
 
   useEffect(() => {
     if (!map || !extent) return;
+
+    const source = new VectorSource();
+    const layer = new VectorLayer({
+      source,
+      zIndex: 1000,
+      properties: { id: 'printBoxLayer' },
+    });
+    layerRef.current = layer;
 
     const coords = [
       [
@@ -45,44 +40,46 @@ export const PrintBox = ({ map }: PrintBoxProps) => {
       ],
     ];
 
-    let feature = printBoxFeatures.item(0);
-    if (!feature) {
-      feature = new Feature(new Polygon(coords));
-      feature.setStyle(
-        new Style({
-          stroke: new Stroke({
-            color: 'rgba(0,0,0,0.5)',
-            width: 2,
-            lineDash: [6, 6],
-          }),
-          fill: new Fill({ color: '#FF770082' }),
+    const feature = new Feature(new Polygon(coords));
+    feature.setStyle(
+      new Style({
+        stroke: new Stroke({
+          color: 'rgba(0,0,0,0.5)',
+          width: 2,
+          lineDash: [6, 6],
         }),
-      );
-      printBoxFeatures.push(feature);
-    } else {
-      feature.setGeometry(new Polygon(coords));
-    }
+        fill: new Fill({ color: '#FF770082' }),
+      })
+    );
+    source.addFeature(feature);
 
-    map.addLayer(printBoxLayer);
-    translateRef.current = new Translate({ features: printBoxFeatures });
+    map.addLayer(layer);
+
+    const featuresCollection = source.getFeaturesCollection() || undefined;
+    translateRef.current = new Translate({ features: featuresCollection });
     map.addInteraction(translateRef.current);
 
-    translateRef.current.on('translateend', () => {
-      const geom = feature!.getGeometry() as Polygon;
+    const onTranslateEnd = () => {
+      const geom = feature.getGeometry() as Polygon;
       const newExtent = geom.getExtent();
       const newCenter: [number, number] = [
         (newExtent[0] + newExtent[2]) / 2,
         (newExtent[1] + newExtent[3]) / 2,
       ];
       setCenter(newCenter);
-    });
+    };
+    translateRef.current.on('translateend', onTranslateEnd);
 
     return () => {
       if (translateRef.current) {
+        translateRef.current.un('translateend', onTranslateEnd);
         map.removeInteraction(translateRef.current);
         translateRef.current = null;
       }
-      map.removeLayer(printBoxLayer);
+      if (layerRef.current) {
+        map.removeLayer(layerRef.current);
+        layerRef.current = null;
+      }
     };
   }, [map, extent, setCenter]);
 

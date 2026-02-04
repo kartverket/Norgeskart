@@ -1,4 +1,3 @@
-import { toaster } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
 import Map from 'ol/Map';
 import { transform } from 'ol/proj';
@@ -12,6 +11,7 @@ import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
 import { createGeoJsonLayerWithStyles } from './utils';
 import { WMTS_MATRICES } from './wmtsMatrices';
+import { toaster } from '@kvib/react';
 
 type GenerateMapPdfProps = {
   map: Map;
@@ -37,7 +37,6 @@ export const generateMapPdf = async ({
   setLoading(true);
 
   try {
-    //Hent ut og forbered kartdata
     const center = [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2];
     const [lon, lat] = center;
     const sourceProjection = map.getView().getProjection().getCode();
@@ -78,7 +77,6 @@ export const generateMapPdf = async ({
       const style = getDefaultStore().get(drawStyleReadAtom);
       const styleForStorage = getStyleForStorage(style);
 
-      // Bruk hjelpefunksjonen for å lage geojson-lag med styles
       if (styleForStorage) {
         const geoJsonLayer = createGeoJsonLayerWithStyles(
           features,
@@ -90,7 +88,6 @@ export const generateMapPdf = async ({
       }
     }
 
-    //Bygg opp payload for print-API
     const payload: Payload = {
       attributes: {
         map: {
@@ -110,7 +107,6 @@ export const generateMapPdf = async ({
     };
 
 
-    //Send til print-API
     const result = await requestPdfGeneration(payload);
     const downloadURL = await pollPdfStatus(result.statusURL);
 
