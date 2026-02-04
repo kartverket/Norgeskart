@@ -17,15 +17,8 @@ import {
   VStack,
 } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
-import { Feature, Overlay } from 'ol';
-import { Coordinate } from 'ol/coordinate';
-import { Polygon } from 'ol/geom';
-import { Translate } from 'ol/interaction';
-import { TranslateEvent } from 'ol/interaction/Translate';
-import VectorLayer from 'ol/layer/Vector';
+import { Overlay } from 'ol';
 import { getPointResolution, transform } from 'ol/proj';
-import VectorSource from 'ol/source/Vector';
-import { Fill, Stroke, Style } from 'ol/style';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createHikingMap } from '../../api/hikingMap/hikingMapApi';
@@ -34,7 +27,7 @@ import { mapAtom } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
 import { utmInfoFromLonLat } from '../EmergencyPoster/utmStringUtils';
-import { createMultiPolygonGridFromExtent, getOverlayFootprint } from './utils';
+import { getOverlayFootprint } from './utils';
 
 const env = getEnv();
 
@@ -48,54 +41,6 @@ const MapScaleOptions = ['1 : 25 000', '1 : 50 000'] as const;
 
 const xExtent1_25k = 17_800;
 const yExtent1_25k = 19_500;
-const getOverlayFeature = (): Feature | null => {
-  const store = getDefaultStore();
-  const map = store.get(mapAtom);
-  const overlayLayer = map
-    .getLayers()
-    .getArray()
-    .find(
-      (layer) => layer.get('id') === 'hikingMapOverlayLayer',
-    ) as unknown as VectorLayer;
-
-  const features = overlayLayer.getSource()?.getFeatures();
-  return features ? features[0] : null;
-};
-
-const generateOverlayFeture = (center: Coordinate, scale: HikingMapSacles) => {
-  const store = getDefaultStore();
-  const map = store.get(mapAtom);
-  const view = map.getView();
-  const xExtent = scale === '1 : 25 000' ? xExtent1_25k : xExtent1_25k * 2;
-  const yExtent = scale === '1 : 25 000' ? yExtent1_25k : yExtent1_25k * 2;
-
-  const maxX = center[0]! + xExtent / 2;
-  const minX = center[0]! - xExtent / 2;
-  const maxY = center[1]! + yExtent / 2;
-  const minY = center[1]! - yExtent / 2;
-  const overlayFeature = new Feature({});
-
-  const geometry = createMultiPolygonGridFromExtent(
-    [minX, minY],
-    [maxX, maxY],
-    3,
-    4,
-  );
-  overlayFeature.setStyle(
-    new Style({
-      stroke: new Stroke({ color: 'white', width: 2 }),
-      fill: new Fill({ color: 'rgba(253, 143, 0, 0.5)' }),
-    }),
-  );
-  const projectionCode = view.getProjection().getCode();
-  const [lon, lat] = transform(center, projectionCode, 'EPSG:4326');
-  const utmInfo = utmInfoFromLonLat(lon, lat);
-
-  const rotation = getRotationFromUtmZone(utmInfo.zone);
-  geometry.rotate(rotation - view.getRotation()!, center);
-  overlayFeature.setGeometry(geometry);
-  return overlayFeature;
-};
 
 type HikingMapSacles = (typeof MapScaleOptions)[number];
 export const HikingMapSection = () => {
@@ -109,7 +54,6 @@ export const HikingMapSection = () => {
   const [includeLegend, setIncludeLegend] = useState<boolean>(false);
   const [includeSweeden, setIncludeSweeden] = useState<boolean>(false);
   const [printLoading, setPrintLoading] = useState<boolean>(false);
-  const previousZone = useRef<number | null>(null);
   const hasChangedBackground = useRef(false);
   const [includeCompassInstructions, setIncludeCompassInstructions] =
     useState<boolean>(false);
@@ -127,49 +71,24 @@ export const HikingMapSection = () => {
   }, [setBackgroundLayer]);
 
   useEffect(() => {
-    const overlayLayer = new VectorLayer({
-      source: new VectorSource(),
-      zIndex: 1000,
-      properties: { id: 'hikingMapOverlayLayer' },
-    });
-
     const store = getDefaultStore();
     const map = store.get(mapAtom);
-    const view = map.getView();
-    const overlayFeature = generateOverlayFeture(
-      view.getCenter()!,
-      selectedScale,
-    );
 
-    overlayLayer.getSource()?.addFeature(overlayFeature); //create rectangle overlay on map
-    map.addLayer(overlayLayer);
-
-    const source = overlayLayer.getSource();
-    const featuresForTranslation = source?.getFeaturesCollection();
-
-    const translateInteraction = new Translate({
-      features: featuresForTranslation || undefined,
-    });
-
-    const centerMarker = document.createElement('div');
-    centerMarker.className = 'hiking-map-overlay';
+    const overlayGridContainer = document.createElement('div');
+    overlayGridContainer.className = 'hiking-map-overlay';
     for (let i = 0; i < 3 * 4; i++) {
-      centerMarker.appendChild(document.createElement('div'));
+      overlayGridContainer.appendChild(document.createElement('div'));
     }
 
-    // Create the overlay and position it using viewport coordinates
     const overlay = new Overlay({
-      element: centerMarker,
+      element: overlayGridContainer,
       positioning: 'center-center',
       stopEvent: false,
-      id: 'hikingMapCenterOverlay',
+      id: 'hikingMapGridOverlay',
     });
 
-    // Add to map
     map.addOverlay(overlay);
-
-    // Set overlay to map viewport center on each render
-    map.on('postrender', () => {
+    const postRenderHandler = () => {
       const size = map.getSize();
       if (!size) {
         return;
@@ -193,54 +112,25 @@ export const HikingMapSection = () => {
         center,
       );
 
-      centerMarker.style.width = `${(xExtent1_25k * (selectedScale === '1 : 25 000' ? 1 : 2)) / centerResolution}px`;
-      centerMarker.style.height = `${(yExtent1_25k * (selectedScale === '1 : 25 000' ? 1 : 2)) / centerResolution}px`;
+      overlayGridContainer.style.width = `${(xExtent1_25k * (selectedScale === '1 : 25 000' ? 1 : 2)) / centerResolution}px`;
+      overlayGridContainer.style.height = `${(yExtent1_25k * (selectedScale === '1 : 25 000' ? 1 : 2)) / centerResolution}px`;
 
       const latLonCenter = transform(center, projection.getCode(), 'EPSG:4326');
       const utmInfo = utmInfoFromLonLat(latLonCenter[0], latLonCenter[1]);
 
       const rotation = getRotationFromUtmZone(utmInfo.zone);
-      centerMarker.style.transform = `rotate(${
+      overlayGridContainer.style.transform = `rotate(${
         (rotation - map.getView().getRotation()!) * -1
       }rad)`;
-    });
+    };
+    postRenderHandler(); // Called here as well to ensure right size on add and scale change
 
-    translateInteraction.on('translateend', (e) => {
-      if (e instanceof TranslateEvent) {
-        const feature = e.features.getArray()[0];
-        const geometry = feature.getGeometry() as Polygon;
-        const extent = geometry.getExtent();
-        const center = [
-          (extent[0] + extent[2]) / 2,
-          (extent[1] + extent[3]) / 2,
-        ];
-        const view = map.getView();
-        const projectionCode = view.getProjection().getCode();
-        const [lon, lat] = transform(center, projectionCode, 'EPSG:4326');
-        const utmInfo = utmInfoFromLonLat(lon, lat);
-        if (previousZone.current && previousZone.current !== utmInfo.zone) {
-          overlayLayer.getSource()?.clear();
-          const newOverlayFeature = generateOverlayFeture(
-            center,
-            selectedScale,
-          );
-          overlayLayer.getSource()?.addFeature(newOverlayFeature);
-        }
-        previousZone.current = utmInfo.zone;
-      }
-    });
-    map.addInteraction(translateInteraction);
+    // Set overlay to map viewport center on each render
+    map.on('postrender', postRenderHandler);
 
     return () => {
-      overlayLayer
-        .getSource()
-        ?.getFeatures()
-        .forEach((f) => {
-          overlayLayer.getSource()?.removeFeature(f);
-        });
-      map.removeLayer(overlayLayer);
-      map.removeInteraction(translateInteraction);
       map.removeOverlay(overlay);
+      map.un('postrender', postRenderHandler);
     };
   }, [selectedScale]);
 
@@ -249,7 +139,7 @@ export const HikingMapSection = () => {
 
     const store = getDefaultStore();
     const map = store.get(mapAtom);
-    const hikinhMapOverlay = map.getOverlayById('hikingMapCenterOverlay');
+    const hikinhMapOverlay = map.getOverlayById('hikingMapGridOverlay');
     if (!hikinhMapOverlay) {
       setPrintLoading(false);
       return;
