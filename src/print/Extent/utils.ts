@@ -29,6 +29,23 @@ type StyleCollection = {
   [featureId: string]: { symbolizers: PrintSymbolizer[] } | string;
 };
 
+// Backend only accepts 6-digit hex colors, convert rgba and 8-digit hex
+const normalizeHexColor = (color: string): string => {
+  if (color.startsWith('#') && color.length === 9) {
+    return color.slice(0, 7);
+  }
+
+  const rgbaMatch = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if (rgbaMatch) {
+    const r = parseInt(rgbaMatch[1], 10);
+    const g = parseInt(rgbaMatch[2], 10);
+    const b = parseInt(rgbaMatch[3], 10);
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  }
+
+  return color;
+};
+
 export const getSymbolizersFromStyle = (
   style: StyleForStorage | null,
   geometryType: string,
@@ -40,9 +57,9 @@ export const getSymbolizersFromStyle = (
       return [
         {
           type: 'polygon',
-          fillColor: style.fill?.color?.toString() ?? 'rgba(255,255,255,0.5)',
+          fillColor: normalizeHexColor(style.fill?.color?.toString() ?? 'rgba(255,255,255,0.5)'),
           fillOpacity: 0.5,
-          strokeColor: style.stroke?.color?.toString() ?? '#000',
+          strokeColor: normalizeHexColor(style.stroke?.color?.toString() ?? '#000'),
           strokeWidth: style.stroke?.width ?? 2,
         },
       ];
@@ -50,7 +67,7 @@ export const getSymbolizersFromStyle = (
       return [
         {
           type: 'line',
-          strokeColor: style.stroke?.color?.toString() ?? '#000',
+          strokeColor: normalizeHexColor(style.stroke?.color?.toString() ?? '#000'),
           strokeWidth: style.stroke?.width ?? 2,
         },
       ];
@@ -58,7 +75,7 @@ export const getSymbolizersFromStyle = (
       return [
         {
           type: 'point',
-          fillColor: style.icon?.color?.toString() ?? '#000',
+          fillColor: normalizeHexColor(style.icon?.color?.toString() ?? '#000'),
           pointRadius: style.icon?.radius ?? 6,
           graphicName: 'circle', //TODO: må utvides for andre symboltyper
         },
