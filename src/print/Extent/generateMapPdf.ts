@@ -51,7 +51,6 @@ export const generateMapPdf = async ({
     const resolution = map.getView().getResolution();
     const scale = resolution ? getScaleFromResolution(resolution, map) : 25000;
 
-    //Bygg WMTS-lag for bakgrunnskart
     const layers: Layer[] = [
       {
         baseURL: BASE_URL,

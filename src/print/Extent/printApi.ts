@@ -49,7 +49,6 @@ interface Attributes {
   map: MapAttributes;
   pos: string;
   scale_string: string;
-  // title?: string; // Uncomment if needed
 }
 
 export interface Payload {
