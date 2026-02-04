@@ -79,23 +79,17 @@ export const PrintDialog = () => {
           unmountOnExit
         >
           <TabsList>
-            {tabsListConfig.map((tab) =>
-              envName !== 'prod' ||
-              tab.value === 'emergencyPoster' ||
-              tab.value === 'elevationProfile' ||
-              tab.value === 'hiking' ? (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  disabled={
-                    tab.value === 'elevationProfile' &&
-                    currentMapTool === 'draw'
-                  }
-                >
-                  {tab.label}
-                </TabsTrigger>
-              ) : null,
-            )}
+            {tabsListConfig.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                disabled={
+                  tab.value === 'elevationProfile' && currentMapTool === 'draw'
+                }
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
           <TabsContent value="extent">
             <ExtentSection />
