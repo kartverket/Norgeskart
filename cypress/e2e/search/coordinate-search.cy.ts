@@ -132,6 +132,13 @@ describe('Coordinate Search', () => {
       getSearchInput().type(coordinates);
       cy.contains('UTM 32').should('be.visible');
     });
+
+    it('should parse coordinates with full EPSG: prefix', () => {
+      const coordinates = '163834.01,6663030.01@EPSG:25833';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 33').should('be.visible');
+    });
   });
 
   describe('Norwegian Language Support', () => {
