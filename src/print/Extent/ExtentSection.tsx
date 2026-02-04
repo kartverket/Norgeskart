@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
 import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
+import { isPrintDialogOpenAtom } from '../atoms';
 import { PrintBox } from './PrintBox';
 import {
   printBoxCenterAtom,
@@ -30,11 +31,40 @@ import {
 import { generateMapPdf } from './generateMapPdf';
 import { PrintLayout, usePrintCapabilities } from './usePrintCapabilities';
 
+const getFormatOptions = (layouts: PrintLayout[]) => {
+  return Array.from(new Set(layouts.map((l) => (l.name.match(/A\d/) || [])[0])))
+    .filter(Boolean)
+    .map((f) => ({ value: f, label: f }));
+};
+
+const getOrientationOptions = (layouts: PrintLayout[]) => {
+  return Array.from(
+    new Set(
+      layouts.map((l) =>
+        l.name.toLowerCase().includes('portrait') ? 'portrait' : 'landscape',
+      ),
+    ),
+  );
+};
+
+const getSelectedLayout = (
+  layouts: PrintLayout[],
+  format: string,
+  orientation: string,
+) => {
+  return layouts.find(
+    (l) =>
+      l.name.toLowerCase().includes(format.toLowerCase()) &&
+      l.name.toLowerCase().includes(orientation),
+  );
+};
+
 export const ExtentSection = () => {
   const { t } = useTranslation();
   const layouts: PrintLayout[] = usePrintCapabilities();
   const map = useAtomValue(mapAtom);
   const backgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const setPrintBoxCenter = useSetAtom(printBoxCenterAtom);
   const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
   const printBoxExtent = useAtomValue(printBoxExtentAtom);
@@ -133,36 +163,15 @@ export const ExtentSection = () => {
       <HStack mt={4}>
         {loading && <Spinner />}
         <Button onClick={handlePrint}>{t('printExtent.button.print')}</Button>
-        <Button variant="outline">{t('shared.cancel')}</Button>
+        <Button
+          onClick={() => {
+            setIsPrintDialogOpen(false);
+          }}
+          variant="outline"
+        >
+          {t('shared.cancel')}
+        </Button>
       </HStack>
     </>
-  );
-};
-
-const getFormatOptions = (layouts: PrintLayout[]) => {
-  return Array.from(new Set(layouts.map((l) => (l.name.match(/A\d/) || [])[0])))
-    .filter(Boolean)
-    .map((f) => ({ value: f, label: f }));
-};
-
-const getOrientationOptions = (layouts: PrintLayout[]) => {
-  return Array.from(
-    new Set(
-      layouts.map((l) =>
-        l.name.toLowerCase().includes('portrait') ? 'portrait' : 'landscape',
-      ),
-    ),
-  );
-};
-
-const getSelectedLayout = (
-  layouts: PrintLayout[],
-  format: string,
-  orientation: string,
-) => {
-  return layouts.find(
-    (l) =>
-      l.name.toLowerCase().includes(format.toLowerCase()) &&
-      l.name.toLowerCase().includes(orientation),
   );
 };
