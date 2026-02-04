@@ -450,7 +450,8 @@
       "overlayinstructions": "Plasser det oransje feltet i området du vil skrive ut",
       "buttons": {
         "generate": "Lag turkart",
-        "cancel": "Avbryt"
+        "cancel": "Avbryt",
+        "download": "Last ned kart"
       },
       "errors": {
         "generateFailed": "Utskrift feilet"

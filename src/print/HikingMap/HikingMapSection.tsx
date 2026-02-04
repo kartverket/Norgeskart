@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   ButtonGroup,
   Checkbox,
@@ -154,33 +153,22 @@ export const HikingMapSection = () => {
 
     try {
       const extent = overlayFootprint.extent;
-      let downloadLink = '';
-      if (storedDownloadUrl) {
-        downloadLink = storedDownloadUrl;
-      } else {
-        const res = await createHikingMap(
-          includeLegend,
-          includeSweeden,
-          includeCompassInstructions,
-          [extent[0], extent[2], extent[3], extent[1]],
-          [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
-          selectedScale === '1 : 25 000' ? '25000' : '50000',
-          encodeURIComponent(mapName),
-        );
-        downloadLink = env.apiUrl + '/nkprint/' + res.linkPdf;
-      }
 
-      if (downloadLink) {
-        const openRef = window.open(downloadLink, '_blank');
-        if (!openRef) {
-          setStoredDownloadUrl(downloadLink);
-        } else {
-          setStoredDownloadUrl(null);
-        }
-      }
+      const res = await createHikingMap(
+        includeLegend,
+        includeSweeden,
+        includeCompassInstructions,
+        [extent[0], extent[2], extent[3], extent[1]],
+        [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2],
+        selectedScale === '1 : 25 000' ? '25000' : '50000',
+        encodeURIComponent(mapName),
+      );
+      const downloadLink = env.apiUrl + '/nkprint/' + res.linkPdf;
+      setStoredDownloadUrl(downloadLink);
     } catch (error) {
       console.error('Error generating hiking map:', error);
       setGenerateButtonText(t('printdialog.hikingMap.errors.generateFailed'));
+      setStoredDownloadUrl(null);
       setTimeout(() => {
         setGenerateButtonText(t('printdialog.hikingMap.buttons.generate'));
       }, 3000);
@@ -294,16 +282,6 @@ export const HikingMapSection = () => {
         </VStack>
       </HStack>
       <Separator />
-      {storedDownloadUrl && (
-        <Alert
-          size="md"
-          status="info"
-          title={t('printdialog.hikingMap.popupblockedalert.title')}
-          variant="subtle"
-        >
-          {t('printdialog.hikingMap.popupblockedalert.body')}
-        </Alert>
-      )}
       <Heading size={'sm'}>
         {t('printdialog.hikingMap.overlayinstructions')}
       </Heading>
@@ -311,6 +289,15 @@ export const HikingMapSection = () => {
         <Button onClick={() => printHikingMap()} disabled={printLoading}>
           {printLoading ? <Spinner /> : generateButtonText}
         </Button>
+        {storedDownloadUrl != null && (
+          <Button
+            onClick={() => {
+              window.open(storedDownloadUrl, '_blank');
+            }}
+          >
+            {t('printdialog.hikingMap.buttons.download')}
+          </Button>
+        )}
         <Button variant="secondary">
           {t('printdialog.hikingMap.buttons.cancel')}
         </Button>
