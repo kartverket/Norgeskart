@@ -1,13 +1,6 @@
+import { Matrix } from "./printApi";
 
-type WMTS_MATRICES = {
-    identifier: string;
-    scaleDenominator: number;
-    topLeftCorner: [number, number];
-    tileSize: [number, number];
-    matrixSize: [number, number];
-}
-
-export const WMTS_MATRICES: WMTS_MATRICES[] = [
+export const WMTS_MATRICES: Matrix[] = [
     {
         identifier: '0',
         scaleDenominator: 77371428.57142858,

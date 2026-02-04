@@ -57,7 +57,7 @@ export const getSymbolizersFromStyle = (
                 pointRadius: style.icon?.radius ?? 6,
                 graphicName: 'circle', //TODO: må utvides for andre symboltyper
             }];
-            //Mangler å få med tekst og circle også
+        //ToDo: tekst og circle
         default:
             return [];
     }

@@ -3,7 +3,7 @@ interface PdfStatusResponse {
   downloadURL?: string;
 }
 
-interface Matrix {
+export interface Matrix {
   identifier: string;
   scaleDenominator: number;
   topLeftCorner: [number, number];
