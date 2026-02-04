@@ -108,11 +108,6 @@ export const generateMapPdf = async ({
     const result = await requestPdfGeneration(payload);
     const downloadURL = await pollPdfStatus(result.statusURL);
 
-    console.log(
-      'PRINT PAYLOAD:',
-      JSON.stringify(payload.attributes.map.layers, null, 2),
-    );
-
     if (downloadURL) {
       window.open(downloadURL, '_blank');
       toaster.create({
@@ -122,7 +117,7 @@ export const generateMapPdf = async ({
     } else {
       toaster.create({ title: t('printExtent.toast.error'), type: 'error' });
     }
-  } catch (err) {
+  } catch {
     toaster.create({
       title: t('printExtent.toast.error'),
       type: 'error',
