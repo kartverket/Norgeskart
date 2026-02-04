@@ -6,23 +6,33 @@ import { Layer } from './printApi';
 
 type PrintSymbolizer =
   | {
-      type: 'polygon';
-      fillColor: string;
-      fillOpacity: number;
-      strokeColor: string;
-      strokeWidth: number;
-    }
+    type: 'polygon';
+    fillColor: string;
+    fillOpacity: number;
+    strokeColor: string;
+    strokeWidth: number;
+  }
   | {
-      type: 'line';
-      strokeColor: string;
-      strokeWidth: number;
-    }
+    type: 'line';
+    strokeColor: string;
+    strokeWidth: number;
+  }
   | {
-      type: 'point';
-      fillColor: string;
-      pointRadius: number;
-      graphicName: string;
-    };
+    type: 'point';
+    fillColor: string;
+    pointRadius: number;
+    graphicName: string;
+  }
+  |
+  {
+    type: 'text';
+    text: string;
+    font: string;
+    fillColor: string;
+    strokeColor: string;
+    strokeWidth: number;
+  }
+
 
 type StyleCollection = {
   version: string;
@@ -49,6 +59,7 @@ const normalizeHexColor = (color: string): string => {
 export const getSymbolizersFromStyle = (
   style: StyleForStorage | null,
   geometryType: string,
+  feature?: OlFeature<Geometry>,
 ): PrintSymbolizer[] => {
   if (!style) return [];
 
@@ -77,21 +88,45 @@ export const getSymbolizersFromStyle = (
           strokeWidth: style.stroke?.width ?? 2,
         },
       ];
-    case 'Point':
+    case 'Point': {
+      // Sjekk om feature har overlayIcon property
+      const overlayIcon = feature?.get('overlayIcon') as { icon: string; color: string; size: number } | undefined;
+      if (overlayIcon) {
+        return [
+          {
+            type: 'point',
+            fillColor: normalizeHexColor(overlayIcon.color ?? '#000'),
+            pointRadius: overlayIcon.size ?? 8,
+            graphicName: overlayIcon.icon, // MaterialSymbol-navn
+          },
+        ];
+      }
+      // Sjekk om det finnes tekst i style
+      if (style?.text?.text) {
+        return [
+          {
+            type: 'text',
+            text: style.text.text,
+            font: style.text.font ?? '16px sans-serif',
+            fillColor: normalizeHexColor(style.text.fillColor?.toString() ?? '#000'),
+            strokeColor: normalizeHexColor(style.text.stroke?.color?.toString() ?? '#000'),
+            strokeWidth: style.text.stroke?.width ?? 1,
+          },
+        ];
+      }
+    }
       return [
         {
           type: 'point',
-          fillColor: normalizeHexColor(style.icon?.color?.toString() ?? '#000'),
-          pointRadius: style.icon?.radius ?? 6,
-          graphicName: 'circle', //TODO: må utvides for andre symboltyper
+          fillColor: normalizeHexColor(style?.icon?.color?.toString() ?? '#000'),
+          pointRadius: style?.icon?.radius ?? 6,
+          graphicName: 'circle',
         },
       ];
-    //ToDo: tekst og circle
     default:
       return [];
   }
 };
-
 export const createGeoJsonLayerWithStyles = (
   features: OlFeature<Geometry>[],
   sourceProjection: string,
@@ -114,7 +149,7 @@ export const createGeoJsonLayerWithStyles = (
       }
     }
     styleCollection[`[IN('${f.id}')]`] = {
-      symbolizers: getSymbolizersFromStyle(styleForStorage, f.geometry?.type),
+      symbolizers: getSymbolizersFromStyle(styleForStorage, f.geometry?.type, features[i]),
     };
   }
 
