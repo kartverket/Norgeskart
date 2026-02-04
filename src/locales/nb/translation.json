@@ -425,5 +425,21 @@
         "yAxis": "Høyde [m]"
       }
     }
+  },
+  "printExtent": {
+    "label": "Velg format",
+    "placeholder": "Format",
+    "orientation": {
+      "portrait": "Portrett",
+      "landscape": "Landskap"
+    },
+    "description": "Plasser det oransje feltet i området du vil skrive ut",
+    "button": {
+      "print": "Hent kartet"
+    },
+    "toast": {
+      "success": "Nedlasting fullført",
+      "error": "Klarte ikke å hente kartet"
+    }
   }
 }

@@ -420,5 +420,21 @@
         "yAxis": "Elevation [m]"
       }
     }
+  },
+  "printExtent": {
+    "label": "Select format",
+    "placeholder": "Format",
+    "orientation": {
+      "portrait": "Portrait",
+      "landscape": "Landscape"
+    },
+    "description": "Place the orange area over the part of the map you want to print",
+    "button": {
+      "print": "Download map"
+    },
+    "toast": {
+      "success": "Download complete",
+      "error": "Could not download map"
+    }
   }
 }
