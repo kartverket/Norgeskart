@@ -1,5 +1,5 @@
 import { useAtomValue, useSetAtom } from 'jotai';
-import { Collection, Feature } from 'ol';
+import { Feature } from 'ol';
 import { Polygon } from 'ol/geom';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
@@ -49,7 +49,7 @@ export const PrintBox = ({ map }: PrintBoxProps) => {
           lineDash: [6, 6],
         }),
         fill: new Fill({ color: '#FF770082' }),
-      })
+      }),
     );
     source.addFeature(feature);
 

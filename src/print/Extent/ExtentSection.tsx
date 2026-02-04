@@ -46,7 +46,7 @@ export const ExtentSection = () => {
 
   const formatOptions = getFormatOptions(layouts);
   const orientationOptions = getOrientationOptions(layouts);
-  const selectedLayout = getSelectedLayout(layouts, format, orientation)
+  const selectedLayout = getSelectedLayout(layouts, format, orientation);
 
   useEffect(() => {
     if (layouts.length) {
@@ -140,9 +140,7 @@ export const ExtentSection = () => {
 };
 
 const getFormatOptions = (layouts: PrintLayout[]) => {
-  return Array.from(
-    new Set(layouts.map((l) => (l.name.match(/A\d/) || [])[0])),
-  )
+  return Array.from(new Set(layouts.map((l) => (l.name.match(/A\d/) || [])[0])))
     .filter(Boolean)
     .map((f) => ({ value: f, label: f }));
 };
@@ -151,17 +149,20 @@ const getOrientationOptions = (layouts: PrintLayout[]) => {
   return Array.from(
     new Set(
       layouts.map((l) =>
-        l.name.toLowerCase().includes('portrait') ? 'portrait' : 'landscape'
-      )
-    )
+        l.name.toLowerCase().includes('portrait') ? 'portrait' : 'landscape',
+      ),
+    ),
   );
 };
 
-const getSelectedLayout = (layouts: PrintLayout[], format: string, orientation: string) => {
+const getSelectedLayout = (
+  layouts: PrintLayout[],
+  format: string,
+  orientation: string,
+) => {
   return layouts.find(
     (l) =>
       l.name.toLowerCase().includes(format.toLowerCase()) &&
-      l.name.toLowerCase().includes(orientation)
+      l.name.toLowerCase().includes(orientation),
   );
 };
-

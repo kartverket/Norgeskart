@@ -1,3 +1,4 @@
+import { toaster } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
 import Map from 'ol/Map';
 import { transform } from 'ol/proj';
@@ -11,7 +12,6 @@ import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
 import { createGeoJsonLayerWithStyles } from './utils';
 import { WMTS_MATRICES } from './wmtsMatrices';
-import { toaster } from '@kvib/react';
 
 type GenerateMapPdfProps = {
   map: Map;
@@ -20,7 +20,7 @@ type GenerateMapPdfProps = {
   layout: PrintLayout;
   backgroundLayer: BackgroundLayerName;
   extent: number[];
-}
+};
 
 const BASE_URL = 'https://cache.kartverket.no/v1/service';
 
@@ -82,7 +82,7 @@ export const generateMapPdf = async ({
           features,
           sourceProjection,
           targetProjection,
-          styleForStorage
+          styleForStorage,
         );
         layers.unshift(geoJsonLayer);
       }
@@ -105,7 +105,6 @@ export const generateMapPdf = async ({
       outputFormat: 'pdf',
       outputFilename: 'norgeskart-utskrift',
     };
-
 
     const result = await requestPdfGeneration(payload);
     const downloadURL = await pollPdfStatus(result.statusURL);
