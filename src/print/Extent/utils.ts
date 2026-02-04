@@ -57,9 +57,13 @@ export const getSymbolizersFromStyle = (
       return [
         {
           type: 'polygon',
-          fillColor: normalizeHexColor(style.fill?.color?.toString() ?? 'rgba(255,255,255,0.5)'),
+          fillColor: normalizeHexColor(
+            style.fill?.color?.toString() ?? 'rgba(255,255,255,0.5)',
+          ),
           fillOpacity: 0.5,
-          strokeColor: normalizeHexColor(style.stroke?.color?.toString() ?? '#000'),
+          strokeColor: normalizeHexColor(
+            style.stroke?.color?.toString() ?? '#000',
+          ),
           strokeWidth: style.stroke?.width ?? 2,
         },
       ];
@@ -67,7 +71,9 @@ export const getSymbolizersFromStyle = (
       return [
         {
           type: 'line',
-          strokeColor: normalizeHexColor(style.stroke?.color?.toString() ?? '#000'),
+          strokeColor: normalizeHexColor(
+            style.stroke?.color?.toString() ?? '#000',
+          ),
           strokeWidth: style.stroke?.width ?? 2,
         },
       ];
