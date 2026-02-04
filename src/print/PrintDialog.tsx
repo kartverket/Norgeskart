@@ -17,6 +17,7 @@ import { isPrintDialogOpenAtom } from './atoms';
 import { ElevationProfileSection } from './ElevationProfile/ElevationProfileSection';
 import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
 import { ExtentSection } from './Extent/ExtentSection';
+import { HikingMapSection } from './HikingMap/HikingMapSection';
 
 const printTabNames = [
   'extent',
@@ -78,27 +79,24 @@ export const PrintDialog = () => {
           unmountOnExit
         >
           <TabsList>
-            {tabsListConfig.map((tab) =>
-              envName !== 'prod' ||
-              tab.value === 'emergencyPoster' ||
-              tab.value === 'elevationProfile' ? (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  disabled={
-                    tab.value === 'elevationProfile' &&
-                    currentMapTool === 'draw'
-                  }
-                >
-                  {tab.label}
-                </TabsTrigger>
-              ) : null,
-            )}
+            {tabsListConfig.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                disabled={
+                  tab.value === 'elevationProfile' && currentMapTool === 'draw'
+                }
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
           <TabsContent value="extent">
             <ExtentSection />
           </TabsContent>
-          <TabsContent value="hiking">hei turkart</TabsContent>
+          <TabsContent value="hiking">
+            <HikingMapSection />
+          </TabsContent>
           <TabsContent value="elevationProfile">
             <ElevationProfileSection />
           </TabsContent>

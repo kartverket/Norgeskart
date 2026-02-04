@@ -419,6 +419,42 @@
         "xAxis": "Distance [m]",
         "yAxis": "Elevation [m]"
       }
+    },
+    "hikingMap": {
+      "heading": "Choose a scale and give your map a name",
+      "fields": {
+        "scale": {
+          "label": "Scale"
+        },
+        "mapName": {
+          "label": "Name on map",
+          "placeholder": "My hiking map",
+          "helpertext": "Only a-z and numbers"
+        },
+        "includeLegend": {
+          "label": "map legend"
+        },
+        "includeSweeden": {
+          "label": "map into Sweeden (50km)"
+        },
+        "includeCompassInstructions": {
+          "label": "crash course in compass usage"
+        },
+        "heading": "Include"
+      },
+      "overlayinstructions": "Place the orange overlay where you want the map",
+      "buttons": {
+        "generate": "Make map",
+        "cancel": "Cancel",
+        "download": "Download map"
+      },
+      "errors": {
+        "generateFailed": "Print failed"
+      },
+      "popupblockedalert": {
+        "title": "Popup blocked",
+        "body": "Popups are blocked. Please unblock them and try again"
+      }
     }
   },
   "printExtent": {
