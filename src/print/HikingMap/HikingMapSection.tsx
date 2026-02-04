@@ -34,7 +34,7 @@ import { mapAtom } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
 import { utmInfoFromLonLat } from '../EmergencyPoster/utmStringUtils';
-import { createMultiPolygonGridFromExtent } from './utils';
+import { createMultiPolygonGridFromExtent, getOverlayFootprint } from './utils';
 
 const env = getEnv();
 
@@ -246,15 +246,24 @@ export const HikingMapSection = () => {
 
   const printHikingMap = async () => {
     setPrintLoading(true);
-    const overlayFeature = getOverlayFeature();
 
-    if (!overlayFeature) {
+    const store = getDefaultStore();
+    const map = store.get(mapAtom);
+    const hikinhMapOverlay = map.getOverlayById('hikingMapCenterOverlay');
+    if (!hikinhMapOverlay) {
       setPrintLoading(false);
       return;
     }
+
+    const overlayElement = hikinhMapOverlay.getElement();
+    if (!overlayElement) {
+      setPrintLoading(false);
+      return;
+    }
+    const overlayFootprint = getOverlayFootprint(map, overlayElement);
+
     try {
-      const geometry = overlayFeature.getGeometry() as Polygon;
-      const extent = geometry.getExtent();
+      const extent = overlayFootprint.extent;
       let downloadLink = '';
       if (storedDownloadUrl) {
         downloadLink = storedDownloadUrl;
