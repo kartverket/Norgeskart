@@ -5,13 +5,14 @@ import {
   AccordionItemTrigger,
   Alert,
   Box,
+  Button,
   Flex,
   Heading,
   Switch,
   Text,
   VStack,
 } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,6 +20,7 @@ import {
   getSubcategories,
   themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
+import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import { MAX_THEME_LAYERS, useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
 
@@ -45,6 +47,9 @@ export const MapThemes = () => {
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
 
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
+    activeThemeLayersAtom,
+  );
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -140,6 +145,15 @@ export const MapThemes = () => {
             {t('map.settings.layers.theme.activeLayersCount')}: {activeCount} /{' '}
             {MAX_THEME_LAYERS}
           </Text>
+          <Button
+            size={'sm'}
+            visibility={activeThemeLayers.size > 0 ? 'visible' : 'hidden'}
+            onClick={() => {
+              setActiveThemeLayers(new Set());
+            }}
+          >
+            {t('map.settings.layers.theme.resetbutton.text')}
+          </Button>
         </Flex>
         {showLimitWarning && (
           <Alert status="warning" marginTop={2}>

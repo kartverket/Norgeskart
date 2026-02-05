@@ -194,7 +194,10 @@
           "label": "Chose theme layers",
           "activeLayersCount": "Active layers",
           "warningLimit": "Maximum layer limit reached. Please deactivate some layers before adding more for better performance.",
-          "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers."
+          "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers.",
+          "resetbutton": {
+            "text": "Reset"
+          }
         }
       }
     },
