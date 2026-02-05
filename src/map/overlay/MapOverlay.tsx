@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, HStack, useBreakpointValue } from '@kvib/react';
+import { Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { PrintDialog } from '../../print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from '../../search/atoms';
@@ -8,10 +8,8 @@ import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { Toolbar } from '../../toolbar/Toolbar';
-import { displayCompassOverlayAtom, displayMapLegendAtom } from '../atoms';
+import { displayCompassOverlayAtom } from '../atoms';
 import { useFeatureInfoClick } from '../featureInfo/useFeatureInfo';
-import { activeThemeLayersAtom } from '../layers/atoms';
-import { MapLegend } from '../legend/MapLegend';
 import { MapControlButtons } from '../MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './atoms';
 import { Compass } from './Compass';
@@ -25,8 +23,6 @@ export const MapOverlay = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
-  const displayMapLegend = useAtomValue(displayMapLegendAtom);
-  const themeLayers = useAtomValue(activeThemeLayersAtom);
   const isMobile = useIsMobileScreen();
   const isToolOpen = currentMapTool !== null;
   const isLargeScreen = useBreakpointValue({
@@ -34,9 +30,6 @@ export const MapOverlay = () => {
     lg: true,
   });
   const selectedResult = useAtomValue(selectedResultAtom);
-
-  const shouldDisplayLegend =
-    themeLayers.size > 0 && displayMapLegend && isLargeScreen;
   useFeatureInfoClick();
   useSearchEffects();
   useMapClickSearch();
@@ -146,10 +139,7 @@ export const MapOverlay = () => {
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
-          <HStack alignItems={'flex-end'}>
-            <MapControlButtons />
-            {shouldDisplayLegend && <MapLegend />}
-          </HStack>
+          <MapControlButtons />
         </GridItem>
 
         {!isMobile && (
