@@ -194,7 +194,10 @@
           "label": "Chose theme layers",
           "activeLayersCount": "Active layers",
           "warningLimit": "Maximum layer limit reached. Please deactivate some layers before adding more for better performance.",
-          "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers."
+          "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers.",
+          "resetbutton": {
+            "text": "Reset"
+          }
         }
       }
     },
@@ -239,7 +242,7 @@
   },
   "privacyAndContact": {
     "contactUs": "Contact us",
-    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
+    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Use the form linked below, or feel free to contact us by email or phone.",
     "infoText": "Read how we protect personal data in the Norwegian Mapping Authority's",
     "privacyPolicy": "Privacy policy ",
     "sendEmail": "Send e-mail",
@@ -247,7 +250,8 @@
     "status": {
       "heading": "Status",
       "infoText": "See the status of our apps and services by following the link"
-    }
+    },
+    "formsLinkText": "Open feedback form"
   },
   "propertyInfo": {
     "holdingNr": "Holding nr.",

@@ -199,7 +199,10 @@
           "label": "Vel temakart",
           "activeLayersCount": "Aktive lag",
           "warningLimit": "Maksimalt antal lag nådd. Ver vennleg og deaktiver nokre lag før du legg til fleire for betre yting.",
-          "warningPerformance": "Aktivering av mange lag kan påverke ytinga. Vurder å deaktivere ubrukte lag."
+          "warningPerformance": "Aktivering av mange lag kan påverke ytinga. Vurder å deaktivere ubrukte lag.",
+          "resetbutton": {
+            "text": "Nullstill"
+          }
         }
       }
     },
@@ -244,7 +247,7 @@
   },
   "privacyAndContact": {
     "contactUs": "Kontakt",
-    "dialogContent": "Me tek gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
+    "dialogContent": "Me tek gjerne imot ris og ros på Norgeskart.no. Nytt skjema under, eller kontakt oss gjerne på e-post eller telefon",
     "infoText": "Les korleis me tek vare på personopplysningar i Kartverket si",
     "privacyPolicy": "Personvernerklæring ",
     "sendEmail": "Send e-post",
@@ -252,7 +255,8 @@
     "status": {
       "heading": "Status",
       "infoText": "Sjå status for tenestene våre med å nytta lenkja"
-    }
+    },
+    "formsLinkText": "Åpne tilbakemeldingskjema"
   },
   "propertyInfo": {
     "holdingNr": "Gardsnr.",
