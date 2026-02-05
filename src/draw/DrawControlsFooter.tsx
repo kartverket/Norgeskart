@@ -20,7 +20,7 @@ import { Feature, FeatureCollection } from 'geojson';
 import { t } from 'i18next';
 import { useAtomValue } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
-import { Geometry, LineString, Point, Polygon } from 'ol/geom';
+import { Circle, Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
 import { Style } from 'ol/style';
 import { useState } from 'react';
@@ -49,9 +49,26 @@ const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
     ];
   } else if (geo instanceof Point) {
     coordinates = transform(geo.getCoordinates(), mapProjection, 'EPSG:4326');
+  } else if (geo instanceof Circle) {
+    coordinates = transform(geo.getCenter(), mapProjection, 'EPSG:4326');
   }
 
   return coordinates;
+};
+
+//To handle things not covered by geojson spec, like circle
+const getGeometryType = (geo: Geometry): string => {
+  if (geo instanceof Circle) {
+    return 'Point';
+  }
+  return geo.getType();
+};
+
+const getRadius = (geo: Geometry): number | undefined => {
+  if (geo instanceof Circle) {
+    return geo.getRadius();
+  }
+  return undefined;
 };
 
 export const DrawControlFooter = () => {
@@ -85,12 +102,13 @@ export const DrawControlFooter = () => {
         return {
           type: 'Feature',
           geometry: {
-            type: geometry.getType(),
+            type: getGeometryType(geometry),
             coordinates: featureCoordinates,
           },
           properties: {
             style: styleForStorage,
             overlayIcon: icon || undefined,
+            radius: getRadius(geometry),
           },
         } as Feature;
       })
