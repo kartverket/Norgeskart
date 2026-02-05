@@ -1,10 +1,10 @@
 import { DrawerContent } from '@chakra-ui/react';
 import { Drawer, DrawerPositioner, useBreakpointValue } from '@kvib/react';
 import { useAtom } from 'jotai';
-import { displayMapLegendAtom } from '../atoms';
-import { MapLegend } from './MapLegend';
+import { displayMapLegendAtom } from '../../atoms';
+import { MapLegend } from '../../legend/MapLegend';
 
-export const MapLegendWrapper = () => {
+export const MapLegendDrawer = () => {
   const [isOpen, setIsOpen] = useAtom(displayMapLegendAtom);
   const isSmallScreen = useBreakpointValue({
     base: true,
