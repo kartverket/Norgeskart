@@ -1,7 +1,7 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { t } from 'i18next';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { CSSProperties } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
 import {
@@ -17,7 +17,7 @@ export const MapControlButtons = () => {
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const [displayMapLegend, setDisplayMapLegend] = useAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
-  const setTrackPosition = useSetAtom(trackPositionAtom);
+  const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
   const ph = usePostHog();
   const {
     rotateSnappy,
@@ -101,9 +101,13 @@ export const MapControlButtons = () => {
         displayTooltip
       />
       <ControlButton
-        icon="my_location"
+        icon={trackPosition ? 'location_disabled' : 'my_location'}
         onClick={handleMapLocationClick}
-        label={t('map.controls.myLocation.label')}
+        label={
+          trackPosition
+            ? t('map.controls.myLocation.disable.label')
+            : t('map.controls.myLocation.enable.label')
+        }
         displayTooltip
       />
       <ControlButton

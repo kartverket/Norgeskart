@@ -223,7 +223,10 @@
         "label": "Roter høyre"
       },
       "myLocation": {
-        "label": "Gå til min posisjon"
+        "enable": { "label": "Gå til min posisjon" },
+        "disable": {
+          "label": "Ikke vis posisjon"
+        }
       },
       "fullscreen": {
         "label": "Bruk fullskjerm"
