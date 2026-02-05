@@ -1,13 +1,14 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { t } from 'i18next';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
 import {
   displayMapLegendAtom,
   displayMapLegendControlAtom,
   mapOrientationDegreesAtom,
+  trackPositionAtom,
 } from './atoms';
 import { useMapSettings } from './mapHooks';
 
@@ -16,23 +17,19 @@ export const MapControlButtons = () => {
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const [displayMapLegend, setDisplayMapLegend] = useAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
+  const setTrackPosition = useSetAtom(trackPositionAtom);
   const ph = usePostHog();
   const {
     rotateSnappy,
     setMapAngle,
-    setMapLocation,
+
     setMapFullScreen,
     zoomIn,
     zoomOut,
   } = useMapSettings();
 
   const handleMapLocationClick = () => {
-    if (!navigator.geolocation) return;
-
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const { longitude, latitude } = pos.coords;
-      setMapLocation([longitude, latitude], 'EPSG:4326', 15);
-    });
+    setTrackPosition((p) => !p);
   };
 
   const handleFullScreenClick = () => {

@@ -1,8 +1,8 @@
-import { atom } from 'jotai';
+import { atom, getDefaultStore } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls, ScaleLine } from 'ol/control';
 import Map from 'ol/Map';
-import { get as getProjection } from 'ol/proj';
+import { get as getProjection, transform } from 'ol/proj';
 
 import { atomEffect } from 'jotai-effect';
 import { v4 as uuidv4 } from 'uuid';
@@ -158,6 +158,28 @@ export const availableScales = [
 ];
 
 export const scaleAtom = atom<number | null>(null);
+
+export const trackPositionAtom = atom<boolean>(false);
+
+export const trackPostitionAtomEffect = atomEffect((get) => {
+  const trackPosition = get(trackPositionAtom);
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+
+  if (!navigator.geolocation) return;
+  if (trackPosition) {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const { longitude, latitude } = pos.coords;
+      const transformedCoords = transform(
+        [longitude, latitude],
+        'EPSG:4326',
+        map.getView().getProjection(),
+      );
+      map.getView().setCenter(transformedCoords);
+      map.getView().setZoom(15);
+    });
+  }
+});
 
 export const scaleToResolutionEffect = atomEffect((get) => {
   const map = get(mapAtom);
