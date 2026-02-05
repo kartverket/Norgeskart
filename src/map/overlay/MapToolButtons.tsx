@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   HStack,
   Icon,
@@ -12,6 +13,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
+import { activeThemeLayersAtom } from '../layers/atoms';
 import { mapToolAtom } from './atoms';
 
 export const MapToolButtons = () => {
@@ -30,6 +32,7 @@ export const MapToolButtons = () => {
       });
     });
   };
+  const activeLayers = useAtomValue(activeThemeLayersAtom);
 
   return (
     <HStack
@@ -43,18 +46,37 @@ export const MapToolButtons = () => {
       mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
     >
-      <MapButton
-        onClick={() => {
-          setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
-        }}
-        icon={'layers'}
-        label={
-          isMobile
-            ? t('controller.maplayers.mobiletext')
-            : t('controller.maplayers.openText')
-        }
-        active={currentMapTool === 'layers'}
-      />
+      <Box position="relative">
+        <MapButton
+          onClick={() => {
+            setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
+          }}
+          icon={'layers'}
+          label={
+            isMobile
+              ? t('controller.maplayers.mobiletext')
+              : t('controller.maplayers.openText')
+          }
+          active={currentMapTool === 'layers'}
+        />
+        {activeLayers.size > 0 && (
+          <Text
+            position={'absolute'}
+            top={-1}
+            right={1}
+            backgroundColor={'#FFDD9D'}
+            borderRadius="full"
+            borderWidth={'2px'}
+            borderColor={'white'}
+            px={2}
+            py={0.5}
+            pointerEvents={'none'}
+            fontSize={'sm'}
+          >
+            {activeLayers.size}
+          </Text>
+        )}
+      </Box>
       <MapButton
         onClick={() => {
           posthog.capture('map_draw_button_clicked');
