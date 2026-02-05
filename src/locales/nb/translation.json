@@ -244,7 +244,7 @@
   },
   "privacyAndContact": {
     "contactUs": "Kontakt",
-    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
+    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Bruk skjemaet under eller kontakt oss gjerne på e-post eller telefon",
     "infoText": "Les hvordan vi tar vare på personopplysninger i Kartverkets",
     "privacyPolicy": "Personvernerklæring ",
     "sendEmail": "Send e-post",
@@ -252,7 +252,8 @@
     "status": {
       "heading": "Status",
       "infoText": "Se status for våre tjenester ved å besøke lenken"
-    }
+    },
+    "formsLinkText": "Åpne tilbakemeldingskjema"
   },
   "propertyInfo": {
     "holdingNr": "Gårdsnr.",
