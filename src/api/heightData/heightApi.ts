@@ -17,7 +17,7 @@ export const submitelevationProfileRequest = async (
   const bodyData = {
     f: 'json',
     polyline: JSON.stringify(polyline),
-    dem: 'DOM',
+    dem: 'DTM_TOPOBATHY',
     sample_distance: sampleDistance.toString(),
   };
   const body = new URLSearchParams(bodyData);
