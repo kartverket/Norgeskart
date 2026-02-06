@@ -164,16 +164,12 @@ export const InputForm = ({
                   'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                 ),
               );
-              ph.capture('print_emergency_poster_created', {
-                success: false,
-              });
+              ph.capture('print_emergency_poster_failed');
               return;
             }
 
             downloadFile(downloadLink, customName + '_emergency_poster.pdf');
-            ph.capture('print_emergency_poster_created', {
-              success: true,
-            });
+            ph.capture('print_emergency_poster_created');
           }}
         >
           {t('printdialog.emergencyPoster.buttons.makePoster')}
