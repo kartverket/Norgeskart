@@ -1,6 +1,7 @@
 import type { Feature as OlFeature } from 'ol';
 import { GeoJSON } from 'ol/format';
-import type { Geometry } from 'ol/geom';
+import { Circle, type Geometry } from 'ol/geom';
+import { fromCircle } from 'ol/geom/Polygon';
 import { StyleForStorage } from '../../api/nkApiClient';
 import { Layer } from './printApi';
 
@@ -23,16 +24,14 @@ type PrintSymbolizer =
     pointRadius: number;
     graphicName: string;
   }
-  |
-  {
+  | {
     type: 'text';
     text: string;
     font: string;
     fillColor: string;
     strokeColor: string;
     strokeWidth: number;
-  }
-
+  };
 
 type StyleCollection = {
   version: string;
@@ -59,7 +58,6 @@ const normalizeHexColor = (color: string): string => {
 export const getSymbolizersFromStyle = (
   style: StyleForStorage | null,
   geometryType: string,
-  feature?: OlFeature<Geometry>,
 ): PrintSymbolizer[] => {
   if (!style) return [];
 
@@ -69,13 +67,13 @@ export const getSymbolizersFromStyle = (
         {
           type: 'polygon',
           fillColor: normalizeHexColor(
-            style.fill?.color?.toString() ?? 'rgba(255,255,255,0.5)',
+            style.fill?.color?.toString() || 'rgba(255,255,255,0.5)',
           ),
           fillOpacity: 0.5,
           strokeColor: normalizeHexColor(
-            style.stroke?.color?.toString() ?? '#000',
+            style.stroke?.color?.toString() || '#000',
           ),
-          strokeWidth: style.stroke?.width ?? 2,
+          strokeWidth: style.stroke?.width || 2,
         },
       ];
     case 'LineString':
@@ -83,44 +81,19 @@ export const getSymbolizersFromStyle = (
         {
           type: 'line',
           strokeColor: normalizeHexColor(
-            style.stroke?.color?.toString() ?? '#000',
+            style.stroke?.color?.toString() || '#000',
           ),
-          strokeWidth: style.stroke?.width ?? 2,
+          strokeWidth: style.stroke?.width || 2,
         },
       ];
-    case 'Point': {
-      // Sjekk om feature har overlayIcon property
-      const overlayIcon = feature?.get('overlayIcon') as { icon: string; color: string; size: number } | undefined;
-      if (overlayIcon) {
-        return [
-          {
-            type: 'point',
-            fillColor: normalizeHexColor(overlayIcon.color ?? '#000'),
-            pointRadius: overlayIcon.size ?? 8,
-            graphicName: overlayIcon.icon, // MaterialSymbol-navn
-          },
-        ];
-      }
-      // Sjekk om det finnes tekst i style
-      if (style?.text?.text) {
-        return [
-          {
-            type: 'text',
-            text: style.text.text,
-            font: style.text.font ?? '16px sans-serif',
-            fillColor: normalizeHexColor(style.text.fillColor?.toString() ?? '#000'),
-            strokeColor: normalizeHexColor(style.text.stroke?.color?.toString() ?? '#000'),
-            strokeWidth: style.text.stroke?.width ?? 1,
-          },
-        ];
-      }
-    }
+
+    case 'Point':
       return [
         {
           type: 'point',
-          fillColor: normalizeHexColor(style?.icon?.color?.toString() ?? '#000'),
-          pointRadius: style?.icon?.radius ?? 6,
-          graphicName: 'circle',
+          fillColor: normalizeHexColor(style.icon?.color?.toString() || '#000'),
+          pointRadius: style.icon?.radius || 6,
+          graphicName: 'circle', //TODO: må utvides for andre symboltyper
         },
       ];
     default:
@@ -133,7 +106,19 @@ export const createGeoJsonLayerWithStyles = (
   targetProjection: string,
   styleForStorage: StyleForStorage,
 ): Layer => {
-  const geoJson = new GeoJSON().writeFeaturesObject(features, {
+
+  // Convert circles to polygons
+  const featuresForGeoJson = features.map((feature) => {
+    const geom = feature.getGeometry();
+    if (geom instanceof Circle) {
+      const polygon = fromCircle(geom, 64);
+      const newFeature = feature.clone();
+      newFeature.setGeometry(polygon);
+      return newFeature;
+    }
+    return feature;
+  });
+  const geoJson = new GeoJSON().writeFeaturesObject(featuresForGeoJson, {
     featureProjection: sourceProjection,
     dataProjection: targetProjection,
   });
@@ -149,7 +134,10 @@ export const createGeoJsonLayerWithStyles = (
       }
     }
     styleCollection[`[IN('${f.id}')]`] = {
-      symbolizers: getSymbolizersFromStyle(styleForStorage, f.geometry?.type, features[i]),
+      symbolizers: getSymbolizersFromStyle(
+        styleForStorage,
+        f.geometry?.type,
+      ),
     };
   }
 
