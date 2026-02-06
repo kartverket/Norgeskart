@@ -8,6 +8,7 @@ import {
   displayMapLegendAtom,
   displayMapLegendControlAtom,
   mapOrientationDegreesAtom,
+  trackPositionAtom,
 } from './atoms';
 import { useMapSettings } from './mapHooks';
 
@@ -16,23 +17,19 @@ export const MapControlButtons = () => {
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const [displayMapLegend, setDisplayMapLegend] = useAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
+  const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
   const ph = usePostHog();
   const {
     rotateSnappy,
     setMapAngle,
-    setMapLocation,
+
     setMapFullScreen,
     zoomIn,
     zoomOut,
   } = useMapSettings();
 
   const handleMapLocationClick = () => {
-    if (!navigator.geolocation) return;
-
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const { longitude, latitude } = pos.coords;
-      setMapLocation([longitude, latitude], 'EPSG:4326', 15);
-    });
+    setTrackPosition((p) => !p);
   };
 
   const handleFullScreenClick = () => {
@@ -104,9 +101,13 @@ export const MapControlButtons = () => {
         displayTooltip
       />
       <ControlButton
-        icon="my_location"
+        icon={trackPosition ? 'location_disabled' : 'my_location'}
         onClick={handleMapLocationClick}
-        label={t('map.controls.myLocation.label')}
+        label={
+          trackPosition
+            ? t('map.controls.myLocation.disable.label')
+            : t('map.controls.myLocation.enable.label')
+        }
         displayTooltip
       />
       <ControlButton
