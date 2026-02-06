@@ -49,6 +49,14 @@ const getSelectedLayout = (
   );
 };
 
+// Used to scale down the layout size for better fit on screen.
+const LAYOUT_SCALE: Record<string, number> = {
+  '1_A4_portrait': 0.9,
+  '2_A4_landscape': 1.0,
+  '3_A3_portrait': 0.65,
+  '4_A3_landscape': 0.8,
+};
+
 export const ExtentSection = () => {
   const { t } = useTranslation();
   const layouts: PrintLayout[] = usePrintCapabilities();
@@ -75,11 +83,13 @@ export const ExtentSection = () => {
 
   useEffect(() => {
     if (!selectedLayout) return;
-    const widthPx = selectedLayout?.width;
-    const heightPx = selectedLayout?.height;
-    if (widthPx && heightPx) {
-      setPrintBoxLayout({ widthPx, heightPx });
-    }
+
+    const layoutScale = LAYOUT_SCALE[selectedLayout.name] || 1;
+
+    setPrintBoxLayout({
+      widthPx: Math.round((selectedLayout.width || 0) * layoutScale),
+      heightPx: Math.round((selectedLayout.height || 0) * layoutScale),
+    });
   }, [selectedLayout, setPrintBoxLayout]);
 
   const handlePrint = async () => {
