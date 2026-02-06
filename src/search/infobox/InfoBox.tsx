@@ -1,7 +1,4 @@
 import {
-  AccordionItem,
-  AccordionItemContent,
-  AccordionItemTrigger,
   AccordionRoot,
   Box,
   Button,
@@ -14,7 +11,6 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ProjectionIdentifier } from '../../map/atoms';
 import {
   isRettIKartetDialogOpenAtom,
   rettIKartetCoordinatesAtom,
@@ -26,11 +22,8 @@ import {
   searchCoordinatesAtom,
   selectedResultAtom,
 } from '../atoms';
-import { CoordinateInfo } from './CoordinateSection';
-import { FeatureInfoSection } from './FeatureInfoSection';
+import { InfoboxAccordionContent } from './InfoboxAccodionContent';
 import { InfoBoxPreamble } from './InfoBoxPreamble';
-import { PlaceInfo } from './PlaceInfo';
-import { PropertyInfo } from './PropertyInfo';
 
 export const InfoBox = () => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
@@ -83,58 +76,7 @@ export const InfoBox = () => {
       <InfoBoxPreamble result={selectedResult} x={x} y={y} />
       <Box overflowY="auto" overflowX="auto">
         <AccordionRoot collapsible multiple defaultValue={[]}>
-          {['Property', 'Coordinate', 'Address'].includes(
-            selectedResult.type,
-          ) && (
-            <PropertyInfo
-              lon={selectedResult.lon}
-              lat={selectedResult.lat}
-              inputCRS={inputCRS}
-            />
-          )}
-
-          {selectedResult.type === 'Place' && (
-            <AccordionItem value="placeInfo">
-              <AccordionItemTrigger pl={0}>
-                {t('infoBox.placeinfo')}
-              </AccordionItemTrigger>
-              <AccordionItemContent>
-                <PlaceInfo place={selectedResult.place} />
-              </AccordionItemContent>
-            </AccordionItem>
-          )}
-          {placesNearby.length > 0 && (
-            <AccordionItem value={'PlacesNearby'}>
-              <AccordionItemTrigger pl={0}>
-                {t('infoBox.placesNearby')}
-              </AccordionItemTrigger>
-              <AccordionItemContent>
-                {placesNearby.map((place) => (
-                  <Box
-                    key={place.placeNumber}
-                    mb={2}
-                    p={2}
-                    borderBottom="1px solid #E2E8F0"
-                  >
-                    <PlaceInfo place={place} />
-                  </Box>
-                ))}
-              </AccordionItemContent>
-            </AccordionItem>
-          )}
-          <AccordionItem value="coordinateInfo">
-            <AccordionItemTrigger pl={0}>
-              {t('infoBox.coordinateInfo')}
-            </AccordionItemTrigger>
-            <AccordionItemContent>
-              <CoordinateInfo
-                lon={selectedResult.lon}
-                lat={selectedResult.lat}
-                inputCRS={inputCRS as ProjectionIdentifier}
-              />
-            </AccordionItemContent>
-          </AccordionItem>
-          <FeatureInfoSection />
+          <InfoboxAccordionContent />
         </AccordionRoot>
       </Box>
       <Button
