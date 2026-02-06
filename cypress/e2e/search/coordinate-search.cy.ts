@@ -112,8 +112,7 @@ describe('Coordinate Search', () => {
     });
 
     it('should parse DMS with direction before coordinates', () => {
-      // eslint-disable-next-line
-      const coordinates = 'N 60° 5\' 38\'\', E 10° 50\' 10\'\'';
+      const coordinates = "N 60° 5' 38'', E 10° 50' 10''";
 
       getSearchInput().type(coordinates);
       cy.contains('°').should('be.visible');
@@ -363,7 +362,7 @@ describe('Coordinate Search', () => {
       cy.get('#map').should('be.visible');
     });
   });
-/*
+  /*
  // Latwr ...
   describe('NTM (Norwegian Transverse Mercator) - Unsupported', () => {
     it('should not parse NTM zone 10 coordinates (EPSG:5110)', () => {
