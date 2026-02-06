@@ -1,6 +1,8 @@
 import { HStack } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_PROJECTION } from '../../map/atoms';
+import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { ProjectionPopover } from '../../shared/Components/ProjectionPopover';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
@@ -13,6 +15,8 @@ export const ProjectionSettings = () => {
     getUrlParameter('projection'),
   );
   const { t } = useTranslation();
+  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const isNauticalActive = activeBackgroundLayer === 'nautical-background';
 
   return (
     <HStack
@@ -27,6 +31,12 @@ export const ProjectionSettings = () => {
         hideBorders
         isToolbar
         label={t('toolbar.crs.tooltip')}
+        disabled={isNauticalActive}
+        disabledReason={
+          isNauticalActive
+            ? t('map.settings.layers.projection.lockedByLayer')
+            : undefined
+        }
       />
       <ProjectionPopover isToolbar />
     </HStack>

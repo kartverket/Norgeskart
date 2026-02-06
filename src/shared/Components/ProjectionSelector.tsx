@@ -18,6 +18,8 @@ export interface ProjectionSelectorProps {
   textColor: 'white' | 'black';
   hideBorders?: boolean;
   isToolbar?: boolean;
+  disabled?: boolean;
+  disabledReason?: string;
 }
 
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
@@ -41,6 +43,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       size="sm"
       collection={createListCollection({ items: projectionCollection })}
       value={[selectedProjection]}
+      disabled={props.disabled}
     >
       <SelectTrigger
         className={props.isToolbar ? 'toolbar-select' : ''}
@@ -49,7 +52,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       >
         {props.label ? (
           <Tooltip
-            content={props.label}
+            content={props.disabledReason || props.label}
             portalled={false}
             positioning={{ placement: 'top' }}
           >

@@ -1,6 +1,5 @@
-import { apply } from 'ol-mapbox-style';
-import LayerGroup from 'ol/layer/Group';
-import VectorTileLayer from 'ol/layer/VectorTile';
+import { MapLibreLayer } from '@geoblocks/ol-maplibre-layer';
+import BaseLayer from 'ol/layer/Base';
 
 export type VectorTileLayerName = 'nautical-background';
 
@@ -18,9 +17,16 @@ const vectorTileProviders: Record<VectorTileLayerName, VectorTileProvider> = {
   },
 };
 
+const layerCache = new Map<VectorTileLayerName, BaseLayer>();
+
 export const createVectorTileLayer = async (
   layerName: VectorTileLayerName,
-): Promise<LayerGroup | null> => {
+): Promise<BaseLayer | null> => {
+  const cached = layerCache.get(layerName);
+  if (cached) {
+    return cached;
+  }
+
   const provider = vectorTileProviders[layerName];
   if (!provider) {
     console.error(`Vector tile provider ${layerName} not found`);
@@ -28,63 +34,19 @@ export const createVectorTileLayer = async (
   }
 
   try {
-    const response = await fetch(provider.styleUrl);
-    const styleJson = await response.json();
+    // Use MapLibre GL JS (WebGL) to render the Mapbox vector tile style.
+    const layer = new MapLibreLayer({
+      mapLibreOptions: {
+        style: window.location.origin + provider.styleUrl,
+      },
+      properties: {
+        id: `bg.${layerName}`,
+        isVectorTile: true,
+      },
+    });
 
-    // Replace hyphenated font names with proper Google Fonts names while preserving styles
-    if (styleJson.layers) {
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      styleJson.layers.forEach((layer: any) => {
-        if (layer.layout && layer.layout['text-font']) {
-          layer.layout['text-font'] = layer.layout['text-font'].map(
-            (font: string) => {
-              const isItalic = font.includes('Italic');
-              const isBold = font.includes('Bold');
-
-              let baseFontName = font;
-              if (font.includes('WorkSans')) {
-                baseFontName = 'Work Sans';
-              } else if (font.includes('Raleway')) {
-                baseFontName = 'Raleway';
-              }
-
-              // Reconstruct with proper style suffix for Google Fonts
-              if (isBold && isItalic) {
-                return baseFontName + ' Bold Italic';
-              } else if (isBold) {
-                return baseFontName + ' Bold';
-              } else if (isItalic) {
-                return baseFontName + ' Italic';
-              }
-
-              return baseFontName;
-            },
-          );
-        }
-      });
-    }
-
-    const styleDataUrl =
-      'data:application/json;charset=utf-8,' +
-      encodeURIComponent(JSON.stringify(styleJson));
-
-    const container = document.createElement('div');
-    const layerOrMap = await apply(container, styleDataUrl);
-
-    let layerGroup: LayerGroup;
-    if (layerOrMap instanceof LayerGroup) {
-      layerGroup = layerOrMap;
-    } else {
-      const layers = layerOrMap.getAllLayers().filter((layer) => {
-        return layer instanceof VectorTileLayer || layer instanceof LayerGroup;
-      });
-      layerGroup = new LayerGroup({ layers });
-    }
-
-    layerGroup.set('id', `bg.${layerName}`);
-    layerGroup.set('isVectorTile', true);
-
-    return layerGroup;
+    layerCache.set(layerName, layer);
+    return layer;
   } catch (error) {
     console.error(`Failed to load vector tile layer ${layerName}:`, error);
     return null;

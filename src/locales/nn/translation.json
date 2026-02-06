@@ -191,6 +191,8 @@
               "displayName": "Webmercator"
             }
           },
+          "forcedWebMercator": "Nautisk bakgrunnskart krev Webmercator-projeksjon",
+          "lockedByLayer": "Projeksjon er låst til Webmercator av nautisk bakgrunnskart",
           "popover": {
             "title": "Koordinatreferansesystem",
             "body": "Vel eit koordinatreferansesystem. Dei har ulik nøyaktigheit i ulike delar av landet. Me tilrår at du nyttar UTM 33 om du ikkje er sikker."

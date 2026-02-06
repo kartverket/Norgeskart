@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
-import { Listener } from 'ol/events';
 import { get as getProjection, transform } from 'ol/proj';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import {
@@ -44,32 +44,63 @@ const useMap = () => {
     }
   };
 
-  map.getView().on('change:center', (e) => {
-    const newCenter = e.target.getCenter();
+  // that works for now, remove useEffect later 
+  useEffect(() => {
+    const registerViewListeners = () => {
+      const view = map.getView();
 
-    const projection = map.getView().getProjection();
-    const angleCoords = transform(newCenter, projection, 'EPSG:4326');
+      const onCenterChange = () => {
+        const newCenter = view.getCenter();
+        if (!newCenter) return;
 
-    const magneticNorth = [162.867, 86.494];
-    const azimuth = calculateAzimuth(
-      angleCoords[1], // latitude
-      angleCoords[0], // longitude
-      magneticNorth[1], // magnetic north latitude
-      magneticNorth[0], // magnetic north longitude)
-    );
+        const projection = view.getProjection();
+        const angleCoords = transform(newCenter, projection, 'EPSG:4326');
 
-    setMagneticDeclination((prev) => {
-      const diff = Math.abs(azimuth - prev);
-      if (isNaN(diff) || diff < 0.01) {
-        return prev; // No significant change, return previous value
-      }
-      return azimuth;
-    });
-  });
-  map.getView().on('change:rotation', (e) => {
-    const rotation = e.target.getRotation();
-    setMapOrientation(rotation);
-  });
+        const magneticNorth = [162.867, 86.494];
+        const azimuth = calculateAzimuth(
+          angleCoords[1],
+          angleCoords[0],
+          magneticNorth[1],
+          magneticNorth[0],
+        );
+
+        setMagneticDeclination((prev) => {
+          const diff = Math.abs(azimuth - prev);
+          if (isNaN(diff) || diff < 0.01) {
+            return prev;
+          }
+          return azimuth;
+        });
+      };
+
+      const onRotationChange = () => {
+        const rotation = view.getRotation();
+        setMapOrientation(rotation);
+      };
+
+      view.on('change:center', onCenterChange);
+      view.on('change:rotation', onRotationChange);
+
+      return () => {
+        view.un('change:center', onCenterChange);
+        view.un('change:rotation', onRotationChange);
+      };
+    };
+
+    let cleanupViewListeners = registerViewListeners();
+
+    const onViewChange = () => {
+      cleanupViewListeners();
+      cleanupViewListeners = registerViewListeners();
+    };
+
+    map.on('change:view', onViewChange);
+
+    return () => {
+      cleanupViewListeners();
+      map.un('change:view', onViewChange);
+    };
+  }, [map, setMapOrientation, setMagneticDeclination]);
 
   const mapElement = map.getTarget() as HTMLElement | undefined;
   return { mapElement, setTargetElement };
@@ -99,6 +130,15 @@ const useMapSettings = () => {
   ) => {
     if (backgroundLayerState !== 'hasData') {
       console.warn('Background layers are not loaded yet');
+      return;
+    }
+
+    if (
+      backgroundLayerName === 'nautical-background' &&
+      getMapProjectionCode() !== 'EPSG:3857'
+    ) {
+      setUrlParameter('backgroundLayer', backgroundLayerName);
+      await setProjection('EPSG:3857');
       return;
     }
 
@@ -200,14 +240,8 @@ const useMapSettings = () => {
       minZoom: oldView.getMinZoom(),
       maxZoom: oldView.getMaxZoom(),
       projection: projection,
-      constrainResolution: false,
+      constrainResolution: true,
       extent: projection.getExtent(),
-    });
-    oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {
-      newView.addEventListener('change:rotation', listener);
-    });
-    oldView.getListeners('change:center')?.forEach((listener: Listener) => {
-      newView.addEventListener('change:center', listener);
     });
 
     map.setView(newView);

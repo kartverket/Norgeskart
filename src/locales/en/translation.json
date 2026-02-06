@@ -186,6 +186,8 @@
               "displayName": "Webmercator"
             }
           },
+          "forcedWebMercator": "Nautical background map requires Web Mercator projection",
+          "lockedByLayer": "Projection is locked to Web Mercator by nautical background map",
           "popover": {
             "title": "Coordinate refereance system",
             "body": "Select a coordinate refereance system to use. Different systems are accurate in different parts of the country. We recomend using UTM 33 if you are unsure."

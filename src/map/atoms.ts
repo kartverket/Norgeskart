@@ -116,7 +116,7 @@ const getInitialMapView = () => {
     zoom: initialZoom,
     rotation: initialRotation,
     projection: initialProjection,
-    constrainResolution: false,
+    constrainResolution: true,
   });
 };
 

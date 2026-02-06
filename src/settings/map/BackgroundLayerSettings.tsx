@@ -1,4 +1,12 @@
-import { Box, Button, Image, SimpleGrid, Text, VStack } from '@kvib/react';
+import {
+  Box,
+  Button,
+  Image,
+  SimpleGrid,
+  Text,
+  toaster,
+  VStack,
+} from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
@@ -103,7 +111,8 @@ export const BackgroundLayerSettings = ({
   onSelectComplete: () => void;
 }) => {
   const { t } = useTranslation();
-  const { setBackgroundLayer, getMapProjectionCode } = useMapSettings();
+  const { setBackgroundLayer, setProjection, getMapProjectionCode } =
+    useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
   const map = useAtomValue(mapAtom);
   const ph = usePostHog();
@@ -170,8 +179,21 @@ export const BackgroundLayerSettings = ({
 
   const sortedLayers = avaiableLayers.sort(layerPrioritySort);
 
-  const handleSetLayer = (layer: BackgroundLayerName) => {
+  const handleSetLayer = async (layer: BackgroundLayerName) => {
     ph.capture('map_background_layer_changed', { layerName: layer });
+
+    if (
+      layer === 'nautical-background' &&
+      getMapProjectionCode() !== 'EPSG:3857'
+    ) {
+      await setProjection('EPSG:3857');
+      toaster.create({
+        title: t('map.settings.layers.projection.forcedWebMercator'),
+        duration: 4000,
+        type: 'info',
+      });
+    }
+
     setBackgroundLayer(layer);
     setCurrentLayer(layer);
     setActiveBackgroundLayer(layer);
