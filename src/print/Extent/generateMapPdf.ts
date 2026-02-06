@@ -20,6 +20,8 @@ type GenerateMapPdfProps = {
   layout: PrintLayout;
   backgroundLayer: BackgroundLayerName;
   extent: number[];
+  onSuccess: () => void;
+  onError: (msg: string) => void;
 };
 
 const BASE_URL = 'https://cache.kartverket.no/v1/service';
@@ -31,6 +33,8 @@ export const generateMapPdf = async ({
   layout,
   backgroundLayer,
   extent,
+  onSuccess,
+  onError,
 }: GenerateMapPdfProps) => {
   if (!map) return;
 
@@ -114,10 +118,13 @@ export const generateMapPdf = async ({
         title: t('printExtent.toast.success'),
         type: 'success',
       });
+      onSuccess();
     } else {
+      onError(t('missing downloadURL'));
       toaster.create({ title: t('printExtent.toast.error'), type: 'error' });
     }
   } catch {
+    onError('external api error');
     toaster.create({
       title: t('printExtent.toast.error'),
       type: 'error',
