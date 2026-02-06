@@ -16,7 +16,7 @@ import {
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { getDefaultStore } from 'jotai';
+import { getDefaultStore, useSetAtom } from 'jotai';
 import { Overlay } from 'ol';
 import { getPointResolution, transform } from 'ol/proj';
 import { useEffect, useRef, useState } from 'react';
@@ -26,6 +26,7 @@ import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
 import { useMapSettings } from '../../map/mapHooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
+import { isPrintDialogOpenAtom } from '../atoms';
 import { utmInfoFromLonLat } from '../EmergencyPoster/utmStringUtils';
 import { getOverlayFootprint } from './utils';
 
@@ -54,6 +55,7 @@ export const HikingMapSection = () => {
   const [includeLegend, setIncludeLegend] = useState<boolean>(false);
   const [includeSweeden, setIncludeSweeden] = useState<boolean>(false);
   const [printLoading, setPrintLoading] = useState<boolean>(false);
+  const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const hasChangedBackground = useRef(false);
   const [includeCompassInstructions, setIncludeCompassInstructions] =
     useState<boolean>(false);
@@ -330,7 +332,13 @@ export const HikingMapSection = () => {
             {t('printdialog.hikingMap.buttons.download')}
           </Button>
         )}
-        <Button variant="secondary">
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setIsPrintDialogOpen(false);
+          }}
+          disabled={printLoading}
+        >
           {t('printdialog.hikingMap.buttons.cancel')}
         </Button>
       </ButtonGroup>
