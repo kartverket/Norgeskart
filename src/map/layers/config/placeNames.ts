@@ -191,7 +191,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
     {
       id: 'infrastructurePlaceNames',
       name: {
-        nb: 'Samferdsle',
+        nb: 'Samferdsel',
         nn: 'Samferdsle',
         en: 'Infrastructure',
       },
