@@ -45,7 +45,7 @@ export const InputForm = ({
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
   const [isInfoCorrect, setIsInfoCorrect] = useState<boolean>(false);
 
-  const posthog = usePostHog();
+  const ph = usePostHog();
 
   return (
     <Stack gap={3}>
@@ -164,16 +164,12 @@ export const InputForm = ({
                   'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                 ),
               );
-              posthog.capture('print_emergency_poster_created', {
-                success: false,
-              });
+              ph.capture('print_emergency_poster_failed');
               return;
             }
 
             downloadFile(downloadLink, customName + '_emergency_poster.pdf');
-            posthog.capture('print_emergency_poster_created', {
-              success: true,
-            });
+            ph.capture('print_emergency_poster_created');
           }}
         >
           {t('printdialog.emergencyPoster.buttons.makePoster')}

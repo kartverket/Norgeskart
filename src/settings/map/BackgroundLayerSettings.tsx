@@ -105,7 +105,7 @@ export const BackgroundLayerSettings = ({
   const { setBackgroundLayer, getMapProjectionCode } = useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
   const map = useAtomValue(mapAtom);
-  const posthog = usePostHog();
+  const ph = usePostHog();
   const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
 
   const initialLayer: BackgroundLayerName = (() => {
@@ -164,7 +164,7 @@ export const BackgroundLayerSettings = ({
   const sortedLayers = avaiableLayers.sort(layerPrioritySort);
 
   const handleSetLayer = (layer: BackgroundLayerName) => {
-    posthog.capture('map_background_layer_changed', { layerName: layer });
+    ph.capture('map_background_layer_changed', { layerName: layer });
     setBackgroundLayer(layer);
     setCurrentLayer(layer);
     setActiveBackgroundLayer(layer);

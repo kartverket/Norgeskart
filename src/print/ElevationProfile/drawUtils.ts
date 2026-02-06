@@ -9,7 +9,7 @@ import { profileLineAtom } from './atoms';
 
 const LAYER_ID = 'elevationProfileDrawLayer';
 
-export const addDrawInteractionToMap = () => {
+export const addDrawInteractionToMap = (onDrawEnd: () => void) => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
 
@@ -44,6 +44,7 @@ export const addDrawInteractionToMap = () => {
     const geometry = e.feature.getGeometry();
     if (!geometry) return;
     if (!(geometry instanceof LineString)) return;
+    onDrawEnd();
     store.set(profileLineAtom, geometry);
   });
   map.addInteraction(drawInteraction);

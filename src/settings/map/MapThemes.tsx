@@ -12,6 +12,7 @@ import {
   Text,
   VStack,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -50,6 +51,7 @@ export const MapThemes = () => {
   const [activeThemeLayers, setActiveThemeLayers] = useAtom(
     activeThemeLayersAtom,
   );
+  const ph = usePostHog();
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -232,6 +234,9 @@ export const MapThemes = () => {
                             onCheckedChange={(e) => {
                               if (e.checked) {
                                 addThemeLayerToMap(layer.name);
+                                ph.capture('theme_layer_added', {
+                                  layerName: layer.name,
+                                });
                               } else {
                                 removeThemeLayerFromMap(layer.name);
                               }

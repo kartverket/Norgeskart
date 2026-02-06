@@ -15,6 +15,7 @@ import {
   Stack,
   Text,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -67,6 +68,7 @@ export const ExtentSection = () => {
   const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
   const printBoxExtent = useAtomValue(printBoxExtentAtom);
   useAtom(printBoxExtentEffect);
+  const ph = usePostHog();
 
   const [format, setFormat] = useState('A4');
   const [orientation, setOrientation] = useState('portrait');
@@ -94,6 +96,11 @@ export const ExtentSection = () => {
 
   const handlePrint = async () => {
     if (!selectedLayout || !printBoxExtent) return;
+
+    ph.capture('print_extent_initiated', {
+      format,
+      orientation,
+    });
     await generateMapPdf({
       map,
       setLoading,
@@ -101,6 +108,19 @@ export const ExtentSection = () => {
       layout: selectedLayout,
       backgroundLayer,
       extent: printBoxExtent,
+      onSuccess: () => {
+        ph.capture('print_extent_complete', {
+          format,
+          orientation,
+        });
+      },
+      onError: (msg) => {
+        ph.capture('print_extent_error', {
+          format,
+          orientation,
+          errorMessage: msg,
+        });
+      },
     });
   };
 
