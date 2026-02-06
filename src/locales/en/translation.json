@@ -218,7 +218,10 @@
         "label": "Rotate right"
       },
       "myLocation": {
-        "label": "Go to my location"
+        "enable": { "label": "Go to my location" },
+        "disable": {
+          "label": "Hide position"
+        }
       },
       "fullscreen": {
         "label": "Use fullscreen"

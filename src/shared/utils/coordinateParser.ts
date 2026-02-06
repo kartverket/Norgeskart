@@ -108,6 +108,9 @@ export const parseCoordinateInput = (
     const epsgResult = parseWithEPSG(
       normalizeDecimalSeparators(normalizeDirections(trimmedInput)),
     );
+    // If input has @, it's explicitly requesting EPSG parsing.
+    // Return result or null — don't fall through to other parsers
+    // which would silently misinterpret the unsupported EPSG code.
     return epsgResult;
   }
 

@@ -205,7 +205,7 @@ export const DrawControlFooter = () => {
           </DialogTrigger>
           <DialogContent>
             <DialogBody>
-              <ExportControls></ExportControls>
+              <ExportControls />
             </DialogBody>
 
             <DialogCloseTrigger />

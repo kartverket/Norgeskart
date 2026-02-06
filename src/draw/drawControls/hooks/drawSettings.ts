@@ -259,7 +259,6 @@ const useDrawSettings = () => {
         const featureStyle = getStyleFromProperties(feature.properties);
         const overlayIcon = getOverlayIconFromProperties(feature.properties);
         const circleRadius = getCircleRadiusFromProperties(feature.properties);
-        console.log('circleRadius', circleRadius);
 
         if (transformedGeometry) {
           let newFeature;

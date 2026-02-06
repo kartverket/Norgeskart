@@ -15,6 +15,7 @@ import {
   Stack,
   Text,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -49,6 +50,14 @@ const getSelectedLayout = (
   );
 };
 
+// Used to scale down the layout size for better fit on screen.
+const LAYOUT_SCALE: Record<string, number> = {
+  '1_A4_portrait': 0.9,
+  '2_A4_landscape': 1.0,
+  '3_A3_portrait': 0.65,
+  '4_A3_landscape': 0.8,
+};
+
 export const ExtentSection = () => {
   const { t } = useTranslation();
   const layouts: PrintLayout[] = usePrintCapabilities();
@@ -59,6 +68,7 @@ export const ExtentSection = () => {
   const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
   const printBoxExtent = useAtomValue(printBoxExtentAtom);
   useAtom(printBoxExtentEffect);
+  const ph = usePostHog();
 
   const [format, setFormat] = useState('A4');
   const [orientation, setOrientation] = useState('portrait');
@@ -75,15 +85,22 @@ export const ExtentSection = () => {
 
   useEffect(() => {
     if (!selectedLayout) return;
-    const widthPx = selectedLayout?.width;
-    const heightPx = selectedLayout?.height;
-    if (widthPx && heightPx) {
-      setPrintBoxLayout({ widthPx, heightPx });
-    }
+
+    const layoutScale = LAYOUT_SCALE[selectedLayout.name] || 1;
+
+    setPrintBoxLayout({
+      widthPx: Math.round((selectedLayout.width || 0) * layoutScale),
+      heightPx: Math.round((selectedLayout.height || 0) * layoutScale),
+    });
   }, [selectedLayout, setPrintBoxLayout]);
 
   const handlePrint = async () => {
     if (!selectedLayout || !printBoxExtent) return;
+
+    ph.capture('print_extent_initiated', {
+      format,
+      orientation,
+    });
     await generateMapPdf({
       map,
       setLoading,
@@ -91,6 +108,19 @@ export const ExtentSection = () => {
       layout: selectedLayout,
       backgroundLayer,
       extent: printBoxExtent,
+      onSuccess: () => {
+        ph.capture('print_extent_complete', {
+          format,
+          orientation,
+        });
+      },
+      onError: (msg) => {
+        ph.capture('print_extent_error', {
+          format,
+          orientation,
+          errorMessage: msg,
+        });
+      },
     });
   };
 

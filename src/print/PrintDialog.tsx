@@ -35,13 +35,17 @@ export const PrintDialog = () => {
   const [isPrintDialogOpen, setIsPrintDialogOpen] = useAtom(
     isPrintDialogOpenAtom,
   );
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
 
   if (!isPrintDialogOpen) {
     return null;
   }
-  const tabsListConfig: { label: string; value: PrintTabName }[] =
-    printTabNames.map((tabName) => ({
+  const tabsListConfig: { label: string; value: PrintTabName }[] = printTabNames
+    .filter((tabName) => {
+      return currentLanguage !== 'en' || tabName !== 'emergencyPoster';
+    })
+    .map((tabName) => ({
       label: t(`printdialog.tabs.${tabName}.heading`),
       value: tabName,
     }));

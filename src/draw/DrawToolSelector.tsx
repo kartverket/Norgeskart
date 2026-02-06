@@ -1,4 +1,5 @@
 import { Flex, IconButton, MaterialSymbol, Tooltip } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
@@ -79,6 +80,7 @@ const DrawTypeButton = ({
   const isCurrentTool = drawType === type;
   const setPrimaryColor = useSetAtom(primaryColorAtom);
   const setSecondaryColor = useSetAtom(secondaryColorAtom);
+  const ph = usePostHog();
 
   return (
     <Tooltip content={tooltip}>
@@ -94,7 +96,7 @@ const DrawTypeButton = ({
             setPrimaryColor('#000000');
             setSecondaryColor('#ffffffff');
           }
-
+          ph.capture('draw_tool_selected', { tool: type });
           setDrawType(type);
         }}
       />

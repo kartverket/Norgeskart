@@ -1,4 +1,5 @@
 import { Heading, Stack, Text } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { Chart as ChartJS } from 'chart.js';
 import { getDefaultStore, useAtom } from 'jotai';
 import { useEffect, useRef } from 'react';
@@ -20,8 +21,11 @@ export const ElevationProfileSection = () => {
   useAtom(profileEffect);
   const { t } = useTranslation();
   const chartRef = useRef<ChartJS<'line'> | null>(null);
+  const ph = usePostHog();
   useEffect(() => {
-    addDrawInteractionToMap();
+    addDrawInteractionToMap(() => {
+      ph.capture('print_elevation_profile_generate_started');
+    });
     return () => {
       removeDrawInteractionFromMap();
       const store = getDefaultStore();
@@ -29,7 +33,7 @@ export const ElevationProfileSection = () => {
       store.set(profileResponseAtom, null);
       store.set(profileJobStatusAtom, 'notStarted');
     };
-  }, []);
+  }, [ph]);
   return (
     <Stack>
       <Heading size={'md'}>{t('printdialog.elevationProfile.heading')}</Heading>
