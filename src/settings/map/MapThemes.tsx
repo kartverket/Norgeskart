@@ -12,6 +12,7 @@ import {
   Text,
   VStack,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -50,6 +51,7 @@ export const MapThemes = () => {
   const [activeThemeLayers, setActiveThemeLayers] = useAtom(
     activeThemeLayersAtom,
   );
+  const ph = usePostHog();
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -127,6 +129,21 @@ export const MapThemes = () => {
       return count + subTheme.layers.length;
     }, 0);
   }, []);
+
+  const toggleLayer = useCallback(
+    (layerName: ThemeLayerName) => {
+      const checked = isLayerChecked(layerName);
+      if (!checked) {
+        addThemeLayerToMap(layerName);
+        ph.capture('theme_layer_added', {
+          layerName,
+        });
+      } else {
+        removeThemeLayerFromMap(layerName);
+      }
+    },
+    [addThemeLayerToMap, removeThemeLayerFromMap, isLayerChecked, ph],
+  );
 
   return (
     <VStack gap={0} align="stretch">
@@ -217,6 +234,8 @@ export const MapThemes = () => {
                           key={layer.name}
                           justifyContent="space-between"
                           paddingTop={2}
+                          onClick={() => toggleLayer(layer.name)}
+                          cursor="pointer"
                         >
                           <Text fontSize={{ base: 'sm', md: 'md' }}>
                             {layer.label}
@@ -229,13 +248,6 @@ export const MapThemes = () => {
                               !isLayerChecked(layer.name) &&
                               activeCount >= MAX_THEME_LAYERS
                             }
-                            onCheckedChange={(e) => {
-                              if (e.checked) {
-                                addThemeLayerToMap(layer.name);
-                              } else {
-                                removeThemeLayerFromMap(layer.name);
-                              }
-                            }}
                           />
                         </Flex>
                       ))}

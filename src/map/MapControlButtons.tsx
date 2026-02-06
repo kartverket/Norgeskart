@@ -1,36 +1,35 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { t } from 'i18next';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { CSSProperties } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
 import {
   displayMapLegendAtom,
   displayMapLegendControlAtom,
   mapOrientationDegreesAtom,
+  trackPositionAtom,
 } from './atoms';
 import { useMapSettings } from './mapHooks';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
-  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
+  const [displayMapLegend, setDisplayMapLegend] = useAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
+  const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
+  const ph = usePostHog();
   const {
     rotateSnappy,
     setMapAngle,
-    setMapLocation,
+
     setMapFullScreen,
     zoomIn,
     zoomOut,
   } = useMapSettings();
 
   const handleMapLocationClick = () => {
-    if (!navigator.geolocation) return;
-
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const { longitude, latitude } = pos.coords;
-      setMapLocation([longitude, latitude], 'EPSG:4326', 15);
-    });
+    setTrackPosition((p) => !p);
   };
 
   const handleFullScreenClick = () => {
@@ -54,8 +53,14 @@ export const MapControlButtons = () => {
         <ControlButton
           label={t('map.controls.symbols.label')}
           icon={'info'}
-          onClick={() => setDisplayMapLegend((prev) => !prev)}
+          onClick={() => {
+            if (!displayMapLegend) {
+              ph.capture('map_legend_opened');
+            }
+            setDisplayMapLegend((prev) => !prev);
+          }}
           displayTooltip
+          variant="primary"
         />
       )}
 
@@ -87,7 +92,6 @@ export const MapControlButtons = () => {
           transition: 'none',
         }}
         displayTooltip
-        variant="tertiary"
       />
       <ControlButton
         icon="rotate_right"
@@ -97,9 +101,13 @@ export const MapControlButtons = () => {
         displayTooltip
       />
       <ControlButton
-        icon="my_location"
+        icon={trackPosition ? 'location_disabled' : 'my_location'}
         onClick={handleMapLocationClick}
-        label={t('map.controls.myLocation.label')}
+        label={
+          trackPosition
+            ? t('map.controls.myLocation.disable.label')
+            : t('map.controls.myLocation.enable.label')
+        }
         displayTooltip
       />
       <ControlButton
@@ -120,7 +128,7 @@ interface ControlButtonProps {
   displayTooltip?: boolean;
   style?: CSSProperties;
   hide?: boolean;
-  variant?: 'ghost' | 'tertiary';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'tertiary';
 }
 
 const ControlIconButton = (props: ControlButtonProps) => {

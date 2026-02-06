@@ -53,7 +53,6 @@ export const profileEffect = atomEffect((get, set) => {
     while (true) {
       const status = await getelevationProfileJobStatus(submitResponse.jobId);
       if (status.jobStatus === 'esriJobSucceeded') {
-        console.log('Job succeeded:', status);
         const result = await getelevationProfileResult(
           submitResponse.jobId,
           'output_points',

@@ -8,14 +8,14 @@ import {
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
+import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
+import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
 import { getElevation } from '../searchApi';
 
 interface InfoBoxContentProps {
   result: SearchResult;
-  x: number;
-  y: number;
 }
 
 const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
@@ -83,7 +83,9 @@ const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
   return null;
 };
 
-export const InfoBoxPreamble = ({ result, x, y }: InfoBoxContentProps) => {
+export const InfoBoxPreamble = ({ result }: InfoBoxContentProps) => {
+  const inputCRS = getInputCRS(result);
+  const [x, y] = transform([result.lon, result.lat], inputCRS, 'EPSG:25833');
   return (
     <Box userSelect={'text'}>
       <InfoBoxTextContent result={result} />

@@ -7,7 +7,7 @@ import { disableCookies, enableCookies } from './cookieBlocker';
 export const LOCALSTORAGE_CONSENT_KEY = 'cookie_consent';
 
 export const CookieConsentDialog = () => {
-  const posthog = usePostHog();
+  const ph = usePostHog();
   const { t } = useTranslation();
   const previousConsent = localStorage.getItem(LOCALSTORAGE_CONSENT_KEY) as
     | 'granted'
@@ -15,22 +15,22 @@ export const CookieConsentDialog = () => {
     | null;
 
   const [consentStatus, setConsentStatus] = useState(
-    previousConsent ?? posthog.get_explicit_consent_status(),
+    previousConsent ?? ph.get_explicit_consent_status(),
   );
 
   const handleEnableCookies = useCallback(() => {
-    posthog.opt_in_capturing();
+    ph.opt_in_capturing();
     localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'granted');
     setConsentStatus('granted');
     enableCookies();
-  }, [posthog]);
+  }, [ph]);
 
   const handleDisableCookies = useCallback(() => {
-    posthog.opt_out_capturing();
+    ph.opt_out_capturing();
     localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'denied');
     setConsentStatus('denied');
     disableCookies();
-  }, [posthog]);
+  }, [ph]);
 
   if (consentStatus !== 'pending') {
     return null;
