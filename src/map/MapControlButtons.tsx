@@ -1,6 +1,7 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { t } from 'i18next';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { CSSProperties } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
 import {
@@ -13,8 +14,9 @@ import { useMapSettings } from './mapHooks';
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
-  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
+  const [displayMapLegend, setDisplayMapLegend] = useAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
+  const posthog = usePostHog();
   const {
     rotateSnappy,
     setMapAngle,
@@ -54,7 +56,12 @@ export const MapControlButtons = () => {
         <ControlButton
           label={t('map.controls.symbols.label')}
           icon={'info'}
-          onClick={() => setDisplayMapLegend((prev) => !prev)}
+          onClick={() => {
+            if (!displayMapLegend) {
+              posthog.capture('map_legend_opened');
+            }
+            setDisplayMapLegend((prev) => !prev);
+          }}
           displayTooltip
         />
       )}
