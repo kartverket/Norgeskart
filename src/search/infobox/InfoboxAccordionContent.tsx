@@ -50,14 +50,7 @@ export const InfoboxAccordionContent = () => {
 
       {selectedResult.type === 'Place' && (
         <AccordionItem value="placeInfo">
-          <AccordionItemTrigger
-            pl={0}
-            onClick={(e) => {
-              console.log(e);
-
-              console.log('hei place');
-            }}
-          >
+          <AccordionItemTrigger pl={0}>
             {t('infoBox.placeinfo')}
           </AccordionItemTrigger>
           <AccordionItemContent>
