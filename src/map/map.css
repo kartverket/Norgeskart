@@ -1,20 +1,29 @@
 /* --- Scale & Mouse Position --- */
-.ol-scale-bar {
+.ol-scale-line {
   position: absolute;
-  left: 120px;
-  bottom: 35px;
+  right: 10px;
+  bottom: 48px;
+  left: auto;
 }
 
-.ol-scale-line-bar {
-  font-size: 24px;
+/* Mobile: center scale line above toolbar */
+@media (max-width: 768px) {
+  .ol-scale-line {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 70px;
+  }
 }
 
-.ol-scale-text {
-  font-size: 14px;
-}
-
-.ol-scale-step-text {
+.ol-scale-line-inner {
+  border: 2px solid #333;
+  border-top: none;
+  color: #333;
   font-size: 12px;
+  text-align: center;
+  background: rgba(233, 229, 229, 0.7);
+  padding: 2px 5px;
 }
 
 .ol-mouse-position {
@@ -70,6 +79,23 @@
   left: 50%;
   margin-left: -7px;
 }
+
+.hiking-map-overlay {
+  width: 300px; /* Adjust as you like */
+  height: 400px; /* Adjust as you like */
+  pointer-events: none; /* Let user interact with map */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+  background-color: rgba(253, 143, 0, 0.5);
+
+  div {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
+
 /* --- Misc --- */
 .hidden {
   display: none;

@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Kartlag",
-      "mobiletext": "Lag"
+      "openText": "Temakart",
+      "mobiletext": "Temakart"
     },
     "print": {
       "text": "Print"
@@ -18,6 +18,9 @@
     "sharemap": {
       "text": "Del kart",
       "mobiletext": "Del"
+    },
+    "help": {
+      "mobiletext": "Hjelp"
     }
   },
   "draw": {
@@ -25,6 +28,10 @@
     "clear": "Fjern teikning",
     "close": "Lukk",
     "confrimClear": "Er du sikker?",
+    "privacyNotice": {
+      "title": "Lagring av teikning",
+      "message": "Når du lagrar ei teikning, lagrast det i 2 år på Kartverkets tenarar. Alle med lenka kan sjå teikninga. For å slette teikningar kontakt post@kartverket.no."
+    },
     "controls": {
       "colorBackground": "Bakgrunn",
       "colorFill": "Fyll",
@@ -47,7 +54,8 @@
       },
       "toolSelect": {
         "placeholder": "Vel teiknemåte"
-      }
+      },
+      "color": "Farger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -63,7 +71,8 @@
       }
     },
     "tools": "Verktøy",
-    "yesClear": "Ja, fjern"
+    "yesClear": "Ja, fjern",
+    "redoundo": "Angre / Gjer om"
   },
   "export": {
     "format": {
@@ -104,9 +113,6 @@
   },
   "languageSelector": {
     "chooseLanguage": "Vel språk",
-    "english": "English",
-    "norwegianBokmaal": "Norsk bokmål",
-    "norwegianNynorsk": "Norsk nynorsk",
     "tabHeading": "Språk"
   },
   "locationType": {
@@ -194,7 +200,10 @@
           "label": "Vel temakart",
           "activeLayersCount": "Aktive lag",
           "warningLimit": "Maksimalt antal lag nådd. Ver vennleg og deaktiver nokre lag før du legg til fleire for betre yting.",
-          "warningPerformance": "Aktivering av mange lag kan påverke ytinga. Vurder å deaktivere ubrukte lag."
+          "warningPerformance": "Aktivering av mange lag kan påverke ytinga. Vurder å deaktivere ubrukte lag.",
+          "resetbutton": {
+            "text": "Nullstill"
+          }
         }
       }
     },
@@ -209,13 +218,16 @@
         "label": "Roter venstre"
       },
       "orientation": {
-        "label": "Tilbakestill kartet til standard visning"
+        "label": "Rett opp kartet"
       },
       "rotateRight": {
         "label": "Roter høgre"
       },
       "myLocation": {
-        "label": "Gå til min posisjon"
+        "enable": { "label": "Gå til min posisjon" },
+        "disable": {
+          "label": "Ikkje vis posisjon"
+        }
       },
       "fullscreen": {
         "label": "Bruk fullskjerm"
@@ -239,7 +251,7 @@
   },
   "privacyAndContact": {
     "contactUs": "Kontakt",
-    "dialogContent": "Me tek gjerne imot ris og ros på Norgeskart.no. Kontakt oss gjerne på e-post eller telefon",
+    "dialogContent": "Me tek gjerne imot ris og ros på Norgeskart.no. Nytt skjema under, eller kontakt oss gjerne på e-post eller telefon",
     "infoText": "Les korleis me tek vare på personopplysningar i Kartverket si",
     "privacyPolicy": "Personvernerklæring ",
     "sendEmail": "Send e-post",
@@ -247,7 +259,8 @@
     "status": {
       "heading": "Status",
       "infoText": "Sjå status for tenestene våre med å nytta lenkja"
-    }
+    },
+    "formsLinkText": "Åpne tilbakemeldingskjema"
   },
   "propertyInfo": {
     "holdingNr": "Gardsnr.",
@@ -326,9 +339,9 @@
   },
   "cookieDialog": {
     "heading": "Me brukar informasjonskapslar",
-    "body": "Me gjer dette for å gje deg ei betre oppleving. Med å trykkja på 'OK' godtek du bruken av cookies.",
+    "body": "Norgeskart brukar informasjonskapslar (cookies) for at nettsida skal fungere, og for å forstå korleis tenesta blir brukt, slik at vi kan forbetre ho.\n\nVi brukar analyseverktøyet PostHog til å samle inn anonymisert bruksstatistikk, som til dømes kva sider som blir besøkte og kva funksjonar som blir brukt. Opplysningane blir berre nytta til statistikk og forbetring av tenesta.\n\nDu kan når som helst endre eller trekkje tilbake samtykket ditt under Hjelp – Personvern.\n\nFeltet for tilbakemelding er eit ope fritekstfelt. Vi ber deg om å ikkje skrive inn sensitive personopplysningar. Dersom du likevel oppgir personopplysningar, vil desse bli slette så snart som mogleg og ikkje brukte vidare.",
     "buttons": {
-      "accept": "OK",
+      "accept": "Godta",
       "reject": "Avslå"
     }
   },
@@ -356,7 +369,7 @@
       "hiking": {
         "heading": "Turkart"
       },
-      "heightProfile": {
+      "elevationProfile": {
         "heading": "Høydeprofil"
       },
       "emergencyPoster": {
@@ -378,13 +391,13 @@
         "heading": "Klikk i kartet for å vele stedet nødplakaten skal være for",
         "fields": {
           "title": {
-            "label": "Gi punktet et namn"
+            "label": "Plakattittel"
           },
           "place": {
-            "label": "Vel riktig stadsnamn"
+            "label": "Vel næreste stedsnamn"
           },
           "road": {
-            "label": "Næraste veg er"
+            "label": "Vel næreste addresse"
           },
           "isInfoCorrect": {
             "label": "Stemmer informasjonen over?"
@@ -398,16 +411,79 @@
         "makePoster": "Lag plakat"
       }
     },
-    "heightProfile": {
+    "elevationProfile": {
       "heading": "Tekn ei linje for å lage ei høydeprofil",
       "infotext": "Opprett ei høydeprofil ved å klikke i kartet for å plassere det fyste punktet og dobbelklikk for å avslutte.",
       "jobError": "Kunne ikkje lage høgdeprofil",
       "jobRunning": "Lager profil",
       "buttons": {
         "exportCsv": {
-          "label": "Eksporter som CSV"
+          "label": "Last ned som CSV"
+        },
+        "exportPng": {
+          "label": "Last ned som PNG"
+        },
+        "exportJpeg": {
+          "label": "Last ned som JPEG"
         }
+      },
+      "chartLabels": {
+        "title": "Høydeprofil",
+        "xAxis": "Avstand [m]",
+        "yAxis": "Høyde [m]"
       }
+    },
+    "hikingMap": {
+      "heading": "Vel målestokk og gi kartet ditt eit namn",
+      "fields": {
+        "scale": {
+          "label": "Målestokk"
+        },
+        "mapName": {
+          "label": "Namn på kartet",
+          "placeholder": "Mitt turkart",
+          "helpertext": "Kun a-z og tall"
+        },
+        "includeLegend": {
+          "label": "teknforklaring"
+        },
+        "includeSweeden": {
+          "label": "kart inn i Sverige (50km)"
+        },
+        "includeCompassInstructions": {
+          "label": "minikurs i kompassbruk"
+        },
+        "heading": "Ta med"
+      },
+      "overlayinstructions": "Plasser det oransje feltet i området du vil skrive ut ",
+      "buttons": {
+        "generate": "Lag turkart",
+        "cancel": "Avbryt",
+        "download": "Last ned kart"
+      },
+      "errors": {
+        "generateFailed": "Utskrift feilet"
+      },
+      "popupblockedalert": {
+        "title": "Popup blokkert",
+        "body": "Popup blokkert. Vær venleg å fjerne blokkeringa og prøv at"
+      }
+    }
+  },
+  "printExtent": {
+    "label": "Vel format",
+    "placeholder": "Format",
+    "orientation": {
+      "portrait": "Portrett",
+      "landscape": "Landskap"
+    },
+    "description": "Plasser det oransje feltet i området der du vil skriva ut",
+    "button": {
+      "print": "Hent kartet"
+    },
+    "toast": {
+      "success": "Nedlasting fullført",
+      "error": "Klarte ikkje å hente kartet"
     }
   }
 }

@@ -37,7 +37,6 @@ export const MapLegend = () => {
         collapsible
         multiple
         defaultValue={layers}
-        maxH={'30vh'}
         overflowY={'auto'}
       >
         {layers.map((l) => (

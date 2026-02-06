@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, HStack, useBreakpointValue } from '@kvib/react';
+import { Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { PrintDialog } from '../../print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from '../../search/atoms';
@@ -8,10 +8,8 @@ import { SearchComponent } from '../../search/SearchComponent';
 import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { Toolbar } from '../../toolbar/Toolbar';
-import { displayCompassOverlayAtom, displayMapLegendAtom } from '../atoms';
+import { displayCompassOverlayAtom } from '../atoms';
 import { useFeatureInfoClick } from '../featureInfo/useFeatureInfo';
-import { activeThemeLayersAtom } from '../layers/atoms';
-import { MapLegend } from '../legend/MapLegend';
 import { MapControlButtons } from '../MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './atoms';
 import { Compass } from './Compass';
@@ -25,8 +23,6 @@ export const MapOverlay = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
-  const displayMapLegend = useAtomValue(displayMapLegendAtom);
-  const themeLayers = useAtomValue(activeThemeLayersAtom);
   const isMobile = useIsMobileScreen();
   const isToolOpen = currentMapTool !== null;
   const isLargeScreen = useBreakpointValue({
@@ -34,9 +30,6 @@ export const MapOverlay = () => {
     lg: true,
   });
   const selectedResult = useAtomValue(selectedResultAtom);
-
-  const shouldDisplayLegend =
-    themeLayers.size > 0 && displayMapLegend && isLargeScreen;
   useFeatureInfoClick();
   useSearchEffects();
   useMapClickSearch();
@@ -82,9 +75,12 @@ export const MapOverlay = () => {
             md: '1 / span 6',
             lg: '1 / span 4',
             xl: '1 / span 3',
+            '2xl': '1 / span 2',
           }}
-          gridRow={{ base: '4 / span 2', md: '1 / span 4' }}
+          gridRow={{ base: '2 / span 4', md: '1 / span 4' }}
           zIndex={1}
+          alignItems={{ base: 'flex-end', md: 'stretch' }}
+          display={{ base: 'flex', md: 'block' }}
         >
           <MapToolCards
             currentMapTool={currentMapTool}
@@ -96,14 +92,14 @@ export const MapOverlay = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '7 / span 6',
-            lg: '8 / span 5',
-            xl: '9 / span 4',
+            md: '8 / span 5',
+            lg: '9 / span 4',
+            xl: '10 / span 3',
           }}
           gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
           zIndex={2}
         >
-          <Flex w={'100%'} justifyContent={'flex-end'}>
+          <Flex maxHeight={'100%'} w={'100%'} justifyContent={'flex-end'}>
             <InfoBox />
             <PrintDialog />
           </Flex>
@@ -139,14 +135,11 @@ export const MapOverlay = () => {
           alignContent="end"
           gridRow={{ base: 4, md: '3 / span 3' }}
           gridColumn={'12 / span 3'}
-          mb={{ base: 3, md: 4 }}
+          mb={{ base: 3, md: 16 }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
         >
-          <HStack alignItems={'flex-end'}>
-            <MapControlButtons />
-            {shouldDisplayLegend && <MapLegend />}
-          </HStack>
+          <MapControlButtons />
         </GridItem>
 
         {!isMobile && (

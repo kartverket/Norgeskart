@@ -17,7 +17,7 @@ export const getWMSLayer = (
             LAYERS: 'cells',
             TILED: true,
             SRS: projection,
-            TICKET: 'B8LBG7B',
+            VERSION: '1.1.0',
           },
           projection: projection,
         }),

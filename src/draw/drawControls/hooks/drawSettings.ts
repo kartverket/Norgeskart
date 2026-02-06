@@ -3,7 +3,7 @@ import { FeatureCollection, GeoJsonProperties } from 'geojson';
 import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
 import { Feature, Overlay } from 'ol';
 import GeoJSON from 'ol/format/GeoJSON.js';
-import { Geometry, Point } from 'ol/geom';
+import { Circle, Geometry, Point } from 'ol/geom';
 import VectorSource from 'ol/source/Vector';
 import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
@@ -163,6 +163,13 @@ const useDrawSettings = () => {
     return iconFromProps;
   };
 
+  const getCircleRadiusFromProperties = (
+    properties: GeoJsonProperties,
+  ): number | null => {
+    const radiusFromProps = properties?.radius as number | null;
+    return radiusFromProps;
+  };
+
   const removeDrawnFeatureById = (featureId: string) => {
     const drawLayer = getDrawLayer();
     const drawSource = drawLayer.getSource() as VectorSource | null;
@@ -251,11 +258,23 @@ const useDrawSettings = () => {
           ?.transform(sourceProjection, mapProjection);
         const featureStyle = getStyleFromProperties(feature.properties);
         const overlayIcon = getOverlayIconFromProperties(feature.properties);
+        const circleRadius = getCircleRadiusFromProperties(feature.properties);
 
         if (transformedGeometry) {
-          const newFeature = new Feature({
-            geometry: transformedGeometry,
-          });
+          let newFeature;
+          if (circleRadius != null && transformedGeometry instanceof Point) {
+            newFeature = new Feature({
+              geometry: new Circle(
+                transformedGeometry.getCoordinates(),
+                circleRadius,
+              ),
+            });
+          } else {
+            newFeature = new Feature({
+              geometry: transformedGeometry,
+            });
+          }
+
           const featureId = uuidv4();
           newFeature.setId(featureId);
           if (featureStyle) {

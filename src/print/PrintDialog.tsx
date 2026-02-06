@@ -11,32 +11,41 @@ import {
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { getEnvName } from '../env';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { isPrintDialogOpenAtom } from './atoms';
+import { ElevationProfileSection } from './ElevationProfile/ElevationProfileSection';
 import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
-import { HeightProfileSection } from './HeightProfile/HeightProfileSection';
+import { ExtentSection } from './Extent/ExtentSection';
+import { HikingMapSection } from './HikingMap/HikingMapSection';
 
 const printTabNames = [
   'extent',
   'hiking',
-  'heightProfile',
+  'elevationProfile',
   'emergencyPoster',
 ] as const;
 
 type PrintTabName = (typeof printTabNames)[number];
+
+const envName = getEnvName();
 
 export const PrintDialog = () => {
   const currentMapTool = useAtomValue(mapToolAtom);
   const [isPrintDialogOpen, setIsPrintDialogOpen] = useAtom(
     isPrintDialogOpenAtom,
   );
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
 
   if (!isPrintDialogOpen) {
     return null;
   }
-  const tabsListConfig: { label: string; value: PrintTabName }[] =
-    printTabNames.map((tabName) => ({
+  const tabsListConfig: { label: string; value: PrintTabName }[] = printTabNames
+    .filter((tabName) => {
+      return currentLanguage !== 'en' || tabName !== 'emergencyPoster';
+    })
+    .map((tabName) => ({
       label: t(`printdialog.tabs.${tabName}.heading`),
       value: tabName,
     }));
@@ -68,24 +77,32 @@ export const PrintDialog = () => {
             aria-label="close-print"
           />
         </Flex>
-        <Tabs defaultValue={'extent'} lazyMount unmountOnExit>
+        <Tabs
+          defaultValue={envName == 'prod' ? 'elevationProfile' : 'extent'}
+          lazyMount
+          unmountOnExit
+        >
           <TabsList>
             {tabsListConfig.map((tab) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
                 disabled={
-                  tab.value === 'heightProfile' && currentMapTool === 'draw'
+                  tab.value === 'elevationProfile' && currentMapTool === 'draw'
                 }
               >
                 {tab.label}
               </TabsTrigger>
             ))}
           </TabsList>
-          <TabsContent value="extent">hei utsnitt</TabsContent>
-          <TabsContent value="hiking">hei turkart</TabsContent>
-          <TabsContent value="heightProfile">
-            <HeightProfileSection />
+          <TabsContent value="extent">
+            <ExtentSection />
+          </TabsContent>
+          <TabsContent value="hiking">
+            <HikingMapSection />
+          </TabsContent>
+          <TabsContent value="elevationProfile">
+            <ElevationProfileSection />
           </TabsContent>
           <TabsContent value="emergencyPoster">
             <EmergencyPosterSection />

@@ -26,6 +26,32 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       groupid: 5,
       legacyId: '1011',
       queryable: true,
+      filter: `
+        <Filter xmlns="http://www.opengis.net/ogc">
+          <PropertyIsEqualTo>
+            <PropertyName>merking_d</PropertyName>
+            <Literal>Merket</Literal>
+          </PropertyIsEqualTo>
+        </Filter>`.trim(),
+    },
+    {
+      id: 'hikingTrailsUnmarked',
+      name: {
+        nb: 'Umerkede fotruter',
+        nn: 'Umerka fotruter',
+        en: 'Unmarked hiking trails',
+      },
+      layers: 'Fotrute',
+      categoryId: 'outdoorRecreation',
+      groupid: 5,
+      queryable: true,
+      filter: `
+        <Filter xmlns="http://www.opengis.net/ogc">
+          <PropertyIsEqualTo>
+            <PropertyName>merking_d</PropertyName>
+            <Literal>Ikke merket</Literal>
+          </PropertyIsEqualTo>
+        </Filter>`.trim(),
     },
     {
       id: 'routeInfoPoints',

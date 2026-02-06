@@ -7,7 +7,7 @@ import { disableCookies, enableCookies } from './cookieBlocker';
 export const LOCALSTORAGE_CONSENT_KEY = 'cookie_consent';
 
 export const CookieConsentDialog = () => {
-  const posthog = usePostHog();
+  const ph = usePostHog();
   const { t } = useTranslation();
   const previousConsent = localStorage.getItem(LOCALSTORAGE_CONSENT_KEY) as
     | 'granted'
@@ -15,22 +15,22 @@ export const CookieConsentDialog = () => {
     | null;
 
   const [consentStatus, setConsentStatus] = useState(
-    previousConsent ?? posthog.get_explicit_consent_status(),
+    previousConsent ?? ph.get_explicit_consent_status(),
   );
 
   const handleEnableCookies = useCallback(() => {
-    posthog.opt_in_capturing();
+    ph.opt_in_capturing();
     localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'granted');
     setConsentStatus('granted');
     enableCookies();
-  }, [posthog]);
+  }, [ph]);
 
   const handleDisableCookies = useCallback(() => {
-    posthog.opt_out_capturing();
+    ph.opt_out_capturing();
     localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'denied');
     setConsentStatus('denied');
     disableCookies();
-  }, [posthog]);
+  }, [ph]);
 
   if (consentStatus !== 'pending') {
     return null;
@@ -43,21 +43,25 @@ export const CookieConsentDialog = () => {
       left={{ base: '50%', md: '32px' }}
       transform={{ base: 'translateX(-50%)', md: 'none' }}
       bg={'white'}
-      maxW={'300px'}
+      maxW={{ base: '320px', md: '380px' }}
       padding={4}
       boxShadow={'md'}
       borderRadius={'md'}
+      zIndex={'modal'}
     >
-      <Stack>
+      <Stack gap={3}>
         <Heading as="h4" size="md">
           {t('cookieDialog.heading')}
         </Heading>
-        <Text>{t('cookieDialog.body')}</Text>
-        <HStack justifyContent={'space-between'}>
-          <Button colorPalette="red" onClick={handleDisableCookies}>
+        <Text fontSize="sm" whiteSpace="pre-line">
+          {t('cookieDialog.body')}
+        </Text>
+
+        <HStack justifyContent={'space-between'} mt={2}>
+          <Button variant="outline" onClick={handleDisableCookies} size="sm">
             {t('cookieDialog.buttons.reject')}
           </Button>
-          <Button colorPalette="green" onClick={handleEnableCookies}>
+          <Button variant="outline" onClick={handleEnableCookies} size="sm">
             {t('cookieDialog.buttons.accept')}
           </Button>
         </HStack>

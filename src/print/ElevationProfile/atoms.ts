@@ -2,9 +2,9 @@ import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { LineString } from 'ol/geom';
 import {
-  getHeightProfileJobStatus,
-  getHeightProfileResult,
-  submitHeightProfileRequest,
+  getelevationProfileJobStatus,
+  getelevationProfileResult,
+  submitelevationProfileRequest,
 } from '../../api/heightData/heightApi';
 import {
   GPFeatureRecordSetLayer,
@@ -44,14 +44,16 @@ export const profileEffect = atomEffect((get, set) => {
   const body = new GPFeatureRecordSetLayer([lineCoordinates], wkid);
 
   const effect = async () => {
-    const submitResponse = await submitHeightProfileRequest(body, stepLength);
+    const submitResponse = await submitelevationProfileRequest(
+      body,
+      stepLength,
+    );
     set(profileJobStatusAtom, 'running');
     disableDrawInteraction();
     while (true) {
-      const status = await getHeightProfileJobStatus(submitResponse.jobId);
+      const status = await getelevationProfileJobStatus(submitResponse.jobId);
       if (status.jobStatus === 'esriJobSucceeded') {
-        console.log('Job succeeded:', status);
-        const result = await getHeightProfileResult(
+        const result = await getelevationProfileResult(
           submitResponse.jobId,
           'output_points',
         );

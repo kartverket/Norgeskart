@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Maplayers",
-      "mobiletext": "Layers"
+      "openText": "Thematic map",
+      "mobiletext": "Thematics"
     },
     "print": {
       "text": "Print"
@@ -18,11 +18,18 @@
     "sharemap": {
       "text": "Share map",
       "mobiletext": "Share"
+    },
+    "help": {
+      "mobiletext": "Help"
     }
   },
   "draw": {
     "begin": "Draw on map",
     "clear": "Clear drawing",
+    "privacyNotice": {
+      "title": "Drawing storage",
+      "message": "When you save a drawing, it is stored for 2 years on Kartverket's servers. Anyone with the link can view the drawing. To delete drawings, contact post@kartverket.no."
+    },
     "close": "Close",
     "confrimClear": "Are you sure?",
     "controls": {
@@ -32,7 +39,7 @@
       "colorStroke": "Stroke",
       "colorText": "Text",
       "pointType": "Select icon",
-      "showMeasurements": "Show measurements",
+      "showMeasurements": "Show measurements on map",
       "tool": {
         "tooltip": {
           "circle": "Circle",
@@ -47,18 +54,20 @@
       },
       "toolSelect": {
         "placeholder": "Select draw tool"
-      }
+      },
+      "color": "Colors"
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
     "save": "Save",
     "size": {
-      "label": "Size"
+      "label": "Element size"
     },
     "tabHeading": "Draw and measure",
     "textInputLabel": "Enter text",
     "tools": "Tools",
-    "yesClear": "Yes clear"
+    "yesClear": "Yes clear",
+    "redoundo": "Undo / Redo "
   },
   "export": {
     "format": {
@@ -99,9 +108,6 @@
   },
   "languageSelector": {
     "chooseLanguage": "Select language",
-    "english": "English",
-    "norwegianBokmaal": "Norwegian bokmål",
-    "norwegianNynorsk": "Norwegian nynorsk",
     "tabHeading": "Language"
   },
   "locationType": {
@@ -189,7 +195,10 @@
           "label": "Chose theme layers",
           "activeLayersCount": "Active layers",
           "warningLimit": "Maximum layer limit reached. Please deactivate some layers before adding more for better performance.",
-          "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers."
+          "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers.",
+          "resetbutton": {
+            "text": "Reset"
+          }
         }
       }
     },
@@ -204,13 +213,16 @@
         "label": "Rotate left"
       },
       "orientation": {
-        "label": "Reset the map to standard view"
+        "label": "Reset the map orientation"
       },
       "rotateRight": {
         "label": "Rotate right"
       },
       "myLocation": {
-        "label": "Go to my location"
+        "enable": { "label": "Go to my location" },
+        "disable": {
+          "label": "Hide position"
+        }
       },
       "fullscreen": {
         "label": "Use fullscreen"
@@ -234,7 +246,7 @@
   },
   "privacyAndContact": {
     "contactUs": "Contact us",
-    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Feel free to contact us by email or phone.",
+    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Use the form linked below, or feel free to contact us by email or phone.",
     "infoText": "Read how we protect personal data in the Norwegian Mapping Authority's",
     "privacyPolicy": "Privacy policy ",
     "sendEmail": "Send e-mail",
@@ -242,7 +254,8 @@
     "status": {
       "heading": "Status",
       "infoText": "See the status of our apps and services by following the link"
-    }
+    },
+    "formsLinkText": "Open feedback form"
   },
   "propertyInfo": {
     "holdingNr": "Holding nr.",
@@ -320,11 +333,11 @@
     }
   },
   "cookieDialog": {
-    "heading": "We're using cookies ",
-    "body": "We do this to give you a better experience. By pressing 'OK' you accept the use of cookies.",
+    "heading": "We use cookies",
+    "body": "Norgeskart uses cookies to make the website work and to understand how the service is used, so that we can improve it.\n\nWe use the analytics tool PostHog to collect anonymized usage statistics, such as which pages are visited and which features are used. The information is only used for statistics and service improvement.\n\nYou can change or withdraw your consent at any time under Help – Privacy. \n\n The feedback field is an open free-text field. We ask you not to enter sensitive personal information. If you do provide personal information, it will be deleted as soon as possible and not used further.",
     "buttons": {
-      "accept": "OK",
-      "reject": "Deny"
+      "accept": "Accept",
+      "reject": "Decline"
     }
   },
   "info": {
@@ -351,7 +364,7 @@
       "hiking": {
         "heading": "Hiking map"
       },
-      "heightProfile": {
+      "elevationProfile": {
         "heading": "Height profile"
       },
       "emergencyPoster": {
@@ -373,13 +386,13 @@
         "heading": "Click the map to set the location for the poster",
         "fields": {
           "title": {
-            "label": "Give the location a name"
+            "label": "Poster title"
           },
           "place": {
-            "label": "Select right place name"
+            "label": "Select nearest location"
           },
           "road": {
-            "label": "The closest road is"
+            "label": "Select nearest address"
           },
           "isInfoCorrect": {
             "label": "Is the above info correct?"
@@ -393,7 +406,7 @@
         "makePoster": "Create poster"
       }
     },
-    "heightProfile": {
+    "elevationProfile": {
       "heading": "Draw a line to create a height profile",
       "infotext": "Start creating a height profile by clicking the map to place the first point and double click to finish.",
       "jobError": "Failed to load height profile data.",
@@ -401,8 +414,71 @@
       "buttons": {
         "exportCsv": {
           "label": "Export as CSV"
+        },
+        "exportPng": {
+          "label": "Download as PNG"
+        },
+        "exportJpeg": {
+          "label": "Download as JPEG"
         }
+      },
+      "chartLabels": {
+        "title": "elevationProfile",
+        "xAxis": "Distance [m]",
+        "yAxis": "Elevation [m]"
       }
+    },
+    "hikingMap": {
+      "heading": "Choose a scale and give your map a name",
+      "fields": {
+        "scale": {
+          "label": "Scale"
+        },
+        "mapName": {
+          "label": "Name on map",
+          "placeholder": "My hiking map",
+          "helpertext": "Only a-z and numbers"
+        },
+        "includeLegend": {
+          "label": "map legend"
+        },
+        "includeSweeden": {
+          "label": "map into Sweeden (50km)"
+        },
+        "includeCompassInstructions": {
+          "label": "crash course in compass usage"
+        },
+        "heading": "Include"
+      },
+      "overlayinstructions": "Place the orange overlay where you want the map",
+      "buttons": {
+        "generate": "Make map",
+        "cancel": "Cancel",
+        "download": "Download map"
+      },
+      "errors": {
+        "generateFailed": "Print failed"
+      },
+      "popupblockedalert": {
+        "title": "Popup blocked",
+        "body": "Popups are blocked. Please unblock them and try again"
+      }
+    }
+  },
+  "printExtent": {
+    "label": "Select format",
+    "placeholder": "Format",
+    "orientation": {
+      "portrait": "Portrait",
+      "landscape": "Landscape"
+    },
+    "description": "Place the orange area over the part of the map you want to print",
+    "button": {
+      "print": "Download map"
+    },
+    "toast": {
+      "success": "Download complete",
+      "error": "Could not download map"
     }
   }
 }

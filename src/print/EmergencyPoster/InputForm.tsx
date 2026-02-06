@@ -3,7 +3,6 @@ import {
   FieldLabel,
   FieldRoot,
   Flex,
-  Heading,
   Input,
   Separator,
   Stack,
@@ -14,119 +13,59 @@ import {
   Text,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useQuery } from '@tanstack/react-query';
-import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
-import { MapBrowserEvent } from 'ol';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
-import BaseEvent from 'ol/events/Event';
-import { transform } from 'ol/proj';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getPosterMarkerLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
-import { selectedResultAtom } from '../../search/atoms';
-import { getEmergecyPosterInfoByCoordinates } from '../../search/searchApi';
-import { createMarkerFromCoordinate } from '../../search/searchmarkers/marker';
 import { downloadFile } from '../../shared/utils/fileUtils';
+import { EmergencyPosterResponse } from '../../types/searchTypes';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { PlaceSelector } from './PlaceSelector';
 import { RoadAddressSelection } from './RoadAddressSelection';
 import { createPosterUrl } from './utils';
 
-export const InputForm = () => {
+const LABEL_WIDTH = '40%';
+export const InputForm = ({
+  clickedCoordinates,
+  emergenyPosterData,
+}: {
+  clickedCoordinates: Coordinate;
+  emergenyPosterData: EmergencyPosterResponse;
+}) => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
-  const [clickedCoordinates, setClickedCoordinates] =
-    useState<Coordinate | null>(() => {
-      const selectedResult = getDefaultStore().get(selectedResultAtom);
-      if (selectedResult) {
-        return [selectedResult.lon, selectedResult.lat];
-      }
-      return null;
-    });
+  const [customNameChanged, setCustomNameChanged] = useState(false);
+
   const [customName, setCustomName] = useState<string>('');
-  const [selectedRoad, setSelectedRoad] = useState<string | null>(null);
+  const [selectedRoad, setSelectedRoad] = useState<string | null>(
+    emergenyPosterData.vegliste[0],
+  );
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
   const [isInfoCorrect, setIsInfoCorrect] = useState<boolean>(false);
 
-  const posthog = usePostHog();
-
-  const posterClickHandler = (event: Event | BaseEvent) => {
-    if (event instanceof MapBrowserEvent) {
-      const coordinate = event.coordinate;
-      setClickedCoordinates(coordinate);
-    }
-  };
-
-  useEffect(() => {
-    map.addEventListener('click', posterClickHandler);
-    return () => {
-      map.removeEventListener('click', posterClickHandler);
-    };
-  }, [map]);
-
-  useEffect(() => {
-    if (!clickedCoordinates) {
-      return;
-    }
-    const marker = createMarkerFromCoordinate(
-      clickedCoordinates[0],
-      clickedCoordinates[1],
-      'yellow',
-    );
-    const markerlayer = getPosterMarkerLayer();
-    const makerSource = markerlayer.getSource();
-    if (!makerSource) {
-      return;
-    }
-    makerSource.clear();
-    makerSource.addFeature(marker);
-    return () => {
-      makerSource.clear();
-    };
-  }, [clickedCoordinates]);
-
-  const emergenyPosterData = useQuery({
-    queryKey: ['emergencyPosterData', clickedCoordinates],
-    queryFn: async () => {
-      if (!clickedCoordinates) {
-        return null;
-      }
-      const transformedCoordinates = transform(
-        clickedCoordinates,
-        map.getView().getProjection(),
-        'EPSG:4326',
-      );
-
-      const response = await getEmergecyPosterInfoByCoordinates(
-        transformedCoordinates[0],
-        transformedCoordinates[1],
-      );
-
-      return response;
-    },
-  });
+  const ph = usePostHog();
 
   return (
-    <Stack>
-      <Heading size={'md'}>
-        {t('printdialog.emergencyPoster.inputform.heading')}
-      </Heading>
-      <Separator />
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+    <Stack gap={3}>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={LABEL_WIDTH}>
           {t('printdialog.emergencyPoster.inputform.fields.title.label')}
         </FieldLabel>
         <Input
           value={customName}
           onChange={(s) => {
             setCustomName(s.target.value);
+            if (!customNameChanged) {
+              setCustomNameChanged(true);
+            }
           }}
+          borderRadius={0}
         />
       </FieldRoot>
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={LABEL_WIDTH}>
           {t('printdialog.emergencyPoster.inputform.fields.place.label')}
         </FieldLabel>
         <PlaceSelector
@@ -134,33 +73,39 @@ export const InputForm = () => {
           range={1500}
           onSelect={(s) => {
             setSelectedPlace(s);
-            setCustomName(s);
+            if (!customNameChanged) {
+              setCustomName(s);
+            }
           }}
           onLoadComplete={(s) => {
             setSelectedPlace(s);
-            setCustomName(s);
+            if (!customNameChanged) {
+              setCustomName(s);
+            }
           }}
         />
       </FieldRoot>
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
-          {t('printdialog.emergencyPoster.inputform.fields.road.label')}
-        </FieldLabel>
-        <RoadAddressSelection
-          posterData={emergenyPosterData}
-          onSelect={(s) => {
-            setSelectedRoad(s);
-          }}
-        />
-      </FieldRoot>
-      <Text>
-        {emergenyPosterData.isSuccess
-          ? `${t('shared.in')} ${emergenyPosterData.data?.kommune} ${t('shared.locations.municipality')}`
-          : ''}
-      </Text>
+      {emergenyPosterData.vegliste.length > 0 && (
+        <>
+          <FieldRoot orientation={'horizontal'} display={'flex'}>
+            <FieldLabel flexBasis={LABEL_WIDTH}>
+              {t('printdialog.emergencyPoster.inputform.fields.road.label')}
+            </FieldLabel>
+            <RoadAddressSelection
+              posterData={emergenyPosterData}
+              onSelect={(s) => {
+                setSelectedRoad(s);
+              }}
+            />
+          </FieldRoot>
+          <Text>
+            {`${t('shared.in')} ${emergenyPosterData.kommune} ${t('shared.locations.municipality')}`}
+          </Text>
+        </>
+      )}
       <Separator />
-      <FieldRoot orientation={'horizontal'}>
-        <FieldLabel>
+      <FieldRoot orientation={'horizontal'} display={'flex'}>
+        <FieldLabel flexBasis={'80%'}>
           {t(
             'printdialog.emergencyPoster.inputform.fields.isInfoCorrect.label',
           )}
@@ -190,15 +135,27 @@ export const InputForm = () => {
         <Button
           disabled={!isInfoCorrect || !clickedCoordinates}
           onClick={() => {
+            let roadString = '';
+            if (selectedRoad) {
+              roadString += selectedRoad;
+              if (emergenyPosterData.kommune != '') {
+                roadString += ` i ${emergenyPosterData.kommune}`;
+              }
+            }
+            let cadastreString = '';
+            if (emergenyPosterData.matrikkelnr) {
+              cadastreString += emergenyPosterData.matrikkelnr;
+              if (emergenyPosterData.kommune != '') {
+                cadastreString += ` i ${emergenyPosterData.kommune}`;
+              }
+            }
             const downloadLink = createPosterUrl(
               customName,
               clickedCoordinates!,
               map.getView().getProjection().getCode(),
-              selectedRoad || '',
+              roadString,
               selectedPlace || '',
-              emergenyPosterData.data
-                ? `${emergenyPosterData.data.matrikkelnr || ''} i ${emergenyPosterData.data.kommune || ''}`
-                : '',
+              cadastreString,
             );
 
             if (!downloadLink) {
@@ -207,16 +164,12 @@ export const InputForm = () => {
                   'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                 ),
               );
-              posthog.capture('print_emergency_poster_created', {
-                success: false,
-              });
+              ph.capture('print_emergency_poster_failed');
               return;
             }
 
             downloadFile(downloadLink, customName + '_emergency_poster.pdf');
-            posthog.capture('print_emergency_poster_created', {
-              success: true,
-            });
+            ph.capture('print_emergency_poster_created');
           }}
         >
           {t('printdialog.emergencyPoster.buttons.makePoster')}
