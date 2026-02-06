@@ -58,6 +58,7 @@ export const MapToolButtons = () => {
               : t('controller.maplayers.openText')
           }
           active={currentMapTool === 'layers'}
+          id="map-layers-button"
         />
         {activeLayers.size > 0 && (
           <Text
@@ -88,6 +89,7 @@ export const MapToolButtons = () => {
         }
         active={currentMapTool === 'draw'}
         disabled={isPrintDialogOpenDisabled}
+        id="map-draw-button"
       />
       <MapButton
         onClick={handleShareMapClick}
@@ -97,6 +99,7 @@ export const MapToolButtons = () => {
             ? t('controller.sharemap.mobiletext')
             : t('controller.sharemap.text')
         }
+        id="map-share-button"
       />
       {!isMobile && (
         <MapButton
@@ -106,6 +109,7 @@ export const MapToolButtons = () => {
           icon={'print'}
           label={t('controller.print.text')}
           ariaLabel="print"
+          id="map-print-button"
         />
       )}
       <MapButton
@@ -115,6 +119,7 @@ export const MapToolButtons = () => {
         icon={'help'}
         label={t('controller.help.mobiletext')}
         active={currentMapTool === 'info'}
+        id="map-info-button"
       />
     </HStack>
   );
@@ -127,6 +132,7 @@ interface MapButtonProps {
   active?: boolean;
   ariaLabel?: string;
   disabled?: boolean;
+  id?: string;
 }
 const MapButton = ({
   onClick,
@@ -135,17 +141,23 @@ const MapButton = ({
   active,
   ariaLabel,
   disabled,
+  id,
 }: MapButtonProps) => {
+  const posthog = usePostHog();
   return (
     <Button
       disabled={disabled}
       w={'fit-content'}
-      onClick={onClick}
+      onClick={() => {
+        posthog.capture('map_tool_button_clicked', { tool: id || label });
+        onClick();
+      }}
       variant="ghost"
       colorPalette="green"
       py={{ base: 2, md: 8 }}
       backgroundColor={active ? '#D0ECD6' : ''}
       aria-label={ariaLabel || label}
+      id={id}
     >
       <VStack gap={{ base: 0, md: 1 }} align="center" justify="center">
         <Icon icon={icon} />
