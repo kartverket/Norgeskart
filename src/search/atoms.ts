@@ -1,11 +1,8 @@
 import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { transform } from 'ol/proj';
-import {
-  DEFAULT_PROJECTION,
-  mapAtom,
-  ProjectionIdentifier,
-} from '../map/atoms';
+import { DEFAULT_PROJECTION, mapAtom } from '../map/atoms';
+import { ProjectionIdentifier } from '../map/types/projections';
 import { isPrintDialogOpenAtom } from '../print/atoms';
 import {
   parseCoordinateInput,

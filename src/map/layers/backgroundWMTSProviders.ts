@@ -5,7 +5,8 @@ import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import Tile, { LoadFunction } from 'ol/Tile';
 import { getEnv } from '../../env';
-import { AvailableProjections, ProjectionIdentifier } from '../atoms';
+import { AvailableProjections } from '../atoms';
+import { ProjectionIdentifier } from '../types/projections';
 
 export const DEFAULT_BACKGROUND_LAYER = 'topo';
 

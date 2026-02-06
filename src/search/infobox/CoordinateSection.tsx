@@ -3,7 +3,8 @@ import { useAtomValue } from 'jotai';
 import { transform } from 'ol/proj';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom, ProjectionIdentifier } from '../../map/atoms';
+import { mapAtom } from '../../map/atoms';
+import { ProjectionIdentifier } from '../../map/types/projections';
 import { ProjectionPopover } from '../../shared/Components/ProjectionPopover';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
 

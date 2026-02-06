@@ -1,6 +1,7 @@
 import { useAtomValue } from 'jotai';
 import TileLayer from 'ol/layer/Tile';
-import { mapAtom, ProjectionIdentifier } from '../atoms';
+import { mapAtom } from '../atoms';
+import { ProjectionIdentifier } from '../types/projections';
 import { getWMSLayer, WMSLayerName } from './backgroundWMS';
 import { loadableWMTS, WMTSLayerName } from './backgroundWMTSProviders';
 

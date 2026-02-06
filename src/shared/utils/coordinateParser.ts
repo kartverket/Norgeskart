@@ -1,4 +1,4 @@
-import { ProjectionIdentifier } from '../../map/atoms';
+import { ProjectionIdentifier } from '../../map/types/projections';
 
 export interface ParsedCoordinate {
   lat: number;

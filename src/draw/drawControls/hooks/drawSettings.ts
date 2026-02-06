@@ -9,7 +9,7 @@ import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../../../api/nkApiClient';
-import { mapAtom, ProjectionIdentifier } from '../../../map/atoms';
+import { mapAtom } from '../../../map/atoms';
 import {
   drawEnabledAtom,
   drawTypeAtom,
@@ -22,6 +22,7 @@ import {
   enableFeatureMeasurementOverlay,
 } from '../drawUtils';
 
+import { ProjectionIdentifier } from '../../../map/types/projections';
 import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
 import { getDrawLayer } from './mapLayers';
