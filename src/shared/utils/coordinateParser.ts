@@ -86,7 +86,9 @@ export const parseCoordinateInput = (
   const trimmedInput = input.trim();
 
   if (trimmedInput.includes('@')) {
-    const epsgResult = parseWithEPSG(normalizeDirections(trimmedInput));
+    const epsgResult = parseWithEPSG(
+      normalizeDecimalSeparators(normalizeDirections(trimmedInput)),
+    );
     if (epsgResult) {
       return epsgResult;
     }
