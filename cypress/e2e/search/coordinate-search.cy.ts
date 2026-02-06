@@ -112,6 +112,7 @@ describe('Coordinate Search', () => {
     });
 
     it('should parse DMS with direction before coordinates', () => {
+      // eslint-disable-next-line
       const coordinates = 'N 60° 5\' 38\'\', E 10° 50\' 10\'\'';
 
       getSearchInput().type(coordinates);
