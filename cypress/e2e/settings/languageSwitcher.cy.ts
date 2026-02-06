@@ -99,7 +99,9 @@ describe('Language Switcher', () => {
       cy.reload();
       cy.get('#map').should('be.visible');
 
-      cy.contains('button', 'Settings', { timeout: 5000 }).click({ force: true });
+      cy.contains('button', 'Settings', { timeout: 5000 }).click({
+        force: true,
+      });
       cy.wait(200);
 
       cy.contains('Choose language').should('be.visible');

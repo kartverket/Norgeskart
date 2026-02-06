@@ -150,9 +150,7 @@ describe('Map Tool Buttons', () => {
       cy.contains('button', 'Del kart').click();
       cy.wait(500);
 
-      cy.contains('Lenken er kopiert til utklippstavlen').should(
-        'be.visible',
-      );
+      cy.contains('Lenken er kopiert til utklippstavlen').should('be.visible');
     });
   });
 
