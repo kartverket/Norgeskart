@@ -83,27 +83,32 @@ export const parseCoordinateInput = (
     return null;
   }
 
-  const normalizedInput = normalizeDecimalSeparators(
-    normalizeDirections(input.trim()),
-  );
-  const trimmedInput = normalizedInput;
+  const trimmedInput = input.trim();
 
-  const epsgResult = parseWithEPSG(trimmedInput);
-  if (epsgResult) {
-    return epsgResult;
+  if (trimmedInput.includes('@')) {
+    const epsgResult = parseWithEPSG(
+      normalizeDecimalSeparators(normalizeDirections(trimmedInput)),
+    );
+    if (epsgResult) {
+      return epsgResult;
+    }
   }
 
-  const decimalResult = parseDecimalDegrees(trimmedInput);
+  const normalizedInput = normalizeDecimalSeparators(
+    normalizeDirections(trimmedInput),
+  );
+
+  const decimalResult = parseDecimalDegrees(normalizedInput);
   if (decimalResult) {
     return decimalResult;
   }
 
-  const dmsResult = parseDMS(trimmedInput);
+  const dmsResult = parseDMS(normalizedInput);
   if (dmsResult) {
     return dmsResult;
   }
 
-  const utmResult = parseUTM(trimmedInput, fallbackProjection);
+  const utmResult = parseUTM(normalizedInput, fallbackProjection);
   if (utmResult) {
     return utmResult;
   }
@@ -114,6 +119,7 @@ export const parseCoordinateInput = (
 /**
  * Parse coordinates with explicit EPSG code
  * Examples: "425917 7730314@25833", "59.91273, 10.74609@4326", "598515 6643994@25832"
+ * Also supports: "163834.01,6663030.01@EPSG:25833"
  */
 const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   if (!input.includes('@')) {
@@ -128,7 +134,7 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   const coordsPart = parts[0].trim();
   const epsgPart = parts[1].trim();
 
-  const epsgMatch = epsgPart.match(/^(\d{4,5})$/);
+  const epsgMatch = epsgPart.match(/^(?:EPSG:)?(\d{4,5})$/i);
   if (!epsgMatch) {
     return null;
   }

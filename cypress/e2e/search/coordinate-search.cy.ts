@@ -132,6 +132,34 @@ describe('Coordinate Search', () => {
       getSearchInput().type(coordinates);
       cy.contains('UTM 32').should('be.visible');
     });
+
+    it('should parse coordinates with full EPSG: prefix', () => {
+      const coordinates = '163834.01,6663030.01@EPSG:25833';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 33').should('be.visible');
+    });
+
+    it('should parse EPSG coordinates with European decimal separators (commas)', () => {
+      const coordinates = '163834,01 6663030,01@EPSG:25833';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 33').should('be.visible');
+    });
+
+    it('should parse EPSG:4326 coordinates with European decimal separators', () => {
+      const coordinates = '59,91273 10,74609@4326';
+
+      getSearchInput().type(coordinates);
+      cy.contains('WGS84').should('be.visible');
+    });
+
+    it('should parse EPSG coordinates with European decimals and semicolon separator', () => {
+      const coordinates = '163834,01;6663030,01@EPSG:25833';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 33').should('be.visible');
+    });
   });
 
   describe('Norwegian Language Support', () => {
