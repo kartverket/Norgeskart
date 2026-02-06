@@ -61,20 +61,48 @@ describe('Coordinate Search', () => {
       getSearchInput().type(coordinates);
       cy.contains('59.9494').should('be.visible');
     });
+
+    it('should handle semicolon separator', () => {
+      const coordinates = '59.91273; 10.74609';
+
+      getSearchInput().type(coordinates);
+      cy.contains('59.91273').should('be.visible');
+      cy.contains('10.74609').should('be.visible');
+    });
+
+    it('should handle space-only separator', () => {
+      const coordinates = '59.91273 10.74609';
+
+      getSearchInput().type(coordinates);
+      cy.contains('59.91273').should('be.visible');
+      cy.contains('10.74609').should('be.visible');
+    });
+
+    it('should handle Bergen coordinates', () => {
+      const coordinates = '60.39299, 5.32415';
+
+      getSearchInput().type(coordinates);
+      cy.contains('60.39299').should('be.visible');
+      cy.contains('5.32415').should('be.visible');
+    });
+
+    it('should handle Tromsø coordinates', () => {
+      const coordinates = '69.6496, 18.9560';
+
+      getSearchInput().type(coordinates);
+      cy.contains('69.6496').should('be.visible');
+    });
   });
 
   describe('DMS (Degrees Minutes Seconds) Format', () => {
-    /*
     it('should parse standard DMS format', () => {
       const dmsCoordinates = '59°54\'45.8"N 10°44\'45.9"E';
 
       getSearchInput().type(dmsCoordinates);
-      // Verify DMS result appears (formatted back)
       cy.contains('°').should('be.visible');
       cy.contains('N').should('be.visible');
       cy.contains('E').should('be.visible');
     });
-    */
 
     it('should parse DMS with decimal minutes', () => {
       const dmCoordinates = "60° 50.466' N, 04° 52.535' E";
@@ -82,14 +110,28 @@ describe('Coordinate Search', () => {
       getSearchInput().type(dmCoordinates);
       cy.contains('°').should('be.visible');
     });
-    /*
+
     it('should parse DMS with direction before coordinates', () => {
-      const coordinates = 'N 60° 5\' 38", E 10° 50\' 10"';
+      const coordinates = 'N 60° 5\' 38\'\', E 10° 50\' 10\'\'';
 
       getSearchInput().type(coordinates);
       cy.contains('°').should('be.visible');
     });
-    */
+
+    it('should parse DMS without quotes on seconds', () => {
+      const coordinates = "60°10'10,10°10'10";
+
+      getSearchInput().type(coordinates);
+      cy.contains('°').should('be.visible');
+    });
+
+    it('should parse DMS with spaces', () => {
+      const coordinates = '59° 54\' 45.8" N, 10° 44\' 45.9" E';
+
+      getSearchInput().type(coordinates);
+      cy.contains('°').should('be.visible');
+      cy.contains('N').should('be.visible');
+    });
   });
 
   describe('UTM Format', () => {
@@ -108,6 +150,37 @@ describe('Coordinate Search', () => {
       getSearchInput().type(utmCoordinates);
       cy.contains('UTM').should('be.visible');
       cy.contains('33').should('be.visible');
+    });
+
+    it('should parse UTM with space separator', () => {
+      const coordinates = '598515 6643994';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM').should('be.visible');
+      cy.contains('598515').should('be.visible');
+    });
+
+    it('should auto-detect northing-first order', () => {
+      const coordinates = '6643994, 598515';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM').should('be.visible');
+      cy.contains('598515').should('be.visible');
+      cy.contains('6643994').should('be.visible');
+    });
+
+    it('should parse UTM with direction letters N/E', () => {
+      const coordinates = '6653873.01 N, 227047.11 E';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM').should('be.visible');
+    });
+
+    it('should parse UTM with zone 32', () => {
+      const coordinates = '32 425917 7730314';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 32').should('be.visible');
     });
   });
 
@@ -140,6 +213,15 @@ describe('Coordinate Search', () => {
       cy.contains('UTM 33').should('be.visible');
     });
 
+    it('should parse dot-decimal coordinates with comma separator and EPSG', () => {
+      const coordinates = '242366.00,6736146.01@EPSG:25833';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 33').should('be.visible');
+      cy.contains('242366').should('be.visible');
+      cy.contains('6736146').should('be.visible');
+    });
+
     it('should parse EPSG coordinates with European decimal separators (commas)', () => {
       const coordinates = '163834,01 6663030,01@EPSG:25833';
 
@@ -160,11 +242,69 @@ describe('Coordinate Search', () => {
       getSearchInput().type(coordinates);
       cy.contains('UTM 33').should('be.visible');
     });
+
+    it('should parse EPSG:4258 (ETRS89)', () => {
+      const coordinates = '59.91273, 10.74609@4258';
+
+      getSearchInput().type(coordinates);
+      cy.contains('ETRS89').should('be.visible');
+    });
+
+    it('should parse case-insensitive EPSG prefix', () => {
+      const coordinates = '598515 6643994@epsg:25833';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 33').should('be.visible');
+    });
+
+    it('should parse comma-separated 4326 without spaces', () => {
+      const coordinates = '59.91273,10.74609@4326';
+
+      getSearchInput().type(coordinates);
+      cy.contains('WGS84').should('be.visible');
+    });
+
+    it('should parse integer UTM with comma separator and EPSG', () => {
+      const coordinates = '500000,7000000@25833';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 33').should('be.visible');
+      cy.contains('500000').should('be.visible');
+      cy.contains('7000000').should('be.visible');
+    });
+
+    it('should parse UTM zone 34 with EPSG', () => {
+      const coordinates = '598515 7643994@25834';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 34').should('be.visible');
+    });
+
+    it('should parse UTM zone 35 with EPSG', () => {
+      const coordinates = '498515 7643994@25835';
+
+      getSearchInput().type(coordinates);
+      cy.contains('UTM 35').should('be.visible');
+    });
   });
 
   describe('Norwegian Language Support', () => {
     it('should parse coordinates with Norwegian direction words', () => {
       const coordinates = '60° Nord, 10° Øst';
+
+      getSearchInput().type(coordinates);
+      cy.contains('60').should('be.visible');
+    });
+
+    it('should parse uppercase Norwegian directions', () => {
+      const coordinates = '60° NORD, 10° ØST';
+
+      getSearchInput().type(coordinates);
+      cy.contains('60').should('be.visible');
+    });
+
+    it('should parse English direction words', () => {
+      const coordinates = '60° North, 10° East';
 
       getSearchInput().type(coordinates);
       cy.contains('60').should('be.visible');
@@ -220,6 +360,32 @@ describe('Coordinate Search', () => {
     it('should handle empty search input gracefully', () => {
       getSearchInput().type(' ').clear();
       cy.get('#map').should('be.visible');
+    });
+  });
+
+  describe('NTM (Norwegian Transverse Mercator) - Unsupported', () => {
+    it('should not parse NTM zone 10 coordinates (EPSG:5110)', () => {
+      const coordinates = '100000,6500000@5110';
+
+      getSearchInput().type(coordinates);
+      cy.contains('NTM').should('not.exist');
+      cy.contains('UTM').should('not.exist');
+    });
+
+    it('should not parse NTM zone 15 coordinates (EPSG:5115)', () => {
+      const coordinates = '100000 6600000@5115';
+
+      getSearchInput().type(coordinates);
+      cy.contains('NTM').should('not.exist');
+      cy.contains('UTM').should('not.exist');
+    });
+
+    it('should not parse NTM with full EPSG prefix (EPSG:5120)', () => {
+      const coordinates = '100000,6700000@EPSG:5120';
+
+      getSearchInput().type(coordinates);
+      cy.contains('NTM').should('not.exist');
+      cy.contains('UTM').should('not.exist');
     });
   });
 

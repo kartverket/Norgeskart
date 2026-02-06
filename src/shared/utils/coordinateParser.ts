@@ -41,10 +41,29 @@ const normalizeDecimalSeparators = (input: string): string => {
   // But preserve "60,10" as two separate coordinates (not 60.10)
 
   // Count short decimal patterns (1-2 digits after comma)
-  const shortPatterns = input.match(/\d,\d{1,2}(?=,|;|\s|$)/g) || [];
+  const shortPatterns = input.match(/\d,\d{1,2}(?=,|;|\s|@|$)/g) || [];
   const hasMultipleShortPatterns = shortPatterns.length >= 2;
 
   return input.replace(/(\d),(\d+)/g, (match, before, after, offset, str) => {
+    const textBefore = str.slice(0, offset + 1);
+    const numberBeforeComma = textBefore.match(/[\d.]+$/);
+
+    // If the number before the comma already uses dot as decimal separator
+    // (e.g., "242366.00,6736146.01"), the comma is a coordinate separator
+    if (numberBeforeComma && numberBeforeComma[0].includes('.')) {
+      return match;
+    }
+
+    // If both sides of the comma are large numbers (>= 1000), the comma is
+    // a coordinate separator, not a European decimal (e.g., "500000,7000000")
+    if (numberBeforeComma) {
+      const fullBefore = parseInt(numberBeforeComma[0], 10);
+      const fullAfter = parseInt(after, 10);
+      if (fullBefore >= 1000 && fullAfter >= 1000) {
+        return match;
+      }
+    }
+
     // 3+ digits after comma = definitely European decimal (e.g., 60,135106)
     if (after.length >= 3) {
       return `${before}.${after}`;
@@ -53,9 +72,9 @@ const normalizeDecimalSeparators = (input: string): string => {
     if (hasMultipleShortPatterns) {
       return `${before}.${after}`;
     }
-    // Single short pattern: only convert if followed by delimiter+digit (next coord coming)
+    // Single short pattern: only convert if followed by delimiter+digit or @ (next coord/EPSG coming)
     const rest = str.slice(offset + match.length);
-    if (/^[,;]\s*\d|^\s+\d/.test(rest)) {
+    if (/^[,;]\s*\d|^\s+\d|^@/.test(rest)) {
       return `${before}.${after}`;
     }
     // Otherwise keep as-is (e.g., "60,10" alone = two coordinates)
@@ -89,9 +108,7 @@ export const parseCoordinateInput = (
     const epsgResult = parseWithEPSG(
       normalizeDecimalSeparators(normalizeDirections(trimmedInput)),
     );
-    if (epsgResult) {
-      return epsgResult;
-    }
+    return epsgResult;
   }
 
   const normalizedInput = normalizeDecimalSeparators(
@@ -240,48 +257,59 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
 const parseDecimalDegrees = (input: string): ParsedCoordinate | null => {
   // First try to match decimal degrees with degree symbol and optional direction
   // Examples: "59.9494° N, 10.7564° E" or "60° N, 10° E"
-  const degreePattern =
-    /([NSEW])?\s*(\d+(?:\.\d+)?)\s*°\s*([NSEW])?[\s,;]+([NSEW])?\s*(\d+(?:\.\d+)?)\s*°\s*([NSEW])?/i;
-  const degreeMatch = input.match(degreePattern);
+  // But skip if input contains minute markers (') — that's DMS, not decimal degrees
+  const hasMinuteMarkers = /['\u2032]/.test(input);
 
-  if (degreeMatch) {
-    const dir1Before = degreeMatch[1]?.toUpperCase();
-    const num1 = parseFloat(degreeMatch[2]);
-    const dir1After = degreeMatch[3]?.toUpperCase();
-    const dir2Before = degreeMatch[4]?.toUpperCase();
-    const num2 = parseFloat(degreeMatch[5]);
-    const dir2After = degreeMatch[6]?.toUpperCase();
+  if (!hasMinuteMarkers) {
+    const degreePattern =
+      /([NSEW])?\s*(\d+(?:\.\d+)?)\s*°\s*([NSEW])?[\s,;]+([NSEW])?\s*(\d+(?:\.\d+)?)\s*°\s*([NSEW])?/i;
+    const degreeMatch = input.match(degreePattern);
 
-    if (!isNaN(num1) && !isNaN(num2)) {
-      // Determine which is lat and which is lon based on direction letters
-      const dir1 = dir1Before || dir1After;
-      const dir2 = dir2Before || dir2After;
+    if (degreeMatch) {
+      const dir1Before = degreeMatch[1]?.toUpperCase();
+      const num1 = parseFloat(degreeMatch[2]);
+      const dir1After = degreeMatch[3]?.toUpperCase();
+      const dir2Before = degreeMatch[4]?.toUpperCase();
+      const num2 = parseFloat(degreeMatch[5]);
+      const dir2After = degreeMatch[6]?.toUpperCase();
 
-      let lat: number, lon: number;
+      if (!isNaN(num1) && !isNaN(num2)) {
+        // Determine which is lat and which is lon based on direction letters
+        const dir1 = dir1Before || dir1After;
+        const dir2 = dir2Before || dir2After;
 
-      if (dir1 === 'N' || dir1 === 'S') {
-        lat = dir1 === 'S' ? -num1 : num1;
-        lon = dir2 === 'W' ? -num2 : num2;
-      } else if (dir1 === 'E' || dir1 === 'W') {
-        lon = dir1 === 'W' ? -num1 : num1;
-        lat = dir2 === 'S' ? -num2 : num2;
-      } else {
-        // No direction specified, assume first is lat, second is lon
-        lat = num1;
-        lon = num2;
-      }
+        let lat: number, lon: number;
 
-      // Validate ranges
-      if (Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
-        return {
-          lat,
-          lon,
-          projection: 'EPSG:4326',
-          formattedString: `${lat.toFixed(5)}, ${lon.toFixed(5)}`,
-          inputFormat: 'decimal',
-        };
+        if (dir1 === 'N' || dir1 === 'S') {
+          lat = dir1 === 'S' ? -num1 : num1;
+          lon = dir2 === 'W' ? -num2 : num2;
+        } else if (dir1 === 'E' || dir1 === 'W') {
+          lon = dir1 === 'W' ? -num1 : num1;
+          lat = dir2 === 'S' ? -num2 : num2;
+        } else {
+          // No direction specified, assume first is lat, second is lon
+          lat = num1;
+          lon = num2;
+        }
+
+        // Validate ranges
+        if (Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
+          return {
+            lat,
+            lon,
+            projection: 'EPSG:4326',
+            formattedString: `${lat.toFixed(5)}, ${lon.toFixed(5)}`,
+            inputFormat: 'decimal',
+          };
+        }
       }
     }
+  }
+
+  // If input has DMS-like markers (° with ' or ″), don't try plain decimal parsing
+  // — let parseDMS handle it instead
+  if (/°/.test(input) && /['\u2032"\u2033]/.test(input)) {
+    return null;
   }
 
   // Remove common prefixes
@@ -550,11 +578,13 @@ const parseUTM = (
   }
 
   // Remove common prefixes and parentheses
+  // Note: \b doesn't work with non-ASCII chars like ø, so we use
+  // (^|[\s,;:=]) as a word boundary alternative for Norwegian words
   const cleaned = input
     .toLowerCase()
-    .replace(/\b(east|easting|øst|ost|e)[\s:=]*/gi, '')
-    .replace(/\b(north|northing|nord|n)[\s:=]*/gi, '')
-    .replace(/\b(zone|sone|utm)[\s:=]*/gi, '')
+    .replace(/(^|[\s,;:=])(east|easting|øst|ost|e)[\s:=]*/gi, '$1')
+    .replace(/(^|[\s,;:=])(north|northing|nord|n)[\s:=]*/gi, '$1')
+    .replace(/(^|[\s,;:=])(zone|sone|utm)[\s:=]*/gi, '$1')
     .replace(/[()]/g, '') // Remove parentheses
     .trim();
 
