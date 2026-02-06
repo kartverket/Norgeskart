@@ -8,7 +8,6 @@ import {
   Stack,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,19 +15,13 @@ import {
   rettIKartetCoordinatesAtom,
 } from '../../map/menu/dialogs/atoms';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
-import { getInputCRS } from '../../shared/utils/crsUtils';
-import {
-  placesNearbyAtom,
-  searchCoordinatesAtom,
-  selectedResultAtom,
-} from '../atoms';
-import { InfoboxAccordionContent } from './InfoboxAccodionContent';
+import { searchCoordinatesAtom, selectedResultAtom } from '../atoms';
+import { InfoboxAccordionContent } from './InfoboxAccordionContent';
 import { InfoBoxPreamble } from './InfoBoxPreamble';
 
 export const InfoBox = () => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
-  const placesNearby = useAtomValue(placesNearbyAtom);
   const { t } = useTranslation();
   const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
   const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
@@ -42,12 +35,6 @@ export const InfoBox = () => {
   if (selectedResult === null || isPrintDialogOpen) {
     return null;
   }
-  const inputCRS = getInputCRS(selectedResult);
-  const [x, y] = transform(
-    [selectedResult.lon, selectedResult.lat],
-    inputCRS,
-    'EPSG:25833',
-  );
 
   return (
     <Stack
@@ -73,7 +60,7 @@ export const InfoBox = () => {
           alignSelf={'flex-end'}
         />
       </Flex>
-      <InfoBoxPreamble result={selectedResult} x={x} y={y} />
+      <InfoBoxPreamble result={selectedResult} />
       <Box overflowY="auto" overflowX="auto">
         <AccordionRoot collapsible multiple defaultValue={[]}>
           <InfoboxAccordionContent />
