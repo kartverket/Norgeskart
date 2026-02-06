@@ -63,6 +63,7 @@ export const MapControlButtons = () => {
             setDisplayMapLegend((prev) => !prev);
           }}
           displayTooltip
+          variant="primary"
         />
       )}
 
@@ -94,7 +95,6 @@ export const MapControlButtons = () => {
           transition: 'none',
         }}
         displayTooltip
-        variant="tertiary"
       />
       <ControlButton
         icon="rotate_right"
@@ -127,7 +127,7 @@ interface ControlButtonProps {
   displayTooltip?: boolean;
   style?: CSSProperties;
   hide?: boolean;
-  variant?: 'ghost' | 'tertiary';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'tertiary';
 }
 
 const ControlIconButton = (props: ControlButtonProps) => {
