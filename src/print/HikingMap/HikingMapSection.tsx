@@ -15,6 +15,7 @@ import {
   Stack,
   VStack,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { getDefaultStore } from 'jotai';
 import { Overlay } from 'ol';
 import { getPointResolution, transform } from 'ol/proj';
@@ -59,6 +60,7 @@ export const HikingMapSection = () => {
   const [storedDownloadUrl, setStoredDownloadUrl] = useState<string | null>(
     null,
   );
+  const ph = usePostHog();
 
   const { setBackgroundLayer } = useMapSettings();
   useEffect(() => {
@@ -135,6 +137,12 @@ export const HikingMapSection = () => {
 
   const printHikingMap = async () => {
     setPrintLoading(true);
+    ph.capture('print_hiking_started', {
+      scale: selectedScale,
+      includeLegend,
+      includeSweeden,
+      includeCompassInstructions,
+    });
 
     const store = getDefaultStore();
     const map = store.get(mapAtom);
@@ -167,7 +175,21 @@ export const HikingMapSection = () => {
       const downloadLink = env.apiUrl + '/nkprint/' + res.linkPdf;
       const openRes = window.open(downloadLink, '_blank');
       if (openRes == null) {
+        ph.capture('print_hiking_complete_popup_blocked', {
+          scale: selectedScale,
+          includeLegend,
+          includeSweeden,
+          includeCompassInstructions,
+        });
+        setGenerateButtonText(t('printdialog.hikingMap.errors.popupBlocked'));
         setStoredDownloadUrl(downloadLink);
+      } else {
+        ph.capture('print_hiking_complete', {
+          scale: selectedScale,
+          includeLegend,
+          includeSweeden,
+          includeCompassInstructions,
+        });
       }
     } catch (error) {
       console.error('Error generating hiking map:', error);
@@ -297,6 +319,12 @@ export const HikingMapSection = () => {
           <Button
             onClick={() => {
               window.open(storedDownloadUrl, '_blank');
+              ph.capture('print_hiking_download_link_clicked', {
+                scale: selectedScale,
+                includeLegend,
+                includeSweeden,
+                includeCompassInstructions,
+              });
             }}
           >
             {t('printdialog.hikingMap.buttons.download')}

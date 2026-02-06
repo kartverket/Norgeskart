@@ -97,8 +97,7 @@ export const ExtentSection = () => {
   const handlePrint = async () => {
     if (!selectedLayout || !printBoxExtent) return;
 
-    ph.capture('print_extent', {
-      status: 'started',
+    ph.capture('print_extent_initiated', {
       format,
       orientation,
     });
@@ -110,15 +109,13 @@ export const ExtentSection = () => {
       backgroundLayer,
       extent: printBoxExtent,
       onSuccess: () => {
-        ph.capture('print_extent', {
-          status: 'success',
+        ph.capture('print_extent_complete', {
           format,
           orientation,
         });
       },
       onError: (msg) => {
-        ph.capture('print_extent', {
-          status: 'error',
+        ph.capture('print_extent_error', {
           format,
           orientation,
           errorMessage: msg,
