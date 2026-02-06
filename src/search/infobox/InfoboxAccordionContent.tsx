@@ -21,7 +21,7 @@ export const InfoboxAccordionContent = () => {
   const placesNearby = useAtomValue(placesNearbyAtom);
   const selectedResult = useAtomValue(selectedResultAtom);
   const accordion = useAccordionContext();
-  const posthog = usePostHog();
+  const ph = usePostHog();
 
   // It works ok, but might trigger falsly when two items are open and you close one of them.
   useEffect(() => {
@@ -29,11 +29,11 @@ export const InfoboxAccordionContent = () => {
       accordion.focusedValue != null &&
       accordion.value.includes(accordion.focusedValue)
     ) {
-      posthog.capture('infobox_accordion_item_opened', {
+      ph.capture('infobox_accordion_item_opened', {
         item: accordion.focusedValue,
       });
     }
-  }, [accordion]);
+  }, [accordion, ph]);
   if (!selectedResult) {
     return null;
   }

@@ -1,6 +1,7 @@
 import { Button, Group, Heading, HStack, VStack } from '@kvib/react';
 import { useState } from 'react';
 //import { useTranslation } from 'react-i18next';
+import { usePostHog } from '@posthog/react';
 import { useDrawSettings } from '../drawControls/hooks/drawSettings';
 import {
   handleGeoJsonExport,
@@ -13,11 +14,13 @@ type ExportFormat = (typeof exportFormats)[number];
 
 export const ExportControls = () => {
   const { getDrawLayer } = useDrawSettings();
+  const ph = usePostHog();
   //const { t } = useTranslation();
   const [exportFormat, setExportFormat] = useState<ExportFormat>('GeoJSON');
 
   const handleExport = () => {
     const drawLayer = getDrawLayer();
+    ph.capture('draw_export', { format: exportFormat });
     switch (exportFormat) {
       case 'GeoJSON':
         handleGeoJsonExport(drawLayer);

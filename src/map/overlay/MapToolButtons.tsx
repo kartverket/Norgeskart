@@ -22,7 +22,7 @@ export const MapToolButtons = () => {
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const isMobile = useIsMobileScreen();
   const isPrintDialogOpenDisabled = useAtomValue(isPrintDialogOpenAtom);
-  const posthog = usePostHog();
+  const ph = usePostHog();
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -80,7 +80,7 @@ export const MapToolButtons = () => {
       </Box>
       <MapButton
         onClick={() => {
-          posthog.capture('map_draw_button_clicked');
+          ph.capture('map_draw_button_clicked');
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={'edit'}
@@ -143,13 +143,13 @@ const MapButton = ({
   disabled,
   id,
 }: MapButtonProps) => {
-  const posthog = usePostHog();
+  const ph = usePostHog();
   return (
     <Button
       disabled={disabled}
       w={'fit-content'}
       onClick={() => {
-        posthog.capture('map_tool_button_clicked', { tool: id || label });
+        ph.capture('map_tool_button_clicked', { tool: id || label });
         onClick();
       }}
       variant="ghost"

@@ -51,7 +51,7 @@ export const MapThemes = () => {
   const [activeThemeLayers, setActiveThemeLayers] = useAtom(
     activeThemeLayersAtom,
   );
-  const posthog = usePostHog();
+  const ph = usePostHog();
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -234,7 +234,7 @@ export const MapThemes = () => {
                             onCheckedChange={(e) => {
                               if (e.checked) {
                                 addThemeLayerToMap(layer.name);
-                                posthog.capture('theme_layer_added', {
+                                ph.capture('theme_layer_added', {
                                   layerName: layer.name,
                                 });
                               } else {

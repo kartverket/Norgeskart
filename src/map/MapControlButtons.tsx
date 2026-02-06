@@ -16,7 +16,7 @@ export const MapControlButtons = () => {
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const [displayMapLegend, setDisplayMapLegend] = useAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
-  const posthog = usePostHog();
+  const ph = usePostHog();
   const {
     rotateSnappy,
     setMapAngle,
@@ -58,7 +58,7 @@ export const MapControlButtons = () => {
           icon={'info'}
           onClick={() => {
             if (!displayMapLegend) {
-              posthog.capture('map_legend_opened');
+              ph.capture('map_legend_opened');
             }
             setDisplayMapLegend((prev) => !prev);
           }}
