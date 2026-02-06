@@ -130,6 +130,21 @@ export const MapThemes = () => {
     }, 0);
   }, []);
 
+  const toggleLayer = useCallback(
+    (layerName: ThemeLayerName) => {
+      const checked = isLayerChecked(layerName);
+      if (!checked) {
+        addThemeLayerToMap(layerName);
+        ph.capture('theme_layer_added', {
+          layerName,
+        });
+      } else {
+        removeThemeLayerFromMap(layerName);
+      }
+    },
+    [addThemeLayerToMap, removeThemeLayerFromMap, isLayerChecked, ph],
+  );
+
   return (
     <VStack gap={0} align="stretch">
       <Box marginBottom={0}>
@@ -219,6 +234,8 @@ export const MapThemes = () => {
                           key={layer.name}
                           justifyContent="space-between"
                           paddingTop={2}
+                          onClick={() => toggleLayer(layer.name)}
+                          cursor="pointer"
                         >
                           <Text fontSize={{ base: 'sm', md: 'md' }}>
                             {layer.label}
@@ -231,16 +248,6 @@ export const MapThemes = () => {
                               !isLayerChecked(layer.name) &&
                               activeCount >= MAX_THEME_LAYERS
                             }
-                            onCheckedChange={(e) => {
-                              if (e.checked) {
-                                addThemeLayerToMap(layer.name);
-                                ph.capture('theme_layer_added', {
-                                  layerName: layer.name,
-                                });
-                              } else {
-                                removeThemeLayerFromMap(layer.name);
-                              }
-                            }}
                           />
                         </Flex>
                       ))}
