@@ -33,11 +33,11 @@ const CoordindateDigit = ({
   projection: ProjectionIdentifier;
 }) => {
   return (
-    <HStack justifyContent={'flex-start'} alignItems={'flex-start'}>
-      <Text w={'30%'} fontWeight={'bold'}>
+    <HStack justifyContent={'space-between'} alignItems={'flex-start'}>
+      <Text fontWeight={'bold'} justifySelf={'end'}>
         {label}:
       </Text>
-      <VStack alignItems={'flex-start'}>
+      <VStack alignItems={'flex-end'} justifyItems={'flex-end'}>
         {formatCoordinateDigit(value, projection).map((text, index) => (
           <Text key={index}>{text}</Text>
         ))}

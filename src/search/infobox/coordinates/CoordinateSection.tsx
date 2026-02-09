@@ -39,15 +39,16 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
   return (
     <Stack>
       <HStack justifyContent="space-between" alignItems="baseline">
-        <Text>{t('infoBox.coordinateSection.differentCrs')}</Text>
-        <HStack>
-          <ProjectionSelector
-            default={currentMapProjection}
-            onProjectionChange={setSelectedProjection}
-            label={t('infoBox.coordinateSection.differentCrs')}
-            textColor="black"
-          />
-        </HStack>
+        <Text fontWeight={'bold'}>
+          {t('infoBox.coordinateSection.differentCrs')}
+        </Text>
+
+        <ProjectionSelector
+          default={currentMapProjection}
+          onProjectionChange={setSelectedProjection}
+          label={t('infoBox.coordinateSection.differentCrs')}
+          textColor="black"
+        />
       </HStack>
 
       <CoordinateText x={x} y={y} projection={selectedProjection} />

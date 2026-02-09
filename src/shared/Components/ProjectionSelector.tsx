@@ -88,8 +88,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
     >
       <HStack alignItems={'baseline'}>
         <SelectRoot
-          width="180px"
-          size="sm"
+          minWidth="180px"
           collection={createListCollection({ items: projectionCollection })}
           value={[selectedProjection]}
         >
