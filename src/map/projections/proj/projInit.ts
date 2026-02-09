@@ -1,5 +1,6 @@
 import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
+import { registerED50Projections } from './ed50';
 import { registerETRS89Projections, setETRS89Extents } from './etrs89';
 import { registerNGO1948Projections } from './ngo1948';
 import { registerWGS84Projections } from './wgs84';
@@ -10,6 +11,7 @@ export const projInit = () => {
   registerETRS89Projections();
   registerNGO1948Projections();
   registerWGS84Projections();
+  registerED50Projections();
 
   // eslint-disable-next-line
   register(proj4 as any);

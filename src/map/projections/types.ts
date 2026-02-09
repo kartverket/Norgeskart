@@ -19,14 +19,11 @@ export type ProjectionIdentifier =
   | 'EPSG:23036' // ed50 utm36n
 
   //NGO 1948
-  | 'EPSG:27391' // NGO 1948 / Gauss-Kruger sone 1
-  | 'EPSG:27392' // NGO 1948 / Gauss-Kruger sone 2
-  | 'EPSG:27393' // NGO 1948 / Gauss-Kruger sone 3
-  | 'EPSG:27394' // NGO 1948 / Gauss-Kruger sone 4
-  | 'EPSG:27395' // NGO 1948 / Gauss-Kruger sone 5
-  | 'EPSG:27396' // NGO 1948 / Gauss-Kruger sone 6
-  | 'EPSG:27397' // NGO 1948 / Gauss-Kruger sone 7
-  | 'EPSG:27398'; // NGO 1948 / Gauss-Kruger sone 8
-
-//https://epsg.io/27391
-//https://snl.no/NGO_1948
+  | 'EPSG:27391' // NGO 1948 Gauss-Kruger sone 1
+  | 'EPSG:27392' // NGO 1948 Gauss-Kruger sone 2
+  | 'EPSG:27393' // NGO 1948 Gauss-Kruger sone 3
+  | 'EPSG:27394' // NGO 1948 Gauss-Kruger sone 4
+  | 'EPSG:27395' // NGO 1948 Gauss-Kruger sone 5
+  | 'EPSG:27396' // NGO 1948 Gauss-Kruger sone 6
+  | 'EPSG:27397' // NGO 1948 Gauss-Kruger sone 7
+  | 'EPSG:27398'; //  NGO 1948 / Gauss-Kruger sone 8
