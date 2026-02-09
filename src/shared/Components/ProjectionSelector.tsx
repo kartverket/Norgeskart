@@ -15,6 +15,7 @@ import {
 } from '@kvib/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AvailableProjections } from '../../map/atoms';
 import { ProjectionIdentifier } from '../../map/projections/types';
 import { ProjectionPopover } from './ProjectionPopover';
 
@@ -63,9 +64,11 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const [displayAllProjections, setDisplayAllProjections] =
     useState<boolean>(false);
 
-  const projectionsToDisplay = displayAllProjections
-    ? allProjections
-    : basicProjections;
+  const projectionsToDisplay = props.isToolbar
+    ? AvailableProjections
+    : displayAllProjections
+      ? allProjections
+      : basicProjections;
 
   const projectionCollection = projectionsToDisplay.map((projection) => {
     const label = t(
