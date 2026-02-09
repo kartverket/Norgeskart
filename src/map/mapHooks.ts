@@ -26,7 +26,7 @@ import {
 } from './layers/backgroundWMTSProviders';
 import { useThemeLayers } from './layers/themeLayers';
 import { ThemeLayerName } from './layers/themeWMS';
-import { ProjectionIdentifier } from './types/projections';
+import { ProjectionIdentifier } from './projections/types';
 
 const ROTATION_ANIMATION_DURATION = 500;
 

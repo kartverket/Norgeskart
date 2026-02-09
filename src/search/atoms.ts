@@ -2,7 +2,7 @@ import { atom, getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { transform } from 'ol/proj';
 import { DEFAULT_PROJECTION, mapAtom } from '../map/atoms';
-import { ProjectionIdentifier } from '../map/types/projections';
+import { ProjectionIdentifier } from '../map/projections/types';
 import { isPrintDialogOpenAtom } from '../print/atoms';
 import {
   parseCoordinateInput,

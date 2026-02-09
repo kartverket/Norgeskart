@@ -22,7 +22,7 @@ import {
   enableFeatureMeasurementOverlay,
 } from '../drawUtils';
 
-import { ProjectionIdentifier } from '../../../map/types/projections';
+import { ProjectionIdentifier } from '../../../map/projections/types';
 import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
 import { getDrawLayer } from './mapLayers';

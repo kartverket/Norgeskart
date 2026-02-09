@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import TileLayer from 'ol/layer/Tile';
-import { mapAtom } from '../atoms';
-import { ProjectionIdentifier } from '../types/projections';
+import { AvailableProjectionType, mapAtom } from '../atoms';
+import { ProjectionIdentifier } from '../projections/types';
 import { getWMSLayer, WMSLayerName } from './backgroundWMS';
 import { loadableWMTS, WMTSLayerName } from './backgroundWMTSProviders';
 
@@ -27,7 +27,7 @@ const isLayerNiBLayer = (layerName: BackgroundLayerName) => {
 };
 
 const getNiBLayerNameForProjection = (
-  projection: ProjectionIdentifier,
+  projection: AvailableProjectionType,
 ): WMTSLayerName | null => {
   switch (projection) {
     case 'EPSG:4326':
@@ -38,12 +38,10 @@ const getNiBLayerNameForProjection = (
       return 'Nibcache_UTM32_EUREF89_v2';
     case 'EPSG:25833':
       return 'Nibcache_UTM33_EUREF89_v2';
-    case 'EPSG:25834':
-      return null; // Not available as WMTS layer
     case 'EPSG:25835':
       return 'Nibcache_UTM35_EUREF89_v2';
-    case 'EPSG:25836':
-      return null; // Not available as WMTS layer
+    default:
+      return null;
   }
 };
 

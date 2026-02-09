@@ -9,7 +9,7 @@ import { usePostHog } from '@posthog/react';
 import { t } from 'i18next';
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { ProjectionIdentifier } from '../../map/types/projections';
+import { ProjectionIdentifier } from '../../map/projections/types';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { placesNearbyAtom, selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './CoordinateSection';

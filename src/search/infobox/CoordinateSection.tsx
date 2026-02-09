@@ -4,7 +4,7 @@ import { transform } from 'ol/proj';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
-import { ProjectionIdentifier } from '../../map/types/projections';
+import { ProjectionIdentifier } from '../../map/projections/types';
 import { ProjectionPopover } from '../../shared/Components/ProjectionPopover';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
 

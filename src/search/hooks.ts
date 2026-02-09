@@ -6,7 +6,7 @@ import { useCallback, useEffect } from 'react';
 import { mapAtom } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms';
 import { showSearchComponentAtom } from '../map/overlay/atoms';
-import { ProjectionIdentifier } from '../map/types/projections';
+import { ProjectionIdentifier } from '../map/projections/types';
 import { isPrintDialogOpenAtom } from '../print/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
 import { SearchResult } from '../types/searchTypes';
