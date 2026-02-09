@@ -193,7 +193,8 @@
           "popover": {
             "title": "Koordinatreferansesystem",
             "body": "Velg et koordinatreferansesystem. Forskjellige systemer har forskjellige nøyaktighet i ulike deler av landet. Vi anbefaler UTM 33 hvis du er usikker."
-          }
+          },
+          "showAllProjections": "Vis flere koordinatsystemer"
         },
         "theme": {
           "label": "Velg temakart",
@@ -223,7 +224,9 @@
         "label": "Roter høyre"
       },
       "myLocation": {
-        "enable": { "label": "Gå til min posisjon" },
+        "enable": {
+          "label": "Gå til min posisjon"
+        },
         "disable": {
           "label": "Ikke vis posisjon"
         }

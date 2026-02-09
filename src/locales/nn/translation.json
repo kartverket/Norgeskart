@@ -193,7 +193,8 @@
           "popover": {
             "title": "Koordinatreferansesystem",
             "body": "Vel eit koordinatreferansesystem. Dei har ulik nøyaktigheit i ulike delar av landet. Me tilrår at du nyttar UTM 33 om du ikkje er sikker."
-          }
+          },
+          "showAllProjections": "Vis fleire koordinatsystem"
         },
         "theme": {
           "label": "Vel temakart",
@@ -223,7 +224,9 @@
         "label": "Roter høgre"
       },
       "myLocation": {
-        "enable": { "label": "Gå til min posisjon" },
+        "enable": {
+          "label": "Gå til min posisjon"
+        },
         "disable": {
           "label": "Ikkje vis posisjon"
         }
