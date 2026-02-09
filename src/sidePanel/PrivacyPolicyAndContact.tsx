@@ -1,4 +1,4 @@
-import { Flex, Heading, Link, Text, VStack } from '@kvib/react';
+import { Box, Flex, Heading, Link, Text, VStack } from '@kvib/react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
     <Flex justifyContent="start" flexDirection="column" gap={4}>
       <VStack alignItems={'flex-start'} w={'100%'}>
         <Heading size="md">{t('privacyAndContact.contactUs')}</Heading>
-        <Text>{t('privacyAndContact.dialogContent')}</Text>
+        <Box>{t('privacyAndContact.dialogContent')}</Box>
         <Flex
           flexDirection="row"
           justifyContent="space-between"
@@ -33,13 +33,6 @@ const PrivacyPolicy = () => {
             {t('privacyAndContact.sendEmail')}
           </Link>
         </Flex>
-        <Link
-          href="https://forms.office.com/e/PPTcK53z83"
-          target="_blank"
-          external
-        >
-          {t('privacyAndContact.formsLinkText')}
-        </Link>
       </VStack>
       <VStack alignItems={'flex-start'}>
         <Heading size="md">{t('privacyAndContact.privacy')}</Heading>

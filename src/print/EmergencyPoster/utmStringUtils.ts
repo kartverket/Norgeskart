@@ -95,7 +95,7 @@ const utmZoneWithExceptions = (lon: number, lat: number): number => {
 };
 
 /** Compute UTM info (zone, band, hemisphere, EPSG) from lon/lat. */
-export const utmInfoFromLonLat = (lon: number, lat: number): UtmInfo => {
+const utmInfoFromLonLat = (lon: number, lat: number): UtmInfo => {
   const zone = utmZoneWithExceptions(lon, lat);
   const band = utmLatBand(lat);
   const hemisphere: Hemisphere = lat >= 0 ? ('N' as const) : ('S' as const);

@@ -80,8 +80,8 @@ export const PlaceSelector = ({
         <SelectValueText />
       </SelectTrigger>
       <SelectContent>
-        {placesNearby.data.map((item, i) => (
-          <SelectItem key={item.name + i} item={item.name}>
+        {placesNearby.data.map((item) => (
+          <SelectItem key={item.name} item={item.name}>
             {item.name}
           </SelectItem>
         ))}

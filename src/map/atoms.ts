@@ -1,14 +1,10 @@
-import { atom, getDefaultStore } from 'jotai';
-import { Feature, View } from 'ol';
-import { defaults as defaultControls, ScaleLine } from 'ol/control';
+import { atom } from 'jotai';
+import { View } from 'ol';
+import { defaults as defaultControls } from 'ol/control/defaults.js';
 import Map from 'ol/Map';
-import { get as getProjection, transform } from 'ol/proj';
+import { get as getProjection } from 'ol/proj';
 
 import { atomEffect } from 'jotai-effect';
-import { Point } from 'ol/geom';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import { Circle, Fill, Stroke, Style } from 'ol/style';
 import { v4 as uuidv4 } from 'uuid';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
@@ -120,11 +116,7 @@ const getInitialMapView = () => {
 
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
-    controls: defaultControls({ zoom: false }).extend([
-      new ControlPortal(),
-      new ScaleLine({ minWidth: 100 }),
-    ]),
-    keyboardEventTarget: document,
+    controls: defaultControls({ zoom: false }).extend([new ControlPortal()]),
   });
 
   map.addLayer(mapLayers.markerLayer.getLayer());
@@ -162,103 +154,6 @@ export const availableScales = [
 ];
 
 export const scaleAtom = atom<number | null>(null);
-
-export const trackPositionAtom = atom<boolean>(false);
-const intervalIdAtom = atom<NodeJS.Timeout | null>(null);
-
-export const trackPostitionAtomEffect = atomEffect((get) => {
-  const trackPosition = get(trackPositionAtom);
-  const store = getDefaultStore();
-  const map = store.get(mapAtom);
-
-  if (!navigator.geolocation) return;
-  if (trackPosition) {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const { longitude, latitude } = pos.coords;
-      const transformedCoords = transform(
-        [longitude, latitude],
-        'EPSG:4326',
-        map.getView().getProjection(),
-      );
-      map.getView().setCenter(transformedCoords);
-      map.getView().setZoom(15);
-      const pointFeature = new Feature({
-        geometry: new Point(transformedCoords),
-      });
-      pointFeature.setStyle(
-        new Style({
-          image: new Circle({
-            radius: 8,
-            fill: new Fill({ color: '#245cf7' }),
-            stroke: new Stroke({ color: 'white', width: 2 }),
-          }),
-        }),
-      );
-      const positionLayer = new VectorLayer({
-        source: new VectorSource({
-          features: [pointFeature],
-        }),
-        properties: { id: 'positionLayer' },
-      });
-      map.addLayer(positionLayer);
-
-      const intervalId = setInterval(() => {
-        console.log('Updating position...');
-        navigator.geolocation.getCurrentPosition((pos) => {
-          const { longitude, latitude } = pos.coords;
-          const transformedCoords = transform(
-            [longitude, latitude],
-            'EPSG:4326',
-            map.getView().getProjection(),
-          );
-          const positionLayer = map
-            .getLayers()
-            .getArray()
-            .find(
-              (layer) => layer.get('id') === 'positionLayer',
-            ) as VectorLayer;
-          if (positionLayer) {
-            const source = positionLayer.getSource();
-            if (source) {
-              const feature = source.getFeatures()[0];
-              if (feature) {
-                feature.setGeometry(new Point(transformedCoords));
-              }
-            }
-          }
-        });
-      }, 2000);
-      store.set(intervalIdAtom, intervalId);
-    });
-  } else {
-    const intervalId = store.get(intervalIdAtom);
-    if (intervalId) {
-      clearInterval(intervalId);
-      store.set(intervalIdAtom, null);
-    }
-    const positionLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === 'positionLayer');
-    if (positionLayer) {
-      map.removeLayer(positionLayer);
-    }
-  }
-  return () => {
-    const intervalId = store.get(intervalIdAtom);
-    if (intervalId) {
-      clearInterval(intervalId);
-      store.set(intervalIdAtom, null);
-    }
-    const positionLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === 'positionLayer');
-    if (positionLayer) {
-      map.removeLayer(positionLayer);
-    }
-  };
-});
 
 export const scaleToResolutionEffect = atomEffect((get) => {
   const map = get(mapAtom);

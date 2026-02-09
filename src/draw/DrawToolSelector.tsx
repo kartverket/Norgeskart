@@ -1,12 +1,7 @@
 import { Flex, IconButton, MaterialSymbol, Tooltip } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { useAtom, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import {
-  drawTypeAtom,
-  primaryColorAtom,
-  secondaryColorAtom,
-} from '../settings/draw/atoms';
+import { drawTypeAtom, primaryColorAtom } from '../settings/draw/atoms';
 import { DrawType } from './drawControls/hooks/drawSettings';
 
 export const DrawToolSelector = () => {
@@ -48,13 +43,7 @@ export const DrawToolSelector = () => {
     },
   ];
   return (
-    <Flex
-      w="100%"
-      justifyContent={'space-between'}
-      padding={1}
-      boxShadow="sm"
-      borderRadius={5}
-    >
+    <Flex gap={2}>
       {drawTypeButtons.map((button) => (
         <DrawTypeButton
           key={button.value}
@@ -79,13 +68,12 @@ const DrawTypeButton = ({
   const [drawType, setDrawType] = useAtom(drawTypeAtom);
   const isCurrentTool = drawType === type;
   const setPrimaryColor = useSetAtom(primaryColorAtom);
-  const setSecondaryColor = useSetAtom(secondaryColorAtom);
-  const ph = usePostHog();
+  const setSecondaryColor = useSetAtom(primaryColorAtom);
 
   return (
     <Tooltip content={tooltip}>
       <IconButton
-        variant={isCurrentTool ? 'solid' : 'ghost'}
+        variant={isCurrentTool ? 'primary' : 'secondary'}
         icon={icon}
         size="sm"
         onClick={() => {
@@ -96,7 +84,7 @@ const DrawTypeButton = ({
             setPrimaryColor('#000000');
             setSecondaryColor('#ffffffff');
           }
-          ph.capture('draw_tool_selected', { tool: type });
+
           setDrawType(type);
         }}
       />

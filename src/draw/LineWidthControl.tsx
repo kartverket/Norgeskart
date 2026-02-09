@@ -1,4 +1,4 @@
-import { Box, HStack, Text, VStack } from '@kvib/react';
+import { HStack, Radio, RadioGroup, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { LineWidth, lineWidthAtom } from '../settings/draw/atoms';
@@ -25,41 +25,23 @@ export const LineWidthControl = () => {
   }
 
   return (
-    <VStack align="stretch" mt={2}>
-      <Text fontWeight="semibold">{t('draw.size.label')}</Text>
-
-      <HStack gap="2">
-        {lineWidthCollection.map((item) => {
-          const isSelected = lineWidth === item.value;
-
-          return (
-            <Box
+    <VStack alignItems={'flex-start'}>
+      <Text fontSize={'sm'}>{t('draw.size.label')}</Text>
+      <RadioGroup value={lineWidth.toString()}>
+        <HStack>
+          {lineWidthCollection.map((item) => (
+            <Radio
               key={item.value}
-              as="button"
-              onClick={() => setLineWidth(item.value)}
-              aria-pressed={isSelected}
-              aria-label={`${t('draw.size.label')} ${item.label}`}
-              w="32px"
-              h="32px"
-              borderRadius="full"
-              borderWidth="1px"
-              display="inline-flex"
-              alignItems="center"
-              justifyContent="center"
-              cursor="pointer"
-              bg={isSelected ? 'colorPalette.500' : 'white'}
-              color={isSelected ? 'white' : 'inherit'}
-              borderColor={isSelected ? 'colorPalette.500' : 'gray.300'}
-              _hover={{ bg: isSelected ? 'colorPalette.600' : 'gray.50' }}
-              _active={{ transform: 'scale(0.98)' }}
+              value={item.value.toString()}
+              onClick={() => {
+                setLineWidth(item.value);
+              }}
             >
-              <Text fontSize="sm" fontWeight="semibold">
-                {item.label}
-              </Text>
-            </Box>
-          );
-        })}
-      </HStack>
+              {item.label}
+            </Radio>
+          ))}
+        </HStack>
+      </RadioGroup>
     </VStack>
   );
 };

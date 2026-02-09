@@ -5,7 +5,7 @@ export const Print = () => {
   const clickHandler = () => {
     const markerLayer = getMarkerLayer();
     const features = markerLayer.getSource()?.getFeatures();
-    console.debug('Markers on map:', features);
+    console.log('Markers on map:', features);
   };
   return (
     <Box>

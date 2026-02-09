@@ -1,31 +1,38 @@
 import {
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
   AccordionRoot,
   Box,
-  Button,
   Flex,
   Heading,
   IconButton,
   Stack,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { transform } from 'ol/proj';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  isRettIKartetDialogOpenAtom,
-  rettIKartetCoordinatesAtom,
-} from '../../map/menu/dialogs/atoms';
+import { ProjectionIdentifier } from '../../map/atoms';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
-import { searchCoordinatesAtom, selectedResultAtom } from '../atoms';
-import { InfoboxAccordionContent } from './InfoboxAccordionContent';
+import { getInputCRS } from '../../shared/utils/crsUtils';
+import {
+  placesNearbyAtom,
+  searchCoordinatesAtom,
+  selectedResultAtom,
+} from '../atoms';
+import { CoordinateInfo } from './CoordinateSection';
+import { FeatureInfoSection } from './FeatureInfoSection';
 import { InfoBoxPreamble } from './InfoBoxPreamble';
+import { PlaceInfo } from './PlaceInfo';
+import { PropertyInfo } from './PropertyInfo';
 
 export const InfoBox = () => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
+  const placesNearby = useAtomValue(placesNearbyAtom);
   const { t } = useTranslation();
   const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
-  const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
-  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
 
   const onClose = useCallback(() => {
     setSelectedResult(null);
@@ -35,6 +42,12 @@ export const InfoBox = () => {
   if (selectedResult === null || isPrintDialogOpen) {
     return null;
   }
+  const inputCRS = getInputCRS(selectedResult);
+  const [x, y] = transform(
+    [selectedResult.lon, selectedResult.lat],
+    inputCRS,
+    'EPSG:25833',
+  );
 
   return (
     <Stack
@@ -49,7 +62,7 @@ export const InfoBox = () => {
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading fontWeight="bold" size={'lg'}>
-          {selectedResult.type !== 'Coordinate' && selectedResult.name}
+          {selectedResult.name}
         </Heading>
         <IconButton
           onClick={onClose}
@@ -60,22 +73,65 @@ export const InfoBox = () => {
           alignSelf={'flex-end'}
         />
       </Flex>
-      <InfoBoxPreamble result={selectedResult} />
-      <Box overflowY="auto" overflowX="auto">
-        <AccordionRoot collapsible multiple defaultValue={[]}>
-          <InfoboxAccordionContent />
+      <InfoBoxPreamble result={selectedResult} x={x} y={y} />
+      <Box overflowY="auto" overflowX="auto" maxHeight="80%">
+        <AccordionRoot
+          collapsible
+          multiple
+          defaultValue={['placeInfo', 'propertyInfo']}
+        >
+          {['Property', 'Coordinate'].includes(selectedResult.type) && (
+            <PropertyInfo
+              lon={selectedResult.lon}
+              lat={selectedResult.lat}
+              inputCRS={inputCRS}
+            />
+          )}
+
+          {selectedResult.type === 'Place' && (
+            <AccordionItem value="placeInfo">
+              <AccordionItemTrigger pl={0}>
+                {t('infoBox.placeinfo')}
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                <PlaceInfo place={selectedResult.place} />
+              </AccordionItemContent>
+            </AccordionItem>
+          )}
+          {placesNearby.length > 0 && (
+            <AccordionItem value={'PlacesNearby'}>
+              <AccordionItemTrigger pl={0}>
+                {t('infoBox.placesNearby')}
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                {placesNearby.map((place) => (
+                  <Box
+                    key={place.placeNumber}
+                    mb={2}
+                    p={2}
+                    borderBottom="1px solid #E2E8F0"
+                  >
+                    <PlaceInfo place={place} />
+                  </Box>
+                ))}
+              </AccordionItemContent>
+            </AccordionItem>
+          )}
+          <AccordionItem value="coordinateInfo">
+            <AccordionItemTrigger pl={0}>
+              {t('infoBox.coordinateInfo')}
+            </AccordionItemTrigger>
+            <AccordionItemContent>
+              <CoordinateInfo
+                lon={selectedResult.lon}
+                lat={selectedResult.lat}
+                inputCRS={inputCRS as ProjectionIdentifier}
+              />
+            </AccordionItemContent>
+          </AccordionItem>
+          <FeatureInfoSection />
         </AccordionRoot>
       </Box>
-      <Button
-        variant="plain"
-        size="sm"
-        onClick={() => {
-          setRettIKartetCoordinates([selectedResult.lon, selectedResult.lat]);
-          setRettIKartetDialogOpen(true);
-        }}
-      >
-        {t('toolbar.reportError.label')}
-      </Button>
     </Stack>
   );
 };

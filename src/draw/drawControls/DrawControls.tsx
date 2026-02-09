@@ -1,5 +1,6 @@
-import { HStack, IconButton, VStack } from '@kvib/react';
+import { Button, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
@@ -16,30 +17,24 @@ import { useDrawSettings } from './hooks/drawSettings.ts';
 export const DrawControls = () => {
   const { drawType, deleteSelected } = useDrawSettings();
   const isMobile = useIsMobileScreen();
+  const { t } = useTranslation();
 
   useDrawControlsKeyboardEffects();
   useAtom(distanceUnitAtomEffect);
 
   return (
-    <VStack alignItems={'flex-start'} width={'100%'} padding={0.5}>
+    <VStack alignItems={'flex-start'} width={'100%'}>
       <DrawToolSelector />
       {drawType === 'Text' && <TextStyleControl />}
-      <HStack width="100%">
+      <EditControls />
+      <HStack>
         <ColorControls />
         {drawType === 'Point' && <PointStyleSelector />}
       </HStack>
       {isMobile && drawType == 'Move' && (
-        <IconButton
-          onClick={deleteSelected}
-          colorPalette="red"
-          icon="delete"
-          size="md"
-          variant="ghost"
-        />
-        // <Button onClick={deleteSelected} size="sm" >{t('draw.deleteSelection')}</Button>
+        <Button onClick={deleteSelected}>{t('draw.deleteSelection')}</Button>
       )}
       <LineWidthControl />
-      <EditControls />
       <MeasurementControls />
       <DrawControlFooter />
     </VStack>

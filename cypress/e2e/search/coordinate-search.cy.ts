@@ -4,7 +4,7 @@ describe('Coordinate Search', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:3000');
-    cy.get('#map', { timeout: 10000 }).should('be.visible');
+    cy.get('#map').should('be.visible');
   });
 
   describe('Decimal Degrees Format', () => {
@@ -16,43 +16,11 @@ describe('Coordinate Search', () => {
       cy.contains('10.74609').should('be.visible');
     });
 
-    it('should handle coordinates without space after comma', () => {
-      const coordinates = '60,10';
-
-      getSearchInput().type(coordinates);
-      cy.contains('60').should('be.visible');
-      cy.contains('10').should('be.visible');
-    });
-
     it('should handle coordinates with European decimal separators', () => {
       const coordinates = '60,135106, 10,618917';
 
       getSearchInput().type(coordinates);
       cy.contains('60.135').should('be.visible');
-    });
-
-    it('should handle European decimals without spaces between coordinates', () => {
-      const coordinates = '60,135106,10,618917';
-
-      getSearchInput().type(coordinates);
-      cy.contains('60.135').should('be.visible');
-      cy.contains('10.618').should('be.visible');
-    });
-
-    it('should handle short European decimals with space', () => {
-      const coordinates = '60,13, 10,61';
-
-      getSearchInput().type(coordinates);
-      cy.contains('60.13').should('be.visible');
-      cy.contains('10.61').should('be.visible');
-    });
-
-    it('should handle short European decimals without space', () => {
-      const coordinates = '60,13,10,61';
-
-      getSearchInput().type(coordinates);
-      cy.contains('60.13').should('be.visible');
-      cy.contains('10.61').should('be.visible');
     });
 
     it('should handle coordinates with degree symbols', () => {
@@ -132,34 +100,6 @@ describe('Coordinate Search', () => {
       getSearchInput().type(coordinates);
       cy.contains('UTM 32').should('be.visible');
     });
-
-    it('should parse coordinates with full EPSG: prefix', () => {
-      const coordinates = '163834.01,6663030.01@EPSG:25833';
-
-      getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
-    });
-
-    it('should parse EPSG coordinates with European decimal separators (commas)', () => {
-      const coordinates = '163834,01 6663030,01@EPSG:25833';
-
-      getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
-    });
-
-    it('should parse EPSG:4326 coordinates with European decimal separators', () => {
-      const coordinates = '59,91273 10,74609@4326';
-
-      getSearchInput().type(coordinates);
-      cy.contains('WGS84').should('be.visible');
-    });
-
-    it('should parse EPSG coordinates with European decimals and semicolon separator', () => {
-      const coordinates = '163834,01;6663030,01@EPSG:25833';
-
-      getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
-    });
   });
 
   describe('Norwegian Language Support', () => {
@@ -229,7 +169,7 @@ describe('Coordinate Search', () => {
 
       getSearchInput().type(coordinates);
       cy.contains('59.91273').should('be.visible');
-      cy.contains('59.91273').click({ force: true });
+      cy.contains('59.91273').click();
       cy.get('#map').should('be.visible');
     });
   });

@@ -1,13 +1,6 @@
 import {
-  Alert,
   Button,
   ButtonGroup,
-  Dialog,
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogTrigger,
-  Heading,
   IconButton,
   PopoverArrow,
   PopoverBody,
@@ -20,7 +13,7 @@ import { Feature, FeatureCollection } from 'geojson';
 import { t } from 'i18next';
 import { useAtomValue } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
-import { Circle, Geometry, LineString, Point, Polygon } from 'ol/geom';
+import { Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
 import { Style } from 'ol/style';
 import { useState } from 'react';
@@ -31,7 +24,6 @@ import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
-import { ExportControls } from './export/ExportControls';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
@@ -49,26 +41,9 @@ const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
     ];
   } else if (geo instanceof Point) {
     coordinates = transform(geo.getCoordinates(), mapProjection, 'EPSG:4326');
-  } else if (geo instanceof Circle) {
-    coordinates = transform(geo.getCenter(), mapProjection, 'EPSG:4326');
   }
 
   return coordinates;
-};
-
-//To handle things not covered by geojson spec, like circle
-const getGeometryType = (geo: Geometry): string => {
-  if (geo instanceof Circle) {
-    return 'Point';
-  }
-  return geo.getType();
-};
-
-const getRadius = (geo: Geometry): number | undefined => {
-  if (geo instanceof Circle) {
-    return geo.getRadius();
-  }
-  return undefined;
 };
 
 export const DrawControlFooter = () => {
@@ -102,13 +77,12 @@ export const DrawControlFooter = () => {
         return {
           type: 'Feature',
           geometry: {
-            type: getGeometryType(geometry),
+            type: geometry.getType(),
             coordinates: featureCoordinates,
           },
           properties: {
             style: styleForStorage,
             overlayIcon: icon || undefined,
-            radius: getRadius(geometry),
           },
         } as Feature;
       })
@@ -127,12 +101,6 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
-      <Alert status="info" title={t('draw.privacyNotice.title')} mb={3}>
-        {t('draw.privacyNotice.message')}
-      </Alert>
-      <Heading size="md" marginTop={2}>
-        {t('draw.redoundo')}
-      </Heading>
       <ButtonGroup>
         <IconButton
           variant="ghost"
@@ -149,68 +117,38 @@ export const DrawControlFooter = () => {
           />
         )}
       </ButtonGroup>
-      <Heading size="md" marginTop={2}>
-        Handlinger
-      </Heading>
       <ButtonGroup>
         <PopoverRoot
           open={clearPopoverOpen}
           onOpenChange={(e) => setClearPopoverOpen(e.open)}
         >
           <PopoverTrigger asChild>
-            <IconButton
-              size="lg"
-              variant="ghost"
-              iconFill
-              colorPalette={'red'}
-              icon={'delete'}
-            >
+            <Button size="sm" colorPalette={'red'}>
               {t('draw.clear')}
-            </IconButton>
+            </Button>
           </PopoverTrigger>
-          <PopoverContent width="145px">
+          <PopoverContent>
             <PopoverArrow />
             <PopoverBody>
               <PopoverTitle fontWeight="bold">
                 {t('draw.confrimClear')}
               </PopoverTitle>
+
               <Button
                 onClick={() => {
                   setClearPopoverOpen(false);
                   clearDrawing();
                 }}
                 colorPalette={'red'}
-                marginTop={2}
               >
                 {t('shared.yes')}
               </Button>
             </PopoverBody>
           </PopoverContent>
         </PopoverRoot>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          iconFill
-          onClick={onSaveFeatures}
-          icon={'save'}
-        >
+        <Button size="sm" onClick={onSaveFeatures}>
           {t('draw.save')}
-        </IconButton>
-
-        <Dialog placement={'center'} motionPreset="slide-in-left">
-          <DialogTrigger asChild>
-            <IconButton icon={'download'} variant="ghost">
-              Open Dialog
-            </IconButton>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogBody>
-              <ExportControls />
-            </DialogBody>
-
-            <DialogCloseTrigger />
-          </DialogContent>
-        </Dialog>
+        </Button>
       </ButtonGroup>
     </>
   );

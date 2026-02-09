@@ -102,7 +102,6 @@ export const SearchComponent = () => {
             cursor="pointer"
             padding={0}
             onMouseEnter={() => {
-              cancelTimeouts();
               iconHoverTimeoutRef.current = window.setTimeout(
                 () => setShowBackgroundSettings(true),
                 100,
@@ -115,8 +114,8 @@ export const SearchComponent = () => {
               }, 700);
             }}
             onClick={() => {
+              setShowBackgroundSettings(!showBackgroundSettings);
               cancelTimeouts();
-              setShowBackgroundSettings((s) => !s);
             }}
             boxShadow="md"
           >

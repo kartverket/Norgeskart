@@ -1,17 +1,13 @@
 import {
-  Box,
   ColorPicker,
   ColorPickerArea,
   ColorPickerContent,
   ColorPickerControl,
+  ColorPickerLabel,
   ColorPickerSliders,
   ColorPickerTrigger,
   HStack,
-  Icon,
   parseColor,
-  Spacer,
-  Text,
-  VStack,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
@@ -22,35 +18,27 @@ export const ColorControls = () => {
   const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
   const [secondaryColor, setSecondaryColor] = useAtom(secondaryColorAtom);
   const { primaryLabel, secondaryLabel } = useColorLabels();
-  const { t } = useTranslation();
 
   return (
-    <VStack align="stretch" w="100%" mt={2}>
-      <Text fontWeight="semibold">{t('draw.controls.color')}</Text>
-      <HStack w="100%" align="stretch">
-        <Box flex="1">
-          <ColorRow
-            label={primaryLabel}
-            color={primaryColor}
-            onSetColor={setPrimaryColor}
-          />
-        </Box>
+    <HStack>
+      <SingleColorControl
+        label={primaryLabel}
+        color={primaryColor}
+        onSetColor={setPrimaryColor}
+      />
 
-        {secondaryLabel && (
-          <Box flex="1">
-            <ColorRow
-              label={secondaryLabel}
-              color={secondaryColor}
-              onSetColor={setSecondaryColor}
-            />
-          </Box>
-        )}
-      </HStack>
-    </VStack>
+      {secondaryLabel && (
+        <SingleColorControl
+          label={secondaryLabel}
+          color={secondaryColor}
+          onSetColor={setSecondaryColor}
+        />
+      )}
+    </HStack>
   );
 };
 
-const ColorRow = ({
+const SingleColorControl = ({
   label,
   color,
   onSetColor,
@@ -62,36 +50,14 @@ const ColorRow = ({
   return (
     <ColorPicker
       value={parseColor(color)}
-      onValueChange={(value) => onSetColor(value.valueAsString)}
+      onValueChange={(value) => {
+        onSetColor(value.valueAsString);
+      }}
     >
+      <ColorPickerLabel>{label}</ColorPickerLabel>
       <ColorPickerControl>
-        <ColorPickerTrigger asChild>
-          <HStack
-            w="100%"
-            role="button"
-            tabIndex={0}
-            align="center"
-            py={1}
-            borderWidth="1px"
-            borderRadius="lg"
-            bg="white"
-            cursor="pointer"
-            _hover={{ bg: 'gray.50' }}
-          >
-            <Swatch color={color} />
-            <Text>{label}</Text>
-            <Spacer />
-            <Icon
-              color="colorPalette.500"
-              grade={0}
-              icon="chevron_right"
-              size={28}
-              weight={300}
-            />
-          </HStack>
-        </ColorPickerTrigger>
+        <ColorPickerTrigger />
       </ColorPickerControl>
-
       <ColorPickerContent>
         <ColorPickerArea />
         <ColorPickerSliders />
@@ -100,40 +66,42 @@ const ColorRow = ({
   );
 };
 
-const Swatch = ({ color }: { color: string }) => {
-  return (
-    <Box
-      w="25px"
-      h="25px"
-      borderRadius="sm"
-      borderWidth="1px"
-      style={{ background: color }}
-    />
-  );
-};
-
 const useColorLabels = () => {
   const { drawType } = useDrawSettings();
   const { t } = useTranslation();
-  const p = 'draw.controls.';
+  const colorLabelKeyPrefix = 'draw.controls.';
 
   switch (drawType) {
     case 'Text':
       return {
-        primaryLabel: t(p + 'colorText'),
-        secondaryLabel: t(p + 'colorBackground'),
+        primaryLabel: t(colorLabelKeyPrefix + 'colorText'),
+        secondaryLabel: t(colorLabelKeyPrefix + 'colorBackground'),
       };
     case 'Point':
-      return { primaryLabel: t(p + 'colorPoint'), secondaryLabel: null };
+      return {
+        primaryLabel: t(colorLabelKeyPrefix + 'colorPoint'),
+        secondaryLabel: null,
+      };
     case 'LineString':
-      return { primaryLabel: t(p + 'colorStroke'), secondaryLabel: null };
+      return {
+        primaryLabel: t(colorLabelKeyPrefix + 'colorStroke'),
+        secondaryLabel: null,
+      };
     case 'Polygon':
+      return {
+        primaryLabel: t(colorLabelKeyPrefix + 'colorStroke'),
+        secondaryLabel: t(colorLabelKeyPrefix + 'colorFill'),
+      };
     case 'Circle':
       return {
-        primaryLabel: t(p + 'colorStroke'),
-        secondaryLabel: t(p + 'colorFill'),
+        primaryLabel: t(colorLabelKeyPrefix + 'colorStroke'),
+        secondaryLabel: t(colorLabelKeyPrefix + 'colorFill'),
       };
+
     default:
-      return { primaryLabel: 'Primary', secondaryLabel: 'Secondary' };
+      return {
+        primaryLabel: 'Primary color',
+        secondaryLabel: 'Secondary color',
+      };
   }
 };

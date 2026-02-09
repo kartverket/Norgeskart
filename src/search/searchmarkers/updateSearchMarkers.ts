@@ -92,14 +92,6 @@ export const updateSearchMarkers = (
 
   searchResults.forEach((res) => {
     if (!isFinite(res.lon) || !isFinite(res.lat)) return;
-    // Skip if this result is the same as the selected result to avoid duplicate markers
-    if (
-      selectedResult &&
-      res.lon === selectedResult.lon &&
-      res.lat === selectedResult.lat
-    ) {
-      return;
-    }
 
     const isHovered =
       hoveredResult &&

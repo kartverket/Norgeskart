@@ -5,7 +5,6 @@ import { Geometry } from 'ol/geom';
 import { useCallback, useEffect } from 'react';
 import { mapAtom, ProjectionIdentifier } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms';
-import { showSearchComponentAtom } from '../map/overlay/atoms';
 import { isPrintDialogOpenAtom } from '../print/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
 import { SearchResult } from '../types/searchTypes';
@@ -30,7 +29,7 @@ export const useMapClickSearch = () => {
     const hasMarkerFeature =
       features &&
       features.some((f) => {
-        return f.get('features')?.some((ff: Feature<Geometry>) => {
+        return f.get('features').some((ff: Feature<Geometry>) => {
           return ff.get('isMarker') === true;
         });
       });
@@ -80,10 +79,6 @@ export const useMapClickSearch = () => {
       }
       const isPrintDialogOpen = store.get(isPrintDialogOpenAtom);
       if (isPrintDialogOpen) {
-        return;
-      }
-      const isSearchComponentVisible = store.get(showSearchComponentAtom);
-      if (!isSearchComponentVisible) {
         return;
       }
       if (e instanceof MapBrowserEvent) {

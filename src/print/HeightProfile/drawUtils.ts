@@ -7,9 +7,9 @@ import { Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../map/atoms';
 import { profileLineAtom } from './atoms';
 
-const LAYER_ID = 'elevationProfileDrawLayer';
+const LAYER_ID = 'heightProfileDrawLayer';
 
-export const addDrawInteractionToMap = (onDrawEnd: () => void) => {
+export const addDrawInteractionToMap = () => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
 
@@ -44,7 +44,6 @@ export const addDrawInteractionToMap = (onDrawEnd: () => void) => {
     const geometry = e.feature.getGeometry();
     if (!geometry) return;
     if (!(geometry instanceof LineString)) return;
-    onDrawEnd();
     store.set(profileLineAtom, geometry);
   });
   map.addInteraction(drawInteraction);

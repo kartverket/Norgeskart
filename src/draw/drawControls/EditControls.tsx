@@ -1,4 +1,4 @@
-import { Heading, HStack, IconButton, Tooltip } from '@kvib/react';
+import { HStack, IconButton, Tooltip } from '@kvib/react';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DrawAction } from '../../settings/draw/drawActions/atoms';
@@ -61,30 +61,25 @@ export const EditControls = () => {
     return null;
   }
   return (
-    <>
-      <Heading size="md" mt={2}>
-        Flytt opp / ned
-      </Heading>
-      <HStack marginTop={2}>
-        <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
-          <IconButton
-            onClick={() => {
-              moveSelectedUp();
-            }}
-            icon={'arrow_cool_down'}
-            variant="plain"
-          />
-        </Tooltip>
-        <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
-          <IconButton
-            onClick={() => {
-              moveSelectedDown();
-            }}
-            icon={'arrow_warm_up'}
-            variant="ghost"
-          />
-        </Tooltip>
-      </HStack>
-    </>
+    <HStack>
+      <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
+        <IconButton
+          onClick={() => {
+            moveSelectedUp();
+          }}
+          icon={'move_up'}
+          variant="ghost"
+        />
+      </Tooltip>
+      <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
+        <IconButton
+          onClick={() => {
+            moveSelectedDown();
+          }}
+          icon={'move_down'}
+          variant="ghost"
+        />
+      </Tooltip>
+    </HStack>
   );
 };

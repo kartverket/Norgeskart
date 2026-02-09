@@ -5,15 +5,13 @@ import {
   AccordionItemTrigger,
   Alert,
   Box,
-  Button,
   Flex,
   Heading,
   Switch,
   Text,
   VStack,
 } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -21,7 +19,6 @@ import {
   getSubcategories,
   themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
-import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import { MAX_THEME_LAYERS, useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
 
@@ -48,10 +45,6 @@ export const MapThemes = () => {
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
 
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
-    activeThemeLayersAtom,
-  );
-  const ph = usePostHog();
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -130,21 +123,6 @@ export const MapThemes = () => {
     }, 0);
   }, []);
 
-  const toggleLayer = useCallback(
-    (layerName: ThemeLayerName) => {
-      const checked = isLayerChecked(layerName);
-      if (!checked) {
-        addThemeLayerToMap(layerName);
-        ph.capture('theme_layer_added', {
-          layerName,
-        });
-      } else {
-        removeThemeLayerFromMap(layerName);
-      }
-    },
-    [addThemeLayerToMap, removeThemeLayerFromMap, isLayerChecked, ph],
-  );
-
   return (
     <VStack gap={0} align="stretch">
       <Box marginBottom={0}>
@@ -162,15 +140,6 @@ export const MapThemes = () => {
             {t('map.settings.layers.theme.activeLayersCount')}: {activeCount} /{' '}
             {MAX_THEME_LAYERS}
           </Text>
-          <Button
-            size={'sm'}
-            visibility={activeThemeLayers.size > 0 ? 'visible' : 'hidden'}
-            onClick={() => {
-              setActiveThemeLayers(new Set());
-            }}
-          >
-            {t('map.settings.layers.theme.resetbutton.text')}
-          </Button>
         </Flex>
         {showLimitWarning && (
           <Alert status="warning" marginTop={2}>
@@ -234,8 +203,6 @@ export const MapThemes = () => {
                           key={layer.name}
                           justifyContent="space-between"
                           paddingTop={2}
-                          onClick={() => toggleLayer(layer.name)}
-                          cursor="pointer"
                         >
                           <Text fontSize={{ base: 'sm', md: 'md' }}>
                             {layer.label}
@@ -243,11 +210,19 @@ export const MapThemes = () => {
                           <Switch
                             colorPalette="green"
                             size="sm"
+                            variant="raised"
                             checked={isLayerChecked(layer.name)}
                             disabled={
                               !isLayerChecked(layer.name) &&
                               activeCount >= MAX_THEME_LAYERS
                             }
+                            onCheckedChange={(e) => {
+                              if (e.checked) {
+                                addThemeLayerToMap(layer.name);
+                              } else {
+                                removeThemeLayerFromMap(layer.name);
+                              }
+                            }}
                           />
                         </Flex>
                       ))}

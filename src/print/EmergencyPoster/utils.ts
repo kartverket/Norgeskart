@@ -3,13 +3,9 @@ import { Coordinate } from 'ol/coordinate';
 import { transform } from 'ol/proj';
 import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
-import { boundNumber } from '../../shared/utils/numberUtils';
 import { formatToNorwegianUTMString } from './utmStringUtils';
 
 const env = getEnv();
-
-const MAP_HEIGHT = 660;
-const MAP_WIDTH = 1145;
 
 export const createPosterUrl = (
   locationName: string,
@@ -52,19 +48,16 @@ export const createPosterUrl = (
   return `${env.emergencyPosterBaseUrl}?${params.toString()}`;
 };
 
-const hw_ratio = MAP_WIDTH / MAP_HEIGHT; // Width / Height, magic numbers
+const hw_ratio = 1145 / 660; // Width / Height, magic numbers
 const createMapUrl = (coordinates: Coordinate) => {
   const store = getDefaultStore();
   const resolution = store.get(mapAtom).getView().getResolution();
   if (!resolution) {
     return;
   }
-  const currentMapHeight = boundNumber(
-    resolution * window.innerHeight,
-    500,
-    4500,
-  ); // Max 4500 or poster will be blank, min 500 to avoid too small images
-
+  const crs =
+    store.get(mapAtom).getView().getProjection().getCode() || 'EPSG:25833';
+  const currentMapHeight = resolution * window.innerHeight;
   const currentMapWidth = Math.round(currentMapHeight * hw_ratio);
 
   const baseUrl = 'https://wms.geonorge.no/skwms1/wms.topo';
@@ -73,26 +66,20 @@ const createMapUrl = (coordinates: Coordinate) => {
   params.append('VERSION', '1.3.0');
   params.append('REQUEST', 'GetMap');
   params.append('LAYERS', 'topo');
-  params.append('WIDTH', MAP_WIDTH.toString());
-  params.append('HEIGHT', MAP_HEIGHT.toString());
-  params.append('CRS', 'EPSG:32633');
+  params.append('WIDTH', currentMapWidth.toString());
+  params.append('HEIGHT', currentMapHeight.toString());
+  params.append('CRS', crs);
 
-  const transformedCenter = transform(
-    coordinates,
-    store.get(mapAtom).getView().getProjection(),
-    'EPSG:32633',
-  );
   let bboxParam = '';
-  bboxParam += `${transformedCenter[0] - Math.ceil(currentMapWidth / 2)},`;
-  bboxParam += `${transformedCenter[1] - Math.ceil(currentMapHeight / 2)},`;
-  bboxParam += `${transformedCenter[0] + Math.ceil(currentMapWidth / 2)},`;
-  bboxParam += `${transformedCenter[1] + Math.ceil(currentMapHeight / 2)}`;
+  bboxParam += `${coordinates[0] - Math.ceil(currentMapWidth / 2)},`;
+  bboxParam += `${coordinates[1] - Math.ceil(currentMapHeight / 2)},`;
+  bboxParam += `${coordinates[0] + Math.ceil(currentMapWidth / 2)},`;
+  bboxParam += `${coordinates[1] + Math.ceil(currentMapHeight / 2)}`;
 
   params.append('BBOX', bboxParam);
   params.append('FORMAT', 'image/jpeg');
-  const url = `${baseUrl}?${params.toString()}`;
 
-  return url;
+  return `${baseUrl}?${params.toString()}`;
 };
 
 const createPositionString = (

@@ -9,7 +9,7 @@ import {
 
 const env = getEnv();
 
-export const submitelevationProfileRequest = async (
+export const submitHeightProfileRequest = async (
   polyline: GPFeatureRecordSetLayer,
   sampleDistance: number,
 ) => {
@@ -17,7 +17,7 @@ export const submitelevationProfileRequest = async (
   const bodyData = {
     f: 'json',
     polyline: JSON.stringify(polyline),
-    dem: 'DTM_TOPOBATHY',
+    dem: 'DOM',
     sample_distance: sampleDistance.toString(),
   };
   const body = new URLSearchParams(bodyData);
@@ -34,7 +34,7 @@ export const submitelevationProfileRequest = async (
   return data;
 };
 
-export const getelevationProfileJobStatus = async (jobId: string) => {
+export const getHeightProfileJobStatus = async (jobId: string) => {
   const url = `${env.heightDataApiUrl}/services/TerrengprofilV2/gpserver/TerrengprofilV2/jobs/${jobId}?f=json`;
 
   const response = await fetch(url, {
@@ -45,7 +45,7 @@ export const getelevationProfileJobStatus = async (jobId: string) => {
   return data;
 };
 
-export const getelevationProfileResult = async (
+export const getHeightProfileResult = async (
   jobId: string,
   outputType: OutputType,
 ) => {

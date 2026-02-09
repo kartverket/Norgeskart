@@ -14,7 +14,7 @@ import {
   setUrlParameter,
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom, scaleAtom, trackPostitionAtomEffect } from './atoms.ts';
+import { mapAtom, scaleAtom } from './atoms.ts';
 import { activeThemeLayersAtom, themeLayerEffect } from './layers/atoms.ts';
 import {
   BackgroundLayerName,
@@ -50,7 +50,6 @@ export const MapComponent = () => {
   const setScale = useSetAtom(scaleAtom);
   const { setTargetElement } = useMap();
   useAtom(themeLayerEffect);
-  useAtom(trackPostitionAtomEffect);
 
   useEffect(() => {
     if (mapRef.current) {

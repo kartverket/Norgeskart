@@ -5,7 +5,7 @@ import { Icon, Style } from 'ol/style';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { SearchResult } from '../../types/searchTypes';
 
-type MakrerColor = 'red' | 'blue' | 'yellow' | 'green' | 'orange';
+type MakrerColor = 'red' | 'blue' | 'yellow';
 
 export const createMarkerStyle = (iconSrc: string): Style => {
   return new Style({

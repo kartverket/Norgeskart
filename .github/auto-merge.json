@@ -58,17 +58,5 @@
       "dependency_name": "jotai",
       "update_type": "semver:minor"
     }
-  },
-  {
-    "match": {
-      "dependency_name": "react-i18next",
-      "update_type": "semver:patch"
-    }
-  },
-  {
-    "match": {
-      "dependency_name": "posthog-js",
-      "update_type": "semver:minor"
-    }
   }
 ]

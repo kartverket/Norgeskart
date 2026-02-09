@@ -6,7 +6,6 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-  Heading,
   Icon,
   Link,
   List,
@@ -18,7 +17,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PrivacyPolicy from './PrivacyPolicyAndContact';
 
-import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { Tip, unwrapJsonModule } from '../types/tips';
 
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
@@ -133,8 +131,6 @@ export const InfoDrawer = () => {
         </CollapsibleContent>
       </Collapsible>
       <PrivacyPolicy />
-      <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
-      <LanguageSwitcher />
     </SimpleGrid>
   );
 };
