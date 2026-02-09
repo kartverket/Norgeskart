@@ -1,11 +1,12 @@
-import { Box, Button, HStack, Stack, Text, toaster } from '@kvib/react';
+import { Button, HStack, Stack, Text, toaster } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { transform } from 'ol/proj';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom } from '../../map/atoms';
-import { ProjectionIdentifier } from '../../map/projections/types';
-import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
+import { mapAtom } from '../../../map/atoms';
+import { ProjectionIdentifier } from '../../../map/projections/types';
+import { ProjectionSelector } from '../../../shared/Components/ProjectionSelector';
+import { CoordinateText } from './CoordinateText';
 
 interface CoordinateInfoProps {
   lat: number;
@@ -49,10 +50,7 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
         </HStack>
       </HStack>
 
-      <Stack>
-        <Box>{`${x.toFixed(2)} - ${t('infoBox.coordinateSection.east')} `}</Box>
-        <Box>{`${y.toFixed(2)} - ${t('infoBox.coordinateSection.north')} `}</Box>
-      </Stack>
+      <CoordinateText x={x} y={y} projection={selectedProjection} />
       <Button
         onClick={onCopyClick}
         leftIcon={'content_copy'}

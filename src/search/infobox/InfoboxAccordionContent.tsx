@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 import { ProjectionIdentifier } from '../../map/projections/types';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { placesNearbyAtom, selectedResultAtom } from '../atoms';
-import { CoordinateInfo } from './CoordinateSection';
+import { CoordinateInfo } from './coordinates/CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
