@@ -95,6 +95,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       </HStack>
       {!props.isToolbar && (
         <SwitchRoot
+          pl={3}
           checked={displayAllProjections}
           onCheckedChange={(e) => setDisplayAllProjections(e.checked)}
         >
