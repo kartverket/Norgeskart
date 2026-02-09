@@ -124,7 +124,7 @@ const createDegreesPositionText = (
   return `${lat}°N ${lon}°Ø`;
 };
 
-const decimalToDMS = (dec: number) => {
+export const decimalToDMS = (dec: number) => {
   const sign = dec < 0 ? -1 : 1;
   const abs = Math.abs(dec);
 

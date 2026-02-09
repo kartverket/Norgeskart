@@ -1,4 +1,4 @@
-import { ProjectionIdentifier } from '../../map/atoms';
+import { ProjectionIdentifier } from '../../map/projections/types';
 
 export const validateProjectionIdString = (
   projectionId: string | null,

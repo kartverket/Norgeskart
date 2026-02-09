@@ -173,22 +173,77 @@
           "placeholder": "Chose",
           "projections": {
             "epsg25833": {
-              "displayName": "UTM 33 (default)"
+              "displayName": "ETRS89 UTM-33"
             },
             "epsg25832": {
-              "displayName": "UTM 32"
+              "displayName": "ETRS89 UTM-32"
             },
             "epsg25835": {
-              "displayName": "UTM 35"
+              "displayName": "ETRS89 UTM-35"
             },
             "epsg3857": {
               "displayName": "Webmercator"
+            },
+            "epsg4326": {
+              "displayName": "WGS84 Geographical degrees (Lat/Lon)"
+            },
+            "epsg4230": {
+              "displayName": "ED50 Geographical degrees"
+            },
+            "epsg25834": {
+              "displayName": "ETRS89 UTM-34"
+            },
+            "epsg25836": {
+              "displayName": "ETRS89 UTM-36"
+            },
+            "epsg23031": {
+              "displayName": "ED50 UTM-31"
+            },
+            "epsg23032": {
+              "displayName": "ED50 UTM-32"
+            },
+            "epsg23033": {
+              "displayName": "ED50 UTM-33"
+            },
+            "epsg23034": {
+              "displayName": "ED50 UTM-34"
+            },
+            "epsg23035": {
+              "displayName": "ED50 UTM-35"
+            },
+            "epsg23036": {
+              "displayName": "ED50 UTM-36"
+            },
+            "epsg27391": {
+              "displayName": "NGO 1948 Gauss-Kruger zone 1"
+            },
+            "epsg27392": {
+              "displayName": "NGO 1948 Gauss-Kruger zone 2"
+            },
+            "epsg27393": {
+              "displayName": "NGO 1948 Gauss-Kruger zone 3"
+            },
+            "epsg27394": {
+              "displayName": "NGO 1948 Gauss-Kruger zone 4"
+            },
+            "epsg27395": {
+              "displayName": "NGO 1948 Gauss-Kruger zone 5"
+            },
+            "epsg27396": {
+              "displayName": "NGO 1948 Gauss-Kruger zone 6"
+            },
+            "epsg27397": {
+              "displayName": "NGO 1948 Gauss-Kruger zone 7"
+            },
+            "epsg27398": {
+              "displayName": "NGO 1948 Gauss-Kruger zone 8"
             }
           },
           "popover": {
             "title": "Coordinate refereance system",
             "body": "Select a coordinate refereance system to use. Different systems are accurate in different parts of the country. We recomend using UTM 33 if you are unsure."
-          }
+          },
+          "showAllProjections": "Show more coordinatesystems"
         },
         "theme": {
           "label": "Chose theme layers",
@@ -218,7 +273,9 @@
         "label": "Rotate right"
       },
       "myLocation": {
-        "enable": { "label": "Go to my location" },
+        "enable": {
+          "label": "Go to my location"
+        },
         "disable": {
           "label": "Hide position"
         }

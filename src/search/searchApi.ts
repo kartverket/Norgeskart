@@ -1,6 +1,6 @@
 import { transform } from 'ol/proj';
 import { getEnv } from '../env.ts';
-import { ProjectionIdentifier } from '../map/atoms.ts';
+import { ProjectionIdentifier } from '../map/projections/types.ts';
 import {
   AddressApiResponse,
   EmergencyPosterResponse,

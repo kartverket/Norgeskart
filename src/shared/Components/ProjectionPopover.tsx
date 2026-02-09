@@ -40,5 +40,4 @@ export const ProjectionPopover = (props: ProjectionPopoverProps) => {
       </PopoverContent>
     </PopoverRoot>
   );
-  return <div>ProjectionPopover</div>;
 };

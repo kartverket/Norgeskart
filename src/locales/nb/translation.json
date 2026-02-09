@@ -178,22 +178,77 @@
           "placeholder": "Velg",
           "projections": {
             "epsg25833": {
-              "displayName": "UTM 33 (anbefalt)"
+              "displayName": "ETRS89 UTM-33"
             },
             "epsg25832": {
-              "displayName": "UTM 32"
+              "displayName": "ETRS89 UTM-32"
             },
             "epsg25835": {
-              "displayName": "UTM 35"
+              "displayName": "ETRS89 UTM-35"
             },
             "epsg3857": {
               "displayName": "Webmercator"
+            },
+            "epsg4326": {
+              "displayName": "WGS84 Geografisk grader (Lat/Lon)"
+            },
+            "epsg4230": {
+              "displayName": "ED50 Geografiske koordinater"
+            },
+            "epsg25834": {
+              "displayName": "ETRS89 UTM-34"
+            },
+            "epsg25836": {
+              "displayName": "ETRS89 UTM-36"
+            },
+            "epsg23031": {
+              "displayName": "ED50 UTM-31"
+            },
+            "epsg23032": {
+              "displayName": "ED50 UTM-32"
+            },
+            "epsg23033": {
+              "displayName": "ED50 UTM-33"
+            },
+            "epsg23034": {
+              "displayName": "ED50 UTM-34"
+            },
+            "epsg23035": {
+              "displayName": "ED50 UTM-35"
+            },
+            "epsg23036": {
+              "displayName": "ED50 UTM-36"
+            },
+            "epsg27391": {
+              "displayName": "NGO 1948 Gauss-Kruger sone 1"
+            },
+            "epsg27392": {
+              "displayName": "NGO 1948 Gauss-Kruger sone 2"
+            },
+            "epsg27393": {
+              "displayName": "NGO 1948 Gauss-Kruger sone 3"
+            },
+            "epsg27394": {
+              "displayName": "NGO 1948 Gauss-Kruger sone 4"
+            },
+            "epsg27395": {
+              "displayName": "NGO 1948 Gauss-Kruger sone 5"
+            },
+            "epsg27396": {
+              "displayName": "NGO 1948 Gauss-Kruger sone 6"
+            },
+            "epsg27397": {
+              "displayName": "NGO 1948 Gauss-Kruger sone 7"
+            },
+            "epsg27398": {
+              "displayName": "NGO 1948 Gauss-Kruger sone 8"
             }
           },
           "popover": {
             "title": "Koordinatreferansesystem",
             "body": "Velg et koordinatreferansesystem. Forskjellige systemer har forskjellige nøyaktighet i ulike deler av landet. Vi anbefaler UTM 33 hvis du er usikker."
-          }
+          },
+          "showAllProjections": "Vis flere koordinatsystemer"
         },
         "theme": {
           "label": "Velg temakart",
@@ -223,7 +278,9 @@
         "label": "Roter høyre"
       },
       "myLocation": {
-        "enable": { "label": "Gå til min posisjon" },
+        "enable": {
+          "label": "Gå til min posisjon"
+        },
         "disable": {
           "label": "Ikke vis posisjon"
         }

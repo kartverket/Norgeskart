@@ -11,7 +11,8 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { getDefaultStore } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
-import { mapAtom, ProjectionIdentifier } from '../../map/atoms';
+import { mapAtom } from '../../map/atoms';
+import { ProjectionIdentifier } from '../../map/projections/types';
 import { getPlaceNamesByLocation } from '../../search/searchApi';
 import { Place } from '../../types/searchTypes';
 
