@@ -13,12 +13,17 @@ import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
+import { ProjectionIdentifier } from '../atoms';
 import { BackgroundLayerName } from './backgroundLayers';
 import { DEFAULT_BACKGROUND_LAYER } from './backgroundWMTSProviders';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
 
 export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
   DEFAULT_BACKGROUND_LAYER,
+);
+
+export const preNauticalProjectionAtom = atom<ProjectionIdentifier | null>(
+  null,
 );
 
 export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(

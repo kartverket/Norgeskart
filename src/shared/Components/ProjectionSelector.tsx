@@ -7,7 +7,7 @@ import {
   SelectValueText,
   Tooltip,
 } from '@kvib/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AvailableProjections, ProjectionIdentifier } from '../../map/atoms';
 
@@ -26,6 +26,10 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
   const [selectedProjection, setSelectedProjection] =
     useState<ProjectionIdentifier>(props.default);
+
+  useEffect(() => {
+    setSelectedProjection(props.default);
+  }, [props.default]);
 
   const projectionCollection = AvailableProjections.map((projection) => {
     const label = t(
