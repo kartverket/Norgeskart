@@ -26,6 +26,7 @@ export const ProjectionSettings = () => {
     >
       <ProjectionSelector
         onProjectionChange={setProjection}
+        value={projectionId || DEFAULT_PROJECTION}
         default={projectionId || DEFAULT_PROJECTION}
         textColor="white"
         hideBorders

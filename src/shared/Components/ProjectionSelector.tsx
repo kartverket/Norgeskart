@@ -13,7 +13,7 @@ import {
   Tooltip,
   VStack,
 } from '@kvib/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AvailableProjections } from '../../map/atoms';
 import { ProjectionIdentifier } from '../../map/projections/types';
@@ -49,6 +49,7 @@ const allProjections: ProjectionIdentifier[] = [
 
 export interface ProjectionSelectorProps {
   onProjectionChange: (projection: ProjectionIdentifier) => void;
+  value?: ProjectionIdentifier;
   default: ProjectionIdentifier;
   label?: string;
   textColor: 'white' | 'black';
@@ -60,14 +61,9 @@ export interface ProjectionSelectorProps {
 
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
-  const [selectedProjection, setSelectedProjection] =
-    useState<ProjectionIdentifier>(props.default);
   const [displayAllProjections, setDisplayAllProjections] =
     useState<boolean>(false);
-
-  useEffect(() => {
-    setSelectedProjection(props.default);
-  }, [props.default]);
+  const selectedProjection = props.value ?? props.default;
 
   const projectionsToDisplay = props.isToolbar
     ? AvailableProjections
@@ -123,7 +119,6 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
                 item={item.value}
                 onClick={() => {
                   props.onProjectionChange(item.value as ProjectionIdentifier);
-                  setSelectedProjection(item.value as ProjectionIdentifier);
                 }}
               >
                 {item.label}
