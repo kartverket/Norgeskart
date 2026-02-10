@@ -4,6 +4,7 @@ import { Circle, type Geometry } from 'ol/geom';
 import { fromCircle } from 'ol/geom/Polygon';
 import { StyleForStorage } from '../../api/nkApiClient';
 import { Layer } from './printApi';
+import { Style } from 'ol/style';
 
 type PrintSymbolizer =
   | {
@@ -26,8 +27,9 @@ type PrintSymbolizer =
   }
   | {
     type: 'text';
-    text: string;
-    font: string;
+    label: string;
+    fontFamily: string;
+    fontSize: string;
     fillColor: string;
     strokeColor: string;
     strokeWidth: number;
@@ -56,46 +58,62 @@ const normalizeHexColor = (color: string): string => {
 };
 
 export const getSymbolizersFromStyle = (
-  style: StyleForStorage | null,
-  geometryType: string,
+  style: Style | null,
+  geometryType: string
 ): PrintSymbolizer[] => {
   if (!style) return [];
 
   switch (geometryType) {
-    case 'Polygon':
+    case 'Polygon': {
+      const fill = style.getFill();
+      const stroke = style.getStroke();
       return [
         {
           type: 'polygon',
-          fillColor: normalizeHexColor(
-            style.fill?.color?.toString() || 'rgba(255,255,255,0.5)',
-          ),
+          fillColor: normalizeHexColor(fill?.getColor() as string),
           fillOpacity: 0.5,
-          strokeColor: normalizeHexColor(
-            style.stroke?.color?.toString() || '#000',
-          ),
-          strokeWidth: style.stroke?.width || 2,
+          strokeColor: normalizeHexColor(stroke?.getColor() as string),
+          strokeWidth: stroke?.getWidth() || 2,
         },
       ];
-    case 'LineString':
+    }
+    case 'LineString': {
+      const stroke = style.getStroke();
       return [
         {
           type: 'line',
-          strokeColor: normalizeHexColor(
-            style.stroke?.color?.toString() || '#000',
-          ),
-          strokeWidth: style.stroke?.width || 2,
+          strokeColor: normalizeHexColor(stroke?.getColor() as string),
+          strokeWidth: stroke?.getWidth() || 2,
         },
       ];
+    }
+    case 'Point': {
+      const text = style.getText();
 
-    case 'Point':
+
+      if (text && text.getText()) {
+        return [
+          {
+            type: 'text',
+            label: text.getText() || '',
+            fontFamily: text.getFont()?.split(' ')[1] || 'sans-serif',
+            fontSize: text.getFont()?.split(' ')[0] || '16px',
+            fillColor: normalizeHexColor(text.getFill()?.getColor() as string),
+            strokeColor: normalizeHexColor(text.getStroke()?.getColor() as string),
+            strokeWidth: text.getStroke()?.getWidth() || 2,
+          },
+        ];
+      }
+      const image = style.getImage();
       return [
         {
           type: 'point',
-          fillColor: normalizeHexColor(style.icon?.color?.toString() || '#000'),
-          pointRadius: style.icon?.radius || 6,
-          graphicName: 'circle', //TODO: må utvides for andre symboltyper
+          fillColor: normalizeHexColor(image?.getFill()?.getColor() as string),
+          pointRadius: image?.getRadius() || 8,
+          graphicName: 'circle',
         },
       ];
+    }
     default:
       return [];
   }
@@ -104,7 +122,6 @@ export const createGeoJsonLayerWithStyles = (
   features: OlFeature<Geometry>[],
   sourceProjection: string,
   targetProjection: string,
-  styleForStorage: StyleForStorage,
 ): Layer => {
 
   // Convert circles to polygons
@@ -133,9 +150,10 @@ export const createGeoJsonLayerWithStyles = (
         if (f.properties[key] === null) delete f.properties[key];
       }
     }
+
     styleCollection[`[IN('${f.id}')]`] = {
       symbolizers: getSymbolizersFromStyle(
-        styleForStorage,
+        features[i].getStyle() as Style,
         f.geometry?.type,
       ),
     };

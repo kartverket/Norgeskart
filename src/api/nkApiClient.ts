@@ -26,6 +26,7 @@ export type StyleForStorage = {
     angle?: number | undefined;
     points?: number | undefined;
     scale?: [number, number] | undefined;
+    graphicName?: string | undefined;
   };
   text?: {
     text?: string | undefined; // Preferred/current format; 'value' is supported for backward compatibility

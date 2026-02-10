@@ -98,6 +98,7 @@ export const DrawControlFooter = () => {
         );
         const featureStyle = feature.getStyle() as Style | null;
         const icon = getFeatureIcon(feature);
+        console.log('DEBUG featureStyle:', featureStyle, featureStyle?.getText()?.getText());
         const styleForStorage = getStyleForStorage(featureStyle);
         return {
           type: 'Feature',
