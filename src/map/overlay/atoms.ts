@@ -6,3 +6,5 @@ export const showSearchComponentAtom = atom<boolean>((get) => {
   const currentMapTool = get(mapToolAtom);
   return currentMapTool === null;
 });
+
+export const drawPanelCollapsedAtom = atom(false);

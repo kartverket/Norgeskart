@@ -1,5 +1,14 @@
-import { Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+ 
+  useBreakpointValue,
+} from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
+import { useEffect } from 'react';
+import { BottomDrawToolSelector } from '../../draw/BottomDrawToolSelector';
 import { PrintDialog } from '../../print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from '../../search/atoms';
 import { useMapClickSearch } from '../../search/hooks';
@@ -11,7 +20,11 @@ import { Toolbar } from '../../toolbar/Toolbar';
 import { displayCompassOverlayAtom } from '../atoms';
 import { useFeatureInfoClick } from '../featureInfo/useFeatureInfo';
 import { MapControlButtons } from '../MapControlButtons';
-import { mapToolAtom, showSearchComponentAtom } from './atoms';
+import {
+  drawPanelCollapsedAtom,
+  mapToolAtom,
+  showSearchComponentAtom,
+} from './atoms';
 import { Compass } from './Compass';
 import { LinkLogo } from './LinkLogo';
 import { MapToolButtons } from './MapToolButtons';
@@ -30,6 +43,13 @@ export const MapOverlay = () => {
     lg: true,
   });
   const selectedResult = useAtomValue(selectedResultAtom);
+  const [collapsed, setCollapsed] = useAtom(drawPanelCollapsedAtom);
+
+  useEffect(() => {
+    if (currentMapTool !== 'draw') {
+      setCollapsed(false);
+    }
+  }, [currentMapTool, setCollapsed]);
   useFeatureInfoClick();
   useSearchEffects();
   useMapClickSearch();
@@ -82,12 +102,21 @@ export const MapOverlay = () => {
           alignItems={{ base: 'flex-end', md: 'stretch' }}
           display={{ base: 'flex', md: 'block' }}
         >
-          <MapToolCards
-            currentMapTool={currentMapTool}
-            onClose={() => {
-              setCurrentMapTool(null);
-            }}
-          />
+          <Box
+            display={currentMapTool === 'draw' && collapsed ? 'none' : 'block'}
+            pointerEvents={
+              currentMapTool === 'draw' && collapsed ? 'none' : 'auto'
+            }
+            w="100%"
+          >
+            <MapToolCards
+              currentMapTool={currentMapTool}
+              onClose={() => {
+                setCurrentMapTool(null);
+                setCollapsed(false);
+              }}
+            />
+          </Box>
         </GridItem>
         <GridItem
           gridColumn={{
@@ -154,6 +183,7 @@ export const MapOverlay = () => {
           </GridItem>
         )}
       </Grid>
+      {isMobile && currentMapTool === 'draw' && <BottomDrawToolSelector />}
     </ErrorBoundary>
   );
 };
