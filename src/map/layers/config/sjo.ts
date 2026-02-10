@@ -19,8 +19,7 @@ export const sjoConfig: ThemeLayerConfig = {
         nn: 'Djupdatakvalitet',
         en: 'Depth data quality',
       },
-      wmsUrl:
-        'https://wms.geonorge.no/skwms1/wms.dybdedatakvalitet_navigasjon',
+      wmsUrl: 'https://wms.geonorge.no/skwms1/wms.dybdedatakvalitet_navigasjon',
       parentId: 'sjo',
     },
     {
