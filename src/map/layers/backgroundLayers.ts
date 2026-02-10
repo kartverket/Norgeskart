@@ -2,7 +2,11 @@ import { useAtomValue } from 'jotai';
 import TileLayer from 'ol/layer/Tile';
 import { AvailableProjectionType, mapAtom } from '../atoms';
 import { ProjectionIdentifier } from '../projections/types';
-import { VectorTileLayerName } from './backgroundVectorTiles';
+import {
+  createVectorTileLayer,
+  isVectorTileLayer,
+  VectorTileLayerName,
+} from './backgroundVectorTiles';
 import { getWMSLayer, WMSLayerName } from './backgroundWMS';
 import { loadableWMTS, WMTSLayerName } from './backgroundWMTSProviders';
 
@@ -65,11 +69,8 @@ export const useBackgoundLayers = () => {
       return null;
     }
 
-    const { isVectorTileLayer, createVectorTileLayer } = await import(
-      './backgroundVectorTiles'
-    );
     if (isVectorTileLayer(backgroundLayerName)) {
-      return await createVectorTileLayer(backgroundLayerName);
+      return createVectorTileLayer(backgroundLayerName);
     }
 
     const currentProjection: ProjectionIdentifier = map
