@@ -8,12 +8,11 @@ import {
   addToUrlListParameter,
   removeFromUrlListParameter,
 } from '../../shared/utils/urlUtils';
-import { mapAtom } from '../atoms';
+import { mapAtom, ProjectionIdentifier } from '../atoms';
 import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
-import { ProjectionIdentifier } from '../atoms';
 import { BackgroundLayerName } from './backgroundLayers';
 import { DEFAULT_BACKGROUND_LAYER } from './backgroundWMTSProviders';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';

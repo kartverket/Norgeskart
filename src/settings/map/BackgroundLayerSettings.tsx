@@ -23,10 +23,7 @@ import {
   loadableWMTS,
 } from '../../map/layers/backgroundWMTSProviders';
 import { useMapSettings } from '../../map/mapHooks';
-import {
-  getUrlParameter,
-  setUrlParameter,
-} from '../../shared/utils/urlUtils';
+import { getUrlParameter, setUrlParameter } from '../../shared/utils/urlUtils';
 
 // Prioritetskart for sortering
 const layerPriorityMap = new Map<BackgroundLayerName, number>([

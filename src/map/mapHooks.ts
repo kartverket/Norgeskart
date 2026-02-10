@@ -44,7 +44,7 @@ const useMap = () => {
     }
   };
 
-  // that works for now, remove useEffect later 
+  // that works for now, remove useEffect later
   useEffect(() => {
     const registerViewListeners = () => {
       const view = map.getView();
