@@ -1,7 +1,8 @@
 import { Flex, IconButton, MaterialSymbol, Tooltip } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { drawPanelCollapsedAtom } from '../map/overlay/atoms';
 import {
   drawTypeAtom,
   primaryColorAtom,
@@ -72,20 +73,40 @@ const DrawTypeButton = ({
 }) => {
   const [drawType, setDrawType] = useAtom(drawTypeAtom);
   const isCurrentTool = drawType === type;
+
+  const collapsed = useAtomValue(drawPanelCollapsedAtom);
+  const setCollapsed = useSetAtom(drawPanelCollapsedAtom);
+
   const setPrimaryColor = useSetAtom(primaryColorAtom);
   const setSecondaryColor = useSetAtom(secondaryColorAtom);
   const ph = usePostHog();
 
+  const effectiveIcon: MaterialSymbol =
+    isCurrentTool && collapsed ? 'keyboard_arrow_up' : icon;
+
+  const effectiveTooltip = isCurrentTool && collapsed ? 'Vis panel' : tooltip;
+
   return (
-    <Tooltip content={tooltip}>
+    <Tooltip content={effectiveTooltip}>
       <IconButton
         variant={isCurrentTool ? 'solid' : 'ghost'}
-        icon={icon}
+        icon={effectiveIcon}
         size="xl"
         onClick={() => {
+          // Hvis panelet er skjult og du trykker på aktiv knapp -> åpne panelet
+          if (isCurrentTool && collapsed) {
+            setCollapsed(false);
+            return;
+          }
+
+          // Hvis du trykker på aktiv knapp mens panelet er synlig -> gjør ingenting (som før)
           if (isCurrentTool) {
             return;
           }
+
+          // Bytter tool -> åpne panelet (hvis det var skjult)
+          setCollapsed(false);
+
           if (type === 'Text') {
             setPrimaryColor('#000000');
             setSecondaryColor('#ffffffff');

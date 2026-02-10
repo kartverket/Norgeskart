@@ -1,7 +1,7 @@
-import { Flex, HStack, IconButton, VStack } from '@kvib/react';
+import { Flex, Heading, HStack, IconButton, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
-import { BottomDrawToolSelector } from '../BottomDrawToolSelector.tsx';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
 import { DrawToolSelector } from '../DrawToolSelector.tsx';
@@ -14,11 +14,25 @@ import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts
 import { EditControls } from './EditControls.tsx';
 import { useDrawSettings } from './hooks/drawSettings.ts';
 
-const MOBILE_TOOLBAR_RESERVE = '55px'; // juster etter behov
+const MOBILE_TOOLBAR_RESERVE = '55px';
 
 export const DrawControls = () => {
   const { drawType, deleteSelected } = useDrawSettings();
   const isMobile = useIsMobileScreen();
+  const { t } = useTranslation();
+
+  const drawTypeLabels: Record<string, string> = {
+    Move: t('draw.controls.tool.tooltip.edit'),
+    Polygon: t('draw.controls.tool.tooltip.polygon'),
+    Point: t('draw.controls.tool.tooltip.point'),
+    LineString: t('draw.controls.tool.tooltip.linestring'),
+    Circle: t('draw.controls.tool.tooltip.circle'),
+    Text: t('draw.controls.tool.tooltip.text'),
+  };
+
+  const activeToolLabel = drawType
+    ? drawTypeLabels[drawType]
+    : t('draw.tabHeading');
 
   useDrawControlsKeyboardEffects();
   useAtom(distanceUnitAtomEffect);
@@ -29,10 +43,14 @@ export const DrawControls = () => {
         alignItems="flex-start"
         width="100%"
         padding={0.5}
-        // sørger for at innhold ikke havner bak bottom-bar
         style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
       >
-        {/* Desktop: selector øverst. Mobil: den ligger fixed i bunnen */}
+        {isMobile && (
+          <Heading size="md" px={1} py={1}>
+            {activeToolLabel}
+          </Heading>
+        )}
+
         {!isMobile && <DrawToolSelector />}
 
         {drawType === 'Text' && <TextStyleControl />}
@@ -61,12 +79,9 @@ export const DrawControls = () => {
           <LineWidthControl />
           <MeasurementControls />
         </Flex>
-
         <EditControls />
         <DrawControlFooter />
       </VStack>
-
-      {isMobile && <BottomDrawToolSelector />}
     </>
   );
 };
