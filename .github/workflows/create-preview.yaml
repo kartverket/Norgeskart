@@ -130,15 +130,16 @@ jobs:
         env:
           COMMIT_MESSAGE: Create preview for branch ${{ needs.build.outputs.target_branch_short_name }}
           NEW_FILE_PATH: env/atgcp1-dev/norgeskart-preview/norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.jsonnet
+          INGRESS: norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atgcp1-dev.kartverket${{ github.event.inputs.publicPreview == 'true' && '' || '-intern' }}.cloud
         run: |
           mkdir -p env/atgcp1-dev/norgeskart-preview
           cp -f applications/partials/norgeskart-preview-partial.jsonnet $NEW_FILE_PATH
           sed -i '1ilocal name = "norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}";' $NEW_FILE_PATH
           sed -i '1ilocal image = "${{ needs.build.outputs.docker_tag }}";' $NEW_FILE_PATH
-          sed -i '1ilocal ingress = ["norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atgcp1-dev.kartverket${{ github.event.inputs.publicPreview && '' || '-intern' }}.cloud"];' $NEW_FILE_PATH  
+          sed -i '1ilocal ingress = ["$INGRESS"];' $NEW_FILE_PATH  
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
       - name: Add url to  output
         run: |
-          echo "Trykk her snart https://norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atgcp1-dev.kartverket${{ github.event.inputs.publicPreview && '' || '-intern' }}.cloud" >> $GITHUB_STEP_SUMMARY
+          echo "Trykk her snart https://$INGRESS" >> $GITHUB_STEP_SUMMARY
