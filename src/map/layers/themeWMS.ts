@@ -12,7 +12,56 @@ import {
 } from '../../api/themeLayerConfigApi';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
 
-type LocationNameLayerName = 'economicMapFirstEdition' | 'amtMap';
+type HistoricalMapsLayerName = 'economicMapFirstEdition' | 'amtMap';
+
+type StedsnavnLayerName =
+  | 'norwegianPlaceNames'
+  | 'luleSamiPlaceNames'
+  | 'northernSamiPlaceNames'
+  | 'skoltSamiPlaceNames'
+  | 'southernSamiPlaceNames'
+  | 'kvenPlaceNames'
+  | 'otherPlaceNames'
+  | 'administrativeAreasPlaceNames'
+  | 'settlementPlaceNames'
+  | 'infrastructurePlaceNames'
+  | 'seaPlaceNames'
+  | 'landTypePlaceNames'
+  | 'freshwaterPlaceNames'
+  | 'terrainPlaceNames'
+  | 'culturePlaceNames'
+  | 'approvedPlaceNames'
+  | 'approvedNamePartPlaceNames'
+  | 'acceptedPlaceNames'
+  | 'internationalPlaceNames'
+  | 'privatePlaceNames'
+  | 'historicalPlaceNames'
+  | 'proposedPlaceNames'
+  | 'unevaluatedPlaceNames'
+  | 'rejectedNamePartPlaceNames'
+  | 'rejectedPlaceNames'
+  | 'caseStatusUntreatedPlaceNames'
+  | 'notToBeProcessedPlaceNames'
+  | 'approvedByAuthorityPlaceNames'
+  | 'collectiveDecisionPlaceNames'
+  | 'collectiveDecisionWithdrawnPlaceNames'
+  | 'caseRaisedPlaceNames'
+  | 'caseDecisionPlaceNames'
+  | 'decisionPostponedPlaceNames'
+  | 'appealDecisionNotWithdrawnPlaceNames'
+  | 'appealDecisionWithdrawnPlaceNames'
+  | 'appealDecisionPostponedPlaceNames'
+  | 'simplifiedDecisionPlaceNames'
+  | 'decision24MonthsPlaceNames'
+  | 'decision12MonthsPlaceNames'
+  | 'decision6MonthsPlaceNames'
+  | 'decision3MonthsPlaceNames'
+  | 'decision1MonthPlaceNames'
+  | 'collectiveDecision24MonthsPlaceNames'
+  | 'collectiveDecision12MonthsPlaceNames'
+  | 'collectiveDecision6MonthsPlaceNames'
+  | 'collectiveDecision3MonthsPlaceNames'
+  | 'collectiveDecision1MonthPlaceNames';
 
 type PropertyLayerName = 'adresses' | 'buildings' | 'parcels';
 type OutdoorsLifeLayerName =
@@ -34,13 +83,6 @@ type ConfigThemeLayerName =
   | 'snowmobile'
   | 'unprepared'
   | 'preparationNotSpecified'
-  | 'norwegianPlaceNames'
-  | 'luleSamiPlaceNames'
-  | 'northernSamiPlaceNames'
-  | 'skoltSamiPlaceNames'
-  | 'southernSamiPlaceNames'
-  | 'kvenPlaceNames'
-  | 'otherPlaceNames'
   | 'nivBenchmarks'
   | 'landNetPoints'
   | 'primaryNetPoints'
@@ -61,7 +103,8 @@ export type ThemeLayerName =
   | PropertyLayerName
   | OutdoorsLifeLayerName
   | FactsLayerName
-  | LocationNameLayerName
+  | HistoricalMapsLayerName
+  | StedsnavnLayerName
   | ConfigThemeLayerName;
 
 export const QUERYABLE_LAYERS: ThemeLayerName[] = [

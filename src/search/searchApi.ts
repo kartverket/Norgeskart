@@ -1,6 +1,6 @@
 import { transform } from 'ol/proj';
 import { getEnv } from '../env.ts';
-import { ProjectionIdentifier } from '../map/atoms.ts';
+import { ProjectionIdentifier } from '../map/projections/types.ts';
 import {
   AddressApiResponse,
   EmergencyPosterResponse,
@@ -71,9 +71,15 @@ export const getPlaceNames = async (
   page: number,
 ): Promise<PlaceNameApiResponse> => {
   try {
-    const encodedQuery = encodeURIComponent(query);
+    const searchPart = query.split(',')[0].trim();
+    const municipalityPart = query.split(',')[1]?.trim();
+
+    const encodedQuery = encodeURIComponent(searchPart);
+    const encodedMunicipality = municipalityPart
+      ? encodeURIComponent(municipalityPart)
+      : null;
     const res = await fetch(
-      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*&treffPerSide=15&side=${page}`,
+      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*${encodedMunicipality != null ? '&kommunenavn=' + encodedMunicipality + '*' : null}&treffPerSide=15&side=${page}`,
     );
     if (!res.ok) {
       console.warn(`API failed [placeNames]: ${res.status} for "${query}"`);

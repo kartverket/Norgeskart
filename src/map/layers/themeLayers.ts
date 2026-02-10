@@ -19,11 +19,20 @@ const isProjectNameAndCategoryIdMatch = (
   const normalizedProjectName = projectName.toLocaleLowerCase().trim();
   switch (normalizedProjectName) {
     case 'norgeskart':
-      return ['facts', 'outdoorRecreation'].includes(layerCategoryId);
+      return ['facts', 'outdoorRecreation', 'historicalMaps'].includes(
+        layerCategoryId,
+      );
     case 'seeiendom':
       return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
     case 'ssr':
-      return ['placeNames'].includes(layerCategoryId);
+      return [
+        'placeNames',
+        'placeNameLanguages',
+        'placeNameTypes',
+        'placeNameWritingStatus',
+        'placeNameCaseStatus',
+        'placeNameRecentDecisions',
+      ].includes(layerCategoryId);
     case 'tilgjengelighet':
       return ['tilgjengelighet'].includes(layerCategoryId);
     case 'fastmerker':
