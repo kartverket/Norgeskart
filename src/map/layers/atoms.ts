@@ -4,11 +4,12 @@ import {
   getThemeLayerById,
   themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
+import { ProjectionIdentifier } from '../../map/projections/types';
 import {
   addToUrlListParameter,
   removeFromUrlListParameter,
 } from '../../shared/utils/urlUtils';
-import { mapAtom, ProjectionIdentifier } from '../atoms';
+import { mapAtom } from '../atoms';
 import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
