@@ -3,7 +3,13 @@ import { getDefaultStore } from 'jotai';
 import Map from 'ol/Map';
 import { transform } from 'ol/proj';
 import { getStyleForStorage } from '../../api/nkApiClient';
+import {
+  getEffectiveWmsUrl,
+  getThemeLayerById,
+  themeLayerConfigAtom,
+} from '../../api/themeLayerConfigApi';
 import { getDrawLayer } from '../../draw/drawControls/hooks/mapLayers';
+import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { getScaleFromResolution } from '../../map/mapScale';
 import { drawStyleReadAtom } from '../../settings/draw/atoms';
@@ -71,6 +77,27 @@ export const generateMapPdf = async ({
         matrices: WMTS_MATRICES,
       },
     ];
+
+    const store = getDefaultStore();
+    const activeThemeLayers = store.get(activeThemeLayersAtom);
+    const themeLayerConfig = store.get(themeLayerConfigAtom);
+
+    for (const themeLayerId of activeThemeLayers) {
+      const themeLayer = getThemeLayerById(themeLayerConfig, themeLayerId);
+      if (themeLayer && themeLayer.layers) {
+        const wmsUrl = getEffectiveWmsUrl(themeLayerConfig, themeLayer);
+        if (wmsUrl) {
+          layers.unshift({
+            baseURL: wmsUrl,
+            customParams: { TRANSPARENT: 'true' },
+            imageFormat: 'image/png',
+            layers: [themeLayer.layers],
+            opacity: 1,
+            type: 'WMS',
+          });
+        }
+      }
+    }
 
     const drawLayer = getDrawLayer();
     const source = drawLayer?.getSource();
