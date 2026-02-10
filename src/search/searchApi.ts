@@ -79,7 +79,7 @@ export const getPlaceNames = async (
       ? encodeURIComponent(municipalityPart)
       : null;
     const res = await fetch(
-      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*${encodedMunicipality != null ? '&kommunenavn=' + encodedMunicipality + '*' : null}&treffPerSide=15&side=${page}`,
+      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*${encodedMunicipality != null ? '&kommunenavn=' + encodedMunicipality + '*' : ''}&treffPerSide=15&side=${page}`,
     );
     if (!res.ok) {
       console.warn(`API failed [placeNames]: ${res.status} for "${query}"`);
