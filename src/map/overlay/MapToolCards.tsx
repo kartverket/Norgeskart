@@ -122,7 +122,12 @@ const MapToolCard = ({
 
         <HStack>
           {showCollapse && onCollapse && (
-            <Button variant="ghost" leftIcon='bottom_panel_close' size="sm" onClick={onCollapse}>
+            <Button
+              variant="ghost"
+              leftIcon="bottom_panel_close"
+              size="sm"
+              onClick={onCollapse}
+            >
               Skjul verktøyline
             </Button>
           )}

@@ -3,7 +3,11 @@ import { useAtomValue } from 'jotai';
 import { canRedoAtom, canUndoAtom } from '../settings/draw/drawActions/atoms';
 import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 
-export const UndoRedoControls = ({ heading }: { heading?: string }) => {
+export const UndoRedoControls = ({
+  heading: _heading,
+}: {
+  heading?: string;
+}) => {
   const { undoLast, redoLastUndone } = useDrawActions();
   const canUndoDrawAction = useAtomValue(canUndoAtom);
   const canRedoDrawAction = useAtomValue(canRedoAtom);
