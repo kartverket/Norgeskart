@@ -19,9 +19,16 @@ const isProjectNameAndCategoryIdMatch = (
   const normalizedProjectName = projectName.toLocaleLowerCase().trim();
   switch (normalizedProjectName) {
     case 'norgeskart':
-      return ['facts', 'outdoorRecreation', 'historicalMaps'].includes(
-        layerCategoryId,
-      );
+      return [
+        'facts',
+        'outdoorRecreation',
+        'historicalMaps',
+        'sjo',
+        'sjo_dybdedatakvalitet',
+        'sjo_farlige_bolger',
+        'sjo_marine_grunnkart',
+        'sjo_nmg',
+      ].includes(layerCategoryId);
     case 'seeiendom':
       return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
     case 'ssr':
