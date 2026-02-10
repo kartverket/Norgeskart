@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
- 
-  useBreakpointValue,
-} from '@kvib/react';
+import { Box, Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { BottomDrawToolSelector } from '../../draw/BottomDrawToolSelector';
