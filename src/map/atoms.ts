@@ -104,6 +104,9 @@ const getInitialMapView = () => {
     }
   }
 
+  const backgroundLayerFromUrl = getUrlParameter('backgroundLayer');
+  const isNautical = backgroundLayerFromUrl === 'nautical-background';
+
   return new View({
     center: initialCenter,
     minZoom: 3,
@@ -111,7 +114,7 @@ const getInitialMapView = () => {
     zoom: initialZoom,
     rotation: initialRotation,
     projection: initialProjection,
-    constrainResolution: true,
+    constrainResolution: isNautical,
   });
 };
 

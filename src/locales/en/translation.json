@@ -370,15 +370,16 @@
   "tipsandtricks": {
     "heading": "Tips and tricks",
     "headingClosed": "Show tips and tricks",
-    "headingOpen": "Close "
+    "headingOpen": "Close tips and tricks"
   },
   "toolbar": {
     "reportError": {
       "label": "Error in the map?",
-      "tooltip": "Report errrors or things missing in the map."
+      "tooltip": "Report errors or things missing in the map."
     },
     "scale": {
-      "tooltip": "Select a scale"
+      "tooltip": "Select a scale",
+      "disabledTooltip": "Scale selector is disabled because this background map uses integer zoom levels so that it's performant."
     },
     "crs": {
       "tooltip": "Select coordinate system"

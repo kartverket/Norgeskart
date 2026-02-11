@@ -7,13 +7,48 @@ import {
   SelectValueText,
   Tooltip,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { availableScales, scaleAtom } from '../map/atoms';
+import { availableScales, mapAtom, scaleAtom } from '../map/atoms';
 
 export const ScaleSelector = () => {
   const [scale, setScale] = useAtom(scaleAtom);
   const { t } = useTranslation();
+  const map = useAtomValue(mapAtom);
+  const [isIntegerZoom, setIsIntegerZoom] = useState(() =>
+    map.getView().getConstrainResolution(),
+  );
+
+  useEffect(() => {
+    const registerViewListener = () => {
+      const view = map.getView();
+      const updateConstrainResolution = () => {
+        setIsIntegerZoom(view.getConstrainResolution());
+      };
+
+      view.on('change', updateConstrainResolution);
+      updateConstrainResolution();
+
+      return () => {
+        view.un('change', updateConstrainResolution);
+      };
+    };
+
+    let cleanupViewListener = registerViewListener();
+
+    const onViewChange = () => {
+      cleanupViewListener();
+      cleanupViewListener = registerViewListener();
+    };
+
+    map.on('change:view', onViewChange);
+
+    return () => {
+      cleanupViewListener();
+      map.un('change:view', onViewChange);
+    };
+  }, [map]);
 
   const scaleCollection = [...availableScales].map((s) => ({
     value: String(s),
@@ -22,6 +57,10 @@ export const ScaleSelector = () => {
 
   const label = scale ? `1: ${scale.toLocaleString('no-NO')}` : '';
 
+  const tooltipText = isIntegerZoom
+    ? t('toolbar.scale.disabledTooltip')
+    : t('toolbar.scale.tooltip');
+
   return (
     <SelectRoot
       className={'toolbar-select'}
@@ -29,13 +68,14 @@ export const ScaleSelector = () => {
       size="sm"
       collection={createListCollection({ items: scaleCollection })}
       value={[]}
+      disabled={isIntegerZoom}
       onValueChange={(details) => {
         if (details.value.length > 0) {
           setScale(Number(details.value[0]));
         }
       }}
     >
-      <Tooltip content={t('toolbar.scale.tooltip')}>
+      <Tooltip content={tooltipText}>
         <SelectTrigger className={'toolbar-select-trigger'}>
           <SelectValueText color="white" placeholder={label}></SelectValueText>
         </SelectTrigger>

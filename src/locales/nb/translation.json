@@ -383,7 +383,8 @@
       "tooltip": "Rapporter feil eller mangler i kartet."
     },
     "scale": {
-      "tooltip": "Velg målestokk"
+      "tooltip": "Velg målestokk",
+      "disabledTooltip": "Målestokkvelgeren er deaktivert fordi dette bakgrunnskartet bruker heltallige zoomnivåer for bedre ytelse."
     },
     "crs": {
       "tooltip": "Velg koordinatsystem"
