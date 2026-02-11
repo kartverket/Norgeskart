@@ -11,7 +11,7 @@ export interface Matrix {
   matrixSize: [number, number];
 }
 
-export type Layer = WmtsLayer | GeoJsonLayer;
+export type Layer = WmtsLayer | WmsLayer | GeoJsonLayer;
 
 export interface WmtsLayer {
   baseURL: string;
@@ -26,6 +26,15 @@ export interface WmtsLayer {
   dimensionParams: Record<string, unknown>;
   matrixSet: string;
   matrices: Matrix[];
+}
+
+export interface WmsLayer {
+  baseURL: string;
+  customParams: { TRANSPARENT: string };
+  imageFormat: string;
+  layers: string[];
+  opacity: number;
+  type: 'WMS';
 }
 
 export interface GeoJsonLayer {
