@@ -22,7 +22,7 @@ export function usePrintCapabilities() {
   const [layouts, setLayouts] = useState<PrintLayout[]>([]);
 
   useEffect(() => {
-    fetch('https://ws.geonorge.no/print/kv/capabilities.json')
+    fetch('https://print.atkv3-dev.kartverket-intern.cloud/print/kv/capabilities.json')
       .then((res) => res.json())
       .then((data) => {
         const parsedLayouts = (data.layouts as PrintLayoutApi[]).map(
