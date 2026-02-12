@@ -159,6 +159,7 @@
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_web_mercator_v2": "Aerial photos",
+            "nautical-background": "Nautical Background Map",
             "oceanicelectronic": "Electronic Nautical Charts",
             "sjokartraster": "Nautical Charts",
             "topo": "Topographic map",
@@ -239,6 +240,8 @@
               "displayName": "NGO 1948 Gauss-Kruger zone 8"
             }
           },
+          "forcedWebMercator": "Nautical background map requires Web Mercator projection",
+          "lockedByLayer": "Projection is locked to Web Mercator by nautical background map",
           "popover": {
             "title": "Coordinate refereance system",
             "body": "Select a coordinate refereance system to use. Different systems are accurate in different parts of the country. We recomend using UTM 33 if you are unsure."
@@ -367,15 +370,16 @@
   "tipsandtricks": {
     "heading": "Tips and tricks",
     "headingClosed": "Show tips and tricks",
-    "headingOpen": "Close "
+    "headingOpen": "Close tips and tricks"
   },
   "toolbar": {
     "reportError": {
       "label": "Error in the map?",
-      "tooltip": "Report errrors or things missing in the map."
+      "tooltip": "Report errors or things missing in the map."
     },
     "scale": {
-      "tooltip": "Select a scale"
+      "tooltip": "Select a scale",
+      "disabledTooltip": "Scale selector is disabled because this background map uses integer zoom levels so that it's performant."
     },
     "crs": {
       "tooltip": "Select coordinate system"

@@ -1,10 +1,21 @@
-import { Box, Button, Image, SimpleGrid, Text, VStack } from '@kvib/react';
+import {
+  Box,
+  Button,
+  Image,
+  SimpleGrid,
+  Text,
+  toaster,
+  VStack,
+} from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName, mapAtom } from '../../map/atoms';
-import { activeBackgroundLayerAtom } from '../../map/layers/atoms.ts';
+import {
+  activeBackgroundLayerAtom,
+  preNauticalProjectionAtom,
+} from '../../map/layers/atoms.ts';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
@@ -12,7 +23,7 @@ import {
   loadableWMTS,
 } from '../../map/layers/backgroundWMTSProviders';
 import { useMapSettings } from '../../map/mapHooks';
-import { getUrlParameter } from '../../shared/utils/urlUtils';
+import { getUrlParameter, setUrlParameter } from '../../shared/utils/urlUtils';
 
 // Prioritetskart for sortering
 const layerPriorityMap = new Map<BackgroundLayerName, number>([
@@ -20,11 +31,12 @@ const layerPriorityMap = new Map<BackgroundLayerName, number>([
   ['topograatone', 2],
   ['toporaster', 3],
   ['sjokartraster', 4],
-  ['oceanicelectronic', 5],
-  ['Nibcache_web_mercator_v2', 6],
-  ['Nibcache_UTM32_EUREF89_v2', 7],
-  ['Nibcache_UTM33_EUREF89_v2', 8],
-  ['Nibcache_UTM35_EUREF89_v2', 8],
+  ['nautical-background', 5],
+  ['oceanicelectronic', 6],
+  ['Nibcache_web_mercator_v2', 7],
+  ['Nibcache_UTM32_EUREF89_v2', 8],
+  ['Nibcache_UTM33_EUREF89_v2', 9],
+  ['Nibcache_UTM35_EUREF89_v2', 10],
 ]);
 
 const layerPrioritySort = (
@@ -102,11 +114,15 @@ export const BackgroundLayerSettings = ({
   onSelectComplete: () => void;
 }) => {
   const { t } = useTranslation();
-  const { setBackgroundLayer, getMapProjectionCode } = useMapSettings();
+  const { setBackgroundLayer, setProjection, getMapProjectionCode } =
+    useMapSettings();
   const WMTSProviders = useAtomValue(loadableWMTS);
   const map = useAtomValue(mapAtom);
   const ph = usePostHog();
   const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
+  const [preNauticalProjection, setPreNauticalProjection] = useAtom(
+    preNauticalProjectionAtom,
+  );
 
   const initialLayer: BackgroundLayerName = (() => {
     const currentBackgroundLayer = map
@@ -161,10 +177,48 @@ export const BackgroundLayerSettings = ({
     label: t(`map.settings.layers.mapNames.backgroundMaps.oceanicelectronic`),
   });
 
+  // Add vector tile layers
+  avaiableLayers.push({
+    value: 'nautical-background',
+    label: t(`map.settings.layers.mapNames.backgroundMaps.nautical-background`),
+  });
+
   const sortedLayers = avaiableLayers.sort(layerPrioritySort);
 
-  const handleSetLayer = (layer: BackgroundLayerName) => {
+  const handleSetLayer = async (layer: BackgroundLayerName) => {
     ph.capture('map_background_layer_changed', { layerName: layer });
+
+    // Switching away from nautical: restore previous projection
+    if (
+      currentLayer === 'nautical-background' &&
+      layer !== 'nautical-background' &&
+      preNauticalProjection &&
+      preNauticalProjection !== getMapProjectionCode()
+    ) {
+      setPreNauticalProjection(null);
+      setCurrentLayer(layer);
+      setActiveBackgroundLayer(layer);
+      // Set URL first so setProjection picks up the correct background layer
+      setUrlParameter('backgroundLayer', layer);
+      await setProjection(preNauticalProjection);
+      onSelectComplete();
+      return;
+    }
+
+    // Switching to nautical: save current projection and force Web Mercator
+    if (
+      layer === 'nautical-background' &&
+      getMapProjectionCode() !== 'EPSG:3857'
+    ) {
+      setPreNauticalProjection(getMapProjectionCode());
+      await setProjection('EPSG:3857');
+      toaster.create({
+        title: t('map.settings.layers.projection.forcedWebMercator'),
+        duration: 4000,
+        type: 'info',
+      });
+    }
+
     setBackgroundLayer(layer);
     setCurrentLayer(layer);
     setActiveBackgroundLayer(layer);

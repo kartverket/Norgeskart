@@ -19,6 +19,7 @@
     "cy:run": "cypress run"
   },
   "dependencies": {
+    "@geoblocks/ol-maplibre-layer": "^1.0.3",
     "@kvib/react": "^6.2.1",
     "@posthog/react": "^1.7.0",
     "@tanstack/react-query": "^5.90.20",
@@ -29,6 +30,7 @@
     "i18next-browser-languagedetector": "^8.2.0",
     "jotai": "^2.17.1",
     "jotai-effect": "^2.2.3",
+    "maplibre-gl": "^5.17.0",
     "ol": "^10.7.0",
     "posthog-js": "^1.342.1",
     "proj4": "^2.20.2",

@@ -15,11 +15,26 @@ route {
         header Content-Security-Policy "
                 default-src 'self';
                 script-src 'self' ph.kartverket.no;
-                img-src 'self' tilecache.norgeibilder.no opencache.statkart.no *.geonorge.no *.norgeskart.no cache.kartverket.no *.kartverket-intern.cloud cache.atgcp1-prod.kartverket.cloud cache.atkv3-dev.kartverket.cloud data.kartverket.no;
-                connect-src 'self' *.posthog.com internal-j.posthog.com us.posthog.com  tilecache.norgeibilder.no *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no cache.kartverket.no cache.atkv3-dev.kartverket.cloud opencache.statkart.no raw.githubusercontent.com ph.kartverket.no;
-                style-src 'self' 'unsafe-inline' ph.kartverket.no eu.i.posthog.com *.posthog.com;
+                img-src 'self' tilecache.norgeibilder.no opencache.statkart.no *.geonorge.no *.norgeskart.no cache.kartverket.no *.kartverket-intern.cloud cache.atgcp1-prod.kartverket.cloud cache.atkv3-dev.kartverket.cloud data.kartverket.no *.ecc.no *.maplytic.no;
+                connect-src 'self' data: blob: *.posthog.com internal-j.posthog.com us.posthog.com tilecache.norgeibilder.no *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no cache.kartverket.no cache.atkv3-dev.kartverket.cloud opencache.statkart.no raw.githubusercontent.com ph.kartverket.no *.ecc.no *.maplytic.no fonts.googleapis.com fonts.gstatic.com;;
+                style-src 'self' 'unsafe-inline' ph.kartverket.no eu.i.posthog.com *.posthog.com fonts.googleapis.com;
+                font-src 'self' fonts.gstatic.com;
         "
         header Permissions-Policy "geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), accelerometer=(), camera=()"
+        
+        handle /api/styles/* {
+                @options method OPTIONS
+                handle @options {
+                        header Access-Control-Allow-Origin "*"
+                        header Access-Control-Allow-Methods "GET, OPTIONS"
+                        header Access-Control-Allow-Headers "*"
+                        respond 204
+                }
+                reverse_proxy https://dnl.kartverket.no {
+                        header_up Host dnl.kartverket.no
+                        header_down Access-Control-Allow-Origin "*"
+                }
+        }
 }
 
 root * /var/www

@@ -49,20 +49,21 @@ const allProjections: ProjectionIdentifier[] = [
 
 export interface ProjectionSelectorProps {
   onProjectionChange: (projection: ProjectionIdentifier) => void;
+  value?: ProjectionIdentifier;
   default: ProjectionIdentifier;
   label?: string;
   textColor: 'white' | 'black';
   hideBorders?: boolean;
   isToolbar?: boolean;
+  disabled?: boolean;
+  disabledReason?: string;
 }
 
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
-  const [selectedProjection, setSelectedProjection] =
-    useState<ProjectionIdentifier>(props.default);
-
   const [displayAllProjections, setDisplayAllProjections] =
     useState<boolean>(false);
+  const selectedProjection = props.value ?? props.default;
 
   const projectionsToDisplay = props.isToolbar
     ? AvailableProjections
@@ -89,8 +90,10 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       <HStack alignItems={'baseline'}>
         <SelectRoot
           minWidth="180px"
+          size="sm"
           collection={createListCollection({ items: projectionCollection })}
           value={[selectedProjection]}
+          disabled={props.disabled}
         >
           <SelectTrigger
             className={props.isToolbar ? 'toolbar-select' : ''}
@@ -99,7 +102,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
           >
             {props.label ? (
               <Tooltip
-                content={props.label}
+                content={props.disabledReason || props.label}
                 portalled={false}
                 positioning={{ placement: 'top' }}
               >
@@ -116,7 +119,6 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
                 item={item.value}
                 onClick={() => {
                   props.onProjectionChange(item.value as ProjectionIdentifier);
-                  setSelectedProjection(item.value as ProjectionIdentifier);
                 }}
               >
                 {item.label}
