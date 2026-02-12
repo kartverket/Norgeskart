@@ -82,7 +82,7 @@ export const SearchComponent = () => {
       flexDir="column"
       alignItems="stretch"
       gap={2}
-      pointerEvents={'auto'}
+      pointerEvents={'all'}
       px={3}
       pt={3}
       maxH={'100%'}

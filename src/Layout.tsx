@@ -1,25 +1,26 @@
 import { Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { PrintDialog } from '../../print/PrintDialog';
-import { selectedResultAtom, useSearchEffects } from '../../search/atoms';
-import { useMapClickSearch } from '../../search/hooks';
-import { InfoBox } from '../../search/infobox/InfoBox';
-import { SearchComponent } from '../../search/SearchComponent';
-import { ErrorBoundary } from '../../shared/ErrorBoundary';
-import { useIsMobileScreen } from '../../shared/hooks';
-import { Toolbar } from '../../toolbar/Toolbar';
-import { displayCompassOverlayAtom } from '../atoms';
-import { useFeatureInfoClick } from '../featureInfo/useFeatureInfo';
-import { MapControlButtons } from '../MapControlButtons';
-import { mapToolAtom, showSearchComponentAtom } from './atoms';
-import { Compass } from './Compass';
-import { LinkLogo } from './LinkLogo';
-import { MapToolButtons } from './MapToolButtons';
-import { MapToolCards } from './MapToolCards';
+import { displayCompassOverlayAtom } from './map/atoms';
+import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
+import { MapComponent } from './map/MapComponent';
+import { MapControlButtons } from './map/MapControlButtons';
+import { mapToolAtom, showSearchComponentAtom } from './map/overlay/atoms';
+import { Compass } from './map/overlay/Compass';
+import { LinkLogo } from './map/overlay/LinkLogo';
+import { MapToolButtons } from './map/overlay/MapToolButtons';
+import { MapToolCards } from './map/overlay/MapToolCards';
+import { PrintDialog } from './print/PrintDialog';
+import { selectedResultAtom, useSearchEffects } from './search/atoms';
+import { useMapClickSearch } from './search/hooks';
+import { InfoBox } from './search/infobox/InfoBox';
+import { SearchComponent } from './search/SearchComponent';
+import { ErrorBoundary } from './shared/ErrorBoundary';
+import { useIsMobileScreen } from './shared/hooks';
+import { Toolbar } from './toolbar/Toolbar';
 
 export type MapTool = 'layers' | 'draw' | 'info' | 'settings' | null;
 
-export const MapOverlay = () => {
+export const Layout = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
@@ -44,15 +45,23 @@ export const MapOverlay = () => {
       {displayCompassOverlay && <Compass />}
       <Grid
         position={'absolute'}
-        height={'100%'}
-        width={'100%'}
+        height={'100vh'}
+        width={'100vw'}
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows={{
           base: 'repeat(4, 1fr)',
           md: 'repeat(4, 1fr)  120px 40px',
         }}
-        pointerEvents="none"
+        pointerEvents="auto"
+        bg="gray.200"
       >
+        <GridItem
+          gridColumn="1 / span 12" /* span all columns */
+          gridRow={{ base: '1 / span 4', md: '1 / -1' }} /* span all rows */
+          zIndex={0}
+        >
+          <MapComponent />
+        </GridItem>
         <GridItem
           gridColumn={{
             base: '1 / span 12',
@@ -61,7 +70,6 @@ export const MapOverlay = () => {
             xl: '1 / span 3',
           }}
           gridRow={{ base: '1 / span 3', md: '1 / span 4' }}
-          onClick={(e) => e.stopPropagation()}
           display={{
             base: selectedResult == null ? 'block' : 'none',
             md: 'block',
@@ -147,7 +155,7 @@ export const MapOverlay = () => {
             h="40px"
             alignContent="end"
             gridRow={6}
-            colSpan={12}
+            gridColumn={'1 / -1'}
             justifyContent={'end'}
           >
             <Toolbar />

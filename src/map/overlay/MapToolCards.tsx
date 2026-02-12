@@ -1,10 +1,10 @@
 import { Box, Flex, Heading, IconButton, VStack } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
+import { MapTool } from '../../Layout';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapThemes } from '../../settings/map/MapThemes';
 import { InfoDrawer } from '../../sidePanel/InfoDrawer';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
-import { MapTool } from './MapOverlay';
 
 export const MapToolCards = ({
   currentMapTool,
