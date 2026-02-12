@@ -159,8 +159,8 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   if (!epsgMatch) {
     return null;
   }
-
-  const epsgCode = parseInt(epsgMatch[1], 10);
+  const epsgCodeNumberPart = epsgMatch[1].replace('4258', '4326'); // Normalize EPSG:4258 to 4326 for projection lookup
+  const epsgCode = parseInt(epsgCodeNumberPart, 10);
 
   let projection: ProjectionIdentifier;
   let formatName: string;
