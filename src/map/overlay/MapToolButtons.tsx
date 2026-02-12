@@ -44,6 +44,7 @@ export const MapToolButtons = () => {
       px={{ base: 0, md: 2 }}
       mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
+      overflowX={{ base: 'auto', md: 'none' }}
     >
       <Box position="relative">
         <MapButton
