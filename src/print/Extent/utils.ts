@@ -2,9 +2,10 @@ import type { Feature as OlFeature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Circle, type Geometry } from 'ol/geom';
 import { fromCircle } from 'ol/geom/Polygon';
-import { StyleForStorage } from '../../api/nkApiClient';
 import { Layer } from './printApi';
 import { Style } from 'ol/style';
+import { Text as OlText } from 'ol/style';
+
 
 type PrintSymbolizer =
   | {
@@ -33,6 +34,10 @@ type PrintSymbolizer =
     fillColor: string;
     strokeColor: string;
     strokeWidth: number;
+    fontColor: string;
+    haloColor: string;
+    haloOpacity: string;
+    haloRadius: string;
   };
 
 type StyleCollection = {
@@ -57,6 +62,71 @@ const normalizeHexColor = (color: string): string => {
   return color;
 };
 
+const getFillOpacity = (color: string | undefined): number => {
+  if (!color) return 1;
+  const match = color.match(/^rgba\(\d+,\s*\d+,\s*\d+,\s*([\d.]+)\)/);
+  if (match) return parseFloat(match[1]);
+  return 1;
+};
+
+const getPolygonSymbolizer = (style: Style): PrintSymbolizer[] => {
+  const fill = style.getFill();
+  const stroke = style.getStroke();
+  const fillColor = fill?.getColor() as string;
+  return [{
+    type: 'polygon',
+    fillColor: normalizeHexColor(fillColor),
+    fillOpacity: getFillOpacity(fillColor),
+    strokeColor: normalizeHexColor(stroke?.getColor() as string),
+    strokeWidth: stroke?.getWidth() || 2,
+  }];
+};
+
+const getLineSymbolizer = (style: Style): PrintSymbolizer[] => {
+  const stroke = style.getStroke();
+  return [{
+    type: 'line',
+    strokeColor: normalizeHexColor(stroke?.getColor() as string),
+    strokeWidth: stroke?.getWidth() || 2,
+  }]
+}
+
+const getTextSymbolizer = (text: OlText): PrintSymbolizer[] => {
+  const labelValue = text.getText?.();
+  const label = Array.isArray(labelValue) ? labelValue.join('') : String(labelValue || '');
+
+  const font = text.getFont() || '';
+  const [fontSize, ...fontFamilyParts] = font.split(' ');
+  const fontFamily = fontFamilyParts.join(' ');
+
+  const fillColor = normalizeHexColor(text.getFill()?.getColor() as string);
+  const strokeColor = text.getStroke() ? normalizeHexColor(text.getStroke()?.getColor() as string) : '#000000';
+  const strokeWidth = text.getStroke()?.getWidth() || 0;
+  const fontColor = fillColor;
+
+  // Hent ut backgroundFill og farge
+  const backgroundFill = text.getBackgroundFill();
+  const backgroundColor = backgroundFill ? backgroundFill.getColor() as string : undefined;
+  const haloColor = normalizeHexColor(backgroundColor || '#ffffff');
+  const haloOpacity = getFillOpacity(backgroundColor).toString();
+  const haloRadius = "5";
+
+  return [{
+    type: 'text',
+    label,
+    fontFamily,
+    fontSize,
+    fillColor,
+    strokeColor,
+    strokeWidth,
+    fontColor,
+    haloColor,
+    haloOpacity,
+    haloRadius,
+  }];
+}
+
+
 export const getSymbolizersFromStyle = (
   style: Style | null,
   geometryType: string
@@ -64,56 +134,17 @@ export const getSymbolizersFromStyle = (
   if (!style) return [];
 
   switch (geometryType) {
-    case 'Polygon': {
-      const fill = style.getFill();
-      const stroke = style.getStroke();
-      return [
-        {
-          type: 'polygon',
-          fillColor: normalizeHexColor(fill?.getColor() as string),
-          fillOpacity: 0.5,
-          strokeColor: normalizeHexColor(stroke?.getColor() as string),
-          strokeWidth: stroke?.getWidth() || 2,
-        },
-      ];
-    }
-    case 'LineString': {
-      const stroke = style.getStroke();
-      return [
-        {
-          type: 'line',
-          strokeColor: normalizeHexColor(stroke?.getColor() as string),
-          strokeWidth: stroke?.getWidth() || 2,
-        },
-      ];
-    }
-    case 'Point': {
+    case 'Polygon':
+      return getPolygonSymbolizer(style);
+    case 'LineString':
+      return getLineSymbolizer(style);
+    case 'Point':
       const text = style.getText();
 
-
-      if (text && text.getText()) {
-        return [
-          {
-            type: 'text',
-            label: text.getText() || '',
-            fontFamily: text.getFont()?.split(' ')[1] || 'sans-serif',
-            fontSize: text.getFont()?.split(' ')[0] || '16px',
-            fillColor: normalizeHexColor(text.getFill()?.getColor() as string),
-            strokeColor: normalizeHexColor(text.getStroke()?.getColor() as string),
-            strokeWidth: text.getStroke()?.getWidth() || 2,
-          },
-        ];
-      }
-      const image = style.getImage();
-      return [
-        {
-          type: 'point',
-          fillColor: normalizeHexColor(image?.getFill()?.getColor() as string),
-          pointRadius: image?.getRadius() || 8,
-          graphicName: 'circle',
-        },
-      ];
-    }
+      console.log('text background', text?.getBackgroundFill());
+      return getTextSymbolizer(style.getText() as OlText);
+      // TODO: Implement point symbolizer extraction from style
+      return [];
     default:
       return [];
   }

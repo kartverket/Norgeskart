@@ -2,7 +2,6 @@ import { toaster } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
 import Map from 'ol/Map';
 import { transform } from 'ol/proj';
-import { getStyleForStorage } from '../../api/nkApiClient';
 import {
   getEffectiveWmsUrl,
   getThemeLayerById,
@@ -12,7 +11,6 @@ import { getDrawLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { getScaleFromResolution } from '../../map/mapScale';
-import { drawStyleReadAtom } from '../../settings/draw/atoms';
 import type { Layer } from './printApi';
 import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
@@ -104,20 +102,14 @@ export const generateMapPdf = async ({
     const features = source?.getFeatures() ?? [];
 
     if (features.length > 0) {
-      const style = getDefaultStore().get(drawStyleReadAtom);
-      const styleForStorage = getStyleForStorage(style);
+      const geoJsonLayer = createGeoJsonLayerWithStyles(
+        features,
+        sourceProjection,
+        targetProjection
+      );
+      layers.unshift(geoJsonLayer);
 
-      if (styleForStorage) {
-        const geoJsonLayer = createGeoJsonLayerWithStyles(
-          features,
-          sourceProjection,
-          targetProjection,
-          styleForStorage,
-        );
-        layers.unshift(geoJsonLayer);
-      }
     }
-
     const payload: Payload = {
       attributes: {
         map: {
