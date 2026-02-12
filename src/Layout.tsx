@@ -45,8 +45,8 @@ export const Layout = () => {
       {displayCompassOverlay && <Compass />}
       <Grid
         position={'relative'}
-        height={'100vh'}
-        width={'100vw'}
+        height={'100dvh'}
+        width={'100dvw'}
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows={{
           base: 'repeat(4, 1fr)',
