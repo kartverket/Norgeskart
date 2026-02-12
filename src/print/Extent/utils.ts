@@ -104,7 +104,6 @@ const getTextSymbolizer = (text: OlText): PrintSymbolizer[] => {
   const strokeWidth = text.getStroke()?.getWidth() || 0;
   const fontColor = fillColor;
 
-  // Hent ut backgroundFill og farge
   const backgroundFill = text.getBackgroundFill();
   const backgroundColor = backgroundFill ? backgroundFill.getColor() as string : undefined;
   const haloColor = normalizeHexColor(backgroundColor || '#ffffff');
