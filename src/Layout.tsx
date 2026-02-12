@@ -44,7 +44,7 @@ export const Layout = () => {
     >
       {displayCompassOverlay && <Compass />}
       <Grid
-        position={'absolute'}
+        position={'relative'}
         height={'100vh'}
         width={'100vw'}
         gridTemplateColumns="repeat(12, 1fr)"
@@ -62,41 +62,48 @@ export const Layout = () => {
         >
           <MapComponent />
         </GridItem>
-        <GridItem
-          gridColumn={{
-            base: '1 / span 12',
-            md: '1 / span 6',
-            lg: '1 / span 4',
-            xl: '1 / span 3',
-          }}
-          gridRow={{ base: '1 / span 3', md: '1 / span 4' }}
-          display={{
-            base: selectedResult == null ? 'block' : 'none',
-            md: 'block',
-          }}
-        >
-          {(showSearchComponent || !isLargeScreen) && <SearchComponent />}
-        </GridItem>
-        <GridItem
-          gridColumn={{
-            base: '1 / span 12',
-            md: '1 / span 6',
-            lg: '1 / span 4',
-            xl: '1 / span 3',
-            '2xl': '1 / span 2',
-          }}
-          gridRow={{ base: '2 / span 4', md: '1 / span 4' }}
-          zIndex={1}
-          alignItems={{ base: 'flex-end', md: 'stretch' }}
-          display={{ base: 'flex', md: 'block' }}
-        >
-          <MapToolCards
-            currentMapTool={currentMapTool}
-            onClose={() => {
-              setCurrentMapTool(null);
+        {(showSearchComponent || !isLargeScreen) && (
+          <GridItem
+            gridColumn={{
+              base: '1 / span 12',
+              md: '1 / span 6',
+              lg: '1 / span 4',
+              xl: '1 / span 3',
             }}
-          />
-        </GridItem>
+            gridRow={{ base: '1 / span 3', md: '1 / span 4' }}
+            display={{
+              base: selectedResult == null ? 'block' : 'none',
+              md: 'block',
+            }}
+            zIndex={1}
+            pointerEvents={'none'}
+          >
+            <SearchComponent />
+          </GridItem>
+        )}
+        {!showSearchComponent && isLargeScreen && (
+          <GridItem
+            gridColumn={{
+              base: '1 / span 12',
+              md: '1 / span 6',
+              lg: '1 / span 4',
+              xl: '1 / span 3',
+              '2xl': '1 / span 2',
+            }}
+            gridRow={{ base: '2 / span 4', md: '1 / span 4' }}
+            zIndex={1}
+            alignItems={{ base: 'flex-end', md: 'stretch' }}
+            display={{ base: 'flex', md: 'block' }}
+            pointerEvents={'none'}
+          >
+            <MapToolCards
+              currentMapTool={currentMapTool}
+              onClose={() => {
+                setCurrentMapTool(null);
+              }}
+            />
+          </GridItem>
+        )}
         <GridItem
           gridColumn={{
             base: '1 / span 12',
@@ -105,7 +112,8 @@ export const Layout = () => {
             xl: '10 / span 3',
           }}
           gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
-          zIndex={2}
+          zIndex={1}
+          pointerEvents={'none'}
         >
           <Flex maxHeight={'100%'} w={'100%'} justifyContent={'flex-end'}>
             <InfoBox />
@@ -120,6 +128,8 @@ export const Layout = () => {
           mb={{ base: 3, md: 4 }}
           ml={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
+          zIndex={1}
+          pointerEvents={'none'}
         >
           <LinkLogo />
         </GridItem>
@@ -134,6 +144,8 @@ export const Layout = () => {
           alignContent={'end'}
           justifySelf={{ md: 'center' }}
           mb={{ base: 0, md: 4 }}
+          zIndex={1}
+          pointerEvents={'none'}
         >
           <MapToolButtons />
         </GridItem>
@@ -146,6 +158,8 @@ export const Layout = () => {
           mb={{ base: 3, md: 16 }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
+          zIndex={1}
+          pointerEvents={'none'}
         >
           <MapControlButtons />
         </GridItem>
@@ -157,6 +171,8 @@ export const Layout = () => {
             gridRow={6}
             gridColumn={'1 / -1'}
             justifyContent={'end'}
+            zIndex={1}
+            pointerEvents={'none'}
           >
             <Toolbar />
           </GridItem>
