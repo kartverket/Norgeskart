@@ -206,7 +206,7 @@ export const MapComponent = () => {
         <Box
           ref={mapRef}
           id="map"
-          style={{ width: '100%', height: '100vh' }}
+          style={{ width: '100%', height: '100%' }}
           onContextMenu={(e) => {
             setXPos(e.clientX);
             setYPos(e.clientY);
