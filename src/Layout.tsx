@@ -90,7 +90,7 @@ export const Layout = () => {
             xl: '1 / span 3',
             '2xl': '1 / span 2',
           }}
-          gridRow={{ base: '2 / span 4', md: '1 / span 4' }}
+          gridRow={{ base: '2 / span 3', md: '1 / span 4' }}
           zIndex={1}
           alignItems={{ base: 'flex-end', md: 'stretch' }}
           display={{ base: 'flex', md: 'block' }}
