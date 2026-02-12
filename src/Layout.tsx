@@ -81,29 +81,29 @@ export const Layout = () => {
             <SearchComponent />
           </GridItem>
         )}
-        {!showSearchComponent && isLargeScreen && (
-          <GridItem
-            gridColumn={{
-              base: '1 / span 12',
-              md: '1 / span 6',
-              lg: '1 / span 4',
-              xl: '1 / span 3',
-              '2xl': '1 / span 2',
+
+        <GridItem
+          gridColumn={{
+            base: '1 / span 12',
+            md: '1 / span 6',
+            lg: '1 / span 4',
+            xl: '1 / span 3',
+            '2xl': '1 / span 2',
+          }}
+          gridRow={{ base: '2 / span 4', md: '1 / span 4' }}
+          zIndex={1}
+          alignItems={{ base: 'flex-end', md: 'stretch' }}
+          display={{ base: 'flex', md: 'block' }}
+          pointerEvents={'none'}
+        >
+          <MapToolCards
+            currentMapTool={currentMapTool}
+            onClose={() => {
+              setCurrentMapTool(null);
             }}
-            gridRow={{ base: '2 / span 4', md: '1 / span 4' }}
-            zIndex={1}
-            alignItems={{ base: 'flex-end', md: 'stretch' }}
-            display={{ base: 'flex', md: 'block' }}
-            pointerEvents={'none'}
-          >
-            <MapToolCards
-              currentMapTool={currentMapTool}
-              onClose={() => {
-                setCurrentMapTool(null);
-              }}
-            />
-          </GridItem>
-        )}
+          />
+        </GridItem>
+
         <GridItem
           gridColumn={{
             base: '1 / span 12',
