@@ -67,7 +67,7 @@ export interface Payload {
   outputFilename: string;
 }
 
-const BASE_API_URL = 'https://ws.geonorge.no';
+const BASE_API_URL = 'https://print.atkv3-dev.kartverket-intern.cloud'; //'https://ws.geonorge.no';
 
 export const requestPdfGeneration = async (
   payload: Payload,

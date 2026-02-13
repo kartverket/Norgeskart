@@ -105,10 +105,9 @@ export const generateMapPdf = async ({
       const geoJsonLayer = createGeoJsonLayerWithStyles(
         features,
         sourceProjection,
-        targetProjection
+        targetProjection,
       );
       layers.unshift(geoJsonLayer);
-
     }
     const payload: Payload = {
       attributes: {
@@ -142,8 +141,9 @@ export const generateMapPdf = async ({
       onError(t('missing downloadURL'));
       toaster.create({ title: t('printExtent.toast.error'), type: 'error' });
     }
-  } catch {
+  } catch (e) {
     onError('external api error');
+    console.log('error', e);
     toaster.create({
       title: t('printExtent.toast.error'),
       type: 'error',
