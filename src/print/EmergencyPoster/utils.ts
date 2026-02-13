@@ -129,8 +129,7 @@ export const pollEmergencyPosterStatus = async (
       const response = await fetch(
         `${env.emergencyPosterBaseUrl}/${statusURL}`,
       );
-      if (!response.ok)
-        throw new Error(`Polling failed: ${response.status}`);
+      if (!response.ok) throw new Error(`Polling failed: ${response.status}`);
 
       const data: { status: string; downloadURL?: string } =
         await response.json();
