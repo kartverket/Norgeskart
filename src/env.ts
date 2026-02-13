@@ -68,7 +68,7 @@ const DEV_ENV: Env = {
 
 const PROD_ENV: Env = {
   usePostHog: true,
-  apiUrl: 'https://testapi.norgeskart.no',
+  apiUrl: 'https://api.norgeskart.no',
   geoNorgeApiBaseUrl: 'https://ws.geonorge.no',
   layerProviderParameters: {
     norgeIBilder: {
