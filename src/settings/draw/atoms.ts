@@ -174,7 +174,7 @@ const addDrawInteractionToMap = (
   });
 
   const style = getDefaultStore().get(drawStyleReadAtom);
-  newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => { }); //Why this has to be here is beyond me
+  newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
   newDraw.getOverlay().setStyle(style);
   newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
     drawEnd(event);
