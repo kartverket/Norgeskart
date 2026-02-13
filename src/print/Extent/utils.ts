@@ -8,40 +8,40 @@ import { Layer } from './printApi';
 
 type PrintSymbolizer =
   | {
-      type: 'polygon';
-      fillColor: string;
-      fillOpacity: number;
-      strokeColor: string;
-      strokeWidth: number;
-    }
+    type: 'polygon';
+    fillColor: string;
+    fillOpacity: number;
+    strokeColor: string;
+    strokeWidth: number;
+  }
   | {
-      type: 'line';
-      strokeColor: string;
-      strokeWidth: number;
-    }
+    type: 'line';
+    strokeColor: string;
+    strokeWidth: number;
+  }
   | {
-      type: 'point';
-      fillColor: string;
-      fillOpacity: number;
-      pointRadius: number;
-      graphicName: string;
-      strokeColor: string;
-      strokeWidth: number;
-      strokeOpacity: number;
-    }
+    type: 'point';
+    fillColor: string;
+    fillOpacity: number;
+    pointRadius: number;
+    graphicName: string;
+    strokeColor: string;
+    strokeWidth: number;
+    strokeOpacity: number;
+  }
   | {
-      type: 'text';
-      label: string;
-      fontFamily: string;
-      fontSize: string;
-      fillColor: string;
-      strokeColor: string;
-      strokeWidth: number;
-      fontColor: string;
-      haloColor: string;
-      haloOpacity: string;
-      haloRadius: string;
-    };
+    type: 'text';
+    label: string;
+    fontFamily: string;
+    fontSize: string;
+    fillColor: string;
+    strokeColor: string;
+    strokeWidth: number;
+    fontColor: string;
+    haloColor: string;
+    haloOpacity: string;
+    haloRadius: string;
+  };
 
 type StyleCollection = {
   version: string;
@@ -92,7 +92,7 @@ const getFillOpacity = (color: string | undefined): number => {
   if (!color) return 1;
   const match = color.match(/^rgba\(\d+,\s*\d+,\s*\d+,\s*([\d.]+)\)/);
   if (match) return parseFloat(match[1]);
-  return 1;
+  return 0.5;
 };
 
 const getPolygonSymbolizer = (style: Style): PrintSymbolizer[] => {
