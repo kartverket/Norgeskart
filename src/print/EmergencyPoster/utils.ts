@@ -3,96 +3,148 @@ import { Coordinate } from 'ol/coordinate';
 import { transform } from 'ol/proj';
 import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
-import { boundNumber } from '../../shared/utils/numberUtils';
+import { getScaleFromResolution } from '../../map/mapScale';
 import { formatToNorwegianUTMString } from './utmStringUtils';
 
 const env = getEnv();
 
-const MAP_HEIGHT = 660;
-const MAP_WIDTH = 1145;
+export interface EmergencyPosterPayload {
+  layout: string;
+  outputFormat: string;
+  outputFilename: string;
+  attributes: {
+    locationName: string;
+    position1: string;
+    position2: string;
+    street: string;
+    place: string;
+    matrikkel: string;
+    utm: string;
+    posDez: string;
+    map: {
+      center: [number, number];
+      projection: string;
+      dpi: number;
+      rotation: number;
+      scale: number;
+      layers: Array<{
+        baseURL: string;
+        customParams: { TRANSPARENT: string };
+        imageFormat: string;
+        layers: string[];
+        opacity: number;
+        type: string;
+      }>;
+    };
+  };
+}
 
-export const createPosterUrl = (
+export const createPosterPayload = (
   locationName: string,
   coordinates: Coordinate,
-  projectionCoodrdinates: string,
+  projectionCoordinates: string,
   streetName: string,
   placeName: string,
   cadastreString: string,
-) => {
-  const params = new URLSearchParams();
-  const [position1, position2] = createPositionString(
-    coordinates[0],
-    coordinates[1],
-    projectionCoodrdinates,
-  );
-  params.append('locationName', encodeURIComponent(locationName));
-  params.append('position1', position1);
-  params.append('position2', position2);
-  params.append('street', encodeURIComponent(streetName));
-  params.append('place', placeName);
-  const mapUrl = createMapUrl(coordinates);
-  if (!mapUrl) {
-    return null;
-  }
-  params.append('map', encodeURIComponent(mapUrl));
-  params.append(
-    'posDez',
-    createDegreesPositionText(
-      coordinates[0],
-      coordinates[1],
-      projectionCoodrdinates,
-    ),
-  );
-  params.append('matrikkel', cadastreString);
-  params.append(
-    'utm',
-    formatToNorwegianUTMString(coordinates, projectionCoodrdinates),
-  );
-
-  return `${env.emergencyPosterBaseUrl}?${params.toString()}`;
-};
-
-const hw_ratio = MAP_WIDTH / MAP_HEIGHT; // Width / Height, magic numbers
-const createMapUrl = (coordinates: Coordinate) => {
+): EmergencyPosterPayload | null => {
   const store = getDefaultStore();
-  const resolution = store.get(mapAtom).getView().getResolution();
-  if (!resolution) {
-    return;
-  }
-  const currentMapHeight = boundNumber(
-    resolution * window.innerHeight,
-    500,
-    4500,
-  ); // Max 4500 or poster will be blank, min 500 to avoid too small images
+  const map = store.get(mapAtom);
+  const resolution = map.getView().getResolution();
+  if (!resolution) return null;
 
-  const currentMapWidth = Math.round(currentMapHeight * hw_ratio);
-
-  const baseUrl = 'https://wms.geonorge.no/skwms1/wms.topo';
-  const params = new URLSearchParams();
-  params.append('SERVICE', 'WMS');
-  params.append('VERSION', '1.3.0');
-  params.append('REQUEST', 'GetMap');
-  params.append('LAYERS', 'topo');
-  params.append('WIDTH', MAP_WIDTH.toString());
-  params.append('HEIGHT', MAP_HEIGHT.toString());
-  params.append('CRS', 'EPSG:32633');
+  const scale = getScaleFromResolution(resolution, map);
 
   const transformedCenter = transform(
     coordinates,
-    store.get(mapAtom).getView().getProjection(),
-    'EPSG:32633',
+    projectionCoordinates,
+    'EPSG:25833',
+  ) as [number, number];
+
+  const [position1, position2] = createPositionString(
+    coordinates[0],
+    coordinates[1],
+    projectionCoordinates,
   );
-  let bboxParam = '';
-  bboxParam += `${transformedCenter[0] - Math.ceil(currentMapWidth / 2)},`;
-  bboxParam += `${transformedCenter[1] - Math.ceil(currentMapHeight / 2)},`;
-  bboxParam += `${transformedCenter[0] + Math.ceil(currentMapWidth / 2)},`;
-  bboxParam += `${transformedCenter[1] + Math.ceil(currentMapHeight / 2)}`;
 
-  params.append('BBOX', bboxParam);
-  params.append('FORMAT', 'image/jpeg');
-  const url = `${baseUrl}?${params.toString()}`;
+  return {
+    layout: 'nodplakat',
+    outputFormat: 'pdf',
+    outputFilename: `${locationName}_nodplakat`,
+    attributes: {
+      locationName,
+      position1,
+      position2,
+      street: streetName,
+      place: placeName,
+      matrikkel: cadastreString,
+      utm: formatToNorwegianUTMString(coordinates, projectionCoordinates),
+      posDez: createDegreesPositionText(
+        coordinates[0],
+        coordinates[1],
+        projectionCoordinates,
+      ),
+      map: {
+        center: transformedCenter,
+        projection: 'EPSG:25833',
+        dpi: 128,
+        rotation: 0,
+        scale,
+        layers: [
+          {
+            baseURL: 'https://wms.geonorge.no/skwms1/wms.topo',
+            customParams: { TRANSPARENT: 'true' },
+            imageFormat: 'image/png',
+            layers: ['topo'],
+            opacity: 1,
+            type: 'WMS',
+          },
+        ],
+      },
+    },
+  };
+};
 
-  return url;
+export const submitEmergencyPoster = async (
+  payload: EmergencyPosterPayload,
+): Promise<{ statusURL: string }> => {
+  const response = await fetch(
+    `${env.emergencyPosterBaseUrl}/print/nodplakat/report.pdf`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    },
+  );
+  if (!response.ok) throw new Error(`Request failed: ${response.statusText}`);
+  return await response.json();
+};
+
+export const pollEmergencyPosterStatus = async (
+  statusURL: string,
+  maxAttempts = 10,
+  interval = 2000,
+): Promise<string | null> => {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const response = await fetch(
+        `${env.emergencyPosterBaseUrl}/${statusURL}`,
+      );
+      if (!response.ok) throw new Error(`Polling failed: ${response.status}`);
+
+      const data: { status: string; downloadURL?: string } =
+        await response.json();
+
+      if (data.status === 'finished' && data.downloadURL) {
+        return `${env.emergencyPosterBaseUrl}/${data.downloadURL}`;
+      }
+    } catch (error) {
+      console.error(`Attempt ${attempt + 1} failed:`, error);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, interval));
+  }
+
+  return null;
 };
 
 const createPositionString = (
@@ -133,7 +185,7 @@ export const decimalToDMS = (dec: number) => {
   let min = Math.floor(minFloat);
   let sec = (minFloat - min) * 60;
 
-  // Handle rounding so we don’t end up with 60.000 seconds or minutes
+  // Handle rounding so we don't end up with 60.000 seconds or minutes
   sec = Math.round(sec * 1000) / 1000; // keep up to 3 decimals
   if (sec >= 60) {
     sec -= 60;
