@@ -99,13 +99,20 @@ const getEnv = (): Env => {
   if (domain == 'localhost') {
     return LOCAL_ENV;
   }
-  if (domain == 'norgeskart.atgcp1-dev.kartverket-intern.cloud') {
+  if (
+    domain == 'norgeskart.atgcp1-dev.kartverket-intern.cloud' ||
+    domain == 'norgeskart5.atkv3-dev.kartverket-intern.cloud'
+  ) {
     return DEV_ENV;
   }
   if (previewRegex.test(domain)) {
     return DEV_ENV;
   }
-  if (domain == 'test.norgeskart.no') {
+  if (
+    domain == 'test.norgeskart.no' ||
+    domain == 'norgeskart.no' ||
+    domain == 'www.norgeskart.no'
+  ) {
     return PROD_ENV;
   }
 
