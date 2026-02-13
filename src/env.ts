@@ -40,7 +40,7 @@ const LOCAL_ENV: Env = {
     },
   },
   envName: 'local',
-  emergencyPosterBaseUrl: 'https://nodplakat.norgeskart.no/fop2/fop',
+  emergencyPosterBaseUrl: 'https://print.norgeskart.no',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
 };
 
@@ -62,7 +62,7 @@ const DEV_ENV: Env = {
     },
   },
   envName: 'dev',
-  emergencyPosterBaseUrl: 'https://nodplakat.norgeskart.no/fop2/fop',
+  emergencyPosterBaseUrl: 'https://print.norgeskart.no',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
 };
 
@@ -84,7 +84,7 @@ const PROD_ENV: Env = {
     },
   },
   envName: 'prod',
-  emergencyPosterBaseUrl: 'https://nodplakat.norgeskart.no/fop2/fop',
+  emergencyPosterBaseUrl: 'https://print.norgeskart.no',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
 };
 

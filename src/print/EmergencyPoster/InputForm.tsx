@@ -18,12 +18,15 @@ import { Coordinate } from 'ol/coordinate';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
-import { downloadFile } from '../../shared/utils/fileUtils';
 import { EmergencyPosterResponse } from '../../types/searchTypes';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { PlaceSelector } from './PlaceSelector';
 import { RoadAddressSelection } from './RoadAddressSelection';
-import { createPosterUrl } from './utils';
+import {
+  createPosterPayload,
+  pollEmergencyPosterStatus,
+  submitEmergencyPoster,
+} from './utils';
 
 const LABEL_WIDTH = '40%';
 export const InputForm = ({
@@ -44,6 +47,7 @@ export const InputForm = ({
   );
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
   const [isInfoCorrect, setIsInfoCorrect] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const ph = usePostHog();
 
@@ -133,8 +137,9 @@ export const InputForm = ({
           {t('shared.cancel')}
         </Button>
         <Button
-          disabled={!isInfoCorrect || !clickedCoordinates}
-          onClick={() => {
+          disabled={!isInfoCorrect || !clickedCoordinates || isLoading}
+          loading={isLoading}
+          onClick={async () => {
             let roadString = '';
             if (selectedRoad) {
               roadString += selectedRoad;
@@ -149,7 +154,7 @@ export const InputForm = ({
                 cadastreString += ` i ${emergenyPosterData.kommune}`;
               }
             }
-            const downloadLink = createPosterUrl(
+            const payload = createPosterPayload(
               customName,
               clickedCoordinates!,
               map.getView().getProjection().getCode(),
@@ -158,7 +163,7 @@ export const InputForm = ({
               cadastreString,
             );
 
-            if (!downloadLink) {
+            if (!payload) {
               alert(
                 t(
                   'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
@@ -168,8 +173,34 @@ export const InputForm = ({
               return;
             }
 
-            downloadFile(downloadLink, customName + '_emergency_poster.pdf');
-            ph.capture('print_emergency_poster_created');
+            setIsLoading(true);
+            try {
+              const result = await submitEmergencyPoster(payload);
+              const downloadURL = await pollEmergencyPosterStatus(
+                result.statusURL,
+              );
+
+              if (downloadURL) {
+                window.open(downloadURL, '_blank');
+                ph.capture('print_emergency_poster_created');
+              } else {
+                alert(
+                  t(
+                    'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
+                  ),
+                );
+                ph.capture('print_emergency_poster_failed');
+              }
+            } catch {
+              alert(
+                t(
+                  'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
+                ),
+              );
+              ph.capture('print_emergency_poster_failed');
+            } finally {
+              setIsLoading(false);
+            }
           }}
         >
           {t('printdialog.emergencyPoster.buttons.makePoster')}
