@@ -104,6 +104,9 @@ export const MapToolButtons = () => {
       {!isMobile && (
         <MapButton
           onClick={() => {
+            if (currentMapTool === 'draw') {
+              setCurrentMapTool(null);
+            }
             setIsPrintDialogOpen((p) => !p);
           }}
           icon={'print'}
