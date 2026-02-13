@@ -141,9 +141,8 @@ export const generateMapPdf = async ({
       onError(t('missing downloadURL'));
       toaster.create({ title: t('printExtent.toast.error'), type: 'error' });
     }
-  } catch (e) {
+  } catch {
     onError('external api error');
-    console.log('error', e);
     toaster.create({
       title: t('printExtent.toast.error'),
       type: 'error',
