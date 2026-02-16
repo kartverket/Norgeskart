@@ -31,6 +31,7 @@ export const sjoConfig: ThemeLayerConfig = {
         en: 'Dangerous waves',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.farlige_bolger',
+      infoFormat: 'text/plain',
       parentId: 'sjo',
       featureInfoFields: [
         {
@@ -49,17 +50,6 @@ export const sjoConfig: ThemeLayerConfig = {
         
     },
     {
-      id: 'sjo_marine_grunnkart',
-      groupid: 14,
-      name: {
-        nb: 'Marine grunnkart',
-        nn: 'Marine grunnkart',
-        en: 'Marine base maps',
-      },
-      wmsUrl: 'https://geo.ngu.no/mapserver/MarineGrunnkartWMS',
-      parentId: 'sjo',
-    },
-    {
       id: 'sjo_nmg',
       groupid: 14,
       name: {
@@ -68,6 +58,7 @@ export const sjoConfig: ThemeLayerConfig = {
         en: "Norway's maritime borders",
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.nmg',
+      infoFormat: 'text/plain',
       parentId: 'sjo',
     },
   ],
@@ -83,7 +74,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Dybdedatakvalitet_sjokart',
       categoryId: 'sjo_dybdedatakvalitet',
       groupid: 14,
-      queryable: true,
+      queryable: false,
       useLegendGraphic: true,
     },
     {
@@ -96,7 +87,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'IkkeSjomalt',
       categoryId: 'sjo_dybdedatakvalitet',
       groupid: 14,
-      queryable: true,
+      queryable: false,
       useLegendGraphic: true,
     },
 
@@ -123,112 +114,6 @@ export const sjoConfig: ThemeLayerConfig = {
       },
       layers: 'AktsomhetsomradeFarligeBolger',
       categoryId: 'sjo_farlige_bolger',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-
-    // --- Marine grunnkart layers ---
-    {
-      id: 'sjoDybdeforhold',
-      name: {
-        nb: 'Dybdeforhold',
-        nn: 'Djupneforhold',
-        en: 'Depth conditions',
-      },
-      layers: 'Dybdeforhold',
-      categoryId: 'sjo_marine_grunnkart',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoHelning',
-      name: {
-        nb: 'Helning',
-        nn: 'Helling',
-        en: 'Slope',
-      },
-      layers: 'Helning',
-      categoryId: 'sjo_marine_grunnkart',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoHelningOver30',
-      name: {
-        nb: 'Helning over 30°',
-        nn: 'Helling over 30°',
-        en: 'Slope over 30°',
-      },
-      layers: 'Helning_over_30',
-      categoryId: 'sjo_marine_grunnkart',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoNaturtyper',
-      name: {
-        nb: 'Naturtyper',
-        nn: 'Naturtypar',
-        en: 'Nature types',
-      },
-      layers: 'Naturtyper',
-      categoryId: 'sjo_marine_grunnkart',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoKornstorrelseDet',
-      name: {
-        nb: 'Kornstørrelse detaljert',
-        nn: 'Kornstorleik detaljert',
-        en: 'Grain size detailed',
-      },
-      layers: 'Kornstorrelse_Det',
-      categoryId: 'sjo_marine_grunnkart',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoGravbarhet',
-      name: {
-        nb: 'Gravbarhet',
-        nn: 'Gravbarheit',
-        en: 'Excavability',
-      },
-      layers: 'Gravbarhet',
-      categoryId: 'sjo_marine_grunnkart',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoBunnfellingsomrader',
-      name: {
-        nb: 'Bunnfellingsområder',
-        nn: 'Botnfellingsområde',
-        en: 'Sedimentation areas',
-      },
-      layers: 'Bunnfellingsomrader',
-      categoryId: 'sjo_marine_grunnkart',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoAnkringsforhold',
-      name: {
-        nb: 'Ankringsforhold',
-        nn: 'Ankringsforhold',
-        en: 'Anchoring conditions',
-      },
-      layers: 'Ankringsforhold',
-      categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
       queryable: true,
       useLegendGraphic: true,
