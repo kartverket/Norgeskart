@@ -22,7 +22,7 @@
     "@geoblocks/ol-maplibre-layer": "^1.0.3",
     "@kvib/react": "^6.2.1",
     "@posthog/react": "^1.7.0",
-    "@tanstack/react-query": "^5.90.20",
+    "@tanstack/react-query": "^5.90.21",
     "@types/geojson": "^7946.0.16",
     "chart.js": "^4.5.1",
     "fast-xml-parser": "^5.3.4",
