@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import { ProjectionIdentifier } from '../../map/projections/types';
 
 export interface ParsedCoordinate {
@@ -158,47 +159,29 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   if (!epsgMatch) {
     return null;
   }
-
-  const epsgCode = parseInt(epsgMatch[1], 10);
+  const epsgCodeNumberPart = epsgMatch[1].replace('4258', '4326'); // Normalize EPSG:4258 to 4326 for projection lookup
+  const epsgCode = parseInt(epsgCodeNumberPart, 10);
 
   let projection: ProjectionIdentifier;
   let formatName: string;
-
-  switch (epsgCode) {
-    case 4326:
-      projection = 'EPSG:4326';
-      formatName = 'WGS84';
-      break;
-    case 4258:
-      projection = 'EPSG:4326'; // Use 4326 as fallback for ETRS89
-      formatName = 'ETRS89';
-      break;
-    case 25832:
-      projection = 'EPSG:25832';
-      formatName = 'UTM 32N';
-      break;
-    case 25833:
-      projection = 'EPSG:25833';
-      formatName = 'UTM 33N';
-      break;
-    case 25834:
-      projection = 'EPSG:25834';
-      formatName = 'UTM 34N';
-      break;
-    case 25835:
-      projection = 'EPSG:25835';
-      formatName = 'UTM 35N';
-      break;
-    case 25836:
-      projection = 'EPSG:25836';
-      formatName = 'UTM 36N';
-      break;
-    case 3857:
-      projection = 'EPSG:3857';
-      formatName = 'Web Mercator';
-      break;
-    default:
-      return null;
+  if (
+    [
+      4326, 3857, 4230, 25832, 25833, 25834, 25835, 25836, 23031, 23032, 23033,
+      23034, 23035, 23036, 27391, 27392, 27393, 27394, 27395, 27396, 27397,
+      27398,
+    ].includes(epsgCode)
+  ) {
+    projection = `EPSG:${epsgCode}` as ProjectionIdentifier;
+    const formattedName = i18n.t(
+      `map.settings.layers.projection.projections.${projection.replace(':', '').toLowerCase()}.displayName`,
+    );
+    formatName = formattedName.startsWith(
+      'map.settings.layers.projection.projections',
+    )
+      ? projection
+      : formattedName; // Fallback to code if translation missing
+  } else {
+    return null;
   }
 
   // Parse coordinates

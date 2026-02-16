@@ -180,7 +180,7 @@ describe('Coordinate Search', () => {
       const coordinates = '32 425917 7730314';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 32').should('be.visible');
+      cy.contains('UTM-32').should('be.visible');
     });
   });
 
@@ -189,35 +189,35 @@ describe('Coordinate Search', () => {
       const coordinates = '59.91273, 10.74609@4326';
 
       getSearchInput().type(coordinates);
-      cy.contains('WGS84').should('be.visible');
+      cy.contains('WGS84 Geografisk grader (Lat/Lon)').should('be.visible');
     });
 
     it('should parse UTM coordinates with EPSG:25833 specification', () => {
       const coordinates = '598515 6643994@25833';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
+      cy.contains('ETRS89 UTM-33').should('be.visible');
     });
 
     it('should parse UTM zone 32 coordinates', () => {
       const coordinates = '425917 7730314@25832';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 32').should('be.visible');
+      cy.contains('UTM-32').should('be.visible');
     });
 
     it('should parse coordinates with full EPSG: prefix', () => {
       const coordinates = '163834.01,6663030.01@EPSG:25833';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
+      cy.contains('UTM-33').should('be.visible');
     });
 
     it('should parse dot-decimal coordinates with comma separator and EPSG', () => {
       const coordinates = '242366.00,6736146.01@EPSG:25833';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
+      cy.contains('UTM-33').should('be.visible');
       cy.contains('242366').should('be.visible');
       cy.contains('6736146').should('be.visible');
     });
@@ -226,7 +226,7 @@ describe('Coordinate Search', () => {
       const coordinates = '163834,01 6663030,01@EPSG:25833';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
+      cy.contains('UTM-33').should('be.visible');
     });
 
     it('should parse EPSG:4326 coordinates with European decimal separators', () => {
@@ -240,7 +240,7 @@ describe('Coordinate Search', () => {
       const coordinates = '163834,01;6663030,01@EPSG:25833';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
+      cy.contains('UTM-33').should('be.visible');
     });
 
     it('should parse EPSG:4258 (ETRS89)', () => {
@@ -254,7 +254,7 @@ describe('Coordinate Search', () => {
       const coordinates = '598515 6643994@epsg:25833';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
+      cy.contains('UTM-33').should('be.visible');
     });
 
     it('should parse comma-separated 4326 without spaces', () => {
@@ -268,7 +268,7 @@ describe('Coordinate Search', () => {
       const coordinates = '500000,7000000@25833';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 33').should('be.visible');
+      cy.contains('UTM-33').should('be.visible');
       cy.contains('500000').should('be.visible');
       cy.contains('7000000').should('be.visible');
     });
@@ -277,14 +277,14 @@ describe('Coordinate Search', () => {
       const coordinates = '598515 7643994@25834';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 34').should('be.visible');
+      cy.contains('UTM-34').should('be.visible');
     });
 
     it('should parse UTM zone 35 with EPSG', () => {
       const coordinates = '498515 7643994@25835';
 
       getSearchInput().type(coordinates);
-      cy.contains('UTM 35').should('be.visible');
+      cy.contains('UTM-35').should('be.visible');
     });
   });
 
@@ -370,7 +370,7 @@ describe('Coordinate Search', () => {
 
       getSearchInput().type(coordinates);
       // Scope to <ul> elements where coordinate results render,
-      // since the toolbar always shows "UTM 33" in the projection selector
+      // since the toolbar always shows "UTM-33" in the projection selector
       cy.contains('ul', 'NTM').should('not.exist');
       cy.contains('ul', 'UTM').should('not.exist');
     });

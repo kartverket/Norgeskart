@@ -1,5 +1,6 @@
 import { Box, Text } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -205,7 +206,7 @@ export const MapComponent = () => {
         <Box
           ref={mapRef}
           id="map"
-          style={{ width: '100%', height: '100vh' }}
+          style={{ width: '100%', height: '100%' }}
           onContextMenu={(e) => {
             setXPos(e.clientX);
             setYPos(e.clientY);

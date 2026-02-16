@@ -4,6 +4,7 @@ import {
   getThemeLayerById,
   themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
+import { ProjectionIdentifier } from '../../map/projections/types';
 import {
   addToUrlListParameter,
   removeFromUrlListParameter,
@@ -19,6 +20,10 @@ import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
 
 export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
   DEFAULT_BACKGROUND_LAYER,
+);
+
+export const preNauticalProjectionAtom = atom<ProjectionIdentifier | null>(
+  null,
 );
 
 export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(

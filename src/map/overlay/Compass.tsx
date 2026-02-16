@@ -18,11 +18,12 @@ export const Compass = () => {
       rotate={compassOrientation + 'deg'}
       position="absolute"
       width="16%"
-      top="42%"
+      top="34%"
       left="42%"
       src={compassFileName}
       userSelect="none"
       pointerEvents="none"
+      zIndex={2}
     />
   );
 };

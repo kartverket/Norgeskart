@@ -38,13 +38,13 @@ export const MapToolButtons = () => {
     <HStack
       align="flex-end"
       justify="space-between"
-      overflowX={{ base: 'auto', md: 'none' }}
       bg="#FFFF"
       borderRadius={{ base: '', md: 'lg' }}
       py={{ base: 3, md: 2 }}
       px={{ base: 0, md: 2 }}
       mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
+      overflowX={{ base: 'auto', md: 'none' }}
     >
       <Box position="relative">
         <MapButton
@@ -104,6 +104,9 @@ export const MapToolButtons = () => {
       {!isMobile && (
         <MapButton
           onClick={() => {
+            if (currentMapTool === 'draw') {
+              setCurrentMapTool(null);
+            }
             setIsPrintDialogOpen((p) => !p);
           }}
           icon={'print'}

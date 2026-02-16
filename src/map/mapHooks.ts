@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
-import { Listener } from 'ol/events';
 import { get as getProjection, transform } from 'ol/proj';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import {
@@ -44,32 +44,63 @@ const useMap = () => {
     }
   };
 
-  map.getView().on('change:center', (e) => {
-    const newCenter = e.target.getCenter();
+  // that works for now, remove useEffect later
+  useEffect(() => {
+    const registerViewListeners = () => {
+      const view = map.getView();
 
-    const projection = map.getView().getProjection();
-    const angleCoords = transform(newCenter, projection, 'EPSG:4326');
+      const onCenterChange = () => {
+        const newCenter = view.getCenter();
+        if (!newCenter) return;
 
-    const magneticNorth = [162.867, 86.494];
-    const azimuth = calculateAzimuth(
-      angleCoords[1], // latitude
-      angleCoords[0], // longitude
-      magneticNorth[1], // magnetic north latitude
-      magneticNorth[0], // magnetic north longitude)
-    );
+        const projection = view.getProjection();
+        const angleCoords = transform(newCenter, projection, 'EPSG:4326');
 
-    setMagneticDeclination((prev) => {
-      const diff = Math.abs(azimuth - prev);
-      if (isNaN(diff) || diff < 0.01) {
-        return prev; // No significant change, return previous value
-      }
-      return azimuth;
-    });
-  });
-  map.getView().on('change:rotation', (e) => {
-    const rotation = e.target.getRotation();
-    setMapOrientation(rotation);
-  });
+        const magneticNorth = [162.867, 86.494];
+        const azimuth = calculateAzimuth(
+          angleCoords[1],
+          angleCoords[0],
+          magneticNorth[1],
+          magneticNorth[0],
+        );
+
+        setMagneticDeclination((prev) => {
+          const diff = Math.abs(azimuth - prev);
+          if (isNaN(diff) || diff < 0.01) {
+            return prev;
+          }
+          return azimuth;
+        });
+      };
+
+      const onRotationChange = () => {
+        const rotation = view.getRotation();
+        setMapOrientation(rotation);
+      };
+
+      view.on('change:center', onCenterChange);
+      view.on('change:rotation', onRotationChange);
+
+      return () => {
+        view.un('change:center', onCenterChange);
+        view.un('change:rotation', onRotationChange);
+      };
+    };
+
+    let cleanupViewListeners = registerViewListeners();
+
+    const onViewChange = () => {
+      cleanupViewListeners();
+      cleanupViewListeners = registerViewListeners();
+    };
+
+    map.on('change:view', onViewChange);
+
+    return () => {
+      cleanupViewListeners();
+      map.un('change:view', onViewChange);
+    };
+  }, [map, setMapOrientation, setMagneticDeclination]);
 
   const mapElement = map.getTarget() as HTMLElement | undefined;
   return { mapElement, setTargetElement };
@@ -94,13 +125,24 @@ const useMapSettings = () => {
     return getMapProjection().getCode() as ProjectionIdentifier;
   };
 
-  const setBackgroundLayer = (backgroundLayerName: BackgroundLayerName) => {
+  const setBackgroundLayer = async (
+    backgroundLayerName: BackgroundLayerName,
+  ) => {
     if (backgroundLayerState !== 'hasData') {
       console.warn('Background layers are not loaded yet');
       return;
     }
 
-    let layerToAdd = getBackgroundLayer(backgroundLayerName);
+    if (
+      backgroundLayerName === 'nautical-background' &&
+      getMapProjectionCode() !== 'EPSG:3857'
+    ) {
+      setUrlParameter('backgroundLayer', backgroundLayerName);
+      await setProjection('EPSG:3857');
+      return;
+    }
+
+    let layerToAdd = await getBackgroundLayer(backgroundLayerName);
     let actualLayerName = backgroundLayerName;
 
     // If requested layer is not available, fall back to default
@@ -108,7 +150,7 @@ const useMapSettings = () => {
       console.warn(
         `Background layer ${backgroundLayerName} is not available for current projection, falling back to ${DEFAULT_BACKGROUND_LAYER}`,
       );
-      layerToAdd = getBackgroundLayer(DEFAULT_BACKGROUND_LAYER);
+      layerToAdd = await getBackgroundLayer(DEFAULT_BACKGROUND_LAYER);
       actualLayerName = DEFAULT_BACKGROUND_LAYER;
 
       if (layerToAdd == null) {
@@ -124,6 +166,25 @@ const useMapSettings = () => {
 
     map.addLayer(layerToAdd);
     setUrlParameter('backgroundLayer', actualLayerName);
+
+    const isNautical = actualLayerName === 'nautical-background';
+    const view = map.getView();
+    const currentProps = {
+      center: view.getCenter(),
+      zoom: view.getZoom(),
+      minZoom: view.getMinZoom(),
+      maxZoom: view.getMaxZoom(),
+      projection: view.getProjection(),
+      rotation: view.getRotation(),
+      extent: view.getProjection().getExtent(),
+    };
+    if (view.getConstrainResolution() !== isNautical) {
+      const updatedView = new View({
+        ...currentProps,
+        constrainResolution: isNautical,
+      });
+      map.setView(updatedView);
+    }
   };
 
   const zoomIn = () => {
@@ -150,7 +211,7 @@ const useMapSettings = () => {
     });
   };
 
-  const setProjection = (projectionId: ProjectionIdentifier) => {
+  const setProjection = async (projectionId: ProjectionIdentifier) => {
     const projection = getProjection(projectionId)!;
     if (WMTSloadable.state !== 'hasData') {
       console.warn('WMTS data is not loaded yet');
@@ -192,24 +253,20 @@ const useMapSettings = () => {
     // Round zoom to integer to ensure it aligns with tile matrix
     newZoom = Math.round(newZoom);
 
+    const isNautical = backgroundLayerUrlParam === 'nautical-background';
+
     const newView = new View({
       center: newCenter,
       zoom: newZoom,
       minZoom: oldView.getMinZoom(),
       maxZoom: oldView.getMaxZoom(),
       projection: projection,
-      constrainResolution: false,
+      constrainResolution: isNautical,
       extent: projection.getExtent(),
-    });
-    oldView.getListeners('change:rotation')?.forEach((listener: Listener) => {
-      newView.addEventListener('change:rotation', listener);
-    });
-    oldView.getListeners('change:center')?.forEach((listener: Listener) => {
-      newView.addEventListener('change:center', listener);
     });
 
     map.setView(newView);
-    setBackgroundLayer(backgroundLayerUrlParam);
+    await setBackgroundLayer(backgroundLayerUrlParam);
     const themeLayerNames = getListUrlParameter('themeLayers');
     if (themeLayerNames) {
       themeLayerNames.forEach((layerName) => {

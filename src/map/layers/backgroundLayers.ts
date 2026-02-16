@@ -2,10 +2,18 @@ import { useAtomValue } from 'jotai';
 import TileLayer from 'ol/layer/Tile';
 import { AvailableProjectionType, mapAtom } from '../atoms';
 import { ProjectionIdentifier } from '../projections/types';
+import {
+  createVectorTileLayer,
+  isVectorTileLayer,
+  VectorTileLayerName,
+} from './backgroundVectorTiles';
 import { getWMSLayer, WMSLayerName } from './backgroundWMS';
 import { loadableWMTS, WMTSLayerName } from './backgroundWMTSProviders';
 
-export type BackgroundLayerName = WMTSLayerName | WMSLayerName;
+export type BackgroundLayerName =
+  | WMTSLayerName
+  | WMSLayerName
+  | VectorTileLayerName;
 
 export const mapLegacyBackgroundLayerId = (
   layerId: string,
@@ -50,7 +58,9 @@ export const useBackgoundLayers = () => {
   const WMTSProviders = useAtomValue(loadableWMTS);
   const backgroundLayerState = WMTSProviders.state;
 
-  const getBackgroundLayer = (backgroundLayerName: BackgroundLayerName) => {
+  const getBackgroundLayer = async (
+    backgroundLayerName: BackgroundLayerName,
+  ) => {
     if (WMTSProviders.state === 'loading') {
       return null;
     }
@@ -58,6 +68,11 @@ export const useBackgoundLayers = () => {
       console.error('Error loading WMTS providers:', WMTSProviders.error);
       return null;
     }
+
+    if (isVectorTileLayer(backgroundLayerName)) {
+      return createVectorTileLayer(backgroundLayerName);
+    }
+
     const currentProjection: ProjectionIdentifier = map
       .getView()
       .getProjection()

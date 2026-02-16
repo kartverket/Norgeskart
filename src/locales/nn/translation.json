@@ -164,6 +164,7 @@
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_web_mercator_v2": "Flyfoto",
+            "nautical-background": "Nautisk bakgrunnskart",
             "oceanicelectronic": "Elektronisk sjøkart",
             "sjokartraster": "Sjøkart papir",
             "topo": "Topo",
@@ -244,6 +245,8 @@
               "displayName": "NGO 1948 Gauss-Kruger sone 8"
             }
           },
+          "forcedWebMercator": "Nautisk bakgrunnskart krev Webmercator-projeksjon",
+          "lockedByLayer": "Projeksjon er låst til Webmercator av nautisk bakgrunnskart",
           "popover": {
             "title": "Koordinatreferansesystem",
             "body": "Vel eit koordinatreferansesystem. Dei har ulik nøyaktigheit i ulike delar av landet. Me tilrår at du nyttar UTM 33 om du ikkje er sikker."
@@ -380,7 +383,8 @@
       "tooltip": "Rapporter feil eller manglar i kartet."
     },
     "scale": {
-      "tooltip": "Vel målestokk"
+      "tooltip": "Vel målestokk",
+      "disabledTooltip": "Målestokkveljaren er deaktivert fordi dette bakgrunnskartet bruker heiltals zoomnivå for betre ytelse."
     },
     "crs": {
       "tooltip": "Vel koordinatsystem"

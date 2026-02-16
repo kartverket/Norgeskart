@@ -45,6 +45,7 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
 
         <ProjectionSelector
           default={currentMapProjection}
+          value={selectedProjection}
           onProjectionChange={setSelectedProjection}
           label={t('infoBox.coordinateSection.differentCrs')}
           textColor="black"
