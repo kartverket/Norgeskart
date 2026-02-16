@@ -68,7 +68,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Dybdedatakvalitet_sjokart',
       categoryId: 'sjo_dybdedatakvalitet',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -81,7 +81,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'IkkeSjomalt',
       categoryId: 'sjo_dybdedatakvalitet',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
 
@@ -96,7 +96,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Farlige_bolger',
       categoryId: 'sjo_farlige_bolger',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -109,7 +109,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'AktsomhetsomradeFarligeBolger',
       categoryId: 'sjo_farlige_bolger',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
 
@@ -124,7 +124,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Dybdeforhold',
       categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -137,7 +137,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Helning',
       categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -150,7 +150,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Helning_over_30',
       categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -163,7 +163,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Naturtyper',
       categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -176,7 +176,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Kornstorrelse_Det',
       categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -189,7 +189,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Gravbarhet',
       categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -202,7 +202,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Bunnfellingsomrader',
       categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -215,7 +215,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Ankringsforhold',
       categoryId: 'sjo_marine_grunnkart',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
 
@@ -230,7 +230,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Grunnlinje',
       categoryId: 'sjo_nmg',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -243,7 +243,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Territorialgrense',
       categoryId: 'sjo_nmg',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -256,7 +256,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Tilstotende_sone',
       categoryId: 'sjo_nmg',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -269,7 +269,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Norges_okonomiske_sone',
       categoryId: 'sjo_nmg',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -282,7 +282,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Fiskevernsonen_ved_Svalbard',
       categoryId: 'sjo_nmg',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -295,7 +295,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Fiskerisonen_ved_Jan_Mayen',
       categoryId: 'sjo_nmg',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -308,7 +308,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Norges_kontinentalsokkel',
       categoryId: 'sjo_nmg',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
     {
@@ -321,7 +321,7 @@ export const sjoConfig: ThemeLayerConfig = {
       layers: 'Avtalt_avgrensningslinje',
       categoryId: 'sjo_nmg',
       groupid: 14,
-      queryable: false,
+      queryable: true,
       useLegendGraphic: true,
     },
   ],
