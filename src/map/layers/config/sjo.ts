@@ -32,6 +32,21 @@ export const sjoConfig: ThemeLayerConfig = {
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.farlige_bolger',
       parentId: 'sjo',
+      featureInfoFields: [
+        {
+          name:'informasjonnorsk',
+          alias:'Norsk'
+        },
+        {          
+          name:'informasjonengelsk',
+          alias:'English'
+        },
+        {
+          name:'informasjonnorskfulltekst',
+          alias:'Norsk fulltekst'
+        },
+      ],
+        
     },
     {
       id: 'sjo_marine_grunnkart',
