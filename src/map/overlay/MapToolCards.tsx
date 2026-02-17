@@ -129,7 +129,7 @@ const MapToolCard = ({
               size="sm"
               onClick={onCollapse}
             >
-             {t('controller.hide')}
+              {t('controller.hide')}
             </Button>
           )}
           <IconButton

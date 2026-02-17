@@ -122,7 +122,7 @@ const ColorRow = ({
             cursor="pointer"
             _hover={{ bg: 'gray.50' }}
           >
-           <ColorPickerSwatch value={color} />
+            <ColorPickerSwatch value={color} />
             <Text fontSize="sm">{label}</Text>
             <Spacer />
             <Icon

@@ -38,48 +38,48 @@ export const DrawControls = () => {
   useAtom(distanceUnitAtomEffect);
 
   return (
-      <VStack
+    <VStack
+      alignItems="flex-start"
+      width="100%"
+      padding={0.5}
+      style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
+    >
+      {isMobile && (
+        <Heading size="md" px={1} py={1}>
+          {activeToolLabel}
+        </Heading>
+      )}
+
+      {!isMobile && <DrawToolSelector />}
+
+      {drawType === 'Text' && <TextStyleControl />}
+
+      <HStack width="100%">
+        <ColorControls />
+        {drawType === 'Point' && <PointStyleSelector />}
+      </HStack>
+
+      {isMobile && drawType === 'Move' && (
+        <IconButton
+          onClick={deleteSelected}
+          colorPalette="red"
+          icon="delete"
+          size="md"
+          variant="ghost"
+        />
+      )}
+      <Flex
+        w="100%"
         alignItems="flex-start"
-        width="100%"
-        padding={0.5}
-        style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
+        flexDirection={{ base: 'row', md: 'column' }}
+        justifyContent="space-between"
+        py={1}
       >
-        {isMobile && (
-          <Heading size="md" px={1} py={1}>
-            {activeToolLabel}
-          </Heading>
-        )}
-
-        {!isMobile && <DrawToolSelector />}
-
-        {drawType === 'Text' && <TextStyleControl />}
-
-        <HStack width="100%">
-          <ColorControls />
-          {drawType === 'Point' && <PointStyleSelector />}
-        </HStack>
-
-        {isMobile && drawType === 'Move' && (
-          <IconButton
-            onClick={deleteSelected}
-            colorPalette="red"
-            icon="delete"
-            size="md"
-            variant="ghost"
-          />
-        )}
-        <Flex
-          w="100%"
-          alignItems="flex-start"
-          flexDirection={{ base: 'row', md: 'column' }}
-          justifyContent="space-between"
-          py={1}
-        >
-          <LineWidthControl />
-          <MeasurementControls />
-        </Flex>
-        <EditControls />
-        <DrawControlFooter />
-      </VStack>
+        <LineWidthControl />
+        <MeasurementControls />
+      </Flex>
+      <EditControls />
+      <DrawControlFooter />
+    </VStack>
   );
 };
