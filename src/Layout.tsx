@@ -1,13 +1,16 @@
-import { Flex, Grid, GridItem, useBreakpointValue, Box } from '@kvib/react';
+import { Box, Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
-import { drawPanelCollapsedAtom } from './map/overlay/atoms';
 import { displayCompassOverlayAtom } from './map/atoms';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
 import { MapComponent } from './map/MapComponent';
 import { MapControlButtons } from './map/MapControlButtons';
-import { mapToolAtom, showSearchComponentAtom } from './map/overlay/atoms';
+import {
+  drawPanelCollapsedAtom,
+  mapToolAtom,
+  showSearchComponentAtom,
+} from './map/overlay/atoms';
 import { Compass } from './map/overlay/Compass';
 import { LinkLogo } from './map/overlay/LinkLogo';
 import { MapToolButtons } from './map/overlay/MapToolButtons';
