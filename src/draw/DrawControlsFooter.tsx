@@ -130,7 +130,7 @@ export const DrawControlFooter = () => {
       <Alert status="info" title={t('draw.privacyNotice.title')} mb={3}>
         {t('draw.privacyNotice.message')}
       </Alert>
-      <Heading size="md" marginTop={2}>
+      <Heading size={{ base: 'sm', md: 'md' }} marginTop={2}>
         {t('draw.redoundo')}
       </Heading>
       <ButtonGroup>
@@ -149,8 +149,8 @@ export const DrawControlFooter = () => {
           />
         )}
       </ButtonGroup>
-      <Heading size="md" marginTop={2}>
-        Handlinger
+      <Heading size={{ base: 'sm', md: 'md' }}>
+        {t('controller.export')}
       </Heading>
       <ButtonGroup>
         <PopoverRoot
