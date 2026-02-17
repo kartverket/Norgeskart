@@ -115,8 +115,8 @@ const getEnv = (): Env => {
   ) {
     return PROD_ENV;
   }
-
-  throw new Error(`Unknown environment for domain: ${domain}`);
+  console.error(`Unknown domain: ${domain}`);
+  return DEV_ENV;
 };
 
 export { getEnv, getEnvName };
