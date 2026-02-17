@@ -57,7 +57,8 @@
       "toolSelect": {
         "placeholder": "Vel teiknemåte"
       },
-      "color": "Farger"
+      "color": "Farger",
+      "edit": "Rediger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",

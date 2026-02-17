@@ -62,7 +62,9 @@ export const EditControls = () => {
   }
   return (
     <>
-      <Heading size={{ base: 'sm', md: 'md' }}>Rediger</Heading>
+      <Heading size={{ base: 'sm', md: 'md' }}>
+        {t('draw.controls.edit')}
+      </Heading>
       <HStack marginTop={2}>
         <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
           <IconButton

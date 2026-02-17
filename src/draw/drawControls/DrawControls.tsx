@@ -14,7 +14,7 @@ import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts
 import { EditControls } from './EditControls.tsx';
 import { useDrawSettings } from './hooks/drawSettings.ts';
 
-const MOBILE_TOOLBAR_RESERVE = '55px';
+const MOBILE_TOOLBAR_RESERVE = '15px';
 
 export const DrawControls = () => {
   const { drawType, deleteSelected } = useDrawSettings();

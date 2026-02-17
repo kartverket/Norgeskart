@@ -57,7 +57,8 @@
       "toolSelect": {
         "placeholder": "Select draw tool"
       },
-      "color": "Colors"
+      "color": "Colors",
+      "edit": "Edit"
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
