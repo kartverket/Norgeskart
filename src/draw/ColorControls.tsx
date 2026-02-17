@@ -144,18 +144,6 @@ const ColorRow = ({
   );
 };
 
-const Swatch = ({ color, isMobile }: { color: string; isMobile: boolean }) => {
-  return (
-    <Box
-      w={isMobile ? '18px' : '25px'}
-      h={isMobile ? '18px' : '25px'}
-      borderRadius="sm"
-      borderWidth="1px"
-      style={{ background: color }}
-    />
-  );
-};
-
 const useColorLabels = () => {
   const { drawType } = useDrawSettings();
   const { t } = useTranslation();
