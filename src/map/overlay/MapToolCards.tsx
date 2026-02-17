@@ -95,6 +95,7 @@ const MapToolCard = ({
   showCollapse,
   onCollapse,
 }: MapToolCardProps) => {
+  const { t } = useTranslation();
   return (
     <VStack
       width="100%"
@@ -128,7 +129,7 @@ const MapToolCard = ({
               size="sm"
               onClick={onCollapse}
             >
-              Skjul verktøyline
+             {t('controller.hide')}
             </Button>
           )}
           <IconButton

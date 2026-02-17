@@ -149,7 +149,7 @@ export const DrawControlFooter = () => {
           />
         )}
       </ButtonGroup>
-      <Heading size={{ base: 'sm', md: 'md' }}>Eksport og lagring</Heading>
+      <Heading size={{ base: 'sm', md: 'md' }}>{t('controller.export')}</Heading>
       <ButtonGroup>
         <PopoverRoot
           open={clearPopoverOpen}

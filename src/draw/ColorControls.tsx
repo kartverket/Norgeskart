@@ -5,6 +5,7 @@ import {
   ColorPickerContent,
   ColorPickerControl,
   ColorPickerSliders,
+  ColorPickerSwatch,
   ColorPickerTrigger,
   Heading,
   HStack,
@@ -121,7 +122,7 @@ const ColorRow = ({
             cursor="pointer"
             _hover={{ bg: 'gray.50' }}
           >
-            <Swatch color={color} isMobile={isMobile} />
+           <ColorPickerSwatch value={color} />
             <Text fontSize="sm">{label}</Text>
             <Spacer />
             <Icon

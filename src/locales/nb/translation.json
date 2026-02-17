@@ -21,7 +21,9 @@
     },
     "help": {
       "mobiletext": "Hjelp"
-    }
+    },
+    "export": "Eksport og lagring",
+    "hide": "Skjul verktøylinje"
   },
   "draw": {
     "begin": "Tegn på kartet",

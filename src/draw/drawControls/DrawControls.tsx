@@ -38,7 +38,6 @@ export const DrawControls = () => {
   useAtom(distanceUnitAtomEffect);
 
   return (
-    <>
       <VStack
         alignItems="flex-start"
         width="100%"
@@ -82,6 +81,5 @@ export const DrawControls = () => {
         <EditControls />
         <DrawControlFooter />
       </VStack>
-    </>
   );
 };
