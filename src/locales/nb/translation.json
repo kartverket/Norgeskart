@@ -57,7 +57,8 @@
       "toolSelect": {
         "placeholder": "Velg tegnemåte"
       },
-      "color": "Farger"
+      "color": "Farger",
+      "edit": "Rediger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -65,7 +66,7 @@
     "size": {
       "label": "Elementstørrelse"
     },
-    "tabHeading": "Velg tegnetype(dev)",
+    "tabHeading": "Velg tegnetype",
     "textInputLabel": "Skriv inn tekst",
     "tool": {
       "tooltip": {

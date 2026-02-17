@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   ButtonGroup,
   Dialog,
@@ -127,9 +126,6 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
-      <Alert status="info" title={t('draw.privacyNotice.title')} mb={3}>
-        {t('draw.privacyNotice.message')}
-      </Alert>
       <Heading size={{ base: 'sm', md: 'md' }} marginTop={2}>
         {t('draw.redoundo')}
       </Heading>
