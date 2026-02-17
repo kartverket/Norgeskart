@@ -95,7 +95,7 @@ const getEnvName = (): EnvName => {
 const getEnv = (): Env => {
   const domain = document.location.hostname;
   const previewRegex =
-    /norgeskart-preview-.+\.atgcp1-dev\.kartverket(?:-intern)?\.cloud/m;
+    /norgeskart-preview-.+\.atkv3-dev\.kartverket(?:-intern)?\.cloud/m;
   if (domain == 'localhost') {
     return LOCAL_ENV;
   }
