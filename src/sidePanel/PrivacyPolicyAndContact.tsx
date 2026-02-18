@@ -1,9 +1,34 @@
-import { Flex, Heading, Link, Text, VStack } from '@kvib/react';
-
+import { Button, Flex, Heading, HStack, Link, Text, VStack } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LOCALSTORAGE_CONSENT_KEY } from '../CookieConsentDialog';
+import { disableCookies, enableCookies } from '../cookieBlocker';
 
 const PrivacyPolicy = () => {
   const { t } = useTranslation();
+  const ph = usePostHog();
+  const previousConsent = localStorage.getItem(LOCALSTORAGE_CONSENT_KEY) as
+    | 'granted'
+    | 'denied'
+    | null;
+  const [consentStatus, setConsentStatus] = useState(
+    previousConsent ?? ph.get_explicit_consent_status(),
+  );
+
+  const handleEnableCookies = useCallback(() => {
+    ph.opt_in_capturing();
+    localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'granted');
+    setConsentStatus('granted');
+    enableCookies();
+  }, [ph]);
+
+  const handleDisableCookies = useCallback(() => {
+    ph.opt_out_capturing();
+    localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'denied');
+    setConsentStatus('denied');
+    disableCookies();
+  }, [ph]);
 
   return (
     <Flex justifyContent="start" flexDirection="column" gap={4}>
@@ -70,6 +95,38 @@ const PrivacyPolicy = () => {
         >
           status.kartverket.no
         </Link>
+      </VStack>
+      <VStack alignItems={'flex-start'}>
+        <Heading size="md">
+          {t('privacyAndContact.cookieConsent.heading')}
+        </Heading>
+        <Text>
+          {t('privacyAndContact.cookieConsent.currentStatus')}{' '}
+          {consentStatus === 'granted'
+            ? t('privacyAndContact.cookieConsent.granted')
+            : consentStatus === 'denied'
+              ? t('privacyAndContact.cookieConsent.denied')
+              : t('privacyAndContact.cookieConsent.pending')}
+        </Text>
+        <HStack>
+          <Button
+            colorPalette="green"
+            size="sm"
+            onClick={handleEnableCookies}
+            disabled={consentStatus === 'granted'}
+          >
+            {t('cookieDialog.buttons.accept')}
+          </Button>
+          <Button
+            colorPalette="red"
+            variant="outline"
+            size="sm"
+            onClick={handleDisableCookies}
+            disabled={consentStatus === 'denied'}
+          >
+            {t('cookieDialog.buttons.reject')}
+          </Button>
+        </HStack>
       </VStack>
     </Flex>
   );
