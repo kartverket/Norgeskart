@@ -16,6 +16,11 @@ const PrivacyPolicy = () => {
     previousConsent ?? ph.get_explicit_consent_status(),
   );
 
+  const consentStatusKey: Record<string, string> = {
+    granted: 'privacyAndContact.cookieConsent.granted',
+    denied: 'privacyAndContact.cookieConsent.denied',
+  };
+
   const handleEnableCookies = useCallback(() => {
     ph.opt_in_capturing();
     localStorage.setItem(LOCALSTORAGE_CONSENT_KEY, 'granted');
@@ -83,11 +88,7 @@ const PrivacyPolicy = () => {
         </Text>
         <Text>
           {t('privacyAndContact.cookieConsent.currentStatus')}{' '}
-          {consentStatus === 'granted'
-            ? t('privacyAndContact.cookieConsent.granted')
-            : consentStatus === 'denied'
-              ? t('privacyAndContact.cookieConsent.denied')
-              : t('privacyAndContact.cookieConsent.pending')}
+          {t(consentStatusKey[consentStatus] ?? 'privacyAndContact.cookieConsent.pending')}
         </Text>
         <HStack>
           <Button
