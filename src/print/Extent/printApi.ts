@@ -90,7 +90,7 @@ export const pollPdfStatus = async (
 ): Promise<string | null> => {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      const response = await fetch(`${baseURL}/${statusURL}`);
+      const response = await fetch(`${baseURL}${statusURL}`);
       if (!response.ok)
         throw new Error(
           `Polling failed: ${response.status} ${response.statusText}`,
@@ -99,7 +99,7 @@ export const pollPdfStatus = async (
       const data: PdfStatusResponse = await response.json();
 
       if (data.status === 'finished' && data.downloadURL) {
-        return `${baseURL}/${data.downloadURL}`;
+        return `${baseURL}${data.downloadURL}`;
       }
     } catch (error) {
       console.error(`Attempt ${attempt + 1} failed:`, error);
