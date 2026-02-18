@@ -130,18 +130,18 @@ jobs:
         id: create_ingress
         run: |
           if [[ "${{ github.event.inputs.publicPreview }}" == "true" ]]; then
-            ingress="norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atgcp1-dev.kartverket.cloud"
+            ingress="norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atkv3-dev.kartverket.cloud"
           else
-            ingress="norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atgcp1-dev.kartverket-intern.cloud"
+            ingress="norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.atkv3-dev.kartverket-intern.cloud"
           fi
           echo "ingress=$ingress" >> $GITHUB_OUTPUT
 
       - name: Update deployment
         env:
           COMMIT_MESSAGE: Create preview for branch ${{ needs.build.outputs.target_branch_short_name }}
-          NEW_FILE_PATH: env/atgcp1-dev/norgeskart-preview/norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.jsonnet
+          NEW_FILE_PATH: env/atkv3-dev/norgeskart-preview/norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}.jsonnet
         run: |
-          mkdir -p env/atgcp1-dev/norgeskart-preview
+          mkdir -p env/atkv3-dev/norgeskart-preview
           cp -f applications/partials/norgeskart-preview-partial.jsonnet $NEW_FILE_PATH
           sed -i '1ilocal name = "norgeskart-preview-${{ needs.build.outputs.target_branch_short_name }}";' $NEW_FILE_PATH
           sed -i '1ilocal image = "${{ needs.build.outputs.docker_tag }}";' $NEW_FILE_PATH

@@ -21,7 +21,9 @@
     },
     "help": {
       "mobiletext": "Hjelp"
-    }
+    },
+    "export": "Eksport og lagring",
+    "hide": "Skjul verktøylinje"
   },
   "draw": {
     "begin": "Teikne på kartet",
@@ -55,7 +57,8 @@
       "toolSelect": {
         "placeholder": "Vel teiknemåte"
       },
-      "color": "Farger"
+      "color": "Farger",
+      "edit": "Rediger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",

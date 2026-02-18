@@ -95,21 +95,28 @@ const getEnvName = (): EnvName => {
 const getEnv = (): Env => {
   const domain = document.location.hostname;
   const previewRegex =
-    /norgeskart-preview-.+\.atgcp1-dev\.kartverket(?:-intern)?\.cloud/m;
+    /norgeskart-preview-.+\.atkv3-dev\.kartverket(?:-intern)?\.cloud/m;
   if (domain == 'localhost') {
     return LOCAL_ENV;
   }
-  if (domain == 'norgeskart.atgcp1-dev.kartverket-intern.cloud') {
+  if (
+    domain == 'norgeskart.atgcp1-dev.kartverket-intern.cloud' ||
+    domain == 'norgeskart5.atkv3-dev.kartverket-intern.cloud'
+  ) {
     return DEV_ENV;
   }
   if (previewRegex.test(domain)) {
     return DEV_ENV;
   }
-  if (domain == 'test.norgeskart.no') {
+  if (
+    domain == 'test.norgeskart.no' ||
+    domain == 'norgeskart.no' ||
+    domain == 'www.norgeskart.no'
+  ) {
     return PROD_ENV;
   }
-
-  throw new Error(`Unknown environment for domain: ${domain}`);
+  console.error(`Unknown domain: ${domain}`);
+  return DEV_ENV;
 };
 
 export { getEnv, getEnvName };

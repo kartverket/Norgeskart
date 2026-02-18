@@ -21,7 +21,9 @@
     },
     "help": {
       "mobiletext": "Help"
-    }
+    },
+    "export": "Export and download",
+    "hide": "Hide toolbar"
   },
   "draw": {
     "begin": "Draw on map",
@@ -55,7 +57,8 @@
       "toolSelect": {
         "placeholder": "Select draw tool"
       },
-      "color": "Colors"
+      "color": "Colors",
+      "edit": "Edit"
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
