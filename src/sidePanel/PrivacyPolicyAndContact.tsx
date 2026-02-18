@@ -88,7 +88,10 @@ const PrivacyPolicy = () => {
         </Text>
         <Text>
           {t('privacyAndContact.cookieConsent.currentStatus')}{' '}
-          {t(consentStatusKey[consentStatus] ?? 'privacyAndContact.cookieConsent.pending')}
+          {t(
+            consentStatusKey[consentStatus] ??
+              'privacyAndContact.cookieConsent.pending',
+          )}
         </Text>
         <HStack>
           <Button
