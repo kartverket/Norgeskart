@@ -81,25 +81,6 @@ const PrivacyPolicy = () => {
             {t('privacyAndContact.privacyPolicy')}
           </Link>
         </Text>
-      </VStack>
-      <VStack alignItems={'flex-start'}>
-        <Heading size="md">{t('privacyAndContact.status.heading')}</Heading>
-        <Text>{t('privacyAndContact.status.infoText')}</Text>
-        <Link
-          colorPalette="green"
-          href="https://status.kartverket.no/"
-          external={true}
-          target="_blank"
-          variant="underline"
-          ml={1}
-        >
-          status.kartverket.no
-        </Link>
-      </VStack>
-      <VStack alignItems={'flex-start'}>
-        <Heading size="md">
-          {t('privacyAndContact.cookieConsent.heading')}
-        </Heading>
         <Text>
           {t('privacyAndContact.cookieConsent.currentStatus')}{' '}
           {consentStatus === 'granted'
@@ -127,6 +108,20 @@ const PrivacyPolicy = () => {
             {t('cookieDialog.buttons.reject')}
           </Button>
         </HStack>
+      </VStack>
+      <VStack alignItems={'flex-start'}>
+        <Heading size="md">{t('privacyAndContact.status.heading')}</Heading>
+        <Text>{t('privacyAndContact.status.infoText')}</Text>
+        <Link
+          colorPalette="green"
+          href="https://status.kartverket.no/"
+          external={true}
+          target="_blank"
+          variant="underline"
+          ml={1}
+        >
+          status.kartverket.no
+        </Link>
       </VStack>
     </Flex>
   );
