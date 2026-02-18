@@ -4,7 +4,9 @@ import {
   FileUploadDropzoneContent,
   FileUploadList,
   FileUploadRoot,
+  useFileUpload,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { getDefaultStore, useSetAtom } from 'jotai';
 import { Feature } from 'ol';
 import { GPX } from 'ol/format';
@@ -12,7 +14,11 @@ import { LineString, MultiLineString } from 'ol/geom';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
 import { profileLineAtom } from './atoms';
-import { addFeatureToLayer } from './drawUtils';
+import {
+  addDrawInteractionToMap,
+  addFeatureToLayer,
+  removeDrawInteractionFromMap,
+} from './drawUtils';
 
 //combine MultiLineString into one LineString
 const combineMultiLineString = (multiLineString: MultiLineString) => {
@@ -26,12 +32,26 @@ const combineMultiLineString = (multiLineString: MultiLineString) => {
 export const ElevationProfileFileUpload = () => {
   const setProfileLine = useSetAtom(profileLineAtom);
   const { t } = useTranslation();
+  const ph = usePostHog();
+
+  const fileUpload = useFileUpload({
+    maxFiles: 1,
+    maxFileSize: 3000,
+    accept: { '': ['.gpx'] },
+  });
   return (
     <FileUploadRoot
       maxFiles={1}
       accept={{ '': ['.gpx'] }}
       w={'100%'}
       onFileChange={(e) => {
+        if (e.acceptedFiles.length !== 0) {
+          addDrawInteractionToMap(() =>
+            ph.capture('print_elevation_profile_generate_started'),
+          );
+        }
+
+        removeDrawInteractionFromMap();
         if (e.acceptedFiles.length !== 1) {
           setProfileLine(null);
           return;
@@ -47,31 +67,16 @@ export const ElevationProfileFileUpload = () => {
             .getCode();
 
           const text = event.target?.result;
-          console.log(text);
           const gpx = new GPX();
 
           const features = gpx.readFeatures(text as string, {
             dataProjection: 'EPSG:4326',
             featureProjection: projection,
           });
-          console.log(features);
-
-          const points = features.filter(
-            (f) => f.getGeometry()?.getType() === 'Point',
-          );
-          const lines = features.filter(
-            (f) => f.getGeometry()?.getType() === 'LineString',
-          );
-          const multiLines = features.filter(
-            (f) => f.getGeometry()?.getType() === 'MultiLineString',
-          );
-
-          console.log(points, lines, multiLines);
           if (features.length === 0) {
             setProfileLine(null);
             return;
           }
-          console.log(features);
           if (features.length > 0) {
             const feature = features[0];
             const geometry = feature.getGeometry();
@@ -82,8 +87,6 @@ export const ElevationProfileFileUpload = () => {
 
             if (geometry instanceof LineString) {
               addFeatureToLayer(new Feature(geometry));
-
-              //setProfileLine(transformedGeometry);
             } else if (geometry instanceof MultiLineString) {
               const combinedLineString = combineMultiLineString(geometry);
               addFeatureToLayer(new Feature(combinedLineString));
@@ -105,7 +108,15 @@ export const ElevationProfileFileUpload = () => {
           </Box>
         </FileUploadDropzoneContent>
       </FileUploadDropzone>
-      <FileUploadList clearable />
+      <FileUploadList
+        clearable
+        onChange={(e) => {
+          console.log(e);
+        }}
+        onEmptied={(e) => {
+          console.log(e);
+        }}
+      />
     </FileUploadRoot>
   );
 };
