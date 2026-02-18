@@ -494,6 +494,12 @@
         "title": "Høydeprofil",
         "xAxis": "Avstand [m]",
         "yAxis": "Høyde [m]"
+      },
+      "fileUpload": {
+        "dragDrop": {
+          "label": "Dra fil, eller trykk, her",
+          "fileInfo": ".gpx format"
+        }
       }
     },
     "hikingMap": {
