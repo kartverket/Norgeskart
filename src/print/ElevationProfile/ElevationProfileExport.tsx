@@ -1,6 +1,6 @@
-import { Button, ButtonGroup } from '@kvib/react';
+import { Button } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { Chart as ChartJS } from 'chart.js';
+import { Chart } from 'chart.js';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { profileResponseAtom } from './atoms';
@@ -8,7 +8,7 @@ import { profileResponseAtom } from './atoms';
 export const ElevationProfileExport = ({
   chartRef,
 }: {
-  chartRef: React.RefObject<ChartJS<'line'> | null>;
+  chartRef: React.RefObject<Chart<'line'> | null>;
 }) => {
   const profileData = useAtomValue(profileResponseAtom);
   const { t } = useTranslation();
@@ -61,11 +61,10 @@ export const ElevationProfileExport = ({
   };
 
   return (
-    <ButtonGroup justify="space-around">
+    <>
       <Button
         onClick={() => {
           ph.capture('print_elevation_profile_export_csv');
-
           exportAsCSV();
         }}
       >
@@ -79,6 +78,6 @@ export const ElevationProfileExport = ({
       >
         {t('printdialog.elevationProfile.buttons.exportPng.label')}
       </Button>
-    </ButtonGroup>
+    </>
   );
 };

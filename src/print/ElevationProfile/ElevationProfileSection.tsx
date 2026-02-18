@@ -15,7 +15,8 @@ import {
   removeDrawInteractionFromMap,
 } from './drawUtils';
 import { ElevationProfileChart } from './ElevationProfileChart';
-import { ElevationProfileExport } from './ElevationProfileExport';
+import { ElevationProfileFileUpload } from './ElevationProfileFileUpload';
+import { ElevationProfileFooter } from './ElevationProfileFooter';
 
 export const ElevationProfileSection = () => {
   useAtom(profileEffect);
@@ -38,8 +39,9 @@ export const ElevationProfileSection = () => {
     <Stack>
       <Heading size={'md'}>{t('printdialog.elevationProfile.heading')}</Heading>
       <Text>{t('printdialog.elevationProfile.infotext')}</Text>
+      <ElevationProfileFileUpload />
       <ElevationProfileChart chartRef={chartRef} />
-      <ElevationProfileExport chartRef={chartRef} />
+      <ElevationProfileFooter chartRef={chartRef} />
     </Stack>
   );
 };

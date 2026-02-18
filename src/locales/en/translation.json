@@ -504,6 +504,12 @@
         "title": "elevationProfile",
         "xAxis": "Distance [m]",
         "yAxis": "Elevation [m]"
+      },
+      "fileUpload": {
+        "dragDrop": {
+          "label": "Drag file, or click, here",
+          "fileInfo": ".gpx format"
+        }
       }
     },
     "hikingMap": {
