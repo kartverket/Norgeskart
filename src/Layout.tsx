@@ -160,7 +160,7 @@ export const Layout = () => {
           gridColumn={{
             base: '1 / span 12',
             md: '2 / span 10',
-            lg: '2 / span 9',
+            lg: '2 / span 10',
           }}
           gridRow={5}
           alignContent={'end'}
