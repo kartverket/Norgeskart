@@ -13,6 +13,7 @@ import {
   Text,
   VStack,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { getDefaultStore, useAtom, useSetAtom } from 'jotai';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
@@ -57,6 +58,7 @@ export const RettIKartetDialog = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useAtom(isRettIKartetDialogOpenAtom);
   const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
+  const ph = usePostHog();
 
   return (
     <Dialog
@@ -82,6 +84,9 @@ export const RettIKartetDialog = () => {
                   href={getRettIKartetUrl(category)}
                   key={category}
                   target="_blank"
+                  onClick={() => {
+                    ph.capture('rettikartet_category_clicked', { category });
+                  }}
                 >
                   <VStack>
                     <Heading size="sm">

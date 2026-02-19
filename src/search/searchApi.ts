@@ -66,6 +66,7 @@ export const getAdressesByLocation = async (
   return res.json();
 };
 
+export const PLACE_SEARCH_PAGE_SIZE = 10;
 export const getPlaceNames = async (
   query: string,
   page: number,
@@ -79,7 +80,7 @@ export const getPlaceNames = async (
       ? encodeURIComponent(municipalityPart)
       : null;
     const res = await fetch(
-      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*${encodedMunicipality != null ? '&kommunenavn=' + encodedMunicipality + '*' : ''}&treffPerSide=15&side=${page}`,
+      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*${encodedMunicipality != null ? '&kommunenavn=' + encodedMunicipality + '*' : ''}&treffPerSide=${PLACE_SEARCH_PAGE_SIZE}&side=${page}&fuzzy=true`,
     );
     if (!res.ok) {
       console.warn(`API failed [placeNames]: ${res.status} for "${query}"`);
