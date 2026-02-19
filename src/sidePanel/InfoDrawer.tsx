@@ -3,6 +3,7 @@ import {
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
+  Alert,
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
@@ -133,6 +134,9 @@ export const InfoDrawer = () => {
         </CollapsibleContent>
       </Collapsible>
       <PrivacyPolicy />
+      <Alert status="info" title={t('draw.privacyNotice.title')} mb={3}>
+        {t('draw.privacyNotice.message')}
+      </Alert>
       <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
       <LanguageSwitcher />
     </SimpleGrid>

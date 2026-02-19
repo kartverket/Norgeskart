@@ -5,7 +5,9 @@ import {
   ColorPickerContent,
   ColorPickerControl,
   ColorPickerSliders,
+  ColorPickerSwatch,
   ColorPickerTrigger,
+  Heading,
   HStack,
   Icon,
   parseColor,
@@ -16,6 +18,7 @@ import {
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { primaryColorAtom, secondaryColorAtom } from '../settings/draw/atoms';
+import { useIsMobileScreen } from '../shared/hooks';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 export const ColorControls = () => {
@@ -23,29 +26,65 @@ export const ColorControls = () => {
   const [secondaryColor, setSecondaryColor] = useAtom(secondaryColorAtom);
   const { primaryLabel, secondaryLabel } = useColorLabels();
   const { t } = useTranslation();
+  const isMobile = useIsMobileScreen();
 
   return (
-    <VStack align="stretch" w="100%" mt={2}>
-      <Text fontWeight="semibold">{t('draw.controls.color')}</Text>
-      <HStack w="100%" align="stretch">
-        <Box flex="1">
-          <ColorRow
-            label={primaryLabel}
-            color={primaryColor}
-            onSetColor={setPrimaryColor}
-          />
-        </Box>
+    <VStack
+      align="stretch"
+      w="100%"
+      mt={isMobile ? 1 : 2}
+      gap={isMobile ? 1 : 2}
+    >
+      <Heading fontWeight="semibold" size={{ base: 'sm', md: 'md' }}>
+        {t('draw.controls.color')}
+      </Heading>
 
-        {secondaryLabel && (
-          <Box flex="1">
+      {isMobile ? (
+        <HStack w="100%" flexWrap="wrap" gap={2} align="stretch">
+          <Box>
             <ColorRow
-              label={secondaryLabel}
-              color={secondaryColor}
-              onSetColor={setSecondaryColor}
+              isMobile={true}
+              label={primaryLabel}
+              color={primaryColor}
+              onSetColor={setPrimaryColor}
             />
           </Box>
-        )}
-      </HStack>
+
+          {secondaryLabel && (
+            <Box>
+              <ColorRow
+                isMobile={true}
+                label={secondaryLabel}
+                color={secondaryColor}
+                onSetColor={setSecondaryColor}
+              />
+            </Box>
+          )}
+        </HStack>
+      ) : (
+        // Desktop: to like kolonner (som før)
+        <HStack w="100%" align="stretch" gap={2}>
+          <Box flex="1">
+            <ColorRow
+              isMobile={false}
+              label={primaryLabel}
+              color={primaryColor}
+              onSetColor={setPrimaryColor}
+            />
+          </Box>
+
+          {secondaryLabel && (
+            <Box flex="1">
+              <ColorRow
+                isMobile={false}
+                label={secondaryLabel}
+                color={secondaryColor}
+                onSetColor={setSecondaryColor}
+              />
+            </Box>
+          )}
+        </HStack>
+      )}
     </VStack>
   );
 };
@@ -54,10 +93,12 @@ const ColorRow = ({
   label,
   color,
   onSetColor,
+  isMobile,
 }: {
   label: string;
   color: string;
   onSetColor: (v: string) => void;
+  isMobile: boolean;
 }) => {
   return (
     <ColorPicker
@@ -67,25 +108,28 @@ const ColorRow = ({
       <ColorPickerControl>
         <ColorPickerTrigger asChild>
           <HStack
-            w="100%"
+            w={isMobile ? 'auto' : '100%'}
+            minW={isMobile ? '160px' : undefined}
+            maxW={isMobile ? '220px' : undefined}
             role="button"
             tabIndex={0}
             align="center"
-            py={1}
+            py={isMobile ? 0.5 : 1}
+            px={isMobile ? 2 : undefined}
             borderWidth="1px"
-            borderRadius="lg"
+            borderRadius={isMobile ? 'md' : 'lg'}
             bg="white"
             cursor="pointer"
             _hover={{ bg: 'gray.50' }}
           >
-            <Swatch color={color} />
-            <Text>{label}</Text>
+            <ColorPickerSwatch value={color} />
+            <Text fontSize="sm">{label}</Text>
             <Spacer />
             <Icon
               color="colorPalette.500"
               grade={0}
               icon="chevron_right"
-              size={28}
+              size={isMobile ? 24 : 28}
               weight={300}
             />
           </HStack>
@@ -97,18 +141,6 @@ const ColorRow = ({
         <ColorPickerSliders />
       </ColorPickerContent>
     </ColorPicker>
-  );
-};
-
-const Swatch = ({ color }: { color: string }) => {
-  return (
-    <Box
-      w="25px"
-      h="25px"
-      borderRadius="sm"
-      borderWidth="1px"
-      style={{ background: color }}
-    />
   );
 };
 

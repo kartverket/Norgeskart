@@ -46,7 +46,7 @@ export const PlacesResult = ({
   return (
     <AccordionItem value="places">
       <AccordionItemTrigger onClick={onTabClick}>
-        {t('search.placeName')} ({places.length})
+        {t('search.placeName')} ({placesMetadata.totaltAntallTreff})
       </AccordionItemTrigger>
       <AccordionItemContent>
         <List>
