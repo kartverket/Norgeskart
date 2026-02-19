@@ -317,7 +317,14 @@
       "heading": "Status",
       "infoText": "See the status of our apps and services by following the link"
     },
-    "formsLinkText": "Open feedback form"
+    "formsLinkText": "Open feedback form",
+    "cookieConsent": {
+      "heading": "Cookies",
+      "currentStatus": "Current consent:",
+      "granted": "Accepted",
+      "denied": "Declined",
+      "pending": "Not set"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Holding nr.",

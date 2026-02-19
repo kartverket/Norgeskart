@@ -322,7 +322,14 @@
       "heading": "Status",
       "infoText": "Se status for våre tjenester ved å besøke lenken"
     },
-    "formsLinkText": "Åpne tilbakemeldingskjema"
+    "formsLinkText": "Åpne tilbakemeldingskjema",
+    "cookieConsent": {
+      "heading": "Informasjonskapsler",
+      "currentStatus": "Nåværende samtykke:",
+      "granted": "Godtatt",
+      "denied": "Avslått",
+      "pending": "Ikke valgt"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Gårdsnr.",
