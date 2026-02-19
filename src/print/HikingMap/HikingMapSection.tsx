@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   ButtonGroup,
   Checkbox,
@@ -62,6 +63,7 @@ export const HikingMapSection = () => {
   const [storedDownloadUrl, setStoredDownloadUrl] = useState<string | null>(
     null,
   );
+  const [popupBlocked, setPopupBlocked] = useState(false);
   const ph = usePostHog();
 
   const { setBackgroundLayer } = useMapSettings();
@@ -138,6 +140,7 @@ export const HikingMapSection = () => {
   }, [selectedScale]);
 
   const printHikingMap = async () => {
+    setPopupBlocked(false);
     setPrintLoading(true);
     ph.capture('print_hiking_started', {
       scale: selectedScale,
@@ -183,7 +186,7 @@ export const HikingMapSection = () => {
           includeSweeden,
           includeCompassInstructions,
         });
-        setGenerateButtonText(t('printdialog.hikingMap.errors.popupBlocked'));
+        setPopupBlocked(true);
         setStoredDownloadUrl(downloadLink);
       } else {
         ph.capture('print_hiking_complete', {
@@ -320,6 +323,7 @@ export const HikingMapSection = () => {
         {storedDownloadUrl != null && (
           <Button
             onClick={() => {
+              setPopupBlocked(false);
               window.open(storedDownloadUrl, '_blank');
               ph.capture('print_hiking_download_link_clicked', {
                 scale: selectedScale,
@@ -342,6 +346,15 @@ export const HikingMapSection = () => {
           {t('printdialog.hikingMap.buttons.cancel')}
         </Button>
       </ButtonGroup>
+      {popupBlocked && (
+        <Alert
+          status="error"
+          title={t('printdialog.hikingMap.popupblockedalert.title')}
+          mb={3}
+        >
+          {t('printdialog.hikingMap.popupblockedalert.body')}
+        </Alert>
+      )}
     </Stack>
   );
 };
