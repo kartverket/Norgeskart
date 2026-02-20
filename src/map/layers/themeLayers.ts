@@ -26,7 +26,6 @@ const isProjectNameAndCategoryIdMatch = (
         'sjo',
         'sjo_dybdedatakvalitet',
         'sjo_farlige_bolger',
-        'sjo_marine_grunnkart',
         'sjo_nmg',
       ].includes(layerCategoryId);
     case 'seeiendom':
