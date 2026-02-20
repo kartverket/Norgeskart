@@ -72,6 +72,20 @@ type OutdoorsLifeLayerName =
   | 'waterTrails';
 type FactsLayerName = 'osloMarkaBorder';
 
+type SjoLayerName =
+  | 'sjoDybdedatakvalitetSjokart'
+  | 'sjoIkkeSjomalt'
+  | 'sjoFarligeBolger'
+  | 'sjoAktsomhetsomradeFarligeBolger'
+  | 'sjoGrunnlinje'
+  | 'sjoTerritorialgrense'
+  | 'sjoTilstotendeSone'
+  | 'sjoNorgesOkonomiskeSone'
+  | 'sjoFiskevernsonen'
+  | 'sjoFiskerisonen'
+  | 'sjoKontinentalsokkel'
+  | 'sjoAvtaltAvgrensningslinje';
+
 type ConfigThemeLayerName =
   | 'historicalRoute'
   | 'coastalTrail'
@@ -105,7 +119,8 @@ export type ThemeLayerName =
   | FactsLayerName
   | HistoricalMapsLayerName
   | StedsnavnLayerName
-  | ConfigThemeLayerName;
+  | ConfigThemeLayerName
+  | SjoLayerName;
 
 export const QUERYABLE_LAYERS: ThemeLayerName[] = [
   'adresses',
