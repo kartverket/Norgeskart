@@ -10,6 +10,7 @@ import {
   Text,
   Tooltip,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import { useEffect, useState } from 'react';
@@ -50,6 +51,7 @@ export const Toolbar = () => {
   >(null);
   const map = useAtomValue(mapAtom);
   useAtom(scaleToResolutionEffect);
+  const ph = usePostHog();
 
   const crsCode = map.getView().getProjection().getCode();
 
@@ -120,7 +122,10 @@ export const Toolbar = () => {
               variant="plain"
               color="white"
               size="sm"
-              onClick={() => setDisplayMapLegend(true)}
+              onClick={() => {
+                ph.capture('toolbar_legend_clicked');
+                setDisplayMapLegend(true);
+              }}
             >
               {t('toolbar.legend.label')}
             </Button>
@@ -131,7 +136,10 @@ export const Toolbar = () => {
             variant="plain"
             color="white"
             size="sm"
-            onClick={() => setRettIKartetDialogOpen(true)}
+            onClick={() => {
+              ph.capture('toolbar_report_error_clicked');
+              setRettIKartetDialogOpen(true);
+            }}
           >
             {t('toolbar.reportError.label')}
           </Button>

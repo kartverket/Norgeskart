@@ -16,8 +16,8 @@ route {
                 default-src 'self';
                 script-src 'self' ph.kartverket.no;
                 worker-src 'self' blob:;
-                img-src 'self' data: tilecache.norgeibilder.no opencache.statkart.no *.geonorge.no *.norgeskart.no cache.kartverket.no *.kartverket-intern.cloud cache.atgcp1-prod.kartverket.cloud cache.atkv3-dev.kartverket.cloud data.kartverket.no *.ecc.no *.maplytic.no *.ngu.no;
-                connect-src 'self' data: blob: *.posthog.com internal-j.posthog.com us.posthog.com tilecache.norgeibilder.no *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no cache.kartverket.no cache.atkv3-dev.kartverket.cloud opencache.statkart.no raw.githubusercontent.com ph.kartverket.no *.ecc.no *.maplytic.no fonts.googleapis.com fonts.gstatic.com;;
+                img-src 'self' data: tilecache.norgeibilder.no opencache.statkart.no *.geonorge.no *.norgeskart.no cache.kartverket.no *.kartverket-intern.cloud cache.atgcp1-prod.kartverket.cloud cache.atkv3-dev.kartverket.cloud data.kartverket.no *.ecc.no *.maplytic.no *.ngu.no;;
+                connect-src 'self' data: blob: *.posthog.com internal-j.posthog.com us.posthog.com tilecache.norgeibilder.no *.geonorge.no geonorge.no norgeskart.no *.norgeskart.no hoydedata.no cache.kartverket.no cache.atkv3-dev.kartverket.cloud opencache.statkart.no raw.githubusercontent.com ph.kartverket.no *.ecc.no *.maplytic.no fonts.googleapis.com fonts.gstatic.com print.atkv3-dev.kartverket-intern.cloud;
                 style-src 'self' 'unsafe-inline' ph.kartverket.no eu.i.posthog.com *.posthog.com fonts.googleapis.com;
                 font-src 'self' fonts.gstatic.com;
         "

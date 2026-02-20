@@ -109,8 +109,8 @@ jobs:
         env:
           COMMIT_MESSAGE: Update norgeskart5 image to ${{ needs.build.outputs.docker_tag }}
         run: |
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atgcp1-dev/norgeskart-main/norgeskart-version
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atgcp1-prod/norgeskart-main/norgeskart-version
+          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
+          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-version
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push

@@ -30,14 +30,16 @@ export const MeasurementControls = () => {
   };
 
   return (
-    <VStack align="flex-start" mt={2} w="100%">
-      <Heading size="md">{t('draw.controls.showMeasurements')}</Heading>
+    <VStack align="flex-start" w="auto">
+      <Heading size={{ base: 'sm', md: 'md' }}>
+        {t('draw.controls.showMeasurements')}
+      </Heading>
 
       <Group attached>
         {units.map((u) => (
           <Button
             key={u.value}
-            size="sm"
+            size={{ base: 'xs', md: 'sm' }}
             variant={isActive(u.value) ? 'solid' : 'outline'}
             onClick={() => onPick(u.value)}
           >

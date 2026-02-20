@@ -5,7 +5,7 @@
       "mobiletext": "Temakart"
     },
     "print": {
-      "text": "Print"
+      "text": "Skriv ut"
     },
     "draw": {
       "text": "Teikna og måla",
@@ -21,7 +21,9 @@
     },
     "help": {
       "mobiletext": "Hjelp"
-    }
+    },
+    "export": "Eksport og lagring",
+    "hide": "Skjul verktøylinje"
   },
   "draw": {
     "begin": "Teikne på kartet",
@@ -55,7 +57,8 @@
       "toolSelect": {
         "placeholder": "Vel teiknemåte"
       },
-      "color": "Farger"
+      "color": "Farger",
+      "edit": "Rediger"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -319,7 +322,14 @@
       "heading": "Status",
       "infoText": "Sjå status for tenestene våre med å nytta lenkja"
     },
-    "formsLinkText": "Åpne tilbakemeldingskjema"
+    "formsLinkText": "Åpne tilbakemeldingskjema",
+    "cookieConsent": {
+      "heading": "Informasjonskapslar",
+      "currentStatus": "Gjeldande samtykke:",
+      "granted": "Godteke",
+      "denied": "Avslege",
+      "pending": "Ikkje vald"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Gardsnr.",
@@ -526,7 +536,7 @@
       },
       "popupblockedalert": {
         "title": "Popup blokkert",
-        "body": "Popup blokkert. Vær venleg å fjerne blokkeringa og prøv at"
+        "body": "Popup blokkert. Vær venleg å fjerne blokkeringa og prøv att, eller bruk nedlastingsknappen"
       }
     }
   },
