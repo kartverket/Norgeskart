@@ -35,19 +35,18 @@ export const sjoConfig: ThemeLayerConfig = {
       parentId: 'sjo',
       featureInfoFields: [
         {
-          name:'informasjonnorsk',
-          alias:'Norsk'
-        },
-        {          
-          name:'informasjonengelsk',
-          alias:'English'
+          name: 'informasjonnorsk',
+          alias: 'Norsk',
         },
         {
-          name:'informasjonnorskfulltekst',
-          alias:'Norsk fulltekst'
+          name: 'informasjonengelsk',
+          alias: 'English',
+        },
+        {
+          name: 'informasjonnorskfulltekst',
+          alias: 'Norsk fulltekst',
         },
       ],
-        
     },
     {
       id: 'sjo_nmg',
