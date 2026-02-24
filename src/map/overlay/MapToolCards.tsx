@@ -101,7 +101,6 @@ const MapToolCard = ({
       width="100%"
       maxWidth={{ base: '100%', md: '425px' }}
       maxHeight="calc(100vh - 65px)"
-
       pointerEvents="auto"
       bg="#FFFF"
       shadow="lg"

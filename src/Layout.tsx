@@ -129,7 +129,7 @@ export const Layout = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '8 / span 5',
+            md: '8 / span 7',
             lg: '9 / span 4',
             xl: '10 / span 3',
           }}
@@ -137,7 +137,7 @@ export const Layout = () => {
           zIndex={1}
           pointerEvents={'none'}
         >
-          <Flex maxHeight={'100%'} w={'100%'} justifyContent={'flex-end'}>
+          <Flex justifyContent={'flex-end'}>
             <InfoBox />
             <PrintDialog />
           </Flex>

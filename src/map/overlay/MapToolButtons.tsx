@@ -157,7 +157,7 @@ const MapButton = ({
       }}
       variant="ghost"
       colorPalette="green"
-      py={{ base: 2, md: 6 }}
+      py={{ base: 2, md: 4 }}
       backgroundColor={active ? '#D0ECD6' : ''}
       aria-label={ariaLabel || label}
       id={id}
