@@ -142,7 +142,7 @@ const ControlIconButton = (props: ControlButtonProps) => {
     <IconButton
       variant={props.variant || 'ghost'}
       colorPalette="green"
-      size={{ base: 'sm', md: 'md' }}
+      size={{ base: 'xs', md: 'sm' }}
       icon={props.icon}
       aria-label={props.label}
       onClick={() => {

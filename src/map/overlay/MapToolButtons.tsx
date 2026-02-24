@@ -38,10 +38,10 @@ export const MapToolButtons = () => {
     <HStack
       align="flex-end"
       justify="space-between"
-      bg="#FFFF"
+      bg="#fff"
       borderRadius={{ base: '', md: 'lg' }}
-      py={{ base: 3, md: 2 }}
-      px={{ base: 0, md: 2 }}
+      py={{ base: 1, md: 1 }}
+      px={{ base: 0, md: 1 }}
       mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
       overflowX={{ base: 'auto', md: 'none' }}
@@ -157,12 +157,12 @@ const MapButton = ({
       }}
       variant="ghost"
       colorPalette="green"
-      py={{ base: 2, md: 8 }}
+      py={{ base: 2, md: 6 }}
       backgroundColor={active ? '#D0ECD6' : ''}
       aria-label={ariaLabel || label}
       id={id}
     >
-      <VStack gap={{ base: 0, md: 1 }} align="center" justify="center">
+      <VStack gap={{ base: 0, md: 0 }} align="center" justify="center">
         <Icon icon={icon} />
         <Text
           fontSize="sm"

@@ -99,12 +99,12 @@ export const Layout = () => {
           gridColumn={{
             base: '1 / span 12',
             md: '1 / span 6',
-            lg: '1 / span 4',
-            xl: '1 / span 3',
-            '2xl': '1 / span 2',
+            lg: '1 / span 5',
+            xl: '1 / span 4',
+            '2xl': '1 / span 3',
           }}
           gridRow={{ base: '2 / span 3', md: '1 / span 4' }}
-          zIndex={1}
+          zIndex={2}
           alignItems={{ base: 'flex-end', md: 'stretch' }}
           display={{ base: 'flex', md: 'block' }}
           pointerEvents={'none'}
