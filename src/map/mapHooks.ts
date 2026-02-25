@@ -167,10 +167,7 @@ const useMapSettings = () => {
       .getArray()
       .filter(isMapLayerBackground);
 
-    if (
-      existingBgLayers.length === 1 &&
-      existingBgLayers[0] === layerToAdd
-    ) {
+    if (existingBgLayers.length === 1 && existingBgLayers[0] === layerToAdd) {
       setUrlParameter('backgroundLayer', actualLayerName);
       return;
     }

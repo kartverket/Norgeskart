@@ -173,7 +173,9 @@ export const MapThemes = () => {
               });
             } else {
               toaster.create({
-                title: t('map.settings.layers.theme.switchedToNauticalBackground'),
+                title: t(
+                  'map.settings.layers.theme.switchedToNauticalBackground',
+                ),
                 duration: 4000,
                 type: 'info',
               });
@@ -182,7 +184,9 @@ export const MapThemes = () => {
             setActiveBackgroundLayer('nautical-background');
           } else {
             toaster.create({
-              title: t('map.settings.layers.theme.nauticalBackgroundAlreadyActive'),
+              title: t(
+                'map.settings.layers.theme.nauticalBackgroundAlreadyActive',
+              ),
               duration: 4000,
               type: 'info',
             });
