@@ -161,24 +161,32 @@ export const MapThemes = () => {
         ph.capture('theme_layer_added', {
           layerName,
         });
-        if (isSjoLayer(layerName) && activeBackgroundLayer !== 'nautical-background') {
-          if (getMapProjectionCode() !== 'EPSG:3857') {
-            setPreNauticalProjection(getMapProjectionCode());
-            await setProjection('EPSG:3857');
-            toaster.create({
-              title: t('map.settings.layers.projection.forcedWebMercator'),
-              duration: 4000,
-              type: 'info',
-            });
+        if (isSjoLayer(layerName)) {
+          if (activeBackgroundLayer !== 'nautical-background') {
+            if (getMapProjectionCode() !== 'EPSG:3857') {
+              setPreNauticalProjection(getMapProjectionCode());
+              await setProjection('EPSG:3857');
+              toaster.create({
+                title: t('map.settings.layers.projection.forcedWebMercator'),
+                duration: 4000,
+                type: 'info',
+              });
+            } else {
+              toaster.create({
+                title: t('map.settings.layers.theme.switchedToNauticalBackground'),
+                duration: 4000,
+                type: 'info',
+              });
+            }
+            setBackgroundLayer('nautical-background');
+            setActiveBackgroundLayer('nautical-background');
           } else {
             toaster.create({
-              title: t('map.settings.layers.theme.switchedToNauticalBackground'),
+              title: t('map.settings.layers.theme.nauticalBackgroundAlreadyActive'),
               duration: 4000,
               type: 'info',
             });
           }
-          setBackgroundLayer('nautical-background');
-          setActiveBackgroundLayer('nautical-background');
         }
       } else {
         removeThemeLayerFromMap(layerName);
