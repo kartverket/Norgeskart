@@ -104,9 +104,6 @@ const getInitialMapView = () => {
     }
   }
 
-  const backgroundLayerFromUrl = getUrlParameter('backgroundLayer');
-  const isNautical = backgroundLayerFromUrl === 'nautical-background';
-
   return new View({
     center: initialCenter,
     minZoom: 3,
@@ -114,7 +111,7 @@ const getInitialMapView = () => {
     zoom: initialZoom,
     rotation: initialRotation,
     projection: initialProjection,
-    constrainResolution: isNautical,
+    constrainResolution: true,
   });
 };
 
@@ -158,7 +155,7 @@ export const mapAtom = atom<Map>(() => {
 });
 
 export const availableScales = [
-  5000, 10000, 25000, 50000, 80000, 100000, 250000, 500000, 1000000,
+  5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000,
 ];
 
 export const scaleAtom = atom<number | null>(null);
