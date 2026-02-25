@@ -257,6 +257,7 @@
           "showAllProjections": "Vis fleire koordinatsystem"
         },
         "theme": {
+          "switchedToNauticalBackground": "Bakgrunnskartet er bytta til Nautisk bakgrunnskart",
           "label": "Vel temakart",
           "activeLayersCount": "Aktive lag",
           "warningLimit": "Maksimalt antal lag nådd. Ver vennleg og deaktiver nokre lag før du legg til fleire for betre yting.",
