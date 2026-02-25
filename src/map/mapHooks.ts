@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
 import { get as getProjection, transform } from 'ol/proj';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import {
@@ -36,13 +36,16 @@ const useMap = () => {
   const setMapOrientation = useSetAtom(mapOrientationAtom);
   const setMagneticDeclination = useSetAtom(magneticDeclinationAtom);
 
-  const setTargetElement = (element: HTMLDivElement | null) => {
-    if (!map.getTarget() && element) {
-      map.setTarget(element);
-    } else if (element == null) {
-      map.setTarget(undefined);
-    }
-  };
+  const setTargetElement = useCallback(
+    (element: HTMLDivElement | null) => {
+      if (!map.getTarget() && element) {
+        map.setTarget(element);
+      } else if (element == null) {
+        map.setTarget(undefined);
+      }
+    },
+    [map],
+  );
 
   // that works for now, remove useEffect later
   useEffect(() => {
@@ -159,8 +162,20 @@ const useMapSettings = () => {
       }
     }
 
-    const WTMSLayers = map.getLayers().getArray().filter(isMapLayerBackground);
-    WTMSLayers.forEach((layer) => {
+    const existingBgLayers = map
+      .getLayers()
+      .getArray()
+      .filter(isMapLayerBackground);
+
+    if (
+      existingBgLayers.length === 1 &&
+      existingBgLayers[0] === layerToAdd
+    ) {
+      setUrlParameter('backgroundLayer', actualLayerName);
+      return;
+    }
+
+    existingBgLayers.forEach((layer) => {
       map.removeLayer(layer);
     });
 
