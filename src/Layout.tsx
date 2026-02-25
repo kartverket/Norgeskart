@@ -99,12 +99,12 @@ export const Layout = () => {
           gridColumn={{
             base: '1 / span 12',
             md: '1 / span 6',
-            lg: '1 / span 4',
-            xl: '1 / span 3',
-            '2xl': '1 / span 2',
+            lg: '1 / span 5',
+            xl: '1 / span 4',
+            '2xl': '1 / span 3',
           }}
           gridRow={{ base: '2 / span 3', md: '1 / span 4' }}
-          zIndex={1}
+          zIndex={2}
           alignItems={{ base: 'flex-end', md: 'stretch' }}
           display={{ base: 'flex', md: 'block' }}
           pointerEvents={'none'}
@@ -129,7 +129,7 @@ export const Layout = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '8 / span 5',
+            md: '8 / span 7',
             lg: '9 / span 4',
             xl: '10 / span 3',
           }}
@@ -137,7 +137,7 @@ export const Layout = () => {
           zIndex={1}
           pointerEvents={'none'}
         >
-          <Flex maxHeight={'100%'} w={'100%'} justifyContent={'flex-end'}>
+          <Flex justifyContent={'flex-end'}>
             <InfoBox />
             <PrintDialog />
           </Flex>
@@ -160,7 +160,7 @@ export const Layout = () => {
           gridColumn={{
             base: '1 / span 12',
             md: '2 / span 10',
-            lg: '2 / span 9',
+            lg: '2 / span 10',
           }}
           gridRow={5}
           alignContent={'end'}

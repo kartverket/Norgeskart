@@ -536,7 +536,7 @@
       },
       "popupblockedalert": {
         "title": "Popup blokkert",
-        "body": "Popup blokkert. Venligst fjerne blokkeringen og prøv igjen "
+        "body": "Popup blokkert. Vennligst fjern blokkeringen og prøv igjen, eller bruk nedlastingsknappen"
       }
     }
   },

@@ -531,7 +531,7 @@
       },
       "popupblockedalert": {
         "title": "Popup blocked",
-        "body": "Popups are blocked. Please unblock them and try again"
+        "body": "Popups are blocked. Please unblock them and try again, or use the download button"
       }
     }
   },
