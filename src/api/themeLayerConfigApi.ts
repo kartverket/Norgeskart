@@ -6,6 +6,7 @@ import { historicalMapsConfig } from '../map/layers/config/historicalMaps';
 import { outdoorRecreationLayerConfig } from '../map/layers/config/outdoorRecreation';
 import { placeNamesConfig } from '../map/layers/config/placeNames';
 import { propertyInfoConfig } from '../map/layers/config/propertyInfo';
+import { sjoConfig } from '../map/layers/config/sjo';
 import { tilgjengelighetConfig } from '../map/layers/config/tilgjengelighet';
 import { ThemeLayerName } from '../map/layers/themeWMS';
 
@@ -94,6 +95,7 @@ export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
     tilgjengelighetConfig,
     fastmerkerLayerConfig,
     dekningConfig,
+    sjoConfig,
   ];
 
   for (const config of configs) {
