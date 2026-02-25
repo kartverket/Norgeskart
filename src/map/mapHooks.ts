@@ -181,25 +181,6 @@ const useMapSettings = () => {
 
     map.addLayer(layerToAdd);
     setUrlParameter('backgroundLayer', actualLayerName);
-
-    const isNautical = actualLayerName === 'nautical-background';
-    const view = map.getView();
-    const currentProps = {
-      center: view.getCenter(),
-      zoom: view.getZoom(),
-      minZoom: view.getMinZoom(),
-      maxZoom: view.getMaxZoom(),
-      projection: view.getProjection(),
-      rotation: view.getRotation(),
-      extent: view.getProjection().getExtent(),
-    };
-    if (view.getConstrainResolution() !== isNautical) {
-      const updatedView = new View({
-        ...currentProps,
-        constrainResolution: isNautical,
-      });
-      map.setView(updatedView);
-    }
   };
 
   const zoomIn = () => {
@@ -268,15 +249,13 @@ const useMapSettings = () => {
     // Round zoom to integer to ensure it aligns with tile matrix
     newZoom = Math.round(newZoom);
 
-    const isNautical = backgroundLayerUrlParam === 'nautical-background';
-
     const newView = new View({
       center: newCenter,
       zoom: newZoom,
       minZoom: oldView.getMinZoom(),
       maxZoom: oldView.getMaxZoom(),
       projection: projection,
-      constrainResolution: isNautical,
+      constrainResolution: true,
       extent: projection.getExtent(),
     });
 
