@@ -76,7 +76,6 @@ type SjoLayerName =
   | 'sjoDybdedatakvalitetSjokart'
   | 'sjoIkkeSjomalt'
   | 'sjoFarligeBolger'
-  | 'sjoAktsomhetsomradeFarligeBolger'
   | 'sjoGrunnlinje'
   | 'sjoTerritorialgrense'
   | 'sjoTilstotendeSone'
