@@ -6,9 +6,9 @@ export const sjoConfig: ThemeLayerConfig = {
       id: 'sjo',
       groupid: 14,
       name: {
-        nb: 'Sjø',
-        nn: 'Sjø',
-        en: 'Sea',
+        nb: 'Til Sjøs',
+        nn: 'Til Sjøs',
+        en: 'At Sea',
       },
     },
     {
