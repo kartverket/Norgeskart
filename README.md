@@ -1,6 +1,6 @@
 # Norgeskart
 
-Kildekode til norgeskart.no 2025. Enn så lenge WIP
+Kildekode til norgeskart.no som lanseres 17. mars 2026.
 
 For endringslogg, se [wiki-siden](https://github.com/kartverket/Norgeskart/wiki/Endringslogg).
 ## Copyright
