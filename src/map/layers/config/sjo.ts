@@ -104,19 +104,6 @@ export const sjoConfig: ThemeLayerConfig = {
       queryable: true,
       useLegendGraphic: true,
     },
-    {
-      id: 'sjoAktsomhetsomradeFarligeBolger',
-      name: {
-        nb: 'Aktsomhetsområde farlige bølger',
-        nn: 'Aktsemdområde farlege bølgjer',
-        en: 'Precautionary area dangerous waves',
-      },
-      layers: 'AktsomhetsomradeFarligeBolger',
-      categoryId: 'sjo_farlige_bolger',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
 
     // --- Norges maritime grenser layers ---
     {
