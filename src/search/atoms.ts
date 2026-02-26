@@ -218,8 +218,8 @@ const getInitialSelectedResult = (): SearchResult | null => {
     const parsedLat = parseFloat(lat);
     if (!Number.isNaN(parsedLon) && !Number.isNaN(parsedLat)) {
       const parsedCoordinate: ParsedCoordinate = {
-        lat: parsedLon,
-        lon: parsedLat,
+        lat: parsedLat,
+        lon: parsedLon,
         projection: projection as ProjectionIdentifier,
         formattedString: `${parsedLon.toFixed(2)}, ${parsedLat.toFixed(2)} @ ${projection.split(':')[1]}`,
         inputFormat: 'utm',
