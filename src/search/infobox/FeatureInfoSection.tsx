@@ -309,6 +309,7 @@ const FeatureProperties = ({
     if (isSpecialField(key, fieldConfigs)) return false;
     const config = getFieldConfig(key, fieldConfigs);
     if (config?.type === 'picture') return false;
+    if (fieldConfigs && !config) return false;
     return true;
   });
 
