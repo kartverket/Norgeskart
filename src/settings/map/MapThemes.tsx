@@ -288,38 +288,65 @@ export const MapThemes = () => {
               </AccordionItemTrigger>
               <AccordionItemContent>
                 {isExpanded &&
-                  theme.subThemes.map((subTheme) => (
-                    <Box key={subTheme.name} marginBottom={4}>
-                      <Heading
-                        fontWeight={'600'}
-                        size={{ base: 'sm', md: 'md' }}
+                  theme.subThemes.map((subTheme) =>
+                    subTheme.layers.length === 1 ? (
+                      <Flex
+                        key={subTheme.name}
+                        justifyContent="space-between"
+                        paddingTop={2}
+                        marginBottom={2}
+                        onClick={() => toggleLayer(subTheme.layers[0].name)}
+                        cursor="pointer"
                       >
-                        {subTheme.heading}
-                      </Heading>
-                      {subTheme.layers.map((layer) => (
-                        <Flex
-                          key={layer.name}
-                          justifyContent="space-between"
-                          paddingTop={2}
-                          onClick={() => toggleLayer(layer.name)}
-                          cursor="pointer"
+                        <Heading
+                          fontWeight={'600'}
+                          size={{ base: 'sm', md: 'md' }}
                         >
-                          <Text fontSize={{ base: 'sm', md: 'md' }}>
-                            {layer.label}
-                          </Text>
-                          <Switch
-                            colorPalette="green"
-                            size="sm"
-                            checked={isLayerChecked(layer.name)}
-                            disabled={
-                              !isLayerChecked(layer.name) &&
-                              activeCount >= MAX_THEME_LAYERS
-                            }
-                          />
-                        </Flex>
-                      ))}
-                    </Box>
-                  ))}
+                          {subTheme.layers[0].label}
+                        </Heading>
+                        <Switch
+                          colorPalette="green"
+                          size="sm"
+                          checked={isLayerChecked(subTheme.layers[0].name)}
+                          disabled={
+                            !isLayerChecked(subTheme.layers[0].name) &&
+                            activeCount >= MAX_THEME_LAYERS
+                          }
+                        />
+                      </Flex>
+                    ) : (
+                      <Box key={subTheme.name} marginBottom={4}>
+                        <Heading
+                          fontWeight={'600'}
+                          size={{ base: 'sm', md: 'md' }}
+                        >
+                          {subTheme.heading}
+                        </Heading>
+                        {subTheme.layers.map((layer) => (
+                          <Flex
+                            key={layer.name}
+                            justifyContent="space-between"
+                            paddingTop={2}
+                            onClick={() => toggleLayer(layer.name)}
+                            cursor="pointer"
+                          >
+                            <Text fontSize={{ base: 'sm', md: 'md' }}>
+                              {layer.label}
+                            </Text>
+                            <Switch
+                              colorPalette="green"
+                              size="sm"
+                              checked={isLayerChecked(layer.name)}
+                              disabled={
+                                !isLayerChecked(layer.name) &&
+                                activeCount >= MAX_THEME_LAYERS
+                              }
+                            />
+                          </Flex>
+                        ))}
+                      </Box>
+                    ),
+                  )}
               </AccordionItemContent>
             </AccordionItem>
           );
