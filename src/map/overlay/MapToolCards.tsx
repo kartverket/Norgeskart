@@ -65,7 +65,7 @@ export const MapToolCards = ({
   }
   if (currentMapTool === 'info') {
     return (
-      <MapToolCard label={t('info.settings.text')} onClose={onClose}>
+      <MapToolCard label={t('controller.help.mobiletext')} onClose={onClose}>
         <InfoDrawer />
       </MapToolCard>
     );
