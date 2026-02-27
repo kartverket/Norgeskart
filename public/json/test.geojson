@@ -1,0 +1,76 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            9.01331578931261,
+                            66.52770363330205
+                        ],
+                        [
+                            -5.039116240103932,
+                            57.855366570649736
+                        ],
+                        [
+                            23.85069864484934,
+                            57.06740545621894
+                        ],
+                        [
+                            18.143706584594582,
+                            66.39176508124937
+                        ],
+                        [
+                            9.01331578931261,
+                            66.52770363330205
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "style": {
+                    "fill": {
+                        "color": "#1d823b80"
+                    },
+                    "stroke": {
+                        "color": "#0e5aa0ff",
+                        "width": 2
+                    },
+                    "icon": {
+                        "radius": 2,
+                        "color": "#1d823b80"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    12.854061557680161,
+                    65.87395813662403
+                ]
+            },
+            "properties": {
+                "style": {
+                    "fill": {
+                        "color": "rgba(130, 29, 122, 0.5)"
+                    },
+                    "stroke": {
+                        "color": "#0e5aa0ff",
+                        "width": 2
+                    },
+                    "icon": {
+                        "radius": 2,
+                        "color": "rgba(130, 29, 122, 0.5)"
+                    }
+                },
+                "radius": 262689.95839201775
+            }
+        }
+    ]
+}
