@@ -47,6 +47,10 @@ export const getUrlParameter = (key: NKUrlParameter): string | null => {
   return getSearchParams().get(key);
 };
 
+export const getAllUrlParameters = (key: NKUrlParameter): string[] => {
+  return getSearchParams().getAll(key);
+};
+
 export const setListUrlParameter = (
   key: NKUrlParameter,
   values: (string | number | boolean)[],
@@ -126,4 +130,5 @@ export type NKUrlParameter =
   | 'layers' // Legacy parameter from old norgeskart.no
   | 'project' // Legacy project parameter from old norgeskart.no
   | 'sok'
-  | 'showSelection';
+  | 'showSelection'
+  | 'geojsonUrl';

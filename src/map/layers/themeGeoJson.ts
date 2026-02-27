@@ -9,6 +9,7 @@ import type {
   ThemeLayerDefinition,
   ThemeLayerStyle,
 } from '../../api/themeLayerConfigApi';
+import { dekningsstatusToOlStyle } from './urlGeoJson';
 
 const createStyleFromConfig = (
   styleConfig: ThemeLayerStyle | undefined,
@@ -61,11 +62,17 @@ export const createGeoJsonThemeLayer = (
     }),
   });
 
+  const styleFn =
+    layerDef.styleType === 'dekningsstatus'
+      ? dekningsstatusToOlStyle
+      : createStyleFromConfig(layerDef.style);
+
   return new VectorLayer({
     source: vectorSource,
-    style: createStyleFromConfig(layerDef.style),
+    style: styleFn,
     properties: {
       id: `theme.${layerDef.id}`,
+      layerTitle: layerDef.name.nb,
     },
   });
 };

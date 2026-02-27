@@ -9,12 +9,17 @@ import { themeLayerConfigAtom } from '../api/themeLayerConfigApi.ts';
 import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import {
+  getAllUrlParameters,
   getListUrlParameter,
   getUrlParameter,
   removeUrlParameter,
   setUrlParameter,
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
+import {
+  createUrlGeoJsonLayer,
+  urlGeoJsonLayersAtom,
+} from './layers/urlGeoJson.ts';
 import { mapAtom, scaleAtom, trackPostitionAtomEffect } from './atoms.ts';
 import { activeThemeLayersAtom, themeLayerEffect } from './layers/atoms.ts';
 import {
@@ -26,6 +31,7 @@ import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
 import { mapLegacyThemeLayerId } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
+import { createEmpty, extend as extendExtent, isEmpty } from 'ol/extent';
 import { getScaleFromResolution } from './mapScale.ts';
 import {
   mapContextIsOpenAtom,
@@ -48,6 +54,8 @@ export const MapComponent = () => {
   const setYPos = useSetAtom(mapContextYPosAtom);
   const hasProcessedUrlRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
+  const hasLoadedGeoJsonRef = useRef(false);
+  const setUrlGeoJsonLayers = useSetAtom(urlGeoJsonLayersAtom);
   const setScale = useSetAtom(scaleAtom);
   const { setTargetElement } = useMap();
   useAtom(themeLayerEffect);
@@ -178,6 +186,38 @@ export const MapComponent = () => {
     };
     asyncEffect();
   }, [map, setDrawLayerFeatures]);
+
+  useEffect(() => {
+    if (!map || hasLoadedGeoJsonRef.current) return;
+
+    const geojsonUrls = getAllUrlParameters('geojsonUrl');
+    console.log('[urlGeoJson] effect ran, urls:', geojsonUrls);
+    if (geojsonUrls.length === 0) return;
+
+    hasLoadedGeoJsonRef.current = true;
+    const mapProjection = map.getView().getProjection().getCode();
+    console.log('[urlGeoJson] mapProjection:', mapProjection);
+
+    void (async () => {
+      const layers = await Promise.all(
+        geojsonUrls.map((url, index) =>
+          createUrlGeoJsonLayer(url, mapProjection, index),
+        ),
+      );
+      layers.forEach((layer) => map.addLayer(layer));
+      setUrlGeoJsonLayers(layers);
+      console.log('[urlGeoJson] layers added:', layers.length);
+      const combinedExtent = createEmpty();
+      layers.forEach((layer) => {
+        const ext = layer.getSource()?.getExtent();
+        if (ext && !isEmpty(ext)) extendExtent(combinedExtent, ext);
+      });
+      console.log('[urlGeoJson] fitting view to extent:', combinedExtent);
+      if (!isEmpty(combinedExtent)) {
+        map.getView().fit(combinedExtent, { padding: [50, 50, 50, 50], maxZoom: 12 });
+      }
+    })();
+  }, [map, setUrlGeoJsonLayers]);
 
   useEffect(() => {
     if (!map) return;

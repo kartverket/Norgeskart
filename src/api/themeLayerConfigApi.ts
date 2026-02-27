@@ -2,6 +2,7 @@ import { atom } from 'jotai';
 import { dekningConfig } from '../map/layers/config/dekning';
 import { factsConfig } from '../map/layers/config/facts';
 import { fastmerkerLayerConfig } from '../map/layers/config/fastmerker';
+import { fullstendighetsdekningConfig } from '../map/layers/config/fullstendighetsdekning';
 import { historicalMapsConfig } from '../map/layers/config/historicalMaps';
 import { outdoorRecreationLayerConfig } from '../map/layers/config/outdoorRecreation';
 import { placeNamesConfig } from '../map/layers/config/placeNames';
@@ -58,6 +59,7 @@ export interface ThemeLayerDefinition {
     en: string;
   };
   type?: 'wms' | 'geojson';
+  styleType?: 'dekningsstatus';
   wmsUrl?: string;
   geojsonUrl?: string;
   sourceEpsg?: string;
@@ -96,6 +98,7 @@ export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
     fastmerkerLayerConfig,
     dekningConfig,
     sjoConfig,
+    fullstendighetsdekningConfig,
   ];
 
   for (const config of configs) {
