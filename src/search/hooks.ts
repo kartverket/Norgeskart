@@ -5,7 +5,7 @@ import { Geometry } from 'ol/geom';
 import { useCallback, useEffect } from 'react';
 import { mapAtom } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms';
-import { showSearchComponentAtom } from '../map/overlay/atoms';
+import { mapToolAtom, showSearchComponentAtom } from '../map/overlay/atoms';
 import { ProjectionIdentifier } from '../map/projections/types';
 import { isPrintDialogOpenAtom } from '../print/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
@@ -85,7 +85,7 @@ export const useMapClickSearch = () => {
       }
       const isSearchComponentVisible = store.get(showSearchComponentAtom);
       if (!isSearchComponentVisible) {
-        return;
+        store.set(mapToolAtom, null);
       }
       if (e instanceof MapBrowserEvent) {
         const isClickClusterClick = isClusterClick(e);
