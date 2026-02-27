@@ -418,6 +418,10 @@
       "base": "Info"
     }
   },
+  "featureInfo": {
+    "title": "Object information",
+    "loading": "Loading information..."
+  },
   "legend": {
     "heading": {
       "title": "Map legend",
