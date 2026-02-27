@@ -134,7 +134,7 @@ export const Layout = () => {
             xl: '10 / span 3',
           }}
           gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
-          zIndex={1}
+          zIndex={2}
           pointerEvents={'none'}
         >
           <Flex justifyContent={'flex-end'}>
