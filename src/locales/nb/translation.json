@@ -425,6 +425,10 @@
       "base": "Info"
     }
   },
+  "featureInfo": {
+    "title": "Objektinformasjon",
+    "loading": "Henter informasjon..."
+  },
   "legend": {
     "heading": {
       "title": "Symbolforklaring",
