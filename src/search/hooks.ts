@@ -5,7 +5,7 @@ import { Geometry } from 'ol/geom';
 import { useCallback, useEffect } from 'react';
 import { mapAtom } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms';
-import { mapToolAtom, showSearchComponentAtom } from '../map/overlay/atoms';
+import { mapToolAtom } from '../map/overlay/atoms';
 import { ProjectionIdentifier } from '../map/projections/types';
 import { isPrintDialogOpenAtom } from '../print/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
@@ -83,8 +83,11 @@ export const useMapClickSearch = () => {
       if (isPrintDialogOpen) {
         return;
       }
-      const isSearchComponentVisible = store.get(showSearchComponentAtom);
-      if (!isSearchComponentVisible) {
+      const currentTool = store.get(mapToolAtom);
+      if (currentTool && currentTool !== 'layers') {
+        return;
+      }
+      if (currentTool === 'layers') {
         store.set(mapToolAtom, null);
       }
       if (e instanceof MapBrowserEvent) {

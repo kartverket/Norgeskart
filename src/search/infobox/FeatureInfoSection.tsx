@@ -426,7 +426,7 @@ export const FeatureInfoSection = () => {
     : 0;
 
   useEffect(() => {
-    if (totalFeatures === 1) {
+    if (totalFeatures === 1 && !accordion.value.includes('featureInfo')) {
       accordion.setValue([...accordion.value, 'featureInfo']);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
