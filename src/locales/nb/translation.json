@@ -363,7 +363,9 @@
     "properties": "Eiendommer",
     "roads": "Veger",
     "tabHeading": "Søk",
-    "noResults": "Ingen treff"
+    "noResults": "Ingen treff",
+    "coordinateSwapWarning": "Koordinatene ser ikke ut til å være i Norge. De kan ha blitt limt inn i feil rekkefølge (lon/lat i stedet for lat/lon).",
+    "coordinateSwapButton": "Bytt rekkefølge"
   },
   "shared": {
     "actions": {
@@ -422,6 +424,10 @@
       "text": "Informasjon",
       "base": "Info"
     }
+  },
+  "featureInfo": {
+    "title": "Objektinformasjon",
+    "loading": "Henter informasjon..."
   },
   "legend": {
     "heading": {

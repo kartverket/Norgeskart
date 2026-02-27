@@ -363,7 +363,9 @@
     "properties": "Eigedomar",
     "roads": "Vegar",
     "tabHeading": "Søk",
-    "noResults": "Inge treff"
+    "noResults": "Inge treff",
+    "coordinateSwapWarning": "Koordinatane ser ikkje ut til å vere i Noreg. Dei kan ha vore limt inn i feil rekkefølgje (lon/lat i staden for lat/lon).",
+    "coordinateSwapButton": "Byt rekkefølgje"
   },
   "shared": {
     "actions": {
@@ -422,6 +424,10 @@
       "text": "Informasjon",
       "base": "Info"
     }
+  },
+  "featureInfo": {
+    "title": "Objektinformasjon",
+    "loading": "Hentar informasjon..."
   },
   "legend": {
     "heading": {
