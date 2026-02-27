@@ -790,3 +790,9 @@ const parseUTM = (
     inputFormat: 'utm',
   };
 };
+
+export const isLikelyLonLatSwap = (parsed: ParsedCoordinate): boolean => {
+  if (parsed.projection !== 'EPSG:4326') return false;
+  const { lat, lon } = parsed;
+  return lat > 0 && lat < 45 && lon > 50 && lon < 90;
+};
