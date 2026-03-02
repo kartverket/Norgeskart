@@ -11,7 +11,11 @@ import {
   JobResultResponse,
 } from '../../api/heightData/types';
 import { mapAtom } from '../../map/atoms';
-import { disableDrawInteraction, enableDrawInteraction } from './drawUtils';
+import {
+  clearDrawLayer,
+  disableDrawInteraction,
+  enableDrawInteraction,
+} from './drawUtils';
 import { getSamleDistance } from './utils';
 
 export type ProfileJobStatus =
@@ -28,6 +32,7 @@ export const profileSampleDistanceAtom = atom<number>(10);
 export const profileEffect = atomEffect((get, set) => {
   const line = get(profileLineAtom);
   if (line === null) {
+    clearDrawLayer();
     set(profileJobStatusAtom, 'notStarted');
     return;
   }

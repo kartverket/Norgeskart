@@ -4,9 +4,8 @@ import {
   FileUploadDropzoneContent,
   FileUploadList,
   FileUploadRoot,
-  useFileUpload,
+  useFileUploadContext,
 } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { getDefaultStore, useSetAtom } from 'jotai';
 import { Feature } from 'ol';
 import { GPX } from 'ol/format';
@@ -14,11 +13,7 @@ import { LineString, MultiLineString } from 'ol/geom';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
 import { profileLineAtom } from './atoms';
-import {
-  addDrawInteractionToMap,
-  addFeatureToLayer,
-  removeDrawInteractionFromMap,
-} from './drawUtils';
+import { addFeatureToLayer } from './drawUtils';
 
 //combine MultiLineString into one LineString
 const combineMultiLineString = (multiLineString: MultiLineString) => {
@@ -31,31 +26,22 @@ const combineMultiLineString = (multiLineString: MultiLineString) => {
 
 export const ElevationProfileFileUpload = () => {
   const setProfileLine = useSetAtom(profileLineAtom);
-  const { t } = useTranslation();
-  const ph = usePostHog();
 
-  const fileUpload = useFileUpload({
-    maxFiles: 1,
-    maxFileSize: 3000,
-    accept: { '': ['.gpx'] },
-  });
   return (
     <FileUploadRoot
       maxFiles={1}
       accept={{ '': ['.gpx'] }}
       w={'100%'}
       onFileChange={(e) => {
-        if (e.acceptedFiles.length !== 0) {
-          addDrawInteractionToMap(() =>
-            ph.capture('print_elevation_profile_generate_started'),
-          );
-        }
-
-        removeDrawInteractionFromMap();
-        if (e.acceptedFiles.length !== 1) {
+        if (e.acceptedFiles.length === 0 && e.rejectedFiles.length === 0) {
           setProfileLine(null);
           return;
         }
+        if (e.acceptedFiles.length === 0 && e.rejectedFiles.length > 0) {
+          setProfileLine(null);
+          return;
+        }
+
         const file = e.acceptedFiles[0];
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -98,16 +84,7 @@ export const ElevationProfileFileUpload = () => {
         reader.readAsText(file);
       }}
     >
-      <FileUploadDropzone label={undefined} w={'100%'}>
-        <FileUploadDropzoneContent w={'100%'} gap={2}>
-          <Box>
-            {t('printdialog.elevationProfile.fileUpload.dragDrop.label')}
-          </Box>
-          <Box color="fg.muted">
-            {t('printdialog.elevationProfile.fileUpload.dragDrop.fileInfo')}
-          </Box>
-        </FileUploadDropzoneContent>
-      </FileUploadDropzone>
+      <FileUploadDropZoneContainer />
       <FileUploadList
         clearable
         onChange={(e) => {
@@ -118,5 +95,23 @@ export const ElevationProfileFileUpload = () => {
         }}
       />
     </FileUploadRoot>
+  );
+};
+
+const FileUploadDropZoneContainer = () => {
+  const { t } = useTranslation();
+  const fileUploadContext = useFileUploadContext();
+  if (fileUploadContext.acceptedFiles.length > 0) {
+    return null;
+  }
+  return (
+    <FileUploadDropzone label={undefined} w={'100%'}>
+      <FileUploadDropzoneContent w={'100%'} gap={2}>
+        <Box>{t('printdialog.elevationProfile.fileUpload.dragDrop.label')}</Box>
+        <Box color="fg.muted">
+          {t('printdialog.elevationProfile.fileUpload.dragDrop.fileInfo')}
+        </Box>
+      </FileUploadDropzoneContent>
+    </FileUploadDropzone>
   );
 };
