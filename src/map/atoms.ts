@@ -161,7 +161,7 @@ export const availableScales = [
 export const scaleAtom = atom<number | null>(null);
 
 export const trackPositionAtom = atom<boolean>(false);
-const intervalIdAtom = atom<NodeJS.Timeout | null>(null);
+const watchIdAtom = atom<number | null>(null);
 
 export const trackPostitionAtomEffect = atomEffect((get) => {
   const trackPosition = get(trackPositionAtom);
@@ -199,39 +199,36 @@ export const trackPostitionAtomEffect = atomEffect((get) => {
           properties: { id: 'positionLayer' },
         });
         map.addLayer(positionLayer);
-
-        const intervalId = setInterval(() => {
-          navigator.geolocation.getCurrentPosition(
-            (pos) => {
-              const { longitude, latitude } = pos.coords;
-              const transformedCoords = transform(
-                [longitude, latitude],
-                'EPSG:4326',
-                map.getView().getProjection(),
-              );
-              const positionLayer = map
-                .getLayers()
-                .getArray()
-                .find(
-                  (layer) => layer.get('id') === 'positionLayer',
-                ) as VectorLayer;
-              if (positionLayer) {
-                const source = positionLayer.getSource();
-                if (source) {
-                  const feature = source.getFeatures()[0];
-                  if (feature) {
-                    feature.setGeometry(new Point(transformedCoords));
-                  }
+        const watchId = navigator.geolocation.watchPosition(
+          (pos) => {
+            const { longitude, latitude } = pos.coords;
+            const transformedCoords = transform(
+              [longitude, latitude],
+              'EPSG:4326',
+              map.getView().getProjection(),
+            );
+            const positionLayer = map
+              .getLayers()
+              .getArray()
+              .find(
+                (layer) => layer.get('id') === 'positionLayer',
+              ) as VectorLayer;
+            if (positionLayer) {
+              const source = positionLayer.getSource();
+              if (source) {
+                const feature = source.getFeatures()[0];
+                if (feature) {
+                  feature.setGeometry(new Point(transformedCoords));
                 }
               }
-            },
-            (err) => {
-              console.error('Error getting position', err);
-            },
-            { enableHighAccuracy: true },
-          );
-        }, 2000);
-        store.set(intervalIdAtom, intervalId);
+            }
+          },
+          (err) => {
+            console.error('Error getting position', err);
+          },
+          { enableHighAccuracy: true },
+        );
+        store.set(watchIdAtom, watchId);
       },
       (err) => {
         console.error('Error getting position', err);
@@ -239,10 +236,14 @@ export const trackPostitionAtomEffect = atomEffect((get) => {
       { enableHighAccuracy: true },
     );
   } else {
-    const intervalId = store.get(intervalIdAtom);
-    if (intervalId) {
-      clearInterval(intervalId);
-      store.set(intervalIdAtom, null);
+    const watchId = store.get(watchIdAtom);
+    if (watchId == null) {
+      return;
+    }
+    navigator.geolocation.clearWatch(watchId);
+    if (watchId) {
+      clearInterval(watchId);
+      store.set(watchIdAtom, null);
     }
     const positionLayer = map
       .getLayers()
@@ -253,10 +254,10 @@ export const trackPostitionAtomEffect = atomEffect((get) => {
     }
   }
   return () => {
-    const intervalId = store.get(intervalIdAtom);
-    if (intervalId) {
-      clearInterval(intervalId);
-      store.set(intervalIdAtom, null);
+    const watchId = store.get(watchIdAtom);
+    if (watchId) {
+      clearInterval(watchId);
+      store.set(watchIdAtom, null);
     }
     const positionLayer = map
       .getLayers()
