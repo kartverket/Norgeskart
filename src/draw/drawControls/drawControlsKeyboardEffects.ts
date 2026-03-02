@@ -22,11 +22,7 @@ export const useDrawControlsKeyboardEffects = () => {
     return () => {
       document.removeEventListener('keydown', keyListener);
     };
-  }, [
-    abortDrawing,
-    drawEnabled,
-    removeFeaturelessInteractiveMeasurementOverlay,
-  ]);
+  }, [abortDrawing, drawEnabled]);
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
