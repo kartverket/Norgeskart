@@ -399,7 +399,9 @@
       "tooltip": "Select coordinate system"
     },
     "coordinates": {
-      "tooltip": "Coordinates of the mouse pointer"
+      "tooltip": "Coordinates of the mouse pointer",
+      "east": "E",
+      "north": "N"
     },
     "legend": {
       "tooltip": "Show map legend",
