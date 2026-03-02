@@ -11,8 +11,10 @@ import {
   Spinner,
   Stack,
   Text,
+  useAccordionContext,
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { FieldConfig } from '../../api/themeLayerConfigApi';
 import {
@@ -417,6 +419,18 @@ export const FeatureInfoSection = () => {
   const { t } = useTranslation();
   const result = useAtomValue(featureInfoResultAtom);
   const loading = useAtomValue(featureInfoLoadingAtom);
+  const accordion = useAccordionContext();
+
+  const totalFeatures = result
+    ? result.layers.reduce((sum, layer) => sum + layer.features.length, 0)
+    : 0;
+
+  useEffect(() => {
+    if (totalFeatures === 1 && !accordion.value.includes('featureInfo')) {
+      accordion.setValue([...accordion.value, 'featureInfo']);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
 
   if (loading) {
     return (
@@ -439,11 +453,6 @@ export const FeatureInfoSection = () => {
   if (!result || result.layers.length === 0) {
     return null;
   }
-
-  const totalFeatures = result.layers.reduce(
-    (sum, layer) => sum + layer.features.length,
-    0,
-  );
 
   const defaultExpanded =
     result.layers.length > 0 ? [result.layers[0].layerId] : [];

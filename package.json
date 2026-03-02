@@ -32,7 +32,7 @@
     "jotai-effect": "^2.2.3",
     "maplibre-gl": "^5.18.0",
     "ol": "^10.8.0",
-    "posthog-js": "^1.352.0",
+    "posthog-js": "^1.356.1",
     "proj4": "^2.20.2",
     "react": "^19.2.4",
     "react-chartjs-2": "^5.3.1",
@@ -53,11 +53,11 @@
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.0",
-    "globals": "^17.3.0",
+    "globals": "^17.4.0",
     "playwright-webkit": "^1.58.2",
     "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.56.0",
+    "typescript-eslint": "^8.56.1",
     "vite": "^7.3.1"
   },
   "browserslist": [

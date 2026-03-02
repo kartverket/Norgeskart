@@ -3,24 +3,16 @@ import {
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
-  Alert,
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-  Heading,
-  Icon,
   Link,
   List,
   ListItem,
-  SimpleGrid,
   Text,
 } from '@kvib/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PrivacyPolicy from './PrivacyPolicyAndContact';
-
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { Tip, unwrapJsonModule } from '../types/tips';
+import { Contact, PrivacyPolicy } from './PrivacyPolicyAndContact';
 
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   nb: () =>
@@ -34,7 +26,6 @@ const loaders: Record<string, () => Promise<{ default: unknown }>> = {
 export const InfoDrawer = () => {
   const { i18n, t } = useTranslation();
   const [tipsData, setTipsData] = useState<Tip[]>([]);
-  const [tipsOpen, setTipsOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -58,33 +49,12 @@ export const InfoDrawer = () => {
   }, [i18n.language]);
 
   return (
-    <SimpleGrid columns={1} gap="6">
-      <Collapsible
-        open={tipsOpen}
-        onOpenChange={(details) => setTipsOpen(details.open)}
-      >
-        <CollapsibleTrigger
-          fontWeight={600}
-          textDecoration={'underline'}
-          mb={2}
-          _hover={{
-            cursor: 'pointer',
-          }}
-        >
-          {tipsOpen ? (
-            <>
-              {t('tipsandtricks.headingOpen')}
-              <Icon icon={'arrow_drop_up'} />
-            </>
-          ) : (
-            <>
-              {t('tipsandtricks.headingClosed')}
-              <Icon icon={'arrow_drop_down'} />
-            </>
-          )}
-          {}
-        </CollapsibleTrigger>
-        <CollapsibleContent>
+    <Accordion collapsible multiple variant="outline">
+      <AccordionItem value="tips">
+        <AccordionItemTrigger>
+          {t('tipsandtricks.heading')}
+        </AccordionItemTrigger>
+        <AccordionItemContent>
           <Accordion collapsible multiple size="md" variant="outline">
             {tipsData.map((tip, index) => (
               <AccordionItem key={index} value={`item${index + 1}`}>
@@ -98,7 +68,6 @@ export const InfoDrawer = () => {
                             {block.text}
                           </Text>
                         );
-
                       case 'list':
                         return (
                           <List key={i} listStyleType="disc" mb="2" ml="4">
@@ -107,7 +76,6 @@ export const InfoDrawer = () => {
                             ))}
                           </List>
                         );
-
                       case 'link':
                         return (
                           <Text key={i} mb="2">
@@ -122,7 +90,6 @@ export const InfoDrawer = () => {
                             </Link>
                           </Text>
                         );
-
                       default:
                         return null;
                     }
@@ -131,14 +98,58 @@ export const InfoDrawer = () => {
               </AccordionItem>
             ))}
           </Accordion>
-        </CollapsibleContent>
-      </Collapsible>
-      <PrivacyPolicy />
-      <Alert status="info" title={t('draw.privacyNotice.title')} mb={3}>
-        {t('draw.privacyNotice.message')}
-      </Alert>
-      <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
-      <LanguageSwitcher />
-    </SimpleGrid>
+        </AccordionItemContent>
+      </AccordionItem>
+      <AccordionItem value="contact">
+        <AccordionItemTrigger>
+          {t('privacyAndContact.contactUs')}
+        </AccordionItemTrigger>
+        <AccordionItemContent>
+          <Contact />
+        </AccordionItemContent>
+      </AccordionItem>
+      <AccordionItem value="privacy">
+        <AccordionItemTrigger>
+          {t('privacyAndContact.privacy')}
+        </AccordionItemTrigger>
+        <AccordionItemContent>
+          <PrivacyPolicy />
+        </AccordionItemContent>
+      </AccordionItem>
+      <AccordionItem value="status">
+        <AccordionItemTrigger>
+          {t('privacyAndContact.status.heading')}
+        </AccordionItemTrigger>
+        <AccordionItemContent>
+          <Text>{t('privacyAndContact.status.infoText')}</Text>
+          <Link
+            colorPalette="green"
+            href="https://status.kartverket.no/"
+            external={true}
+            target="_blank"
+            variant="underline"
+            ml={1}
+          >
+            status.kartverket.no
+          </Link>
+        </AccordionItemContent>
+      </AccordionItem>
+      <AccordionItem value="drawNotice">
+        <AccordionItemTrigger>
+          {t('draw.privacyNotice.title')}
+        </AccordionItemTrigger>
+        <AccordionItemContent>
+          <Text>{t('draw.privacyNotice.message')}</Text>
+        </AccordionItemContent>
+      </AccordionItem>
+      <AccordionItem value="language">
+        <AccordionItemTrigger>
+          {t('languageSelector.chooseLanguage')}
+        </AccordionItemTrigger>
+        <AccordionItemContent>
+          <LanguageSwitcher />
+        </AccordionItemContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
