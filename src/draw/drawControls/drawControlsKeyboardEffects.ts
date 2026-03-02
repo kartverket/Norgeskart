@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDrawActions } from '../../settings/draw/drawActions/drawActionsHooks';
+import { removeFeaturelessInteractiveMeasurementOverlay } from './drawUtils';
 import { useDrawSettings } from './hooks/drawSettings';
 
 export const useDrawControlsKeyboardEffects = () => {
@@ -14,6 +15,7 @@ export const useDrawControlsKeyboardEffects = () => {
 
       if (event.key === 'Escape') {
         abortDrawing();
+        removeFeaturelessInteractiveMeasurementOverlay();
       }
     };
     document.addEventListener('keydown', keyListener);
