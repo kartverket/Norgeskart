@@ -23,6 +23,10 @@ const formatCoordinateDigit = (
   }
 };
 
+const isGeographicProjection = (projection: ProjectionIdentifier): boolean => {
+  return projection === 'EPSG:4326' || projection === 'EPSG:4230';
+};
+
 const CoordindateDigit = ({
   label,
   value,
@@ -56,18 +60,37 @@ export const CoordinateText = ({
   projection: ProjectionIdentifier;
 }) => {
   const { t } = useTranslation();
+  const showNorthEast = isGeographicProjection(projection);
+
   return (
     <Stack>
-      <CoordindateDigit
-        label={t('infoBox.coordinateSection.north')}
-        value={y}
-        projection={projection}
-      />
-      <CoordindateDigit
-        label={t('infoBox.coordinateSection.east')}
-        value={x}
-        projection={projection}
-      />
+      {showNorthEast ? (
+        <>
+          <CoordindateDigit
+            label={t('infoBox.coordinateSection.north')}
+            value={y}
+            projection={projection}
+          />
+          <CoordindateDigit
+            label={t('infoBox.coordinateSection.east')}
+            value={x}
+            projection={projection}
+          />
+        </>
+      ) : (
+        <>
+          <CoordindateDigit
+            label={t('infoBox.coordinateSection.east')}
+            value={x}
+            projection={projection}
+          />
+          <CoordindateDigit
+            label={t('infoBox.coordinateSection.north')}
+            value={y}
+            projection={projection}
+          />
+        </>
+      )}
     </Stack>
   );
 };

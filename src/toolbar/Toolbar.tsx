@@ -28,12 +28,16 @@ import { isRettIKartetDialogOpenAtom } from '../map/menu/dialogs/atoms';
 import { ProjectionSettings } from '../settings/map/ProjectionSettings';
 import { ScaleSelector } from './ScaleSelector';
 
-const formatCoords = (coord: [number, number] | null, crsCode: string) => {
+const formatCoords = (
+  coord: [number, number] | null,
+  crsCode: string,
+  translate: (key: string) => string,
+) => {
   if (!coord) return '';
   if (crsCode === 'EPSG:3857') {
     return `${coord[0].toFixed(2)}, ${coord[1].toFixed(2)}`;
   } else {
-    return `N: ${coord[1].toFixed(2)}, Ø: ${coord[0].toFixed(2)}`;
+    return `${translate('toolbar.coordinates.east')}: ${coord[0].toFixed(2)}, ${translate('toolbar.coordinates.north')}: ${coord[1].toFixed(2)}`;
   }
 };
 
@@ -109,7 +113,7 @@ export const Toolbar = () => {
         <Tooltip content={t('toolbar.coordinates.tooltip')}>
           <Text fontSize="sm">
             {mousePositionCoords
-              ? formatCoords(mousePositionCoords, crsCode)
+              ? formatCoords(mousePositionCoords, crsCode, t)
               : ''}
           </Text>
         </Tooltip>
