@@ -30,7 +30,7 @@ const LOCAL_ENV: Env = {
     norgeIBilder: {
       baseUrl: 'https://tilecache.norgeibilder.no',
       apiKey:
-        'QtFmMDmnsoVno-q57lJceiJZECE2vsxbc5o9M3U3NQZBfyjWzpmpwzuyTFS-9dgt',
+        'XfHYfx1C2WFLyx_YIQ691V208TmiXQBOos-XW4ngvUx5-Ruh-_NJpLQ1YmBUDgnh',
     },
     kartverketCache: {
       baseUrl: 'https://cache.kartverket.no',
@@ -52,7 +52,7 @@ const DEV_ENV: Env = {
     norgeIBilder: {
       baseUrl: 'https://tilecache.norgeibilder.no',
       apiKey:
-        'QtFmMDmnsoVno-q57lJcemfvn7mqMQwgmV0iOBRmE7r4BOMdUgOHUm2KhICHF7zmr45l-P4-Lzoazyp9kxDTXA..',
+        'C-Uchk2o_WKPxs1ySOgbV1fGDYisqK1ARRin1snVFgRypTS1HSw8xAQG_yL8-uBxHQpJpgU9qRqmH8Uo3iKLYA..',
     },
     kartverketCache: {
       baseUrl: 'https://cache.kartverket.no',
@@ -74,7 +74,7 @@ const PROD_ENV: Env = {
     norgeIBilder: {
       baseUrl: 'https://tilecache.norgeibilder.no',
       apiKey:
-        'QtFmMDmnsoVno-q57lJcem8vr-Ai7rjF5QvG5I4bkGpVQs2QlmcuuHmreysu4Qdz',
+        'C-Uchk2o_WKPxs1ySOgbV_QfuZ-oS6b6gUCdXgAYPExQwx_lu0PpbszjZVXx0Lsc',
     },
     kartverketCache: {
       baseUrl: 'https://cache.kartverket.no',
