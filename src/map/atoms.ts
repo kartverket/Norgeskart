@@ -117,7 +117,7 @@ const getInitialMapView = () => {
 
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
-    controls: defaultControls({ zoom: false }).extend([
+    controls: defaultControls({ zoom: false, rotate: false }).extend([
       new ControlPortal(),
       new ScaleLine({ minWidth: 100 }),
     ]),
