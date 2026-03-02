@@ -4,9 +4,8 @@ import {
   FileUploadDropzoneContent,
   FileUploadList,
   FileUploadRoot,
-  useFileUploadContext,
 } from '@kvib/react';
-import { getDefaultStore, useSetAtom } from 'jotai';
+import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import { Feature } from 'ol';
 import { GPX } from 'ol/format';
 import { LineString, MultiLineString } from 'ol/geom';
@@ -85,23 +84,15 @@ export const ElevationProfileFileUpload = () => {
       }}
     >
       <FileUploadDropZoneContainer />
-      <FileUploadList
-        clearable
-        onChange={(e) => {
-          console.log(e);
-        }}
-        onEmptied={(e) => {
-          console.log(e);
-        }}
-      />
+      <FileUploadList clearable />
     </FileUploadRoot>
   );
 };
 
 const FileUploadDropZoneContainer = () => {
   const { t } = useTranslation();
-  const fileUploadContext = useFileUploadContext();
-  if (fileUploadContext.acceptedFiles.length > 0) {
+  const profileLine = useAtomValue(profileLineAtom);
+  if (profileLine !== null) {
     return null;
   }
   return (
