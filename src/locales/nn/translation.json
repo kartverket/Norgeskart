@@ -405,7 +405,9 @@
       "tooltip": "Vel koordinatsystem"
     },
     "coordinates": {
-      "tooltip": "Pekerens koordinatar"
+      "tooltip": "Pekerens koordinatar",
+      "east": "Ø",
+      "north": "N"
     },
     "legend": {
       "tooltip": "Vis symbolforklaring",
