@@ -18,6 +18,15 @@ import { BackgroundLayerName } from './backgroundLayers';
 import { DEFAULT_BACKGROUND_LAYER } from './backgroundWMTSProviders';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
 
+export type Portal = 'norgeskart' | 'geonorge';
+
+const detectPortal = (): Portal => {
+  if (window.location.pathname.startsWith('/geonorge')) return 'geonorge';
+  return 'norgeskart';
+};
+
+export const portalAtom = atom<Portal>(detectPortal());
+
 export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
   DEFAULT_BACKGROUND_LAYER,
 );

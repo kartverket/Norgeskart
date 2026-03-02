@@ -5,6 +5,11 @@ import { ThemeLayerName } from './themeWMS';
 
 export const MAX_THEME_LAYERS = 10; // Maximum number of theme layers allowed on the map, what is a good number here?
 
+const GEONORGE_CATEGORY_IDS = ['fullstendighetsdekning'] as const;
+
+export const isGeonorgeCategory = (categoryId: string): boolean =>
+  (GEONORGE_CATEGORY_IDS as readonly string[]).includes(categoryId);
+
 const isProjectNameAndCategoryIdMatch = (
   projectName: string | undefined,
   layerCategoryId: string | undefined,
@@ -45,6 +50,8 @@ const isProjectNameAndCategoryIdMatch = (
       return ['fastmerker', 'benchmarks'].includes(layerCategoryId);
     case 'dekning':
       return ['dekning'].includes(layerCategoryId);
+    case 'geonorge':
+      return isGeonorgeCategory(layerCategoryId);
   }
   return false;
 };

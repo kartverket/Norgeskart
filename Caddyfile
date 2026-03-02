@@ -36,7 +36,10 @@ route {
                         header_down Access-Control-Allow-Origin "*"
                 }
         }
-}
 
-root * /var/www
-file_server
+        handle {
+                root * /var/www
+                try_files {path} /index.html
+                file_server
+        }
+}

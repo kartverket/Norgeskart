@@ -260,7 +260,8 @@
           "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers.",
           "resetbutton": {
             "text": "Reset"
-          }
+          },
+          "otherThemes": "Other themes"
         }
       }
     },
