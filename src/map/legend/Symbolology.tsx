@@ -95,6 +95,7 @@ const SymbolLine = ({
 
 const MarkSymbol = ({ mark }: { mark: Mark }) => {
   const { color } = getParamsFromFill(mark.Fill!);
+  console.log('mark', mark);
   switch (mark.WellKnownName) {
     case 'circle':
       return (
@@ -147,6 +148,7 @@ const LineSymbolizerPart = ({
   symbolizer: LineSymbolizer;
   text?: string;
 }) => {
+  console.log('line symbolizer', symbolizer);
   let color;
   let width;
   const svgParams = symbolizer.Stroke?.SvgParameter;
@@ -178,7 +180,19 @@ const PolygonSymbolizerPart = ({
   symbolizer: PolygonSymbolizer | PolygonSymbolizer[];
   text?: string;
 }) => {
+  console.log('polygon symbolizer', symbolizer);
   const { fill, stroke } = getParamsFromPolygonSymboliser(symbolizer);
+  console.log('oh hi mark', fill?.GraphicFill);
+  const graphicFillMark = fill?.GraphicFill?.Graphic.Mark;
+
+  if (graphicFillMark) {
+    return (
+      <SymbolLine text={text}>
+        <MarkSymbol mark={graphicFillMark} />
+      </SymbolLine>
+    );
+  }
+
   const { color, opacity } = fill
     ? getParamsFromFill(fill)
     : { color: undefined, opacity: 0 };
@@ -186,6 +200,7 @@ const PolygonSymbolizerPart = ({
   const { strokeColor, strokeWidth } = stroke
     ? getParamsFromStroke(stroke)
     : { strokeColor: undefined, strokeWidth: 0 };
+
   return (
     <SymbolLine text={text}>
       <Box
