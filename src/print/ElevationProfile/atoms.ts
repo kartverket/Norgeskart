@@ -22,11 +22,13 @@ export type ProfileJobStatus =
   | 'notStarted'
   | 'running'
   | 'succeeded'
-  | 'failed';
+  | 'failed'
+  | 'cancelled';
 
 export const profileLineAtom = atom<LineString | null>(null);
+export const clearProfileFilesAtom = atom<(() => void) | null>(null);
 export const profileResponseAtom = atom<JobResultResponse | null>(null);
-export const profileJobStatusAtom = atom<string | null>(null);
+export const profileJobStatusAtom = atom<ProfileJobStatus | null>(null);
 export const profileSampleDistanceAtom = atom<number>(10);
 
 export const profileEffect = atomEffect((get, set) => {
@@ -56,6 +58,12 @@ export const profileEffect = atomEffect((get, set) => {
     set(profileJobStatusAtom, 'running');
     disableDrawInteraction();
     while (true) {
+      const jobStatus = store.get(profileJobStatusAtom);
+      if (jobStatus === 'cancelled') {
+        set(profileResponseAtom, null);
+        set(profileJobStatusAtom, 'notStarted');
+        break;
+      }
       const status = await getelevationProfileJobStatus(submitResponse.jobId);
       if (status.jobStatus === 'esriJobSucceeded') {
         const result = await getelevationProfileResult(

@@ -497,7 +497,7 @@
     },
     "elevationProfile": {
       "heading": "Tekn ei linje for å lage ei høydeprofil",
-      "infotext": "Opprett ei høydeprofil ved å klikke i kartet for å plassere det fyste punktet og dobbelklikk for å avslutte.",
+      "infotext": "Opprett ei høydeprofil ved å laste opp ei .GPX fil eller ved å klikke i kartet for å plassere det fyste punktet og dobbelklikk for å avslutte.",
       "jobError": "Kunne ikkje lage høgdeprofil",
       "jobRunning": "Lager profil",
       "buttons": {
@@ -509,6 +509,9 @@
         },
         "exportJpeg": {
           "label": "Last ned som JPEG"
+        },
+        "reset": {
+          "label": "Nullstill"
         }
       },
       "chartLabels": {

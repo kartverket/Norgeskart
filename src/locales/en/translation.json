@@ -492,7 +492,7 @@
     },
     "elevationProfile": {
       "heading": "Draw a line to create a elevation profile",
-      "infotext": "Start creating a elevation profile by clicking the map to place the first point and double click to finish.",
+      "infotext": "Start creating a elevation profile by uploading a .GPX file or by clicking the map to place the first point and double click to finish.",
       "jobError": "Failed to load elevation profile data.",
       "jobRunning": "Creating profile",
       "buttons": {
@@ -504,6 +504,9 @@
         },
         "exportJpeg": {
           "label": "Download as JPEG"
+        },
+        "reset": {
+          "label": "Reset"
         }
       },
       "chartLabels": {

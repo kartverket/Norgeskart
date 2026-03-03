@@ -4,6 +4,7 @@ import {
   FileUploadDropzoneContent,
   FileUploadList,
   FileUploadRoot,
+  useFileUploadContext,
 } from '@kvib/react';
 import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import { Feature } from 'ol';
@@ -11,7 +12,7 @@ import { GPX } from 'ol/format';
 import { LineString, MultiLineString } from 'ol/geom';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
-import { profileLineAtom } from './atoms';
+import { clearProfileFilesAtom, profileLineAtom } from './atoms';
 import { addFeatureToLayer } from './drawUtils';
 
 //combine MultiLineString into one LineString
@@ -92,9 +93,15 @@ export const ElevationProfileFileUpload = () => {
 const FileUploadDropZoneContainer = () => {
   const { t } = useTranslation();
   const profileLine = useAtomValue(profileLineAtom);
+  const setClearProfileFiles = useSetAtom(clearProfileFilesAtom);
   if (profileLine !== null) {
     return null;
   }
+  const fileUploadContext = useFileUploadContext();
+  setClearProfileFiles(() => () => {
+    fileUploadContext.clearFiles();
+  });
+
   return (
     <FileUploadDropzone label={undefined} w={'100%'}>
       <FileUploadDropzoneContent w={'100%'} gap={2}>
