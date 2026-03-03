@@ -39,8 +39,8 @@ export const LineWidthControl = () => {
               onClick={() => setLineWidth(item.value)}
               aria-pressed={isSelected}
               aria-label={`${t('draw.size.label')} ${item.label}`}
-              w={{ base: '16px', md: '26px' }}
-              h={{ base: '16px', md: '26px' }}
+              w={{ base: '16px', md: '22px' }}
+              h={{ base: '16px', md: '22px' }}
               borderRadius="full"
               borderWidth="1px"
               display="inline-flex"
