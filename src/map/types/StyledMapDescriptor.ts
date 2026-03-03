@@ -60,6 +60,7 @@ export type PolygonSymbolizer = {
   Type: 'Polygon';
   Fill?: Fill;
   Stroke?: Stroke;
+  GraphicFill?: GraphicFill;
 };
 
 export interface TextSymbolizer {
@@ -82,6 +83,9 @@ export interface Graphic {
   ExternalGraphic?: ExternalGraphic;
   Size?: number;
 }
+export interface GraphicFill {
+  Graphic: Graphic;
+}
 
 export interface ExternalGraphic {
   Href: string;
@@ -96,6 +100,7 @@ export interface Stroke {
 export interface Fill {
   CssParameter?: CssParameter;
   SvgParameter?: SvgParameter;
+  GraphicFill?: GraphicFill;
 }
 
 export interface Halo {
