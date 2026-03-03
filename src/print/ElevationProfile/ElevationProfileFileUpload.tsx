@@ -1,7 +1,5 @@
 import {
-  Box,
   FileUploadDropzone,
-  FileUploadDropzoneContent,
   FileUploadList,
   FileUploadRoot,
   useFileUploadContext,
@@ -31,7 +29,6 @@ export const ElevationProfileFileUpload = () => {
     <FileUploadRoot
       maxFiles={1}
       accept={{ '': ['.gpx'] }}
-      w={'100%'}
       onFileChange={(e) => {
         if (e.acceptedFiles.length === 0 && e.rejectedFiles.length === 0) {
           setProfileLine(null);
@@ -103,13 +100,10 @@ const FileUploadDropZoneContainer = () => {
   });
 
   return (
-    <FileUploadDropzone label={undefined} w={'100%'}>
-      <FileUploadDropzoneContent w={'100%'} gap={2}>
-        <Box>{t('printdialog.elevationProfile.fileUpload.dragDrop.label')}</Box>
-        <Box color="fg.muted">
-          {t('printdialog.elevationProfile.fileUpload.dragDrop.fileInfo')}
-        </Box>
-      </FileUploadDropzoneContent>
-    </FileUploadDropzone>
+    <FileUploadDropzone
+      label={t('printdialog.elevationProfile.fileUpload.dragDrop.label')}
+      w={'100%'}
+      minH={'unset'}
+    />
   );
 };
