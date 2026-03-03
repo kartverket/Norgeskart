@@ -578,5 +578,11 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikkje å hente kartet"
     }
+  },
+  "about": {
+    "heading": "Om oss",
+    "textone": "Norgeskart er Kartverket si mest brukte kartteneste. Enten du planlegg ein tur til fjells eller til sjøs, eller treng informasjon om ein eigedom, gir Norgeskart deg påliteleg og detaljert geografisk informasjon – presentert på ein enkel og tilgjengeleg måte.",
+    "texttwo": "Sidan 1773 har Kartverket kartlagt Noreg. Mykje har endra seg sidan den gong. Behov utviklar seg over tid, og ny teknologi gir oss stadig nye moglegheiter. Difor arbeider vi kontinuerleg med å tilby eit breitt spekter av kartprodukt som møter behova til brukarane – både i dag og i framtida.",
+    "textthree": "Saman med brukarane skal vi vere opne, innovative og stabile."
   }
 }
