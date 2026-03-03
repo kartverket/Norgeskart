@@ -51,7 +51,10 @@
           "moveup": "Move up",
           "point": "Points",
           "polygon": "Polygon",
-          "text": "Text"
+          "text": "Text",
+          "undo": "Undo",
+          "redo": "Redo",
+          "deleteselected": "Delete selected"
         }
       },
       "toolSelect": {

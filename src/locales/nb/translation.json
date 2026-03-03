@@ -51,7 +51,10 @@
           "moveup": "Flytt opp",
           "point": "Punkter",
           "polygon": "Flate",
-          "text": "Tekst"
+          "text": "Tekst",
+          "undo": "Angre",
+          "redo": "Gjør om",
+          "deleteselected": "Slett valgte"
         }
       },
       "toolSelect": {

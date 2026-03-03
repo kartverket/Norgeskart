@@ -10,8 +10,6 @@ import {
   DialogCloseTrigger,
   DialogContent,
   DialogTrigger,
-  Heading,
-  IconButton,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
@@ -21,7 +19,6 @@ import {
 } from '@kvib/react';
 import { Feature, FeatureCollection } from 'geojson';
 import { t } from 'i18next';
-import { useAtomValue } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
 import { Circle, Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
@@ -29,8 +26,6 @@ import { Style } from 'ol/style';
 import { useState } from 'react';
 import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
-import { canRedoAtom, canUndoAtom } from '../settings/draw/drawActions/atoms';
-import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
@@ -77,10 +72,9 @@ const getRadius = (geo: Geometry): number | undefined => {
 export const DrawControlFooter = () => {
   const { getDrawnFeatures, clearDrawing } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
-  const { undoLast, redoLastUndone } = useDrawActions();
+
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
-  const canUndoDrawAction = useAtomValue(canUndoAtom);
-  const canRedoDrawAction = useAtomValue(canRedoAtom);
+
   const onSaveFeatures = () => {
     const drawnFeatures = getDrawnFeatures();
     const mapProjection = getMapProjectionCode();
@@ -130,29 +124,11 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
-      <Heading size={{ base: 'xs', md: 'sm' }} marginTop={2}>
-        {t('draw.redoundo')}
-      </Heading>
-      <ButtonGroup>
-        <IconButton
-          variant="ghost"
-          disabled={!canUndoDrawAction}
-          onClick={undoLast}
-          icon={'undo'}
-        />
-        {canRedoDrawAction && (
-          <IconButton
-            variant="ghost"
-            disabled={!canRedoDrawAction}
-            onClick={redoLastUndone}
-            icon={'redo'}
-          />
-        )}
-      </ButtonGroup>
-
-      <Accordion collapsible variant="plain" size="sm">
+      <Accordion collapsible variant="plain" size="sm" paddingTop={2}>
         <AccordionItem value="export">
-          <AccordionItemTrigger padding="0">{t('controller.export')}</AccordionItemTrigger>
+          <AccordionItemTrigger fontWeight="600" padding="0">
+            {t('controller.export')}
+          </AccordionItemTrigger>
           <AccordionItemContent paddingX="0">
             <ButtonGroup>
               <PopoverRoot

@@ -123,13 +123,13 @@ const ColorRow = ({
             _hover={{ bg: 'gray.50' }}
           >
             <ColorPickerSwatch value={color} />
-            <Text fontSize="sm">{label}</Text>
+            <Text fontSize={{ base: 'xs', md: 'sm' }}>{label}</Text>
             <Spacer />
             <Icon
               color="colorPalette.500"
               grade={0}
               icon="chevron_right"
-              size={isMobile ? 4 : 8}
+              size={isMobile ? 16 : 18}
               weight={300}
             />
           </HStack>

@@ -138,7 +138,7 @@ const MapToolCard = ({
             aria-label="Lukk"
             colorPalette="red"
             onClick={onClose}
-            size={{base:'xs', md:"sm"}}
+            size={{ base: 'xs', md: 'sm' }}
           />
         </HStack>
       </Flex>
