@@ -99,7 +99,7 @@ const MapToolCard = ({
   return (
     <VStack
       width="100%"
-      maxWidth={{ base: '100%', md: '425px' }}
+      maxWidth={{ base: '100%', md: '345px' }}
       maxHeight="calc(100vh - 65px)"
       pointerEvents="auto"
       bg="#FFFF"
@@ -138,7 +138,7 @@ const MapToolCard = ({
             aria-label="Lukk"
             colorPalette="red"
             onClick={onClose}
-            size="md"
+            size={{ base: 'xs', md: 'sm' }}
           />
         </HStack>
       </Flex>

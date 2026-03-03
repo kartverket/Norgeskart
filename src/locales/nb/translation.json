@@ -51,7 +51,10 @@
           "moveup": "Flytt opp",
           "point": "Punkter",
           "polygon": "Flate",
-          "text": "Tekst"
+          "text": "Tekst",
+          "undo": "Angre",
+          "redo": "Gjør om",
+          "deleteselected": "Slett valgte"
         }
       },
       "toolSelect": {
@@ -75,7 +78,8 @@
     },
     "tools": "Tegneverktøy",
     "yesClear": "Ja, fjern",
-    "redoundo": "Angre / Gjør om"
+    "redoundo": "Angre / Gjør om",
+    "download": "Last ned"
   },
   "export": {
     "format": {

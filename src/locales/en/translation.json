@@ -51,7 +51,10 @@
           "moveup": "Move up",
           "point": "Points",
           "polygon": "Polygon",
-          "text": "Text"
+          "text": "Text",
+          "undo": "Undo",
+          "redo": "Redo",
+          "deleteselected": "Delete selected"
         }
       },
       "toolSelect": {
@@ -70,7 +73,8 @@
     "textInputLabel": "Enter text",
     "tools": "Tools",
     "yesClear": "Yes clear",
-    "redoundo": "Undo / Redo "
+    "redoundo": "Undo / Redo ",
+    "download": "Download"
   },
   "export": {
     "format": {

@@ -1,4 +1,4 @@
-import { Flex, Heading, HStack, IconButton, VStack } from '@kvib/react';
+import { Flex, Heading, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -17,7 +17,7 @@ import { useDrawSettings } from './hooks/drawSettings.ts';
 const MOBILE_TOOLBAR_RESERVE = '15px';
 
 export const DrawControls = () => {
-  const { drawType, deleteSelected } = useDrawSettings();
+  const { drawType } = useDrawSettings();
   const isMobile = useIsMobileScreen();
   const { t } = useTranslation();
 
@@ -45,7 +45,7 @@ export const DrawControls = () => {
       style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
     >
       {isMobile && (
-        <Heading size="md" px={1} py={1}>
+        <Heading size="sm" px={1} py={1}>
           {activeToolLabel}
         </Heading>
       )}
@@ -58,16 +58,6 @@ export const DrawControls = () => {
         <ColorControls />
         {drawType === 'Point' && <PointStyleSelector />}
       </HStack>
-
-      {isMobile && drawType === 'Move' && (
-        <IconButton
-          onClick={deleteSelected}
-          colorPalette="red"
-          icon="delete"
-          size="md"
-          variant="ghost"
-        />
-      )}
       <Flex
         w="100%"
         alignItems="flex-start"

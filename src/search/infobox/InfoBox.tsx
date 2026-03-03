@@ -44,8 +44,9 @@ export const InfoBox = () => {
       bg="white"
       pointerEvents={'auto'}
       overflowY={'hidden'}
-      maxHeight="480px"
-      w={'100%'}
+      maxHeight="55vh"
+      width="100%"
+      maxWidth="355px"
     >
       <Flex justifyContent={'space-between'} alignItems="center">
         <Heading fontWeight="bold" size={'lg'}>
