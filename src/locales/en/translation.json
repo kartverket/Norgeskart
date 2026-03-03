@@ -74,7 +74,10 @@
     "tools": "Tools",
     "yesClear": "Yes clear",
     "redoundo": "Undo / Redo ",
-    "download": "Download"
+    "download": "Download",
+    "uploadButton": {
+      "label": "Upload"
+    }
   },
   "export": {
     "format": {
