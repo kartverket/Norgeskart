@@ -96,6 +96,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 8,
       legacyId: '1014',
       queryable: false,
+      legendLayerNames: ['lulesamisk'],
     },
     {
       id: 'northernSamiPlaceNames',
@@ -109,6 +110,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 8,
       legacyId: '1015',
       queryable: false,
+      legendLayerNames: ['nordsamisk'],
     },
     {
       id: 'skoltSamiPlaceNames',
@@ -122,6 +124,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 8,
       legacyId: '1016',
       queryable: false,
+      legendLayerNames: ['skoltesamisk'],
     },
     {
       id: 'southernSamiPlaceNames',
@@ -135,6 +138,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 8,
       legacyId: '1017',
       queryable: false,
+      legendLayerNames: ['sorsamisk'],
     },
     {
       id: 'kvenPlaceNames',
@@ -148,6 +152,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 8,
       legacyId: '1018',
       queryable: false,
+      legendLayerNames: ['kvensk'],
     },
     {
       id: 'otherPlaceNames',
@@ -161,6 +166,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 8,
       legacyId: '1019',
       queryable: false,
+      legendLayerNames: ['andre'],
     },
     // Place names by type
     {
@@ -175,6 +181,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1020',
       queryable: false,
+      legendLayerNames: ['offentlig_administrasjon'],
     },
     {
       id: 'settlementPlaceNames',
@@ -188,6 +195,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1021',
       queryable: false,
+      legendLayerNames: ['bebyggelse'],
     },
     {
       id: 'infrastructurePlaceNames',
@@ -201,6 +209,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1022',
       queryable: false,
+      legendLayerNames: ['infrastruktur'],
     },
     {
       id: 'seaPlaceNames',
@@ -214,6 +223,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1023',
       queryable: false,
+      legendLayerNames: ['sjo'],
     },
     {
       id: 'landTypePlaceNames',
@@ -227,6 +237,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1024',
       queryable: false,
+      legendLayerNames: ['markslag'],
     },
     {
       id: 'freshwaterPlaceNames',
@@ -240,6 +251,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1025',
       queryable: false,
+      legendLayerNames: ['ferskvann'],
     },
     {
       id: 'terrainPlaceNames',
@@ -253,6 +265,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1026',
       queryable: false,
+      legendLayerNames: ['terreng'],
     },
     {
       id: 'culturePlaceNames',
@@ -266,6 +279,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1027',
       queryable: false,
+      legendLayerNames: ['kultur'],
     },
     // Writing status
     {
@@ -280,6 +294,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1038',
       queryable: false,
+      legendLayerNames: ['vedtatt'],
     },
     {
       id: 'approvedNamePartPlaceNames',
@@ -293,6 +308,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1039',
       queryable: false,
+      legendLayerNames: ['vedtatt_navneledd'],
     },
     {
       id: 'acceptedPlaceNames',
@@ -306,6 +322,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1040',
       queryable: false,
+      legendLayerNames: ['godkjent'],
     },
     {
       id: 'internationalPlaceNames',
@@ -319,6 +336,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1041',
       queryable: false,
+      legendLayerNames: ['internasjonalt'],
     },
     {
       id: 'privatePlaceNames',
@@ -332,6 +350,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1042',
       queryable: false,
+      legendLayerNames: ['privat'],
     },
     {
       id: 'historicalPlaceNames',
@@ -345,6 +364,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1043',
       queryable: false,
+      legendLayerNames: ['historisk'],
     },
     {
       id: 'proposedPlaceNames',
@@ -358,6 +378,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1044',
       queryable: false,
+      legendLayerNames: ['foreslatt'],
     },
     {
       id: 'unevaluatedPlaceNames',
@@ -371,6 +392,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1045',
       queryable: false,
+      legendLayerNames: ['uvurdert'],
     },
     {
       id: 'rejectedNamePartPlaceNames',
@@ -384,6 +406,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1046',
       queryable: false,
+      legendLayerNames: ['avslatt_navneledd'],
     },
     {
       id: 'rejectedPlaceNames',
@@ -397,6 +420,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 4,
       legacyId: '1047',
       queryable: false,
+      legendLayerNames: ['avslatt'],
     },
     // Case status
     {
@@ -411,6 +435,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1048',
       queryable: false,
+      legendLayerNames: ['navnesakstatus_ubehandlet'],
     },
     {
       id: 'notToBeProcessedPlaceNames',
@@ -424,6 +449,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1049',
       queryable: false,
+      legendLayerNames: ['skalikkebehandles'],
     },
     {
       id: 'approvedByAuthorityPlaceNames',
@@ -437,6 +463,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1050',
       queryable: false,
+      legendLayerNames: ['navnemyndighet'],
     },
     {
       id: 'collectiveDecisionPlaceNames',
@@ -450,6 +477,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1051',
       queryable: false,
+      legendLayerNames: ['samlevedtak'],
     },
     {
       id: 'collectiveDecisionWithdrawnPlaceNames',
@@ -463,6 +491,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1052',
       queryable: false,
+      legendLayerNames: ['samlevedtak_tilbake'],
     },
     {
       id: 'caseRaisedPlaceNames',
@@ -476,6 +505,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1053',
       queryable: false,
+      legendLayerNames: ['reist'],
     },
     {
       id: 'caseDecisionPlaceNames',
@@ -489,6 +519,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1054',
       queryable: false,
+      legendLayerNames: ['navnesak_vedtak'],
     },
     {
       id: 'decisionPostponedPlaceNames',
@@ -502,6 +533,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1055',
       queryable: false,
+      legendLayerNames: ['vedtakutsatt'],
     },
     {
       id: 'appealDecisionNotWithdrawnPlaceNames',
@@ -515,6 +547,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1056',
       queryable: false,
+      legendLayerNames: ['klage_ikke_trukket'],
     },
     {
       id: 'appealDecisionWithdrawnPlaceNames',
@@ -528,6 +561,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1057',
       queryable: false,
+      legendLayerNames: ['klage_trukket'],
     },
     {
       id: 'appealDecisionPostponedPlaceNames',
@@ -541,6 +575,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1058',
       queryable: false,
+      legendLayerNames: ['klagevedtakutsatt'],
     },
     {
       id: 'simplifiedDecisionPlaceNames',
@@ -554,6 +589,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 2,
       legacyId: '1059',
       queryable: false,
+      legendLayerNames: ['forenkletvedtak'],
     },
     // Recent decisions
     {
@@ -568,6 +604,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1028',
       queryable: false,
+      legendLayerNames: ['vedtak_24'],
     },
     {
       id: 'decision12MonthsPlaceNames',
@@ -581,6 +618,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1029',
       queryable: false,
+      legendLayerNames: ['vedtak_12'],
     },
     {
       id: 'decision6MonthsPlaceNames',
@@ -594,6 +632,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1030',
       queryable: false,
+      legendLayerNames: ['vedtak_6'],
     },
     {
       id: 'decision3MonthsPlaceNames',
@@ -607,6 +646,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1031',
       queryable: false,
+      legendLayerNames: ['vedtak_3'],
     },
     {
       id: 'decision1MonthPlaceNames',
@@ -620,6 +660,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1032',
       queryable: false,
+      legendLayerNames: ['vedtak_1'],
     },
     {
       id: 'collectiveDecision24MonthsPlaceNames',
@@ -633,6 +674,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1033',
       queryable: false,
+      legendLayerNames: ['samlevedtak24'],
     },
     {
       id: 'collectiveDecision12MonthsPlaceNames',
@@ -646,6 +688,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1034',
       queryable: false,
+      legendLayerNames: ['samlevedtak12'],
     },
     {
       id: 'collectiveDecision6MonthsPlaceNames',
@@ -659,6 +702,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1035',
       queryable: false,
+      legendLayerNames: ['samlevedtak6'],
     },
     {
       id: 'collectiveDecision3MonthsPlaceNames',
@@ -672,6 +716,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1036',
       queryable: false,
+      legendLayerNames: ['samlevedtak3'],
     },
     {
       id: 'collectiveDecision1MonthPlaceNames',
@@ -685,6 +730,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1037',
       queryable: false,
+      legendLayerNames: ['samlevedtak1'],
     },
   ],
 };
