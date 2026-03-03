@@ -91,10 +91,10 @@ const FileUploadDropZoneContainer = () => {
   const { t } = useTranslation();
   const profileLine = useAtomValue(profileLineAtom);
   const setClearProfileFiles = useSetAtom(clearProfileFilesAtom);
+  const fileUploadContext = useFileUploadContext();
   if (profileLine !== null) {
     return null;
   }
-  const fileUploadContext = useFileUploadContext();
   setClearProfileFiles(() => () => {
     fileUploadContext.clearFiles();
   });

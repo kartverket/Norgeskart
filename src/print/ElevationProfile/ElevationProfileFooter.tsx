@@ -25,7 +25,9 @@ export const ElevationProfileFooter = ({
     setProfileLine(null);
     setElevationProfileResponse(null);
     setStatus('cancelled');
-    clearFiles && clearFiles();
+    if (clearFiles != null) {
+      clearFiles();
+    }
   };
   return (
     <ButtonGroup justify="space-between" mt={4}>
