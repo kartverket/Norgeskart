@@ -1,5 +1,6 @@
 import { Box, HStack, Text, useKvibContext, VStack } from '@kvib/react';
 import { ReactNode } from 'react';
+import { ThemeLayerDefinition } from '../../api/themeLayerConfigApi';
 import {
   FeatureTypeStyle,
   Fill,
@@ -288,33 +289,31 @@ const UserStylePart = ({ style }: { style: UserStyle }) => {
 };
 
 const NamedLayerPart = ({ namedLayer }: { namedLayer: NamedLayer }) => {
-  return (
-    <>
-      {Array.isArray(namedLayer.UserStyle) ? (
-        namedLayer.UserStyle.map((s) => <UserStylePart style={s} />)
-      ) : (
-        <UserStylePart style={namedLayer.UserStyle} />
-      )}
-    </>
-  );
+  const userStyles = Array.isArray(namedLayer.UserStyle)
+    ? namedLayer.UserStyle
+    : [namedLayer.UserStyle];
+  return userStyles.map((s) => <UserStylePart style={s} />);
 };
 
 export const Symbolology = ({
-  activeThemeLayers,
+  layerDescriptor,
+  layerConfig,
   heading,
 }: {
-  activeThemeLayers: StyledLayerDescriptor;
+  layerDescriptor: StyledLayerDescriptor;
+  layerConfig: ThemeLayerDefinition;
   heading: string;
 }) => {
-  return (
-    <>
-      {Array.isArray(activeThemeLayers.NamedLayer) ? (
-        activeThemeLayers.NamedLayer.map((l) => (
-          <NamedLayerPart key={heading + l.Name} namedLayer={l} />
-        ))
-      ) : (
-        <NamedLayerPart namedLayer={activeThemeLayers.NamedLayer} />
-      )}
-    </>
+  const descriptors = (
+    Array.isArray(layerDescriptor.NamedLayer)
+      ? layerDescriptor.NamedLayer
+      : [layerDescriptor.NamedLayer]
+  ).filter(
+    (l) =>
+      layerConfig.legendLayerNames == null ||
+      layerConfig.legendLayerNames.includes(l.Name),
   );
+  return descriptors.map((l) => (
+    <NamedLayerPart key={heading + l.Name} namedLayer={l} />
+  ));
 };

@@ -73,6 +73,7 @@ export interface ThemeLayerDefinition {
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];
   useLegendGraphic?: boolean;
+  legendLayerNames?: string[];
   filter?: string;
 }
 
