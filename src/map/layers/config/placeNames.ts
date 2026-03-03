@@ -82,6 +82,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       groupid: 8,
       legacyId: '1013',
       queryable: false,
+      legendLayerNames: ['norsk'],
     },
     {
       id: 'luleSamiPlaceNames',
