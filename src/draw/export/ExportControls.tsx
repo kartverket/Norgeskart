@@ -2,6 +2,8 @@ import { Button, Group, Heading, HStack, VStack } from '@kvib/react';
 import { useState } from 'react';
 //import { useTranslation } from 'react-i18next';
 import { usePostHog } from '@posthog/react';
+import { useSetAtom } from 'jotai';
+import { isExportDialogOpenAtom } from '../dialogs/atoms';
 import { useDrawSettings } from '../drawControls/hooks/drawSettings';
 import {
   handleGeoJsonExport,
@@ -17,6 +19,7 @@ export const ExportControls = () => {
   const ph = usePostHog();
   //const { t } = useTranslation();
   const [exportFormat, setExportFormat] = useState<ExportFormat>('GeoJSON');
+  const setIsExportDialogOpen = useSetAtom(isExportDialogOpenAtom);
 
   const handleExport = () => {
     const drawLayer = getDrawLayer();
@@ -32,6 +35,7 @@ export const ExportControls = () => {
         handleGPXExport(drawLayer);
         break;
     }
+    setIsExportDialogOpen(false);
   };
 
   return (
