@@ -176,7 +176,7 @@ export const DrawControlFooter = () => {
               <Dialog placement={'center'} motionPreset="slide-in-left">
                 <DialogTrigger asChild>
                   <Button variant="outline" size="xs">
-                    Last ned
+                    {t('draw.download')}
                   </Button>
                 </DialogTrigger>
                 <DialogContent>

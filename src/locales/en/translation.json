@@ -73,7 +73,8 @@
     "textInputLabel": "Enter text",
     "tools": "Tools",
     "yesClear": "Yes clear",
-    "redoundo": "Undo / Redo "
+    "redoundo": "Undo / Redo ",
+    "download": "Download"
   },
   "export": {
     "format": {
