@@ -62,7 +62,7 @@ export const EditControls = () => {
   }
   return (
     <>
-      <Heading size={{ base: 'sm', md: 'md' }}>
+      <Heading size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.edit')}
       </Heading>
       <HStack marginTop={2}>
@@ -73,7 +73,7 @@ export const EditControls = () => {
             }}
             icon={'arrow_cool_down'}
             variant="plain"
-            size={{ base: 'xs', md: 'md' }}
+            size={{ base: 'xs', md: 'sm' }}
           />
         </Tooltip>
         <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
@@ -83,7 +83,7 @@ export const EditControls = () => {
             }}
             icon={'arrow_warm_up'}
             variant="ghost"
-            size={{ base: 'xs', md: 'md' }}
+            size={{ base: 'xs', md: 'sm' }}
           />
         </Tooltip>
       </HStack>

@@ -1,4 +1,8 @@
 import {
+  Accordion,
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
   Button,
   ButtonGroup,
   Dialog,
@@ -126,7 +130,7 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
-      <Heading size={{ base: 'sm', md: 'md' }} marginTop={2}>
+      <Heading size={{ base: 'xs', md: 'sm' }} marginTop={2}>
         {t('draw.redoundo')}
       </Heading>
       <ButtonGroup>
@@ -145,69 +149,72 @@ export const DrawControlFooter = () => {
           />
         )}
       </ButtonGroup>
-      <Heading size={{ base: 'sm', md: 'md' }}>
-        {t('controller.export')}
-      </Heading>
-      <ButtonGroup>
-        <PopoverRoot
-          open={clearPopoverOpen}
-          onOpenChange={(e) => setClearPopoverOpen(e.open)}
-        >
-          <PopoverTrigger asChild>
-            <IconButton
-              size="lg"
-              variant="ghost"
-              iconFill
-              colorPalette={'red'}
-              icon={'delete'}
-            >
-              {t('draw.clear')}
-            </IconButton>
-          </PopoverTrigger>
-          <PopoverContent width="145px">
-            <PopoverArrow />
-            <PopoverBody>
-              <PopoverTitle fontWeight="bold">
-                {t('draw.confrimClear')}
-              </PopoverTitle>
-              <Button
-                onClick={() => {
-                  setClearPopoverOpen(false);
-                  clearDrawing();
-                }}
-                colorPalette={'red'}
-                marginTop={2}
+
+      <Accordion collapsible variant="plain" size="sm" paddingX="0">
+        <AccordionItem value="item1">
+          <AccordionItemTrigger>{t('controller.export')}</AccordionItemTrigger>
+          <AccordionItemContent>
+            <ButtonGroup>
+              <PopoverRoot
+                open={clearPopoverOpen}
+                onOpenChange={(e) => setClearPopoverOpen(e.open)}
               >
-                {t('shared.yes')}
+                <PopoverTrigger asChild>
+                  <Button
+                    size="xs"
+                    variant="outline"
+                    iconFill
+                    colorPalette={'red'}
+                  >
+                    {t('draw.clear')}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent width="145px">
+                  <PopoverArrow />
+                  <PopoverBody>
+                    <PopoverTitle fontWeight="bold">
+                      {t('draw.confrimClear')}
+                    </PopoverTitle>
+                    <Button
+                      onClick={() => {
+                        setClearPopoverOpen(false);
+                        clearDrawing();
+                      }}
+                      colorPalette={'red'}
+                      marginTop={2}
+                    >
+                      {t('shared.yes')}
+                    </Button>
+                  </PopoverBody>
+                </PopoverContent>
+              </PopoverRoot>
+              <Button
+                size="xs"
+                variant="outline"
+                iconFill
+                onClick={onSaveFeatures}
+              >
+                {t('draw.save')}
               </Button>
-            </PopoverBody>
-          </PopoverContent>
-        </PopoverRoot>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          iconFill
-          onClick={onSaveFeatures}
-          icon={'save'}
-        >
-          {t('draw.save')}
-        </IconButton>
 
-        <Dialog placement={'center'} motionPreset="slide-in-left">
-          <DialogTrigger asChild>
-            <IconButton icon={'download'} variant="ghost">
-              Open Dialog
-            </IconButton>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogBody>
-              <ExportControls />
-            </DialogBody>
+              <Dialog placement={'center'} motionPreset="slide-in-left">
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="xs">
+                    Last ned
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogBody>
+                    <ExportControls />
+                  </DialogBody>
 
-            <DialogCloseTrigger />
-          </DialogContent>
-        </Dialog>
-      </ButtonGroup>
+                  <DialogCloseTrigger />
+                </DialogContent>
+              </Dialog>
+            </ButtonGroup>
+          </AccordionItemContent>
+        </AccordionItem>
+      </Accordion>
     </>
   );
 };

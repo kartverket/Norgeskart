@@ -276,7 +276,7 @@ export const MapThemes = () => {
                   width="100%"
                   alignItems="center"
                 >
-                  <Heading size={{ base: 'sm', md: 'lg' }}>
+                  <Heading size={{ base: 'xs', md: 'sm' }}>
                     {theme.heading}
                   </Heading>
                   {activeInCategory > 0 && (
@@ -300,13 +300,13 @@ export const MapThemes = () => {
                       >
                         <Heading
                           fontWeight={'600'}
-                          size={{ base: 'sm', md: 'md' }}
+                          size={{ base: 'xs', md: 'sm' }}
                         >
                           {subTheme.layers[0].label}
                         </Heading>
                         <Switch
                           colorPalette="green"
-                          size="sm"
+                          size="xs"
                           checked={isLayerChecked(subTheme.layers[0].name)}
                           disabled={
                             !isLayerChecked(subTheme.layers[0].name) &&
@@ -318,7 +318,7 @@ export const MapThemes = () => {
                       <Box key={subTheme.name} marginBottom={4}>
                         <Heading
                           fontWeight={'600'}
-                          size={{ base: 'sm', md: 'md' }}
+                          size={{ base: 'xs', md: 'sm' }}
                         >
                           {subTheme.heading}
                         </Heading>
@@ -330,7 +330,7 @@ export const MapThemes = () => {
                             onClick={() => toggleLayer(layer.name)}
                             cursor="pointer"
                           >
-                            <Text fontSize={{ base: 'sm', md: 'md' }}>
+                            <Text fontSize={{ base: 'xs', md: 'sm' }}>
                               {layer.label}
                             </Text>
                             <Switch

@@ -58,6 +58,7 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
         leftIcon={'content_copy'}
         w={'fit-content'}
         variant="secondary"
+        size="xs"
       >
         {t('infoBox.coordinateSection.copy.label')}
       </Button>

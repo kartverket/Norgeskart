@@ -99,7 +99,7 @@ const MapToolCard = ({
   return (
     <VStack
       width="100%"
-      maxWidth={{ base: '100%', md: '425px' }}
+      maxWidth={{ base: '100%', md: '345px' }}
       maxHeight="calc(100vh - 65px)"
       pointerEvents="auto"
       bg="#FFFF"

@@ -89,9 +89,10 @@ const DrawTypeButton = ({
   return (
     <Tooltip content={effectiveTooltip}>
       <IconButton
-        variant={isCurrentTool ? 'solid' : 'ghost'}
+        variant={isCurrentTool ? 'outline' : 'ghost'}
         icon={effectiveIcon}
-        size="xl"
+        iconFill
+        size={{ base: 'xs', md: 'sm' }}
         onClick={() => {
           // Hvis panelet er skjult og du trykker på aktiv knapp -> åpne panelet
           if (isCurrentTool && collapsed) {

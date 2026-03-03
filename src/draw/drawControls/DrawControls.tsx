@@ -45,7 +45,7 @@ export const DrawControls = () => {
       style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
     >
       {isMobile && (
-        <Heading size="md" px={1} py={1}>
+        <Heading size="sm" px={1} py={1}>
           {activeToolLabel}
         </Heading>
       )}
@@ -64,7 +64,7 @@ export const DrawControls = () => {
           onClick={deleteSelected}
           colorPalette="red"
           icon="delete"
-          size="md"
+          size="sm"
           variant="ghost"
         />
       )}
