@@ -150,10 +150,10 @@ export const DrawControlFooter = () => {
         )}
       </ButtonGroup>
 
-      <Accordion collapsible variant="plain" size="sm" paddingX="0">
-        <AccordionItem value="item1">
-          <AccordionItemTrigger>{t('controller.export')}</AccordionItemTrigger>
-          <AccordionItemContent>
+      <Accordion collapsible variant="plain" size="sm">
+        <AccordionItem value="export">
+          <AccordionItemTrigger padding="0">{t('controller.export')}</AccordionItemTrigger>
+          <AccordionItemContent paddingx="0">
             <ButtonGroup>
               <PopoverRoot
                 open={clearPopoverOpen}
