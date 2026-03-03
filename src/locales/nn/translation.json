@@ -266,7 +266,8 @@
           "resetbutton": {
             "text": "Nullstill"
           },
-          "otherThemes": "Andre tema"
+          "kartverketThemes": "Kartverket tema",
+          "geonorgeThemes": "Geonorge tema"        
         }
       }
     },

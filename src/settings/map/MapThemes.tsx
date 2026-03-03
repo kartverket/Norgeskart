@@ -373,6 +373,7 @@ export const MapThemes = () => {
         value={expandedItems}
         onValueChange={(details) => setExpandedItems(details.value)}
       >
+        {t('map.settings.layers.theme.geonorgeThemes')}
         {primaryThemes.map((theme) => (
           <ThemeAccordionItem
             key={theme.name}
@@ -398,7 +399,7 @@ export const MapThemes = () => {
             letterSpacing="wide"
             marginBottom={2}
           >
-            {t('map.settings.layers.theme.otherThemes')}
+            {t('map.settings.layers.theme.kartverketThemes')}
           </Text>
           <Accordion
             collapsible
