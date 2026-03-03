@@ -79,7 +79,10 @@
     "tools": "Verktøy",
     "yesClear": "Ja, fjern",
     "redoundo": "Angre / Gjør om",
-    "download": "Last ned"
+    "download": "Last ned",
+    "uploadButton": {
+      "label": "Last opp"
+    }
   },
   "export": {
     "format": {

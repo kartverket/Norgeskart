@@ -16,6 +16,7 @@ import {
   PopoverRoot,
   PopoverTitle,
   PopoverTrigger,
+  VStack,
 } from '@kvib/react';
 import { Feature, FeatureCollection } from 'geojson';
 import { t } from 'i18next';
@@ -124,70 +125,82 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
-      <Accordion collapsible variant="plain" size="sm" paddingTop={2}>
-        <AccordionItem value="export">
+      <Accordion
+        collapsible
+        variant="plain"
+        size="sm"
+        paddingTop={2}
+        paddingX={0}
+        overflow={'hidden'}
+      >
+        <AccordionItem value="export" paddingX="0">
           <AccordionItemTrigger fontWeight="600" padding="0">
             {t('controller.export')}
           </AccordionItemTrigger>
-          <AccordionItemContent paddingX="0">
-            <ButtonGroup>
-              <PopoverRoot
-                open={clearPopoverOpen}
-                onOpenChange={(e) => setClearPopoverOpen(e.open)}
-              >
-                <PopoverTrigger asChild>
-                  <Button
-                    size="xs"
-                    variant="outline"
-                    iconFill
-                    colorPalette={'red'}
-                  >
-                    {t('draw.clear')}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent width="145px">
-                  <PopoverArrow />
-                  <PopoverBody>
-                    <PopoverTitle fontWeight="bold">
-                      {t('draw.confrimClear')}
-                    </PopoverTitle>
+          <AccordionItemContent marginX="-15px">
+            <VStack align={'flex-start'}>
+              <ButtonGroup>
+                <PopoverRoot
+                  open={clearPopoverOpen}
+                  onOpenChange={(e) => setClearPopoverOpen(e.open)}
+                >
+                  <PopoverTrigger asChild>
                     <Button
-                      onClick={() => {
-                        setClearPopoverOpen(false);
-                        clearDrawing();
-                      }}
+                      size="xs"
+                      variant="outline"
+                      iconFill
                       colorPalette={'red'}
-                      marginTop={2}
                     >
-                      {t('shared.yes')}
+                      {t('draw.clear')}
                     </Button>
-                  </PopoverBody>
-                </PopoverContent>
-              </PopoverRoot>
-              <Button
-                size="xs"
-                variant="outline"
-                iconFill
-                onClick={onSaveFeatures}
-              >
-                {t('draw.save')}
+                  </PopoverTrigger>
+                  <PopoverContent width="145px">
+                    <PopoverArrow />
+                    <PopoverBody>
+                      <PopoverTitle fontWeight="bold">
+                        {t('draw.confrimClear')}
+                      </PopoverTitle>
+                      <Button
+                        onClick={() => {
+                          setClearPopoverOpen(false);
+                          clearDrawing();
+                        }}
+                        colorPalette={'red'}
+                        marginTop={2}
+                      >
+                        {t('shared.yes')}
+                      </Button>
+                    </PopoverBody>
+                  </PopoverContent>
+                </PopoverRoot>
+                <Button
+                  size="xs"
+                  variant="outline"
+                  iconFill
+                  onClick={onSaveFeatures}
+                >
+                  {t('draw.save')}
+                </Button>
+
+                <Dialog placement={'center'} motionPreset="slide-in-left">
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="xs">
+                      {t('draw.download')}
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogBody>
+                      <ExportControls />
+                    </DialogBody>
+
+                    <DialogCloseTrigger />
+                  </DialogContent>
+                </Dialog>
+              </ButtonGroup>
+              <Button size="xs" variant="outline">
+                {t('draw.uploadButton.label')}
               </Button>
-
-              <Dialog placement={'center'} motionPreset="slide-in-left">
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="xs">
-                    {t('draw.download')}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogBody>
-                    <ExportControls />
-                  </DialogBody>
-
-                  <DialogCloseTrigger />
-                </DialogContent>
-              </Dialog>
-            </ButtonGroup>
+            </VStack>
           </AccordionItemContent>
         </AccordionItem>
       </Accordion>
