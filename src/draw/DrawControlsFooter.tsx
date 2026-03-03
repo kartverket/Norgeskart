@@ -153,7 +153,7 @@ export const DrawControlFooter = () => {
       <Accordion collapsible variant="plain" size="sm">
         <AccordionItem value="export">
           <AccordionItemTrigger padding="0">{t('controller.export')}</AccordionItemTrigger>
-          <AccordionItemContent paddingx="0">
+          <AccordionItemContent paddingX="0">
             <ButtonGroup>
               <PopoverRoot
                 open={clearPopoverOpen}
