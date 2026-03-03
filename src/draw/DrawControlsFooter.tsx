@@ -5,11 +5,6 @@ import {
   AccordionItemTrigger,
   Button,
   ButtonGroup,
-  Dialog,
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogTrigger,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
@@ -20,6 +15,7 @@ import {
 } from '@kvib/react';
 import { Feature, FeatureCollection } from 'geojson';
 import { t } from 'i18next';
+import { useSetAtom } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
 import { Circle, Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
@@ -28,9 +24,10 @@ import { useState } from 'react';
 import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
+import { isExportDialogOpenAtom } from './dialogs/atoms';
+import { ExportDialog } from './dialogs/ExportDialog';
 import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
-import { ExportControls } from './export/ExportControls';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
@@ -73,6 +70,7 @@ const getRadius = (geo: Geometry): number | undefined => {
 export const DrawControlFooter = () => {
   const { getDrawnFeatures, clearDrawing } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
+  const setIsExportDialogOpen = useSetAtom(isExportDialogOpenAtom);
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
 
@@ -173,29 +171,16 @@ export const DrawControlFooter = () => {
                     </PopoverBody>
                   </PopoverContent>
                 </PopoverRoot>
-                <Button
-                  size="xs"
-                  variant="outline"
-                  iconFill
-                  onClick={onSaveFeatures}
-                >
+                <Button size="xs" variant="outline" onClick={onSaveFeatures}>
                   {t('draw.save')}
                 </Button>
-
-                <Dialog placement={'center'} motionPreset="slide-in-left">
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="xs">
-                      {t('draw.download')}
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogBody>
-                      <ExportControls />
-                    </DialogBody>
-
-                    <DialogCloseTrigger />
-                  </DialogContent>
-                </Dialog>
+                <Button
+                  variant="outline"
+                  size="xs"
+                  onClick={() => setIsExportDialogOpen(true)}
+                >
+                  {t('draw.download')}
+                </Button>
               </ButtonGroup>
               <Button size="xs" variant="outline">
                 {t('draw.uploadButton.label')}
@@ -204,6 +189,7 @@ export const DrawControlFooter = () => {
           </AccordionItemContent>
         </AccordionItem>
       </Accordion>
+      <ExportDialog />
     </>
   );
 };
