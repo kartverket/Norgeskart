@@ -108,6 +108,14 @@ export const InfoDrawer = () => {
           <Contact />
         </AccordionItemContent>
       </AccordionItem>
+      <AccordionItem value="aboutus">
+        <AccordionItemTrigger>{t('about.heading')}</AccordionItemTrigger>
+        <AccordionItemContent>
+          <Text>{t('about.textone')}</Text>
+          <Text marginY="3">{t('about.texttwo')}</Text>
+          <Text>{t('about.textthree')}</Text>
+        </AccordionItemContent>
+      </AccordionItem>
       <AccordionItem value="privacy">
         <AccordionItemTrigger>
           {t('privacyAndContact.privacy')}
