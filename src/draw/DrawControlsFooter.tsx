@@ -24,8 +24,12 @@ import { useState } from 'react';
 import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
-import { isExportDialogOpenAtom } from './dialogs/atoms';
+import {
+  isExportDialogOpenAtom,
+  isImportDialogOpenAtom,
+} from './dialogs/atoms';
 import { ExportDialog } from './dialogs/ExportDialog';
+import { ImportDialog } from './dialogs/ImportDialog';
 import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
@@ -71,6 +75,7 @@ export const DrawControlFooter = () => {
   const { getDrawnFeatures, clearDrawing } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
   const setIsExportDialogOpen = useSetAtom(isExportDialogOpenAtom);
+  const setIsImportDialogOpen = useSetAtom(isImportDialogOpenAtom);
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
 
@@ -182,7 +187,11 @@ export const DrawControlFooter = () => {
                   {t('draw.download')}
                 </Button>
               </ButtonGroup>
-              <Button size="xs" variant="outline">
+              <Button
+                size="xs"
+                variant="outline"
+                onClick={() => setIsImportDialogOpen(true)}
+              >
                 {t('draw.uploadButton.label')}
               </Button>
             </VStack>
@@ -190,6 +199,7 @@ export const DrawControlFooter = () => {
         </AccordionItem>
       </Accordion>
       <ExportDialog />
+      <ImportDialog />
     </>
   );
 };
