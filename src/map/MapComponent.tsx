@@ -15,7 +15,8 @@ import {
   setUrlParameter,
   transitionHashToQuery,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom, scaleAtom, trackPostitionAtomEffect } from './atoms.ts';
+import { mapAtom, scaleAtom } from './atoms.ts';
+import { trackPostitionAtomEffect } from './geolocation/atoms.ts';
 import { activeThemeLayersAtom, themeLayerEffect } from './layers/atoms.ts';
 import {
   BackgroundLayerName,

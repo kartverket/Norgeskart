@@ -8,8 +8,8 @@ import {
   displayMapLegendAtom,
   displayMapLegendControlAtom,
   mapOrientationDegreesAtom,
-  trackPositionAtom,
 } from './atoms';
+import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
 
 export const MapControlButtons = () => {
