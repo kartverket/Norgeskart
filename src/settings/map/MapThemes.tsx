@@ -335,7 +335,7 @@ export const MapThemes = () => {
                             </Text>
                             <Switch
                               colorPalette="green"
-                              size="sm"
+                              size="xs"
                               checked={isLayerChecked(layer.name)}
                               disabled={
                                 !isLayerChecked(layer.name) &&
