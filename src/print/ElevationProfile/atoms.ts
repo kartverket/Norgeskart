@@ -1,6 +1,7 @@
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { LineString } from 'ol/geom';
+import posthog from 'posthog-js';
 import {
   getelevationProfileJobStatus,
   getelevationProfileResult,
@@ -48,6 +49,7 @@ export const profileEffect = atomEffect((get, set) => {
   set(profileSampleDistanceAtom, stepLength);
 
   const lineCoordinates = line.getCoordinates();
+
   const body = new GPFeatureRecordSetLayer([lineCoordinates], wkid);
 
   const effect = async () => {
@@ -75,6 +77,11 @@ export const profileEffect = atomEffect((get, set) => {
 
         break;
       } else if (status.jobStatus === 'esriJobFailed') {
+        posthog.captureException('elevation_profile_job_failed', {
+          jobId: submitResponse.jobId,
+          feature: lineCoordinates,
+          sampleDistance: stepLength,
+        });
         set(profileJobStatusAtom, 'failed');
         console.error('Job failed:', status);
         break;

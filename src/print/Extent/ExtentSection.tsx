@@ -115,7 +115,7 @@ export const ExtentSection = () => {
         });
       },
       onError: (msg) => {
-        ph.capture('print_extent_error', {
+        ph.captureException('print_extent_error', {
           format,
           orientation,
           errorMessage: msg,
