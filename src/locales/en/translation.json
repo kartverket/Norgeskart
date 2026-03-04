@@ -604,5 +604,19 @@
     "textone": "Norgeskart is the Norwegian Mapping Authority’s most widely used map service. Whether you are planning a trip to the mountains or at sea, or need information about a property, Norgeskart provides reliable and detailed geographic information – presented in a simple and accessible way.",
     "texttwo": "Since 1773, the Norwegian Mapping Authority has been mapping Norway. Much has changed since then. Needs evolve over time, and new technology continuously gives us new opportunities. That is why we work continuously to offer a wide range of map products that meet users’ needs – both today and in the future.",
     "textthree": "Together with our users, we aim to be open, innovative, and reliable."
+  },
+  "importDialog": {
+    "header": "Import file for drawlayer",
+    "body": {
+      "text": "Select a file, either GPX, GML or GEOJSON to upload to the map. If you want, you can overwrite the existing drawing with the contents of the file. "
+    },
+    "overwriteSwitch": {
+      "label": "Overwrite draing"
+    },
+    "buttons": {
+      "confirm": {
+        "label": "Upload"
+      }
+    }
   }
 }
