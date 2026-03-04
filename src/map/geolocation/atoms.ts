@@ -13,7 +13,6 @@ export const trackPostitionAtomEffect = atomEffect((get) => {
   const trackPosition = get(trackPositionAtom);
   const store = getDefaultStore();
   const map = store.get(mapAtom);
-  navigator.geolocation.getCurrentPosition(() => {});
 
   if (!navigator.geolocation) return;
   if (trackPosition) {
