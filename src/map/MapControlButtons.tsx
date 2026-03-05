@@ -8,8 +8,8 @@ import {
   displayMapLegendAtom,
   displayMapLegendControlAtom,
   mapOrientationDegreesAtom,
-  trackPositionAtom,
 } from './atoms';
+import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
 
 export const MapControlButtons = () => {
@@ -102,17 +102,19 @@ export const MapControlButtons = () => {
         hide={isMobile}
         displayTooltip
       />
-      <ControlButton
-        id={trackPosition ? 'location_disabled' : 'location_enabled'}
-        icon={trackPosition ? 'location_disabled' : 'my_location'}
-        onClick={handleMapLocationClick}
-        label={
-          trackPosition
-            ? t('map.controls.myLocation.disable.label')
-            : t('map.controls.myLocation.enable.label')
-        }
-        displayTooltip
-      />
+      {navigator.geolocation && (
+        <ControlButton
+          id={trackPosition ? 'location_disabled' : 'location_enabled'}
+          icon={trackPosition ? 'location_disabled' : 'my_location'}
+          onClick={handleMapLocationClick}
+          label={
+            trackPosition
+              ? t('map.controls.myLocation.disable.label')
+              : t('map.controls.myLocation.enable.label')
+          }
+          displayTooltip
+        />
+      )}
       <ControlButton
         id="fullscreen"
         icon="fullscreen"
