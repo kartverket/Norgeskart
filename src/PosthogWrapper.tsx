@@ -24,6 +24,7 @@ export const PostHogWrapper = ({
         ui_host: 'https://eu.i.posthog.com',
         api_host: 'https://ph.kartverket.no',
         opt_out_capturing_by_default: true,
+        opt_in_site_apps: true,
         cookieless_mode: 'on_reject',
       }}
     >
