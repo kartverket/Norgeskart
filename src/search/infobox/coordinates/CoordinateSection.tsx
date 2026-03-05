@@ -27,8 +27,13 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
 
   const [x, y] = transform([lon, lat], inputCRS, selectedProjection);
 
+  const isGeographic = selectedProjection === 'EPSG:4326'; // should it be flipped for others ? 4230?  || selectedProjection === 'EPSG:4230';
+
   const onCopyClick = () => {
-    const coordString = `${y.toFixed(2)},${x.toFixed(2)}@${selectedProjection}`;
+    const coordString = isGeographic
+      ? `${y.toFixed(2)},${x.toFixed(2)}@${selectedProjection}`
+      : `${x.toFixed(2)},${y.toFixed(2)}@${selectedProjection}`;
+
     navigator.clipboard.writeText(coordString);
     toaster.create({
       title: t('infoBox.coordinateSection.copy.toast.title'),
