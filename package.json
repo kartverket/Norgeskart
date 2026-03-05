@@ -52,7 +52,7 @@
     "eslint-plugin-compat": "^6.2.0",
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.0",
+    "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
     "playwright-webkit": "^1.58.2",
     "prettier-plugin-organize-imports": "^4.3.0",
