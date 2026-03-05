@@ -134,6 +134,11 @@ export const ExtentSection = () => {
           {t('printExtent.vectorTileFallbackWarning')}
         </Alert>
       )}
+      {backgroundLayer.startsWith('Nibcache_') && (
+        <Alert status="warning" mb={2}>
+          {t('printExtent.aerialImageryNotSupported')}
+        </Alert>
+      )}
       <Text>{t('printExtent.label')}</Text>
       <SelectRoot
         collection={createListCollection({ items: formatOptions })}

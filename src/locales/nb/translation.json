@@ -578,7 +578,8 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikke å hente kartet"
     },
-    "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkartraster i utskriften."
+    "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkartraster i utskriften.",
+    "aerialImageryNotSupported": "Flyfoto støttes ikke av utskriftstjenesten. Vennligst bytt til et annet bakgrunnskart for å skrive ut."
   },
   "about": {
     "heading": "Om oss",
