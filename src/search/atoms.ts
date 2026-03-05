@@ -59,17 +59,14 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
   setUrlParameter('markerLat', coords.y.toString());
 
   const fetchData = async () => {
-    return await Promise.all([
-      getPlaceNamesByLocation(
-        coords.x,
-        coords.y,
-        500,
-        coords.projection as ProjectionIdentifier,
-      ),
-    ]);
+    return await getPlaceNamesByLocation(
+      coords.x,
+      coords.y,
+      500,
+      coords.projection as ProjectionIdentifier,
+    );
   };
-  fetchData().then((res) => {
-    const [placeResult] = res;
+  fetchData().then((placeResult) => {
     if (placeResult.navn) {
       set(placesNearbyAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
     }

@@ -1,4 +1,4 @@
-import { transform } from 'ol/proj';
+import posthog from 'posthog-js';
 import { getEnv } from '../env.ts';
 import { ProjectionIdentifier } from '../map/projections/types.ts';
 import {
@@ -12,32 +12,39 @@ import {
 
 const env = getEnv();
 
+const trackApiError = (
+  error: unknown,
+  context: { url?: string; httpStatus?: number; query?: string; type: string },
+) => {
+  console.error(`Search API error [${context.type}]:`, error);
+  if (posthog.__loaded) {
+    console.warn('PostHog is not loaded, cannot track search API error');
+    posthog.captureException('search_api_error', {
+      error,
+      ...context,
+    });
+  }
+};
+
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
+  let url;
+  let httpStatus;
   try {
     const encodedQuery = encodeURIComponent(query);
-    const res = await fetch(
-      `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`,
-    );
+    const url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`;
+    const res = await fetch(url);
+    httpStatus = res.status;
+
     if (!res.ok) {
-      console.warn(`API failed [addresses]: ${res.status} for "${query}"`);
-      return {
-        adresser: [],
-        metadata: {
-          side: 1,
-          totaltAntallTreff: 0,
-          treffPerSide: 100,
-          viserFra: 0,
-          viserTil: 0,
-          sokeStreng: query,
-          utkoordsys: 4258,
-        },
-      };
+      throw new Error(
+        `API failed [addresses]: ${res.status} for "${query}", Statuscode:${res.status}`,
+      );
     }
     return res.json();
   } catch (error) {
-    console.error(`Error [addresses]: ${query}`, error);
+    trackApiError(error, { url, httpStatus, query, type: 'addresses' });
     return {
       adresser: [],
       metadata: {
@@ -53,53 +60,38 @@ export const getAddresses = async (
   }
 };
 
-export const getAdressesByLocation = async (
-  x: number,
-  y: number,
-  projection: ProjectionIdentifier,
-): Promise<AddressApiResponse> => {
-  const transformedCoord = transform([x, y], projection, 'EPSG:4326');
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/adresser/v1/punktsok?radius=50&lat=${transformedCoord[1]}&lon=${transformedCoord[0]}&treffPerSide=10`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av adresser');
-  return res.json();
-};
-
 export const PLACE_SEARCH_PAGE_SIZE = 10;
 export const getPlaceNames = async (
   query: string,
   page: number,
 ): Promise<PlaceNameApiResponse> => {
-  try {
-    const searchPart = query.split(',')[0].trim();
-    const municipalityPart = query.split(',')[1]?.trim();
+  const searchPart = query.split(',')[0].trim();
+  const municipalityPart = query.split(',')[1]?.trim();
 
-    const encodedQuery = encodeURIComponent(searchPart);
-    const encodedMunicipality = municipalityPart
-      ? encodeURIComponent(municipalityPart)
-      : null;
-    const res = await fetch(
-      `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn?sok=${encodedQuery}*${encodedMunicipality != null ? '&kommunenavn=' + encodedMunicipality + '*' : ''}&treffPerSide=${PLACE_SEARCH_PAGE_SIZE}&side=${page}&fuzzy=true`,
-    );
+  const encodedMunicipality = municipalityPart
+    ? encodeURIComponent(municipalityPart)
+    : null;
+
+  const url = new URL(`${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn`);
+  url.searchParams.append('sok', `${searchPart}*`);
+  if (encodedMunicipality) {
+    url.searchParams.append('kommunenavn', `${encodedMunicipality}*`);
+  }
+  url.searchParams.append('treffPerSide', PLACE_SEARCH_PAGE_SIZE.toString());
+  url.searchParams.append('side', page.toString());
+  url.searchParams.append('fuzzy', 'true');
+
+  try {
+    const res = await fetch(url.toString());
     if (!res.ok) {
-      console.warn(`API failed [placeNames]: ${res.status} for "${query}"`);
-      return {
-        navn: [],
-        metadata: {
-          side: page,
-          totaltAntallTreff: 0,
-          treffPerSide: 15,
-          viserFra: 0,
-          viserTil: 0,
-          sokeStreng: query,
-          utkoordsys: 25833,
-        },
-      };
+      throw new Error(
+        `API failed [placeNames]: ${res.status} for "${query}", Statuscode:${res.status}`,
+      );
     }
     return res.json();
   } catch (error) {
-    console.error(`Error [placeNames]: ${query}`, error);
+    trackApiError(error, { query, url: url.toString(), type: 'placeNames' });
+
     return {
       navn: [],
       metadata: {
@@ -122,24 +114,37 @@ export const getPlaceNamesByLocation = async (
   projection: ProjectionIdentifier,
 ): Promise<PlaceNamePointApiResponse> => {
   const projectionEPSGNumber = projection.split(':')[1];
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/punkt?nord=${y}&ost=${x}&treffPerSide=20&koordsys=${projectionEPSGNumber}&radius=${radius}&side=1`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
-  return res.json();
+  const url = `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/punkt?nord=${y}&ost=${x}&treffPerSide=35&koordsys=${projectionEPSGNumber}&radius=${radius}&side=1`;
+  let httpStatus;
+  try {
+    const res = await fetch(url);
+    httpStatus = res.status;
+
+    if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
+    return res.json();
+  } catch (error) {
+    trackApiError(error, {
+      url,
+      httpStatus,
+      query: `x:${x}, y:${y}, radius:${radius}, projection:${projection}`,
+      type: 'placeNamesByLocation',
+    });
+    throw error;
+  }
 };
 
 export const getRoads = async (query: string): Promise<Road[]> => {
+  const url = `${env.apiUrl}/v1/matrikkel/veg/${encodeURIComponent(query)}`;
   try {
-    const encodedQuery = encodeURIComponent(query);
-    const res = await fetch(`${env.apiUrl}/v1/matrikkel/veg/${encodedQuery}`);
+    const res = await fetch(url);
     if (!res.ok) {
-      console.warn(`API failed [roads]: ${res.status} for "${query}"`);
-      return [];
+      throw new Error(
+        `API failed [roads]: ${res.status} for "${query}", Statuscode:${res.status}`,
+      );
     }
     return res.json();
   } catch (error) {
-    console.error(`Error [roads]: ${query}`, error);
+    trackApiError(error, { query, url, type: 'roads' });
     return [];
   }
 };
@@ -165,44 +170,101 @@ const normalizePropertyQuery = (query: string): string => {
 };
 
 export const getProperties = async (query: string): Promise<Property[]> => {
+  const normalizedQuery = normalizePropertyQuery(query);
+  const encodedQuery = encodeURIComponent(normalizedQuery);
+  const url = `${env.apiUrl}/v1/matrikkel/eie/${encodedQuery}`;
+  let httpStatus;
   try {
-    const normalizedQuery = normalizePropertyQuery(query);
-    const encodedQuery = encodeURIComponent(normalizedQuery);
-    const res = await fetch(`${env.apiUrl}/v1/matrikkel/eie/${encodedQuery}`);
+    const res = await fetch(url);
+    httpStatus = res.status;
     if (!res.ok) {
-      console.warn(`API failed [properties]: ${res.status} for "${query}"`);
-      return [];
+      throw new Error(
+        `API failed [properties]: ${res.status} for "${query}", Statuscode:${res.status}`,
+      );
     }
     return res.json();
   } catch (error) {
-    console.error(`Error [properties]: ${query}`, error);
+    trackApiError(error, { query, url, httpStatus, type: 'properties' });
     return [];
   }
 };
 
 export const getElevation = async (x: number, y: number) => {
-  const res = await fetch(
-    `https://hoydedata.no/arcgis/rest/services/NHM_DTM_TOPOBATHY_25833/ImageServer/identify?f=json&geometry=${x},${y}&geometryType=esriGeometryPoint&sr=25833&returnGeometry=false&returnCatalogItems=false`,
+  const url = new URL(
+    'https://hoydedata.no/arcgis/rest/services/NHM_DTM_TOPOBATHY_25833/ImageServer/identify',
   );
-  if (!res.ok) throw new Error('Feil ved henting av høyde');
-  return res.json();
+  url.searchParams.append('f', 'json');
+  url.searchParams.append('geometry', `${x},${y}`);
+  url.searchParams.append('geometryType', 'esriGeometryPoint');
+  url.searchParams.append('sr', '25833'); //TODO ta denne som input
+  url.searchParams.append('returnGeometry', 'false');
+  url.searchParams.append('returnCatalogItems', 'false');
+  let httpStatus;
+  try {
+    const res = await fetch(url.toString());
+    httpStatus = res.status;
+    if (!res.ok) {
+      throw new Error(
+        `API failed [elevation]: ${res.status} for coordinates (${x}, ${y}), Statuscode:${res.status}`,
+      );
+    }
+    return res.json();
+  } catch (error) {
+    trackApiError(error, {
+      url: url.toString(),
+      httpStatus,
+      type: 'elevation',
+    });
+    throw error;
+  }
 };
 
 export const getEmergecyPosterInfoByCoordinates = async (
   lat: number,
   lon: number,
 ): Promise<EmergencyPosterResponse> => {
-  const res = await fetch(`${env.apiUrl}/emergencyPoster/${lat}/${lon}`);
-  if (!res.ok) throw new Error('Feil ved henting av informasjon for nødplakat');
-  return res.json();
+  const url = `${env.apiUrl}/emergencyPoster/${lat}/${lon}`;
+  let httpStatus;
+  try {
+    const res = await fetch(url);
+    httpStatus = res.status;
+    if (!res.ok) {
+      throw new Error(
+        `API failed [emergencyPoster]: ${res.status} for coordinates (${lat}, ${lon}), Statuscode:${res.status}`,
+      );
+    }
+    return res.json();
+  } catch (error) {
+    trackApiError(error, { url, httpStatus, type: 'emergencyPoster' });
+    throw error;
+  }
 };
 
 export const getPropetyInfoByCoordinates = async (lat: number, lon: number) => {
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/eiendom/v1/punkt/omrader?radius=1&nord=${lat}&ost=${lon}&koordsys=4258`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av eiendomsinformasjon');
-  return res.json();
+  const url = new URL(`${env.geoNorgeApiBaseUrl}/eiendom/v1/punkt/omrader`);
+  url.searchParams.append('radius', '1');
+  url.searchParams.append('nord', lat.toString());
+  url.searchParams.append('ost', lon.toString());
+  url.searchParams.append('koordsys', '4258');
+
+  let httpStatus;
+  try {
+    const res = await fetch(url.toString());
+    httpStatus = res.status;
+    if (!res.ok) {
+      throw new Error(
+        `API failed [propertyInfoByCoordinates]: ${res.status} for coordinates (${lat}, ${lon}), Statuscode:${res.status}`,
+      );
+    }
+    return res.json();
+  } catch (error) {
+    trackApiError(error, {
+      url: url.toString(),
+      httpStatus,
+      type: 'propertyInfoByCoordinates',
+    });
+    throw error;
+  }
 };
 
 export const getPropertyDetailsByMatrikkelId = async (
@@ -221,7 +283,7 @@ export const getPropertyDetailsByMatrikkelId = async (
     !isNumeric(festenr) ||
     !isNumeric(seksjonsnr)
   ) {
-    throw new Error('Alle parametere må være numeriske verdier.');
+    throw new Error('Alle parametere må være numeriske verdier.'); //TODO, ta inn number?!
   }
 
   let url = `${env.apiUrl}/v1/matrikkel/eiendom/`;
@@ -235,18 +297,51 @@ export const getPropertyDetailsByMatrikkelId = async (
     url += `${kommunenr}-${gardsnr}/${bruksnr}`;
   }
   url += `&KILDE:Eiendom KOMMUNENR:${kommunenr} GARDSNR:${gardsnr} BRUKSNR:${bruksnr} SEKSJONSNR:${seksjonsnr} FESTENR:${festenr}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('Feil ved henting av matrikkeldetaljer');
-  return res.json();
+  let httpStatus;
+  try {
+    const res = await fetch(url);
+    httpStatus = res.status;
+    if (!res.ok) {
+      throw new Error(
+        `API failed [propertyDetailsByMatrikkelId]: ${res.status} for matrikkelId (${kommunenr}-${gardsnr}/${bruksnr}/${festenr}/${seksjonsnr}), Statuscode:${res.status}`,
+      );
+    }
+    return res.json();
+  } catch (error) {
+    trackApiError(error, {
+      url,
+      httpStatus,
+      type: 'propertyDetailsByMatrikkelId',
+    });
+    throw error;
+  }
 };
 
 export const getPlaceNamesByCoordinates = async (
   north: number,
   east: number,
 ): Promise<PlaceNamePointApiResponse> => {
-  const res = await fetch(
-    `${env.geoNorgeApiBaseUrl}/stedsnavn/v1/punkt?nord=${north}&ost=${east}&treffPerSide=35&koordsys=25833&radius=150&side=1`,
-  );
-  if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
-  return res.json();
+  const url = new URL('https://ws.geonorge.no/stedsnavn/v1/punkt');
+  url.searchParams.append('nord', north.toString());
+  url.searchParams.append('ost', east.toString());
+  url.searchParams.append('treffPerSide', '35');
+  url.searchParams.append('koordsys', '25833');
+  url.searchParams.append('radius', '150');
+  url.searchParams.append('side', '1');
+
+  let httpStatus;
+  try {
+    const res = await fetch(url.toString());
+    httpStatus = res.status;
+    if (!res.ok) throw new Error('Feil ved henting av stedsnavn');
+    return res.json();
+  } catch (error) {
+    trackApiError(error, {
+      url: url.toString(),
+      httpStatus,
+      query: `north:${north}, east:${east}`,
+      type: 'placeNamesByCoordinates',
+    });
+    throw error;
+  }
 };

@@ -167,7 +167,6 @@ export const HikingMapSection = () => {
     try {
       const extent = overlayFootprint.extent;
       setStoredDownloadUrl(null);
-
       const res = await createHikingMap(
         includeLegend,
         includeSweeden,
@@ -199,6 +198,14 @@ export const HikingMapSection = () => {
     } catch (error) {
       console.error('Error generating hiking map:', error);
       setGenerateButtonText(t('printdialog.hikingMap.errors.generateFailed'));
+      ph.captureException('print_hiking_map_error', {
+        scale: selectedScale,
+        includeLegend,
+        includeSweeden,
+        includeCompassInstructions,
+        extent: overlayFootprint.extent,
+        errorMessage: (error as Error).message,
+      });
       setStoredDownloadUrl(null);
       setTimeout(() => {
         setGenerateButtonText(t('printdialog.hikingMap.buttons.generate'));

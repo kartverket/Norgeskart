@@ -4,6 +4,7 @@ import { ImageTile } from 'ol';
 import { WMTSCapabilities } from 'ol/format';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import Tile, { LoadFunction } from 'ol/Tile';
+import posthog from 'posthog-js';
 import { getEnv } from '../../env';
 import { AvailableProjections } from '../atoms';
 import { ProjectionIdentifier } from '../projections/types';
@@ -126,11 +127,20 @@ const WMTSAtom = atom(async () => {
       const providerId = pid as WMTSProviderId;
       const provider = providers[providerId];
       try {
-        const capabiltiesRes = await fetch(
-          provider.baseUrl + provider.endpoints.getCapabilities,
-        );
-        const capabilitiesText = await capabiltiesRes.text();
-        const providerCapabilities = parser.read(capabilitiesText);
+        let providerCapabilities;
+        try {
+          const capabiltiesRes = await fetch(
+            provider.baseUrl + provider.endpoints.getCapabilities,
+          );
+          const capabilitiesText = await capabiltiesRes.text();
+          providerCapabilities = parser.read(capabilitiesText);
+        } catch (error) {
+          posthog.captureException('wmts_capabilities_fetch_failed', {
+            providerId,
+            error: (error as Error).message,
+          });
+          throw error;
+        }
 
         /* eslint-disable @typescript-eslint/no-explicit-any */
         const availableMatrixSets: ProjectionIdentifier[] =

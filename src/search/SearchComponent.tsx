@@ -9,11 +9,12 @@ import {
   Spinner,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
 import { activeBackgroundLayerAtom } from '../map/layers/atoms.ts';
 import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
+import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { SearchResult } from '../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
@@ -78,99 +79,101 @@ export const SearchComponent = () => {
   }, []);
 
   return (
-    <Flex
-      flexDir="column"
-      alignItems="stretch"
-      gap={2}
-      pointerEvents={'auto'}
-      px={3}
-      pt={3}
-      maxH={'100%'}
-      overflowY={'auto'}
-      maxW={'450px'}
-    >
-      {/* TOPP: kart-flis + søkefelt */}
-      <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
-        <Flex alignItems="center" gap={2}>
-          {/* Kart-flis til venstre */}
+    <ErrorBoundary fallback={undefined} name={React.Component.name}>
+      <Flex
+        flexDir="column"
+        alignItems="stretch"
+        gap={2}
+        pointerEvents={'auto'}
+        px={3}
+        pt={3}
+        maxH={'100%'}
+        overflowY={'auto'}
+        maxW={'450px'}
+      >
+        {/* TOPP: kart-flis + søkefelt */}
+        <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
+          <Flex alignItems="center" gap={2}>
+            {/* Kart-flis til venstre */}
 
-          <Button
-            width="46px"
-            height="44px"
-            borderRadius={8}
-            overflow="hidden"
-            cursor="pointer"
-            padding={0}
-            onMouseEnter={() => {
-              cancelTimeouts();
-              iconHoverTimeoutRef.current = window.setTimeout(
-                () => setShowBackgroundSettings(true),
-                100,
-              );
-            }}
+            <Button
+              width="46px"
+              height="44px"
+              borderRadius={8}
+              overflow="hidden"
+              cursor="pointer"
+              padding={0}
+              onMouseEnter={() => {
+                cancelTimeouts();
+                iconHoverTimeoutRef.current = window.setTimeout(
+                  () => setShowBackgroundSettings(true),
+                  100,
+                );
+              }}
+              onMouseLeave={() => {
+                cancelTimeouts();
+                settingsHoverTimeoutRef.current = window.setTimeout(() => {
+                  setShowBackgroundSettings(false);
+                }, 700);
+              }}
+              onClick={() => {
+                cancelTimeouts();
+                setShowBackgroundSettings((s) => !s);
+              }}
+              boxShadow="md"
+            >
+              <Image
+                src={backgroundImageUrl}
+                alt="Velg bakgrunnskart"
+                width="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            </Button>
+
+            <Box position="relative" width="100%">
+              <Search
+                width="100%"
+                placeholder={t('search.placeholder')}
+                value={searchQuery}
+                onChange={handleChange}
+                height="45px"
+                fontSize="1.1rem"
+                bg="white"
+              />
+              <Box
+                position="absolute"
+                right="10px"
+                top="50%"
+                transform="translateY(-50%)"
+              >
+                <SearchIcon />
+              </Box>
+            </Box>
+          </Flex>
+        </Box>
+
+        <SearchResults
+          hoveredResult={hoveredResult}
+          setHoveredResult={setHoveredResult}
+        />
+        {showBackgroundSettings && (
+          <Box
             onMouseLeave={() => {
-              cancelTimeouts();
               settingsHoverTimeoutRef.current = window.setTimeout(() => {
                 setShowBackgroundSettings(false);
               }, 700);
             }}
-            onClick={() => {
+            onMouseEnter={() => {
               cancelTimeouts();
-              setShowBackgroundSettings((s) => !s);
             }}
-            boxShadow="md"
           >
-            <Image
-              src={backgroundImageUrl}
-              alt="Velg bakgrunnskart"
-              width="100%"
-              height="100%"
-              objectFit="cover"
+            <BackgroundLayerSettings
+              onSelectComplete={() => setShowBackgroundSettings(false)}
             />
-          </Button>
-
-          <Box position="relative" width="100%">
-            <Search
-              width="100%"
-              placeholder={t('search.placeholder')}
-              value={searchQuery}
-              onChange={handleChange}
-              height="45px"
-              fontSize="1.1rem"
-              bg="white"
-            />
-            <Box
-              position="absolute"
-              right="10px"
-              top="50%"
-              transform="translateY(-50%)"
-            >
-              <SearchIcon />
-            </Box>
           </Box>
-        </Flex>
-      </Box>
-
-      <SearchResults
-        hoveredResult={hoveredResult}
-        setHoveredResult={setHoveredResult}
-      />
-      {showBackgroundSettings && (
-        <Box
-          onMouseLeave={() => {
-            settingsHoverTimeoutRef.current = window.setTimeout(() => {
-              setShowBackgroundSettings(false);
-            }, 700);
-          }}
-          onMouseEnter={() => {
-            cancelTimeouts();
-          }}
-        >
-          <BackgroundLayerSettings
-            onSelectComplete={() => setShowBackgroundSettings(false)}
-          />
-        </Box>
-      )}
-    </Flex>
+        )}
+      </Flex>
+    </ErrorBoundary>
   );
 };

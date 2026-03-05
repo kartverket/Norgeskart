@@ -11,6 +11,7 @@ import {
   SwitchLabel,
   SwitchRoot,
   Text,
+  toaster,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -46,7 +47,6 @@ export const InputForm = ({
   const [isInfoCorrect, setIsInfoCorrect] = useState<boolean>(false);
 
   const ph = usePostHog();
-
   return (
     <Stack gap={3}>
       <FieldRoot orientation={'horizontal'} display={'flex'}>
@@ -159,12 +159,13 @@ export const InputForm = ({
             );
 
             if (!downloadLink) {
-              alert(
-                t(
+              toaster.create({
+                title: t(
                   'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                 ),
-              );
-              ph.capture('print_emergency_poster_failed');
+                type: 'error',
+              });
+              ph.captureException('print_emergency_poster_failed');
               return;
             }
 
