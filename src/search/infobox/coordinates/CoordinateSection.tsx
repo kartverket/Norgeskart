@@ -30,9 +30,10 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
   const isGeographic = selectedProjection === 'EPSG:4326'; // should it be flipped for others ? 4230?  || selectedProjection === 'EPSG:4230';
 
   const onCopyClick = () => {
+    const decimals = isGeographic ? 7 : 2;
     const coordString = isGeographic
-      ? `${y.toFixed(2)},${x.toFixed(2)}@${selectedProjection}`
-      : `${x.toFixed(2)},${y.toFixed(2)}@${selectedProjection}`;
+      ? `${y.toFixed(decimals)} ${x.toFixed(decimals)}`
+      : `${x.toFixed(decimals)},${y.toFixed(decimals)}@${selectedProjection}`;
 
     navigator.clipboard.writeText(coordString);
     toaster.create({
