@@ -32,7 +32,7 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
   const onCopyClick = () => {
     const decimals = isGeographic ? 7 : 2;
     const coordString = isGeographic
-      ? `${y.toFixed(decimals)},${x.toFixed(decimals)}@${selectedProjection}`
+      ? `${y.toFixed(decimals)} ${x.toFixed(decimals)}`
       : `${x.toFixed(decimals)},${y.toFixed(decimals)}@${selectedProjection}`;
 
     navigator.clipboard.writeText(coordString);
