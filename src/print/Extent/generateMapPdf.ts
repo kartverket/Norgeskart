@@ -11,11 +11,11 @@ import {
   themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
 import { getDrawLayer } from '../../draw/drawControls/hooks/mapLayers';
+import { getEnv } from '../../env';
 import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
 import { getScaleFromResolution } from '../../map/mapScale';
-import { getEnv } from '../../env';
 import type { Layer, Matrix } from './printApi';
 import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
