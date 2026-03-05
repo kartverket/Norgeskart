@@ -120,7 +120,7 @@ export const Toolbar = () => {
         </Tooltip>
         <ScaleSelector />
       </Flex>
-      <Flex justify="flex-end" alignItems="center" h={'100%'}>
+      <Flex justify="flex-end" alignItems="center" h={'100%'} flex={1}>
         {displayMapLegendControl && (
           <Tooltip content={t('toolbar.legend.tooltip')}>
             <Button
