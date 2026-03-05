@@ -22,7 +22,7 @@ export interface WmtsLayer {
   opacity: number;
   type: 'WMTS';
   dimensions: null;
-  requestEncoding: 'KVP';
+  requestEncoding: 'KVP' | 'REST';
   dimensionParams: Record<string, unknown>;
   matrixSet: string;
   matrices: Matrix[];

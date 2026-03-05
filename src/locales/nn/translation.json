@@ -577,7 +577,8 @@
     "toast": {
       "success": "Nedlasting fullført",
       "error": "Klarte ikkje å hente kartet"
-    }
+    },
+    "vectorTileFallbackWarning": "Nautisk bakgrunnskart er ikkje støtta av utskriftstenesta og vert erstatta med sjøkartraster i utskrifta."
   },
   "about": {
     "heading": "Om oss",

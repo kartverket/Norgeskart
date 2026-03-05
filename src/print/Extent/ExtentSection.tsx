@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   createListCollection,
@@ -21,6 +22,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
 import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
+import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { PrintBox } from './PrintBox';
 import {
@@ -127,6 +129,11 @@ export const ExtentSection = () => {
   return (
     <>
       <PrintBox map={map} />
+      {isVectorTileLayer(backgroundLayer) && (
+        <Alert status="warning" mb={2}>
+          {t('printExtent.vectorTileFallbackWarning')}
+        </Alert>
+      )}
       <Text>{t('printExtent.label')}</Text>
       <SelectRoot
         collection={createListCollection({ items: formatOptions })}
