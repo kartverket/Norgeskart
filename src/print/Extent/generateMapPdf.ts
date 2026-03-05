@@ -1,17 +1,22 @@
 import { toaster } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
 import Map from 'ol/Map';
+import TileLayer from 'ol/layer/Tile';
 import { transform } from 'ol/proj';
+import WMTSSource from 'ol/source/WMTS';
+import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import {
   getEffectiveWmsUrl,
   getThemeLayerById,
   themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
 import { getDrawLayer } from '../../draw/drawControls/hooks/mapLayers';
+import { getEnv } from '../../env';
 import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
+import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
 import { getScaleFromResolution } from '../../map/mapScale';
-import type { Layer } from './printApi';
+import type { Layer, Matrix } from './printApi';
 import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
 import { createGeoJsonLayerWithStyles } from './utils';
@@ -28,7 +33,148 @@ type GenerateMapPdfProps = {
   onError: (msg: string) => void;
 };
 
-const BASE_URL = 'https://cache.kartverket.no/v1/service';
+const KARTVERKET_CACHE_URL = 'https://cache.kartverket.no/v1/service';
+
+const PIXEL_SIZE = 0.00028;
+
+const buildBackgroundPrintLayer = (
+  backgroundLayer: BackgroundLayerName,
+  map: Map,
+): Layer => {
+  // Vector tile layers (e.g. nautical-background via MapLibre GL) cannot be
+  // rendered by MapFish Print. Fall back to the nearest raster equivalent:
+  // nautical-background → sjokartraster (mirrors the thumbnail mapping in atoms.ts).
+  if (isVectorTileLayer(backgroundLayer)) {
+    console.warn(
+      `Vector tile layer "${backgroundLayer}" is not supported by the print server. Falling back to "sjokartraster".`,
+    );
+    return {
+      baseURL: KARTVERKET_CACHE_URL,
+      customParams: { TRANSPARENT: 'true' },
+      style: 'default',
+      imageFormat: 'image/png',
+      layer: 'sjokartraster',
+      opacity: 1,
+      type: 'WMTS',
+      dimensions: null,
+      requestEncoding: 'KVP',
+      dimensionParams: {},
+      matrixSet: 'utm33n',
+      matrices: WMTS_MATRICES,
+    };
+  }
+
+  // WMS background layers
+  if (backgroundLayer === 'oceanicelectronic') {
+    const ENV = getEnv();
+    return {
+      baseURL: ENV.layerProviderParameters.geoNorgeWMS.baseUrl + '.ecc_enc',
+      customParams: { TRANSPARENT: 'true' },
+      imageFormat: 'image/png',
+      layers: ['cells'],
+      opacity: 1,
+      type: 'WMS',
+    };
+  }
+
+  if (backgroundLayer.startsWith('Nibcache_')) {
+    const ENV = getEnv();
+    const nibLayer = map
+      .getLayers()
+      .getArray()
+      .find((l) => l.get('id')?.startsWith('bg.Nibcache_'));
+
+    if (nibLayer instanceof TileLayer) {
+      const source = nibLayer.getSource();
+      if (source instanceof WMTSSource) {
+        const tileGrid = source.getTileGrid() as WMTSTileGrid;
+        const matrixIds = tileGrid.getMatrixIds();
+        const resolutions = tileGrid.getResolutions();
+
+        const matrices: Matrix[] = matrixIds.map((identifier, i) => {
+          const scaleDenominator = resolutions[i] / PIXEL_SIZE;
+          const rawTileSize = tileGrid.getTileSize(i);
+          const tileSize: [number, number] =
+            typeof rawTileSize === 'number'
+              ? [rawTileSize, rawTileSize]
+              : [rawTileSize[0], rawTileSize[1]];
+          const known = WMTS_MATRICES.find(
+            (m) =>
+              Math.abs(m.scaleDenominator - scaleDenominator) /
+                scaleDenominator <
+              0.001,
+          );
+          return {
+            identifier,
+            scaleDenominator,
+            topLeftCorner: tileGrid.getOrigin(i) as [number, number],
+            tileSize,
+            matrixSize: known?.matrixSize ?? [Math.pow(2, i), Math.pow(2, i)],
+          };
+        });
+
+        const rawUrl =
+          source.getUrls()?.[0] ??
+          `${ENV.layerProviderParameters.norgeIBilder.baseUrl}/arcgis/rest/services/${backgroundLayer}/MapServer/WMTS`;
+        const isRestUrl = rawUrl.includes('{');
+        const requestEncoding: 'KVP' | 'REST' = isRestUrl ? 'REST' : 'KVP';
+
+        const baseURL = rawUrl.split('?')[0];
+
+        return {
+          baseURL,
+          customParams: {
+            TRANSPARENT: 'true',
+            token: ENV.layerProviderParameters.norgeIBilder.apiKey,
+          },
+          style: source.getStyle() || 'default',
+          imageFormat: source.getFormat() || 'image/png',
+          layer: source.getLayer(),
+          opacity: 1,
+          type: 'WMTS',
+          dimensions: null,
+          requestEncoding,
+          dimensionParams: {},
+          matrixSet: source.getMatrixSet(),
+          matrices,
+        };
+      }
+    }
+
+    console.warn(
+      `Could not extract NorgeIBilder WMTS source from map. Falling back to topo.`,
+    );
+    return {
+      baseURL: KARTVERKET_CACHE_URL,
+      customParams: { TRANSPARENT: 'true' },
+      style: 'default',
+      imageFormat: 'image/png',
+      layer: 'topo',
+      opacity: 1,
+      type: 'WMTS',
+      dimensions: null,
+      requestEncoding: 'KVP',
+      dimensionParams: {},
+      matrixSet: 'utm33n',
+      matrices: WMTS_MATRICES,
+    };
+  }
+
+  return {
+    baseURL: KARTVERKET_CACHE_URL,
+    customParams: { TRANSPARENT: 'true' },
+    style: 'default',
+    imageFormat: 'image/png',
+    layer: backgroundLayer,
+    opacity: 1,
+    type: 'WMTS',
+    dimensions: null,
+    requestEncoding: 'KVP',
+    dimensionParams: {},
+    matrixSet: 'utm33n',
+    matrices: WMTS_MATRICES,
+  };
+};
 
 export const generateMapPdf = async ({
   map,
@@ -59,22 +205,7 @@ export const generateMapPdf = async ({
     const resolution = map.getView().getResolution();
     const scale = resolution ? getScaleFromResolution(resolution, map) : 25000;
 
-    const layers: Layer[] = [
-      {
-        baseURL: BASE_URL,
-        customParams: { TRANSPARENT: 'true' },
-        style: 'default',
-        imageFormat: 'image/png',
-        layer: backgroundLayer,
-        opacity: 1,
-        type: 'WMTS',
-        dimensions: null,
-        requestEncoding: 'KVP',
-        dimensionParams: {},
-        matrixSet: 'utm33n',
-        matrices: WMTS_MATRICES,
-      },
-    ];
+    const layers: Layer[] = [buildBackgroundPrintLayer(backgroundLayer, map)];
 
     const store = getDefaultStore();
     const activeThemeLayers = store.get(activeThemeLayersAtom);
@@ -113,7 +244,7 @@ export const generateMapPdf = async ({
       attributes: {
         map: {
           center: [convertedLon, convertedLat],
-          projection: sourceProjection,
+          projection: targetProjection,
           dpi: 128,
           rotation: rotationDegrees,
           scale: scale,

@@ -581,7 +581,9 @@
     "toast": {
       "success": "Nedlasting fullført",
       "error": "Klarte ikkje å hente kartet"
-    }
+    },
+    "vectorTileFallbackWarning": "Nautisk bakgrunnskart er ikkje støtta av utskriftstenesta og vert erstatta med sjøkartraster i utskrifta.",
+    "aerialImageryNotSupported": "Flyfoto er ikkje støtta av utskriftstenesta. Byt til eit anna bakgrunnskart for å skrive ut."
   },
   "about": {
     "heading": "Om oss",
