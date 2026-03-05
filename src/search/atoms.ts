@@ -46,6 +46,7 @@ const initialSearchQuery = getUrlParameter('sok') || '';
 export const searchQueryAtom = atom<string>(initialSearchQuery);
 export const searchPendingAtom = atom<boolean>(false);
 export const placeNamePageAtom = atom<number>(1);
+export const displaySearchResultsAtom = atom<boolean>(true);
 
 const searchCoordinatesEffect = atomEffect((get, set) => {
   const coords = get(searchCoordinatesAtom);
@@ -88,6 +89,7 @@ const searchQueryEffect = atomEffect((get, set) => {
 
   if (searchQuery) {
     setUrlParameter('sok', searchQuery);
+    set(displaySearchResultsAtom, true);
   } else {
     removeUrlParameter('sok');
   }

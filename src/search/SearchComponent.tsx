@@ -8,7 +8,7 @@ import {
   Search,
   Spinner,
 } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
@@ -18,6 +18,7 @@ import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { SearchResult } from '../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
+  displaySearchResultsAtom,
   searchPendingAtom,
   searchQueryAtom,
   useResetSearchResults,
@@ -56,6 +57,7 @@ export const SearchComponent = () => {
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
   const settingsHoverTimeoutRef = useRef<number | null>(null);
   const iconHoverTimeoutRef = useRef<number | null>(null);
+  const setDisplaySearchResults = useSetAtom(displaySearchResultsAtom);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
   );
@@ -140,6 +142,9 @@ export const SearchComponent = () => {
                 height="45px"
                 fontSize="1.1rem"
                 bg="white"
+                onClick={() => {
+                  setDisplaySearchResults(true);
+                }}
               />
               <Box
                 position="absolute"
