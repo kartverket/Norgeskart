@@ -15,14 +15,14 @@ export type Layer = WmtsLayer | WmsLayer | GeoJsonLayer;
 
 export interface WmtsLayer {
   baseURL: string;
-  customParams: { TRANSPARENT: string };
+  customParams: { TRANSPARENT: string; token?: string };
   style: string;
   imageFormat: string;
   layer: string;
   opacity: number;
   type: 'WMTS';
   dimensions: null;
-  requestEncoding: 'KVP';
+  requestEncoding: 'KVP' | 'REST';
   dimensionParams: Record<string, unknown>;
   matrixSet: string;
   matrices: Matrix[];
