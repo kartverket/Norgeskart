@@ -415,6 +415,10 @@
     "legend": {
       "tooltip": "Vis symbolforklaring",
       "label": "Teknforklaring"
+    },
+    "oldnorgeskartbutton": {
+      "tooltip": "Bruk gamle Norgeskart.no",
+      "content": "arkiv.norgeskart.no"
     }
   },
   "cookieDialog": {
