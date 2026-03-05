@@ -3,7 +3,6 @@ import {
   Button,
   Flex,
   IconButton,
-  Separator,
   SwitchControl,
   SwitchHiddenInput,
   SwitchRoot,
@@ -11,8 +10,9 @@ import {
   Tooltip,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { MapBrowserEvent } from 'ol';
+import { transform } from 'ol/proj';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
@@ -26,6 +26,7 @@ import {
 } from '../map/atoms';
 import { isRettIKartetDialogOpenAtom } from '../map/menu/dialogs/atoms';
 import { ProjectionSettings } from '../settings/map/ProjectionSettings';
+import { getUrlParameter } from '../shared/utils/urlUtils';
 import { ScaleSelector } from './ScaleSelector';
 
 const formatCoords = (
@@ -119,7 +120,7 @@ export const Toolbar = () => {
         </Tooltip>
         <ScaleSelector />
       </Flex>
-      <Flex flex="1" justify="flex-end" alignItems="center">
+      <Flex justify="flex-end" alignItems="center" h={'100%'}>
         {displayMapLegendControl && (
           <Tooltip content={t('toolbar.legend.tooltip')}>
             <Button
@@ -135,6 +136,38 @@ export const Toolbar = () => {
             </Button>
           </Tooltip>
         )}
+        <Tooltip content={t('toolbar.oldnorgeskartbutton.tooltip')}>
+          <Button
+            leftIcon="open_in_new"
+            variant="plain"
+            color="white"
+            size="sm"
+            onClick={() => {
+              const x = Number.parseFloat(
+                getUrlParameter('lon') || '396722.00',
+              );
+              const y = Number.parseFloat(
+                getUrlParameter('lat') || '7197864.00',
+              );
+              const z = Number.parseFloat(getUrlParameter('zoom') || '3');
+              const store = getDefaultStore();
+              const currentProjection = store
+                .get(mapAtom)
+                .getView()
+                .getProjection()
+                .getCode();
+              const transformedCoords = transform(
+                [x, y],
+                currentProjection,
+                'EPSG:25833',
+              );
+              const url = `https://norgeskart.no/#!?project=norgeskart&zoom=${z}&lat=${transformedCoords[1]}&lon=${transformedCoords[0]}`;
+              window.open(url, '_blank');
+            }}
+          >
+            {t('toolbar.oldnorgeskartbutton.content')}
+          </Button>
+        </Tooltip>
         <Tooltip content={t('toolbar.reportError.tooltip')}>
           <Button
             variant="plain"
@@ -148,7 +181,7 @@ export const Toolbar = () => {
             {t('toolbar.reportError.label')}
           </Button>
         </Tooltip>
-        <Separator orientation="vertical" mx={2} height="140%" />
+
         <LanguageSwitcher variant="icon" />
       </Flex>
     </Flex>
