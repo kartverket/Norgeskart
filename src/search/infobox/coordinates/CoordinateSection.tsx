@@ -28,7 +28,7 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
   const [x, y] = transform([lon, lat], inputCRS, selectedProjection);
 
   const onCopyClick = () => {
-    const coordString = `${x.toFixed(2)},${y.toFixed(2)}@${selectedProjection}`;
+    const coordString = `${y.toFixed(2)},${x.toFixed(2)}@${selectedProjection}`;
     navigator.clipboard.writeText(coordString);
     toaster.create({
       title: t('infoBox.coordinateSection.copy.toast.title'),
