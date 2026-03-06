@@ -8,6 +8,7 @@ import { SearchResult } from '../../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
   coordinateResultsAtom,
+  displaySearchResultsAtom,
   searchQueryAtom,
   selectedResultAtom,
 } from '../atoms.ts';
@@ -32,6 +33,7 @@ export const SearchResults = ({
   const { setMapLocation } = useMapSettings();
   const searchQuery = useAtomValue(searchQueryAtom);
   const { t } = useTranslation();
+  const displaySearchResults = useAtomValue(displaySearchResultsAtom);
   const [accordionTabsOpen, setAccordionTabsOpen] = useState<AccordionTab[]>([
     'places',
     'roads',
@@ -111,7 +113,7 @@ export const SearchResults = ({
       borderRadius={'16px'}
       maxH={'100%'}
       overflowY={'auto'}
-      display={'flex'}
+      display={displaySearchResults ? 'flex' : 'none'}
       maxWidth={'450px'}
     >
       <Box overflowY="auto" overflowX="hidden" minHeight="0px">

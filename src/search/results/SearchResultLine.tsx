@@ -1,5 +1,7 @@
 import { Box, Button, Flex, ListItem, Separator, Text } from '@kvib/react';
+import { useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { displaySearchResultsAtom } from '../atoms';
 
 export const SearchResultLine = ({
   heading,
@@ -19,12 +21,16 @@ export const SearchResultLine = ({
   onMouseLeave?: () => void;
 }) => {
   const { t } = useTranslation();
+  const setDisplaySearchResults = useSetAtom(displaySearchResultsAtom);
 
   return (
     <ListItem
       cursor="pointer"
       _hover={{ fontWeight: '600' }}
-      onClick={onClick}
+      onClick={() => {
+        setDisplaySearchResults(false);
+        onClick();
+      }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       as={'ul'}

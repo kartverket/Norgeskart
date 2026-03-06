@@ -1,16 +1,28 @@
-import { Heading, HStack, IconButton, Tooltip } from '@kvib/react';
+import { ButtonGroup, HStack, IconButton, Tooltip } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DrawAction } from '../../settings/draw/drawActions/atoms';
-import { useDrawActionsState } from '../../settings/draw/drawActions/drawActionsHooks';
+
+import {
+  canRedoAtom,
+  canUndoAtom,
+  DrawAction,
+} from '../../settings/draw/drawActions/atoms';
+import {
+  useDrawActions,
+  useDrawActionsState,
+} from '../../settings/draw/drawActions/drawActionsHooks';
 import { StyleChangeDetail } from './hooks/drawEventHandlers';
 import { useDrawSettings } from './hooks/drawSettings';
 import { useVerticalMove } from './hooks/verticalMove';
 
 export const EditControls = () => {
   const { moveSelectedUp, moveSelectedDown } = useVerticalMove();
-  const { drawType } = useDrawSettings();
+  const { drawType, deleteSelected } = useDrawSettings();
   const { addDrawAction } = useDrawActionsState();
+  const { undoLast, redoLastUndone } = useDrawActions();
+  const canUndoDrawAction = useAtomValue(canUndoAtom);
+  const canRedoDrawAction = useAtomValue(canRedoAtom);
   const { t } = useTranslation();
 
   const featureMovedListener = useCallback(
@@ -40,11 +52,13 @@ export const EditControls = () => {
     },
     [addDrawAction],
   );
+
   useEffect(() => {
     document.addEventListener('featureMoved', featureMovedListener);
     return () =>
       document.removeEventListener('featureMoved', featureMovedListener);
   }, [featureMovedListener]);
+
   useEffect(() => {
     document.addEventListener(
       'featureStyleChanged',
@@ -57,33 +71,58 @@ export const EditControls = () => {
       );
   }, [featureStyleChangedListener]);
 
-  if (drawType !== 'Move') {
-    return null;
-  }
   return (
     <>
-      <Heading size={{ base: 'sm', md: 'md' }}>
-        {t('draw.controls.edit')}
-      </Heading>
-      <HStack marginTop={2}>
-        <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
+      <HStack marginTop={2} wrap="wrap">
+        {drawType === 'Move' && (
+          <ButtonGroup>
+            <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
+              <IconButton
+                onClick={moveSelectedUp}
+                icon="arrow_cool_down"
+                variant="plain"
+                size={{ base: 'xs', md: 'sm' }}
+              />
+            </Tooltip>
+
+            <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
+              <IconButton
+                onClick={moveSelectedDown}
+                icon="arrow_warm_up"
+                variant="ghost"
+                size={{ base: 'xs', md: 'sm' }}
+              />
+            </Tooltip>
+          </ButtonGroup>
+        )}
+        <ButtonGroup>
+          <Tooltip content={t('draw.controls.tool.tooltip.undo')}>
+            <IconButton
+              variant="ghost"
+              disabled={!canUndoDrawAction}
+              onClick={undoLast}
+              icon="undo"
+              size={{ base: 'xs', md: 'sm' }}
+            />
+          </Tooltip>
+
+          <Tooltip content={t('draw.controls.tool.tooltip.redo')}>
+            <IconButton
+              variant="ghost"
+              disabled={!canRedoDrawAction}
+              onClick={redoLastUndone}
+              icon="redo"
+              size={{ base: 'xs', md: 'sm' }}
+            />
+          </Tooltip>
+        </ButtonGroup>
+        <Tooltip content={t('draw.controls.tool.tooltip.deleteselected')}>
           <IconButton
-            onClick={() => {
-              moveSelectedUp();
-            }}
-            icon={'arrow_cool_down'}
-            variant="plain"
-            size={{ base: 'xs', md: 'md' }}
-          />
-        </Tooltip>
-        <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
-          <IconButton
-            onClick={() => {
-              moveSelectedDown();
-            }}
-            icon={'arrow_warm_up'}
+            onClick={deleteSelected}
+            colorPalette="red"
+            icon="delete"
+            size="sm"
             variant="ghost"
-            size={{ base: 'xs', md: 'md' }}
           />
         </Tooltip>
       </HStack>

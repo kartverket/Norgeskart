@@ -25,8 +25,8 @@ export const LineWidthControl = () => {
   }
 
   return (
-    <VStack align="stretch">
-      <Heading size={{ base: 'sm', md: 'md' }}>{t('draw.size.label')}</Heading>
+    <VStack align="stretch" paddingY={2}>
+      <Heading size={{ base: 'xs', md: 'sm' }}>{t('draw.size.label')}</Heading>
 
       <HStack>
         {lineWidthCollection.map((item) => {
@@ -39,8 +39,8 @@ export const LineWidthControl = () => {
               onClick={() => setLineWidth(item.value)}
               aria-pressed={isSelected}
               aria-label={`${t('draw.size.label')} ${item.label}`}
-              w={{ base: '20px', md: '32px' }}
-              h={{ base: '20px', md: '32px' }}
+              w={{ base: '16px', md: '22px' }}
+              h={{ base: '16px', md: '22px' }}
               borderRadius="full"
               borderWidth="1px"
               display="inline-flex"
@@ -53,7 +53,7 @@ export const LineWidthControl = () => {
               _hover={{ bg: isSelected ? 'colorPalette.600' : 'gray.50' }}
               _active={{ transform: 'scale(0.98)' }}
             >
-              <Text fontSize="sm" fontWeight="semibold">
+              <Text fontSize="xs" fontWeight="semibold">
                 {item.label}
               </Text>
             </Box>

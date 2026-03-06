@@ -79,6 +79,17 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Upload sourc map to PostHog
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          POSTHOG_CLI_HOST: https://eu.posthog.com
+          POSTHOG_CLI_PROJECT_ID: 102231
+          POSTHOG_CLI_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+        run: |
+          npm install -g @posthog/cli
+          posthog-cli sourcemap inject --directory dist
+          posthog-cli sourcemap upload --directory dist
+
   deploy:
     runs-on: ubuntu-latest
     needs: build

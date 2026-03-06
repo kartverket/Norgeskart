@@ -12,7 +12,7 @@
     right: auto;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 70px;
+    bottom: 10px;
   }
 }
 
@@ -51,6 +51,7 @@
   opacity: 1;
   font-weight: bold;
 }
+
 .ol-tooltip-static {
   background-color: #ffffff;
   color: black;
@@ -81,9 +82,12 @@
 }
 
 .hiking-map-overlay {
-  width: 300px; /* Adjust as you like */
-  height: 400px; /* Adjust as you like */
-  pointer-events: none; /* Let user interact with map */
+  width: 300px;
+  /* Adjust as you like */
+  height: 400px;
+  /* Adjust as you like */
+  pointer-events: none;
+  /* Let user interact with map */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -99,4 +103,8 @@
 /* --- Misc --- */
 .hidden {
   display: none;
+}
+
+#map {
+  touch-action: none;
 }

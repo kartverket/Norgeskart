@@ -10,10 +10,11 @@ import {
   Heading,
   Switch,
   Text,
+  toaster,
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -21,9 +22,14 @@ import {
   getSubcategories,
   themeLayerConfigAtom,
 } from '../../api/themeLayerConfigApi';
-import { activeThemeLayersAtom } from '../../map/layers/atoms';
+import {
+  activeBackgroundLayerAtom,
+  activeThemeLayersAtom,
+  preNauticalProjectionAtom,
+} from '../../map/layers/atoms';
 import { MAX_THEME_LAYERS, useThemeLayers } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
+import { useMapSettings } from '../../map/mapHooks';
 
 type Theme = {
   name: string;
@@ -52,6 +58,11 @@ export const MapThemes = () => {
     activeThemeLayersAtom,
   );
   const ph = usePostHog();
+  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
+  const [, setPreNauticalProjection] = useAtom(preNauticalProjectionAtom);
+  const { setBackgroundLayer, setProjection, getMapProjectionCode } =
+    useMapSettings();
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -130,19 +141,75 @@ export const MapThemes = () => {
     }, 0);
   }, []);
 
+  const isSjoLayer = useCallback(
+    (layerName: ThemeLayerName): boolean => {
+      const layerDef = themeConfig.layers.find((l) => l.id === layerName);
+      if (!layerDef) return false;
+      const category = themeConfig.categories.find(
+        (c) => c.id === layerDef.categoryId,
+      );
+      return category?.id === 'sjo' || category?.parentId === 'sjo';
+    },
+    [themeConfig],
+  );
+
   const toggleLayer = useCallback(
-    (layerName: ThemeLayerName) => {
+    async (layerName: ThemeLayerName) => {
       const checked = isLayerChecked(layerName);
       if (!checked) {
         addThemeLayerToMap(layerName);
         ph.capture('theme_layer_added', {
           layerName,
         });
+        if (isSjoLayer(layerName)) {
+          if (activeBackgroundLayer !== 'nautical-background') {
+            if (getMapProjectionCode() !== 'EPSG:3857') {
+              setPreNauticalProjection(getMapProjectionCode());
+              await setProjection('EPSG:3857');
+              toaster.create({
+                title: t('map.settings.layers.projection.forcedWebMercator'),
+                duration: 4000,
+                type: 'info',
+              });
+            } else {
+              toaster.create({
+                title: t(
+                  'map.settings.layers.theme.switchedToNauticalBackground',
+                ),
+                duration: 4000,
+                type: 'info',
+              });
+            }
+            setBackgroundLayer('nautical-background');
+            setActiveBackgroundLayer('nautical-background');
+          } else {
+            toaster.create({
+              title: t(
+                'map.settings.layers.theme.nauticalBackgroundAlreadyActive',
+              ),
+              duration: 4000,
+              type: 'info',
+            });
+          }
+        }
       } else {
         removeThemeLayerFromMap(layerName);
       }
     },
-    [addThemeLayerToMap, removeThemeLayerFromMap, isLayerChecked, ph],
+    [
+      addThemeLayerToMap,
+      removeThemeLayerFromMap,
+      isLayerChecked,
+      ph,
+      isSjoLayer,
+      activeBackgroundLayer,
+      getMapProjectionCode,
+      setPreNauticalProjection,
+      setProjection,
+      setBackgroundLayer,
+      setActiveBackgroundLayer,
+      t,
+    ],
   );
 
   return (
@@ -209,7 +276,7 @@ export const MapThemes = () => {
                   width="100%"
                   alignItems="center"
                 >
-                  <Heading size={{ base: 'sm', md: 'lg' }}>
+                  <Heading size={{ base: 'xs', md: 'sm' }}>
                     {theme.heading}
                   </Heading>
                   {activeInCategory > 0 && (
@@ -221,38 +288,65 @@ export const MapThemes = () => {
               </AccordionItemTrigger>
               <AccordionItemContent>
                 {isExpanded &&
-                  theme.subThemes.map((subTheme) => (
-                    <Box key={subTheme.name} marginBottom={4}>
-                      <Heading
-                        fontWeight={'600'}
-                        size={{ base: 'sm', md: 'md' }}
+                  theme.subThemes.map((subTheme) =>
+                    subTheme.layers.length === 1 ? (
+                      <Flex
+                        key={subTheme.name}
+                        justifyContent="space-between"
+                        paddingTop={2}
+                        marginBottom={2}
+                        onClick={() => toggleLayer(subTheme.layers[0].name)}
+                        cursor="pointer"
                       >
-                        {subTheme.heading}
-                      </Heading>
-                      {subTheme.layers.map((layer) => (
-                        <Flex
-                          key={layer.name}
-                          justifyContent="space-between"
-                          paddingTop={2}
-                          onClick={() => toggleLayer(layer.name)}
-                          cursor="pointer"
+                        <Heading
+                          fontWeight={'600'}
+                          size={{ base: 'xs', md: 'sm' }}
                         >
-                          <Text fontSize={{ base: 'sm', md: 'md' }}>
-                            {layer.label}
-                          </Text>
-                          <Switch
-                            colorPalette="green"
-                            size="sm"
-                            checked={isLayerChecked(layer.name)}
-                            disabled={
-                              !isLayerChecked(layer.name) &&
-                              activeCount >= MAX_THEME_LAYERS
-                            }
-                          />
-                        </Flex>
-                      ))}
-                    </Box>
-                  ))}
+                          {subTheme.layers[0].label}
+                        </Heading>
+                        <Switch
+                          colorPalette="green"
+                          size="xs"
+                          checked={isLayerChecked(subTheme.layers[0].name)}
+                          disabled={
+                            !isLayerChecked(subTheme.layers[0].name) &&
+                            activeCount >= MAX_THEME_LAYERS
+                          }
+                        />
+                      </Flex>
+                    ) : (
+                      <Box key={subTheme.name} marginBottom={4}>
+                        <Heading
+                          fontWeight={'600'}
+                          size={{ base: 'xs', md: 'sm' }}
+                        >
+                          {subTheme.heading}
+                        </Heading>
+                        {subTheme.layers.map((layer) => (
+                          <Flex
+                            key={layer.name}
+                            justifyContent="space-between"
+                            paddingTop={2}
+                            onClick={() => toggleLayer(layer.name)}
+                            cursor="pointer"
+                          >
+                            <Text fontSize={{ base: 'xs', md: 'sm' }}>
+                              {layer.label}
+                            </Text>
+                            <Switch
+                              colorPalette="green"
+                              size="xs"
+                              checked={isLayerChecked(layer.name)}
+                              disabled={
+                                !isLayerChecked(layer.name) &&
+                                activeCount >= MAX_THEME_LAYERS
+                              }
+                            />
+                          </Flex>
+                        ))}
+                      </Box>
+                    ),
+                  )}
               </AccordionItemContent>
             </AccordionItem>
           );

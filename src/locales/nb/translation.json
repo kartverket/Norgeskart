@@ -51,7 +51,10 @@
           "moveup": "Flytt opp",
           "point": "Punkter",
           "polygon": "Flate",
-          "text": "Tekst"
+          "text": "Tekst",
+          "undo": "Angre",
+          "redo": "Gjør om",
+          "deleteselected": "Slett valgte"
         }
       },
       "toolSelect": {
@@ -75,7 +78,8 @@
     },
     "tools": "Tegneverktøy",
     "yesClear": "Ja, fjern",
-    "redoundo": "Angre / Gjør om"
+    "redoundo": "Angre / Gjør om",
+    "download": "Last ned"
   },
   "export": {
     "format": {
@@ -257,6 +261,8 @@
           "showAllProjections": "Vis flere koordinatsystemer"
         },
         "theme": {
+          "switchedToNauticalBackground": "Bakgrunnskartet er byttet til Nautisk bakgrunnskart",
+          "nauticalBackgroundAlreadyActive": "Nautisk bakgrunnskart er allerede aktivt",
           "label": "Velg temakart",
           "activeLayersCount": "Aktive lag",
           "warningLimit": "Maksimalt antall lag nådd. Vennligst deaktiver noen lag før du legger til flere for bedre ytelse.",
@@ -322,7 +328,14 @@
       "heading": "Status",
       "infoText": "Se status for våre tjenester ved å besøke lenken"
     },
-    "formsLinkText": "Åpne tilbakemeldingskjema"
+    "formsLinkText": "Åpne tilbakemeldingskjema",
+    "cookieConsent": {
+      "heading": "Informasjonskapsler",
+      "currentStatus": "Nåværende samtykke:",
+      "granted": "Godtatt",
+      "denied": "Avslått",
+      "pending": "Ikke valgt"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Gårdsnr.",
@@ -354,7 +367,9 @@
     "properties": "Eiendommer",
     "roads": "Veger",
     "tabHeading": "Søk",
-    "noResults": "Ingen treff"
+    "noResults": "Ingen treff",
+    "coordinateSwapWarning": "Koordinatene ser ikke ut til å være i Norge. De kan ha blitt limt inn i feil rekkefølge (lon/lat i stedet for lat/lon).",
+    "coordinateSwapButton": "Bytt rekkefølge"
   },
   "shared": {
     "actions": {
@@ -393,11 +408,17 @@
       "tooltip": "Velg koordinatsystem"
     },
     "coordinates": {
-      "tooltip": "Pekerens koordinater"
+      "tooltip": "Pekerens koordinater",
+      "east": "Ø",
+      "north": "N"
     },
     "legend": {
       "tooltip": "Vis symbolforklaring",
       "label": "Tegnforklaring"
+    },
+    "oldnorgeskartbutton": {
+      "tooltip": "Bruk gamle Norgeskart.no",
+      "content": "arkiv.norgeskart.no"
     }
   },
   "cookieDialog": {
@@ -413,6 +434,10 @@
       "text": "Informasjon",
       "base": "Info"
     }
+  },
+  "featureInfo": {
+    "title": "Objektinformasjon",
+    "loading": "Henter informasjon..."
   },
   "legend": {
     "heading": {
@@ -476,7 +501,7 @@
     },
     "elevationProfile": {
       "heading": "Tegn en linje for å lage en høydeprofil",
-      "infotext": "Opprett en høydeprofil ved å klikke i kartet for å plassere det første punktet og dobbelklikk for å avslutte.",
+      "infotext": "Opprett en høydeprofil ved å laste opp en .GPX fil eller ved å klikke i kartet for å plassere det første punktet og dobbelklikk for å avslutte.",
       "jobError": "Kunne ikke lage høydeprofil",
       "jobRunning": "Lager profil",
       "buttons": {
@@ -488,12 +513,21 @@
         },
         "exportJpeg": {
           "label": "Last ned som JPEG"
+        },
+        "reset": {
+          "label": "Nullstill"
         }
       },
       "chartLabels": {
         "title": "Høydeprofil",
         "xAxis": "Avstand [m]",
         "yAxis": "Høyde [m]"
+      },
+      "fileUpload": {
+        "dragDrop": {
+          "label": "Dra fil, eller trykk, her",
+          "fileInfo": ".gpx format"
+        }
       }
     },
     "hikingMap": {
@@ -529,7 +563,7 @@
       },
       "popupblockedalert": {
         "title": "Popup blokkert",
-        "body": "Popup blokkert. Venligst fjerne blokkeringen og prøv igjen "
+        "body": "Popup blokkert. Vennligst fjern blokkeringen og prøv igjen, eller bruk nedlastingsknappen"
       }
     }
   },
@@ -547,6 +581,14 @@
     "toast": {
       "success": "Nedlasting fullført",
       "error": "Klarte ikke å hente kartet"
-    }
+    },
+    "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkartraster i utskriften.",
+    "aerialImageryNotSupported": "Flyfoto støttes ikke av utskriftstjenesten. Vennligst bytt til et annet bakgrunnskart for å skrive ut."
+  },
+  "about": {
+    "heading": "Om oss",
+    "textone": "Norgeskart er Kartverkets mest brukte karttjeneste. Enten du planlegger en tur til fjells eller til sjøs, eller trenger informasjon om en eiendom, gir Norgeskart deg pålitelig og detaljert geografisk informasjon – presentert på en enkel og tilgjengelig måte.",
+    "texttwo": "Siden 1773 har Kartverket kartlagt Norge. Mye har endret seg siden den gang. Behov utvikler seg over tid, og ny teknologi gir oss stadig nye muligheter. Derfor jobber vi kontinuerlig med å tilby et bredt spekter av kartprodukter som møter brukernes behov – både i dag og i fremtiden.",
+    "textthree": "Sammen med brukerne skal vi være åpne, innovative og stabile."
   }
 }
