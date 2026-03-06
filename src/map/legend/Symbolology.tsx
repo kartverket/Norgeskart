@@ -95,32 +95,15 @@ const SymbolLine = ({
 
 const MarkSymbol = ({ mark }: { mark: Mark }) => {
   const { color } = getParamsFromFill(mark.Fill!);
-  console.log('mark', mark);
   switch (mark.WellKnownName) {
     case 'circle':
-      return (
-        <svg width="28" height="28">
-          <circle cx="14" cy="14" r="10" fill={color} />
-        </svg>
-      );
+      return <circle cx="14" cy="14" r="10" fill={color} />;
     case 'square':
-      return (
-        <svg width="28" height="28">
-          <rect x="4" y="4" width="20" height="20" fill={color} />
-        </svg>
-      );
+      return <rect x="4" y="4" width="20" height="20" fill={color} />;
     case 'triangle':
-      return (
-        <svg width="28" height="28">
-          <polygon points="14,4 24,24 4,24" fill={color} />
-        </svg>
-      );
+      return <polygon points="14,4 24,24 4,24" fill={color} />;
     default:
-      return (
-        <svg width="28" height="28">
-          <rect x="4" y="4" width="20" height="20" fill={color} />
-        </svg>
-      );
+      return <rect x="4" y="4" width="20" height="20" fill={color} />;
   }
 };
 
@@ -131,13 +114,16 @@ const PointSymbolizerPart = ({
   symbolizer: PointSymbolizer;
   text?: string;
 }) => {
+  const symbolizers = Array.isArray(symbolizer) ? symbolizer : [symbolizer];
   return (
     <SymbolLine text={text}>
-      {symbolizer.Graphic?.Mark ? (
-        <MarkSymbol mark={symbolizer.Graphic.Mark} />
-      ) : (
-        <></>
-      )}
+      <svg width="28" height="28">
+        {symbolizers.map((symbolizer, i) =>
+          symbolizer.Graphic?.Mark ? (
+            <MarkSymbol key={i} mark={symbolizer.Graphic.Mark} />
+          ) : null
+        )}
+      </svg>
     </SymbolLine>
   );
 };
@@ -154,10 +140,10 @@ const LineSymbolizerPart = ({
   return (
     <SymbolLine text={text}>
       <svg width="28" height="28">
-        {symbolizers.map((sym, idx) => {
+        {symbolizers.map((symbolizer, i) => {
           let color, width;
-          const svgParams = sym.Stroke?.SvgParameter;
-          const cssParams = sym.Stroke?.CssParameter;
+          const svgParams = symbolizer.Stroke?.SvgParameter;
+          const cssParams = symbolizer.Stroke?.CssParameter;
           if (svgParams) {
             color = svgParams[0];
             width = svgParams[1];
@@ -167,7 +153,7 @@ const LineSymbolizerPart = ({
           }
           return (
             <polyline
-              key={idx}
+              key={i}
               points="2,14 7,7 14,21 21,7 26,14"
               fill="none"
               stroke={color}
