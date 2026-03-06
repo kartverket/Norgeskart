@@ -1,11 +1,12 @@
 import { atom } from 'jotai';
+import { borderConfig } from '../map/layers/config/borders';
 import { dekningConfig } from '../map/layers/config/dekning';
-import { factsConfig } from '../map/layers/config/facts';
 import { fastmerkerLayerConfig } from '../map/layers/config/fastmerker';
 import { historicalMapsConfig } from '../map/layers/config/historicalMaps';
 import { outdoorRecreationLayerConfig } from '../map/layers/config/outdoorRecreation';
 import { placeNamesConfig } from '../map/layers/config/placeNames';
 import { propertyInfoConfig } from '../map/layers/config/propertyInfo';
+import { sjoConfig } from '../map/layers/config/sjo';
 import { tilgjengelighetConfig } from '../map/layers/config/tilgjengelighet';
 import { ThemeLayerName } from '../map/layers/themeWMS';
 
@@ -90,10 +91,11 @@ export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
     placeNamesConfig,
     historicalMapsConfig,
     outdoorRecreationLayerConfig,
-    factsConfig,
+    borderConfig,
     tilgjengelighetConfig,
     fastmerkerLayerConfig,
     dekningConfig,
+    sjoConfig,
   ];
 
   for (const config of configs) {

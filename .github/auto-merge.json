@@ -67,8 +67,26 @@
   },
   {
     "match": {
+      "dependency_name": "i18next",
+      "update_type": "semver:patch"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "i18next-browser-languagedetector",
+      "update_type": "semver:patch"
+    }
+  },
+  {
+    "match": {
       "dependency_name": "posthog-js",
       "update_type": "semver:minor"
+    }
+  },
+  {
+    "match": {
+      "dependency_name": "posthog/react",
+      "update_type": "semver:patch"
     }
   }
 ]

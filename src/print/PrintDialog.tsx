@@ -59,7 +59,6 @@ export const PrintDialog = () => {
       m={1}
       pointerEvents={'auto'}
       maxH={'100%'}
-      overflowY={'auto'}
       w={{ base: '100%', md: '500px' }}
     >
       <Stack>

@@ -46,6 +46,7 @@ const initialSearchQuery = getUrlParameter('sok') || '';
 export const searchQueryAtom = atom<string>(initialSearchQuery);
 export const searchPendingAtom = atom<boolean>(false);
 export const placeNamePageAtom = atom<number>(1);
+export const displaySearchResultsAtom = atom<boolean>(true);
 
 const searchCoordinatesEffect = atomEffect((get, set) => {
   const coords = get(searchCoordinatesAtom);
@@ -59,17 +60,14 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
   setUrlParameter('markerLat', coords.y.toString());
 
   const fetchData = async () => {
-    return await Promise.all([
-      getPlaceNamesByLocation(
-        coords.x,
-        coords.y,
-        500,
-        coords.projection as ProjectionIdentifier,
-      ),
-    ]);
+    return await getPlaceNamesByLocation(
+      coords.x,
+      coords.y,
+      500,
+      coords.projection as ProjectionIdentifier,
+    );
   };
-  fetchData().then((res) => {
-    const [placeResult] = res;
+  fetchData().then((placeResult) => {
     if (placeResult.navn) {
       set(placesNearbyAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
     }
@@ -91,6 +89,7 @@ const searchQueryEffect = atomEffect((get, set) => {
 
   if (searchQuery) {
     setUrlParameter('sok', searchQuery);
+    set(displaySearchResultsAtom, true);
   } else {
     removeUrlParameter('sok');
   }
@@ -218,8 +217,8 @@ const getInitialSelectedResult = (): SearchResult | null => {
     const parsedLat = parseFloat(lat);
     if (!Number.isNaN(parsedLon) && !Number.isNaN(parsedLat)) {
       const parsedCoordinate: ParsedCoordinate = {
-        lat: parsedLon,
-        lon: parsedLat,
+        lat: parsedLat,
+        lon: parsedLon,
         projection: projection as ProjectionIdentifier,
         formattedString: `${parsedLon.toFixed(2)}, ${parsedLat.toFixed(2)} @ ${projection.split(':')[1]}`,
         inputFormat: 'utm',

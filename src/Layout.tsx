@@ -1,16 +1,11 @@
-import { Box, Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
-import { useEffect } from 'react';
+import { Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
 import { displayCompassOverlayAtom } from './map/atoms';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
 import { MapComponent } from './map/MapComponent';
 import { MapControlButtons } from './map/MapControlButtons';
-import {
-  drawPanelCollapsedAtom,
-  mapToolAtom,
-  showSearchComponentAtom,
-} from './map/overlay/atoms';
+import { mapToolAtom, showSearchComponentAtom } from './map/overlay/atoms';
 import { Compass } from './map/overlay/Compass';
 import { LinkLogo } from './map/overlay/LinkLogo';
 import { MapToolButtons } from './map/overlay/MapToolButtons';
@@ -28,33 +23,22 @@ export type MapTool = 'layers' | 'draw' | 'info' | 'settings' | null;
 
 export const Layout = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
-  const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
   const showSearchComponent = useAtomValue(showSearchComponentAtom);
   const isMobile = useIsMobileScreen();
-  const isToolOpen = currentMapTool !== null;
   const isLargeScreen = useBreakpointValue({
     base: false,
     lg: true,
   });
   const selectedResult = useAtomValue(selectedResultAtom);
-  const [collapsed, setCollapsed] = useAtom(drawPanelCollapsedAtom);
+  const currentMapTool = useAtomValue(mapToolAtom);
 
-  useEffect(() => {
-    if (currentMapTool !== 'draw') {
-      setCollapsed(false);
-    }
-  }, [currentMapTool, setCollapsed]);
   useFeatureInfoClick();
   useSearchEffects();
   useMapClickSearch();
 
+  const isToolOpen = currentMapTool !== null;
   return (
-    <ErrorBoundary
-      fallback={undefined}
-      onError={() => {
-        console.error('Error in MapOverlay');
-      }}
-    >
+    <ErrorBoundary fallback={undefined}>
       {displayCompassOverlay && <Compass />}
       <Grid
         position={'relative'}
@@ -73,7 +57,9 @@ export const Layout = () => {
           gridRow={{ base: '1 / span 4', md: '1 / -1' }} /* span all rows */
           zIndex={0}
         >
-          <MapComponent />
+          <ErrorBoundary fallback={undefined} name={'MapComponent'}>
+            <MapComponent />
+          </ErrorBoundary>
         </GridItem>
         {(showSearchComponent || !isLargeScreen) && (
           <GridItem
@@ -91,7 +77,9 @@ export const Layout = () => {
             zIndex={1}
             pointerEvents={'none'}
           >
-            <SearchComponent />
+            <ErrorBoundary fallback={undefined} name={'SearchComponent'}>
+              <SearchComponent />
+            </ErrorBoundary>
           </GridItem>
         )}
 
@@ -99,47 +87,39 @@ export const Layout = () => {
           gridColumn={{
             base: '1 / span 12',
             md: '1 / span 6',
-            lg: '1 / span 4',
-            xl: '1 / span 3',
-            '2xl': '1 / span 2',
+            lg: '1 / span 5',
+            xl: '1 / span 4',
+            '2xl': '1 / span 3',
           }}
           gridRow={{ base: '2 / span 3', md: '1 / span 4' }}
-          zIndex={1}
+          zIndex={2}
           alignItems={{ base: 'flex-end', md: 'stretch' }}
           display={{ base: 'flex', md: 'block' }}
           pointerEvents={'none'}
         >
-          <Box
-            display={currentMapTool === 'draw' && collapsed ? 'none' : 'block'}
-            pointerEvents={
-              currentMapTool === 'draw' && collapsed ? 'none' : 'auto'
-            }
-            w="100%"
-          >
-            <MapToolCards
-              currentMapTool={currentMapTool}
-              onClose={() => {
-                setCurrentMapTool(null);
-                setCollapsed(false);
-              }}
-            />
-          </Box>
+          <ErrorBoundary fallback={undefined} name="MapToolCards">
+            <MapToolCards />
+          </ErrorBoundary>
         </GridItem>
 
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '8 / span 5',
+            md: '8 / span 7',
             lg: '9 / span 4',
             xl: '10 / span 3',
           }}
           gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
-          zIndex={1}
+          zIndex={2}
           pointerEvents={'none'}
         >
-          <Flex maxHeight={'100%'} w={'100%'} justifyContent={'flex-end'}>
-            <InfoBox />
-            <PrintDialog />
+          <Flex justifyContent={'flex-end'}>
+            <ErrorBoundary fallback={undefined} name={'InfoBox'}>
+              <InfoBox />
+            </ErrorBoundary>
+            <ErrorBoundary fallback={undefined} name={'PrintDialog'}>
+              <PrintDialog />
+            </ErrorBoundary>
           </Flex>
         </GridItem>
 
@@ -160,7 +140,7 @@ export const Layout = () => {
           gridColumn={{
             base: '1 / span 12',
             md: '2 / span 10',
-            lg: '2 / span 9',
+            lg: '2 / span 10',
           }}
           gridRow={5}
           alignContent={'end'}
@@ -169,7 +149,9 @@ export const Layout = () => {
           zIndex={1}
           pointerEvents={'none'}
         >
-          <MapToolButtons />
+          <ErrorBoundary fallback={undefined} name={'MapToolButtons'}>
+            <MapToolButtons />
+          </ErrorBoundary>
         </GridItem>
 
         <GridItem
@@ -183,7 +165,9 @@ export const Layout = () => {
           zIndex={1}
           pointerEvents={'none'}
         >
-          <MapControlButtons />
+          <ErrorBoundary fallback={undefined} name={'MapControlButtons'}>
+            <MapControlButtons />
+          </ErrorBoundary>
         </GridItem>
 
         {!isMobile && (
@@ -196,11 +180,17 @@ export const Layout = () => {
             zIndex={1}
             pointerEvents={'none'}
           >
-            <Toolbar />
+            <ErrorBoundary fallback={undefined} name={'Toolbar'}>
+              <Toolbar />
+            </ErrorBoundary>
           </GridItem>
         )}
       </Grid>
-      {isMobile && currentMapTool === 'draw' && <BottomDrawToolSelector />}
+      {isMobile && currentMapTool === 'draw' && (
+        <ErrorBoundary fallback={undefined} name={'BottomDrawToolSelector'}>
+          <BottomDrawToolSelector />
+        </ErrorBoundary>
+      )}
     </ErrorBoundary>
   );
 };

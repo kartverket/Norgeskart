@@ -1,4 +1,5 @@
 import { getDefaultStore } from 'jotai';
+import { Feature } from 'ol';
 import { LineString } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
@@ -7,7 +8,35 @@ import { Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../map/atoms';
 import { profileLineAtom } from './atoms';
 
-const LAYER_ID = 'elevationProfileDrawLayer';
+const ELEVATION_LAYER_ID = 'elevationProfileDrawLayer';
+
+export const addFeatureToLayer = (geometry: Feature) => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const drawLayer = map
+    .getLayers()
+    .getArray()
+    .find((layer) => layer.get('id') === ELEVATION_LAYER_ID) as
+    | VectorLayer
+    | undefined;
+  if (drawLayer) {
+    drawLayer.getSource()?.addFeature(geometry);
+  }
+};
+
+export const clearDrawLayer = () => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const drawLayer = map
+    .getLayers()
+    .getArray()
+    .find((layer) => layer.get('id') === ELEVATION_LAYER_ID) as
+    | VectorLayer
+    | undefined;
+  if (drawLayer) {
+    drawLayer.getSource()?.clear();
+  }
+};
 
 export const addDrawInteractionToMap = (onDrawEnd: () => void) => {
   const store = getDefaultStore();
@@ -16,7 +45,7 @@ export const addDrawInteractionToMap = (onDrawEnd: () => void) => {
   const drawLayer = new VectorLayer({
     source: new Vector(),
     zIndex: 1000,
-    properties: { id: LAYER_ID },
+    properties: { id: ELEVATION_LAYER_ID },
   });
 
   map.addLayer(drawLayer);
@@ -38,16 +67,25 @@ export const addDrawInteractionToMap = (onDrawEnd: () => void) => {
     drawLayer.getSource()?.clear();
   });
 
-  drawInteraction.on('drawend', (e: DrawEvent) => {
-    const store = getDefaultStore();
-
-    const geometry = e.feature.getGeometry();
+  const onNewFeature = (feature: Feature) => {
+    const geometry = feature.getGeometry();
     if (!geometry) return;
     if (!(geometry instanceof LineString)) return;
     onDrawEnd();
     store.set(profileLineAtom, geometry);
+  };
+
+  drawInteraction.on('drawend', (e: DrawEvent) => {
+    const feature = e.feature;
+    onNewFeature(feature);
   });
   map.addInteraction(drawInteraction);
+
+  drawLayer.getSource()?.on('addfeature', (e) => {
+    const feature = e.feature;
+    if (!feature) return;
+    onNewFeature(feature);
+  });
 };
 
 export const removeDrawInteractionFromMap = () => {
@@ -57,7 +95,9 @@ export const removeDrawInteractionFromMap = () => {
   const drawLayer = map
     .getLayers()
     .getArray()
-    .find((layer) => layer.get('id') === LAYER_ID) as VectorLayer | undefined;
+    .find((layer) => layer.get('id') === ELEVATION_LAYER_ID) as
+    | VectorLayer
+    | undefined;
 
   if (drawLayer) {
     map.removeLayer(drawLayer);

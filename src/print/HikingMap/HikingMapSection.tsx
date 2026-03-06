@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   ButtonGroup,
   Checkbox,
@@ -62,6 +63,7 @@ export const HikingMapSection = () => {
   const [storedDownloadUrl, setStoredDownloadUrl] = useState<string | null>(
     null,
   );
+  const [popupBlocked, setPopupBlocked] = useState(false);
   const ph = usePostHog();
 
   const { setBackgroundLayer } = useMapSettings();
@@ -138,6 +140,7 @@ export const HikingMapSection = () => {
   }, [selectedScale]);
 
   const printHikingMap = async () => {
+    setPopupBlocked(false);
     setPrintLoading(true);
     ph.capture('print_hiking_started', {
       scale: selectedScale,
@@ -164,7 +167,6 @@ export const HikingMapSection = () => {
     try {
       const extent = overlayFootprint.extent;
       setStoredDownloadUrl(null);
-
       const res = await createHikingMap(
         includeLegend,
         includeSweeden,
@@ -183,7 +185,7 @@ export const HikingMapSection = () => {
           includeSweeden,
           includeCompassInstructions,
         });
-        setGenerateButtonText(t('printdialog.hikingMap.errors.popupBlocked'));
+        setPopupBlocked(true);
         setStoredDownloadUrl(downloadLink);
       } else {
         ph.capture('print_hiking_complete', {
@@ -196,6 +198,14 @@ export const HikingMapSection = () => {
     } catch (error) {
       console.error('Error generating hiking map:', error);
       setGenerateButtonText(t('printdialog.hikingMap.errors.generateFailed'));
+      ph.captureException('print_hiking_map_error', {
+        scale: selectedScale,
+        includeLegend,
+        includeSweeden,
+        includeCompassInstructions,
+        extent: overlayFootprint.extent,
+        errorMessage: (error as Error).message,
+      });
       setStoredDownloadUrl(null);
       setTimeout(() => {
         setGenerateButtonText(t('printdialog.hikingMap.buttons.generate'));
@@ -320,6 +330,7 @@ export const HikingMapSection = () => {
         {storedDownloadUrl != null && (
           <Button
             onClick={() => {
+              setPopupBlocked(false);
               window.open(storedDownloadUrl, '_blank');
               ph.capture('print_hiking_download_link_clicked', {
                 scale: selectedScale,
@@ -342,6 +353,15 @@ export const HikingMapSection = () => {
           {t('printdialog.hikingMap.buttons.cancel')}
         </Button>
       </ButtonGroup>
+      {popupBlocked && (
+        <Alert
+          status="error"
+          title={t('printdialog.hikingMap.popupblockedalert.title')}
+          mb={3}
+        >
+          {t('printdialog.hikingMap.popupblockedalert.body')}
+        </Alert>
+      )}
     </Stack>
   );
 };

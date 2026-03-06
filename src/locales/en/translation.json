@@ -51,7 +51,10 @@
           "moveup": "Move up",
           "point": "Points",
           "polygon": "Polygon",
-          "text": "Text"
+          "text": "Text",
+          "undo": "Undo",
+          "redo": "Redo",
+          "deleteselected": "Delete selected"
         }
       },
       "toolSelect": {
@@ -70,7 +73,8 @@
     "textInputLabel": "Enter text",
     "tools": "Tools",
     "yesClear": "Yes clear",
-    "redoundo": "Undo / Redo "
+    "redoundo": "Undo / Redo ",
+    "download": "Download"
   },
   "export": {
     "format": {
@@ -252,6 +256,8 @@
           "showAllProjections": "Show more coordinatesystems"
         },
         "theme": {
+          "switchedToNauticalBackground": "Background map switched to Nautical Background Map",
+          "nauticalBackgroundAlreadyActive": "Nautical Background Map is already active",
           "label": "Chose theme layers",
           "activeLayersCount": "Active layers",
           "warningLimit": "Maximum layer limit reached. Please deactivate some layers before adding more for better performance.",
@@ -317,7 +323,14 @@
       "heading": "Status",
       "infoText": "See the status of our apps and services by following the link"
     },
-    "formsLinkText": "Open feedback form"
+    "formsLinkText": "Open feedback form",
+    "cookieConsent": {
+      "heading": "Cookies",
+      "currentStatus": "Current consent:",
+      "granted": "Accepted",
+      "denied": "Declined",
+      "pending": "Not set"
+    }
   },
   "propertyInfo": {
     "holdingNr": "Holding nr.",
@@ -349,7 +362,9 @@
     "properties": "Properties",
     "roads": "Roads",
     "tabHeading": "Search",
-    "noResults": "No results found"
+    "noResults": "No results found",
+    "coordinateSwapWarning": "These coordinates do not appear to be in Norway. They may have been pasted in the wrong order (lon/lat instead of lat/lon).",
+    "coordinateSwapButton": "Swap order"
   },
   "shared": {
     "actions": {
@@ -388,11 +403,17 @@
       "tooltip": "Select coordinate system"
     },
     "coordinates": {
-      "tooltip": "Coordinates of the mouse pointer"
+      "tooltip": "Coordinates of the mouse pointer",
+      "east": "E",
+      "north": "N"
     },
     "legend": {
       "tooltip": "Show map legend",
       "label": "Map legend"
+    },
+    "oldnorgeskartbutton": {
+      "tooltip": "Use old Norgeskart.no",
+      "content": "arkiv.norgeskart.no"
     }
   },
   "cookieDialog": {
@@ -408,6 +429,10 @@
       "text": "Information",
       "base": "Info"
     }
+  },
+  "featureInfo": {
+    "title": "Object information",
+    "loading": "Loading information..."
   },
   "legend": {
     "heading": {
@@ -428,7 +453,7 @@
         "heading": "Hiking map"
       },
       "elevationProfile": {
-        "heading": "Height profile"
+        "heading": "Elevation profile"
       },
       "emergencyPoster": {
         "heading": "Emergency poster"
@@ -470,9 +495,9 @@
       }
     },
     "elevationProfile": {
-      "heading": "Draw a line to create a height profile",
-      "infotext": "Start creating a height profile by clicking the map to place the first point and double click to finish.",
-      "jobError": "Failed to load height profile data.",
+      "heading": "Draw a line to create a elevation profile",
+      "infotext": "Start creating a elevation profile by uploading a .GPX file or by clicking the map to place the first point and double click to finish.",
+      "jobError": "Failed to load elevation profile data.",
       "jobRunning": "Creating profile",
       "buttons": {
         "exportCsv": {
@@ -483,12 +508,21 @@
         },
         "exportJpeg": {
           "label": "Download as JPEG"
+        },
+        "reset": {
+          "label": "Reset"
         }
       },
       "chartLabels": {
         "title": "elevationProfile",
         "xAxis": "Distance [m]",
         "yAxis": "Elevation [m]"
+      },
+      "fileUpload": {
+        "dragDrop": {
+          "label": "Drag file, or click, here",
+          "fileInfo": ".gpx format"
+        }
       }
     },
     "hikingMap": {
@@ -524,7 +558,7 @@
       },
       "popupblockedalert": {
         "title": "Popup blocked",
-        "body": "Popups are blocked. Please unblock them and try again"
+        "body": "Popups are blocked. Please unblock them and try again, or use the download button"
       }
     }
   },
@@ -542,6 +576,14 @@
     "toast": {
       "success": "Download complete",
       "error": "Could not download map"
-    }
+    },
+    "vectorTileFallbackWarning": "The nautical background map is not supported by the print service and will be replaced with raster nautical charts in the print.",
+    "aerialImageryNotSupported": "Aerial imagery is not supported by the print service. Please switch to a different background map to print."
+  },
+  "about": {
+    "heading": "About us",
+    "textone": "Norgeskart is the Norwegian Mapping Authority’s most widely used map service. Whether you are planning a trip to the mountains or at sea, or need information about a property, Norgeskart provides reliable and detailed geographic information – presented in a simple and accessible way.",
+    "texttwo": "Since 1773, the Norwegian Mapping Authority has been mapping Norway. Much has changed since then. Needs evolve over time, and new technology continuously gives us new opportunities. That is why we work continuously to offer a wide range of map products that meet users’ needs – both today and in the future.",
+    "textthree": "Together with our users, we aim to be open, innovative, and reliable."
   }
 }

@@ -1,6 +1,7 @@
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { LineString } from 'ol/geom';
+import posthog from 'posthog-js';
 import {
   getelevationProfileJobStatus,
   getelevationProfileResult,
@@ -11,23 +12,30 @@ import {
   JobResultResponse,
 } from '../../api/heightData/types';
 import { mapAtom } from '../../map/atoms';
-import { disableDrawInteraction, enableDrawInteraction } from './drawUtils';
+import {
+  clearDrawLayer,
+  disableDrawInteraction,
+  enableDrawInteraction,
+} from './drawUtils';
 import { getSamleDistance } from './utils';
 
 export type ProfileJobStatus =
   | 'notStarted'
   | 'running'
   | 'succeeded'
-  | 'failed';
+  | 'failed'
+  | 'cancelled';
 
 export const profileLineAtom = atom<LineString | null>(null);
+export const clearProfileFilesAtom = atom<(() => void) | null>(null);
 export const profileResponseAtom = atom<JobResultResponse | null>(null);
-export const profileJobStatusAtom = atom<string | null>(null);
+export const profileJobStatusAtom = atom<ProfileJobStatus | null>(null);
 export const profileSampleDistanceAtom = atom<number>(10);
 
 export const profileEffect = atomEffect((get, set) => {
   const line = get(profileLineAtom);
   if (line === null) {
+    clearDrawLayer();
     set(profileJobStatusAtom, 'notStarted');
     return;
   }
@@ -41,6 +49,7 @@ export const profileEffect = atomEffect((get, set) => {
   set(profileSampleDistanceAtom, stepLength);
 
   const lineCoordinates = line.getCoordinates();
+
   const body = new GPFeatureRecordSetLayer([lineCoordinates], wkid);
 
   const effect = async () => {
@@ -51,6 +60,12 @@ export const profileEffect = atomEffect((get, set) => {
     set(profileJobStatusAtom, 'running');
     disableDrawInteraction();
     while (true) {
+      const jobStatus = store.get(profileJobStatusAtom);
+      if (jobStatus === 'cancelled') {
+        set(profileResponseAtom, null);
+        set(profileJobStatusAtom, 'notStarted');
+        break;
+      }
       const status = await getelevationProfileJobStatus(submitResponse.jobId);
       if (status.jobStatus === 'esriJobSucceeded') {
         const result = await getelevationProfileResult(
@@ -62,6 +77,11 @@ export const profileEffect = atomEffect((get, set) => {
 
         break;
       } else if (status.jobStatus === 'esriJobFailed') {
+        posthog.captureException('elevation_profile_job_failed', {
+          jobId: submitResponse.jobId,
+          feature: lineCoordinates,
+          sampleDistance: stepLength,
+        });
         set(profileJobStatusAtom, 'failed');
         console.error('Job failed:', status);
         break;

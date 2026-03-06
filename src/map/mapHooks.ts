@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { View } from 'ol';
 import { get as getProjection, transform } from 'ol/proj';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import {
@@ -36,13 +36,16 @@ const useMap = () => {
   const setMapOrientation = useSetAtom(mapOrientationAtom);
   const setMagneticDeclination = useSetAtom(magneticDeclinationAtom);
 
-  const setTargetElement = (element: HTMLDivElement | null) => {
-    if (!map.getTarget() && element) {
-      map.setTarget(element);
-    } else if (element == null) {
-      map.setTarget(undefined);
-    }
-  };
+  const setTargetElement = useCallback(
+    (element: HTMLDivElement | null) => {
+      if (!map.getTarget() && element) {
+        map.setTarget(element);
+      } else if (element == null) {
+        map.setTarget(undefined);
+      }
+    },
+    [map],
+  );
 
   // that works for now, remove useEffect later
   useEffect(() => {
@@ -159,32 +162,22 @@ const useMapSettings = () => {
       }
     }
 
-    const WTMSLayers = map.getLayers().getArray().filter(isMapLayerBackground);
-    WTMSLayers.forEach((layer) => {
+    const existingBgLayers = map
+      .getLayers()
+      .getArray()
+      .filter(isMapLayerBackground);
+
+    if (existingBgLayers.length === 1 && existingBgLayers[0] === layerToAdd) {
+      setUrlParameter('backgroundLayer', actualLayerName);
+      return;
+    }
+
+    existingBgLayers.forEach((layer) => {
       map.removeLayer(layer);
     });
 
     map.addLayer(layerToAdd);
     setUrlParameter('backgroundLayer', actualLayerName);
-
-    const isNautical = actualLayerName === 'nautical-background';
-    const view = map.getView();
-    const currentProps = {
-      center: view.getCenter(),
-      zoom: view.getZoom(),
-      minZoom: view.getMinZoom(),
-      maxZoom: view.getMaxZoom(),
-      projection: view.getProjection(),
-      rotation: view.getRotation(),
-      extent: view.getProjection().getExtent(),
-    };
-    if (view.getConstrainResolution() !== isNautical) {
-      const updatedView = new View({
-        ...currentProps,
-        constrainResolution: isNautical,
-      });
-      map.setView(updatedView);
-    }
   };
 
   const zoomIn = () => {
@@ -253,15 +246,13 @@ const useMapSettings = () => {
     // Round zoom to integer to ensure it aligns with tile matrix
     newZoom = Math.round(newZoom);
 
-    const isNautical = backgroundLayerUrlParam === 'nautical-background';
-
     const newView = new View({
       center: newCenter,
       zoom: newZoom,
       minZoom: oldView.getMinZoom(),
       maxZoom: oldView.getMaxZoom(),
       projection: projection,
-      constrainResolution: isNautical,
+      constrainResolution: true,
       extent: projection.getExtent(),
     });
 

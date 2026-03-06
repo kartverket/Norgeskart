@@ -7,28 +7,41 @@ import {
   IconButton,
   VStack,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MapTool } from '../../Layout';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapThemes } from '../../settings/map/MapThemes';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { InfoDrawer } from '../../sidePanel/InfoDrawer';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
-import { drawPanelCollapsedAtom } from './atoms';
+import { drawPanelCollapsedAtom, mapToolAtom } from './atoms';
 
-export const MapToolCards = ({
-  currentMapTool,
-  onClose,
-}: {
-  currentMapTool: MapTool;
-  onClose: () => void;
-}) => {
+export const MapToolCards = () => {
+  const currentMapTool = useAtomValue(mapToolAtom);
+  const [collapsed, setCollapsed] = useAtom(drawPanelCollapsedAtom);
+  useEffect(() => {
+    if (currentMapTool !== 'draw') {
+      setCollapsed(false);
+    }
+  }, [currentMapTool, setCollapsed]);
+  return (
+    <Box
+      display={currentMapTool === 'draw' && collapsed ? 'none' : 'block'}
+      pointerEvents={currentMapTool === 'draw' && collapsed ? 'none' : 'auto'}
+      w="100%"
+    >
+      <MapToolCardsBody />
+    </Box>
+  );
+};
+const MapToolCardsBody = () => {
   const { t } = useTranslation();
   const isMobile = useIsMobileScreen();
   const [, setCollapsed] = useAtom(drawPanelCollapsedAtom);
   const { drawType } = useDrawSettings();
+  const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
 
   const drawTypeLabels: Record<string, string> = {
     Move: t('draw.controls.tool.tooltip.edit'),
@@ -42,6 +55,11 @@ export const MapToolCards = ({
   const activeToolLabel = drawType
     ? drawTypeLabels[drawType]
     : t('draw.tabHeading');
+
+  const onClose = () => {
+    setCurrentMapTool(null);
+    setCollapsed(true);
+  };
 
   if (currentMapTool === 'draw') {
     return (
@@ -65,7 +83,7 @@ export const MapToolCards = ({
   }
   if (currentMapTool === 'info') {
     return (
-      <MapToolCard label={t('info.settings.text')} onClose={onClose}>
+      <MapToolCard label={t('controller.help.mobiletext')} onClose={onClose}>
         <InfoDrawer />
       </MapToolCard>
     );
@@ -99,8 +117,8 @@ const MapToolCard = ({
   return (
     <VStack
       width="100%"
-      maxWidth={{ base: '100%', md: '425px' }}
-      maxHeight="100%"
+      maxWidth={{ base: '100%', md: '345px' }}
+      maxHeight="calc(100vh - 65px)"
       pointerEvents="auto"
       bg="#FFFF"
       shadow="lg"
@@ -138,7 +156,7 @@ const MapToolCard = ({
             aria-label="Lukk"
             colorPalette="red"
             onClick={onClose}
-            size="md"
+            size={{ base: 'xs', md: 'sm' }}
           />
         </HStack>
       </Flex>
