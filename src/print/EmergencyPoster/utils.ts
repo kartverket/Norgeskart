@@ -108,7 +108,7 @@ export const submitEmergencyPoster = async (
   payload: EmergencyPosterPayload,
 ): Promise<{ statusURL: string }> => {
   const response = await fetch(
-    `${env.emergencyPosterBaseUrl}/print/nodplakat/report.pdf`,
+    `${env.printApiUrl}/print/nodplakat/report.pdf`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -126,16 +126,14 @@ export const pollEmergencyPosterStatus = async (
 ): Promise<string | null> => {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      const response = await fetch(
-        `${env.emergencyPosterBaseUrl}/${statusURL}`,
-      );
+      const response = await fetch(`${env.printApiUrl}${statusURL}`);
       if (!response.ok) throw new Error(`Polling failed: ${response.status}`);
 
       const data: { status: string; downloadURL?: string } =
         await response.json();
 
       if (data.status === 'finished' && data.downloadURL) {
-        return `${env.emergencyPosterBaseUrl}/${data.downloadURL}`;
+        return `${env.printApiUrl}${data.downloadURL}`;
       }
     } catch (error) {
       console.error(`Attempt ${attempt + 1} failed:`, error);

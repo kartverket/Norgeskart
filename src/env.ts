@@ -15,8 +15,8 @@ type EnvName = 'local' | 'dev' | 'test' | 'prod';
 type Env = {
   apiUrl: string;
   heightDataApiUrl: string;
-  emergencyPosterBaseUrl: string;
   geoNorgeApiBaseUrl: string;
+  printApiUrl: string;
   usePostHog: boolean;
   layerProviderParameters: layerProviderParameters;
   envName: EnvName;
@@ -40,8 +40,8 @@ const LOCAL_ENV: Env = {
     },
   },
   envName: 'local',
-  emergencyPosterBaseUrl: 'https://print.norgeskart.no',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
+  printApiUrl: 'https://testapi.norgeskart.no',
 };
 
 const DEV_ENV: Env = {
@@ -62,8 +62,8 @@ const DEV_ENV: Env = {
     },
   },
   envName: 'dev',
-  emergencyPosterBaseUrl: 'https://print.norgeskart.no',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
+  printApiUrl: 'https://testapi.norgeskart.no',
 };
 
 const PROD_ENV: Env = {
@@ -84,8 +84,8 @@ const PROD_ENV: Env = {
     },
   },
   envName: 'prod',
-  emergencyPosterBaseUrl: 'https://print.norgeskart.no',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
+  printApiUrl: 'https://testapi.norgeskart.no',
 };
 
 const getEnvName = (): EnvName => {
