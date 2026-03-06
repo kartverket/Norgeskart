@@ -180,7 +180,9 @@ const PolygonSymbolizerPart = ({
   if (graphicFillMark) {
     return (
       <SymbolLine text={text}>
-        <MarkSymbol mark={graphicFillMark} />
+        <svg width="28" height="28">
+          <MarkSymbol mark={graphicFillMark} />
+        </svg>
       </SymbolLine>
     );
   }
