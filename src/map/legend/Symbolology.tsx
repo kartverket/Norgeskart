@@ -149,26 +149,32 @@ const LineSymbolizerPart = ({
   text?: string;
 }) => {
   console.log('line symbolizer', symbolizer);
-  let color;
-  let width;
-  const svgParams = symbolizer.Stroke?.SvgParameter;
-  const cssParams = symbolizer.Stroke?.CssParameter;
-  if (svgParams) {
-    color = svgParams[0];
-    width = svgParams[1];
-  } else if (cssParams) {
-    color = cssParams[0];
-    width = cssParams[2];
-  }
+  const symbolizers = Array.isArray(symbolizer) ? symbolizer : [symbolizer];
+
   return (
     <SymbolLine text={text}>
       <svg width="28" height="28">
-        <polyline
-          points="2,14 7,7 14,21 21,7 26,14"
-          fill="none"
-          stroke={color}
-          strokeWidth={width}
-        />
+        {symbolizers.map((sym, idx) => {
+          let color, width;
+          const svgParams = sym.Stroke?.SvgParameter;
+          const cssParams = sym.Stroke?.CssParameter;
+          if (svgParams) {
+            color = svgParams[0];
+            width = svgParams[1];
+          } else if (cssParams) {
+            color = cssParams[0];
+            width = cssParams[2];
+          }
+          return (
+            <polyline
+              key={idx}
+              points="2,14 7,7 14,21 21,7 26,14"
+              fill="none"
+              stroke={color}
+              strokeWidth={width}
+            />
+          );
+        })}
       </svg>
     </SymbolLine>
   );
@@ -229,9 +235,9 @@ const TextSymbolizerPart = ({
 
   const { color: haloColor, radius } = symbolizer.Halo
     ? {
-        color: symbolizer.Halo.Fill.SvgParameter,
-        radius: symbolizer.Halo.Radius * 2,
-      }
+      color: symbolizer.Halo.Fill.SvgParameter,
+      radius: symbolizer.Halo.Radius * 2,
+    }
     : { color: undefined };
   return (
     <SymbolLine text={text}>
@@ -253,6 +259,7 @@ const TextSymbolizerPart = ({
 };
 
 const RulePart = ({ rule }: { rule: Rule }) => {
+  console.log('RulePart: rule', rule);
   return (
     <VStack align={'flex-start'} w={'100%'}>
       {rule.PointSymbolizer && (
@@ -319,6 +326,8 @@ export const Symbolology = ({
   layerConfig: ThemeLayerDefinition;
   heading: string;
 }) => {
+
+  console.log('Symbolology: layerDescriptor', layerDescriptor);
   const descriptors = (
     Array.isArray(layerDescriptor.NamedLayer)
       ? layerDescriptor.NamedLayer
@@ -328,6 +337,7 @@ export const Symbolology = ({
       layerConfig.legendLayerNames == null ||
       layerConfig.legendLayerNames.includes(l.Name),
   );
+  console.log('Symbolology: descriptors', descriptors);
   return descriptors.map((l) => (
     <NamedLayerPart key={heading + l.Name} namedLayer={l} />
   ));
