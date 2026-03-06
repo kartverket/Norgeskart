@@ -62,7 +62,7 @@ export const borderConfig: ThemeLayerConfig = {
         nn: 'Noregs maritime grense',
         en: 'Norwegian maritime border',
       },
-      layers: 'Maritime_grenser,Maritime_grenser_navn',
+      layers: 'nmg_WMS',
       categoryId: 'borders',
       wmsUrl: env.layerProviderParameters.geoNorgeWMS.baseUrl + '.nmg',
       groupid: 3,
