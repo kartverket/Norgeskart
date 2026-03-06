@@ -284,6 +284,38 @@ export const MapThemes = () => {
                       ({activeInCategory}/{totalInCategory})
                     </Text>
                   )}
+                  <Switch //skjul denne hvis bare noen er valgt? egentlig hør hva som er tanken her....
+                    colorPalette="green"
+                    size="xs"
+                    // visibility={
+                    //   activeInCategory === 0 ||
+                    //   activeInCategory === totalInCategory
+                    //     ? 'visible'
+                    //     : 'hidden'
+                    // }
+                    checked={activeInCategory === totalInCategory}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      const allLayerNames = theme.subThemes.flatMap(
+                        (subTheme) =>
+                          subTheme.layers.map((layer) => layer.name),
+                      );
+                      console.log(theme.heading, allLayerNames, activeLayerSet);
+                      if (activeInCategory !== totalInCategory) {
+                        allLayerNames.forEach((name) =>
+                          addThemeLayerToMap(name),
+                        );
+                      } else {
+                        console.log('hi there');
+                        allLayerNames.filter(isLayerChecked).forEach(
+                          (name) => {
+                            removeThemeLayerFromMap(name);
+                          }, // sjekk hvilke som er er på før de fjernes
+                        );
+                      }
+                    }}
+                  />
                 </Flex>
               </AccordionItemTrigger>
               <AccordionItemContent>
@@ -302,7 +334,7 @@ export const MapThemes = () => {
                           fontWeight={'600'}
                           size={{ base: 'xs', md: 'sm' }}
                         >
-                          {subTheme.layers[0].label}
+                          {subTheme.layers[0].label} asd asd
                         </Heading>
                         <Switch
                           colorPalette="green"
@@ -320,7 +352,7 @@ export const MapThemes = () => {
                           fontWeight={'600'}
                           size={{ base: 'xs', md: 'sm' }}
                         >
-                          {subTheme.heading}
+                          {subTheme.heading} asdasd
                         </Heading>
                         {subTheme.layers.map((layer) => (
                           <Flex
