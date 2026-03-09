@@ -93,15 +93,20 @@ const SymbolLine = ({
   );
 };
 
-const MarkSymbol = ({ mark }: { mark: Mark }) => {
+const MarkSymbol = ({ mark, rotation }: { mark: Mark; rotation?: number }) => {
   const { color } = getParamsFromFill(mark.Fill!);
+  const svgRotation = rotation ? -rotation : 0;
   switch (mark.WellKnownName) {
     case 'circle':
       return <circle cx="14" cy="14" r="10" fill={color} />;
     case 'square':
       return <rect x="4" y="4" width="20" height="20" fill={color} />;
     case 'triangle':
-      return <polygon points="14,4 24,24 4,24" fill={color} />;
+      return (
+        <g transform={`rotate(${svgRotation},14,14)`}>
+          <polygon points="14,4 24,24 4,24" fill={color} />
+        </g>
+      );
     default:
       return <rect x="4" y="4" width="20" height="20" fill={color} />;
   }
@@ -173,12 +178,13 @@ const PolygonSymbolizerPart = ({
 }) => {
   const { fill, stroke } = getParamsFromPolygonSymboliser(symbolizer);
   const graphicFillMark = fill?.GraphicFill?.Graphic.Mark;
+  const graphicFillRotation = fill?.GraphicFill?.Graphic.Rotation;
 
   if (graphicFillMark) {
     return (
       <SymbolLine text={text}>
         <svg width="28" height="28">
-          <MarkSymbol mark={graphicFillMark} />
+          <MarkSymbol mark={graphicFillMark} rotation={graphicFillRotation} />
         </svg>
       </SymbolLine>
     );

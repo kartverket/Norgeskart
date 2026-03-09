@@ -82,6 +82,7 @@ export interface Graphic {
   Mark?: Mark;
   ExternalGraphic?: ExternalGraphic;
   Size?: number;
+  Rotation?: number;
 }
 export interface GraphicFill {
   Graphic: Graphic;
