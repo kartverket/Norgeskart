@@ -17,7 +17,7 @@ import {
   Text,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
@@ -25,12 +25,7 @@ import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
 import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { PrintBox } from './PrintBox';
-import {
-  printBoxCenterAtom,
-  printBoxExtentAtom,
-  printBoxExtentEffect,
-  printBoxLayoutAtom,
-} from './atoms';
+import { getExtentFromMap, printBoxLayoutAtom } from './atoms';
 import { generateMapPdf } from './generateMapPdf';
 import { PrintLayout, usePrintCapabilities } from './usePrintCapabilities';
 
@@ -66,10 +61,8 @@ export const ExtentSection = () => {
   const map = useAtomValue(mapAtom);
   const backgroundLayer = useAtomValue(activeBackgroundLayerAtom);
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
-  const setPrintBoxCenter = useSetAtom(printBoxCenterAtom);
   const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
-  const printBoxExtent = useAtomValue(printBoxExtentAtom);
-  useAtom(printBoxExtentEffect);
+  const layout = useAtomValue(printBoxLayoutAtom);
   const ph = usePostHog();
 
   const [format, setFormat] = useState('A4');
@@ -78,12 +71,6 @@ export const ExtentSection = () => {
 
   const formatOptions = getFormatOptions(layouts);
   const selectedLayout = getSelectedLayout(layouts, format, orientation);
-
-  useEffect(() => {
-    if (!map) return;
-    const center = map.getView().getCenter();
-    if (center) setPrintBoxCenter(center as [number, number]);
-  }, [map, setPrintBoxCenter]);
 
   useEffect(() => {
     if (!selectedLayout) return;
@@ -97,6 +84,7 @@ export const ExtentSection = () => {
   }, [selectedLayout, setPrintBoxLayout]);
 
   const handlePrint = async () => {
+    const printBoxExtent = getExtentFromMap(map, layout);
     if (!selectedLayout || !printBoxExtent) return;
 
     ph.capture('print_extent_initiated', {
