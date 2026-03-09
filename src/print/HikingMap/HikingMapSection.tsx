@@ -47,7 +47,7 @@ const yExtent1_25k = 19_500;
 type HikingMapSacles = (typeof MapScaleOptions)[number];
 export const HikingMapSection = () => {
   const [selectedScale, setSelectedScale] =
-    useState<HikingMapSacles>('1 : 50 000');
+    useState<HikingMapSacles>('1 : 25 000');
   const [mapName, setMapName] = useState<string>('');
   const { t } = useTranslation();
   const [generateButtonText, setGenerateButtonText] = useState<string>(
