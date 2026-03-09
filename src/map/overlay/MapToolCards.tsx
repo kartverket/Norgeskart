@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { DrawSettings } from '../../settings/draw/DrawSettings';
-import { MapThemes } from '../../settings/map/MapThemes';
+import { MapThemes } from '../../settings/map/themes/MapThemes';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { InfoDrawer } from '../../sidePanel/InfoDrawer';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
