@@ -121,7 +121,7 @@ const PointSymbolizerPart = ({
         {symbolizers.map((symbolizer, i) =>
           symbolizer.Graphic?.Mark ? (
             <MarkSymbol key={i} mark={symbolizer.Graphic.Mark} />
-          ) : null
+          ) : null,
         )}
       </svg>
     </SymbolLine>
@@ -223,9 +223,9 @@ const TextSymbolizerPart = ({
 
   const { color: haloColor, radius } = symbolizer.Halo
     ? {
-      color: symbolizer.Halo.Fill.SvgParameter,
-      radius: symbolizer.Halo.Radius * 2,
-    }
+        color: symbolizer.Halo.Fill.SvgParameter,
+        radius: symbolizer.Halo.Radius * 2,
+      }
     : { color: undefined };
   return (
     <SymbolLine text={text}>
@@ -314,7 +314,6 @@ export const Symbolology = ({
   layerConfig: ThemeLayerDefinition;
   heading: string;
 }) => {
-
   console.log('Symbolology: layerDescriptor', layerDescriptor);
   const descriptors = (
     Array.isArray(layerDescriptor.NamedLayer)

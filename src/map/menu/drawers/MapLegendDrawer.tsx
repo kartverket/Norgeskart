@@ -1,10 +1,10 @@
 import { DrawerContent } from '@chakra-ui/react';
 import { Drawer, DrawerPositioner, useBreakpointValue } from '@kvib/react';
 import { useAtom } from 'jotai';
-import { displayMapLegendAtom } from '../../atoms';
-import { MapLegend } from '../../legend/MapLegend';
-import { activeThemeLayersAtom } from '../../layers/atoms';
 import { useEffect } from 'react';
+import { displayMapLegendAtom } from '../../atoms';
+import { activeThemeLayersAtom } from '../../layers/atoms';
+import { MapLegend } from '../../legend/MapLegend';
 
 export const MapLegendDrawer = () => {
   const [isOpen, setIsOpen] = useAtom(displayMapLegendAtom);
@@ -18,7 +18,7 @@ export const MapLegendDrawer = () => {
     if (isOpen && activeLayers.size === 0) {
       setIsOpen(false);
     }
-  }, [activeLayers, isOpen, setIsOpen])
+  }, [activeLayers, isOpen, setIsOpen]);
 
   return (
     <Drawer

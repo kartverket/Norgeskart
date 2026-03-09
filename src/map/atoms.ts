@@ -6,6 +6,7 @@ import { get as getProjection } from 'ol/proj';
 
 import { atomEffect } from 'jotai-effect';
 import { v4 as uuidv4 } from 'uuid';
+import { themeLayerConfigAtom } from '../api/themeLayerConfigApi';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { mapLayers } from './layers';
@@ -14,7 +15,6 @@ import { BackgroundLayerName } from './layers/backgroundLayers';
 import { ControlPortal } from './mapControls';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
-import { themeLayerConfigAtom } from '../api/themeLayerConfigApi';
 
 export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 3;
@@ -44,7 +44,7 @@ export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
     const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;
-  })
+  });
   return !displayMapLegned && hasLegend;
 });
 export const displayCompassOverlayAtom = atom<boolean>(false);
