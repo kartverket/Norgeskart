@@ -43,16 +43,17 @@ export const MapThemes = () => {
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
 
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
-    activeThemeLayersAtom,
-  );
-  const ph = usePostHog();
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
   const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
   const [, setPreNauticalProjection] = useAtom(preNauticalProjectionAtom);
   const { setBackgroundLayer, setProjection, getMapProjectionCode } =
     useMapSettings();
+  const ph = usePostHog();
+
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
+    activeThemeLayersAtom,
+  );
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -252,6 +253,8 @@ export const MapThemes = () => {
         variant="outline"
         value={expandedItems}
         onValueChange={(details) => setExpandedItems(details.value)}
+        lazyMount
+        unmountOnExit
       >
         {configThemeLayers.map((theme) => {
           const activeInCategory = getActiveCategoryCount(theme);
@@ -277,7 +280,11 @@ export const MapThemes = () => {
               </AccordionItemTrigger>
               <AccordionItemContent>
                 {theme.subThemes.map((subTheme) => (
-                  <SubThemeSection key={subTheme.name} subTheme={subTheme} />
+                  <SubThemeSection
+                    key={subTheme.name}
+                    subTheme={subTheme}
+                    toggleLayer={toggleLayer}
+                  />
                 ))}
               </AccordionItemContent>
             </AccordionItem>

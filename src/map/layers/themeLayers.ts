@@ -107,20 +107,55 @@ export const parseLegacyLayersParameter = (
 export const useThemeLayers = () => {
   const [activeLayerSet, setActiveLayerSet] = useAtom(activeThemeLayersAtom);
 
-  const addThemeLayerToMap = (layerName: ThemeLayerName): boolean => {
-    if (activeLayerSet.size >= MAX_THEME_LAYERS) {
-      return false;
-    }
-    setActiveLayerSet((prev) => new Set(prev).add(layerName));
-    return true;
-  };
-
-  const removeThemeLayerFromMap = (layerName: ThemeLayerName) => {
+  const addThemeLayersToMap = (layerNames: ThemeLayerName[]) => {
     setActiveLayerSet((prev) => {
       const newSet = new Set(prev);
-      newSet.delete(layerName);
+      layerNames.forEach((name) => {
+        newSet.add(name);
+      });
       return newSet;
     });
+  };
+
+  const addThemeLayerToMap = (
+    layerName: ThemeLayerName | ThemeLayerName[],
+  ): boolean => {
+    if (Array.isArray(layerName)) {
+      if (activeLayerSet.size + layerName.length > MAX_THEME_LAYERS) {
+        return false;
+      }
+      addThemeLayersToMap(layerName);
+      return true;
+    } else {
+      if (activeLayerSet.size >= MAX_THEME_LAYERS) {
+        return false;
+      }
+      setActiveLayerSet((prev) => new Set(prev).add(layerName));
+      return true;
+    }
+  };
+  const removeThemeLayersFromMap = (layerNames: ThemeLayerName[]) => {
+    setActiveLayerSet((prev) => {
+      const newSet = new Set(prev);
+      layerNames.forEach((name) => {
+        newSet.delete(name);
+      });
+      return newSet;
+    });
+  };
+
+  const removeThemeLayerFromMap = (
+    layerName: ThemeLayerName | ThemeLayerName[],
+  ) => {
+    if (Array.isArray(layerName)) {
+      removeThemeLayersFromMap(layerName);
+    } else {
+      setActiveLayerSet((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(layerName);
+        return newSet;
+      });
+    }
   };
 
   return {
