@@ -259,6 +259,7 @@ export const MapThemes = () => {
         {configThemeLayers.map((theme) => {
           const activeInCategory = getActiveCategoryCount(theme);
           const totalInCategory = getTotalCategoryLayers(theme);
+          const defaultOpen = theme.subThemes.length === 1;
 
           return (
             <AccordionItem key={theme.name} value={theme.name}>
@@ -284,6 +285,7 @@ export const MapThemes = () => {
                     key={subTheme.name}
                     subTheme={subTheme}
                     toggleLayer={toggleLayer}
+                    defaultOpen={defaultOpen}
                   />
                 ))}
               </AccordionItemContent>
