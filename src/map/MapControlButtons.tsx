@@ -47,6 +47,7 @@ export const MapControlButtons = () => {
       w={{ base: '10', md: '12' }}
       pointerEvents="auto"
       py={1}
+      shadow="lg"
     >
       {displayMapLegendControl && (
         <ControlButton
