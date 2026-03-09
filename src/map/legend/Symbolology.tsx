@@ -134,7 +134,6 @@ const LineSymbolizerPart = ({
   symbolizer: LineSymbolizer;
   text?: string;
 }) => {
-  console.log('line symbolizer', symbolizer);
   const symbolizers = Array.isArray(symbolizer) ? symbolizer : [symbolizer];
 
   return (
@@ -172,9 +171,7 @@ const PolygonSymbolizerPart = ({
   symbolizer: PolygonSymbolizer | PolygonSymbolizer[];
   text?: string;
 }) => {
-  console.log('polygon symbolizer', symbolizer);
   const { fill, stroke } = getParamsFromPolygonSymboliser(symbolizer);
-  console.log('oh hi mark', fill?.GraphicFill);
   const graphicFillMark = fill?.GraphicFill?.Graphic.Mark;
 
   if (graphicFillMark) {
@@ -247,7 +244,6 @@ const TextSymbolizerPart = ({
 };
 
 const RulePart = ({ rule }: { rule: Rule }) => {
-  console.log('RulePart: rule', rule);
   return (
     <VStack align={'flex-start'} w={'100%'}>
       {rule.PointSymbolizer && (
@@ -314,7 +310,6 @@ export const Symbolology = ({
   layerConfig: ThemeLayerDefinition;
   heading: string;
 }) => {
-  console.log('Symbolology: layerDescriptor', layerDescriptor);
   const descriptors = (
     Array.isArray(layerDescriptor.NamedLayer)
       ? layerDescriptor.NamedLayer
@@ -324,7 +319,6 @@ export const Symbolology = ({
       layerConfig.legendLayerNames == null ||
       layerConfig.legendLayerNames.includes(l.Name),
   );
-  console.log('Symbolology: descriptors', descriptors);
   return descriptors.map((l) => (
     <NamedLayerPart key={heading + l.Name} namedLayer={l} />
   ));

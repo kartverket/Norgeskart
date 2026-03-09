@@ -65,7 +65,6 @@ export const DynamicLegend = ({
     return null;
   }
 
-  console.log('legendData', legendData);
   return (
     <Symbolology
       layerConfig={layer}
