@@ -26,7 +26,7 @@ export const SingleLayerLegend = ({
   const currentLang = i18n.language as 'nb' | 'nn' | 'en';
 
   const layer = getThemeLayerById(config, layerName);
-  if (!layer) {
+  if (!layer || layer.noLegend) {
     return null;
   }
 

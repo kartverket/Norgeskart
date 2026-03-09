@@ -26,6 +26,7 @@ export const historicalMapsConfig: ThemeLayerConfig = {
       legacyId: '1011',
       queryable: true,
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.n5raster2',
+      noLegend: true,
     },
     {
       id: 'amtMap',
@@ -40,6 +41,7 @@ export const historicalMapsConfig: ThemeLayerConfig = {
       legacyId: '1012',
       queryable: false,
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.historiskekart',
+      noLegend: true,
     },
   ],
 };

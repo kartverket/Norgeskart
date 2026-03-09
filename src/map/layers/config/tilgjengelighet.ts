@@ -465,6 +465,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 6,
       legacyId: '1013',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '6_t_inngangbygg_r_01',
@@ -517,6 +518,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 9,
       legacyId: '1017',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '9_t_inngangbygg_r_02',
@@ -569,6 +571,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 8,
       legacyId: '1021',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '8_t_inngangbygg',
@@ -647,6 +650,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 5,
       legacyId: '1015',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '5_gapahukhytte_01',
@@ -660,6 +664,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 5,
       legacyId: '1016',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '5_fiskeplass_01',
@@ -673,6 +678,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 5,
       legacyId: '1017',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '5_grillbalplass_01',
@@ -686,6 +692,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 5,
       legacyId: '1018',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '5_baderampe_01',
@@ -699,6 +706,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 5,
       legacyId: '1019',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '5_hc_parkering_friluft_01',
@@ -712,6 +720,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 5,
       legacyId: '1020',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '5_skiloype_01',
@@ -790,6 +799,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 7,
       legacyId: '1026',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '7_gapahukhytte_02',
@@ -803,6 +813,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 7,
       legacyId: '1027',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '7_fiskeplass_02',
@@ -816,6 +827,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 7,
       legacyId: '1028',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '7_grillbalplass_02',
@@ -829,6 +841,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 7,
       legacyId: '1029',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '7_hc_parkering_friluft_02',
@@ -842,6 +855,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 7,
       legacyId: '1030',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '7_skiloype_02',
@@ -920,6 +934,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1036',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '3_gapahukhytte_03',
@@ -933,6 +948,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1037',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '3_fiskeplass_03',
@@ -946,6 +962,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1038',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '3_grillbalplass_03',
@@ -959,6 +976,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1039',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '3_baderampe_02',
@@ -972,6 +990,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1040',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '3_hc_parkering_friluft_03',
@@ -985,6 +1004,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 3,
       legacyId: '1041',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '3_skiloype_03',
@@ -1011,6 +1031,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1055',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: '10_sittegruppebenk',
@@ -1024,6 +1045,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       groupid: 10,
       legacyId: '1056',
       queryable: true,
+      useLegendGraphic: true,
     },
   ],
 };

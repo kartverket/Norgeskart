@@ -26,6 +26,7 @@ export const dekningConfig: ThemeLayerConfig = {
       groupid: 18,
       legacyId: '8011',
       queryable: false,
+      noLegend: true,
       style: {
         fill: {
           color: 'rgba(51, 153, 204, 0.2)',
@@ -61,6 +62,7 @@ export const dekningConfig: ThemeLayerConfig = {
       groupid: 18,
       legacyId: '8012',
       queryable: false,
+      noLegend: true,
       style: {
         fill: {
           color: 'rgba(102, 178, 102, 0.2)',
@@ -95,6 +97,7 @@ export const dekningConfig: ThemeLayerConfig = {
       groupid: 18,
       legacyId: '8013',
       queryable: false,
+      noLegend: true,
       style: {
         fill: {
           color: 'rgba(204, 153, 51, 0.2)',
@@ -129,6 +132,7 @@ export const dekningConfig: ThemeLayerConfig = {
       groupid: 18,
       legacyId: '8014',
       queryable: false,
+      noLegend: true,
       style: {
         fill: {
           color: 'rgba(153, 102, 204, 0.2)',
@@ -163,6 +167,7 @@ export const dekningConfig: ThemeLayerConfig = {
       groupid: 18,
       legacyId: '8015',
       queryable: false,
+      noLegend: true,
       style: {
         fill: {
           color: 'rgba(204, 51, 102, 0.2)',
@@ -197,6 +202,7 @@ export const dekningConfig: ThemeLayerConfig = {
       groupid: 18,
       legacyId: '8016',
       queryable: false,
+      noLegend: true,
       style: {
         fill: {
           color: 'rgba(102, 178, 204, 0.2)',
