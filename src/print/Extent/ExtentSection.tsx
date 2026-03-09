@@ -127,6 +127,11 @@ export const ExtentSection = () => {
           {t('printExtent.aerialImageryNotSupported')}
         </Alert>
       )}
+      {map && map.getView().getProjection().getCode() !== 'EPSG:25833' && (
+        <Alert status="warning" mb={2}>
+          {t('printExtent.projectionWarning')}
+        </Alert>
+      )}
       <Text>{t('printExtent.label')}</Text>
       <SelectRoot
         collection={createListCollection({ items: formatOptions })}
