@@ -9,9 +9,11 @@ export type Theme = {
 export type SubTheme = {
   name: string;
   heading: string;
-  layers: {
-    name: ThemeLayerName;
-    label: string;
-  }[];
+  layers: SubThemeLayer[];
   disableToggleAll?: boolean;
+};
+
+export type SubThemeLayer = {
+  name: ThemeLayerName;
+  label: string;
 };
