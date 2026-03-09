@@ -15,7 +15,6 @@ import { getEnv } from '../../env';
 import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
-import { getScaleFromResolution } from '../../map/mapScale';
 import type { Layer, Matrix } from './printApi';
 import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
@@ -202,8 +201,12 @@ export const generateMapPdf = async ({
     );
     const rotation = map.getView().getRotation() || 0;
     const rotationDegrees = (rotation * 180) / Math.PI;
-    const resolution = map.getView().getResolution();
-    const scale = resolution ? getScaleFromResolution(resolution, map) : 25000;
+    const PT_TO_METERS = 0.0254 / 72; // 1 typographic point in meters
+    const extentWidthMeters = Math.abs(extent[2] - extent[0]);
+    const scale =
+      layout.width && layout.width > 0
+        ? Math.round(extentWidthMeters / (layout.width * PT_TO_METERS))
+        : 25000;
 
     const layers: Layer[] = [buildBackgroundPrintLayer(backgroundLayer, map)];
 

@@ -583,8 +583,9 @@
       "success": "Download complete",
       "error": "Could not download map"
     },
-    "vectorTileFallbackWarning": "The nautical background map is not supported by the print service and will be replaced with raster nautical charts in the print.",
-    "aerialImageryNotSupported": "Aerial imagery is not supported by the print service. Please switch to a different background map to print."
+    "vectorTileFallbackWarning": "The nautical background map is not supported by the print service and will be replaced with nautical charts in the print.",
+    "aerialImageryNotSupported": "Aerial imagery is not supported by the print service. Please switch to a different background map to print.",
+    "projectionWarning": "The print output will always be in UTM zone 33 (EPSG:25833), regardless of the selected map projection."
   },
   "about": {
     "heading": "About us",
