@@ -16,9 +16,9 @@ export const placeNamesConfig: ThemeLayerConfig = {
       id: 'placeNameLanguages',
       groupid: 8,
       name: {
-        nb: 'Stedsnavn etter språk',
-        nn: 'Stadnamn etter språk',
-        en: 'Place names by language',
+        nb: 'Språk',
+        nn: 'Språk',
+        en: 'Language',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.ssr2',
       parentId: 'placeNames',
@@ -27,9 +27,20 @@ export const placeNamesConfig: ThemeLayerConfig = {
       id: 'placeNameTypes',
       groupid: 3,
       name: {
-        nb: 'Stedsnavn etter type',
-        nn: 'Stadnamn etter type',
-        en: 'Place names by type',
+        nb: 'Navnetype',
+        nn: 'Namnetype',
+        en: 'Name type',
+      },
+      wmsUrl: 'https://wms.geonorge.no/skwms1/wms.ssr2',
+      parentId: 'placeNames',
+    },
+    {
+      id: 'placeNameRecentDecisions',
+      groupid: 10,
+      name: {
+        nb: 'Vedtak siste periode',
+        nn: 'Vedtak siste periode',
+        en: 'Decisions',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.ssr2',
       parentId: 'placeNames',
@@ -40,7 +51,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       name: {
         nb: 'Skrivemåtestatus',
         nn: 'Skrivemåtestatus',
-        en: 'Writing status',
+        en: 'Spelling status',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.ssr2',
       parentId: 'placeNames',
@@ -51,18 +62,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       name: {
         nb: 'Navnesaksstatus',
         nn: 'Namnesaksstatus',
-        en: 'Name case status',
-      },
-      wmsUrl: 'https://wms.geonorge.no/skwms1/wms.ssr2',
-      parentId: 'placeNames',
-    },
-    {
-      id: 'placeNameRecentDecisions',
-      groupid: 10,
-      name: {
-        nb: 'Siste vedtak',
-        nn: 'Siste vedtak',
-        en: 'Recent decisions',
+        en: 'Place name status',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.ssr2',
       parentId: 'placeNames',
@@ -313,9 +313,9 @@ export const placeNamesConfig: ThemeLayerConfig = {
     {
       id: 'acceptedPlaceNames',
       name: {
-        nb: 'Godkjent',
-        nn: 'Godkjent',
-        en: 'Accepted',
+        nb: 'Godkjent skrivemåte',
+        nn: 'Godkjent skrivemåte',
+        en: 'Accepted spelling',
       },
       layers: 'godkjent',
       categoryId: 'placeNameWritingStatus',
@@ -383,8 +383,8 @@ export const placeNamesConfig: ThemeLayerConfig = {
     {
       id: 'unevaluatedPlaceNames',
       name: {
-        nb: 'Uvurdert',
-        nn: 'Uvurdert',
+        nb: 'Uvurdert skrivemåte',
+        nn: 'Uvurdert skrivemåte',
         en: 'Unevaluated',
       },
       layers: 'uvurdert',
@@ -411,9 +411,9 @@ export const placeNamesConfig: ThemeLayerConfig = {
     {
       id: 'rejectedPlaceNames',
       name: {
-        nb: 'Avslått',
-        nn: 'Avslått',
-        en: 'Rejected',
+        nb: 'Avslått skrivemåte',
+        nn: 'Avslått skrivemåte',
+        en: 'Rejected spelling',
       },
       layers: 'avslatt',
       categoryId: 'placeNameWritingStatus',
