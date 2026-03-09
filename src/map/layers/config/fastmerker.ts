@@ -157,6 +157,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
       groupid: 14,
       legacyId: '1016',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: 'swedishFinnishBaseStations',
@@ -170,6 +171,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
       groupid: 14,
       legacyId: '1017',
       queryable: true,
+      useLegendGraphic: true,
     },
     {
       id: 'nivBenchmarks',

@@ -67,7 +67,8 @@ export const DynamicLegend = ({
 
   return (
     <Symbolology
-      activeThemeLayers={legendData.StyledLayerDescriptor}
+      layerConfig={layer}
+      layerDescriptor={legendData.StyledLayerDescriptor}
       heading={layer.id}
     />
   );
