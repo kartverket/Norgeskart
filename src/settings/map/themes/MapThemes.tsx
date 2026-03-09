@@ -8,7 +8,6 @@ import {
   Button,
   Flex,
   Heading,
-  Switch,
   Text,
   toaster,
   VStack,
@@ -21,30 +20,21 @@ import {
   getMainCategories,
   getSubcategories,
   themeLayerConfigAtom,
-} from '../../api/themeLayerConfigApi';
+} from '../../../api/themeLayerConfigApi';
 import {
   activeBackgroundLayerAtom,
   activeThemeLayersAtom,
   preNauticalProjectionAtom,
-} from '../../map/layers/atoms';
-import { MAX_THEME_LAYERS, useThemeLayers } from '../../map/layers/themeLayers';
-import { ThemeLayerName } from '../../map/layers/themeWMS';
-import { useMapSettings } from '../../map/mapHooks';
+} from '../../../map/layers/atoms';
+import {
+  MAX_THEME_LAYERS,
+  useThemeLayers,
+} from '../../../map/layers/themeLayers';
+import { ThemeLayerName } from '../../../map/layers/themeWMS';
+import { useMapSettings } from '../../../map/mapHooks';
+import { SubThemeSection } from './SubTheme';
+import { SubTheme, Theme } from './types';
 
-type Theme = {
-  name: string;
-  heading: string;
-  subThemes: SubTheme[];
-};
-
-type SubTheme = {
-  name: string;
-  heading: string;
-  layers: {
-    name: ThemeLayerName;
-    label: string;
-  }[];
-};
 export const MapThemes = () => {
   const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
     useThemeLayers();
@@ -53,16 +43,17 @@ export const MapThemes = () => {
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
 
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
-    activeThemeLayersAtom,
-  );
-  const ph = usePostHog();
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
   const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
   const [, setPreNauticalProjection] = useAtom(preNauticalProjectionAtom);
   const { setBackgroundLayer, setProjection, getMapProjectionCode } =
     useMapSettings();
+  const ph = usePostHog();
+
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
+    activeThemeLayersAtom,
+  );
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -262,11 +253,12 @@ export const MapThemes = () => {
         variant="outline"
         value={expandedItems}
         onValueChange={(details) => setExpandedItems(details.value)}
+        lazyMount
+        unmountOnExit
       >
         {configThemeLayers.map((theme) => {
           const activeInCategory = getActiveCategoryCount(theme);
           const totalInCategory = getTotalCategoryLayers(theme);
-          const isExpanded = expandedItems.includes(theme.name);
 
           return (
             <AccordionItem key={theme.name} value={theme.name}>
@@ -287,66 +279,13 @@ export const MapThemes = () => {
                 </Flex>
               </AccordionItemTrigger>
               <AccordionItemContent>
-                {isExpanded &&
-                  theme.subThemes.map((subTheme) =>
-                    subTheme.layers.length === 1 ? (
-                      <Flex
-                        key={subTheme.name}
-                        justifyContent="space-between"
-                        paddingTop={2}
-                        marginBottom={2}
-                        onClick={() => toggleLayer(subTheme.layers[0].name)}
-                        cursor="pointer"
-                      >
-                        <Heading
-                          fontWeight={'600'}
-                          size={{ base: 'xs', md: 'sm' }}
-                        >
-                          {subTheme.layers[0].label}
-                        </Heading>
-                        <Switch
-                          colorPalette="green"
-                          size="xs"
-                          checked={isLayerChecked(subTheme.layers[0].name)}
-                          disabled={
-                            !isLayerChecked(subTheme.layers[0].name) &&
-                            activeCount >= MAX_THEME_LAYERS
-                          }
-                        />
-                      </Flex>
-                    ) : (
-                      <Box key={subTheme.name} marginBottom={4}>
-                        <Heading
-                          fontWeight={'600'}
-                          size={{ base: 'xs', md: 'sm' }}
-                        >
-                          {subTheme.heading}
-                        </Heading>
-                        {subTheme.layers.map((layer) => (
-                          <Flex
-                            key={layer.name}
-                            justifyContent="space-between"
-                            paddingTop={2}
-                            onClick={() => toggleLayer(layer.name)}
-                            cursor="pointer"
-                          >
-                            <Text fontSize={{ base: 'xs', md: 'sm' }}>
-                              {layer.label}
-                            </Text>
-                            <Switch
-                              colorPalette="green"
-                              size="xs"
-                              checked={isLayerChecked(layer.name)}
-                              disabled={
-                                !isLayerChecked(layer.name) &&
-                                activeCount >= MAX_THEME_LAYERS
-                              }
-                            />
-                          </Flex>
-                        ))}
-                      </Box>
-                    ),
-                  )}
+                {theme.subThemes.map((subTheme) => (
+                  <SubThemeSection
+                    key={subTheme.name}
+                    subTheme={subTheme}
+                    toggleLayer={toggleLayer}
+                  />
+                ))}
               </AccordionItemContent>
             </AccordionItem>
           );
