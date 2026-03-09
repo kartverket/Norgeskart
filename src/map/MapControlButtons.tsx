@@ -44,9 +44,10 @@ export const MapControlButtons = () => {
       bg="#FFFF"
       borderRadius="xl"
       alignItems="center"
-      w={{ base: '10', md: '12' }}
+      w={{ base: '8', md: '10' }}
       pointerEvents="auto"
       py={1}
+      shadow="lg"
     >
       {displayMapLegendControl && (
         <ControlButton
@@ -144,7 +145,7 @@ const ControlIconButton = (props: ControlButtonProps) => {
     <IconButton
       variant={props.variant || 'ghost'}
       colorPalette="green"
-      size={{ base: 'xs', md: 'sm' }}
+      size="xs"
       icon={props.icon}
       aria-label={props.label}
       onClick={() => {
