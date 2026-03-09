@@ -3,13 +3,23 @@ import { Drawer, DrawerPositioner, useBreakpointValue } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { displayMapLegendAtom } from '../../atoms';
 import { MapLegend } from '../../legend/MapLegend';
+import { activeThemeLayersAtom } from '../../layers/atoms';
+import { useEffect } from 'react';
 
 export const MapLegendDrawer = () => {
   const [isOpen, setIsOpen] = useAtom(displayMapLegendAtom);
+  const [activeLayers] = useAtom(activeThemeLayersAtom);
   const isSmallScreen = useBreakpointValue({
     base: true,
     lg: false,
   });
+
+  useEffect(() => {
+    if (isOpen && activeLayers.size === 0) {
+      setIsOpen(false);
+    }
+  }, [activeLayers, isOpen, setIsOpen])
+
   return (
     <Drawer
       trapFocus={false}
