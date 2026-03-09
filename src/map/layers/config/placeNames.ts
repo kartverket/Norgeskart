@@ -313,9 +313,9 @@ export const placeNamesConfig: ThemeLayerConfig = {
     {
       id: 'acceptedPlaceNames',
       name: {
-        nb: 'Godkjent',
-        nn: 'Godkjent',
-        en: 'Accepted',
+        nb: 'Godkjent skrivemåte',
+        nn: 'Godkjent skrivemåte',
+        en: 'Accepted spelling',
       },
       layers: 'godkjent',
       categoryId: 'placeNameWritingStatus',
@@ -383,8 +383,8 @@ export const placeNamesConfig: ThemeLayerConfig = {
     {
       id: 'unevaluatedPlaceNames',
       name: {
-        nb: 'Uvurdert',
-        nn: 'Uvurdert',
+        nb: 'Uvurdert skrivemåte',
+        nn: 'Uvurdert skrivemåte',
         en: 'Unevaluated',
       },
       layers: 'uvurdert',
@@ -411,9 +411,9 @@ export const placeNamesConfig: ThemeLayerConfig = {
     {
       id: 'rejectedPlaceNames',
       name: {
-        nb: 'Avslått',
-        nn: 'Avslått',
-        en: 'Rejected',
+        nb: 'Avslått skrivemåte',
+        nn: 'Avslått skrivemåte',
+        en: 'Rejected spelling',
       },
       layers: 'avslatt',
       categoryId: 'placeNameWritingStatus',
