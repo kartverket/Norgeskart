@@ -90,14 +90,14 @@ export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
   };
   const configs: ThemeLayerConfig[] = [
     propertyInfoConfig,
-    placeNamesConfig,
-    historicalMapsConfig,
     outdoorRecreationLayerConfig,
+    sjoConfig,
     borderConfig,
+    historicalMapsConfig,
     tilgjengelighetConfig,
+    placeNamesConfig,
     fastmerkerLayerConfig,
     dekningConfig,
-    sjoConfig,
   ];
 
   for (const config of configs) {
