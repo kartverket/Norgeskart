@@ -1,4 +1,6 @@
-import { Box, Flex, Heading, Switch, Text } from '@kvib/react';
+import { Box, Flex, Heading, Switch, Text, Tooltip } from '@kvib/react';
+import { useId } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   MAX_THEME_LAYERS,
   useThemeLayers,
@@ -15,6 +17,9 @@ export const SubThemeSection = ({
 }) => {
   const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
     useThemeLayers();
+
+  const { t } = useTranslation();
+  const id = useId();
   const subthemeLayerNames = subTheme.layers.map((layer) => layer.name);
   const activeCount = activeLayerSet.size;
 
@@ -31,22 +36,32 @@ export const SubThemeSection = ({
         <Heading fontWeight={'600'} size={{ base: 'xs', md: 'sm' }}>
           {subTheme.heading}
         </Heading>
-        {subTheme.disableToggleAll ? null : (
-          <Switch
-            colorPalette="green"
-            size="xs"
-            checked={activeInSubTheme === totalInSubTheme}
-            onCheckedChange={(e) => {
-              if (e.checked) {
-                addThemeLayerToMap(subthemeLayerNames);
-              } else {
-                removeThemeLayerFromMap(subthemeLayerNames);
-              }
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
+        {subTheme.disableToggleAll || totalInSubTheme === 1 ? null : (
+          <Tooltip
+            content={
+              activeInSubTheme === totalInSubTheme
+                ? t('map.settings.layers.theme.subtheme.toggleall.removeall')
+                : t('map.settings.layers.theme.subtheme.toggleall.addall')
+            }
+            ids={{ trigger: id }}
+          >
+            <Switch
+              colorPalette="green"
+              size="xs"
+              checked={activeInSubTheme === totalInSubTheme}
+              ids={{ root: id }}
+              onCheckedChange={(e) => {
+                if (e.checked) {
+                  addThemeLayerToMap(subthemeLayerNames);
+                } else {
+                  removeThemeLayerFromMap(subthemeLayerNames);
+                }
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </Tooltip>
         )}
       </Flex>
       {subTheme.layers.map((layer) => (

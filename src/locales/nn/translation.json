@@ -269,6 +269,12 @@
           "warningPerformance": "Aktivering av mange lag kan påverke ytinga. Vurder å deaktivere ubrukte lag.",
           "resetbutton": {
             "text": "Nullstill"
+          },
+          "subtheme": {
+            "toggleall": {
+              "addall": "Legg til alle",
+              "removeall": "Fjern alle"
+            }
           }
         }
       }

@@ -264,6 +264,12 @@
           "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers.",
           "resetbutton": {
             "text": "Reset"
+          },
+          "subtheme": {
+            "toggleall": {
+              "addall": "Add all layers",
+              "removeall": "Remove all"
+            }
           }
         }
       }
