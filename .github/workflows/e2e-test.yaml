@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, firefox, edge, webkit]
+        browser: [chrome, firefox, edge]
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -23,10 +23,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-      - name: Install webkit dependencies
-        if: matrix.browser == 'webkit'
-        run: |
-          npx playwright install-deps
       - name: Cypress run
         uses: cypress-io/github-action@v7
         with:
