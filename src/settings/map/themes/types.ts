@@ -13,4 +13,5 @@ export type SubTheme = {
     name: ThemeLayerName;
     label: string;
   }[];
+  disableToggleAll?: boolean;
 };

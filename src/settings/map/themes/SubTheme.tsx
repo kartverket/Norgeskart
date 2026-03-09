@@ -31,21 +31,23 @@ export const SubThemeSection = ({
         <Heading fontWeight={'600'} size={{ base: 'xs', md: 'sm' }}>
           {subTheme.heading}
         </Heading>
-        <Switch
-          colorPalette="green"
-          size="xs"
-          checked={activeInSubTheme === totalInSubTheme}
-          onCheckedChange={(e) => {
-            if (e.checked) {
-              addThemeLayerToMap(subthemeLayerNames);
-            } else {
-              removeThemeLayerFromMap(subthemeLayerNames);
-            }
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
+        {subTheme.disableToggleAll ? null : (
+          <Switch
+            colorPalette="green"
+            size="xs"
+            checked={activeInSubTheme === totalInSubTheme}
+            onCheckedChange={(e) => {
+              if (e.checked) {
+                addThemeLayerToMap(subthemeLayerNames);
+              } else {
+                removeThemeLayerFromMap(subthemeLayerNames);
+              }
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
+        )}
       </Flex>
       {subTheme.layers.map((layer) => (
         <Flex
