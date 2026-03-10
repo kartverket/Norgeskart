@@ -23,6 +23,18 @@ export const sjoConfig: ThemeLayerConfig = {
       parentId: 'sjo',
     },
     {
+      id: 'sjo_nmg',
+      groupid: 14,
+      name: {
+        nb: 'Norges maritime grenser',
+        nn: 'Noregs maritime grenser',
+        en: "Norway's maritime borders",
+      },
+      wmsUrl: 'https://wms.geonorge.no/skwms1/wms.nmg',
+      infoFormat: 'text/plain',
+      parentId: 'sjo',
+    },
+    {
       id: 'sjo_farlige_bolger',
       groupid: 14,
       name: {
@@ -51,18 +63,6 @@ export const sjoConfig: ThemeLayerConfig = {
           alias: 'Norsk fulltekst',
         },
       ],
-    },
-    {
-      id: 'sjo_nmg',
-      groupid: 14,
-      name: {
-        nb: 'Norges maritime grenser',
-        nn: 'Noregs maritime grenser',
-        en: "Norway's maritime borders",
-      },
-      wmsUrl: 'https://wms.geonorge.no/skwms1/wms.nmg',
-      infoFormat: 'text/plain',
-      parentId: 'sjo',
     },
   ],
   layers: [
