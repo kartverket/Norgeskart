@@ -99,6 +99,12 @@
           "title": "Koordinater kopier til utklipstavlen"
         }
       },
+      "copyDMS": {
+        "label": "Kopier GMS",
+        "toast": {
+          "title": "Grader, minutter og sekunder kopiert til utklipstavlen"
+        }
+      },
       "differentCrs": "Vis i",
       "east": "Øst",
       "north": "Nord"

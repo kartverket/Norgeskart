@@ -94,6 +94,12 @@
           "title": "Coordinates copied to clipboard"
         }
       },
+      "copyDMS": {
+        "label": "Copy DMS",
+        "toast": {
+          "title": "Degrees, minutes and seconds copied to clipboard"
+        }
+      },
       "differentCrs": "Display in",
       "east": "East",
       "north": "North"

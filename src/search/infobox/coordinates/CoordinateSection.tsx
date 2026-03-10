@@ -4,7 +4,9 @@ import { transform } from 'ol/proj';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../../map/atoms';
+import { activeBackgroundLayerAtom } from '../../../map/layers/atoms';
 import { ProjectionIdentifier } from '../../../map/projections/types';
+import { decimalToDMS } from '../../../print/EmergencyPoster/utils';
 import { ProjectionSelector } from '../../../shared/Components/ProjectionSelector';
 import { CoordinateText } from './CoordinateText';
 
@@ -15,19 +17,26 @@ interface CoordinateInfoProps {
 }
 export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
   const map = useAtomValue(mapAtom);
+  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
   const { t } = useTranslation();
   const currentMapProjection = map
     .getView()
     .getProjection()
     .getCode() as ProjectionIdentifier;
+  const defaultProjection: ProjectionIdentifier =
+    activeBackgroundLayer === 'nautical-background'
+      ? 'EPSG:4326'
+      : currentMapProjection;
   const [selectedProjection, setSelectedProjection] =
-    useState<ProjectionIdentifier>(
-      currentMapProjection as ProjectionIdentifier,
-    );
+    useState<ProjectionIdentifier>(defaultProjection);
 
   const [x, y] = transform([lon, lat], inputCRS, selectedProjection);
 
   const isGeographic = selectedProjection === 'EPSG:4326'; // should it be flipped for others ? 4230?  || selectedProjection === 'EPSG:4230';
+  const showsDMS =
+    selectedProjection === 'EPSG:4326' ||
+    selectedProjection === 'EPSG:3857' ||
+    selectedProjection === 'EPSG:4230';
 
   const onCopyClick = () => {
     const decimals = isGeographic ? 7 : 2;
@@ -42,6 +51,24 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
     });
   };
 
+  const onCopyDMSClick = () => {
+    const formatDMS = (value: number) => {
+      const dms = decimalToDMS(value);
+      const sign = dms.sign < 0 ? '-' : '';
+      return `${sign}${dms.deg}° ${dms.min}' ${dms.sec}"`;
+    };
+    const eastLabel = t('toolbar.coordinates.east');
+    const coordString = isGeographic
+      ? `${formatDMS(y)} N, ${formatDMS(x)} ${eastLabel}`
+      : `${formatDMS(x)}, ${formatDMS(y)}`;
+
+    navigator.clipboard.writeText(coordString);
+    toaster.create({
+      title: t('infoBox.coordinateSection.copyDMS.toast.title'),
+      duration: 2000,
+    });
+  };
+
   return (
     <Stack>
       <HStack justifyContent="space-between" alignItems="baseline">
@@ -50,7 +77,7 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
         </Text>
 
         <ProjectionSelector
-          default={currentMapProjection}
+          default={defaultProjection}
           value={selectedProjection}
           onProjectionChange={setSelectedProjection}
           label={t('infoBox.coordinateSection.differentCrs')}
@@ -59,15 +86,28 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
       </HStack>
 
       <CoordinateText x={x} y={y} projection={selectedProjection} />
-      <Button
-        onClick={onCopyClick}
-        leftIcon={'content_copy'}
-        w={'fit-content'}
-        variant="secondary"
-        size="xs"
-      >
-        {t('infoBox.coordinateSection.copy.label')}
-      </Button>
+      <HStack>
+        <Button
+          onClick={onCopyClick}
+          leftIcon={'content_copy'}
+          w={'fit-content'}
+          variant="secondary"
+          size="xs"
+        >
+          {t('infoBox.coordinateSection.copy.label')}
+        </Button>
+        {showsDMS && (
+          <Button
+            onClick={onCopyDMSClick}
+            leftIcon={'content_copy'}
+            w={'fit-content'}
+            variant="secondary"
+            size="xs"
+          >
+            {t('infoBox.coordinateSection.copyDMS.label')}
+          </Button>
+        )}
+      </HStack>
     </Stack>
   );
 };
