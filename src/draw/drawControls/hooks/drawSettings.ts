@@ -5,7 +5,7 @@ import { Feature, Overlay } from 'ol';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle, Geometry, Point } from 'ol/geom';
 import VectorSource from 'ol/source/Vector';
-import { Fill, RegularShape, Stroke, Style, Text } from 'ol/style';
+import { Fill, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleForStorage } from '../../../api/nkApiClient';
@@ -101,24 +101,6 @@ const useDrawSettings = () => {
         })
       : undefined;
 
-    const icon =
-      styleFromProps.icon?.points != null
-        ? new RegularShape({
-            points: styleFromProps.icon.points,
-            radius: styleFromProps.icon.radius ?? 10,
-            radius2: styleFromProps.icon.radius2,
-            angle: styleFromProps.icon.angle,
-            scale: styleFromProps.icon.scale,
-            fill: new Fill({ color: styleFromProps.icon.color }),
-          })
-        : styleFromProps.icon?.radius != null &&
-            styleFromProps.icon?.color != null
-          ? new CircleStyle({
-              radius: styleFromProps.icon.radius,
-              fill: new Fill({ color: styleFromProps.icon.color }),
-            })
-          : undefined;
-
     const textValue =
       (styleFromProps.text as { text?: string; value?: string })?.text ??
       (styleFromProps.text as { text?: string; value?: string })?.value;
@@ -144,18 +126,55 @@ const useDrawSettings = () => {
         })
       : undefined;
 
-    if (!fill && !stroke && !icon && !text) {
+    if (!fill && !stroke && !text) {
       return null;
     }
 
     const style = new Style({
       fill,
       stroke,
-      image: icon,
       text,
     });
 
     return style;
+  };
+
+  const getSizeFromProperties = (props: GeoJsonProperties): number | null => {
+    const sizeFromProps = props?.style?.regularshape.radius as number | null;
+    return sizeFromProps ? sizeFromProps / 3 : null;
+  };
+
+  const getIconPropertiesFromArchiveSolution = (
+    props: GeoJsonProperties,
+  ): PointIcon | null => {
+    console.log('getIconPropertiesFromArchiveSolution', props);
+    const numberOfPoints = props?.style?.regularshape?.points;
+    console.log('numberOfPoints', numberOfPoints);
+    if (numberOfPoints == null) {
+      return null;
+    }
+    switch (numberOfPoints) {
+      case 64: //This is circle. don't question it.
+        return {
+          icon: 'circle',
+          color: props?.style.regularshape.fill?.color ?? '#000000',
+          size: getSizeFromProperties(props) ?? 1,
+        };
+      case 3:
+        return {
+          icon: 'change_history',
+          color: props?.style.regularshape.fill?.color ?? '#000000',
+          size: getSizeFromProperties(props) ?? 1,
+        };
+      case 4:
+        return {
+          icon: 'square',
+          color: props?.style.regularshape.fill?.color ?? '#000000',
+          size: getSizeFromProperties(props) ?? 1,
+        };
+      default:
+        return null;
+    }
   };
 
   const getOverlayIconFromProperties = (
@@ -229,6 +248,7 @@ const useDrawSettings = () => {
     }
 
     const geojsonReader = new GeoJSON();
+    console.log(featureCollection);
 
     const featuresToAddWithStyle: Feature<Geometry>[] = [];
 
@@ -259,7 +279,10 @@ const useDrawSettings = () => {
           .getGeometry()
           ?.transform(sourceProjection, mapProjection);
         const featureStyle = getStyleFromProperties(feature.properties);
-        const overlayIcon = getOverlayIconFromProperties(feature.properties);
+        const overlayIcon =
+          getOverlayIconFromProperties(feature.properties) ||
+          getIconPropertiesFromArchiveSolution(feature.properties);
+        console.log('overlayIcon', overlayIcon);
         const circleRadius = getCircleRadiusFromProperties(feature.properties);
 
         if (transformedGeometry) {
