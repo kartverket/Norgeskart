@@ -1,3 +1,4 @@
+import { MaterialSymbol } from '@kvib/react';
 import { getDefaultStore } from 'jotai';
 import { Feature, Overlay } from 'ol';
 import { Circle, Geometry, LineString, Polygon } from 'ol/geom';
@@ -60,6 +61,9 @@ const getGeometryPositionForOverlay = (geometry: Geometry) => {
   return null;
 };
 
+export const isDrawIconFilled = (icon: MaterialSymbol) => {
+  return ['circle', 'change_history', 'square'].includes(icon);
+};
 const clearStaticOverlaysForFeature = (feature: Feature<Geometry>) => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);

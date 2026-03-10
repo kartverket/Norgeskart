@@ -16,6 +16,7 @@ import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { pointIconAtom, primaryColorAtom } from '../settings/draw/atoms';
 import { useIsMobileScreen } from '../shared/hooks';
+import { isDrawIconFilled } from './drawControls/drawUtils';
 
 const icons: MaterialSymbol[] = [
   'circle',
@@ -36,10 +37,6 @@ const icons: MaterialSymbol[] = [
   'local_see',
   'elevation',
 ];
-
-export const isDrawIconFilled = (icon: MaterialSymbol) => {
-  return ['circle', 'change_history', 'square'].includes(icon);
-};
 
 const iconsCollection = createListCollection({
   items: icons.map((icon) => ({

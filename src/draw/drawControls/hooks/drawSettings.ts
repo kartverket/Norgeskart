@@ -23,7 +23,7 @@ import {
 } from '../drawUtils';
 
 import { ProjectionIdentifier } from '../../../map/projections/types';
-import { isDrawIconFilled } from '../../PointStyleSelector';
+import { isDrawIconFilled } from '../drawUtils';
 import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
 import { getDrawLayer } from './mapLayers';
