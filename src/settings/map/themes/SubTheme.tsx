@@ -17,7 +17,7 @@ import {
   useThemeLayers,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
-import { SubTheme } from './types';
+import { SubTheme, SubThemeLayer } from './types';
 
 export const SubThemeSection = ({
   subTheme,
@@ -46,79 +46,114 @@ export const SubThemeSection = ({
 
   return (
     <Box key={subTheme.name} marginBottom={2}>
-      <CollapsibleRoot
-        open={isOpen}
-        onOpenChange={(e) => setIsOpen(e.open)}
-        m={0}
-      >
-        <CollapsibleTrigger w={'100%'}>
-          <Flex justify={'space-between'} cursor={'pointer'}>
-            <Heading fontWeight={'600'} size={{ base: 'xs', md: 'sm' }}>
-              {subTheme.heading}
-            </Heading>
-            <Flex>
-              {subTheme.disableToggleAll || totalInSubTheme === 1 ? null : (
-                <Tooltip
-                  content={
-                    activeInSubTheme === totalInSubTheme
-                      ? t(
-                          'map.settings.layers.theme.subtheme.toggleall.removeall',
-                        )
-                      : t('map.settings.layers.theme.subtheme.toggleall.addall')
-                  }
-                  ids={{ trigger: id }}
-                >
-                  <Switch
-                    colorPalette="green"
-                    size="xs"
-                    checked={activeInSubTheme === totalInSubTheme}
-                    ids={{ root: id }}
-                    onCheckedChange={(e) => {
-                      if (e.checked) {
-                        addThemeLayerToMap(subthemeLayerNames);
-                      } else {
-                        removeThemeLayerFromMap(subthemeLayerNames);
-                      }
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
+      {subTheme.layers.length == 1 ? (
+        <LayerLine
+          toggleLayer={toggleLayer}
+          layer={subTheme.layers[0]}
+          checked={isLayerChecked(subTheme.layers[0].name)}
+          disabled={
+            !isLayerChecked(subTheme.layers[0].name) &&
+            activeCount >= MAX_THEME_LAYERS
+          }
+        />
+      ) : (
+        <CollapsibleRoot
+          open={isOpen}
+          onOpenChange={(e) => setIsOpen(e.open)}
+          m={0}
+        >
+          <CollapsibleTrigger w={'100%'}>
+            <Flex justify={'space-between'} cursor={'pointer'}>
+              <Heading fontWeight={'600'} size={{ base: 'xs', md: 'sm' }}>
+                {subTheme.heading}
+              </Heading>
+              <Flex>
+                {subTheme.disableToggleAll || totalInSubTheme === 1 ? null : (
+                  <Tooltip
+                    content={
+                      activeInSubTheme === totalInSubTheme
+                        ? t(
+                            'map.settings.layers.theme.subtheme.toggleall.removeall',
+                          )
+                        : t(
+                            'map.settings.layers.theme.subtheme.toggleall.addall',
+                          )
+                    }
+                    ids={{ trigger: id }}
+                  >
+                    <Switch
+                      colorPalette="green"
+                      size="xs"
+                      checked={activeInSubTheme === totalInSubTheme}
+                      ids={{ root: id }}
+                      onCheckedChange={(e) => {
+                        if (e.checked) {
+                          addThemeLayerToMap(subthemeLayerNames);
+                        } else {
+                          removeThemeLayerFromMap(subthemeLayerNames);
+                        }
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    />
+                  </Tooltip>
+                )}
+                <Box transform={isOpen ? 'rotate(-90deg)' : 'rotate(90deg)'}>
+                  <Icon
+                    icon={'chevron_forward'}
+                    rotate={'90deg'}
+                    transform={'rotate(120deg)'}
                   />
-                </Tooltip>
-              )}
-              <Box transform={isOpen ? 'rotate(-90deg)' : 'rotate(90deg)'}>
-                <Icon
-                  icon={'chevron_forward'}
-                  rotate={'90deg'}
-                  transform={'rotate(120deg)'}
-                />
-              </Box>
+                </Box>
+              </Flex>
             </Flex>
-          </Flex>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          {subTheme.layers.map((layer) => (
-            <Flex
-              key={layer.name}
-              justifyContent="space-between"
-              paddingTop={2}
-              onClick={() => toggleLayer(layer.name)}
-              cursor="pointer"
-            >
-              <Text fontSize={{ base: 'xs', md: 'sm' }}>{layer.label}</Text>
-              <Switch
-                marginRight={'24px'}
-                colorPalette="green"
-                size="xs"
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            {subTheme.layers.map((layer) => (
+              <LayerLine
+                toggleLayer={toggleLayer}
+                layer={layer}
                 checked={isLayerChecked(layer.name)}
                 disabled={
                   !isLayerChecked(layer.name) && activeCount >= MAX_THEME_LAYERS
                 }
               />
-            </Flex>
-          ))}
-        </CollapsibleContent>
-      </CollapsibleRoot>
+            ))}
+          </CollapsibleContent>
+        </CollapsibleRoot>
+      )}
     </Box>
+  );
+};
+
+const LayerLine = ({
+  toggleLayer,
+  layer,
+  checked,
+  disabled,
+}: {
+  toggleLayer: (layerName: ThemeLayerName) => void;
+  layer: SubThemeLayer;
+  checked: boolean;
+  disabled: boolean;
+}) => {
+  return (
+    <Flex
+      key={layer.name}
+      justifyContent="space-between"
+      paddingTop={2}
+      onClick={() => toggleLayer(layer.name)}
+      cursor="pointer"
+    >
+      <Text fontSize={{ base: 'xs', md: 'sm' }}>{layer.label}</Text>
+      <Switch
+        marginRight={'24px'}
+        colorPalette="green"
+        size="xs"
+        checked={checked}
+        disabled={disabled}
+      />
+    </Flex>
   );
 };
