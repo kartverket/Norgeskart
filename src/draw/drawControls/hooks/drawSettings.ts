@@ -23,6 +23,7 @@ import {
 } from '../drawUtils';
 
 import { ProjectionIdentifier } from '../../../map/projections/types';
+import { isDrawIconFilled } from '../../PointStyleSelector';
 import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
 import { getDrawLayer } from './mapLayers';
@@ -411,6 +412,9 @@ export const addIconOverlayToPointFeature = (
   elm.style.userSelect = 'none';
   elm.style.pointerEvents = 'none';
   elm.textContent = icon.icon;
+  if (isDrawIconFilled(icon.icon)) {
+    elm.style.fontVariationSettings = '"FILL" 1, "wght" 300, "GRAD" 0';
+  }
   const overlayId = `${ICON_OVERLAY_PREFIX}${featureId}`;
   const existingOverlay = map.getOverlayById(overlayId);
   if (existingOverlay) {

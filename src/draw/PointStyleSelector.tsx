@@ -10,12 +10,15 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { pointIconAtom } from '../settings/draw/atoms';
+import { pointIconAtom, primaryColorAtom } from '../settings/draw/atoms';
 
 const icons: MaterialSymbol[] = [
+  'circle',
+  'change_history',
+  'square',
   'directions_walk',
   'directions_bike',
   'kayaking',
@@ -32,6 +35,10 @@ const icons: MaterialSymbol[] = [
   'elevation',
 ];
 
+export const isDrawIconFilled = (icon: MaterialSymbol) => {
+  return ['circle', 'change_history', 'square'].includes(icon);
+};
+
 const iconsCollection = createListCollection({
   items: icons.map((icon) => ({
     value: icon,
@@ -41,6 +48,7 @@ const iconsCollection = createListCollection({
 
 export const PointStyleSelector = () => {
   const [pointIcon, setPointIcon] = useAtom(pointIconAtom);
+  const color = useAtomValue(primaryColorAtom);
   const { t } = useTranslation();
 
   return (
@@ -60,7 +68,7 @@ export const PointStyleSelector = () => {
       <SelectContent>
         {icons.map((icon) => (
           <SelectItem key={icon} item={icon} onClick={() => setPointIcon(icon)}>
-            <Icon icon={icon} />
+            <Icon icon={icon} filled={isDrawIconFilled(icon)} color={color} />
           </SelectItem>
         ))}
       </SelectContent>
@@ -71,10 +79,16 @@ export const PointStyleSelector = () => {
 const ValueText = (
   items: { label: string; value: MaterialSymbol }[],
 ): ReactNode => {
+  const color = useAtomValue(primaryColorAtom);
   return (
     <HStack>
       {items.map((item) => (
-        <Icon key={item.value} icon={item.value} />
+        <Icon
+          color={color}
+          key={item.value}
+          icon={item.value}
+          filled={isDrawIconFilled(item.value)}
+        />
       ))}
     </HStack>
   );
