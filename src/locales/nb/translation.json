@@ -408,6 +408,8 @@
     },
     "scale": {
       "tooltip": "Velg målestokk",
+      "info": "Virkeligheten er {{scale}} ganger større enn på kartet",
+      "approximateInfo": "Kartet vises i faste zoomnivåer, så den faktiske målestokken kan avvike litt fra valgt verdi.",
       "disabledTooltip": "Målestokkvelgeren er deaktivert fordi dette bakgrunnskartet bruker heltallige zoomnivåer for bedre ytelse."
     },
     "crs": {

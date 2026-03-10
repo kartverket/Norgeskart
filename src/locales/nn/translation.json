@@ -408,6 +408,8 @@
     },
     "scale": {
       "tooltip": "Vel målestokk",
+      "info": "Røyndomen er {{scale}} gonger større enn på kartet",
+      "approximateInfo": "Kartet vert vist i faste zoomnivå, så den faktiske målestokken kan avvike litt frå vald verdi.",
       "disabledTooltip": "Målestokkveljaren er deaktivert fordi dette bakgrunnskartet brukar heiltals zoomnivå for betre ytelse."
     },
     "crs": {

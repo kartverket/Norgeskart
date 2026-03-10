@@ -403,6 +403,8 @@
     },
     "scale": {
       "tooltip": "Select a scale",
+      "info": "Reality is {{scale}} times larger than on the map",
+      "approximateInfo": "The map uses fixed zoom levels, so the actual scale may differ slightly from the selected value.",
       "disabledTooltip": "Scale selector is disabled because this background map uses integer zoom levels so that it's performant."
     },
     "crs": {
