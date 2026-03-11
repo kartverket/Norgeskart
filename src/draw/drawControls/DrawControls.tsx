@@ -1,5 +1,6 @@
 import { Flex, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { snapEffect } from '../../settings/draw/atoms.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
@@ -21,6 +22,7 @@ export const DrawControls = () => {
 
   useDrawControlsKeyboardEffects();
   useAtom(distanceUnitAtomEffect);
+  useAtom(snapEffect);
 
   return (
     <VStack
