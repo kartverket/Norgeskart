@@ -16,17 +16,43 @@ import {
   SwitchRoot,
   Text,
 } from '@kvib/react';
-import { getDefaultStore, useAtom } from 'jotai';
-import { GPX } from 'ol/format';
+import { useAtom } from 'jotai';
+import { Feature } from 'ol';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom } from '../../map/atoms';
-import { isImportDialogOpenAtom } from './atoms';
+import { getDrawLayer } from '../../drawControls/hooks/mapLayers';
+import { isImportDialogOpenAtom } from '../atoms';
+import {
+  readFeaturesFromGeoJsonString,
+  readFeaturesFromGMLString,
+  readFeaturesFromGPXString,
+} from './utls';
 
 export const ImportDialog = () => {
   const [isOpen, setIsOpen] = useAtom(isImportDialogOpenAtom);
   const [overWriteDrawLayer, setOverWriteDrawLayer] = useState(false);
+  const [importedFeatures, setImportedFeatures] = useState<Feature[] | null>(
+    null,
+  );
   const { t } = useTranslation();
+
+  const handleImportClick = () => {
+    console.log(importedFeatures);
+    if (!importedFeatures) {
+      console.warn('no features to import');
+      return;
+    }
+    const drawLayer = getDrawLayer();
+    if (!drawLayer) {
+      console.warn('draw layer not found');
+      return;
+    }
+    if (overWriteDrawLayer) {
+      drawLayer.getSource()?.clear();
+    }
+    drawLayer.getSource()?.addFeatures(importedFeatures);
+    setIsOpen(false);
+  };
   return (
     <Dialog
       placement={'center'}
@@ -41,28 +67,33 @@ export const ImportDialog = () => {
           <Text> {t('importDialog.body.text')}</Text>
           <FileUploadRoot
             maxFiles={1}
-            accept={{ '': ['.gpx', '.geojson', 'gml'] }}
-            onFileChange={(e) => {
+            accept={'.gpx, .geojson, .gml'}
+            onFileChange={async (e) => {
               const file = e.acceptedFiles[0];
-              const reader = new FileReader();
-              reader.onload = (event) => {
-                const store = getDefaultStore();
-                const projection = store
-                  .get(mapAtom)
-                  .getView()
-                  .getProjection()
-                  .getCode();
-                console.log(event.type);
-
-                const text = event.target?.result;
-                const gpx = new GPX();
-
-                const features = gpx.readFeatures(text as string, {
-                  dataProjection: 'EPSG:4326',
-                  featureProjection: projection,
-                });
-              };
-              reader.readAsText(file);
+              const fileText = await file.text();
+              const fileName = file.name.toLowerCase();
+              const fileExtension = fileName.split('.').pop();
+              const features: Feature[] = [];
+              switch (fileExtension) {
+                case 'gpx': {
+                  const readFeatures = readFeaturesFromGPXString(fileText);
+                  features.push(...readFeatures);
+                  break;
+                }
+                case 'geojson': {
+                  const readFeatures = readFeaturesFromGeoJsonString(fileText);
+                  features.push(...readFeatures);
+                  break;
+                }
+                case 'gml': {
+                  const readFeatures = readFeaturesFromGMLString(fileText);
+                  features.push(...readFeatures);
+                  break;
+                }
+                default:
+                  console.warn('unsupported file type');
+              }
+              setImportedFeatures(features);
             }}
           >
             <FileUploadDropzone
@@ -90,9 +121,8 @@ export const ImportDialog = () => {
             <Button
               variant="outline"
               size="xs"
-              onClick={() => {
-                setIsOpen(false);
-              }}
+              disabled={!importedFeatures || importedFeatures.length === 0}
+              onClick={handleImportClick}
             >
               {t('importDialog.buttons.confirm.label')}
             </Button>

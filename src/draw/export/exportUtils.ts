@@ -11,7 +11,16 @@ export const handleGeoJsonExport = (layer: VectorLayer) => {
     console.error('No features to export');
     return;
   }
-  const geojsonStr = formater.writeFeatures(features);
+  const projection = getDefaultStore()
+    .get(mapAtom)
+    .getView()
+    .getProjection()
+    .getCode();
+
+  const geojsonStr = formater.writeFeatures(features, {
+    dataProjection: 'EPSG:4326',
+    featureProjection: projection,
+  });
   downloadStringAsFile(
     geojsonStr,
     'Norgeskart_eksport.geojson',

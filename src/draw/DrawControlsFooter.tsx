@@ -29,7 +29,7 @@ import {
   isImportDialogOpenAtom,
 } from './dialogs/atoms';
 import { ExportDialog } from './dialogs/ExportDialog';
-import { ImportDialog } from './dialogs/ImportDialog';
+import { ImportDialog } from './dialogs/import/ImportDialog';
 import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
