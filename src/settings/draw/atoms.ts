@@ -308,8 +308,6 @@ export const snapEffect = atomEffect((get) => {
   const map = store.get(mapAtom);
   const drawLayer = getDrawLayer();
 
-  if (!map || !drawLayer.getSource()) return;
-
   map.getInteractions().forEach((interaction) => {
     if (interaction instanceof Snap) {
       map.removeInteraction(interaction);
