@@ -83,7 +83,7 @@ export const drawStyleReadAtom = atom((get) => {
 export const drawTypeAtom = atom<DrawType | null>(null);
 export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
-export const pointIconAtom = atom<MaterialSymbol>('pin_drop');
+export const pointIconAtom = atom<MaterialSymbol>('circle');
 
 export const textInputAtom = atom('');
 

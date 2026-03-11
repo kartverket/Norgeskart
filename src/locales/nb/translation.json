@@ -179,7 +179,7 @@
             "Nibcache_web_mercator_v2": "Flyfoto",
             "nautical-background": "Nautisk bakgrunnskart",
             "oceanicelectronic": "Elektronisk sjøkart",
-            "sjokartraster": "Sjøkart papir",
+            "sjokartraster": "Sjøkart oppdatert EFS",
             "topo": "Topo",
             "topo_2025": "Topo 2025",
             "topograatone": "Topografisk, gråtone",
@@ -594,7 +594,7 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikke å hente kartet"
     },
-    "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkart papir i utskriften.",
+    "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkart oppdatert EFS i utskriften.",
     "aerialImageryNotSupported": "Flyfoto støttes ikke av utskriftstjenesten. Vennligst bytt til et annet bakgrunnskart for å skrive ut.",
     "projectionWarning": "Utskriften vil alltid være i UTM-sone 33 (EPSG:25833), uavhengig av valgt kartprojeksjon."
   },
