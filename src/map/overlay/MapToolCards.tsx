@@ -66,7 +66,6 @@ const MapToolCardsBody = () => {
       <MapToolCard
         label={isMobile ? activeToolLabel : t('draw.tabHeading')}
         onClose={onClose}
-        hideHeader={isMobile}
         showCollapse={isMobile}
         onCollapse={() => setCollapsed(true)}
       >
@@ -132,7 +131,11 @@ const MapToolCard = ({
     >
       <Flex justify="space-between" gap="2" w="100%" align="center">
         {!hideHeader ? (
-          <Heading fontWeight="bold" mb={{ base: '0', md: '2' }} size="lg">
+          <Heading
+            fontWeight="bold"
+            mb={{ base: '0', md: '2' }}
+            size={{ base: 'sm', md: 'md' }}
+          >
             {label}
           </Heading>
         ) : (
