@@ -94,15 +94,15 @@
     "coordinateInfo": "Koordinater",
     "coordinateSection": {
       "copy": {
-        "label": "Kopier koordinater",
+        "label": "Kopier som DD",
         "toast": {
-          "title": "Koordinater kopier til utklipstavlen"
+          "title": "Koordinater kopiert som desimalgrader til utklipstavlen"
         }
       },
       "copyDMS": {
-        "label": "Kopier GMS",
+        "label": "Kopier som DMS",
         "toast": {
-          "title": "Grader, minutter og sekunder kopiert til utklipstavlen"
+          "title": "Grader, minutter og sekunder kopiert som DMS til utklipstavlen"
         }
       },
       "differentCrs": "Vis i",

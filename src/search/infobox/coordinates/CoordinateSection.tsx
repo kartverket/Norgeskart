@@ -57,9 +57,8 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
       const sign = dms.sign < 0 ? '-' : '';
       return `${sign}${dms.deg}° ${dms.min}' ${dms.sec}"`;
     };
-    const eastLabel = t('toolbar.coordinates.east');
     const coordString = isGeographic
-      ? `${formatDMS(y)} N, ${formatDMS(x)} ${eastLabel}`
+      ? `${formatDMS(y)} N, ${formatDMS(x)} E`
       : `${formatDMS(x)}, ${formatDMS(y)}`;
 
     navigator.clipboard.writeText(coordString);

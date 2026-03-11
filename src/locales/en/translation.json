@@ -89,15 +89,15 @@
     "coordinateInfo": "Coordinates",
     "coordinateSection": {
       "copy": {
-        "label": "Copy coordinates",
+        "label": "Copy as DD",
         "toast": {
-          "title": "Coordinates copied to clipboard"
+          "title": "Coordinates copied as decimal degrees to clipboard"
         }
       },
       "copyDMS": {
-        "label": "Copy DMS",
+        "label": "Copy as DMS",
         "toast": {
-          "title": "Degrees, minutes and seconds copied to clipboard"
+          "title": "Degrees, minutes and seconds copied as DMS to clipboard"
         }
       },
       "differentCrs": "Display in",
