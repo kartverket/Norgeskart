@@ -1,4 +1,4 @@
-import { Button, HStack, Stack, Text, toaster } from '@kvib/react';
+import { Button, HStack, Stack, Text, toaster, Tooltip } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { transform } from 'ol/proj';
 import { useState } from 'react';
@@ -86,25 +86,37 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
 
       <CoordinateText x={x} y={y} projection={selectedProjection} />
       <HStack>
-        <Button
-          onClick={onCopyClick}
-          leftIcon={'content_copy'}
-          w={'fit-content'}
-          variant="secondary"
-          size="xs"
+        <Tooltip
+          content={t('infoBox.coordinateSection.copy.toast.title')}
+          portalled={false}
+          positioning={{ placement: 'top' }}
         >
-          {t('infoBox.coordinateSection.copy.label')}
-        </Button>
-        {showsDMS && (
           <Button
-            onClick={onCopyDMSClick}
+            onClick={onCopyClick}
             leftIcon={'content_copy'}
             w={'fit-content'}
             variant="secondary"
             size="xs"
           >
-            {t('infoBox.coordinateSection.copyDMS.label')}
+            {t('infoBox.coordinateSection.copy.label')}
           </Button>
+        </Tooltip>
+        {showsDMS && (
+          <Tooltip
+            content={t('infoBox.coordinateSection.copyDMS.toast.title')}
+            portalled={false}
+            positioning={{ placement: 'top' }}
+          >
+            <Button
+              onClick={onCopyDMSClick}
+              leftIcon={'content_copy'}
+              w={'fit-content'}
+              variant="secondary"
+              size="xs"
+            >
+              {t('infoBox.coordinateSection.copyDMS.label')}
+            </Button>
+          </Tooltip>
         )}
       </HStack>
     </Stack>

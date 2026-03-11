@@ -100,9 +100,9 @@
         }
       },
       "copyDMS": {
-        "label": "Kopier som DMS",
+        "label": "Kopier som DDMMSS",
         "toast": {
-          "title": "Grader, minuttar og sekund kopiert som DMS til utklippstavla"
+          "title": "Grader, minuttar og sekund kopiert som DDMMSS til utklippstavla"
         }
       },
       "differentCrs": "Vis i",

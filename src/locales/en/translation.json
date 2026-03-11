@@ -95,9 +95,9 @@
         }
       },
       "copyDMS": {
-        "label": "Copy as DMS",
+        "label": "Copy as DDMMSS",
         "toast": {
-          "title": "Degrees, minutes and seconds copied as DMS to clipboard"
+          "title": "Degrees, minutes and seconds copied as DDMMSS to clipboard"
         }
       },
       "differentCrs": "Display in",
