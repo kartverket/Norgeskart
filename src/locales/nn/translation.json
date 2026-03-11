@@ -94,7 +94,8 @@
     "coordinateInfo": "Sjå koordinatar",
     "coordinateSection": {
       "copy": {
-        "label": "Kopier som DD",
+        "label": "Kopier koordinatar",
+        "label_geo": "Kopier som DD",
         "toast": {
           "title": "Koordinatar kopiert som desimalgrader til utklippstavla"
         }

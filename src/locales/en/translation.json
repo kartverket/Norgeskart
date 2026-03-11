@@ -89,7 +89,8 @@
     "coordinateInfo": "Coordinates",
     "coordinateSection": {
       "copy": {
-        "label": "Copy as DD",
+        "label": "Copy coordinates",
+        "label_geo": "Copy as DD",
         "toast": {
           "title": "Coordinates copied as decimal degrees to clipboard"
         }

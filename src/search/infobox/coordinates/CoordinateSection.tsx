@@ -98,7 +98,9 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
             variant="secondary"
             size="xs"
           >
-            {t('infoBox.coordinateSection.copy.label')}
+            {showsDMS
+              ? t('infoBox.coordinateSection.copy.label_geo')
+              : t('infoBox.coordinateSection.copy.label')}
           </Button>
         </Tooltip>
         {showsDMS && (
