@@ -1,6 +1,5 @@
-import { Flex, Heading, HStack, VStack } from '@kvib/react';
+import { Flex, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
-import { useTranslation } from 'react-i18next';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
@@ -19,20 +18,6 @@ const MOBILE_TOOLBAR_RESERVE = '15px';
 export const DrawControls = () => {
   const { drawType } = useDrawSettings();
   const isMobile = useIsMobileScreen();
-  const { t } = useTranslation();
-
-  const drawTypeLabels: Record<string, string> = {
-    Move: t('draw.controls.tool.tooltip.edit'),
-    Polygon: t('draw.controls.tool.tooltip.polygon'),
-    Point: t('draw.controls.tool.tooltip.point'),
-    LineString: t('draw.controls.tool.tooltip.linestring'),
-    Circle: t('draw.controls.tool.tooltip.circle'),
-    Text: t('draw.controls.tool.tooltip.text'),
-  };
-
-  const activeToolLabel = drawType
-    ? drawTypeLabels[drawType]
-    : t('draw.tabHeading');
 
   useDrawControlsKeyboardEffects();
   useAtom(distanceUnitAtomEffect);
@@ -44,12 +29,6 @@ export const DrawControls = () => {
       padding={0.5}
       style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
     >
-      {isMobile && (
-        <Heading size="sm" px={1} py={1}>
-          {activeToolLabel}
-        </Heading>
-      )}
-
       {!isMobile && <DrawToolSelector />}
 
       {drawType === 'Text' && <TextStyleControl />}
