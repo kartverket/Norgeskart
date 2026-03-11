@@ -54,7 +54,7 @@ export const DrawControls = () => {
 
       {drawType === 'Text' && <TextStyleControl />}
 
-      <HStack width="100%">
+      <HStack width="100%" align={'space-between'}>
         <ColorControls />
         {drawType === 'Point' && <PointStyleSelector />}
       </HStack>
