@@ -10,6 +10,7 @@ import {
   setUrlParameter,
 } from '../shared/utils/urlUtils';
 import {
+  currentProjectionAtom,
   DEFAULT_ZOOM_LEVEL,
   magneticDeclinationAtom,
   mapAtom,
@@ -114,6 +115,7 @@ const useMapSettings = () => {
   const WMTSloadable = useAtomValue(loadableWMTS);
   const { backgroundLayerState, getBackgroundLayer } = useBackgoundLayers();
   const { removeThemeLayerFromMap, addThemeLayerToMap } = useThemeLayers();
+  const setCurrentProjection = useSetAtom(currentProjectionAtom);
 
   const getMapViewCenter = () => {
     const view = map.getView();
@@ -266,6 +268,7 @@ const useMapSettings = () => {
       });
     }
     setUrlParameter('projection', projectionId);
+    setCurrentProjection(projectionId);
   };
 
   const setMapFullScreen = (shouldBeFullscreen: boolean) => {

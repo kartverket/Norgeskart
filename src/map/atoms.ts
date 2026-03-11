@@ -30,6 +30,11 @@ export const AvailableProjections: ProjectionIdentifier[] = [
 ];
 export type AvailableProjectionType = (typeof AvailableProjections)[number];
 
+export const currentProjectionAtom = atom<ProjectionIdentifier>(
+  validateProjectionIdString(getUrlParameter('projection')) ||
+    DEFAULT_PROJECTION,
+);
+
 export const mapOrientationAtom = atom<number>(0);
 export const mapOrientationDegreesAtom = atom<number>((get) => {
   const radians = get(mapOrientationAtom);
