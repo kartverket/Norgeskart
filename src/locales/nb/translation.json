@@ -97,13 +97,13 @@
         "label": "Kopier koordinater",
         "label_geo": "Kopier som DD",
         "toast": {
-          "title": "Koordinater kopiert som desimalgrader til utklipstavlen"
+          "title": "Kopier koordinatene som desimalgrader (f.eks. 62.0515257, 5.2972102)"
         }
       },
       "copyDMS": {
-        "label": "Kopier som DDMMSS",
+        "label": "Kopier som DMS",
         "toast": {
-          "title": "Grader, minutter og sekunder kopiert som DDMMSS til utklipstavlen"
+          "title": "Kopier koordinater i grader–minutter–sekunder, (f.eks. 62°03'05.49\" N, 5°17'49.96\" E)"
         }
       },
       "differentCrs": "Vis i",

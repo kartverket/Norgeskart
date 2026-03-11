@@ -92,13 +92,13 @@
         "label": "Copy coordinates",
         "label_geo": "Copy as DD",
         "toast": {
-          "title": "Coordinates copied as decimal degrees to clipboard"
+          "title": "Copy coordinates as decimal degrees (e.g., 62.0515257, 5.2972102)"
         }
       },
       "copyDMS": {
-        "label": "Copy as DDMMSS",
+        "label": "Copy as DMS",
         "toast": {
-          "title": "Degrees, minutes and seconds copied as DDMMSS to clipboard"
+          "title": "Copy coordinates in degrees–minutes–seconds (e.g., 62°03'05.49\" N, 5°17'49.96\" E)"
         }
       },
       "differentCrs": "Display in",
