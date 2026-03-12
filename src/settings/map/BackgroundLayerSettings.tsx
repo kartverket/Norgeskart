@@ -211,10 +211,7 @@ export const BackgroundLayerSettings = ({
     setActiveBackgroundLayer(layer);
 
     // Switching to nautical: save current projection and force Web Mercator
-    if (
-      layer === 'nautical-background' &&
-      currentProjection !== 'EPSG:3857'
-    ) {
+    if (layer === 'nautical-background' && currentProjection !== 'EPSG:3857') {
       setPreNauticalProjection(currentProjection);
       setCurrentProjection('EPSG:3857');
       toaster.create({

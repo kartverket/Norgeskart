@@ -212,13 +212,17 @@ export const projectionEffect = atomEffect((get, set) => {
   const projection = getProjection(projectionId)!;
   const oldCenter = oldView.getCenter();
 
-  const newCenter =
-    oldCenter ? transform(oldCenter, oldProjection, projection) : undefined;
+  const newCenter = oldCenter
+    ? transform(oldCenter, oldProjection, projection)
+    : undefined;
 
   let newZoom = oldView.getZoom() ?? DEFAULT_ZOOM_LEVEL;
   if (oldProjectionCode !== 'EPSG:3857' && projectionId === 'EPSG:3857') {
     newZoom += 1;
-  } else if (oldProjectionCode === 'EPSG:3857' && projectionId !== 'EPSG:3857') {
+  } else if (
+    oldProjectionCode === 'EPSG:3857' &&
+    projectionId !== 'EPSG:3857'
+  ) {
     newZoom -= 1;
   }
   newZoom = Math.round(newZoom);
