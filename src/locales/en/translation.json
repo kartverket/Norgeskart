@@ -169,9 +169,9 @@
             "nautical-background": "Nautical Background Chart",
             "oceanicelectronic": "Electronic Nautical Chart",
             "sjokartraster": "Nautical Chart updated EFS",
-            "topo": "Topographic Map",
+            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topographic, Grayscale",
+            "topograatone": "Standard (greyscale)",
             "topoProd": "Topographic",
             "toporaster": "Paper Map"
           }

@@ -12,7 +12,6 @@ import {
   toaster,
   VStack,
 } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -50,7 +49,6 @@ export const MapThemes = () => {
   const { setBackgroundLayer } = useMapSettings();
   const currentProjection = useAtomValue(currentProjectionAtom);
   const setCurrentProjection = useSetAtom(currentProjectionAtom);
-  const ph = usePostHog();
 
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [activeThemeLayers, setActiveThemeLayers] = useAtom(
@@ -151,9 +149,6 @@ export const MapThemes = () => {
       const checked = isLayerChecked(layerName);
       if (!checked) {
         addThemeLayerToMap(layerName);
-        ph.capture('theme_layer_added', {
-          layerName,
-        });
         if (isSjoLayer(layerName)) {
           if (activeBackgroundLayer !== 'nautical-background') {
             if (currentProjection !== 'EPSG:3857') {
@@ -194,7 +189,6 @@ export const MapThemes = () => {
       addThemeLayerToMap,
       removeThemeLayerFromMap,
       isLayerChecked,
-      ph,
       isSjoLayer,
       activeBackgroundLayer,
       currentProjection,
