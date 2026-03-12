@@ -1,115 +1,254 @@
 [
   {
-    "title": "Tips 1: Søk etter eiendommer",
+    "title": "Kan jeg måle avstand med knekkpunkt?",
     "content": [
       {
         "type": "text",
-        "text": "Du kan søke etter eiendommer ved å bruke gårds- og bruksnummer, adresse eller stedsnavn."
-      }
-    ]
-  },
-  {
-    "title": "Tips 2: Bruk kartlag for mer informasjon",
-    "content": [
-      {
-        "type": "text",
-        "text": "Kartverket tilbyr flere kartlag du kan slå av og på for å vise ulike typer informasjon:"
+        "text": "Ja. Du kan måle avstand med flere knekkpunkter i kartet."
       },
       {
         "type": "list",
         "items": [
-          "Eiendomsgrenser og matrikkelnummer",
-          "Bygninger og adresser",
-          "Stedsnavn",
-          "Flyfoto",
-          "Høydedata"
+          "Velg «Tegne og måle» i menyen.",
+          "Velg linje og trykk på «Vis mål».",
+          "Klikk i kartet der du ønsker å starte målingen.",
+          "Klikk videre på punktene der du ønsker knekkpunkt.",
+          "Avslutt målingen med dobbeltklikk."
+        ]
+      },
+      {
+        "type": "text",
+        "text": "Lengden vises i kartet der linjen avsluttes."
+      }
+    ]
+  },
+  {
+    "title": "Kan jeg slette enkeltobjekter når jeg tegner?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Ja. I tegnefunksjonen kan du velge og slette enkeltobjekter."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Klikk på musepeker-knappen øverst til venstre i tegneverktøyet.",
+          "Klikk på objektet du ønsker å slette.",
+          "Når objektet blir stiplet er det valgt.",
+          "Klikk på søppelkasse-ikonet for å slette objektet."
         ]
       }
     ]
   },
   {
-    "title": "Tips 3: Mål avstander og areal",
+    "title": "Hvilke søkekriterier støttes i søkefeltet?",
     "content": [
       {
         "type": "text",
-        "text": "Bruk måleverktøyet for å beregne avstander eller areal direkte i kartet."
+        "text": "I tillegg til stedsnavn og adresser kan du søke på flere kombinasjoner av kommune, gårdsnummer og bruksnummer."
       },
       {
         "type": "list",
         "items": [
-          "Klikk på linjal-ikonet i verktøylinjen.",
-          "Velg mellom avstand eller areal.",
-          "Klikk i kartet for å måle."
+          "kommunenavn-gnr/bnr",
+          "kommunenavn-gnr/bnr/fnr",
+          "kommunenavn-gnr/bnr/snr/fnr",
+          "kommunenavn/gnr/bnr",
+          "kommunenavn/gnr/bnr/fnr",
+          "kommunenavn/gnr/bnr/snr/fnr",
+          "kommunenr-gnr/bnr",
+          "kommunenr-gnr/bnr/fnr",
+          "kommunenr-gnr/bnr/snr/fnr",
+          "kommunenr/gnr/bnr",
+          "kommunenr/gnr/bnr/fnr",
+          "kommunenr/gnr/bnr/snr/fnr"
         ]
       },
       {
         "type": "text",
-        "text": "Resultatet vises nederst i kartet, og du kan slette målingen når du er ferdig."
+        "text": "Eksempler på gyldige søk:"
+      },
+      {
+        "type": "list",
+        "items": ["Hole-195/15", "3310-195/15", "3310/195/15"]
       }
     ]
   },
   {
-    "title": "Tips 4: Del kartutsnitt",
+    "title": "Hvordan søker jeg på koordinater?",
     "content": [
       {
         "type": "text",
-        "text": "Når du har funnet et interessant område i kartet, kan du enkelt dele det med andre:"
+        "text": "Søkefeltet støtter flere koordinatformater."
+      },
+      {
+        "type": "text",
+        "text": "Geografiske koordinater:"
       },
       {
         "type": "list",
         "items": [
-          "Bruk «Del»-knappen øverst i kartvisningen.",
-          "Kopier lenken som blir generert.",
-          "Lim den inn i e-post eller melding."
+          "59.9494° N, 10.7564° E",
+          "60 N, 10 E",
+          "60°10',10°10'",
+          "60°10'10,10°10'10",
+          "60°10' N,10°10' E",
+          "60°10'10 N,10°10'10 E",
+          "N 60° 5' 38'', E 10° 50' 10''",
+          "N 60° 5' 38'' E 10° 50' 10''"
         ]
       },
       {
         "type": "text",
-        "text": "Mottakeren vil se det samme utsnittet og kartlagene som du har valgt."
+        "text": "UTM-koordinater:"
+      },
+      {
+        "type": "text",
+        "text": "Hvis koordinatene er større enn 180 tolkes de som UTM33-koordinater (standard i kartvisningen), for eksempel: 487560,7442215."
+      },
+      {
+        "type": "text",
+        "text": "Du kan også spesifisere koordinatsystem ved å legge til EPSG-kode, for eksempel: 306461.46,6885442.27@EPSG:25832."
       }
     ]
   },
   {
-    "title": "Tips 5: Last ned data fra Kartverket",
+    "title": "Hvordan deler jeg kartutsnitt?",
     "content": [
-      {
-        "type": "text",
-        "text": "Kartverket tilbyr mange åpne datasett som du kan laste ned gratis fra Geonorge."
-      },
       {
         "type": "list",
         "items": [
-          "Gå til geonorge.no",
-          "Søk etter datasettet du er interessert i",
-          "Velg filformat som passer best (for eksempel GML, GeoJSON eller shapefile)"
+          "Klikk på «Del kart» i menyen.",
+          "En unik URL genereres automatisk.",
+          "Lenken inneholder kartutsnittet ditt og kan deles med andre."
         ]
-      },
-      {
-        "type": "text",
-        "text": "Husk å lese lisensvilkårene for data du bruker i egne prosjekter."
       }
     ]
   },
   {
-    "title": "Tips 6: Søk etter koordinater",
+    "title": "Hvordan deler jeg kart med tegninger?",
     "content": [
       {
         "type": "text",
-        "text": "Du kan søke direkte på koordinater i søkefeltet. Støttede formater inkluderer:"
+        "text": "For å dele kart med tegninger må tegningen først lagres."
       },
       {
         "type": "list",
         "items": [
-          "Geografiske koordinater (WGS84): 59.91273, 10.74609 eller 59°54'45.8\"N 10°44'45.9\"E",
-          "UTM-koordinater: 598515, 6643994 eller 33 598515 6643994",
-          "Med EPSG-kode: 598515 6643994@25833 eller (25833) i parentes",
-          "Wikipedia-format: 59°54′48″N 10°44′20″E (kopier direkte fra Wikipedia)",
-          "Norske retningsbokstaver: 6653873 N, 227047 Ø"
+          "Klikk på lagre-symbolet nederst i tegnemenyen.",
+          "En unik URL genereres.",
+          "Del kartet via «Del kart» i menyen eller kopier URL-en i søkefeltet."
         ]
+      }
+    ]
+  },
+  {
+    "title": "Kan jeg skrive ut i andre formater enn A4?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Kartet kan skrives ut i både A3- og A4-format."
+      },
+      {
+        "type": "list",
+        "items": ["Velg «Skriv ut».", "Velg ønsket format under «Utsnitt»."]
+      }
+    ]
+  },
+  {
+    "title": "Hva er vilkårene for bruk?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Kartverkets vilkår for bruk finner du på kartverket.no."
+      }
+    ]
+  },
+  {
+    "title": "Finnes det tegnforklaring for kartlagene?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Detaljert skjermkartografi for bakgrunnskartene finnes på Geonorge.no."
       },
       {
         "type": "text",
-        "text": "Søkemotoren gjenkjenner automatisk koordinatformatet og viser stedet på kartet."
+        "text": "Desktop:"
+      },
+      {
+        "type": "text",
+        "text": "Når temakart er aktivert kan du vise tegnforklaring ved å trykke på «Tegnforklaring» nederst i høyre hjørne."
+      },
+      {
+        "type": "text",
+        "text": "Mobil:"
+      },
+      {
+        "type": "text",
+        "text": "Når temakart er aktivert kan du vise tegnforklaring ved å trykke på info-ikonet i sidemenyen."
+      }
+    ]
+  },
+  {
+    "title": "Hvor ofte oppdateres kartet?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Oppdateringsfrekvensen avhenger av kartlaget. Standardkartet oppdateres ukentlig, mens temalagene oppdateres med ulike intervaller."
+      }
+    ]
+  },
+  {
+    "title": "Hvor finner jeg eiendomsinformasjon?",
+    "content": [
+      {
+        "type": "text",
+        "text": "I Norgeskart kan du se eiendomsgrenser og grunnleggende eiendomsinformasjon."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Klikk på en eiendom i kartet.",
+          "En resultatboks vises øverst til høyre.",
+          "Velg «Eiendomsinformasjon» for detaljer som kommunenummer, gårdsnummer og bruksnummer.",
+          "Velg «Vis på kartet» for å markere eiendomsgrensen.",
+          "Klikk «Vis mer» for mer informasjon i Eiendomsregisteret."
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Hvordan aktiverer jeg fullskjermsmodus?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Verktøylinjen nederst til høyre i kartet inneholder flere funksjoner, blant annet zoom, rotasjon, posisjon og fullskjermsmodus."
+      }
+    ]
+  },
+  {
+    "title": "Hvordan finner jeg høydeprofil?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Høydeprofil finner du under «Skriv ut» i hovedmenyen."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Velg «Skriv ut».",
+          "Klikk et startpunkt i kartet.",
+          "Klikk der du ønsker å avslutte målingen."
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Hvorfor kan jeg ikke skrive ut flyfoto?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Det er foreløpig ikke mulig å skrive ut flyfoto eller ortofoto. Det arbeides med en løsning for dette i fremtiden."
       }
     ]
   }
