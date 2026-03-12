@@ -19,9 +19,8 @@ import { useSetAtom } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
 import { Circle, Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
-import { Style } from 'ol/style';
 import { useState } from 'react';
-import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
+import { saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import {
@@ -30,8 +29,8 @@ import {
 } from './dialogs/atoms';
 import { ExportDialog } from './dialogs/ExportDialog';
 import { ImportDialog } from './dialogs/import/ImportDialog';
-import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
+import { getFeaturePropertiesForExport } from './utils/featureUtils';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
@@ -64,13 +63,6 @@ const getGeometryType = (geo: Geometry): string => {
   return geo.getType();
 };
 
-const getRadius = (geo: Geometry): number | undefined => {
-  if (geo instanceof Circle) {
-    return geo.getRadius();
-  }
-  return undefined;
-};
-
 export const DrawControlFooter = () => {
   const { getDrawnFeatures, clearDrawing } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
@@ -97,20 +89,15 @@ export const DrawControlFooter = () => {
           geometry,
           mapProjection,
         );
-        const featureStyle = feature.getStyle() as Style | null;
-        const icon = getFeatureIcon(feature);
-        const styleForStorage = getStyleForStorage(featureStyle);
+
+        const featureProperties = getFeaturePropertiesForExport(feature);
         return {
           type: 'Feature',
           geometry: {
             type: getGeometryType(geometry),
             coordinates: featureCoordinates,
           },
-          properties: {
-            style: styleForStorage,
-            overlayIcon: icon || undefined,
-            radius: getRadius(geometry),
-          },
+          properties: featureProperties,
         } as Feature;
       })
       .filter((f) => f !== null);
