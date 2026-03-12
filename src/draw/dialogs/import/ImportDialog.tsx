@@ -15,6 +15,7 @@ import {
   SwitchLabel,
   SwitchRoot,
   Text,
+  toaster,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { Feature } from 'ol';
@@ -23,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { getDrawLayer } from '../../drawControls/hooks/mapLayers';
 import { isImportDialogOpenAtom } from '../atoms';
 import {
+  FeatureReadResult,
   readFeaturesFromGeoJsonString,
   readFeaturesFromGMLString,
   readFeaturesFromGPXString,
@@ -73,25 +75,48 @@ export const ImportDialog = () => {
               const fileText = await file.text();
               const fileName = file.name.toLowerCase();
               const fileExtension = fileName.split('.').pop();
-              const features: Feature[] = [];
+              let readResult: FeatureReadResult;
+
               switch (fileExtension) {
                 case 'gpx': {
-                  const readFeatures = readFeaturesFromGPXString(fileText);
-                  features.push(...readFeatures);
+                  readResult = readFeaturesFromGPXString(fileText);
                   break;
                 }
                 case 'geojson': {
-                  const readFeatures = readFeaturesFromGeoJsonString(fileText);
-                  features.push(...readFeatures);
+                  readResult = readFeaturesFromGeoJsonString(fileText);
+
                   break;
                 }
                 case 'gml': {
-                  const readFeatures = readFeaturesFromGMLString(fileText);
-                  features.push(...readFeatures);
+                  readResult = readFeaturesFromGMLString(fileText);
                   break;
                 }
                 default:
+                  toaster.error({
+                    title: t('importDialog.fileTypeNotSupported'),
+                  });
+                  setImportedFeatures(null);
                   console.warn('unsupported file type');
+                  return;
+              }
+
+              if (readResult.status === 'error') {
+                toaster.error({
+                  title: t('importDialog.fileReadError'),
+                });
+                setImportedFeatures(null);
+                console.warn('error reading features from file');
+                return;
+              }
+
+              const features = readResult.features;
+              if (features.length === 0) {
+                toaster.warning({
+                  title: t('importDialog.noFeaturesFound'),
+                });
+                setImportedFeatures(null);
+                console.warn('no features found in file');
+                return;
               }
               setImportedFeatures(features);
             }}
