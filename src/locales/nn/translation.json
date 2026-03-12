@@ -174,9 +174,9 @@
             "nautical-background": "Nautisk bakgrunnskart",
             "oceanicelectronic": "Elektronisk sjøkart",
             "sjokartraster": "Sjøkart oppdatert EFS",
-            "topo": "Topografisk kart",
+            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografisk gråtonekart",
+            "topograatone": "Standard (gråtone)",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
           }
