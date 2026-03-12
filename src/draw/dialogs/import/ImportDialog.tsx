@@ -21,6 +21,10 @@ import { useAtom } from 'jotai';
 import { Feature } from 'ol';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  addIconOverlayToPointFeature,
+  PointIcon,
+} from '../../drawControls/hooks/drawSettings';
 import { getDrawLayer } from '../../drawControls/hooks/mapLayers';
 import { isImportDialogOpenAtom } from '../atoms';
 import {
@@ -39,7 +43,6 @@ export const ImportDialog = () => {
   const { t } = useTranslation();
 
   const handleImportClick = () => {
-    console.log(importedFeatures);
     if (!importedFeatures) {
       console.warn('no features to import');
       return;
@@ -49,10 +52,24 @@ export const ImportDialog = () => {
       console.warn('draw layer not found');
       return;
     }
-    if (overWriteDrawLayer) {
-      drawLayer.getSource()?.clear();
+    const drawSource = drawLayer.getSource();
+    if (!drawSource) {
+      console.warn('draw layer source not found');
+      return;
     }
-    drawLayer.getSource()?.addFeatures(importedFeatures);
+    if (overWriteDrawLayer) {
+      drawSource.clear();
+    }
+
+    importedFeatures.forEach((feature) => {
+      drawSource.addFeature(feature);
+
+      const overlayIcon = feature.get('overlayIcon') as PointIcon | undefined;
+      if (overlayIcon) {
+        addIconOverlayToPointFeature(feature, overlayIcon);
+      }
+    });
+    setImportedFeatures(null);
     setIsOpen(false);
   };
   return (
@@ -93,7 +110,7 @@ export const ImportDialog = () => {
                 }
                 default:
                   toaster.error({
-                    title: t('importDialog.fileTypeNotSupported'),
+                    title: t('importDialog.toasts.fileTypeNotSupported.title'),
                   });
                   setImportedFeatures(null);
                   console.warn('unsupported file type');
@@ -102,7 +119,7 @@ export const ImportDialog = () => {
 
               if (readResult.status === 'error') {
                 toaster.error({
-                  title: t('importDialog.fileReadError'),
+                  title: t('importDialog.toasts.fileReadError.title'),
                 });
                 setImportedFeatures(null);
                 console.warn('error reading features from file');
@@ -112,7 +129,7 @@ export const ImportDialog = () => {
               const features = readResult.features;
               if (features.length === 0) {
                 toaster.warning({
-                  title: t('importDialog.noFeaturesFound'),
+                  title: t('importDialog.toasts.noFeaturesFound.title'),
                 });
                 setImportedFeatures(null);
                 console.warn('no features found in file');
