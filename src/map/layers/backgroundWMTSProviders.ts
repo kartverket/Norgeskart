@@ -20,14 +20,18 @@ export type WMTSLayerName =
   | 'Nibcache_web_mercator_v2'
   | 'Nibcache_UTM32_EUREF89_v2'
   | 'Nibcache_UTM33_EUREF89_v2'
-  | 'Nibcache_UTM35_EUREF89_v2';
+  | 'Nibcache_UTM35_EUREF89_v2'
+  | 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833'
+  | 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833';
 
 export type WMTSProviderId =
   | 'kartverketCache'
   | 'norgeibilder_webmercator'
   | 'norgeibilder_utm32'
   | 'norgeibilder_utm33'
-  | 'norgeibilder_utm35';
+  | 'norgeibilder_utm35'
+  | 'npolar_svalbard'
+  | 'npolar_jan_mayen';
 
 type WMTSProvider = {
   baseUrl: string;
@@ -91,6 +95,22 @@ const providers: WMTSProviders = {
         ENV.layerProviderParameters.norgeIBilder.apiKey,
     },
     layers: ['Nibcache_UTM35_EUREF89_v2'],
+  },
+  npolar_svalbard: {
+    baseUrl: 'https://geodata.npolar.no',
+    endpoints: {
+      getCapabilities:
+        '/arcgis/rest/services/Basisdata/NP_Basiskart_Svalbard_WMTS_25833/MapServer/WMTS?Request=GetCapabilities&Service=WMTS',
+    },
+    layers: ['Basisdata_NP_Basiskart_Svalbard_WMTS_25833'],
+  },
+  npolar_jan_mayen: {
+    baseUrl: 'https://geodata.npolar.no',
+    endpoints: {
+      getCapabilities:
+        '/arcgis/rest/services/Basisdata/NP_Basiskart_JanMayen_WMTS_25833/MapServer/WMTS?Request=GetCapabilities&Service=WMTS',
+    },
+    layers: ['Basisdata_NP_Basiskart_JanMayen_WMTS_25833'],
   },
 };
 
