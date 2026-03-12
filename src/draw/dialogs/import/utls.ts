@@ -15,6 +15,7 @@ export type FeatureReadResult =
     };
 
 import { GeoJsonProperties } from 'geojson';
+import { Point } from 'ol/geom';
 import { Fill, Stroke, Style, Text } from 'ol/style';
 import { StyleForStorage } from '../../../api/nkApiClient';
 import { PointIcon } from '../../drawControls/hooks/drawSettings';
@@ -109,9 +110,38 @@ export const readFeaturesFromGMLString = (
   const projection = map.getView().getProjection().getCode();
   try {
     const gmlReader = new GML();
-    const features = gmlReader.readFeatures(fileText, {
-      featureProjection: projection,
-    });
+    const features = gmlReader
+      .readFeatures(fileText, {
+        featureProjection: projection,
+      })
+      .map((feature) => {
+        const geometry = feature.getGeometry();
+        if (geometry && geometry instanceof Point) {
+          feature.setProperties(
+            {
+              overlayIcon: {
+                icon: 'circle',
+                color: '#0044ff',
+                size: 1,
+              } as PointIcon,
+            },
+            true,
+          );
+        } else {
+          feature.setStyle(
+            new Style({
+              stroke: new Stroke({
+                color: '#0044ff',
+                width: 2,
+              }),
+              fill: new Fill({
+                color: 'rgba(0, 68, 255, 0.3)',
+              }),
+            }),
+          );
+        }
+        return feature;
+      });
     return {
       status: 'success',
       features,
