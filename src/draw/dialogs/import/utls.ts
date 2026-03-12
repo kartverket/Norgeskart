@@ -14,6 +14,10 @@ export type FeatureReadResult =
       status: 'error';
     };
 
+import { GeoJsonProperties } from 'geojson';
+import { Fill, Stroke, Style, Text } from 'ol/style';
+import { StyleForStorage } from '../../../api/nkApiClient';
+import { PointIcon } from '../../drawControls/hooks/drawSettings';
 import { FeatureCollection } from './types';
 export const readFeaturesFromGPXString = (
   fileText: string,
@@ -69,9 +73,26 @@ export const readFeaturesFromGeoJsonString = (
       dataProjection: 'EPSG:4326',
       featureProjection: projection,
     });
+    const featuresWithStyle = features.map((feature) => {
+      const props = feature.getProperties() as GeoJsonProperties;
+      const style = getStyleFromProperties(props);
+      const icon = getOverlayIconFromProperties(props);
+      if (style) {
+        feature.setStyle(style);
+      }
+      if (icon) {
+        feature.setProperties(
+          {
+            overlayIcon: icon,
+          },
+          true,
+        );
+      }
+      return feature;
+    });
     return {
       status: 'success',
-      features,
+      features: featuresWithStyle,
     };
   } catch (error) {
     console.error('Error reading GeoJSON features:', error);
@@ -101,4 +122,76 @@ export const readFeaturesFromGMLString = (
       status: 'error',
     };
   }
+};
+
+export const getStyleFromProperties = (props: GeoJsonProperties) => {
+  if (props == null) {
+    return null;
+  }
+  const styleFromProps = props.style as StyleForStorage | undefined;
+  if (styleFromProps == null) {
+    return null;
+  }
+
+  const fill = styleFromProps.fill?.color
+    ? new Fill({ color: styleFromProps.fill.color })
+    : undefined;
+
+  const stroke = styleFromProps.stroke?.color
+    ? new Stroke({
+        color: styleFromProps.stroke.color,
+        width: styleFromProps.stroke.width ?? 2,
+      })
+    : undefined;
+
+  const textValue =
+    (styleFromProps.text as { text?: string; value?: string })?.text ??
+    (styleFromProps.text as { text?: string; value?: string })?.value;
+  const text = textValue
+    ? new Text({
+        text: textValue,
+        font: styleFromProps.text?.font ?? '16px sans-serif',
+        fill: styleFromProps.text?.fillColor
+          ? new Fill({ color: styleFromProps.text.fillColor })
+          : new Fill({ color: '#000000' }),
+        stroke: styleFromProps.text?.stroke?.color
+          ? new Stroke({
+              color: styleFromProps.text.stroke.color,
+              width: styleFromProps.text.stroke.width ?? 1,
+            })
+          : undefined,
+        backgroundFill: styleFromProps.text?.backgroundFillColor
+          ? new Fill({ color: styleFromProps.text.backgroundFillColor })
+          : undefined,
+        offsetY: -15,
+        textAlign: 'center',
+        textBaseline: 'bottom',
+      })
+    : undefined;
+
+  if (!fill && !stroke && !text) {
+    return null;
+  }
+
+  const style = new Style({
+    fill,
+    stroke,
+    text,
+  });
+
+  return style;
+};
+
+export const getOverlayIconFromProperties = (
+  properties: GeoJsonProperties,
+): PointIcon | null => {
+  const iconFromProps = properties?.overlayIcon as PointIcon | null;
+  return iconFromProps;
+};
+
+export const getCircleRadiusFromProperties = (
+  properties: GeoJsonProperties,
+): number | null => {
+  const radiusFromProps = properties?.radius as number | null;
+  return radiusFromProps;
 };
