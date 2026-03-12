@@ -22,9 +22,7 @@ export const ScaleSelector = () => {
 
   const label = scale ? `1: ${scale.toLocaleString('no-NO')}` : '';
 
-  const tooltipText = scale
-    ? `${t('toolbar.scale.tooltip')}\n${t('toolbar.scale.info', { scale: scale.toLocaleString('no-NO') })}\n${t('toolbar.scale.approximateInfo')}`
-    : t('toolbar.scale.tooltip');
+  const tooltipText = t('toolbar.scale.tooltip');
 
   return (
     <SelectRoot
