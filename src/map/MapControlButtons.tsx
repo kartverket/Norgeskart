@@ -1,5 +1,4 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties } from 'react';
@@ -140,7 +139,6 @@ interface ControlButtonProps {
 }
 
 const ControlIconButton = (props: ControlButtonProps) => {
-  const ph = usePostHog();
   return (
     <IconButton
       variant={props.variant || 'ghost'}
@@ -149,7 +147,6 @@ const ControlIconButton = (props: ControlButtonProps) => {
       icon={props.icon}
       aria-label={props.label}
       onClick={() => {
-        ph.capture('map_control_clicked', { control: props.id });
         props.onClick();
       }}
       style={props.style}
