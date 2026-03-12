@@ -1,12 +1,14 @@
 import { getDefaultStore } from 'jotai';
+import { Feature } from 'ol';
 import { GeoJSON, GML, GPX } from 'ol/format';
 import VectorLayer from 'ol/layer/Vector';
 import { mapAtom } from '../../map/atoms';
 import { downloadStringAsFile } from '../../shared/utils/fileOperations';
+import { getFeaturePropertiesForExport } from '../utils/featureUtils';
 
 export const handleGeoJsonExport = (layer: VectorLayer) => {
   const formater = new GeoJSON();
-  const features = layer.getSource()?.getFeatures();
+  const features = layer.getSource()?.getFeatures() as Feature[] | undefined;
   if (!features || features.length === 0) {
     console.error('No features to export');
     return;
@@ -16,8 +18,23 @@ export const handleGeoJsonExport = (layer: VectorLayer) => {
     .getView()
     .getProjection()
     .getCode();
+  console.log(features);
+  const featuresToExport = features
+    .filter(
+      (f) =>
+        f.getGeometry()?.getType() === 'LineString' ||
+        f.getGeometry()?.getType() === 'Polygon' ||
+        f.getGeometry()?.getType() === 'Point',
+    )
+    .map((f) => {
+      const props = getFeaturePropertiesForExport(f);
+      if (props) {
+        f.setProperties(props, true);
+      }
+      return f;
+    });
 
-  const geojsonStr = formater.writeFeatures(features, {
+  const geojsonStr = formater.writeFeatures(featuresToExport, {
     dataProjection: 'EPSG:4326',
     featureProjection: projection,
   });

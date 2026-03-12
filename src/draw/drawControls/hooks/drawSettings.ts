@@ -23,8 +23,8 @@ import {
 } from '../drawUtils';
 
 import { ProjectionIdentifier } from '../../../map/projections/types';
+import { getFeatureIcon } from '../../utils/featureUtils';
 import { isDrawIconFilled } from '../drawUtils';
-import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
 import { getDrawLayer } from './mapLayers';
 
@@ -248,7 +248,6 @@ const useDrawSettings = () => {
     }
 
     const geojsonReader = new GeoJSON();
-    console.log(featureCollection);
 
     const featuresToAddWithStyle: Feature<Geometry>[] = [];
 
