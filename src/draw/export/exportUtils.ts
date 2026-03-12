@@ -34,6 +34,11 @@ export const handleGMLExport = (layer: VectorLayer) => {
     console.error('No features to export');
     return;
   }
+  const projection = getDefaultStore()
+    .get(mapAtom)
+    .getView()
+    .getProjection()
+    .getCode();
   // Use a default feature type and geometry name
   const formater = new GML({
     featureNS: 'http://www.opengis.net/gml',
@@ -48,7 +53,9 @@ export const handleGMLExport = (layer: VectorLayer) => {
     }
   });
 
-  const gmlStr = formater.writeFeatures(features);
+  const gmlStr = formater.writeFeatures(features, {
+    dataProjection: projection,
+  });
   downloadStringAsFile(gmlStr, 'Norgeskart_eksport.gml', 'application/gml+xml');
 };
 
