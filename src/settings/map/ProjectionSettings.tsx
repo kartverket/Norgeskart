@@ -1,12 +1,11 @@
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom } from '../../map/atoms';
 import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
-import { useMapSettings } from '../../map/mapHooks';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
 
 export const ProjectionSettings = () => {
-  const { setProjection } = useMapSettings();
+  const setCurrentProjection = useSetAtom(currentProjectionAtom);
   const currentProjection = useAtomValue(currentProjectionAtom);
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
@@ -14,7 +13,7 @@ export const ProjectionSettings = () => {
 
   return (
     <ProjectionSelector
-      onProjectionChange={setProjection}
+      onProjectionChange={setCurrentProjection}
       value={currentProjection}
       default={currentProjection}
       textColor="white"

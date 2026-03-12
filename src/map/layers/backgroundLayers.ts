@@ -1,5 +1,6 @@
 import { useAtomValue } from 'jotai';
 import TileLayer from 'ol/layer/Tile';
+import WMTS from 'ol/source/WMTS';
 import { AvailableProjectionType, mapAtom } from '../atoms';
 import { ProjectionIdentifier } from '../projections/types';
 import {
@@ -8,7 +9,11 @@ import {
   VectorTileLayerName,
 } from './backgroundVectorTiles';
 import { getWMSLayer, WMSLayerName } from './backgroundWMS';
-import { loadableWMTS, WMTSLayerName } from './backgroundWMTSProviders';
+import {
+  loadableWMTS,
+  WMTSLayerName,
+  WMTSProviderId,
+} from './backgroundWMTSProviders';
 
 export type BackgroundLayerName =
   | WMTSLayerName
@@ -53,6 +58,48 @@ const getNiBLayerNameForProjection = (
   }
 };
 
+type WMTSData = Map<
+  WMTSProviderId,
+  Map<ProjectionIdentifier, Map<WMTSLayerName, WMTS>>
+>;
+
+export const getBackgroundLayerForProjection = (
+  wmtsData: WMTSData,
+  projectionId: ProjectionIdentifier,
+  layerName: BackgroundLayerName,
+): TileLayer | null => {
+  const wmsLayer = getWMSLayer(layerName as WMSLayerName, projectionId);
+  if (wmsLayer) return wmsLayer;
+
+  let targetLayerName: WMTSLayerName | null;
+  if (isLayerNiBLayer(layerName)) {
+    targetLayerName = getNiBLayerNameForProjection(
+      projectionId as AvailableProjectionType,
+    );
+    if (!targetLayerName) {
+      console.warn(
+        `NiB layer ${layerName} is not available for projection ${projectionId}`,
+      );
+      return null;
+    }
+  } else {
+    targetLayerName = layerName as WMTSLayerName;
+  }
+
+  for (const projectionLayerMap of wmtsData.values()) {
+    const source = projectionLayerMap.get(projectionId)?.get(targetLayerName);
+    if (source) {
+      return new TileLayer({
+        source,
+        preload: Infinity,
+        properties: { id: `bg.${targetLayerName}` },
+      });
+    }
+  }
+
+  return null;
+};
+
 export const useBackgoundLayers = () => {
   const map = useAtomValue(mapAtom);
   const WMTSProviders = useAtomValue(loadableWMTS);
@@ -78,51 +125,10 @@ export const useBackgoundLayers = () => {
       .getProjection()
       .getCode() as ProjectionIdentifier;
 
-    const wmsLayer = getWMSLayer(
-      backgroundLayerName as WMSLayerName,
+    return getBackgroundLayerForProjection(
+      WMTSProviders.data,
       currentProjection,
-    );
-    if (wmsLayer) {
-      return wmsLayer;
-    }
-
-    const avialableWMTSLayersForProjection: Map<WMTSLayerName, TileLayer> =
-      new Map();
-
-    WMTSProviders.data.forEach((projectionLayerMap) => {
-      const layersForProjection = projectionLayerMap.get(currentProjection);
-      if (layersForProjection) {
-        layersForProjection.forEach((source, layerName) => {
-          const layer = new TileLayer({
-            source: source,
-            preload: Infinity,
-            properties: {
-              id: `bg.${layerName}`,
-            },
-          });
-          avialableWMTSLayersForProjection.set(layerName, layer);
-        });
-      }
-    });
-
-    if (isLayerNiBLayer(backgroundLayerName)) {
-      const nibLayerName = getNiBLayerNameForProjection(currentProjection);
-      if (nibLayerName) {
-        return avialableWMTSLayersForProjection.get(nibLayerName) || null;
-      } else {
-        console.warn(
-          `NiB layer ${backgroundLayerName} is not available for projection ${currentProjection}`,
-        );
-        return null;
-      }
-    }
-
-    //Handle NiB boogaloo here
-
-    return (
-      avialableWMTSLayersForProjection.get(
-        backgroundLayerName as WMTSLayerName,
-      ) || null
+      backgroundLayerName,
     );
   };
 
