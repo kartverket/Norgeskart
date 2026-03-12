@@ -29,7 +29,7 @@ export const MapToolCards = () => {
   return (
     <Box
       display={currentMapTool === 'draw' && collapsed ? 'none' : 'block'}
-      pointerEvents={currentMapTool === 'draw' && collapsed ? 'none' : 'auto'}
+      pointerEvents={'none'}
       w="100%"
     >
       <MapToolCardsBody />
