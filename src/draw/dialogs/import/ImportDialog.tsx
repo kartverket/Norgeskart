@@ -16,10 +16,11 @@ import {
   SwitchRoot,
   Text,
   toaster,
+  Tooltip,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { Feature } from 'ol';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   addIconOverlayToPointFeature,
@@ -27,6 +28,7 @@ import {
 } from '../../drawControls/hooks/drawSettings';
 import { getDrawLayer } from '../../drawControls/hooks/mapLayers';
 import { isImportDialogOpenAtom } from '../atoms';
+import { ImportContentDetails } from './ImportContentDetails';
 import {
   FeatureReadResult,
   readFeaturesFromGeoJsonString,
@@ -41,6 +43,7 @@ export const ImportDialog = () => {
     null,
   );
   const { t } = useTranslation();
+  const id = useId();
 
   const handleImportClick = () => {
     if (!importedFeatures) {
@@ -88,6 +91,10 @@ export const ImportDialog = () => {
             maxFiles={1}
             accept={'.gpx, .geojson, .gml'}
             onFileChange={async (e) => {
+              setImportedFeatures(null);
+              if (!e.acceptedFiles || e.acceptedFiles.length === 0) {
+                return;
+              }
               const file = e.acceptedFiles[0];
               const fileText = await file.text();
               const fileName = file.name.toLowerCase();
@@ -147,19 +154,26 @@ export const ImportDialog = () => {
             />
             <FileUploadList clearable />
           </FileUploadRoot>
+          <ImportContentDetails features={importedFeatures} />
         </DialogBody>
         <DialogFooter>
           <HStack justify={'space-between'} w={'100%'}>
-            <SwitchRoot
-              onCheckedChange={(e) => setOverWriteDrawLayer(e.checked)}
-              checked={overWriteDrawLayer}
+            <Tooltip
+              content={t('importDialog.overwriteSwitch.tooltip')}
+              ids={{ trigger: id }}
             >
-              <SwitchHiddenInput />
-              <SwitchControl />
-              <SwitchLabel>
-                {t('importDialog.overwriteSwitch.label')}
-              </SwitchLabel>
-            </SwitchRoot>
+              <SwitchRoot
+                onCheckedChange={(e) => setOverWriteDrawLayer(e.checked)}
+                checked={overWriteDrawLayer}
+                ids={{ root: id }}
+              >
+                <SwitchHiddenInput />
+                <SwitchControl />
+                <SwitchLabel>
+                  {t('importDialog.overwriteSwitch.label')}
+                </SwitchLabel>
+              </SwitchRoot>
+            </Tooltip>
             <Button
               variant="outline"
               size="xs"
