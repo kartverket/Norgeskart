@@ -9,6 +9,7 @@ import {
   FileUploadDropzone,
   FileUploadList,
   FileUploadRoot,
+  Heading,
   HStack,
   SwitchControl,
   SwitchHiddenInput,
@@ -17,6 +18,7 @@ import {
   Text,
   toaster,
   Tooltip,
+  VStack,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { Feature } from 'ol';
@@ -83,78 +85,82 @@ export const ImportDialog = () => {
       open={isOpen}
     >
       <DialogContent userSelect={'none'}>
-        <DialogHeader>{t('importDialog.header')}</DialogHeader>
+        <DialogHeader>
+          <Heading size={'md'}>{t('importDialog.header')}</Heading>
+        </DialogHeader>
         <DialogCloseTrigger />
         <DialogBody>
-          <Text> {t('importDialog.body.text')}</Text>
-          <FileUploadRoot
-            maxFiles={1}
-            accept={'.gpx, .geojson, .gml'}
-            onFileChange={async (e) => {
-              setImportedFeatures(null);
-              if (!e.acceptedFiles || e.acceptedFiles.length === 0) {
-                return;
-              }
-              const file = e.acceptedFiles[0];
-              const fileText = await file.text();
-              const fileName = file.name.toLowerCase();
-              const fileExtension = fileName.split('.').pop();
-              let readResult: FeatureReadResult;
+          <VStack>
+            <Text> {t('importDialog.body.text')}</Text>
+            <FileUploadRoot
+              maxFiles={1}
+              accept={'.gpx, .geojson, .gml'}
+              onFileChange={async (e) => {
+                setImportedFeatures(null);
+                if (!e.acceptedFiles || e.acceptedFiles.length === 0) {
+                  return;
+                }
+                const file = e.acceptedFiles[0];
+                const fileText = await file.text();
+                const fileName = file.name.toLowerCase();
+                const fileExtension = fileName.split('.').pop();
+                let readResult: FeatureReadResult;
 
-              switch (fileExtension) {
-                case 'gpx': {
-                  readResult = readFeaturesFromGPXString(fileText);
-                  break;
-                }
-                case 'geojson': {
-                  readResult = readFeaturesFromGeoJsonString(fileText);
+                switch (fileExtension) {
+                  case 'gpx': {
+                    readResult = readFeaturesFromGPXString(fileText);
+                    break;
+                  }
+                  case 'geojson': {
+                    readResult = readFeaturesFromGeoJsonString(fileText);
 
-                  break;
+                    break;
+                  }
+                  case 'gml': {
+                    readResult = readFeaturesFromGMLString(fileText);
+                    break;
+                  }
+                  default:
+                    toaster.error({
+                      title: t(
+                        'importDialog.toasts.fileTypeNotSupported.title',
+                      ),
+                    });
+                    setImportedFeatures(null);
+                    console.warn('unsupported file type');
+                    return;
                 }
-                case 'gml': {
-                  readResult = readFeaturesFromGMLString(fileText);
-                  break;
-                }
-                default:
+
+                if (readResult.status === 'error') {
                   toaster.error({
-                    title: t('importDialog.toasts.fileTypeNotSupported.title'),
+                    title: t('importDialog.toasts.fileReadError.title'),
                   });
                   setImportedFeatures(null);
-                  console.warn('unsupported file type');
+                  console.warn('error reading features from file');
                   return;
-              }
+                }
 
-              if (readResult.status === 'error') {
-                toaster.error({
-                  title: t('importDialog.toasts.fileReadError.title'),
-                });
-                setImportedFeatures(null);
-                console.warn('error reading features from file');
-                return;
-              }
-
-              const features = readResult.features;
-              if (features.length === 0) {
-                toaster.warning({
-                  title: t('importDialog.toasts.noFeaturesFound.title'),
-                });
-                setImportedFeatures(null);
-                console.warn('no features found in file');
-                return;
-              }
-              setImportedFeatures(features);
-            }}
-          >
-            <FileUploadDropzone
-              label={t(
-                'printdialog.elevationProfile.fileUpload.dragDrop.label',
-              )}
-              w={'100%'}
-              minH={'unset'}
-            />
-            <FileUploadList clearable />
-          </FileUploadRoot>
-          <ImportContentDetails features={importedFeatures} />
+                const features = readResult.features;
+                if (features.length === 0) {
+                  toaster.warning({
+                    title: t('importDialog.toasts.noFeaturesFound.title'),
+                  });
+                  setImportedFeatures(null);
+                  console.warn('no features found in file');
+                  return;
+                }
+                setImportedFeatures(features);
+              }}
+            >
+              <FileUploadDropzone
+                label={t('importDialog.fileupload.dragdrop.label')}
+                w={'100%'}
+                minH={'unset'}
+              />
+              <FileUploadList clearable />
+            </FileUploadRoot>
+            <ImportContentDetails features={importedFeatures} />
+          </VStack>
         </DialogBody>
         <DialogFooter>
           <HStack justify={'space-between'} w={'100%'}>

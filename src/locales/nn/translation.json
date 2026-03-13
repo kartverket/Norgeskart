@@ -633,6 +633,11 @@
       "confirm": {
         "label": "Last opp"
       }
+    },
+    "fileupload": {
+      "dragdrop": {
+        "label": "Dra og slipp, eller vel ei fil"
+      }
     }
   }
 }

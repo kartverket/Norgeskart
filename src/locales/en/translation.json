@@ -628,6 +628,11 @@
       "confirm": {
         "label": "Upload"
       }
+    },
+    "fileupload": {
+      "dragdrop": {
+        "label": "Drag and drop or select a file"
+      }
     }
   }
 }
