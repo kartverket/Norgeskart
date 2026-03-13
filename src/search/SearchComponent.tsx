@@ -9,7 +9,7 @@ import {
   Spinner,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
 import { activeBackgroundLayerAtom } from '../map/layers/atoms.ts';
@@ -55,8 +55,6 @@ export const SearchComponent = () => {
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
-  const settingsHoverTimeoutRef = useRef<number | null>(null);
-  const iconHoverTimeoutRef = useRef<number | null>(null);
   const setDisplaySearchResults = useSetAtom(displaySearchResultsAtom);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
@@ -68,17 +66,6 @@ export const SearchComponent = () => {
     setHoveredResult(null);
     setShowBackgroundSettings(false);
   };
-
-  const cancelTimeouts = useMemo(() => {
-    return () => {
-      if (settingsHoverTimeoutRef.current) {
-        clearTimeout(settingsHoverTimeoutRef.current);
-      }
-      if (iconHoverTimeoutRef.current) {
-        clearTimeout(iconHoverTimeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <ErrorBoundary fallback={undefined} name={React.Component.name}>
@@ -105,21 +92,7 @@ export const SearchComponent = () => {
               overflow="hidden"
               cursor="pointer"
               padding={0}
-              onMouseEnter={() => {
-                cancelTimeouts();
-                iconHoverTimeoutRef.current = window.setTimeout(
-                  () => setShowBackgroundSettings(true),
-                  100,
-                );
-              }}
-              onMouseLeave={() => {
-                cancelTimeouts();
-                settingsHoverTimeoutRef.current = window.setTimeout(() => {
-                  setShowBackgroundSettings(false);
-                }, 700);
-              }}
               onClick={() => {
-                cancelTimeouts();
                 setShowBackgroundSettings((s) => !s);
               }}
               boxShadow="md"
@@ -163,16 +136,7 @@ export const SearchComponent = () => {
           setHoveredResult={setHoveredResult}
         />
         {showBackgroundSettings && (
-          <Box
-            onMouseLeave={() => {
-              settingsHoverTimeoutRef.current = window.setTimeout(() => {
-                setShowBackgroundSettings(false);
-              }, 700);
-            }}
-            onMouseEnter={() => {
-              cancelTimeouts();
-            }}
-          >
+          <Box>
             <BackgroundLayerSettings
               onSelectComplete={() => setShowBackgroundSettings(false)}
             />
