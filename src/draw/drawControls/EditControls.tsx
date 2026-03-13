@@ -1,8 +1,9 @@
-import { ButtonGroup, HStack, IconButton, Tooltip } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { ButtonGroup, HStack, IconButton, Switch, Tooltip } from '@kvib/react';
+import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { snapEnabledAtom } from '../../settings/draw/atoms';
 import {
   canRedoAtom,
   canUndoAtom,
@@ -23,6 +24,7 @@ export const EditControls = () => {
   const { undoLast, redoLastUndone } = useDrawActions();
   const canUndoDrawAction = useAtomValue(canUndoAtom);
   const canRedoDrawAction = useAtomValue(canRedoAtom);
+  const [snapEnabled, setSnapEnabled] = useAtom(snapEnabledAtom);
   const { t } = useTranslation();
 
   const featureMovedListener = useCallback(
@@ -125,6 +127,13 @@ export const EditControls = () => {
             variant="ghost"
           />
         </Tooltip>
+        <Switch
+          size="sm"
+          checked={snapEnabled}
+          onCheckedChange={(e) => setSnapEnabled(e.checked)}
+        >
+          Snap
+        </Switch>
       </HStack>
     </>
   );

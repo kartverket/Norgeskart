@@ -23,7 +23,7 @@
       "mobiletext": "Help"
     },
     "export": "Export and download",
-    "hide": "Hide toolbar"
+    "hide": "Minimize"
   },
   "draw": {
     "begin": "Draw on map",
@@ -172,15 +172,15 @@
             "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
-            "Nibcache_web_mercator_v2": "Aerial photos",
+            "Nibcache_web_mercator_v2": "Aerial Photos",
             "nautical-background": "Nautical Background Chart",
             "oceanicelectronic": "Electronic Nautical Chart",
-            "sjokartraster": "Nautical Chart Updated EFS",
-            "topo": "Topographic map",
+            "sjokartraster": "Nautical Chart updated EFS",
+            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografic, grayscale",
+            "topograatone": "Standard (greyscale)",
             "topoProd": "Topographic",
-            "toporaster": "Paper map"
+            "toporaster": "Paper Map"
           }
         },
         "projection": {

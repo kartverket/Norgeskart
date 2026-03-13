@@ -23,7 +23,7 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
-    "hide": "Skjul verktøylinje"
+    "hide": "Minimer"
   },
   "draw": {
     "begin": "Teikn på kartet",
@@ -181,9 +181,9 @@
             "nautical-background": "Nautisk bakgrunnskart",
             "oceanicelectronic": "Elektronisk sjøkart",
             "sjokartraster": "Sjøkart oppdatert EFS",
-            "topo": "Topo",
+            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografisk gråtone",
+            "topograatone": "Standard (gråtone)",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
           }
