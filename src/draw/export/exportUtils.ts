@@ -80,10 +80,13 @@ export const handleGMLExport = (layer: VectorLayer) => {
   });
   console.log(gmlStr);
 
-  const wrappedGmlStr = `<?xml version="1.0" encoding="UTF-8"?>
-<gml:FeatureCollection xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.norgeskart.no/drawings">
-${gmlStr}
-</gml:FeatureCollection>`.trim();
+  const wrappedGmlStr = `
+  <?xml version="1.0" encoding="UTF-8"?>
+    <gml:FeatureCollection  xmlns:gml="http://www.opengis.net/gml"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xsi:schemaLocation="http://www.norgeskart.no/drawings">
+      ${gmlStr}
+    </gml:FeatureCollection>`.trim();
 
   downloadStringAsFile(
     wrappedGmlStr,
