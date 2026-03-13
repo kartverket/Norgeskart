@@ -241,3 +241,15 @@ export const getCircleRadiusFromProperties = (
   const radiusFromProps = properties?.radius as number | null;
   return radiusFromProps;
 };
+
+export const countFeatureTypes = (features: Feature[]) => {
+  const typeCounts: Record<string, number> = {};
+  features.forEach((feature) => {
+    const geometry = feature.getGeometry();
+    if (geometry) {
+      const type = geometry.getType();
+      typeCounts[type] = (typeCounts[type] || 0) + 1;
+    }
+  });
+  return typeCounts;
+};
