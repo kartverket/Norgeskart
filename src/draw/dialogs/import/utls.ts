@@ -154,6 +154,7 @@ export const readFeaturesFromGMLString = (
     const gmlReader = new GML();
     const features = gmlReader
       .readFeatures(fileText, {
+        dataProjection: 'EPSG:4326',
         featureProjection: projection,
       })
       .map(setDefaultStyleForFeature)

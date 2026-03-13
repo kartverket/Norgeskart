@@ -84,7 +84,8 @@ export const handleGMLExport = (layer: VectorLayer) => {
   <?xml version="1.0" encoding="UTF-8"?>
     <gml:FeatureCollection  xmlns:gml="http://www.opengis.net/gml"
                             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                            xsi:schemaLocation="http://www.norgeskart.no/drawings">
+                            xsi:schemaLocation="http://www.norgeskart.no/drawings"
+                            gml:srsName="urn:ogc:def:crs:EPSG::4326">
       ${gmlStr}
     </gml:FeatureCollection>`.trim();
 
