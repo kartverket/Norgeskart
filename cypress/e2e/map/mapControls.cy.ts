@@ -20,9 +20,7 @@ describe('Map Controls', () => {
       cy.get('button[aria-label="Zoom ut"]').should('be.visible');
       cy.get('button[aria-label="Roter venstre"]').should('be.visible');
       cy.get('button[aria-label="Roter høyre"]').should('be.visible');
-      cy.get(
-        'button[aria-label="Rett opp kartet"]',
-      ).should('be.visible');
+      cy.get('button[aria-label="Rett opp kartet"]').should('be.visible');
       cy.get('button[aria-label="Gå til min posisjon"]').should('be.visible');
     });
   });
@@ -64,9 +62,7 @@ describe('Map Controls', () => {
       cy.wait(200);
 
       // Then reset orientation
-      cy.get(
-        'button[aria-label="Rett opp kartet"]',
-      ).click();
+      cy.get('button[aria-label="Rett opp kartet"]').click();
       cy.get('#map').should('be.visible');
     });
 
@@ -109,9 +105,7 @@ describe('Map Controls', () => {
       cy.get('button[aria-label="Zoom inn"]').click().click();
       cy.get('button[aria-label="Zoom ut"]').click();
       cy.get('button[aria-label="Roter venstre"]').click();
-      cy.get(
-        'button[aria-label="Rett opp kartet"]',
-      ).click();
+      cy.get('button[aria-label="Rett opp kartet"]').click();
       cy.get('#map').should('be.visible');
     });
 
@@ -150,9 +144,7 @@ describe('Map Controls', () => {
       cy.get('button[aria-label="Zoom ut"]').should('be.visible');
       cy.get('button[aria-label="Roter venstre"]').should('be.visible');
       cy.get('button[aria-label="Roter høyre"]').should('be.visible');
-      cy.get(
-        'button[aria-label="Rett opp kartet"]',
-      ).should('be.visible');
+      cy.get('button[aria-label="Rett opp kartet"]').should('be.visible');
     });
   });
 
