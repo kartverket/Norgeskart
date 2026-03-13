@@ -5,7 +5,7 @@
       "mobiletext": "Temakart"
     },
     "print": {
-      "text": "Skriv ut"
+      "text": "Lag kart"
     },
     "draw": {
       "text": "Tegne og måle",
@@ -414,7 +414,7 @@
       "tooltip": "Rapporter feil eller mangler i kartet."
     },
     "scale": {
-      "tooltip": "Velg målestokk",
+      "tooltip": "Valgt målestokk tilpasses nærmeste tilgjengelige zoomnivå i kartet. Faktisk målestokk kan derfor avvike noe.",
       "disabledTooltip": "Målestokkvelgeren er deaktivert fordi dette bakgrunnskartet bruker heltallige zoomnivåer for bedre ytelse."
     },
     "crs": {

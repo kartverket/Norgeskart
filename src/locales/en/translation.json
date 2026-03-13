@@ -5,7 +5,7 @@
       "mobiletext": "Thematics"
     },
     "print": {
-      "text": "Print"
+      "text": "Create map"
     },
     "draw": {
       "text": "Draw and measure",
@@ -409,7 +409,7 @@
       "tooltip": "Report errors or things missing in the map."
     },
     "scale": {
-      "tooltip": "Select a scale",
+      "tooltip": "The selected scale is adjusted to the nearest available zoom level in the map. The actual scale may therefore differ slightly.",
       "disabledTooltip": "Scale selector is disabled because this background map uses integer zoom levels so that it's performant."
     },
     "crs": {
