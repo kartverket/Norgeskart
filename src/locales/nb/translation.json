@@ -185,7 +185,9 @@
             "topo_2025": "Topo 2025",
             "topograatone": "Standard (gråtone)",
             "topoProd": "Topografisk",
-            "toporaster": "Papirkart"
+            "toporaster": "Papirkart",
+            "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           }
         },
         "projection": {
