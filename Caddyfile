@@ -24,8 +24,7 @@ route {
         header Permissions-Policy "geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), accelerometer=(), camera=()"
         
         handle /geoportal* {
-                @has_query query *
-                redir @has_query https://geonorge-nkg.atkv3-prod.kartverket.cloud/geoportal/?{query} permanent
+                redir https://geonorge-nkg.atkv3-prod.kartverket.cloud/geoportal/?{query} permanent
                 redir https://geonorge-nkg.atkv3-prod.kartverket.cloud/geoportal/ permanent
         }
 
