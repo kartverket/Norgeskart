@@ -12,11 +12,10 @@ describe('Map Tool Buttons', () => {
 
   describe('Tool Button Bar Visibility', () => {
     it('should display all map tool buttons', () => {
+      cy.contains('button', 'Temakart').should('be.visible');
       cy.contains('button', 'Tegne og måle').should('be.visible');
-      cy.contains('button', 'Kartlag').should('be.visible');
-      cy.contains('button', 'Informasjon').should('be.visible');
       cy.contains('button', 'Del kart').should('be.visible');
-      cy.contains('button', 'Innstillinger').should('be.visible');
+      cy.contains('button', 'Hjelp').should('be.visible');
     });
 
     it('should display print button on desktop', () => {
@@ -65,20 +64,20 @@ describe('Map Tool Buttons', () => {
 
   describe('Layers Tool', () => {
     it('should open layers panel when clicked', () => {
-      cy.contains('button', 'Kartlag').click();
+      cy.contains('button', 'Temakart').click();
       cy.wait(200);
 
       cy.get('div').should('exist');
     });
 
     it('should close layers panel when clicked again', () => {
-      cy.contains('button', 'Kartlag').click();
+      cy.contains('button', 'Temakart').click();
       cy.wait(200);
 
-      cy.contains('button', 'Kartlag').click();
+      cy.contains('button', 'Temakart').click();
       cy.wait(200);
 
-      cy.contains('button', 'Kartlag').should(
+      cy.contains('button', 'Temakart').should(
         'not.have.css',
         'background-color',
         '#D0ECD6',
@@ -86,10 +85,10 @@ describe('Map Tool Buttons', () => {
     });
 
     it('should highlight active layers button', () => {
-      cy.contains('button', 'Kartlag').click();
+      cy.contains('button', 'Temakart').click();
       cy.wait(200);
 
-      cy.contains('button', 'Kartlag')
+      cy.contains('button', 'Temakart')
         .should('have.css', 'background-color')
         .and('include', 'rgb(208, 236, 214)');
     });
@@ -97,45 +96,24 @@ describe('Map Tool Buttons', () => {
 
   describe('Info Tool', () => {
     it('should open info panel when clicked', () => {
-      cy.contains('button', 'Informasjon').click();
+      cy.contains('button', 'Hjelp').click();
       cy.wait(200);
 
       cy.get('div').should('exist');
     });
 
     it('should close info panel when clicked again', () => {
-      cy.contains('button', 'Informasjon').click();
+      cy.contains('button', 'Hjelp').click();
       cy.wait(200);
 
-      cy.contains('button', 'Informasjon').click();
+      cy.contains('button', 'Hjelp').click();
       cy.wait(200);
 
-      cy.contains('button', 'Informasjon').should(
+      cy.contains('button', 'Hjelp').should(
         'not.have.css',
         'background-color',
         '#D0ECD6',
       );
-    });
-  });
-
-  describe('Settings Tool', () => {
-    it('should open settings panel when clicked', () => {
-      cy.contains('button', 'Innstillinger').click();
-      cy.wait(200);
-
-      cy.contains('Velg språk').should('be.visible');
-    });
-
-    it('should close settings panel when clicked again', () => {
-      cy.contains('button', 'Innstillinger').click();
-      cy.wait(200);
-
-      cy.contains('button', 'Innstillinger').click();
-      cy.wait(200);
-
-      cy.contains('button', 'Innstillinger')
-        .should('have.css', 'background-color')
-        .and('not.include', 'rgb(208, 236, 214)');
     });
   });
 
@@ -181,10 +159,10 @@ describe('Map Tool Buttons', () => {
         .should('have.css', 'background-color')
         .and('include', 'rgb(208, 236, 214)');
 
-      cy.contains('button', 'Kartlag').click();
+      cy.contains('button', 'Temakart').click();
       cy.wait(200);
 
-      cy.contains('button', 'Kartlag')
+      cy.contains('button', 'Temakart')
         .should('have.css', 'background-color')
         .and('include', 'rgb(208, 236, 214)');
 
@@ -199,26 +177,24 @@ describe('Map Tool Buttons', () => {
       cy.contains('button', 'Tegne og måle').click();
       cy.wait(200);
 
-      cy.contains('button', 'Kartlag').click();
+      cy.contains('button', 'Temakart').click();
       cy.wait(200);
 
-      cy.contains('button', 'Informasjon').click();
+      cy.contains('button', 'Hjelp').click();
       cy.wait(200);
 
-      cy.contains('button', 'Innstillinger').click();
-      cy.wait(200);
-
-      cy.contains('Velg språk').should('be.visible');
+      cy.contains('button', 'Hjelp')
+        .should('have.css', 'background-color')
+        .and('include', 'rgb(208, 236, 214)');
     });
   });
 
   describe('Button Icons', () => {
     it('should display icon for each button', () => {
+      cy.contains('button', 'Temakart').find('span').should('exist');
       cy.contains('button', 'Tegne og måle').find('span').should('exist');
-      cy.contains('button', 'Kartlag').find('span').should('exist');
-      cy.contains('button', 'Informasjon').find('span').should('exist');
       cy.contains('button', 'Del kart').find('span').should('exist');
-      cy.contains('button', 'Innstillinger').find('span').should('exist');
+      cy.contains('button', 'Hjelp').find('span').should('exist');
     });
   });
 
@@ -249,7 +225,7 @@ describe('Map Tool Buttons', () => {
   });
 
   describe('Responsive Behavior', () => {
-    it('should show compact labels on mobile', () => {
+    it('should show compact share label on mobile', () => {
       cy.viewport(375, 667);
       cy.visit('http://localhost:3000', {
         onBeforeLoad: (win) => {
@@ -258,10 +234,10 @@ describe('Map Tool Buttons', () => {
       });
       cy.get('#map').should('be.visible');
 
-      cy.contains('button', 'Verktøy').should('be.visible');
+      cy.contains('button', 'Del').should('be.visible');
     });
 
-    it('should maintain functionality on mobile', () => {
+    it('should hide print button on mobile', () => {
       cy.viewport(375, 667);
       cy.visit('http://localhost:3000', {
         onBeforeLoad: (win) => {
@@ -270,10 +246,7 @@ describe('Map Tool Buttons', () => {
       });
       cy.get('#map').should('be.visible');
 
-      cy.contains('button', 'Verktøy').click();
-      cy.wait(200);
-
-      cy.get('#map').should('be.visible');
+      cy.get('button[aria-label="print"]').should('not.exist');
     });
   });
 });
