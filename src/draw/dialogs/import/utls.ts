@@ -1,6 +1,7 @@
 import { getDefaultStore } from 'jotai';
 import { Feature } from 'ol';
 import { GML, GPX } from 'ol/format';
+import { v4 as uuidv4 } from 'uuid';
 import { mapAtom } from '../../../map/atoms';
 
 import GeoJSON from 'ol/format/GeoJSON.js';
@@ -20,6 +21,42 @@ import { Fill, Stroke, Style, Text } from 'ol/style';
 import { StyleForStorage } from '../../../api/nkApiClient';
 import { PointIcon } from '../../drawControls/hooks/drawSettings';
 import { FeatureCollection } from './types';
+
+const setDefaultStyleForFeature = (feature: Feature) => {
+  const geometry = feature.getGeometry();
+  if (geometry && geometry instanceof Point) {
+    feature.setProperties(
+      {
+        overlayIcon: {
+          icon: 'circle',
+          color: '#0044ff',
+          size: 2,
+        } as PointIcon,
+      },
+      true,
+    );
+  } else {
+    feature.setStyle(
+      new Style({
+        stroke: new Stroke({
+          color: '#0044ff',
+          width: 2,
+        }),
+        fill: new Fill({
+          color: 'rgba(0, 68, 255, 0.3)',
+        }),
+      }),
+    );
+  }
+  return feature;
+};
+
+const ensureFeatureHasId = (feature: Feature) => {
+  if (!feature.getId()) {
+    feature.setId(uuidv4());
+  }
+  return feature;
+};
 export const readFeaturesFromGPXString = (
   fileText: string,
 ): FeatureReadResult => {
@@ -27,10 +64,13 @@ export const readFeaturesFromGPXString = (
   const projection = map.getView().getProjection().getCode();
   const gpxReader = new GPX();
   try {
-    const features = gpxReader.readFeatures(fileText, {
-      dataProjection: 'EPSG:4326',
-      featureProjection: projection,
-    });
+    const features = gpxReader
+      .readFeatures(fileText, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: projection,
+      })
+      .map(setDefaultStyleForFeature)
+      .map(ensureFeatureHasId);
     return {
       status: 'success',
       features,
@@ -70,30 +110,32 @@ export const readFeaturesFromGeoJsonString = (
     };
   }
   try {
-    const features = new GeoJSON().readFeatures(geoJsonFormat, {
-      dataProjection: 'EPSG:4326',
-      featureProjection: projection,
-    });
-    const featuresWithStyle = features.map((feature) => {
-      const props = feature.getProperties() as GeoJsonProperties;
-      const style = getStyleFromProperties(props);
-      const icon = getOverlayIconFromProperties(props);
-      if (style) {
-        feature.setStyle(style);
-      }
-      if (icon) {
-        feature.setProperties(
-          {
-            overlayIcon: icon,
-          },
-          true,
-        );
-      }
-      return feature;
-    });
+    const features = new GeoJSON()
+      .readFeatures(geoJsonFormat, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: projection,
+      })
+      .map((feature) => {
+        const props = feature.getProperties() as GeoJsonProperties;
+        const style = getStyleFromProperties(props);
+        const icon = getOverlayIconFromProperties(props);
+        if (style) {
+          feature.setStyle(style);
+        }
+        if (icon) {
+          feature.setProperties(
+            {
+              overlayIcon: icon,
+            },
+            true,
+          );
+        }
+        return feature;
+      })
+      .map(ensureFeatureHasId);
     return {
       status: 'success',
-      features: featuresWithStyle,
+      features: features,
     };
   } catch (error) {
     console.error('Error reading GeoJSON features:', error);
@@ -114,34 +156,8 @@ export const readFeaturesFromGMLString = (
       .readFeatures(fileText, {
         featureProjection: projection,
       })
-      .map((feature) => {
-        const geometry = feature.getGeometry();
-        if (geometry && geometry instanceof Point) {
-          feature.setProperties(
-            {
-              overlayIcon: {
-                icon: 'circle',
-                color: '#0044ff',
-                size: 1,
-              } as PointIcon,
-            },
-            true,
-          );
-        } else {
-          feature.setStyle(
-            new Style({
-              stroke: new Stroke({
-                color: '#0044ff',
-                width: 2,
-              }),
-              fill: new Fill({
-                color: 'rgba(0, 68, 255, 0.3)',
-              }),
-            }),
-          );
-        }
-        return feature;
-      });
+      .map(setDefaultStyleForFeature)
+      .map(ensureFeatureHasId);
     return {
       status: 'success',
       features,
