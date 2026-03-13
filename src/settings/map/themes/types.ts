@@ -4,16 +4,17 @@ export type Theme = {
   name: string;
   heading: string;
   subThemes: SubTheme[];
+  directLayers: ThemeLayer[];
 };
 
 export type SubTheme = {
   name: string;
   heading: string;
-  layers: SubThemeLayer[];
+  layers: ThemeLayer[];
   disableToggleAll?: boolean;
 };
 
-export type SubThemeLayer = {
+export type ThemeLayer = {
   name: ThemeLayerName;
   label: string;
 };

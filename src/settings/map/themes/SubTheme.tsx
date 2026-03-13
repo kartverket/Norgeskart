@@ -17,7 +17,7 @@ import {
   useThemeLayers,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
-import { SubTheme, SubThemeLayer } from './types';
+import { SubTheme, ThemeLayer } from './types';
 
 export const SubThemeSection = ({
   subTheme,
@@ -127,14 +127,14 @@ export const SubThemeSection = ({
   );
 };
 
-const LayerLine = ({
+export const LayerLine = ({
   toggleLayer,
   layer,
   checked,
   disabled,
 }: {
   toggleLayer: (layerName: ThemeLayerName) => void;
-  layer: SubThemeLayer;
+  layer: ThemeLayer;
   checked: boolean;
   disabled: boolean;
 }) => {
