@@ -14,10 +14,11 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   currentProjectionAtom,
+  DEFAULT_CENTER,
+  DEFAULT_ZOOM_LEVEL,
   getBackgroundLayerImageName,
   mapAtom,
 } from '../../map/atoms';
-import { DEFAULT_CENTER, DEFAULT_ZOOM_LEVEL } from '../../map/atoms';
 import {
   activeBackgroundLayerAtom,
   preNauticalProjectionAtom,
@@ -249,14 +250,20 @@ export const BackgroundLayerSettings = ({
         'EPSG:25833',
         map.getView().getProjection(),
       );
-      map.getView().fit(targetExtent, { duration: 500, padding: [50, 50, 50, 50] });
+      map
+        .getView()
+        .fit(targetExtent, { duration: 500, padding: [50, 50, 50, 50] });
     } else if (POLAR_LAYER_EXTENTS[currentLayer]) {
       const norwayCenter = transform(
         DEFAULT_CENTER,
         'EPSG:25833',
         map.getView().getProjection(),
       );
-      map.getView().animate({ center: norwayCenter, zoom: DEFAULT_ZOOM_LEVEL, duration: 500 });
+      map.getView().animate({
+        center: norwayCenter,
+        zoom: DEFAULT_ZOOM_LEVEL,
+        duration: 500,
+      });
     }
 
     onSelectComplete();
