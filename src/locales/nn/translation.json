@@ -79,7 +79,10 @@
     "tools": "Verktøy",
     "yesClear": "Ja, fjern",
     "redoundo": "Angre / Gjør om",
-    "download": "Last ned"
+    "download": "Last ned",
+    "uploadButton": {
+      "label": "Last opp"
+    }
   },
   "export": {
     "format": {
@@ -403,7 +406,14 @@
     "locations": {
       "municipality": "kommune"
     },
-    "cancel": "Avbryt"
+    "cancel": "Avbryt",
+    "geometry": {
+      "types": {
+        "point": "Punkter",
+        "linestring": "Linjer",
+        "polygon": "Flateer"
+      }
+    }
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -606,5 +616,28 @@
     "textone": "Norgeskart er Kartverket si mest brukte kartteneste. Enten du planlegg ein tur til fjells eller til sjøs, eller treng informasjon om ein eigedom, gir Norgeskart deg påliteleg og detaljert geografisk informasjon – presentert på ein enkel og tilgjengeleg måte.",
     "texttwo": "Sidan 1773 har Kartverket kartlagt Noreg. Mykje har endra seg sidan den gong. Behov utviklar seg over tid, og ny teknologi gir oss stadig nye moglegheiter. Difor arbeider vi kontinuerleg med å tilby eit breitt spekter av kartprodukt som møter behova til brukarane – både i dag og i framtida.",
     "textthree": "Saman med brukarane skal vi vere opne, innovative og stabile."
+  },
+  "importDialog": {
+    "header": "Importer fil til teknelag",
+    "body": {
+      "text": "Vel ei fil, enten GPX, GML eller GEOJSON. Om du vil erstatte det som er tekna på kartet med innholdet i fila.",
+      "details": {
+        "heading": "Objekt i fila"
+      }
+    },
+    "overwriteSwitch": {
+      "label": "Overskriv tekning",
+      "tooltip": "Vil fjerne all tekning på kartet"
+    },
+    "buttons": {
+      "confirm": {
+        "label": "Last opp"
+      }
+    },
+    "fileupload": {
+      "dragdrop": {
+        "label": "Dra og slipp, eller vel ei fil"
+      }
+    }
   }
 }
