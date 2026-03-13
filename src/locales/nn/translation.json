@@ -23,7 +23,7 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
-    "hide": "Skjul verktøylinje"
+    "hide": "Minimer"
   },
   "draw": {
     "begin": "Teikn på kartet",
@@ -173,10 +173,10 @@
             "Nibcache_web_mercator_v2": "Flyfoto",
             "nautical-background": "Nautisk bakgrunnskart",
             "oceanicelectronic": "Elektronisk sjøkart",
-            "sjokartraster": "Sjøkart papir",
-            "topo": "Topo",
+            "sjokartraster": "Sjøkart oppdatert EFS",
+            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografisk gråtone",
+            "topograatone": "Standard (gråtone)",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart"
           }
@@ -588,7 +588,7 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikkje å hente kartet"
     },
-    "vectorTileFallbackWarning": "Nautisk bakgrunnskart er ikkje støtta av utskriftstenesta og vert erstatta med sjøkart papir i utskrifta.",
+    "vectorTileFallbackWarning": "Nautisk bakgrunnskart er ikkje støtta av utskriftstenesta og vert erstatta med sjøkart oppdatert EFS i utskrifta.",
     "aerialImageryNotSupported": "Flyfoto er ikkje støtta av utskriftstenesta. Byt til eit anna bakgrunnskart for å skrive ut.",
     "projectionWarning": "Utskrifta vil alltid vere i UTM-sone 33 (EPSG:25833), uavhengig av vald kartprojeksjon."
   },

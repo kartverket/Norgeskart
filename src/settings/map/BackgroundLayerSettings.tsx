@@ -11,7 +11,11 @@ import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getBackgroundLayerImageName, mapAtom } from '../../map/atoms';
+import {
+  currentProjectionAtom,
+  getBackgroundLayerImageName,
+  mapAtom,
+} from '../../map/atoms';
 import {
   activeBackgroundLayerAtom,
   preNauticalProjectionAtom,
@@ -23,7 +27,7 @@ import {
   loadableWMTS,
 } from '../../map/layers/backgroundWMTSProviders';
 import { useMapSettings } from '../../map/mapHooks';
-import { getUrlParameter, setUrlParameter } from '../../shared/utils/urlUtils';
+import { getUrlParameter } from '../../shared/utils/urlUtils';
 
 // Prioritetskart for sortering
 const layerPriorityMap = new Map<BackgroundLayerName, number>([
@@ -114,8 +118,9 @@ export const BackgroundLayerSettings = ({
   onSelectComplete: () => void;
 }) => {
   const { t } = useTranslation();
-  const { setBackgroundLayer, setProjection, getMapProjectionCode } =
-    useMapSettings();
+  const { setBackgroundLayer } = useMapSettings();
+  const currentProjection = useAtomValue(currentProjectionAtom);
+  const setCurrentProjection = useSetAtom(currentProjectionAtom);
   const WMTSProviders = useAtomValue(loadableWMTS);
   const map = useAtomValue(mapAtom);
   const ph = usePostHog();
@@ -151,7 +156,6 @@ export const BackgroundLayerSettings = ({
     return null;
   }
 
-  const projectionCode = getMapProjectionCode();
   const providers = WMTSProviders.data.keys();
 
   const avaiableLayers: { value: BackgroundLayerName; label: string }[] = [];
@@ -159,7 +163,7 @@ export const BackgroundLayerSettings = ({
   for (const providerId of providers) {
     const projectionLayersIterator = WMTSProviders.data
       .get(providerId)
-      ?.get(projectionCode)
+      ?.get(currentProjection)
       ?.keys();
 
     const projectionLayerNames = Array.from(projectionLayersIterator || []);
@@ -185,7 +189,7 @@ export const BackgroundLayerSettings = ({
 
   const sortedLayers = avaiableLayers.sort(layerPrioritySort);
 
-  const handleSetLayer = async (layer: BackgroundLayerName) => {
+  const handleSetLayer = (layer: BackgroundLayerName) => {
     ph.capture('map_background_layer_changed', { layerName: layer });
 
     // Switching away from nautical: restore previous projection
@@ -193,35 +197,33 @@ export const BackgroundLayerSettings = ({
       currentLayer === 'nautical-background' &&
       layer !== 'nautical-background' &&
       preNauticalProjection &&
-      preNauticalProjection !== getMapProjectionCode()
+      preNauticalProjection !== currentProjection
     ) {
       setPreNauticalProjection(null);
       setCurrentLayer(layer);
       setActiveBackgroundLayer(layer);
-      // Set URL first so setProjection picks up the correct background layer
-      setUrlParameter('backgroundLayer', layer);
-      await setProjection(preNauticalProjection);
+      setCurrentProjection(preNauticalProjection);
       onSelectComplete();
       return;
     }
 
+    setCurrentLayer(layer);
+    setActiveBackgroundLayer(layer);
+
     // Switching to nautical: save current projection and force Web Mercator
-    if (
-      layer === 'nautical-background' &&
-      getMapProjectionCode() !== 'EPSG:3857'
-    ) {
-      setPreNauticalProjection(getMapProjectionCode());
-      await setProjection('EPSG:3857');
+    if (layer === 'nautical-background' && currentProjection !== 'EPSG:3857') {
+      setPreNauticalProjection(currentProjection);
+      setCurrentProjection('EPSG:3857');
       toaster.create({
         title: t('map.settings.layers.projection.forcedWebMercator'),
         duration: 4000,
         type: 'info',
       });
+      onSelectComplete();
+      return;
     }
 
     setBackgroundLayer(layer);
-    setCurrentLayer(layer);
-    setActiveBackgroundLayer(layer);
     onSelectComplete();
   };
 

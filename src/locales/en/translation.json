@@ -23,7 +23,7 @@
       "mobiletext": "Help"
     },
     "export": "Export and download",
-    "hide": "Hide toolbar"
+    "hide": "Minimize"
   },
   "draw": {
     "begin": "Draw on map",
@@ -165,15 +165,15 @@
             "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
-            "Nibcache_web_mercator_v2": "Aerial photos",
-            "nautical-background": "Nautical Background Map",
-            "oceanicelectronic": "Electronic Nautical Charts",
-            "sjokartraster": "Nautical Charts",
-            "topo": "Topographic map",
+            "Nibcache_web_mercator_v2": "Aerial Photos",
+            "nautical-background": "Nautical Background Chart",
+            "oceanicelectronic": "Electronic Nautical Chart",
+            "sjokartraster": "Nautical Chart updated EFS",
+            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografic, grayscale",
+            "topograatone": "Standard (greyscale)",
             "topoProd": "Topographic",
-            "toporaster": "Paper map"
+            "toporaster": "Paper Map"
           }
         },
         "projection": {
@@ -583,7 +583,7 @@
       "success": "Download complete",
       "error": "Could not download map"
     },
-    "vectorTileFallbackWarning": "The nautical background map is not supported by the print service and will be replaced with nautical charts in the print.",
+    "vectorTileFallbackWarning": "The nautical background map is not supported by the print service and will be replaced with nautical chart in the print.",
     "aerialImageryNotSupported": "Aerial imagery is not supported by the print service. Please switch to a different background map to print.",
     "projectionWarning": "The print output will always be in UTM zone 33 (EPSG:25833), regardless of the selected map projection."
   },

@@ -7,6 +7,7 @@ import BaseEvent from 'ol/events/Event';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify';
 import Select from 'ol/interaction/Select';
+import Snap from 'ol/interaction/Snap';
 import Translate from 'ol/interaction/Translate';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -58,6 +59,8 @@ export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
 export const lineWidthAtom = atom<LineWidth>(2);
 
+export const snapEnabledAtom = atom<boolean>(true);
+
 export const drawStyleReadAtom = atom((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
@@ -83,7 +86,7 @@ export const drawStyleReadAtom = atom((get) => {
 export const drawTypeAtom = atom<DrawType | null>(null);
 export const showMeasurementsAtom = atom<boolean>(false);
 export const distanceUnitAtom = atom<DistanceUnit>('m');
-export const pointIconAtom = atom<MaterialSymbol>('pin_drop');
+export const pointIconAtom = atom<MaterialSymbol>('circle');
 
 export const textInputAtom = atom('');
 
@@ -180,6 +183,16 @@ const addDrawInteractionToMap = (
     drawEnd(event);
   });
   map.addInteraction(newDraw);
+
+  const store = getDefaultStore();
+  const snapEnabled = store.get(snapEnabledAtom);
+
+  if (snapEnabled) {
+    const snapInteraction = new Snap({
+      source: drawLayer.getSource() as VectorSource,
+    });
+    map.addInteraction(snapInteraction);
+  }
 };
 
 const setDisplayStaticMeasurement = (enable: boolean, map: Map) => {
@@ -287,6 +300,24 @@ export const drawTypeEffect = atomEffect((get) => {
 
   setDisplayStaticMeasurement(measurementEnabled, map);
   setDisplayInteractiveMeasurementForDrawInteraction(measurementEnabled);
+});
+
+export const snapEffect = atomEffect((get) => {
+  const snapEnabled = get(snapEnabledAtom);
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const drawLayer = getDrawLayer();
+
+  map.getInteractions().forEach((interaction) => {
+    if (interaction instanceof Snap) {
+      map.removeInteraction(interaction);
+    }
+  });
+
+  if (snapEnabled) {
+    const snap = new Snap({ source: drawLayer.getSource() as VectorSource });
+    map.addInteraction(snap);
+  }
 });
 
 const drawEnd = (event: BaseEvent | Event) => {

@@ -225,12 +225,7 @@ const PropertyItem = ({
     const linkUrl = buildLinkUrl(String(value), fieldConfig);
     if (linkUrl) {
       return (
-        <Flex
-          justify="space-between"
-          py={1}
-          borderBottom="1px solid"
-          borderColor="gray.100"
-        >
+        <Box py={1} borderBottom="1px solid" borderColor="gray.100">
           <Text fontSize="sm" color="gray.600" fontWeight="medium">
             {displayName}
           </Text>
@@ -244,20 +239,15 @@ const PropertyItem = ({
           >
             {value}
           </Link>
-        </Flex>
+        </Box>
       );
     }
   }
 
   if (isUrl(displayValue)) {
     return (
-      <Flex
-        justify="space-between"
-        py={1}
-        borderBottom="1px solid"
-        borderColor="gray.100"
-      >
-        <Text fontSize="sm" color="gray.600" fontWeight="medium">
+      <Box gap={0} py={1} borderBottom="1px solid" borderColor="gray.100">
+        <Text fontSize="sm" color="gray.600" fontWeight="bold">
           {displayName}
         </Text>
         <Link
@@ -270,24 +260,17 @@ const PropertyItem = ({
         >
           Link
         </Link>
-      </Flex>
+      </Box>
     );
   }
 
   return (
-    <Flex
-      justify="space-between"
-      py={1}
-      borderBottom="1px solid"
-      borderColor="gray.100"
-    >
-      <Text fontSize="sm" color="gray.600" fontWeight="medium">
+    <Box gap={0} py={1} borderBottom="1px solid" borderColor="gray.100">
+      <Text fontSize="sm" color="gray.600" fontWeight="bold">
         {displayName}
       </Text>
-      <Text fontSize="sm" textAlign="right" maxW="60%">
-        {displayValue}
-      </Text>
-    </Flex>
+      <Text fontSize="sm">{displayValue}</Text>
+    </Box>
   );
 };
 
@@ -398,7 +381,7 @@ const LayerFeatureInfoSection = ({
         {layerInfo.features.map((feature, index) => (
           <Box key={index} mb={index < featureCount - 1 ? 4 : 0}>
             {featureCount > 1 && (
-              <Text fontSize="xs" fontWeight="bold" color="gray.500" mb={2}>
+              <Text fontSize="lg" fontWeight="bold" color="gray.500" mb={2}>
                 Objekt {index + 1}
               </Text>
             )}
