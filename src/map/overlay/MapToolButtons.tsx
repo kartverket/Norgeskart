@@ -107,7 +107,7 @@ export const MapToolButtons = () => {
             }
             setIsPrintDialogOpen((p) => !p);
           }}
-          icon={'print'}
+          icon={'edit_document'}
           label={t('controller.print.text')}
           ariaLabel="print"
           id="map-print-button"
