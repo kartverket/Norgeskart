@@ -9,9 +9,10 @@ import {
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { transform, transformExtent } from 'ol/proj';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getBackgroundLayerImageName, mapAtom } from '../../map/atoms';
+import { DEFAULT_CENTER, DEFAULT_ZOOM_LEVEL, getBackgroundLayerImageName, mapAtom } from '../../map/atoms';
 import {
   activeBackgroundLayerAtom,
   preNauticalProjectionAtom,
@@ -48,6 +49,17 @@ const layerPrioritySort = (
   const priorityA = layerPriorityMap.get(a.value) || 0;
   const priorityB = layerPriorityMap.get(b.value) || 0;
   return priorityA - priorityB;
+};
+
+const POLAR_LAYER_EXTENTS: Partial<
+  Record<BackgroundLayerName, [number, number, number, number]>
+> = {
+  Basisdata_NP_Basiskart_Svalbard_WMTS_25833: [
+    369976.39, 8221306.54, 878234.72, 9010718.77,
+  ],
+  Basisdata_NP_Basiskart_JanMayen_WMTS_25833: [
+    -393783.25, 7978220.98, -276963.74, 8084965.52,
+  ],
 };
 
 interface LayerCardProps {
@@ -224,6 +236,24 @@ export const BackgroundLayerSettings = ({
     setBackgroundLayer(layer);
     setCurrentLayer(layer);
     setActiveBackgroundLayer(layer);
+
+    const polarExtent = POLAR_LAYER_EXTENTS[layer];
+    if (polarExtent) {
+      const targetExtent = transformExtent(
+        polarExtent,
+        'EPSG:25833',
+        map.getView().getProjection(),
+      );
+      map.getView().fit(targetExtent, { duration: 500, padding: [50, 50, 50, 50] });
+    } else if (POLAR_LAYER_EXTENTS[currentLayer]) {
+      const norwayCenter = transform(
+        DEFAULT_CENTER,
+        'EPSG:25833',
+        map.getView().getProjection(),
+      );
+      map.getView().animate({ center: norwayCenter, zoom: DEFAULT_ZOOM_LEVEL, duration: 500 });
+    }
+
     onSelectComplete();
   };
 
