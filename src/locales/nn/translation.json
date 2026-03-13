@@ -414,7 +414,7 @@
       "tooltip": "Rapporter feil eller manglar i kartet."
     },
     "scale": {
-      "tooltip": "Vel målestokk",
+      "tooltip": "Vald målestokk vert tilpassa næraste tilgjengelege zoomnivå i kartet. Faktisk målestokk kan difor avvike noko.",
       "disabledTooltip": "Målestokkveljaren er deaktivert fordi dette bakgrunnskartet brukar heiltals zoomnivå for betre ytelse."
     },
     "crs": {
