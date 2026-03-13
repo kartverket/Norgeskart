@@ -1,17 +1,32 @@
-import { atom } from 'jotai';
+import { atom, getDefaultStore } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls, ScaleLine } from 'ol/control';
+import BaseLayer from 'ol/layer/Base';
 import Map from 'ol/Map';
-import { get as getProjection } from 'ol/proj';
+import { get as getProjection, transform } from 'ol/proj';
 
 import { atomEffect } from 'jotai-effect';
 import { v4 as uuidv4 } from 'uuid';
 import { themeLayerConfigAtom } from '../api/themeLayerConfigApi';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
-import { mapLayers } from './layers';
-import { activeThemeLayersAtom } from './layers/atoms';
-import { BackgroundLayerName } from './layers/backgroundLayers';
+import { isMapLayerBackground, mapLayers } from './layers';
+import {
+  activeBackgroundLayerAtom,
+  activeThemeLayersAtom,
+} from './layers/atoms';
+import {
+  BackgroundLayerName,
+  getBackgroundLayerForProjection,
+} from './layers/backgroundLayers';
+import {
+  createVectorTileLayer,
+  isVectorTileLayer,
+} from './layers/backgroundVectorTiles';
+import {
+  DEFAULT_BACKGROUND_LAYER,
+  loadableWMTS,
+} from './layers/backgroundWMTSProviders';
 import { ControlPortal } from './mapControls';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
@@ -29,6 +44,11 @@ export const AvailableProjections: ProjectionIdentifier[] = [
   'EPSG:25835', // utm35n
 ];
 export type AvailableProjectionType = (typeof AvailableProjections)[number];
+
+export const currentProjectionAtom = atom<ProjectionIdentifier>(
+  validateProjectionIdString(getUrlParameter('projection')) ||
+    DEFAULT_PROJECTION,
+);
 
 export const mapOrientationAtom = atom<number>(0);
 export const mapOrientationDegreesAtom = atom<number>((get) => {
@@ -174,4 +194,102 @@ export const scaleToResolutionEffect = atomEffect((get) => {
   const view = map.getView();
   const resolution = scaleToResolution(scale, map);
   view.setResolution(resolution);
+});
+
+export const projectionEffect = atomEffect((get, set) => {
+  const projectionId = get(currentProjectionAtom);
+  const map = get(mapAtom);
+  const WMTSLoadable = get(loadableWMTS);
+
+  if (WMTSLoadable.state !== 'hasData') return;
+
+  const oldView = map.getView();
+  const oldProjection = oldView.getProjection();
+  const oldProjectionCode = oldProjection.getCode();
+
+  if (oldProjectionCode === projectionId) return;
+
+  const store = getDefaultStore();
+  const backgroundLayerName = store.get(activeBackgroundLayerAtom);
+  const activeThemeLayers = store.get(activeThemeLayersAtom);
+
+  const projection = getProjection(projectionId)!;
+  const oldCenter = oldView.getCenter();
+
+  const newCenter = oldCenter
+    ? transform(oldCenter, oldProjection, projection)
+    : undefined;
+
+  let newZoom = oldView.getZoom() ?? DEFAULT_ZOOM_LEVEL;
+  if (oldProjectionCode !== 'EPSG:3857' && projectionId === 'EPSG:3857') {
+    newZoom += 1;
+  } else if (
+    oldProjectionCode === 'EPSG:3857' &&
+    projectionId !== 'EPSG:3857'
+  ) {
+    newZoom -= 1;
+  }
+  newZoom = Math.round(newZoom);
+
+  map.setView(
+    new View({
+      center: newCenter,
+      zoom: newZoom,
+      minZoom: oldView.getMinZoom(),
+      maxZoom: oldView.getMaxZoom(),
+      projection,
+      constrainResolution: true,
+      extent: projection.getExtent(),
+    }),
+  );
+
+  if (activeThemeLayers.size > 0) {
+    map
+      .getLayers()
+      .getArray()
+      .filter((l) => l.get('id')?.startsWith('theme.'))
+      .forEach((l) => map.removeLayer(l));
+    set(activeThemeLayersAtom, new Set(activeThemeLayers));
+  }
+
+  setUrlParameter('projection', projectionId);
+
+  const loadBackground = async () => {
+    let layerToAdd: BaseLayer | null;
+
+    if (isVectorTileLayer(backgroundLayerName)) {
+      layerToAdd = await createVectorTileLayer(backgroundLayerName);
+    } else {
+      layerToAdd = getBackgroundLayerForProjection(
+        WMTSLoadable.data,
+        projectionId,
+        backgroundLayerName,
+      );
+      if (!layerToAdd) {
+        console.warn(
+          `Background layer ${backgroundLayerName} not available for ${projectionId}, falling back to ${DEFAULT_BACKGROUND_LAYER}`,
+        );
+        layerToAdd = getBackgroundLayerForProjection(
+          WMTSLoadable.data,
+          projectionId,
+          DEFAULT_BACKGROUND_LAYER,
+        );
+      }
+    }
+
+    if (!layerToAdd) {
+      console.error(`Failed to load background layer ${backgroundLayerName}`);
+      return;
+    }
+
+    const existingBgLayers = map
+      .getLayers()
+      .getArray()
+      .filter(isMapLayerBackground);
+    existingBgLayers.forEach((l) => map.removeLayer(l));
+    map.addLayer(layerToAdd);
+    setUrlParameter('backgroundLayer', backgroundLayerName);
+  };
+
+  void loadBackground();
 });

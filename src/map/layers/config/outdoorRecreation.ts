@@ -6,8 +6,8 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       id: 'outdoorRecreation',
       groupid: 5,
       name: {
-        nb: 'Tur og friluftsruter',
-        nn: 'Tur og friluftsruter',
+        nb: 'Tur- og friluftsruter',
+        nn: 'Tur- og friluftsruter',
         en: 'Hiking and outdoor routes',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.friluftsruter2',

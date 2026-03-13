@@ -5,7 +5,7 @@
       "mobiletext": "Temakart"
     },
     "print": {
-      "text": "Skriv ut"
+      "text": "Lag kart"
     },
     "draw": {
       "text": "Tegne og måle",
@@ -95,8 +95,15 @@
     "coordinateSection": {
       "copy": {
         "label": "Kopier koordinater",
+        "label_geo": "Kopier som DD",
         "toast": {
-          "title": "Koordinater kopier til utklipstavlen"
+          "title": "Kopier koordinatene som desimalgrader (f.eks. 62.0515257, 5.2972102)"
+        }
+      },
+      "copyDMS": {
+        "label": "Kopier som DMS",
+        "toast": {
+          "title": "Kopier koordinater i grader–minutter–sekunder, (f.eks. 62°03'05.49\" N, 5°17'49.96\" E)"
         }
       },
       "differentCrs": "Vis i",
@@ -409,7 +416,7 @@
       "tooltip": "Rapporter feil eller mangler i kartet."
     },
     "scale": {
-      "tooltip": "Velg målestokk",
+      "tooltip": "Valgt målestokk tilpasses nærmeste tilgjengelige zoomnivå i kartet. Faktisk målestokk kan derfor avvike noe.",
       "disabledTooltip": "Målestokkvelgeren er deaktivert fordi dette bakgrunnskartet bruker heltallige zoomnivåer for bedre ytelse."
     },
     "crs": {

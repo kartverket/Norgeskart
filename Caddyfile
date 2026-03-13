@@ -23,6 +23,11 @@ route {
         "
         header Permissions-Policy "geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), accelerometer=(), camera=()"
         
+        handle /geoportal* {
+                redir https://geonorge-nkg.atkv3-prod.kartverket.cloud/geoportal/?{query} permanent
+                redir https://geonorge-nkg.atkv3-prod.kartverket.cloud/geoportal/ permanent
+        }
+
         handle /api/styles/* {
                 @options method OPTIONS
                 handle @options {

@@ -5,7 +5,7 @@
       "mobiletext": "Thematics"
     },
     "print": {
-      "text": "Print"
+      "text": "Create map"
     },
     "draw": {
       "text": "Draw and measure",
@@ -90,8 +90,15 @@
     "coordinateSection": {
       "copy": {
         "label": "Copy coordinates",
+        "label_geo": "Copy as DD",
         "toast": {
-          "title": "Coordinates copied to clipboard"
+          "title": "Copy coordinates as decimal degrees (e.g., 62.0515257, 5.2972102)"
+        }
+      },
+      "copyDMS": {
+        "label": "Copy as DMS",
+        "toast": {
+          "title": "Copy coordinates in degrees–minutes–seconds (e.g., 62°03'05.49\" N, 5°17'49.96\" E)"
         }
       },
       "differentCrs": "Display in",
@@ -404,7 +411,7 @@
       "tooltip": "Report errors or things missing in the map."
     },
     "scale": {
-      "tooltip": "Select a scale",
+      "tooltip": "The selected scale is adjusted to the nearest available zoom level in the map. The actual scale may therefore differ slightly.",
       "disabledTooltip": "Scale selector is disabled because this background map uses integer zoom levels so that it's performant."
     },
     "crs": {
