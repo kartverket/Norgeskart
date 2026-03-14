@@ -219,7 +219,7 @@ describe('Text Search Functionality', () => {
     it('should center map on selected result', () => {
       getSearchInput().type('Oslo');
 
-      cy.wait(1000);
+      cy.get('ul', { timeout: 10000 }).should('be.visible');
 
       cy.contains('Oslo', { timeout: 5000 }).first().click();
 
