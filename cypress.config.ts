@@ -7,7 +7,7 @@ export default defineConfig({
     defaultCommandTimeout: 8000,
     pageLoadTimeout: 30000,
     retries: {
-      runMode: 2,  // retry failing tests up to 2x in CI
+      runMode: 2, // retry failing tests up to 2x in CI
       openMode: 0,
     },
     setupNodeEvents(_on, _config) {
