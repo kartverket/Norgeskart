@@ -23,12 +23,17 @@ export const MapToolButtons = () => {
   const isPrintDialogOpenDisabled = useAtomValue(isPrintDialogOpenAtom);
   const handleShareMapClick = () => {
     const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-      toaster.create({
-        title: t('search.actions.shareMap.success'),
-        duration: 2000,
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        toaster.create({
+          title: t('search.actions.shareMap.success'),
+          duration: 2000,
+        });
+      })
+      .catch(() => {
+        // Clipboard access may be denied (e.g. in non-secure contexts)
       });
-    });
   };
   const activeLayers = useAtomValue(activeThemeLayersAtom);
 
