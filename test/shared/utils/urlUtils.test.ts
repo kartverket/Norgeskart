@@ -3,7 +3,7 @@ import {
   getUrlParameter,
   removeUrlParameter,
   setUrlParameter,
-} from './urlUtils';
+} from '../../../src/shared/utils/urlUtils';
 
 describe('urlUtils', () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { parseCoordinateInput } from './coordinateParser';
+import { parseCoordinateInput } from '../../../src/shared/utils/coordinateParser';
 
 // i18n returns the key as-is when not initialized; the parser uses this as a
 // fallback display name (which is fine) but crashes if t() returns undefined.
