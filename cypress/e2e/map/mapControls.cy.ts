@@ -2,7 +2,7 @@
 describe('Map Controls', () => {
   beforeEach(() => {
     cy.viewport(1280, 720); // Desktop viewport to ensure all controls are visible
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
     cy.get('#map').should('be.visible');
   });
 
@@ -38,9 +38,7 @@ describe('Map Controls', () => {
 
     it('should allow multiple zoom operations', () => {
       cy.get('button[aria-label="Zoom inn"]').click();
-      cy.wait(200);
       cy.get('button[aria-label="Zoom inn"]').click();
-      cy.wait(200);
       cy.get('button[aria-label="Zoom ut"]').click();
       cy.get('#map').should('be.visible');
     });
@@ -59,7 +57,6 @@ describe('Map Controls', () => {
 
     it('should reset orientation when navigation button is clicked', () => {
       cy.get('button[aria-label="Roter venstre"]').click();
-      cy.wait(200);
 
       // Then reset orientation
       cy.get('button[aria-label="Rett opp kartet"]').click();
@@ -68,9 +65,7 @@ describe('Map Controls', () => {
 
     it('should handle multiple rotation operations', () => {
       cy.get('button[aria-label="Roter venstre"]').click();
-      cy.wait(200);
       cy.get('button[aria-label="Roter høyre"]').click();
-      cy.wait(200);
       cy.get('button[aria-label="Roter venstre"]').click();
       cy.get('#map').should('be.visible');
     });
@@ -127,7 +122,7 @@ describe('Map Controls', () => {
   describe('Mobile Responsiveness', () => {
     it('should hide certain controls on mobile viewport', () => {
       cy.viewport(375, 667); // iPhone SE size
-      cy.visit('http://localhost:3000');
+      cy.visit('/');
       cy.get('#map').should('be.visible');
 
       // On mobile, zoom and rotation buttons should be hidden

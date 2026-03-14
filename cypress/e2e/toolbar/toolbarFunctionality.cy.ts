@@ -5,7 +5,7 @@ describe('Toolbar Functionality', () => {
 
   beforeEach(() => {
     cy.viewport(1280, 720);
-    cy.visit('http://localhost:3000', {
+    cy.visit('/', {
       onBeforeLoad: (win) => {
         win.localStorage.setItem('hideDebug', 'true');
       },
@@ -20,7 +20,7 @@ describe('Toolbar Functionality', () => {
 
     it('should hide toolbar on mobile viewport', () => {
       cy.viewport(375, 667);
-      cy.visit('http://localhost:3000', {
+      cy.visit('/', {
         onBeforeLoad: (win) => {
           win.localStorage.setItem('hideDebug', 'true');
         },
@@ -39,10 +39,7 @@ describe('Toolbar Functionality', () => {
     it.skip('should toggle compass overlay when button is clicked', () => {
       getToolbar().find('button').first().click({ force: true });
 
-      cy.wait(200);
-
       getToolbar().find('button').first().click({ force: true });
-      cy.wait(200);
     });
   });
 
@@ -57,7 +54,6 @@ describe('Toolbar Functionality', () => {
 
     it.skip('should enable when compass is activated', () => {
       getToolbar().find('button').first().click({ force: true });
-      cy.wait(200);
 
       cy.get('button[role="switch"]').should('not.have.attr', 'disabled');
     });
@@ -75,10 +71,8 @@ describe('Toolbar Functionality', () => {
 
     it.skip('should update coordinates as mouse moves', () => {
       cy.get('#map').trigger('mousemove', { clientX: 300, clientY: 300 });
-      cy.wait(100);
 
       cy.get('#map').trigger('mousemove', { clientX: 700, clientY: 400 });
-      cy.wait(100);
 
       getToolbar().within(() => {
         cy.get('p').should('exist');
@@ -108,15 +102,11 @@ describe('Toolbar Functionality', () => {
     it('should open report error dialog when clicked', () => {
       cy.contains('button', 'Feil i kartet?').click();
 
-      cy.wait(200);
-
       cy.get('div[role="dialog"]').should('be.visible');
     });
 
     it.skip('should close report error dialog', () => {
       cy.contains('button', 'Feil i kartet?').click();
-
-      cy.wait(200);
 
       cy.get('button[aria-label="Close"]').first().click({ force: true });
 
@@ -139,8 +129,6 @@ describe('Toolbar Functionality', () => {
         cy.get('button[data-scope="select"][data-part="trigger"]').click();
       });
 
-      cy.wait(200);
-
       cy.contains('UTM').should('be.visible');
     });
   });
@@ -148,7 +136,6 @@ describe('Toolbar Functionality', () => {
   describe('Toolbar Interaction', () => {
     it.skip('should maintain toolbar visibility during map interactions', () => {
       cy.get('button[aria-label="Zoom inn"]').click();
-      cy.wait(200);
 
       // Toolbar should still be visible (compass button visible)
       cy.contains('button', 'Feil i kartet?').should('be.visible');

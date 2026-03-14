@@ -2,7 +2,7 @@
 describe('Background Layer Switching', () => {
   beforeEach(() => {
     cy.viewport(1280, 720);
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
     cy.get('#map').should('be.visible');
   });
 
@@ -23,7 +23,6 @@ describe('Background Layer Switching', () => {
   describe('Layer Selection', () => {
     beforeEach(() => {
       cy.get('button').find('img[alt="Velg bakgrunnskart"]').parent().click();
-      cy.wait(200);
     });
 
     it('should display multiple background layer options', () => {
@@ -68,7 +67,6 @@ describe('Background Layer Switching', () => {
   describe('Layer Persistence', () => {
     it('should persist selected layer in URL', () => {
       cy.get('button').find('img[alt="Velg bakgrunnskart"]').parent().click();
-      cy.wait(200);
       cy.contains('gråtone').click();
       cy.wait(300);
 
@@ -83,11 +81,9 @@ describe('Background Layer Switching', () => {
     it('should keep settings open when hovering over settings panel', () => {
       // Open settings by clicking
       cy.get('button').find('img[alt="Velg bakgrunnskart"]').parent().click();
-      cy.wait(200);
 
       // Verify settings remain visible when hovering
       cy.contains('Standard').trigger('mouseenter');
-      cy.wait(200);
 
       // Settings should still be visible
       cy.contains('Standard').should('be.visible');

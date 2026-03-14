@@ -3,7 +3,7 @@ describe('Coordinate Search', () => {
   const getSearchInput = () => cy.get('input[placeholder*="Norgeskart"]');
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
     cy.get('#map', { timeout: 10000 }).should('be.visible');
   });
 

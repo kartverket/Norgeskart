@@ -4,7 +4,7 @@ describe('Text Search Functionality', () => {
 
   beforeEach(() => {
     cy.viewport(1280, 720);
-    cy.visit('http://localhost:3000', {
+    cy.visit('/', {
       onBeforeLoad: (win) => {
         win.localStorage.setItem('hideDebug', 'true');
       },
@@ -45,15 +45,11 @@ describe('Text Search Functionality', () => {
     it('should search for addresses', () => {
       getSearchInput().type('Oslo');
 
-      cy.wait(1000);
-
       cy.contains('Oslo', { timeout: 5000 }).should('be.visible');
     });
 
     it('should search for address with postal code', () => {
       getSearchInput().type('Oslo 0191');
-
-      cy.wait(1000);
 
       cy.get('ul:visible', { timeout: 5000 }).should('exist');
     });
@@ -63,23 +59,17 @@ describe('Text Search Functionality', () => {
     it('should search for city names', () => {
       getSearchInput().type('Oslo');
 
-      cy.wait(1000);
-
       cy.contains('Oslo', { timeout: 5000 }).should('be.visible');
     });
 
     it('should search for smaller place names', () => {
       getSearchInput().type('Lofoten');
 
-      cy.wait(1000);
-
       cy.get('ul:visible', { timeout: 5000 }).should('exist');
     });
 
     it('should search for landmarks', () => {
       getSearchInput().type('Nidarosdomen');
-
-      cy.wait(1000);
 
       cy.get('ul:visible', { timeout: 5000 }).should('exist');
     });
@@ -89,8 +79,6 @@ describe('Text Search Functionality', () => {
     it('should search for roads', () => {
       getSearchInput().type('E6');
 
-      cy.wait(1000);
-
       cy.get('ul:visible', { timeout: 5000 }).should('exist');
     });
   });
@@ -99,23 +87,17 @@ describe('Text Search Functionality', () => {
     it('should display search results in a list', () => {
       getSearchInput().type('Oslo');
 
-      cy.wait(1000);
-
       cy.get('ul:visible', { timeout: 5000 }).should('exist');
     });
 
     it('should display multiple result types', () => {
       getSearchInput().type('Trondheim');
 
-      cy.wait(1000);
-
       cy.get('ul:visible', { timeout: 5000 }).should('exist');
     });
 
     it('should allow clicking on search result', () => {
       getSearchInput().type('Oslo');
-
-      cy.wait(1000);
 
       cy.contains('Oslo', { timeout: 5000 }).first().click();
 
@@ -127,8 +109,6 @@ describe('Text Search Functionality', () => {
     it('should clear results when close button is clicked', () => {
       getSearchInput().type('Bergen');
 
-      cy.wait(1000);
-
       getSearchInput().clear();
 
       getSearchInput().should('have.value', '');
@@ -138,8 +118,6 @@ describe('Text Search Functionality', () => {
 
     it('should clear results when input is cleared', () => {
       getSearchInput().type('Stavanger');
-
-      cy.wait(1000);
 
       getSearchInput().clear();
 
@@ -166,23 +144,17 @@ describe('Text Search Functionality', () => {
     it('should handle Norwegian characters', () => {
       getSearchInput().type('Ålesund');
 
-      cy.wait(1000);
-
       cy.get('ul', { timeout: 5000 }).should('be.visible');
     });
 
     it('should handle search with ø', () => {
       getSearchInput().type('Tromsø');
 
-      cy.wait(1000);
-
       cy.get('ul', { timeout: 5000 }).should('be.visible');
     });
 
     it('should handle search with æ', () => {
       getSearchInput().type('Bærum');
-
-      cy.wait(1000);
 
       cy.get('ul', { timeout: 5000 }).should('be.visible');
     });
@@ -209,8 +181,6 @@ describe('Text Search Functionality', () => {
       getSearchInput().type('Bergen');
       getSearchInput().clear();
       getSearchInput().type('Trondheim');
-
-      cy.wait(1000);
       cy.get('ul', { timeout: 5000 }).should('be.visible');
     });
   });
@@ -234,8 +204,6 @@ describe('Text Search Functionality', () => {
     it('should add marker when result is selected', () => {
       getSearchInput().type('Bergen');
 
-      cy.wait(1000);
-
       cy.contains('Bergen', { timeout: 5000 }).first().click();
 
       cy.wait(500);
@@ -247,8 +215,6 @@ describe('Text Search Functionality', () => {
   describe('No Results Handling', () => {
     it('should handle search with no results', () => {
       getSearchInput().type('xyznonexistentplace123');
-
-      cy.wait(2000);
 
       cy.get('#map').should('be.visible');
     });

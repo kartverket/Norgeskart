@@ -2,7 +2,7 @@
 describe('Map Tool Buttons', () => {
   beforeEach(() => {
     cy.viewport(1280, 720);
-    cy.visit('http://localhost:3000', {
+    cy.visit('/', {
       onBeforeLoad: (win) => {
         win.localStorage.setItem('hideDebug', 'true');
       },
@@ -24,7 +24,7 @@ describe('Map Tool Buttons', () => {
 
     it('should hide print button on mobile', () => {
       cy.viewport(375, 667);
-      cy.visit('http://localhost:3000');
+      cy.visit('/');
       cy.get('#map').should('be.visible');
 
       cy.get('button[aria-label="print"]').should('not.exist');
@@ -34,16 +34,13 @@ describe('Map Tool Buttons', () => {
   describe('Draw Tool', () => {
     it('should open draw tool panel when clicked', () => {
       cy.contains('button', 'Tegne og måle').click();
-      cy.wait(200);
       cy.get('div').should('exist');
     });
 
     it('should close draw tool panel when clicked again', () => {
       cy.contains('button', 'Tegne og måle').click();
-      cy.wait(200);
 
       cy.contains('button', 'Tegne og måle').click();
-      cy.wait(200);
 
       cy.contains('button', 'Tegne og måle').should(
         'not.have.css',
@@ -54,7 +51,6 @@ describe('Map Tool Buttons', () => {
 
     it('should highlight active draw button', () => {
       cy.contains('button', 'Tegne og måle').click();
-      cy.wait(200);
 
       cy.contains('button', 'Tegne og måle')
         .should('have.css', 'background-color')
@@ -65,17 +61,14 @@ describe('Map Tool Buttons', () => {
   describe('Layers Tool', () => {
     it('should open layers panel when clicked', () => {
       cy.contains('button', 'Temakart').click();
-      cy.wait(200);
 
       cy.get('div').should('exist');
     });
 
     it('should close layers panel when clicked again', () => {
       cy.contains('button', 'Temakart').click();
-      cy.wait(200);
 
       cy.contains('button', 'Temakart').click();
-      cy.wait(200);
 
       cy.contains('button', 'Temakart').should(
         'not.have.css',
@@ -86,7 +79,6 @@ describe('Map Tool Buttons', () => {
 
     it('should highlight active layers button', () => {
       cy.contains('button', 'Temakart').click();
-      cy.wait(200);
 
       cy.contains('button', 'Temakart')
         .should('have.css', 'background-color')
@@ -97,17 +89,14 @@ describe('Map Tool Buttons', () => {
   describe('Info Tool', () => {
     it('should open info panel when clicked', () => {
       cy.contains('button', 'Hjelp').click();
-      cy.wait(200);
 
       cy.get('div').should('exist');
     });
 
     it('should close info panel when clicked again', () => {
       cy.contains('button', 'Hjelp').click();
-      cy.wait(200);
 
       cy.contains('button', 'Hjelp').click();
-      cy.wait(200);
 
       cy.contains('button', 'Hjelp').should(
         'not.have.css',
@@ -141,14 +130,12 @@ describe('Map Tool Buttons', () => {
   describe('Print Tool', () => {
     it('should open print dialog when clicked', () => {
       cy.get('button[aria-label="print"]').click();
-      cy.wait(200);
 
       cy.get('[id="print-dialog"]').should('be.visible');
     });
 
     it('should close print dialog', () => {
       cy.get('button[aria-label="print"]').click();
-      cy.wait(200);
 
       cy.get('button[aria-label="close-print"]').click();
 
@@ -159,14 +146,12 @@ describe('Map Tool Buttons', () => {
   describe('Tool Switching', () => {
     it('should close one tool when opening another', () => {
       cy.contains('button', 'Tegne og måle').click();
-      cy.wait(200);
 
       cy.contains('button', 'Tegne og måle')
         .should('have.css', 'background-color')
         .and('include', 'rgb(208, 236, 214)');
 
       cy.contains('button', 'Temakart').click();
-      cy.wait(200);
 
       cy.contains('button', 'Temakart')
         .should('have.css', 'background-color')
@@ -181,13 +166,10 @@ describe('Map Tool Buttons', () => {
 
     it('should allow switching between multiple tools', () => {
       cy.contains('button', 'Tegne og måle').click();
-      cy.wait(200);
 
       cy.contains('button', 'Temakart').click();
-      cy.wait(200);
 
       cy.contains('button', 'Hjelp').click();
-      cy.wait(200);
 
       cy.contains('button', 'Hjelp')
         .should('have.css', 'background-color')
@@ -214,7 +196,6 @@ describe('Map Tool Buttons', () => {
       cy.contains('button', 'Tegne og måle')
         .focus()
         .type('{enter}', { force: true });
-      cy.wait(200);
 
       cy.contains('button', 'Tegne og måle')
         .should('have.css', 'background-color')
@@ -233,7 +214,7 @@ describe('Map Tool Buttons', () => {
   describe('Responsive Behavior', () => {
     it('should show compact share label on mobile', () => {
       cy.viewport(375, 667);
-      cy.visit('http://localhost:3000', {
+      cy.visit('/', {
         onBeforeLoad: (win) => {
           win.localStorage.setItem('hideDebug', 'true');
         },
@@ -245,7 +226,7 @@ describe('Map Tool Buttons', () => {
 
     it('should hide print button on mobile', () => {
       cy.viewport(375, 667);
-      cy.visit('http://localhost:3000', {
+      cy.visit('/', {
         onBeforeLoad: (win) => {
           win.localStorage.setItem('hideDebug', 'true');
         },
