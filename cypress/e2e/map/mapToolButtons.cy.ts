@@ -118,6 +118,12 @@ describe('Map Tool Buttons', () => {
   });
 
   describe('Share Map Tool', () => {
+    beforeEach(() => {
+      cy.window().then((win) => {
+        cy.stub(win.navigator.clipboard, 'writeText').resolves();
+      });
+    });
+
     it('should be clickable without errors', () => {
       cy.contains('button', 'Del kart').click();
 
