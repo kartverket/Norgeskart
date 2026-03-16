@@ -10,8 +10,8 @@ import {
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { DrawControls } from '../../draw/drawControls/DrawControls';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
-import { DrawSettings } from '../../settings/draw/DrawSettings';
 import { MapThemes } from '../../settings/map/themes/MapThemes';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { InfoDrawer } from '../../sidePanel/InfoDrawer';
@@ -29,7 +29,7 @@ export const MapToolCards = () => {
   return (
     <Box
       display={currentMapTool === 'draw' && collapsed ? 'none' : 'block'}
-      pointerEvents={currentMapTool === 'draw' && collapsed ? 'none' : 'auto'}
+      pointerEvents={'none'}
       w="100%"
     >
       <MapToolCardsBody />
@@ -69,7 +69,7 @@ const MapToolCardsBody = () => {
         showCollapse={isMobile}
         onCollapse={() => setCollapsed(true)}
       >
-        <DrawSettings />
+        <DrawControls />
       </MapToolCard>
     );
   }

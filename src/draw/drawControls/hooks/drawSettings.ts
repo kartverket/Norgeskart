@@ -5,10 +5,9 @@ import { Feature, Overlay } from 'ol';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Circle, Geometry, Point } from 'ol/geom';
 import VectorSource from 'ol/source/Vector';
-import { Fill, Stroke, Style, Text } from 'ol/style';
+import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { v4 as uuidv4 } from 'uuid';
-import { StyleForStorage } from '../../../api/nkApiClient';
 import { mapAtom } from '../../../map/atoms';
 import {
   drawEnabledAtom,
@@ -23,8 +22,13 @@ import {
 } from '../drawUtils';
 
 import { ProjectionIdentifier } from '../../../map/projections/types';
+import {
+  getCircleRadiusFromProperties,
+  getOverlayIconFromProperties,
+  getStyleFromProperties,
+} from '../../dialogs/import/utls';
+import { getFeatureIcon } from '../../utils/featureUtils';
 import { isDrawIconFilled } from '../drawUtils';
-import { getFeatureIcon } from './drawEventHandlers';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
 import { getDrawLayer } from './mapLayers';
 
@@ -81,64 +85,6 @@ const useDrawSettings = () => {
     return draw['type_'] as DrawType | null;
   };
 
-  const getStyleFromProperties = (props: GeoJsonProperties) => {
-    if (props == null) {
-      return null;
-    }
-    const styleFromProps = props.style as StyleForStorage | undefined;
-    if (styleFromProps == null) {
-      return null;
-    }
-
-    const fill = styleFromProps.fill?.color
-      ? new Fill({ color: styleFromProps.fill.color })
-      : undefined;
-
-    const stroke = styleFromProps.stroke?.color
-      ? new Stroke({
-          color: styleFromProps.stroke.color,
-          width: styleFromProps.stroke.width ?? 2,
-        })
-      : undefined;
-
-    const textValue =
-      (styleFromProps.text as { text?: string; value?: string })?.text ??
-      (styleFromProps.text as { text?: string; value?: string })?.value;
-    const text = textValue
-      ? new Text({
-          text: textValue,
-          font: styleFromProps.text?.font ?? '16px sans-serif',
-          fill: styleFromProps.text?.fillColor
-            ? new Fill({ color: styleFromProps.text.fillColor })
-            : new Fill({ color: '#000000' }),
-          stroke: styleFromProps.text?.stroke?.color
-            ? new Stroke({
-                color: styleFromProps.text.stroke.color,
-                width: styleFromProps.text.stroke.width ?? 1,
-              })
-            : undefined,
-          backgroundFill: styleFromProps.text?.backgroundFillColor
-            ? new Fill({ color: styleFromProps.text.backgroundFillColor })
-            : undefined,
-          offsetY: -15,
-          textAlign: 'center',
-          textBaseline: 'bottom',
-        })
-      : undefined;
-
-    if (!fill && !stroke && !text) {
-      return null;
-    }
-
-    const style = new Style({
-      fill,
-      stroke,
-      text,
-    });
-
-    return style;
-  };
-
   const getSizeFromProperties = (props: GeoJsonProperties): number | null => {
     const sizeFromProps = props?.style?.regularshape.radius as number | null;
     return sizeFromProps ? sizeFromProps / 3 : null;
@@ -147,9 +93,7 @@ const useDrawSettings = () => {
   const getIconPropertiesFromArchiveSolution = (
     props: GeoJsonProperties,
   ): PointIcon | null => {
-    console.log('getIconPropertiesFromArchiveSolution', props);
     const numberOfPoints = props?.style?.regularshape?.points;
-    console.log('numberOfPoints', numberOfPoints);
     if (numberOfPoints == null) {
       return null;
     }
@@ -175,20 +119,6 @@ const useDrawSettings = () => {
       default:
         return null;
     }
-  };
-
-  const getOverlayIconFromProperties = (
-    properties: GeoJsonProperties,
-  ): PointIcon | null => {
-    const iconFromProps = properties?.overlayIcon as PointIcon | null;
-    return iconFromProps;
-  };
-
-  const getCircleRadiusFromProperties = (
-    properties: GeoJsonProperties,
-  ): number | null => {
-    const radiusFromProps = properties?.radius as number | null;
-    return radiusFromProps;
   };
 
   const removeDrawnFeatureById = (featureId: string) => {
@@ -248,7 +178,6 @@ const useDrawSettings = () => {
     }
 
     const geojsonReader = new GeoJSON();
-    console.log(featureCollection);
 
     const featuresToAddWithStyle: Feature<Geometry>[] = [];
 
@@ -282,7 +211,6 @@ const useDrawSettings = () => {
         const overlayIcon =
           getOverlayIconFromProperties(feature.properties) ||
           getIconPropertiesFromArchiveSolution(feature.properties);
-        console.log('overlayIcon', overlayIcon);
         const circleRadius = getCircleRadiusFromProperties(feature.properties);
 
         if (transformedGeometry) {
