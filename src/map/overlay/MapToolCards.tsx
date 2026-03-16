@@ -113,11 +113,13 @@ const MapToolCard = ({
   onCollapse,
 }: MapToolCardProps) => {
   const { t } = useTranslation();
+  const isMobile = useIsMobileScreen();
+
   return (
     <VStack
       width="100%"
       maxWidth={{ base: '100%', md: '345px' }}
-      maxHeight="calc(100vh - 65px)"
+      maxHeight={isMobile ? '80dvh' : 'calc(100vh - 65px)'}
       pointerEvents="auto"
       bg="#FFFF"
       shadow="lg"
