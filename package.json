@@ -15,8 +15,6 @@
     "preview": "vite preview",
     "aword": "node scripts/addWord.js",
     "rword": "node scripts/removeWord.js",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },
@@ -54,7 +52,6 @@
     "@vitejs/plugin-react": "^5.1.4",
     "@vitest/coverage-v8": "^4.1.0",
     "babel-plugin-react-compiler": "^1.0.0",
-    "cypress": "^15.12.0",
     "eslint": "^9.39.2",
     "eslint-plugin-compat": "^7.0.1",
     "eslint-plugin-prettier": "^5.5.5",
