@@ -9,6 +9,7 @@ import {
   VStack,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
@@ -21,6 +22,32 @@ export const MapToolButtons = () => {
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const isMobile = useIsMobileScreen();
   const isPrintDialogOpenDisabled = useAtomValue(isPrintDialogOpenAtom);
+  const activeLayers = useAtomValue(activeThemeLayersAtom);
+
+  // 🔹 synlighet for toolbar
+  const [isToolbarVisible, setIsToolbarVisible] = useState(true);
+
+  // 🔹 keyboard shortcut
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+
+      const isTyping =
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target?.isContentEditable;
+
+      if (isTyping) return;
+
+      if (e.key.toLowerCase() === 'u') {
+        setIsToolbarVisible((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
@@ -30,19 +57,19 @@ export const MapToolButtons = () => {
       });
     });
   };
-  const activeLayers = useAtomValue(activeThemeLayersAtom);
 
   return (
     <HStack
+      display={isToolbarVisible ? 'flex' : 'none'} // 🔹 toggles toolbar
       align="flex-end"
       justify="space-between"
-      bg="#FFFF"
+      bg="rgba(255,255,255,.65)"
       borderRadius={{ base: '', md: 'lg' }}
       shadow="lg"
       py={{ base: 1, md: 1 }}
       px={{ base: 0, md: 1 }}
       mb={{ base: 0, md: 0 }}
-      pointerEvents={'all'}
+      pointerEvents="all"
       overflowX={{ base: 'auto', md: 'none' }}
     >
       <Box position="relative">
@@ -50,7 +77,7 @@ export const MapToolButtons = () => {
           onClick={() => {
             setCurrentMapTool(currentMapTool === 'layers' ? null : 'layers');
           }}
-          icon={'layers'}
+          icon="layers"
           label={
             isMobile
               ? t('controller.maplayers.mobiletext')
@@ -61,27 +88,28 @@ export const MapToolButtons = () => {
         />
         {activeLayers.size > 0 && (
           <Text
-            position={'absolute'}
+            position="absolute"
             top={-1}
             right={1}
-            backgroundColor={'#FFDD9D'}
+            backgroundColor="#FFDD9D"
             borderRadius="full"
-            borderWidth={'2px'}
-            borderColor={'white'}
+            borderWidth="2px"
+            borderColor="white"
             px={2}
             py={0.5}
-            pointerEvents={'none'}
-            fontSize={'sm'}
+            pointerEvents="none"
+            fontSize="sm"
           >
             {activeLayers.size}
           </Text>
         )}
       </Box>
+
       <MapButton
         onClick={() => {
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
-        icon={'edit'}
+        icon="edit"
         label={
           isMobile ? t('controller.draw.mobiletext') : t('controller.draw.text')
         }
@@ -89,9 +117,10 @@ export const MapToolButtons = () => {
         disabled={isPrintDialogOpenDisabled}
         id="map-draw-button"
       />
+
       <MapButton
         onClick={handleShareMapClick}
-        icon={'share'}
+        icon="share"
         label={
           isMobile
             ? t('controller.sharemap.mobiletext')
@@ -99,6 +128,7 @@ export const MapToolButtons = () => {
         }
         id="map-share-button"
       />
+
       {!isMobile && (
         <MapButton
           onClick={() => {
@@ -107,17 +137,18 @@ export const MapToolButtons = () => {
             }
             setIsPrintDialogOpen((p) => !p);
           }}
-          icon={'edit_document'}
+          icon="edit_document"
           label={t('controller.print.text')}
           ariaLabel="print"
           id="map-print-button"
         />
       )}
+
       <MapButton
         onClick={() => {
           setCurrentMapTool(currentMapTool === 'info' ? null : 'info');
         }}
-        icon={'help'}
+        icon="help"
         label={t('controller.help.mobiletext')}
         active={currentMapTool === 'info'}
         id="map-info-button"
@@ -135,6 +166,7 @@ interface MapButtonProps {
   disabled?: boolean;
   id?: string;
 }
+
 const MapButton = ({
   onClick,
   icon,
@@ -147,16 +179,18 @@ const MapButton = ({
   return (
     <Button
       disabled={disabled}
-      w={'fit-content'}
-      onClick={() => {
-        onClick();
-      }}
+      w="fit-content"
+      onClick={onClick}
       variant="ghost"
       colorPalette="green"
       py={{ base: 2, md: 6 }}
-      backgroundColor={active ? '#D0ECD6' : ''}
+      backgroundColor={active ? '#D0ECD6' : undefined}
       aria-label={ariaLabel || label}
       id={id}
+      _hover={{
+        bg: 'green.500',
+        color: 'white',
+      }}
     >
       <VStack gap={{ base: 0, md: 0 }} align="center" justify="center">
         <Icon icon={icon} />
@@ -164,7 +198,7 @@ const MapButton = ({
           fontSize="sm"
           fontWeight="medium"
           textAlign="start"
-          whiteSpace="no-wrap"
+          whiteSpace="nowrap"
         >
           {label}
         </Text>

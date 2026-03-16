@@ -1,22 +1,22 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Temakart",
-      "mobiletext": "Temakart"
+      "openText": "Lag",
+      "mobiletext": "Lag"
     },
     "print": {
       "text": "Lag kart"
     },
     "draw": {
-      "text": "Tegne og måle",
-      "mobiletext": "Tegne og måle"
+      "text": "Verktøy",
+      "mobiletext": "Verktøy"
     },
     "settings": {
       "mobiletext": "Innstillinger",
       "text": "Innstillinger"
     },
     "sharemap": {
-      "text": "Del kart",
+      "text": "Del",
       "mobiletext": "Del"
     },
     "help": {
