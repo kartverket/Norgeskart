@@ -51,6 +51,7 @@ export const Layout = () => {
         }}
         pointerEvents="auto"
         bg="gray.200"
+        style={{ overflowY: 'hidden' }}
       >
         <GridItem
           gridColumn="1 / span 12" /* span all columns */
