@@ -16,6 +16,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  getDirectLayersForCategory,
   getMainCategories,
   getSubcategories,
   themeLayerConfigAtom,
@@ -32,7 +33,7 @@ import {
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
 import { useMapSettings } from '../../../map/mapHooks';
-import { SubThemeSection } from './SubTheme';
+import { LayerLine, SubThemeSection } from './SubTheme';
 import { SubTheme, Theme } from './types';
 
 export const MapThemes = () => {
@@ -69,6 +70,13 @@ export const MapThemes = () => {
 
     mainCategories.forEach((mainCategory) => {
       const subcategories = getSubcategories(themeConfig, mainCategory.id);
+      const directLayers = getDirectLayersForCategory(
+        themeConfig,
+        mainCategory.id,
+      ).map((layer) => ({
+        name: layer.id as ThemeLayerName,
+        label: layer.name[currentLang] || layer.name.nb,
+      }));
 
       if (subcategories.length > 0) {
         const subThemes: SubTheme[] = subcategories.map((subCategory) => {
@@ -89,6 +97,7 @@ export const MapThemes = () => {
           name: mainCategory.id,
           heading: mainCategory.name[currentLang] || mainCategory.name.nb,
           subThemes,
+          directLayers,
         });
       } else {
         const layers = themeConfig.layers.filter(
@@ -107,6 +116,7 @@ export const MapThemes = () => {
               })),
             },
           ],
+          directLayers,
         });
       }
     });
@@ -256,7 +266,8 @@ export const MapThemes = () => {
         {configThemeLayers.map((theme) => {
           const activeInCategory = getActiveCategoryCount(theme);
           const totalInCategory = getTotalCategoryLayers(theme);
-          const defaultOpen = theme.subThemes.length === 1;
+          const defaultOpen =
+            theme.subThemes.length === 1 && theme.directLayers.length === 0;
 
           return (
             <AccordionItem key={theme.name} value={theme.name}>
@@ -283,6 +294,18 @@ export const MapThemes = () => {
                     subTheme={subTheme}
                     toggleLayer={toggleLayer}
                     defaultOpen={defaultOpen}
+                  />
+                ))}
+                {theme.directLayers.map((layer) => (
+                  <LayerLine
+                    key={layer.name}
+                    toggleLayer={toggleLayer}
+                    layer={layer}
+                    checked={isLayerChecked(layer.name)}
+                    disabled={
+                      !isLayerChecked(layer.name) &&
+                      activeCount >= MAX_THEME_LAYERS
+                    }
                   />
                 ))}
               </AccordionItemContent>
