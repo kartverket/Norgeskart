@@ -79,7 +79,10 @@
     "tools": "Tegneverktøy",
     "yesClear": "Ja, fjern",
     "redoundo": "Angre / Gjør om",
-    "download": "Last ned"
+    "download": "Last ned",
+    "uploadButton": {
+      "label": "Last opp"
+    }
   },
   "export": {
     "format": {
@@ -403,7 +406,14 @@
     "locations": {
       "municipality": "kommune"
     },
-    "cancel": "Avbryt"
+    "cancel": "Avbryt",
+    "geometry": {
+      "types": {
+        "point": "Punkter",
+        "linestring": "Linjer",
+        "polygon": "Flater"
+      }
+    }
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -606,5 +616,28 @@
     "textone": "Norgeskart er Kartverkets mest brukte karttjeneste. Enten du planlegger en tur til fjells eller til sjøs, eller trenger informasjon om en eiendom, gir Norgeskart deg pålitelig og detaljert geografisk informasjon – presentert på en enkel og tilgjengelig måte.",
     "texttwo": "Siden 1773 har Kartverket kartlagt Norge. Mye har endret seg siden den gang. Behov utvikler seg over tid, og ny teknologi gir oss stadig nye muligheter. Derfor jobber vi kontinuerlig med å tilby et bredt spekter av kartprodukter som møter brukernes behov – både i dag og i fremtiden.",
     "textthree": "Sammen med brukerne skal vi være åpne, innovative og stabile."
+  },
+  "importDialog": {
+    "header": "Importer fil til tegnelag",
+    "body": {
+      "text": "Velg en fil, enten GPX, GML eller GEOJSON. Hvis du vil kan du overskrive det som allerede er tegnet på kartet med innholdet i filen.",
+      "details": {
+        "heading": "Objekter i filen"
+      }
+    },
+    "overwriteSwitch": {
+      "label": "Overskriv tegning",
+      "tooltip": "Vil fjerne all tegning gjort på karet til nå"
+    },
+    "buttons": {
+      "confirm": {
+        "label": "Last opp"
+      }
+    },
+    "fileupload": {
+      "dragdrop": {
+        "label": "Dra og slipp, eller velg en fil"
+      }
+    }
   }
 }

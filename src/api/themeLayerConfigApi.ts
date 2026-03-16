@@ -214,6 +214,13 @@ export const getSubcategories = (
   return config.categories.filter((cat) => cat.parentId === parentId);
 };
 
+export const getDirectLayersForCategory = (
+  config: ThemeLayerConfig,
+  categoryId: string,
+): ThemeLayerDefinition[] => {
+  return config.layers.filter((layer) => layer.categoryId === categoryId);
+};
+
 export const getParentCategory = (
   config: ThemeLayerConfig,
   category: ThemeLayerCategory,

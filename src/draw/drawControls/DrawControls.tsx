@@ -1,6 +1,12 @@
 import { Flex, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
-import { snapEffect } from '../../settings/draw/atoms.ts';
+import { useEffect } from 'react';
+import {
+  clearInteractions,
+  drawEnabledEffect,
+  drawTypeEffect,
+  snapEffect,
+} from '../../settings/draw/atoms.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
@@ -19,10 +25,17 @@ const MOBILE_TOOLBAR_RESERVE = '15px';
 export const DrawControls = () => {
   const { drawType } = useDrawSettings();
   const isMobile = useIsMobileScreen();
-
-  useDrawControlsKeyboardEffects();
+  useAtom(drawEnabledEffect);
+  useAtom(drawTypeEffect);
   useAtom(distanceUnitAtomEffect);
   useAtom(snapEffect);
+
+  useDrawControlsKeyboardEffects();
+  useEffect(() => {
+    return () => {
+      clearInteractions();
+    };
+  }, []);
 
   return (
     <VStack

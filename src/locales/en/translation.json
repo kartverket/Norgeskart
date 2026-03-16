@@ -74,7 +74,10 @@
     "tools": "Tools",
     "yesClear": "Yes clear",
     "redoundo": "Undo / Redo ",
-    "download": "Download"
+    "download": "Download",
+    "uploadButton": {
+      "label": "Upload"
+    }
   },
   "export": {
     "format": {
@@ -398,7 +401,14 @@
     "locations": {
       "municipality": "municipality"
     },
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "geometry": {
+      "types": {
+        "point": "Points",
+        "linestring": "Lines",
+        "polygon": "Surfaces"
+      }
+    }
   },
   "tipsandtricks": {
     "heading": "Tips and tricks",
@@ -601,5 +611,28 @@
     "textone": "Norgeskart is the Norwegian Mapping Authority’s most widely used map service. Whether you are planning a trip to the mountains or at sea, or need information about a property, Norgeskart provides reliable and detailed geographic information – presented in a simple and accessible way.",
     "texttwo": "Since 1773, the Norwegian Mapping Authority has been mapping Norway. Much has changed since then. Needs evolve over time, and new technology continuously gives us new opportunities. That is why we work continuously to offer a wide range of map products that meet users’ needs – both today and in the future.",
     "textthree": "Together with our users, we aim to be open, innovative, and reliable."
+  },
+  "importDialog": {
+    "header": "Import file for drawlayer",
+    "body": {
+      "text": "Select a file, either GPX, GML or GEOJSON to upload to the map. If you want, you can overwrite the existing drawing with the contents of the file. ",
+      "details": {
+        "heading": "Features in file"
+      }
+    },
+    "overwriteSwitch": {
+      "label": "Overwrite drawing",
+      "tooltip": "Will remove all drawings currently on the map"
+    },
+    "buttons": {
+      "confirm": {
+        "label": "Upload"
+      }
+    },
+    "fileupload": {
+      "dragdrop": {
+        "label": "Drag and drop or select a file"
+      }
+    }
   }
 }
