@@ -1,6 +1,9 @@
 import { createStore } from 'jotai';
 import { describe, expect, it } from 'vitest';
-import { mapToolAtom, showSearchComponentAtom } from '../../../src/map/overlay/atoms';
+import {
+  mapToolAtom,
+  showSearchComponentAtom,
+} from '../../../src/map/overlay/atoms';
 
 describe('mapToolAtom', () => {
   it('defaults to null', () => {
