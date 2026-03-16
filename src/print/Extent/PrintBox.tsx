@@ -1,7 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { Overlay } from 'ol';
 import Map from 'ol/Map';
-import { getPointResolution } from 'ol/proj';
 import { useEffect } from 'react';
 import { printBoxLayoutAtom } from './atoms';
 
@@ -34,18 +33,8 @@ export const PrintBox = ({ map }: PrintBoxProps) => {
       const center = map.getCoordinateFromPixel([size[0] / 2, size[1] / 2]);
       overlay.setPosition(center);
 
-      const projection = map.getView().getProjection();
-      const resolution = map.getView().getResolution();
-      if (!projection || !resolution) return;
-
-      const centerResolution = getPointResolution(
-        projection,
-        resolution,
-        center,
-      );
-
-      overlayContainer.style.width = `${(layout.widthPx / centerResolution) * resolution}px`;
-      overlayContainer.style.height = `${(layout.heightPx / centerResolution) * resolution}px`;
+      overlayContainer.style.width = `${layout.widthPx}px`;
+      overlayContainer.style.height = `${layout.heightPx}px`;
     };
 
     postRenderHandler();
