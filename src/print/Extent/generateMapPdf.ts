@@ -219,14 +219,18 @@ export const generateMapPdf = async ({
       if (themeLayer && themeLayer.layers) {
         const wmsUrl = getEffectiveWmsUrl(themeLayerConfig, themeLayer);
         if (wmsUrl) {
-          layers.unshift({
+          const layerConfig: any = {
             baseURL: wmsUrl,
             customParams: { TRANSPARENT: 'true' },
             imageFormat: 'image/png',
             layers: [themeLayer.layers],
             opacity: 1,
             type: 'WMS',
-          });
+          };
+          if (themeLayer.styles) {
+            layerConfig.styles = [themeLayer.styles];
+          }
+          layers.unshift(layerConfig);
         }
       }
     }
