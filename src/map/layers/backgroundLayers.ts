@@ -1,19 +1,10 @@
-import { useAtomValue } from 'jotai';
 import TileLayer from 'ol/layer/Tile';
 import WMTS from 'ol/source/WMTS';
-import { AvailableProjectionType, mapAtom } from '../atoms';
+import { AvailableProjectionType } from '../atoms';
 import { ProjectionIdentifier } from '../projections/types';
-import {
-  createVectorTileLayer,
-  isVectorTileLayer,
-  VectorTileLayerName,
-} from './backgroundVectorTiles';
+import { VectorTileLayerName } from './backgroundVectorTiles';
 import { getWMSLayer, WMSLayerName } from './backgroundWMS';
-import {
-  loadableWMTS,
-  WMTSLayerName,
-  WMTSProviderId,
-} from './backgroundWMTSProviders';
+import { WMTSLayerName, WMTSProviderId } from './backgroundWMTSProviders';
 
 export type BackgroundLayerName =
   | WMTSLayerName
@@ -98,39 +89,4 @@ export const getBackgroundLayerForProjection = (
   }
 
   return null;
-};
-
-export const useBackgoundLayers = () => {
-  const map = useAtomValue(mapAtom);
-  const WMTSProviders = useAtomValue(loadableWMTS);
-  const backgroundLayerState = WMTSProviders.state;
-
-  const getBackgroundLayer = async (
-    backgroundLayerName: BackgroundLayerName,
-  ) => {
-    if (WMTSProviders.state === 'loading') {
-      return null;
-    }
-    if (WMTSProviders.state === 'hasError') {
-      console.error('Error loading WMTS providers:', WMTSProviders.error);
-      return null;
-    }
-
-    if (isVectorTileLayer(backgroundLayerName)) {
-      return createVectorTileLayer(backgroundLayerName);
-    }
-
-    const currentProjection: ProjectionIdentifier = map
-      .getView()
-      .getProjection()
-      .getCode() as ProjectionIdentifier;
-
-    return getBackgroundLayerForProjection(
-      WMTSProviders.data,
-      currentProjection,
-      backgroundLayerName,
-    );
-  };
-
-  return { backgroundLayerState, getBackgroundLayer };
 };

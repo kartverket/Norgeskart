@@ -1,6 +1,6 @@
 import { HStack, Image, Link } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { activeBackgroundLayerAtom } from '../layers/atoms';
+import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
 
 const POLAR_LAYERS = new Set([
   'Basisdata_NP_Basiskart_Svalbard_WMTS_25833',
@@ -8,7 +8,7 @@ const POLAR_LAYERS = new Set([
 ]);
 
 export const LinkLogo: React.FC = () => {
-  const activeLayer = useAtomValue(activeBackgroundLayerAtom);
+  const activeLayer = useAtomValue(backgroundLayerAtom);
   const isPolarLayer = POLAR_LAYERS.has(activeLayer);
 
   return (

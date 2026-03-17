@@ -30,7 +30,6 @@ export const allConfiguredBackgroundLayers = [
 const getDefaultBackgroundLayer = () => {
   let layerNameFromUrl = getUrlParameter('backgroundLayer');
   const legacyLayerParam = getUrlParameter('layers');
-  let legacyThemeLayerIds: string[] = [];
 
   if (legacyLayerParam) {
     const layerIds = legacyLayerParam
@@ -42,14 +41,9 @@ const getDefaultBackgroundLayer = () => {
       (id) => mapLegacyBackgroundLayerId(id) !== null,
     );
 
-    const themeLayerIds = layerIds.filter(
-      (id) => id !== backgroundLayerId && parseInt(id, 10) > 1010,
-    );
-
     if (backgroundLayerId) {
       layerNameFromUrl = backgroundLayerId;
     }
-    legacyThemeLayerIds = themeLayerIds;
   }
 
   if (layerNameFromUrl) {
@@ -62,12 +56,12 @@ const getDefaultBackgroundLayer = () => {
   return finalLayerName;
 };
 
-export const backgroundLayerAtom_v2 = atom<BackgroundLayerName>(
+export const backgroundLayerAtom = atom<BackgroundLayerName>(
   getDefaultBackgroundLayer(),
 );
 
-export const backgroundLayerAtom_v2_effect = atomEffect((get, set) => {
-  const layerName = get(backgroundLayerAtom_v2);
+export const backgroundLayerAtomEffect = atomEffect((get, set) => {
+  const layerName = get(backgroundLayerAtom);
   const layerConfig = allConfiguredBackgroundLayers.find(
     (layer) => layer.layerName === layerName,
   );

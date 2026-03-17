@@ -23,16 +23,15 @@ import {
 } from '../../../api/themeLayerConfigApi';
 import { currentProjectionAtom } from '../../../map/atoms';
 import {
-  activeBackgroundLayerAtom,
   activeThemeLayersAtom,
   preNauticalProjectionAtom,
 } from '../../../map/layers/atoms';
+import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
 import {
   MAX_THEME_LAYERS,
   useThemeLayers,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
-import { useMapSettings } from '../../../map/mapHooks';
 import { LayerLine, SubThemeSection } from './SubTheme';
 import { SubTheme, Theme } from './types';
 
@@ -44,10 +43,10 @@ export const MapThemes = () => {
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
 
-  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
-  const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
+  const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
+
   const [, setPreNauticalProjection] = useAtom(preNauticalProjectionAtom);
-  const { setBackgroundLayer } = useMapSettings();
+
   const currentProjection = useAtomValue(currentProjectionAtom);
   const setCurrentProjection = useSetAtom(currentProjectionAtom);
 
@@ -160,10 +159,10 @@ export const MapThemes = () => {
       if (!checked) {
         addThemeLayerToMap(layerName);
         if (isSjoLayer(layerName)) {
-          if (activeBackgroundLayer !== 'nautical-background') {
+          if (backgroundLayer !== 'nautical-background') {
             if (currentProjection !== 'EPSG:3857') {
               setPreNauticalProjection(currentProjection);
-              setActiveBackgroundLayer('nautical-background'); // Set bg BEFORE projection so effect loads correct layer
+              setBackgroundLayer('nautical-background'); // Set bg BEFORE projection so effect loads correct layer
               setCurrentProjection('EPSG:3857');
               toaster.create({
                 title: t('map.settings.layers.projection.forcedWebMercator'),
@@ -172,7 +171,7 @@ export const MapThemes = () => {
               });
             } else {
               setBackgroundLayer('nautical-background');
-              setActiveBackgroundLayer('nautical-background');
+
               toaster.create({
                 title: t(
                   'map.settings.layers.theme.switchedToNauticalBackground',
@@ -200,12 +199,11 @@ export const MapThemes = () => {
       removeThemeLayerFromMap,
       isLayerChecked,
       isSjoLayer,
-      activeBackgroundLayer,
+      backgroundLayer,
       currentProjection,
       setPreNauticalProjection,
       setCurrentProjection,
       setBackgroundLayer,
-      setActiveBackgroundLayer,
       t,
     ],
   );

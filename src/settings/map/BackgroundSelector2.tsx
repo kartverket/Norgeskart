@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom } from '../../map/atoms';
 import {
   allConfiguredBackgroundLayers,
-  backgroundLayerAtom_v2,
+  backgroundLayerAtom,
 } from '../../map/layers/config/backgroundLayers/atoms';
 
 export const BackgroundSelector2 = () => {
-  const setBackgroundLayer = useSetAtom(backgroundLayerAtom_v2);
+  const setBackgroundLayer = useSetAtom(backgroundLayerAtom);
   const currentProjection = useAtomValue(currentProjectionAtom);
   const { t } = useTranslation();
   const layersToShow = allConfiguredBackgroundLayers.filter(

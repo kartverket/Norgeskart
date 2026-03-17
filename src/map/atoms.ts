@@ -10,13 +10,13 @@ import { themeLayerConfigAtom } from '../api/themeLayerConfigApi';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { isMapLayerBackground, mapLayers } from './layers';
-import {
-  activeBackgroundLayerAtom,
-  activeThemeLayersAtom,
-} from './layers/atoms';
+import { activeThemeLayersAtom } from './layers/atoms';
 import { BackgroundLayerName } from './layers/backgroundLayers';
 import { loadableWMTS } from './layers/backgroundWMTSProviders';
-import { allConfiguredBackgroundLayers } from './layers/config/backgroundLayers/atoms';
+import {
+  allConfiguredBackgroundLayers,
+  backgroundLayerAtom,
+} from './layers/config/backgroundLayers/atoms';
 import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
 import { ControlPortal } from './mapControls';
 import { scaleToResolution } from './mapScale';
@@ -202,7 +202,7 @@ export const projectionEffect = atomEffect((get, set) => {
 
   if (oldProjectionCode === projectionId) return;
 
-  const backgroundLayerName = store.get(activeBackgroundLayerAtom);
+  const backgroundLayerName = store.get(backgroundLayerAtom);
   const activeThemeLayers = store.get(activeThemeLayersAtom);
 
   const projection = getProjection(projectionId)!;

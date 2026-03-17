@@ -12,7 +12,8 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
-import { activeBackgroundLayerAtom } from '../map/layers/atoms.ts';
+
+import { backgroundLayerAtom } from '../map/layers/config/backgroundLayers/atoms.ts';
 import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { SearchResult } from '../types/searchTypes.ts';
@@ -54,7 +55,7 @@ export const SearchComponent = () => {
   const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
-  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const activeBackgroundLayer = useAtomValue(backgroundLayerAtom);
   const setDisplaySearchResults = useSetAtom(displaySearchResultsAtom);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,

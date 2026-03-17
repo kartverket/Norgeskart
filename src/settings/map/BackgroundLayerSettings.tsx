@@ -9,7 +9,7 @@ import {
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import {
   allConfiguredBackgroundLayers,
-  backgroundLayerAtom_v2,
+  backgroundLayerAtom,
 } from '../../map/layers/config/backgroundLayers/atoms.ts';
 
 // Prioritetskart for sortering
@@ -34,16 +34,16 @@ const layerPrioritySort = (a: BackgroundLayerName, b: BackgroundLayerName) => {
   return priorityA - priorityB;
 };
 
-const POLAR_LAYER_EXTENTS: Partial<
-  Record<BackgroundLayerName, [number, number, number, number]>
-> = {
-  Basisdata_NP_Basiskart_Svalbard_WMTS_25833: [
-    369976.39, 8221306.54, 878234.72, 9010718.77,
-  ],
-  Basisdata_NP_Basiskart_JanMayen_WMTS_25833: [
-    -393783.25, 7978220.98, -276963.74, 8084965.52,
-  ],
-};
+// const POLAR_LAYER_EXTENTS: Partial<
+//   Record<BackgroundLayerName, [number, number, number, number]>
+// > = {
+//   Basisdata_NP_Basiskart_Svalbard_WMTS_25833: [
+//     369976.39, 8221306.54, 878234.72, 9010718.77,
+//   ],
+//   Basisdata_NP_Basiskart_JanMayen_WMTS_25833: [
+//     -393783.25, 7978220.98, -276963.74, 8084965.52,
+//   ],
+// };
 
 interface LayerCardProps {
   label: string;
@@ -110,7 +110,7 @@ export const BackgroundLayerSettings = ({
 }: {
   onSelectComplete: () => void;
 }) => {
-  const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom_v2);
+  const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
   const { t } = useTranslation();
 
   const currentProjection = useAtomValue(currentProjectionAtom);
