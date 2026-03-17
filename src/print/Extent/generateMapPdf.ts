@@ -15,7 +15,7 @@ import { getEnv } from '../../env';
 import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
-import type { Layer, Matrix } from './printApi';
+import type { Layer, Matrix, WmsLayer } from './printApi';
 import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
 import { createGeoJsonLayerWithStyles } from './utils';
@@ -219,7 +219,7 @@ export const generateMapPdf = async ({
       if (themeLayer && themeLayer.layers) {
         const wmsUrl = getEffectiveWmsUrl(themeLayerConfig, themeLayer);
         if (wmsUrl) {
-          const layerConfig: any = {
+          const layerConfig: WmsLayer = {
             baseURL: wmsUrl,
             customParams: { TRANSPARENT: 'true' },
             imageFormat: 'image/png',

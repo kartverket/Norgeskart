@@ -36,6 +36,7 @@ export interface WmsLayer {
   imageFormat: string;
   layers: string[];
   opacity: number;
+  styles?: string[];
   type: 'WMS';
 }
 
