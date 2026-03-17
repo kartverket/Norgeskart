@@ -24,6 +24,7 @@ import {
   useBackgoundLayers,
 } from './layers/backgroundLayers.ts';
 import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
+import { backgroundLayerAtom_v2_effect } from './layers/config/backgroundLayers/atoms.ts';
 import { mapLegacyThemeLayerId } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap, useMapSettings } from './mapHooks.ts';
@@ -54,6 +55,7 @@ export const MapComponent = () => {
   useAtom(themeLayerEffect);
   useAtom(trackPostitionAtomEffect);
   useAtom(projectionEffect);
+  useAtom(backgroundLayerAtom_v2_effect);
 
   useEffect(() => {
     if (mapRef.current) {

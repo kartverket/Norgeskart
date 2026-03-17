@@ -31,6 +31,7 @@ import {
 } from '../../map/layers/backgroundWMTSProviders';
 import { useMapSettings } from '../../map/mapHooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
+import { BackgroundSelector2 } from './BackgroundSelector2.tsx';
 
 // Prioritetskart for sortering
 const layerPriorityMap = new Map<BackgroundLayerName, number>([
@@ -276,6 +277,7 @@ export const BackgroundLayerSettings = ({
         currentLayer={currentLayer}
         setLayer={handleSetLayer}
       />
+      <BackgroundSelector2 />
     </Box>
   );
 };
