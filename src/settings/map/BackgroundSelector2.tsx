@@ -16,7 +16,6 @@ export const BackgroundSelector2 = () => {
       layer.showForProjections == null ||
       layer.showForProjections.includes(currentProjection),
   );
-  console.log('Layers to show in BackgroundSelector2:', layersToShow);
 
   return (
     <Flex flexFlow={'row wrap'} gap={2}>
