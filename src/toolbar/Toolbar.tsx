@@ -161,7 +161,7 @@ export const Toolbar = () => {
                 currentProjection,
                 'EPSG:25833',
               );
-              const url = `https://norgeskart.no/#!?project=norgeskart&zoom=${z}&lat=${transformedCoords[1]}&lon=${transformedCoords[0]}`;
+              const url = `https://arkiv.norgeskart.no/#!?project=norgeskart&zoom=${z}&lat=${transformedCoords[1]}&lon=${transformedCoords[0]}`;
               window.open(url, '_blank');
             }}
           >
