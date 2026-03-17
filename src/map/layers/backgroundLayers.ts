@@ -1,10 +1,7 @@
-import TileLayer from 'ol/layer/Tile';
-import WMTS from 'ol/source/WMTS';
 import { AvailableProjectionType } from '../atoms';
-import { ProjectionIdentifier } from '../projections/types';
 import { VectorTileLayerName } from './backgroundVectorTiles';
-import { getWMSLayer, WMSLayerName } from './backgroundWMS';
-import { WMTSLayerName, WMTSProviderId } from './backgroundWMTSProviders';
+import { WMSLayerName } from './backgroundWMS';
+import { WMTSLayerName } from './backgroundWMTSProviders';
 
 export type BackgroundLayerName =
   | WMTSLayerName
@@ -26,11 +23,11 @@ export const mapLegacyBackgroundLayerId = (
   return legacyIdMap[layerId] || null;
 };
 
-const isLayerNiBLayer = (layerName: BackgroundLayerName) => {
+export const isLayerNiBLayer = (layerName: BackgroundLayerName) => {
   return layerName.startsWith('Nibcache_');
 };
 
-const getNiBLayerNameForProjection = (
+export const getNiBLayerNameForProjection = (
   projection: AvailableProjectionType,
 ): WMTSLayerName | null => {
   switch (projection) {
@@ -47,46 +44,4 @@ const getNiBLayerNameForProjection = (
     default:
       return null;
   }
-};
-
-type WMTSData = Map<
-  WMTSProviderId,
-  Map<ProjectionIdentifier, Map<WMTSLayerName, WMTS>>
->;
-
-export const getBackgroundLayerForProjection = (
-  wmtsData: WMTSData,
-  projectionId: ProjectionIdentifier,
-  layerName: BackgroundLayerName,
-): TileLayer | null => {
-  const wmsLayer = getWMSLayer(layerName as WMSLayerName, projectionId);
-  if (wmsLayer) return wmsLayer;
-
-  let targetLayerName: WMTSLayerName | null;
-  if (isLayerNiBLayer(layerName)) {
-    targetLayerName = getNiBLayerNameForProjection(
-      projectionId as AvailableProjectionType,
-    );
-    if (!targetLayerName) {
-      console.warn(
-        `NiB layer ${layerName} is not available for projection ${projectionId}`,
-      );
-      return null;
-    }
-  } else {
-    targetLayerName = layerName as WMTSLayerName;
-  }
-
-  for (const projectionLayerMap of wmtsData.values()) {
-    const source = projectionLayerMap.get(projectionId)?.get(targetLayerName);
-    if (source) {
-      return new TileLayer({
-        source,
-        preload: Infinity,
-        properties: { id: `bg.${targetLayerName}` },
-      });
-    }
-  }
-
-  return null;
 };

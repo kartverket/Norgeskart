@@ -12,7 +12,6 @@ import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { isMapLayerBackground, mapLayers } from './layers';
 import { activeThemeLayersAtom } from './layers/atoms';
 import { BackgroundLayerName } from './layers/backgroundLayers';
-import { loadableWMTS } from './layers/backgroundWMTSProviders';
 import {
   allConfiguredBackgroundLayers,
   backgroundLayerAtom,
@@ -192,9 +191,6 @@ export const projectionEffect = atomEffect((get, set) => {
   const projectionId = get(currentProjectionAtom);
   const store = getDefaultStore();
   const map = store.get(mapAtom);
-  const WMTSLoadable = get(loadableWMTS);
-
-  if (WMTSLoadable.state !== 'hasData') return;
 
   const oldView = map.getView();
   const oldProjection = oldView.getProjection();
