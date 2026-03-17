@@ -5,10 +5,7 @@ import {
   setUrlParameter,
 } from '../../../../shared/utils/urlUtils';
 import { currentProjectionAtom, mapAtom } from '../../../atoms';
-import {
-  BackgroundLayerName,
-  mapLegacyBackgroundLayerId,
-} from '../../backgroundLayers';
+import { BackgroundLayerName } from '../../backgroundLayers';
 import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
@@ -27,37 +24,14 @@ export const allConfiguredBackgroundLayers = [
   ...nauticalBackgroundLayers,
 ];
 
-const getDefaultBackgroundLayer = () => {
-  let layerNameFromUrl = getUrlParameter('backgroundLayer');
-  const legacyLayerParam = getUrlParameter('layers');
-
-  if (legacyLayerParam) {
-    const layerIds = legacyLayerParam
-      .split(',')
-      .map((s) => s.trim())
-      .filter((id) => id.length > 0);
-
-    const backgroundLayerId = layerIds.find(
-      (id) => mapLegacyBackgroundLayerId(id) !== null,
-    );
-
-    if (backgroundLayerId) {
-      layerNameFromUrl = backgroundLayerId;
-    }
-  }
-
-  if (layerNameFromUrl) {
-    const legacyLayerName = mapLegacyBackgroundLayerId(layerNameFromUrl);
-    if (legacyLayerName) {
-      layerNameFromUrl = legacyLayerName;
-    }
-  }
+const getInitialBackgroundLayer = () => {
+  const layerNameFromUrl = getUrlParameter('backgroundLayer');
   const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
   return finalLayerName;
 };
 
 export const backgroundLayerAtom = atom<BackgroundLayerName>(
-  getDefaultBackgroundLayer(),
+  getInitialBackgroundLayer(),
 );
 
 export const backgroundLayerAtomEffect = atomEffect((get, set) => {

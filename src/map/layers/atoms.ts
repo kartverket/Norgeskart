@@ -7,6 +7,7 @@ import {
 import { ProjectionIdentifier } from '../../map/projections/types';
 import {
   addToUrlListParameter,
+  getListUrlParameter,
   removeFromUrlListParameter,
 } from '../../shared/utils/urlUtils';
 import { mapAtom } from '../atoms';
@@ -20,8 +21,13 @@ export const preNauticalProjectionAtom = atom<ProjectionIdentifier | null>(
   null,
 );
 
+const getInitialThemeLayers = () => {
+  const finalThemeLayerList = getListUrlParameter('themeLayers') || [];
+  return new Set(finalThemeLayerList as ThemeLayerName[]);
+};
+
 export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(
-  new Set<ThemeLayerName>(),
+  getInitialThemeLayers(),
 );
 
 export const themeLayerEffect = atomEffect((get) => {

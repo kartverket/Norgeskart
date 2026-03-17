@@ -5,23 +5,13 @@ import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getFeatures } from '../api/nkApiClient.ts';
-import { themeLayerConfigAtom } from '../api/themeLayerConfigApi.ts';
 import { useDrawSettings } from '../draw/drawControls/hooks/drawSettings.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
-import {
-  getListUrlParameter,
-  getUrlParameter,
-  removeUrlParameter,
-  setUrlParameter,
-  transitionHashToQuery,
-} from '../shared/utils/urlUtils.ts';
+import { getUrlParameter } from '../shared/utils/urlUtils.ts';
 import { mapAtom, projectionEffect, scaleAtom } from './atoms.ts';
 import { trackPostitionAtomEffect } from './geolocation/atoms.ts';
-import { activeThemeLayersAtom, themeLayerEffect } from './layers/atoms.ts';
-import { mapLegacyBackgroundLayerId } from './layers/backgroundLayers.ts';
+import { themeLayerEffect } from './layers/atoms.ts';
 import { backgroundLayerAtomEffect } from './layers/config/backgroundLayers/atoms.ts';
-import { mapLegacyThemeLayerId } from './layers/themeLayers.ts';
-import { ThemeLayerName } from './layers/themeWMS.ts';
 import { useMap } from './mapHooks.ts';
 import { getScaleFromResolution } from './mapScale.ts';
 import {
@@ -33,16 +23,13 @@ import { MapContextMenu } from './menu/MapContextMenu.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const setActiveThemeLayers = useSetAtom(activeThemeLayersAtom);
 
   const map = useAtomValue(mapAtom);
-  const themeLayerConfig = useAtomValue(themeLayerConfigAtom);
   const { t } = useTranslation();
   const { setDrawLayerFeatures } = useDrawSettings();
   const setIsMenuOpen = useSetAtom(mapContextIsOpenAtom);
   const setXPos = useSetAtom(mapContextXPosAtom);
   const setYPos = useSetAtom(mapContextYPosAtom);
-  const hasProcessedUrlRef = useRef(false);
   const hasLoadedDrawingRef = useRef(false);
   const setScale = useSetAtom(scaleAtom);
   const { setTargetElement } = useMap();
@@ -59,89 +46,6 @@ export const MapComponent = () => {
       setTargetElement(null);
     };
   }, [setTargetElement, mapRef]);
-
-  /**
-   * Process legacy URL parameters from old norgeskart.no format.
-   *
-   * Legacy format: #!?project=<category>&layers=<id1>,<id2>
-   * Modern format: ?backgroundLayer=<name>&themeLayers=<id1>,<id2>
-   *
-   * Timing is critical:
-   * 1. Hash transition must happen BEFORE processing (enables proper URL operations)
-   * 2. Background layers must be available (needed for layer activation)
-   * 3. Process only once per session (prevents re-running on URL updates)
-   *
-   * The legacy 'layers' param contains both background (1001-1010) and theme (>1010) IDs.
-   * The 'project' param filters which theme layers are valid for the current category.
-   */
-  useEffect(() => {
-    if (hasProcessedUrlRef.current) {
-      return;
-    }
-
-    transitionHashToQuery();
-
-    let layerNameFromUrl = getUrlParameter('backgroundLayer');
-    const legacyLayerParam = getUrlParameter('layers');
-    const projectParam = getUrlParameter('project') ?? undefined;
-    let legacyThemeLayerIds: string[] = [];
-
-    if (legacyLayerParam) {
-      const layerIds = legacyLayerParam
-        .split(',')
-        .map((s) => s.trim())
-        .filter((id) => id.length > 0);
-
-      const backgroundLayerId = layerIds.find(
-        (id) => mapLegacyBackgroundLayerId(id) !== null,
-      );
-
-      const themeLayerIds = layerIds.filter(
-        (id) => id !== backgroundLayerId && parseInt(id, 10) > 1010,
-      );
-
-      if (backgroundLayerId) {
-        layerNameFromUrl = backgroundLayerId;
-      }
-
-      legacyThemeLayerIds = themeLayerIds;
-    }
-
-    if (layerNameFromUrl) {
-      const legacyLayerName = mapLegacyBackgroundLayerId(layerNameFromUrl);
-      if (legacyLayerName) {
-        layerNameFromUrl = legacyLayerName;
-      }
-    }
-
-    if (legacyLayerParam) {
-      removeUrlParameter('layers');
-      removeUrlParameter('project');
-
-      const currentThemeLayers = getListUrlParameter('themeLayers') || [];
-      const newThemeLayers = [...currentThemeLayers];
-
-      legacyThemeLayerIds.forEach((legacyId) => {
-        const modernId = mapLegacyThemeLayerId(
-          legacyId,
-          themeLayerConfig,
-          projectParam,
-        );
-        if (modernId && !newThemeLayers.includes(modernId)) {
-          newThemeLayers.push(modernId);
-        }
-      });
-
-      if (newThemeLayers.length > currentThemeLayers.length) {
-        setUrlParameter('themeLayers', newThemeLayers.join(','));
-      }
-    }
-    const finalThemeLayerList = getListUrlParameter('themeLayers') || [];
-
-    setActiveThemeLayers(new Set(finalThemeLayerList as ThemeLayerName[]));
-
-    hasProcessedUrlRef.current = true;
-  }, [setActiveThemeLayers, map, themeLayerConfig]);
 
   useEffect(() => {
     if (hasLoadedDrawingRef.current) {
