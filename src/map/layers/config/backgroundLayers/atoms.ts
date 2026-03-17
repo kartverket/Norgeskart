@@ -5,6 +5,7 @@ import { Map } from 'ol';
 import { WMTSCapabilities } from 'ol/format';
 import ImageTile from 'ol/ImageTile';
 import TileLayer from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import Tile, { LoadFunction } from 'ol/Tile';
 import { getEnv } from '../../../../env';
@@ -14,7 +15,11 @@ import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
 import { npolarBackgroundLayers } from './npolar';
-import { VectorTileBackgroundLayer, WMTSBackgroundLayer } from './types';
+import {
+  VectorTileBackgroundLayer,
+  WMSBackgroundLayer,
+  WMTSBackgroundLayer,
+} from './types';
 
 const env = getEnv();
 export const allConfiguredBackgroundLayers = [
@@ -101,6 +106,21 @@ const getVectorTileLayer = (layerConfig: VectorTileBackgroundLayer) => {
   return layer;
 };
 
+const getWMSLayer = (layerConfig: WMSBackgroundLayer) => {
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+  const projection = map.getView().getProjection().getCode();
+  const layer = new TileLayer({
+    source: new TileWMS({
+      url: layerConfig.url,
+      params: { ...layerConfig.props, SRS: projection },
+    }),
+    properties: { id: `bg.${layerConfig.layerName}` },
+  });
+
+  return layer;
+};
+
 export const backgroundLayerAtom_v2_effect = atomEffect((get) => {
   const layerName = get(backgroundLayerAtom_v2);
   const layerConfig = allConfiguredBackgroundLayers.find(
@@ -120,6 +140,10 @@ export const backgroundLayerAtom_v2_effect = atomEffect((get) => {
       }
       if (layerConfig.type === 'VectorTile') {
         layer = getVectorTileLayer(layerConfig);
+      }
+
+      if (layerConfig.type === 'WMS') {
+        layer = getWMSLayer(layerConfig);
       }
       if (layer) {
         const store = getDefaultStore();

@@ -25,6 +25,8 @@ export type VectorTileBackgroundLayer = BackgroundLayerBase & {
 
 export type WMSBackgroundLayer = BackgroundLayerBase & {
   type: 'WMS';
+  url: string;
+  props?: Record<string, any>;
 };
 
 export type BackgroundLayer =
