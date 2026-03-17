@@ -28,7 +28,7 @@ export const SubThemeSection = ({
   toggleLayer: (layerName: ThemeLayerName) => void;
   defaultOpen?: boolean;
 }) => {
-  const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
+  const { activeLayerSet, removeThemeLayerFromMap } =
     useThemeLayers();
 
   const { t } = useTranslation();
@@ -73,11 +73,11 @@ export const SubThemeSection = ({
                     content={
                       activeInSubTheme === totalInSubTheme
                         ? t(
-                            'map.settings.layers.theme.subtheme.toggleall.removeall',
-                          )
+                          'map.settings.layers.theme.subtheme.toggleall.removeall',
+                        )
                         : t(
-                            'map.settings.layers.theme.subtheme.toggleall.addall',
-                          )
+                          'map.settings.layers.theme.subtheme.toggleall.addall',
+                        )
                     }
                     ids={{ trigger: id }}
                   >
@@ -88,7 +88,9 @@ export const SubThemeSection = ({
                       ids={{ root: id }}
                       onCheckedChange={(e) => {
                         if (e.checked) {
-                          addThemeLayerToMap(subthemeLayerNames);
+                          subthemeLayerNames
+                            .filter(layerName => !activeLayerSet.has(layerName))
+                            .forEach(toggleLayer);
                         } else {
                           removeThemeLayerFromMap(subthemeLayerNames);
                         }
