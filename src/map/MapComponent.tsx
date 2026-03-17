@@ -18,16 +18,14 @@ import {
 import { mapAtom, projectionEffect, scaleAtom } from './atoms.ts';
 import { trackPostitionAtomEffect } from './geolocation/atoms.ts';
 import { activeThemeLayersAtom, themeLayerEffect } from './layers/atoms.ts';
+import { mapLegacyBackgroundLayerId } from './layers/backgroundLayers.ts';
 import {
-  BackgroundLayerName,
-  mapLegacyBackgroundLayerId,
-  useBackgoundLayers,
-} from './layers/backgroundLayers.ts';
-import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders.ts';
-import { backgroundLayerAtom_v2_effect } from './layers/config/backgroundLayers/atoms.ts';
+  backgroundLayerAtom_v2,
+  backgroundLayerAtom_v2_effect,
+} from './layers/config/backgroundLayers/atoms.ts';
 import { mapLegacyThemeLayerId } from './layers/themeLayers.ts';
 import { ThemeLayerName } from './layers/themeWMS.ts';
-import { useMap, useMapSettings } from './mapHooks.ts';
+import { useMap } from './mapHooks.ts';
 import { getScaleFromResolution } from './mapScale.ts';
 import {
   mapContextIsOpenAtom,
@@ -38,9 +36,9 @@ import { MapContextMenu } from './menu/MapContextMenu.tsx';
 
 export const MapComponent = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const { setBackgroundLayer } = useMapSettings();
+  const setBackgroundLayer = useSetAtom(backgroundLayerAtom_v2);
   const setActiveThemeLayers = useSetAtom(activeThemeLayersAtom);
-  const { backgroundLayerState } = useBackgoundLayers();
+
   const map = useAtomValue(mapAtom);
   const themeLayerConfig = useAtomValue(themeLayerConfigAtom);
   const { t } = useTranslation();
@@ -81,14 +79,6 @@ export const MapComponent = () => {
    * The 'project' param filters which theme layers are valid for the current category.
    */
   useEffect(() => {
-    if (!map) {
-      return;
-    }
-
-    if (backgroundLayerState !== 'hasData') {
-      return;
-    }
-
     if (hasProcessedUrlRef.current) {
       return;
     }
@@ -128,13 +118,9 @@ export const MapComponent = () => {
       }
     }
 
-    const finalLayerName = (layerNameFromUrl ||
-      DEFAULT_BACKGROUND_LAYER) as BackgroundLayerName;
-
     if (legacyLayerParam) {
       removeUrlParameter('layers');
       removeUrlParameter('project');
-      setUrlParameter('backgroundLayer', finalLayerName);
 
       const currentThemeLayers = getListUrlParameter('themeLayers') || [];
       const newThemeLayers = [...currentThemeLayers];
@@ -158,15 +144,8 @@ export const MapComponent = () => {
 
     setActiveThemeLayers(new Set(finalThemeLayerList as ThemeLayerName[]));
 
-    setBackgroundLayer(finalLayerName);
     hasProcessedUrlRef.current = true;
-  }, [
-    setActiveThemeLayers,
-    setBackgroundLayer,
-    map,
-    themeLayerConfig,
-    backgroundLayerState,
-  ]);
+  }, [setActiveThemeLayers, map, themeLayerConfig]);
 
   useEffect(() => {
     if (hasLoadedDrawingRef.current) {

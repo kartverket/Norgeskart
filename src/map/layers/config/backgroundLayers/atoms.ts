@@ -1,7 +1,14 @@
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import {
+  getUrlParameter,
+  setUrlParameter,
+} from '../../../../shared/utils/urlUtils';
 import { currentProjectionAtom, mapAtom } from '../../../atoms';
-import { BackgroundLayerName } from '../../backgroundLayers';
+import {
+  BackgroundLayerName,
+  mapLegacyBackgroundLayerId,
+} from '../../backgroundLayers';
 import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
@@ -20,7 +27,44 @@ export const allConfiguredBackgroundLayers = [
   ...nauticalBackgroundLayers,
 ];
 
-export const backgroundLayerAtom_v2 = atom<BackgroundLayerName>('topo');
+const getDefaultBackgroundLayer = () => {
+  let layerNameFromUrl = getUrlParameter('backgroundLayer');
+  const legacyLayerParam = getUrlParameter('layers');
+  let legacyThemeLayerIds: string[] = [];
+
+  if (legacyLayerParam) {
+    const layerIds = legacyLayerParam
+      .split(',')
+      .map((s) => s.trim())
+      .filter((id) => id.length > 0);
+
+    const backgroundLayerId = layerIds.find(
+      (id) => mapLegacyBackgroundLayerId(id) !== null,
+    );
+
+    const themeLayerIds = layerIds.filter(
+      (id) => id !== backgroundLayerId && parseInt(id, 10) > 1010,
+    );
+
+    if (backgroundLayerId) {
+      layerNameFromUrl = backgroundLayerId;
+    }
+    legacyThemeLayerIds = themeLayerIds;
+  }
+
+  if (layerNameFromUrl) {
+    const legacyLayerName = mapLegacyBackgroundLayerId(layerNameFromUrl);
+    if (legacyLayerName) {
+      layerNameFromUrl = legacyLayerName;
+    }
+  }
+  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
+  return finalLayerName;
+};
+
+export const backgroundLayerAtom_v2 = atom<BackgroundLayerName>(
+  getDefaultBackgroundLayer(),
+);
 
 export const backgroundLayerAtom_v2_effect = atomEffect((get, set) => {
   const layerName = get(backgroundLayerAtom_v2);
@@ -52,6 +96,7 @@ export const backgroundLayerAtom_v2_effect = atomEffect((get, set) => {
         const currentProjection = map.getView().getProjection().getCode();
         clearBackgroundLayer();
         map.addLayer(layer);
+        setUrlParameter('backgroundLayer', layerName);
         if (
           layerConfig.requiredProjection &&
           layerConfig.requiredProjection !== currentProjection

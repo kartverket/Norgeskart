@@ -4,19 +4,7 @@ import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
 import { setUrlParameter } from '../shared/utils/urlUtils';
-import {
-  currentProjectionAtom,
-  magneticDeclinationAtom,
-  mapAtom,
-  mapOrientationAtom,
-} from './atoms';
-import { isMapLayerBackground } from './layers';
-import { activeBackgroundLayerAtom } from './layers/atoms';
-import {
-  BackgroundLayerName,
-  useBackgoundLayers,
-} from './layers/backgroundLayers';
-import { DEFAULT_BACKGROUND_LAYER } from './layers/backgroundWMTSProviders';
+import { magneticDeclinationAtom, mapAtom, mapOrientationAtom } from './atoms';
 import { ProjectionIdentifier } from './projections/types';
 
 const ROTATION_ANIMATION_DURATION = 500;
@@ -102,9 +90,6 @@ const useMap = () => {
 
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
-  const { backgroundLayerState, getBackgroundLayer } = useBackgoundLayers();
-  const setCurrentProjection = useSetAtom(currentProjectionAtom);
-  const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
 
   const getMapViewCenter = () => {
     const view = map.getView();
@@ -117,58 +102,6 @@ const useMapSettings = () => {
 
   const getMapProjectionCode = () => {
     return getMapProjection().getCode() as ProjectionIdentifier;
-  };
-
-  const setBackgroundLayer = async (
-    backgroundLayerName: BackgroundLayerName,
-  ) => {
-    if (backgroundLayerState !== 'hasData') {
-      console.warn('Background layers are not loaded yet');
-      return;
-    }
-
-    if (
-      backgroundLayerName === 'nautical-background' &&
-      getMapProjectionCode() !== 'EPSG:3857'
-    ) {
-      setActiveBackgroundLayer('nautical-background');
-      setCurrentProjection('EPSG:3857');
-      return;
-    }
-
-    let layerToAdd = await getBackgroundLayer(backgroundLayerName);
-    let actualLayerName = backgroundLayerName;
-
-    // If requested layer is not available, fall back to default
-    if (layerToAdd == null) {
-      console.warn(
-        `Background layer ${backgroundLayerName} is not available for current projection, falling back to ${DEFAULT_BACKGROUND_LAYER}`,
-      );
-      layerToAdd = await getBackgroundLayer(DEFAULT_BACKGROUND_LAYER);
-      actualLayerName = DEFAULT_BACKGROUND_LAYER;
-
-      if (layerToAdd == null) {
-        console.error('Default background layer is also not available');
-        return;
-      }
-    }
-
-    const existingBgLayers = map
-      .getLayers()
-      .getArray()
-      .filter(isMapLayerBackground);
-
-    if (existingBgLayers.length === 1 && existingBgLayers[0] === layerToAdd) {
-      setUrlParameter('backgroundLayer', actualLayerName);
-      return;
-    }
-
-    existingBgLayers.forEach((layer) => {
-      map.removeLayer(layer);
-    });
-
-    map.addLayer(layerToAdd);
-    setUrlParameter('backgroundLayer', actualLayerName);
   };
 
   const zoomIn = () => {
@@ -288,7 +221,6 @@ const useMapSettings = () => {
     setMapAngle,
     setMapFullScreen,
     setMapLocation,
-    setBackgroundLayer,
     zoomIn,
     zoomOut,
   };
