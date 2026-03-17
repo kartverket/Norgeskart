@@ -10,8 +10,8 @@ const KvCacheProvider: LayerProvider = {
 };
 
 export const KvCacheBackgroundLayers: BackgroundLayer[] = [
-  { layerName: 'topo', provider: KvCacheProvider },
-  { layerName: 'topograatone', provider: KvCacheProvider },
-  { layerName: 'toporaster', provider: KvCacheProvider },
-  { layerName: 'sjokartraster', provider: KvCacheProvider },
+  { type: 'WMTS', layerName: 'topo', provider: KvCacheProvider },
+  { type: 'WMTS', layerName: 'topograatone', provider: KvCacheProvider },
+  { type: 'WMTS', layerName: 'toporaster', provider: KvCacheProvider },
+  { type: 'WMTS', layerName: 'sjokartraster', provider: KvCacheProvider },
 ];

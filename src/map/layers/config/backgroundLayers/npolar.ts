@@ -17,11 +17,13 @@ const SvalbardProvider: LayerProvider = {
 
 export const npolarBackgroundLayers: BackgroundLayer[] = [
   {
+    type: 'WMTS',
     layerName: 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833',
     provider: JanMaynProvider,
     requiredProjection: 'EPSG:25833',
   },
   {
+    type: 'WMTS',
     layerName: 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833',
     provider: SvalbardProvider,
     requiredProjection: 'EPSG:25833',

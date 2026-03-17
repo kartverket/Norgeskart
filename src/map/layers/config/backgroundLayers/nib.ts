@@ -41,24 +41,28 @@ const NiBUTM35Provider: LayerProvider = {
 
 export const nibBackgroundLayers: BackgroundLayer[] = [
   {
+    type: 'WMTS',
     layerName: 'Nibcache_web_mercator_v2',
     provider: NiBWebMercatorProvider,
     showForProjections: ['EPSG:3857'],
     requiredProjection: 'EPSG:3857',
   },
   {
+    type: 'WMTS',
     layerName: 'Nibcache_UTM32_EUREF89_v2',
     provider: NiBUTM32Provider,
     showForProjections: ['EPSG:25832'],
     requiredProjection: 'EPSG:25832',
   },
   {
+    type: 'WMTS',
     layerName: 'Nibcache_UTM33_EUREF89_v2',
     provider: NiBUTM33Provider,
     showForProjections: ['EPSG:25833'],
     requiredProjection: 'EPSG:25833',
   },
   {
+    type: 'WMTS',
     layerName: 'Nibcache_UTM35_EUREF89_v2',
     provider: NiBUTM35Provider,
     showForProjections: ['EPSG:25835'],
