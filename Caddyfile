@@ -11,6 +11,8 @@ route {
         header Strict-Transport-Security max-age=31536000
         header X-Content-Type-Options nosniff
         header Referrer-Policy strict-origin
+        @allowedOrigins header_regexp Origin ^https://(kartkatalog\.)?geonorge\.no$
+        header @allowedOrigins Access-Control-Allow-Origin {http.request.header.Origin}
         header Content-Security-Policy "
                 default-src 'self';
                 script-src 'self' ph.kartverket.no;
