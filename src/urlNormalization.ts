@@ -49,7 +49,6 @@ const getThemeLayers = () => {
 export const processUrlParameters = () => {
   transitionHashToQuery();
   const themeLayerConfig = getThemeLayers();
-  console.log(themeLayerConfig);
 
   let layerNameFromUrl = getUrlParameter('backgroundLayer');
   const legacyLayerParam = getUrlParameter('layers');

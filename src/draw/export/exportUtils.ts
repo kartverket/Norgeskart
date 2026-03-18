@@ -18,7 +18,6 @@ export const handleGeoJsonExport = (layer: VectorLayer) => {
     .getView()
     .getProjection()
     .getCode();
-  console.log(features);
   const featuresToExport = features
     .filter(
       (f) =>
@@ -78,7 +77,6 @@ export const handleGMLExport = (layer: VectorLayer) => {
     dataProjection: 'EPSG:4326',
     featureProjection: projection,
   });
-  console.log(gmlStr);
 
   const wrappedGmlStr = `
   <?xml version="1.0" encoding="UTF-8"?>
