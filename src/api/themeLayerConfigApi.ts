@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
 import { borderConfig } from '../map/layers/config/borders';
 import { dekningConfig } from '../map/layers/config/dekning';
+import { ogcApiFylkerConfig } from '../map/layers/config/ogcApiFylker';
 import { fastmerkerLayerConfig } from '../map/layers/config/fastmerker';
 import { historicalMapsConfig } from '../map/layers/config/historicalMaps';
 import { outdoorRecreationLayerConfig } from '../map/layers/config/outdoorRecreation';
@@ -98,6 +99,7 @@ export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
     placeNamesConfig,
     fastmerkerLayerConfig,
     dekningConfig,
+    ogcApiFylkerConfig,
   ];
 
   for (const config of configs) {
