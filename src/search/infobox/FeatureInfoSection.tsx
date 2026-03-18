@@ -288,7 +288,7 @@ const FeatureProperties = ({
   const imageFilenames = imageBaseUrl ? getImageFields(feature.properties) : [];
   const symbols = getSymbolFields(feature.properties, fieldConfigs);
 
-  const entries = Object.entries(feature.properties).filter(([key]) => {
+  const allEntries = Object.entries(feature.properties).filter(([key]) => {
     if (key.startsWith('_') && key !== '_html') return false;
     if (imageBaseUrl && IMAGE_FIELD_PATTERN.test(key)) return false;
     if (isSpecialField(key, fieldConfigs)) return false;
@@ -297,6 +297,17 @@ const FeatureProperties = ({
     if (fieldConfigs && !config) return false;
     return true;
   });
+
+  type Entry = [string, string | number | boolean | null];
+  const entries: Entry[] = fieldConfigs
+    ? (fieldConfigs
+        .map((fc) =>
+          allEntries.find(([key]) =>
+            key.toLowerCase() === fc.name.toLowerCase(),
+          ),
+        )
+        .filter((e) => e !== undefined) as Entry[])
+    : allEntries;
 
   if (
     entries.length === 0 &&
