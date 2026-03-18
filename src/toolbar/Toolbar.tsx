@@ -24,7 +24,10 @@ import {
   scaleToResolutionEffect,
   useMagneticNorthAtom,
 } from '../map/atoms';
-import { isRettIKartetDialogOpenAtom } from '../map/menu/dialogs/atoms';
+import {
+  isRettIKartetDialogOpenAtom,
+  rettIKartetCoordinatesAtom,
+} from '../map/menu/dialogs/atoms';
 import { ProjectionSettings } from '../settings/map/ProjectionSettings';
 import { getUrlParameter } from '../shared/utils/urlUtils';
 import { ScaleSelector } from './ScaleSelector';
@@ -45,6 +48,7 @@ const formatCoords = (
 export const Toolbar = () => {
   const { t } = useTranslation();
   const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
+  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
   const [displayCompassOverlay, setDisplayCompassOverlay] = useAtom(
     displayCompassOverlayAtom,
   );
@@ -175,6 +179,14 @@ export const Toolbar = () => {
             size="sm"
             onClick={() => {
               ph.capture('toolbar_report_error_clicked');
+              const store = getDefaultStore();
+              const map = store.get(mapAtom);
+              const view = map.getView();
+              const center = view.getCenter();
+              if (center) {
+                setRettIKartetCoordinates(center);
+              }
+
               setRettIKartetDialogOpen(true);
             }}
           >
