@@ -1,4 +1,4 @@
-import { AvailableProjectionType } from '../atoms';
+import { AvailableProjectionType } from '../projections/types.ts';
 import { VectorTileLayerName } from './backgroundVectorTiles';
 import { WMSLayerName } from './backgroundWMS';
 import { WMTSLayerName } from './backgroundWMTSProviders';

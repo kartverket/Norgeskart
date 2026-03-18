@@ -26,15 +26,6 @@ export const DEFAULT_ZOOM_LEVEL = 3;
 export const DEFAULT_CENTER = [396722, 7197860]; // Center in EPSG:25833
 export const DEFAULT_ROTATION = 0;
 
-//The ones we can display the map in
-export const AvailableProjections: ProjectionIdentifier[] = [
-  'EPSG:3857', // webmercator
-  'EPSG:25832', // utm32n
-  'EPSG:25833', // utm33n
-  'EPSG:25835', // utm35n
-];
-export type AvailableProjectionType = (typeof AvailableProjections)[number];
-
 export const currentProjectionAtom = atom<ProjectionIdentifier>(
   validateProjectionIdString(getUrlParameter('projection')) ||
     DEFAULT_PROJECTION,
