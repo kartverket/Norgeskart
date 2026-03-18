@@ -17,7 +17,6 @@ import {
 } from './layers/config/backgroundLayers/atoms';
 import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
 import { themeLayerConfig } from './layers/themeLayerConfigApi';
-import { ControlPortal } from './mapControls';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
 
@@ -125,7 +124,6 @@ const getInitialMapView = () => {
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls({ zoom: false, rotate: false }).extend([
-      new ControlPortal(),
       new ScaleLine({ minWidth: 100 }),
     ]),
     keyboardEventTarget: document,

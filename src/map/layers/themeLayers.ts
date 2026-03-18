@@ -91,19 +91,6 @@ export const mapLegacyThemeLayerId = (
   return legacyMap[legacyId];
 };
 
-export const parseLegacyLayersParameter = (
-  layersParam: string,
-): { backgroundLayerId: string; themeLayerIds: string[] } => {
-  const parts = layersParam.split(',').map((s) => s.trim());
-  const backgroundLayerId = parts[0];
-  const themeLayerIds = parts.slice(1);
-
-  return {
-    backgroundLayerId,
-    themeLayerIds,
-  };
-};
-
 export const useThemeLayers = () => {
   const [activeLayerSet, setActiveLayerSet] = useAtom(activeThemeLayersAtom);
 
