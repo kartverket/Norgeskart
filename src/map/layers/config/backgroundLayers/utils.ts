@@ -105,9 +105,13 @@ export const clearBackgroundLayer = () => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   map.getLayers().forEach((layer) => {
-    const layerId = layer.get('id');
-    if (layerId && layerId.startsWith('bg.')) {
-      map.removeLayer(layer);
+    try {
+      const layerId = layer.get('id');
+      if (layerId && layerId.startsWith('bg.')) {
+        map.removeLayer(layer);
+      }
+    } catch (error) {
+      console.error('Error while clearing background layers:', error);
     }
   });
 };

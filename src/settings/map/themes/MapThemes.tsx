@@ -9,18 +9,12 @@ import {
   Flex,
   Heading,
   Text,
-  toaster,
   VStack,
 } from '@kvib/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { currentProjectionAtom } from '../../../map/atoms';
-import {
-  activeThemeLayersAtom,
-  preNauticalProjectionAtom,
-} from '../../../map/layers/atoms';
-import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
+import { activeThemeLayersAtom } from '../../../map/layers/atoms';
 import {
   getDirectLayersForCategory,
   getMainCategories,
@@ -42,13 +36,6 @@ export const MapThemes = () => {
 
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
-
-  const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
-
-  const [, setPreNauticalProjection] = useAtom(preNauticalProjectionAtom);
-
-  const currentProjection = useAtomValue(currentProjectionAtom);
-  const setCurrentProjection = useSetAtom(currentProjectionAtom);
 
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [activeThemeLayers, setActiveThemeLayers] = useAtom(
@@ -141,71 +128,16 @@ export const MapThemes = () => {
     }, 0);
   }, []);
 
-  const isSjoLayer = useCallback(
-    (layerName: ThemeLayerName): boolean => {
-      const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
-      if (!layerDef) return false;
-      const category = themeLayerConfig.categories.find(
-        (c) => c.id === layerDef.categoryId,
-      );
-      return category?.id === 'sjo' || category?.parentId === 'sjo';
-    },
-    [themeLayerConfig],
-  );
-
   const toggleLayer = useCallback(
     (layerName: ThemeLayerName) => {
       const checked = isLayerChecked(layerName);
       if (!checked) {
         addThemeLayerToMap(layerName);
-        if (isSjoLayer(layerName)) {
-          if (backgroundLayer !== 'nautical-background') {
-            if (currentProjection !== 'EPSG:3857') {
-              setPreNauticalProjection(currentProjection);
-              setBackgroundLayer('nautical-background'); // Set bg BEFORE projection so effect loads correct layer
-              setCurrentProjection('EPSG:3857');
-              toaster.create({
-                title: t('map.settings.layers.projection.forcedWebMercator'),
-                duration: 4000,
-                type: 'info',
-              });
-            } else {
-              setBackgroundLayer('nautical-background');
-
-              toaster.create({
-                title: t(
-                  'map.settings.layers.theme.switchedToNauticalBackground',
-                ),
-                duration: 4000,
-                type: 'info',
-              });
-            }
-          } else {
-            toaster.create({
-              title: t(
-                'map.settings.layers.theme.nauticalBackgroundAlreadyActive',
-              ),
-              duration: 4000,
-              type: 'info',
-            });
-          }
-        }
       } else {
         removeThemeLayerFromMap(layerName);
       }
     },
-    [
-      addThemeLayerToMap,
-      removeThemeLayerFromMap,
-      isLayerChecked,
-      isSjoLayer,
-      backgroundLayer,
-      currentProjection,
-      setPreNauticalProjection,
-      setCurrentProjection,
-      setBackgroundLayer,
-      t,
-    ],
+    [addThemeLayerToMap, removeThemeLayerFromMap, isLayerChecked],
   );
 
   return (
