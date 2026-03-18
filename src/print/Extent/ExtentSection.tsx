@@ -22,7 +22,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
 
-import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
+import { isVectorTileLayer } from '../../map/layers/backgroundLayers';
 import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { PrintBox } from './PrintBox';

@@ -1,6 +1,17 @@
-import { VectorTileLayerName } from './backgroundVectorTiles';
-import { WMSLayerName } from './backgroundWMS';
-import { WMTSLayerName } from './backgroundWMTSProviders';
+type WMSLayerName = 'oceanicelectronic';
+type VectorTileLayerName = 'nautical-background';
+type WMTSLayerName =
+  | 'topo'
+  | 'topograatone'
+  | 'toporaster'
+  | 'sjokartraster'
+  | 'topoProd'
+  | 'Nibcache_web_mercator_v2'
+  | 'Nibcache_UTM32_EUREF89_v2'
+  | 'Nibcache_UTM33_EUREF89_v2'
+  | 'Nibcache_UTM35_EUREF89_v2'
+  | 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833'
+  | 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833';
 
 export type BackgroundLayerName =
   | WMTSLayerName
@@ -20,4 +31,10 @@ export const mapLegacyBackgroundLayerId = (
   };
 
   return legacyIdMap[layerId] || null;
+};
+
+export const isVectorTileLayer = (
+  layerName: string,
+): layerName is VectorTileLayerName => {
+  return layerName === 'nautical-background';
 };
