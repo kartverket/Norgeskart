@@ -1,13 +1,8 @@
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
-import {
-  getThemeLayerById,
-  themeLayerConfigAtom,
-} from '../../api/themeLayerConfigApi';
 import { ProjectionIdentifier } from '../../map/projections/types';
 import {
   addToUrlListParameter,
-  getListUrlParameter,
   removeFromUrlListParameter,
 } from '../../shared/utils/urlUtils';
 import { mapAtom } from '../atoms';
@@ -15,24 +10,17 @@ import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
+import { getThemeLayerById, themeLayerConfig } from './themeLayerConfigApi';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
 
 export const preNauticalProjectionAtom = atom<ProjectionIdentifier | null>(
   null,
 );
 
-const getInitialThemeLayers = () => {
-  const finalThemeLayerList = getListUrlParameter('themeLayers') || [];
-  return new Set(finalThemeLayerList as ThemeLayerName[]);
-};
-
-export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(
-  getInitialThemeLayers(),
-);
+export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(new Set([]));
 
 export const themeLayerEffect = atomEffect((get) => {
   const themeLayers = get(activeThemeLayersAtom);
-  const themeLayerConfig = get(themeLayerConfigAtom);
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();

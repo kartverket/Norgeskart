@@ -6,7 +6,6 @@ import { get as getProjection, transform } from 'ol/proj';
 
 import { atomEffect } from 'jotai-effect';
 import { v4 as uuidv4 } from 'uuid';
-import { themeLayerConfigAtom } from '../api/themeLayerConfigApi';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { isMapLayerBackground, mapLayers } from './layers';
@@ -17,6 +16,7 @@ import {
   backgroundLayerAtom,
 } from './layers/config/backgroundLayers/atoms';
 import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
+import { themeLayerConfig } from './layers/themeLayerConfigApi';
 import { ControlPortal } from './mapControls';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
@@ -41,7 +41,7 @@ export const displayMapLegendAtom = atom<boolean>(false);
 export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
-  const themeLayerConfig = get(themeLayerConfigAtom);
+
   const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
     const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;

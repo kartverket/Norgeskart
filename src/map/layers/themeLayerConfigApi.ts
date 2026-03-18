@@ -1,14 +1,13 @@
-import { atom } from 'jotai';
-import { borderConfig } from '../map/layers/config/borders';
-import { dekningConfig } from '../map/layers/config/dekning';
-import { fastmerkerLayerConfig } from '../map/layers/config/fastmerker';
-import { historicalMapsConfig } from '../map/layers/config/historicalMaps';
-import { outdoorRecreationLayerConfig } from '../map/layers/config/outdoorRecreation';
-import { placeNamesConfig } from '../map/layers/config/placeNames';
-import { propertyInfoConfig } from '../map/layers/config/propertyInfo';
-import { sjoConfig } from '../map/layers/config/sjo';
-import { tilgjengelighetConfig } from '../map/layers/config/tilgjengelighet';
-import { ThemeLayerName } from '../map/layers/themeWMS';
+import { borderConfig } from './config/borders';
+import { dekningConfig } from './config/dekning';
+import { fastmerkerLayerConfig } from './config/fastmerker';
+import { historicalMapsConfig } from './config/historicalMaps';
+import { outdoorRecreationLayerConfig } from './config/outdoorRecreation';
+import { placeNamesConfig } from './config/placeNames';
+import { propertyInfoConfig } from './config/propertyInfo';
+import { sjoConfig } from './config/sjo';
+import { tilgjengelighetConfig } from './config/tilgjengelighet';
+import { ThemeLayerName } from './themeWMS';
 
 export interface FieldConfig {
   name: string;
@@ -83,7 +82,7 @@ export interface ThemeLayerConfig {
   layers: ThemeLayerDefinition[];
 }
 
-export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
+const getThemeLayerConfig = () => {
   const mergedConfig: ThemeLayerConfig = {
     categories: [],
     layers: [],
@@ -106,7 +105,8 @@ export const themeLayerConfigAtom = atom<ThemeLayerConfig>(() => {
   }
 
   return mergedConfig;
-});
+};
+export const themeLayerConfig = getThemeLayerConfig();
 
 export const getThemeLayerById = (
   config: ThemeLayerConfig,

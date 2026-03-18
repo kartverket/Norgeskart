@@ -1,6 +1,6 @@
-import { useAtom, useAtomValue } from 'jotai';
-import { themeLayerConfigAtom } from '../../api/themeLayerConfigApi';
+import { useAtom } from 'jotai';
 import { activeThemeLayersAtom } from './atoms';
+import { themeLayerConfig } from './themeLayerConfigApi';
 import { ThemeLayerName } from './themeWMS';
 
 export const MAX_THEME_LAYERS = 15; // Maximum number of theme layers allowed on the map, what is a good number here?
@@ -51,7 +51,7 @@ const isProjectNameAndCategoryIdMatch = (
 
 export const mapLegacyThemeLayerId = (
   legacyId: string,
-  configLoadable?: ReturnType<typeof useAtomValue<typeof themeLayerConfigAtom>>,
+  configLoadable?: typeof themeLayerConfig,
   projectName?: string,
 ): string | undefined => {
   if (!configLoadable) {

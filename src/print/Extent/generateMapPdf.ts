@@ -5,16 +5,16 @@ import TileLayer from 'ol/layer/Tile';
 import { transform } from 'ol/proj';
 import WMTSSource from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
-import {
-  getEffectiveWmsUrl,
-  getThemeLayerById,
-  themeLayerConfigAtom,
-} from '../../api/themeLayerConfigApi';
 import { getDrawLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { getEnv } from '../../env';
 import { activeThemeLayersAtom } from '../../map/layers/atoms';
 import type { BackgroundLayerName } from '../../map/layers/backgroundLayers';
 import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
+import {
+  getEffectiveWmsUrl,
+  getThemeLayerById,
+  themeLayerConfig,
+} from '../../map/layers/themeLayerConfigApi';
 import type { Layer, Matrix, WmsLayer } from './printApi';
 import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
@@ -212,7 +212,6 @@ export const generateMapPdf = async ({
 
     const store = getDefaultStore();
     const activeThemeLayers = store.get(activeThemeLayersAtom);
-    const themeLayerConfig = store.get(themeLayerConfigAtom);
 
     for (const themeLayerId of activeThemeLayers) {
       const themeLayer = getThemeLayerById(themeLayerConfig, themeLayerId);

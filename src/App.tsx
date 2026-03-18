@@ -1,8 +1,7 @@
 import { Box } from '@kvib/react';
 import { PostHogErrorBoundary } from '@posthog/react';
-import { getDefaultStore } from 'jotai';
 import { useEffect, useRef } from 'react';
-import { themeLayerConfigAtom } from './api/themeLayerConfigApi.ts';
+
 import { Debug } from './debug/Debug.tsx';
 import './i18n';
 import { Layout } from './Layout.tsx';
@@ -10,6 +9,7 @@ import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
 } from './map/layers/backgroundLayers.ts';
+import { themeLayerConfig } from './map/layers/themeLayerConfigApi.ts';
 import { mapLegacyThemeLayerId } from './map/layers/themeLayers.ts';
 import { useMapSettings } from './map/mapHooks.ts';
 import { RettIKartetDialog } from './map/menu/dialogs/RettIKartetDialog.tsx';
@@ -48,8 +48,6 @@ export const App = () => {
     }
 
     transitionHashToQuery();
-    const store = getDefaultStore();
-    const themeLayerConfig = store.get(themeLayerConfigAtom);
 
     let layerNameFromUrl = getUrlParameter('backgroundLayer');
     const legacyLayerParam = getUrlParameter('layers');

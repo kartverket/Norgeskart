@@ -15,18 +15,18 @@ import {
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  getDirectLayersForCategory,
-  getMainCategories,
-  getSubcategories,
-  themeLayerConfigAtom,
-} from '../../../api/themeLayerConfigApi';
 import { currentProjectionAtom } from '../../../map/atoms';
 import {
   activeThemeLayersAtom,
   preNauticalProjectionAtom,
 } from '../../../map/layers/atoms';
 import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
+import {
+  getDirectLayersForCategory,
+  getMainCategories,
+  getSubcategories,
+  themeLayerConfig,
+} from '../../../map/layers/themeLayerConfigApi';
 import {
   MAX_THEME_LAYERS,
   useThemeLayers,
@@ -39,7 +39,7 @@ export const MapThemes = () => {
   const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
     useThemeLayers();
   const { t, i18n } = useTranslation();
-  const themeConfig = useAtomValue(themeLayerConfigAtom);
+
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
 
@@ -64,13 +64,13 @@ export const MapThemes = () => {
 
   const configThemeLayers = useMemo((): Theme[] => {
     const currentLang = i18n.language as 'nb' | 'nn' | 'en';
-    const mainCategories = getMainCategories(themeConfig);
+    const mainCategories = getMainCategories(themeLayerConfig);
     const result: Theme[] = [];
 
     mainCategories.forEach((mainCategory) => {
-      const subcategories = getSubcategories(themeConfig, mainCategory.id);
+      const subcategories = getSubcategories(themeLayerConfig, mainCategory.id);
       const directLayers = getDirectLayersForCategory(
-        themeConfig,
+        themeLayerConfig,
         mainCategory.id,
       ).map((layer) => ({
         name: layer.id as ThemeLayerName,
@@ -79,7 +79,7 @@ export const MapThemes = () => {
 
       if (subcategories.length > 0) {
         const subThemes: SubTheme[] = subcategories.map((subCategory) => {
-          const layers = themeConfig.layers.filter(
+          const layers = themeLayerConfig.layers.filter(
             (layer) => layer.categoryId === subCategory.id,
           );
           return {
@@ -99,7 +99,7 @@ export const MapThemes = () => {
           directLayers,
         });
       } else {
-        const layers = themeConfig.layers.filter(
+        const layers = themeLayerConfig.layers.filter(
           (layer) => layer.categoryId === mainCategory.id,
         );
         result.push({
@@ -121,7 +121,7 @@ export const MapThemes = () => {
     });
 
     return result;
-  }, [themeConfig, i18n.language]);
+  }, [themeLayerConfig, i18n.language]);
 
   const getActiveCategoryCount = useCallback(
     (theme: Theme): number => {
@@ -143,14 +143,14 @@ export const MapThemes = () => {
 
   const isSjoLayer = useCallback(
     (layerName: ThemeLayerName): boolean => {
-      const layerDef = themeConfig.layers.find((l) => l.id === layerName);
+      const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
       if (!layerDef) return false;
-      const category = themeConfig.categories.find(
+      const category = themeLayerConfig.categories.find(
         (c) => c.id === layerDef.categoryId,
       );
       return category?.id === 'sjo' || category?.parentId === 'sjo';
     },
-    [themeConfig],
+    [themeLayerConfig],
   );
 
   const toggleLayer = useCallback(

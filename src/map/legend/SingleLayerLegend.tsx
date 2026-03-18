@@ -5,13 +5,12 @@ import {
   Heading,
   Text,
 } from '@kvib/react';
-import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { ErrorBoundary } from '../../shared/ErrorBoundary';
 import {
   getThemeLayerById,
-  themeLayerConfigAtom,
-} from '../../api/themeLayerConfigApi';
-import { ErrorBoundary } from '../../shared/ErrorBoundary';
+  themeLayerConfig,
+} from '../layers/themeLayerConfigApi';
 import { ThemeLayerName } from '../layers/themeWMS';
 import { DynamicLegend } from './DynamicLegend';
 import { ImageLegend } from './ImageLegend';
@@ -22,10 +21,9 @@ export const SingleLayerLegend = ({
   layerName: ThemeLayerName;
 }) => {
   const { t, i18n } = useTranslation();
-  const config = useAtomValue(themeLayerConfigAtom);
   const currentLang = i18n.language as 'nb' | 'nn' | 'en';
 
-  const layer = getThemeLayerById(config, layerName);
+  const layer = getThemeLayerById(themeLayerConfig, layerName);
   if (!layer || layer.noLegend) {
     return null;
   }
@@ -44,9 +42,9 @@ export const SingleLayerLegend = ({
         </AccordionItemTrigger>
         <AccordionItemContent>
           {layer.useLegendGraphic ? (
-            <ImageLegend config={config} layer={layer} />
+            <ImageLegend config={themeLayerConfig} layer={layer} />
           ) : (
-            <DynamicLegend config={config} layer={layer} />
+            <DynamicLegend config={themeLayerConfig} layer={layer} />
           )}
         </AccordionItemContent>
       </AccordionItem>

@@ -1,4 +1,4 @@
-import { ThemeLayerConfig } from '../../../api/themeLayerConfigApi';
+import { ThemeLayerConfig } from '../themeLayerConfigApi';
 
 export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
   categories: [
