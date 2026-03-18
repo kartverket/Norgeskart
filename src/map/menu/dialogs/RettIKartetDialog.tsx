@@ -14,7 +14,8 @@ import {
   VStack,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { getDefaultStore, useAtom, useSetAtom } from 'jotai';
+import { getDefaultStore, useAtom, useAtomValue } from 'jotai';
+import { Coordinate } from 'ol/coordinate';
 import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../atoms';
@@ -25,28 +26,23 @@ import {
 
 const TRANSLATION_BASE_KEY = 'map.contextmenu.items.rettikartet.dialog';
 
-const getRettIKartetUrl = (category: RettIKartetCategory) => {
+const getRettIKartetUrl = (
+  coordinates: Coordinate | null,
+  category: RettIKartetCategory,
+) => {
+  if (!coordinates) return `https://rettikartet.no/app/${category}`;
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const view = map.getView();
-  const center = view.getCenter();
-  const zoom = view.getZoom();
-  if (!center || !zoom) {
-    return;
-  }
+
+  const zoom = view.getZoom() || 7;
   const projection = view.getProjection();
   const zoomToUse = Math.max(
     zoom - (projection.getCode() === 'EPSG:3857' ? 2 : 0),
     0,
   ); //Hack to make the maps more aligned between web mercator and utm3x
 
-  const customCoords = store.get(rettIKartetCoordinatesAtom);
-
-  const rettIKartetCoords = transform(
-    customCoords || center,
-    projection,
-    'EPSG:32633',
-  );
+  const rettIKartetCoords = transform(coordinates, projection, 'EPSG:32633');
   const url = `https://rettikartet.no/app/${category}?lon=${rettIKartetCoords[0]}&lat=${rettIKartetCoords[1]}&zoom=${zoomToUse}`;
   return url;
 };
@@ -57,16 +53,13 @@ type RettIKartetCategory = (typeof rettIKartetCategory)[number];
 export const RettIKartetDialog = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useAtom(isRettIKartetDialogOpenAtom);
-  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
+  const rettIKartetCoordinates = useAtomValue(rettIKartetCoordinatesAtom);
   const ph = usePostHog();
 
   return (
     <Dialog
       onOpenChange={(e) => {
         setIsOpen(e.open);
-        if (!e.open) {
-          setRettIKartetCoordinates(null);
-        }
       }}
       open={isOpen}
       size={'lg'}
@@ -81,7 +74,7 @@ export const RettIKartetDialog = () => {
             <HStack>
               {rettIKartetCategory.map((category) => (
                 <Link
-                  href={getRettIKartetUrl(category)}
+                  href={getRettIKartetUrl(rettIKartetCoordinates, category)}
                   key={category}
                   target="_blank"
                   onClick={() => {
