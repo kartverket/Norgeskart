@@ -1,4 +1,3 @@
-import { AvailableProjectionType } from '../projections/types.ts';
 import { VectorTileLayerName } from './backgroundVectorTiles';
 import { WMSLayerName } from './backgroundWMS';
 import { WMTSLayerName } from './backgroundWMTSProviders';
@@ -21,27 +20,4 @@ export const mapLegacyBackgroundLayerId = (
   };
 
   return legacyIdMap[layerId] || null;
-};
-
-export const isLayerNiBLayer = (layerName: BackgroundLayerName) => {
-  return layerName.startsWith('Nibcache_');
-};
-
-export const getNiBLayerNameForProjection = (
-  projection: AvailableProjectionType,
-): WMTSLayerName | null => {
-  switch (projection) {
-    case 'EPSG:4326':
-      return null;
-    case 'EPSG:3857':
-      return 'Nibcache_web_mercator_v2';
-    case 'EPSG:25832':
-      return 'Nibcache_UTM32_EUREF89_v2';
-    case 'EPSG:25833':
-      return 'Nibcache_UTM33_EUREF89_v2';
-    case 'EPSG:25835':
-      return 'Nibcache_UTM35_EUREF89_v2';
-    default:
-      return null;
-  }
 };
