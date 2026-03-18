@@ -28,6 +28,7 @@ const isProjectNameAndCategoryIdMatch = (
         'sjo_farlige_bolger',
         'sjo_nmg',
         'ogcApiFylker',
+        'ogcApiKommuner',
       ].includes(layerCategoryId);
     case 'seeiendom':
       return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
