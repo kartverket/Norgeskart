@@ -91,14 +91,14 @@ describe('parseCoordinateInput', () => {
     });
 
     it('parses DMS with spaces around degree/minute markers', () => {
-      const result = parseCoordinateInput("59° 54' 45.8\" N, 10° 44' 45.9\" E");
+      const result = parseCoordinateInput('59° 54\' 45.8" N, 10° 44\' 45.9" E');
       expect(result).not.toBeNull();
       expect(result?.lat).toBeCloseTo(59.9127, 3);
       expect(result?.lon).toBeCloseTo(10.7461, 3);
     });
 
     it('parses DMS with double-single-quote seconds and N/E suffix', () => {
-      const result = parseCoordinateInput("60° 14' 18.306\", 9° 55' 45.113\"");
+      const result = parseCoordinateInput('60° 14\' 18.306", 9° 55\' 45.113"');
       expect(result).not.toBeNull();
       expect(result?.lat).toBeCloseTo(60.2384, 3);
       expect(result?.lon).toBeCloseTo(9.9292, 3);
