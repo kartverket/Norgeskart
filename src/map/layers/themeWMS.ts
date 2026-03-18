@@ -146,7 +146,11 @@ export const createThemeLayerFromConfig = (
     return null;
   }
 
-  const wmsUrl = getEffectiveWmsUrl(config, layerDef);
+  const baseWmsUrl = getEffectiveWmsUrl(config, layerDef);
+  const sep = baseWmsUrl.includes('?') ? '&' : '?';
+  const wmsUrl = layerDef.SLD_BODY
+    ? `${baseWmsUrl}${sep}SLD_BODY=${encodeURIComponent(layerDef.SLD_BODY)}`
+    : baseWmsUrl;
 
   const category = getCategoryById(config, layerDef.categoryId);
   const parentCategory = category

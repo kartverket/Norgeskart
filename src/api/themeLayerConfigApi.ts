@@ -69,6 +69,7 @@ export interface ThemeLayerDefinition {
   legacyId?: string;
   queryable?: boolean;
   styles?: string;
+  SLD_BODY?: string;
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];

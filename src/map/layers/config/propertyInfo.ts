@@ -63,6 +63,37 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       legacyId: '1013',
       queryable: true,
       styles: ',Matrikkelnummer',
+      SLD_BODY: `<?xml version="1.0" encoding="UTF-8"?>
+<sld:StyledLayerDescriptor version="1.0.0" xmlns:sld="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc">
+  <sld:NamedLayer>
+    <sld:Name>matrikkel:TEIGGRENSEWFS</sld:Name>
+    <sld:UserStyle>
+      <sld:FeatureTypeStyle>
+        <sld:Rule>
+          <sld:LineSymbolizer>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke-width">1</sld:CssParameter>
+            </sld:Stroke>
+          </sld:LineSymbolizer>
+        </sld:Rule>
+      </sld:FeatureTypeStyle>
+    </sld:UserStyle>
+  </sld:NamedLayer>
+  <sld:NamedLayer>
+    <sld:Name>matrikkel:TEIGWFS</sld:Name>
+    <sld:UserStyle>
+      <sld:FeatureTypeStyle>
+        <sld:Rule>
+          <sld:PolygonSymbolizer>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke-width">2</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+      </sld:FeatureTypeStyle>
+    </sld:UserStyle>    
+  </sld:NamedLayer>
+</sld:StyledLayerDescriptor>`,
     },
   ],
 };
