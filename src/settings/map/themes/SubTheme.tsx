@@ -74,11 +74,11 @@ export const SubThemeSection = ({
                     content={
                       activeInSubTheme === totalInSubTheme
                         ? t(
-                            'map.settings.layers.theme.subtheme.toggleall.removeall',
-                          )
+                          'map.settings.layers.theme.subtheme.toggleall.removeall',
+                        )
                         : t(
-                            'map.settings.layers.theme.subtheme.toggleall.addall',
-                          )
+                          'map.settings.layers.theme.subtheme.toggleall.addall',
+                        )
                     }
                     ids={{ trigger: id }}
                   >
@@ -113,6 +113,7 @@ export const SubThemeSection = ({
           <CollapsibleContent>
             {subTheme.layers.map((layer) => (
               <LayerLine
+                key={layer.name}
                 toggleLayer={toggleLayer}
                 layer={layer}
                 checked={isLayerChecked(layer.name)}
