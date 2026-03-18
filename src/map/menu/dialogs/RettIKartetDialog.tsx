@@ -45,7 +45,7 @@ const getRettIKartetUrl = (category: RettIKartetCategory) => {
   const rettIKartetCoords = transform(
     customCoords || center,
     projection,
-    'EPSG:25833',
+    'EPSG:32633',
   );
   const url = `https://rettikartet.no/app/${category}?lon=${rettIKartetCoords[0]}&lat=${rettIKartetCoords[1]}&zoom=${zoomToUse}`;
   return url;
