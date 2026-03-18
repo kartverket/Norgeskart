@@ -1,9 +1,6 @@
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
-import {
-  getUrlParameter,
-  setUrlParameter,
-} from '../../../../shared/utils/urlUtils';
+import { setUrlParameter } from '../../../../shared/utils/urlUtils';
 import { currentProjectionAtom, mapAtom } from '../../../atoms';
 import { BackgroundLayerName } from '../../backgroundLayers';
 import { KvCacheBackgroundLayers } from './kvCache';
@@ -24,15 +21,7 @@ export const allConfiguredBackgroundLayers = [
   ...nauticalBackgroundLayers,
 ];
 
-const getInitialBackgroundLayer = () => {
-  const layerNameFromUrl = getUrlParameter('backgroundLayer');
-  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
-  return finalLayerName;
-};
-
-export const backgroundLayerAtom = atom<BackgroundLayerName>(
-  getInitialBackgroundLayer(),
-);
+export const backgroundLayerAtom = atom<BackgroundLayerName>('topo');
 
 export const backgroundLayerAtomEffect = atomEffect((get, set) => {
   const layerName = get(backgroundLayerAtom);

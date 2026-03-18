@@ -83,6 +83,8 @@ export const MapComponent = () => {
     };
   }, [map, setScale]);
 
+  console.log(map);
+
   return (
     <Box position={'relative'} width="100%" height="100%">
       <ErrorBoundary fallback={<Text>{t('map.errorMessage')}</Text>}>
