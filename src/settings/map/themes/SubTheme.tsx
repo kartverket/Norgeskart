@@ -74,11 +74,11 @@ export const SubThemeSection = ({
                     content={
                       activeInSubTheme === totalInSubTheme
                         ? t(
-                          'map.settings.layers.theme.subtheme.toggleall.removeall',
-                        )
+                            'map.settings.layers.theme.subtheme.toggleall.removeall',
+                          )
                         : t(
-                          'map.settings.layers.theme.subtheme.toggleall.addall',
-                        )
+                            'map.settings.layers.theme.subtheme.toggleall.addall',
+                          )
                     }
                     ids={{ trigger: id }}
                   >
