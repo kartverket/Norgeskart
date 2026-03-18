@@ -408,9 +408,29 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     }
   }
 
-  // Pattern 2: DMS without quotes on seconds and no direction (e.g., "60°10'10,10°10'10")
+  // Pattern 1b: Direction BEFORE with decimal minutes, no seconds (e.g., "N 60° 44.077 E 011° 15.943")
+  const dirBeforeDMPattern =
+    /([NSEW])\s*(\d+)\s*°\s*(\d+(?:\.\d+)?)['\u2032]?[,;\s]+([NSEW])\s*(\d+)\s*°\s*(\d+(?:\.\d+)?)['\u2032]?/i;
+  const dirBeforeDMMatch = input.match(dirBeforeDMPattern);
+
+  if (dirBeforeDMMatch) {
+    const [, d1, deg1, min1, d2, deg2, min2] = dirBeforeDMMatch;
+    const dir1 = d1.toUpperCase();
+    const dir2 = d2.toUpperCase();
+    const m1 = parseFloat(min1);
+    const m2 = parseFloat(min2);
+
+    if (m1 < 60 && m2 < 60) {
+      const val1 = parseInt(deg1, 10) + m1 / 60;
+      const val2 = parseInt(deg2, 10) + m2 / 60;
+      const { lat, lon } = assignLatLon(val1, dir1, val2, dir2);
+      return validateAndReturn(lat, lon);
+    }
+  }
+
+  // Pattern 2: DMS without direction (e.g., "60°10'10,10°10'10" or "60° 14' 18.306\", 9° 55' 45.113\"")
   const dmsNoQuotesPattern =
-    /(\d+)\s*°\s*(\d+)\s*['\u2032]\s*(\d+(?:\.\d+)?)\s*[,;\s]+(\d+)\s*°\s*(\d+)\s*['\u2032]\s*(\d+(?:\.\d+)?)/;
+    /(\d+)\s*°\s*(\d+)\s*['\u2032]\s*(\d+(?:\.\d+)?)\s*["\u2033]{0,2}\s*[,;\s]+(\d+)\s*°\s*(\d+)\s*['\u2032]\s*(\d+(?:\.\d+)?)/;
   const dmsNoQuotesMatch = input.match(dmsNoQuotesPattern);
 
   if (dmsNoQuotesMatch) {
