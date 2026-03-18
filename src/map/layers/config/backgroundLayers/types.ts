@@ -11,6 +11,7 @@ type BackgroundLayerBase = {
   layerName: BackgroundLayerName;
   requiredProjection?: ProjectionIdentifier;
   showForProjections?: ProjectionIdentifier[];
+  moveToExtent?: [number, number, number, number];
 };
 
 export type WMTSBackgroundLayer = BackgroundLayerBase & {

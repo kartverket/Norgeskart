@@ -60,6 +60,10 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
         ) {
           set(currentProjectionAtom, layerConfig.requiredProjection);
         }
+
+        if (layerConfig.moveToExtent) {
+          map.getView().fit(layerConfig.moveToExtent, { duration: 200 });
+        }
       }
     } catch (error) {
       console.error(

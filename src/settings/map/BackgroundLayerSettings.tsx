@@ -1,5 +1,4 @@
 import { Box, Button, Image, SimpleGrid, Text, VStack } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
@@ -33,17 +32,6 @@ const layerPrioritySort = (a: BackgroundLayerName, b: BackgroundLayerName) => {
   const priorityB = layerPriorityMap.get(b) || 0;
   return priorityA - priorityB;
 };
-
-// const POLAR_LAYER_EXTENTS: Partial<
-//   Record<BackgroundLayerName, [number, number, number, number]>
-// > = {
-//   Basisdata_NP_Basiskart_Svalbard_WMTS_25833: [
-//     369976.39, 8221306.54, 878234.72, 9010718.77,
-//   ],
-//   Basisdata_NP_Basiskart_JanMayen_WMTS_25833: [
-//     -393783.25, 7978220.98, -276963.74, 8084965.52,
-//   ],
-// };
 
 interface LayerCardProps {
   label: string;
@@ -121,14 +109,11 @@ export const BackgroundLayerSettings = ({
       layer.showForProjections.includes(currentProjection),
   );
 
-  const ph = usePostHog();
-
   const sortedLayers = layersToShow.sort((lc1, lc2) =>
     layerPrioritySort(lc1.layerName, lc2.layerName),
   );
 
   const handleSetLayer = (layer: BackgroundLayerName) => {
-    ph.capture('map_background_layer_changed', { layerName: layer });
     setBackgroundLayer(layer);
     onSelectComplete();
   };
