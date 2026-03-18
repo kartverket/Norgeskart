@@ -22,10 +22,12 @@ import { SubTheme, ThemeLayer } from './types';
 export const SubThemeSection = ({
   subTheme,
   toggleLayer,
+  toggleGroupLayer: toggleLayerGroup,
   defaultOpen = false,
 }: {
   subTheme: SubTheme;
   toggleLayer: (layerName: ThemeLayerName) => void;
+  toggleLayerGroup: (layerNames: ThemeLayerName[]) => void;
   defaultOpen?: boolean;
 }) => {
   const { activeLayerSet, removeThemeLayerFromMap } = useThemeLayers();
@@ -87,11 +89,7 @@ export const SubThemeSection = ({
                       ids={{ root: id }}
                       onCheckedChange={(e) => {
                         if (e.checked) {
-                          subthemeLayerNames
-                            .filter(
-                              (layerName) => !activeLayerSet.has(layerName),
-                            )
-                            .forEach(toggleLayer);
+                          toggleLayerGroup(subthemeLayerNames);
                         } else {
                           removeThemeLayerFromMap(subthemeLayerNames);
                         }

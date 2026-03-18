@@ -210,6 +210,43 @@ export const MapThemes = () => {
     ],
   );
 
+  const toggleLayerGroup = (layerNames: ThemeLayerName[]) => {
+    const layersToActivate = layerNames.filter((name) => !isLayerChecked(name));
+
+    const hasSjoLayer = layersToActivate.some(isSjoLayer);
+
+    layersToActivate.forEach(addThemeLayerToMap);
+
+    if (hasSjoLayer) {
+      if (activeBackgroundLayer !== 'nautical-background') {
+        if (currentProjection !== 'EPSG:3857') {
+          setPreNauticalProjection(currentProjection);
+          setActiveBackgroundLayer('nautical-background');
+          setCurrentProjection('EPSG:3857');
+          toaster.create({
+            title: t('map.settings.layers.projection.forcedWebMercator'),
+            duration: 4000,
+            type: 'info',
+          });
+        } else {
+          setBackgroundLayer('nautical-background');
+          setActiveBackgroundLayer('nautical-background');
+          toaster.create({
+            title: t('map.settings.layers.theme.switchedToNauticalBackground'),
+            duration: 4000,
+            type: 'info',
+          });
+        }
+      } else {
+        toaster.create({
+          title: t('map.settings.layers.theme.nauticalBackgroundAlreadyActive'),
+          duration: 4000,
+          type: 'info',
+        });
+      }
+    }
+  };
+
   return (
     <VStack gap={0} align="stretch">
       <Box marginBottom={0}>
@@ -294,6 +331,7 @@ export const MapThemes = () => {
                     subTheme={subTheme}
                     toggleLayer={toggleLayer}
                     defaultOpen={defaultOpen}
+                    toggleLayerGroup={toggleLayerGroup}
                   />
                 ))}
                 {theme.directLayers.map((layer) => (
