@@ -108,7 +108,7 @@ export const MapThemes = () => {
     });
 
     return result;
-  }, [themeLayerConfig, i18n.language]);
+  }, [i18n.language]);
 
   const getActiveCategoryCount = useCallback(
     (theme: Theme): number => {

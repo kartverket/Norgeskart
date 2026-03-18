@@ -2,7 +2,10 @@ import { MapLibreLayer } from '@geoblocks/ol-maplibre-layer';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import TileLayer from 'ol/layer/Tile';
-import { setUrlParameter } from '../../../../shared/utils/urlUtils';
+import {
+  getUrlParameter,
+  setUrlParameter,
+} from '../../../../shared/utils/urlUtils';
 import { currentProjectionAtom, mapAtom } from '../../../atoms';
 import { BackgroundLayerName } from '../../backgroundLayers';
 import { KvCacheBackgroundLayers } from './kvCache';
@@ -23,7 +26,14 @@ export const allConfiguredBackgroundLayers = [
   ...nauticalBackgroundLayers,
 ];
 
-export const backgroundLayerAtom = atom<BackgroundLayerName>('topo');
+const getDefaultBackgroundLayer = (): BackgroundLayerName => {
+  const layerNameFromUrl = getUrlParameter('backgroundLayer');
+  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
+  return finalLayerName;
+};
+export const backgroundLayerAtom = atom<BackgroundLayerName>(
+  getDefaultBackgroundLayer(),
+);
 
 export const backgroundLayerAtomEffect = atomEffect((get, set) => {
   const layerName = get(backgroundLayerAtom);

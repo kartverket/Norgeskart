@@ -127,7 +127,6 @@ export const themeLayerEffect = atomEffect((get) => {
       );
       store.set(backgroundLayerAtom, 'nautical-background');
     }
-    console.log('should be natisk bg');
   }
 
   return;
