@@ -1,4 +1,4 @@
-import { ThemeLayerConfig } from '../themeLayerConfigApi';
+import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
 export const sjoConfig: ThemeLayerConfig = {
   categories: [

@@ -1,5 +1,7 @@
+import { MapLibreLayer } from '@geoblocks/ol-maplibre-layer';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import TileLayer from 'ol/layer/Tile';
 import { setUrlParameter } from '../../../../shared/utils/urlUtils';
 import { currentProjectionAtom, mapAtom } from '../../../atoms';
 import { BackgroundLayerName } from '../../backgroundLayers';
@@ -36,17 +38,19 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
 
   const effect = async () => {
     try {
-      let layer = null;
-      if (layerConfig.type === 'WMTS') {
-        layer = await getWMTSLayer(layerConfig);
-      }
-      if (layerConfig.type === 'VectorTile') {
-        layer = getVectorTileLayer(layerConfig);
+      let layer: TileLayer | MapLibreLayer | null = null;
+      switch (layerConfig.type) {
+        case 'WMTS':
+          layer = await getWMTSLayer(layerConfig);
+          break;
+        case 'VectorTile':
+          layer = getVectorTileLayer(layerConfig);
+          break;
+        case 'WMS':
+          layer = getWMSLayer(layerConfig);
+          break;
       }
 
-      if (layerConfig.type === 'WMS') {
-        layer = getWMSLayer(layerConfig);
-      }
       if (layer) {
         const store = getDefaultStore();
         const map = store.get(mapAtom);

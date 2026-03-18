@@ -2,15 +2,15 @@ import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
 } from './map/layers/backgroundLayers.ts';
-import { borderConfig } from './map/layers/config/borders.ts';
-import { dekningConfig } from './map/layers/config/dekning.ts';
-import { fastmerkerLayerConfig } from './map/layers/config/fastmerker.ts';
-import { historicalMapsConfig } from './map/layers/config/historicalMaps.ts';
-import { outdoorRecreationLayerConfig } from './map/layers/config/outdoorRecreation.ts';
-import { placeNamesConfig } from './map/layers/config/placeNames.ts';
-import { propertyInfoConfig } from './map/layers/config/propertyInfo.ts';
-import { sjoConfig } from './map/layers/config/sjo.ts';
-import { tilgjengelighetConfig } from './map/layers/config/tilgjengelighet.ts';
+import { borderConfig } from './map/layers/config/backgroundLayers/borders.ts';
+import { dekningConfig } from './map/layers/config/backgroundLayers/dekning.ts';
+import { fastmerkerLayerConfig } from './map/layers/config/backgroundLayers/fastmerker.ts';
+import { historicalMapsConfig } from './map/layers/config/backgroundLayers/historicalMaps.ts';
+import { outdoorRecreationLayerConfig } from './map/layers/config/backgroundLayers/outdoorRecreation.ts';
+import { placeNamesConfig } from './map/layers/config/backgroundLayers/placeNames.ts';
+import { propertyInfoConfig } from './map/layers/config/backgroundLayers/propertyInfo.ts';
+import { sjoConfig } from './map/layers/config/backgroundLayers/sjo.ts';
+import { tilgjengelighetConfig } from './map/layers/config/backgroundLayers/tilgjengelighet.ts';
 import { ThemeLayerConfig } from './map/layers/themeLayerConfigApi.ts';
 import { mapLegacyThemeLayerId } from './map/layers/themeLayers.ts';
 import {

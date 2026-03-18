@@ -1,4 +1,4 @@
-import { ThemeLayerConfig } from '../themeLayerConfigApi';
+import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
 export const tilgjengelighetConfig: ThemeLayerConfig = {
   categories: [

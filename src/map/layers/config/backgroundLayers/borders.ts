@@ -1,5 +1,5 @@
-import { getEnv } from '../../../env';
-import { ThemeLayerConfig } from '../themeLayerConfigApi';
+import { getEnv } from '../../../../env';
+import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 const env = getEnv();
 
 export const borderConfig: ThemeLayerConfig = {
