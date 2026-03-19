@@ -587,19 +587,6 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       queryable: true,
     },
     {
-      id: '5_statlig_sikra_polygon_01',
-      name: {
-        nb: 'Statlig sikra',
-        nn: 'Statleg sikra',
-        en: 'Secured by the state ',
-      },
-      layers: 'statlig_sikra_polygon_01',
-      categoryId: 'accessibilityRecreationWheelchair',
-      groupid: 5,
-      legacyId: 'Tilgjengelighet.1023',
-      queryable: true,
-    },
-    {
       id: '5_friluftsomrade_01',
       name: {
         nb: 'Friluftsområde',
@@ -736,19 +723,6 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       queryable: true,
     },
     {
-      id: '7_statlig_sikra_polygon_02',
-      name: {
-        nb: 'Statlig sikra',
-        nn: 'Statleg sikra',
-        en: 'Secured by the state ',
-      },
-      layers: 'statlig_sikra_polygon_02',
-      categoryId: 'accessibilityRecreationElectricWheelchair',
-      groupid: 7,
-      legacyId: 'Tilgjengelighet.1022',
-      queryable: true,
-    },
-    {
       id: '7_friluftsomrade_02',
       name: {
         nb: 'Friluftsområde',
@@ -868,19 +842,6 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
       categoryId: 'accessibilityRecreationElectricWheelchair',
       groupid: 7,
       legacyId: 'Tilgjengelighet.1031',
-      queryable: true,
-    },
-    {
-      id: '3_statlig_sikra_polygon_03',
-      name: {
-        nb: 'Statlig sikra',
-        nn: 'Statleg sikra',
-        en: 'Secured by the state ',
-      },
-      layers: 'statlig_sikra_polygon_03',
-      categoryId: 'accessibilityRecreationSight',
-      groupid: 3,
-      legacyId: 'Tilgjengelighet.1032',
       queryable: true,
     },
     {
