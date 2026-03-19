@@ -24,12 +24,16 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
       parentId: 'fastmerker',
       featureInfoFields: [
         {
-          name: 'punktnummer',
-          alias: 'Punktnummer',
+          name: 'punkttype',
+          alias: 'Punkttype',
         },
         {
           name: 'punktnavn',
           alias: 'Punktnavn',
+        },
+        {
+          name: 'punktnummer',
+          alias: 'Punktnummer',
         },
         {
           name: 'nord',
@@ -44,31 +48,14 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           alias: 'Sone',
         },
         {
+          name: 'kvalitet_grunnriss',
+          alias: 'Kvalitet grunnriss',
+          unit: 'mm',
+        },
+        {
           name: 'hoyde_nn2000',
           alias: 'Høyde NN2000',
           unit: 'm',
-        },
-        {
-          name: 'hoyde_nn1954',
-          alias: 'Høyde NN1954',
-          unit: 'm',
-        },
-        {
-          name: 'ellipsoidisk_hoyde',
-          alias: 'Ellipsoidisk høyde',
-        },
-        {
-          name: 'punkttype',
-          alias: 'Punkttype',
-        },
-        {
-          name: 'underlag',
-          alias: 'Underlag',
-        },
-        {
-          name: 'kvalitet_nn1954',
-          alias: 'Kvalitet NN1954',
-          unit: 'mm',
         },
         {
           name: 'kvalitet_nn2000',
@@ -76,17 +63,18 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           unit: 'mm',
         },
         {
-          name: 'kvalitet_grunnriss',
-          alias: 'Kvalitet grunnriss',
+          name: 'underlag',
+          alias: 'Underlag',
+        },
+        {
+          name: 'hoyde_nn1954',
+          alias: 'Høyde NN1954',
+          unit: 'm',
+        },
+        {
+          name: 'kvalitet_nn1954',
+          alias: 'Kvalitet NN1954',
           unit: 'mm',
-        },
-        {
-          name: 'status',
-          alias: 'Status',
-        },
-        {
-          name: 'status_ar',
-          alias: 'Status år',
         },
         {
           name: 'beskrivelse',
