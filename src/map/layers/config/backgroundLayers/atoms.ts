@@ -7,7 +7,7 @@ import {
   setUrlParameter,
 } from '../../../../shared/utils/urlUtils';
 import { currentProjectionAtom, mapAtom } from '../../../atoms';
-import { BackgroundLayerName } from '../../backgroundLayers';
+import { BackgroundLayerName, WMTSLayerName } from '../../backgroundLayers';
 import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
@@ -31,6 +31,11 @@ const getDefaultBackgroundLayer = (): BackgroundLayerName => {
   const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
   return finalLayerName;
 };
+
+export const backgroundLayerCapabilitiesCacheAtom = atom<
+  Partial<Record<WMTSLayerName, string>>
+>({});
+
 export const backgroundLayerAtom = atom<BackgroundLayerName>(
   getDefaultBackgroundLayer(),
 );

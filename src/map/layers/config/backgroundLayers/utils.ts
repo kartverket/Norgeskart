@@ -5,6 +5,7 @@ import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import { mapAtom } from '../../../atoms';
+import { backgroundLayerCapabilitiesCacheAtom } from './atoms';
 import { nibTileLoadFunction } from './loadFunctions';
 import {
   BackgroundLayer,
@@ -14,16 +15,28 @@ import {
 } from './types';
 
 export const getWMTSLayer = async (layerConfig: WMTSBackgroundLayer) => {
+  const store = getDefaultStore();
+
   try {
-    const capabilitiesResponse = await fetch(
-      layerConfig.provider.capabilitiesUrl,
-    );
-    if (!capabilitiesResponse.ok) {
-      throw new Error(
-        `Failed to fetch capabilities for layer ${layerConfig.layerName}: ${capabilitiesResponse.statusText}`,
+    const cache = store.get(backgroundLayerCapabilitiesCacheAtom);
+    let capabilitiesText: string;
+    if (cache[layerConfig.layerName]) {
+      capabilitiesText = cache[layerConfig.layerName]!;
+    } else {
+      const capabilitiesResponse = await fetch(
+        layerConfig.provider.capabilitiesUrl,
       );
+      if (!capabilitiesResponse.ok) {
+        throw new Error(
+          `Failed to fetch capabilities for layer ${layerConfig.layerName}: ${capabilitiesResponse.statusText}`,
+        );
+      }
+      capabilitiesText = await capabilitiesResponse.text();
+      store.set(backgroundLayerCapabilitiesCacheAtom, {
+        ...cache,
+        [layerConfig.layerName]: capabilitiesText,
+      });
     }
-    const capabilitiesText = await capabilitiesResponse.text();
     const parser = new WMTSCapabilities();
     const capabilities = parser.read(capabilitiesText);
     const layerOptions = optionsFromCapabilities(capabilities, {
@@ -47,6 +60,7 @@ export const getWMTSLayer = async (layerConfig: WMTSBackgroundLayer) => {
       source: wmts,
       properties: { id: `bg.${layerConfig.layerName}` },
     });
+
     return layer;
   } catch (error) {
     console.error(
@@ -104,10 +118,11 @@ export const getLayerFromConfig = async (
 export const clearBackgroundLayer = () => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
-  map.getLayers().forEach((layer) => {
+  const allLayers = map.getLayers().getArray();
+  allLayers.forEach((layer) => {
     try {
       const layerId = layer.get('id');
-      if (layerId && layerId.startsWith('bg.')) {
+      if (!layerId || layerId.startsWith('bg.')) {
         map.removeLayer(layer);
       }
     } catch (error) {

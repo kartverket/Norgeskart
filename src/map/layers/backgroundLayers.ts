@@ -1,6 +1,6 @@
-type WMSLayerName = 'oceanicelectronic';
-type VectorTileLayerName = 'nautical-background';
-type WMTSLayerName =
+export type WMSLayerName = 'oceanicelectronic';
+export type VectorTileLayerName = 'nautical-background';
+export type WMTSLayerName =
   | 'topo'
   | 'topograatone'
   | 'toporaster'
