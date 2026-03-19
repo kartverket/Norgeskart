@@ -53,19 +53,25 @@ const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
 const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
   const { t } = useTranslation();
 
-  const { data: elevationData, status } = useQuery({
+  const { data: elevationData, status } = useQuery<{ value: string }>({
     queryKey: ['elevation', x, y],
     queryFn: () => getElevation(x, y),
     enabled: x != null && y != null,
   });
+  if (status !== 'success') {
+    return null;
+  }
+  const numericValue = Number(elevationData.value);
+  if (isNaN(numericValue)) {
+    return null;
+  }
 
   if (status === 'success' && elevationData) {
     return (
       <HStack>
         <Text>
           {t('infoBox.heightEstimatedByInterpolation')}{' '}
-          {Number(elevationData?.value).toFixed(1)}{' '}
-          {t('infoBox.metersAboveSeaLevel')}
+          {numericValue.toFixed(1)} {t('infoBox.metersAboveSeaLevel')}
         </Text>
         <Popover>
           <PopoverTrigger cursor="pointer">
