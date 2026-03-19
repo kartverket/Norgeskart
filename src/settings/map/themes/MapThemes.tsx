@@ -11,10 +11,11 @@ import {
   Text,
   VStack,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { getDefaultStore, useAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { activeThemeLayersAtom } from '../../../map/layers/atoms';
+import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
 import {
   getDirectLayersForCategory,
   getMainCategories,
@@ -48,6 +49,15 @@ export const MapThemes = () => {
     },
     [activeLayerSet],
   );
+
+  const isSjoLayer = (layerName: ThemeLayerName): boolean => {
+    const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
+    if (!layerDef) return false;
+    const category = themeLayerConfig.categories.find(
+      (c) => c.id === layerDef.categoryId,
+    );
+    return category?.id === 'sjo' || category?.parentId === 'sjo';
+  };
 
   const configThemeLayers = useMemo((): Theme[] => {
     const currentLang = i18n.language as 'nb' | 'nn' | 'en';
@@ -133,6 +143,15 @@ export const MapThemes = () => {
       const checked = isLayerChecked(layerName);
       if (!checked) {
         addThemeLayerToMap(layerName);
+
+        if (isSjoLayer(layerName)) {
+          const store = getDefaultStore();
+          const currentBakground = store.get(backgroundLayerAtom);
+
+          if (currentBakground !== 'nautical-background') {
+            store.set(backgroundLayerAtom, 'nautical-background');
+          }
+        }
       } else {
         removeThemeLayerFromMap(layerName);
       }
