@@ -1,16 +1,16 @@
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import { TileWMS } from 'ol/source';
+import { createGeoJsonThemeLayer } from './themeGeoJson';
 import type {
   ThemeLayerConfig,
   ThemeLayerDefinition,
-} from '../../api/themeLayerConfigApi';
+} from './themeLayerConfigApi';
 import {
   getCategoryById,
   getEffectiveWmsUrl,
   getParentCategory,
-} from '../../api/themeLayerConfigApi';
-import { createGeoJsonThemeLayer } from './themeGeoJson';
+} from './themeLayerConfigApi';
 
 type HistoricalMapsLayerName = 'economicMapFirstEdition' | 'amtMap';
 

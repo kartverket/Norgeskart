@@ -169,7 +169,6 @@ const getTextSymbolizer = (text: OlText): PrintSymbolizer[] => {
 const getPointSymbolizer = (
   overlayIcon: PointIcon | null,
 ): PrintSymbolizer[] => {
-  console.log('iconName:', overlayIcon?.icon);
   if (overlayIcon && overlayIcon.icon) {
     const graphicName = getMaterialSymbolGraphicName(overlayIcon.icon);
     return [

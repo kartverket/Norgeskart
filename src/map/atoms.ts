@@ -1,33 +1,22 @@
 import { atom, getDefaultStore } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls, ScaleLine } from 'ol/control';
-import BaseLayer from 'ol/layer/Base';
 import Map from 'ol/Map';
 import { get as getProjection, transform } from 'ol/proj';
 
 import { atomEffect } from 'jotai-effect';
 import { v4 as uuidv4 } from 'uuid';
-import { themeLayerConfigAtom } from '../api/themeLayerConfigApi';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { isMapLayerBackground, mapLayers } from './layers';
+import { activeThemeLayersAtom } from './layers/atoms';
+import { BackgroundLayerName } from './layers/backgroundLayers';
 import {
-  activeBackgroundLayerAtom,
-  activeThemeLayersAtom,
-} from './layers/atoms';
-import {
-  BackgroundLayerName,
-  getBackgroundLayerForProjection,
-} from './layers/backgroundLayers';
-import {
-  createVectorTileLayer,
-  isVectorTileLayer,
-} from './layers/backgroundVectorTiles';
-import {
-  DEFAULT_BACKGROUND_LAYER,
-  loadableWMTS,
-} from './layers/backgroundWMTSProviders';
-import { ControlPortal } from './mapControls';
+  allConfiguredBackgroundLayers,
+  backgroundLayerAtom,
+} from './layers/config/backgroundLayers/atoms';
+import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
+import { themeLayerConfig } from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
 
@@ -35,15 +24,6 @@ export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 3;
 export const DEFAULT_CENTER = [396722, 7197860]; // Center in EPSG:25833
 export const DEFAULT_ROTATION = 0;
-
-//The ones we can display the map in
-export const AvailableProjections: ProjectionIdentifier[] = [
-  'EPSG:3857', // webmercator
-  'EPSG:25832', // utm32n
-  'EPSG:25833', // utm33n
-  'EPSG:25835', // utm35n
-];
-export type AvailableProjectionType = (typeof AvailableProjections)[number];
 
 export const currentProjectionAtom = atom<ProjectionIdentifier>(
   validateProjectionIdString(getUrlParameter('projection')) ||
@@ -60,7 +40,7 @@ export const displayMapLegendAtom = atom<boolean>(false);
 export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
-  const themeLayerConfig = get(themeLayerConfigAtom);
+
   const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
     const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;
@@ -144,7 +124,6 @@ const getInitialMapView = () => {
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls({ zoom: false, rotate: false }).extend([
-      new ControlPortal(),
       new ScaleLine({ minWidth: 100 }),
     ]),
     keyboardEventTarget: document,
@@ -187,8 +166,9 @@ export const availableScales = [
 export const scaleAtom = atom<number | null>(null);
 
 export const scaleToResolutionEffect = atomEffect((get) => {
-  const map = get(mapAtom);
   const scale = get(scaleAtom);
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
   if (!map || !scale) return;
 
   const view = map.getView();
@@ -198,10 +178,8 @@ export const scaleToResolutionEffect = atomEffect((get) => {
 
 export const projectionEffect = atomEffect((get, set) => {
   const projectionId = get(currentProjectionAtom);
-  const map = get(mapAtom);
-  const WMTSLoadable = get(loadableWMTS);
-
-  if (WMTSLoadable.state !== 'hasData') return;
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
 
   const oldView = map.getView();
   const oldProjection = oldView.getProjection();
@@ -209,8 +187,7 @@ export const projectionEffect = atomEffect((get, set) => {
 
   if (oldProjectionCode === projectionId) return;
 
-  const store = getDefaultStore();
-  const backgroundLayerName = store.get(activeBackgroundLayerAtom);
+  const backgroundLayerName = store.get(backgroundLayerAtom);
   const activeThemeLayers = store.get(activeThemeLayersAtom);
 
   const projection = getProjection(projectionId)!;
@@ -254,42 +231,31 @@ export const projectionEffect = atomEffect((get, set) => {
 
   setUrlParameter('projection', projectionId);
 
-  const loadBackground = async () => {
-    let layerToAdd: BaseLayer | null;
+  const currentBackgroundLayer = map.getAllLayers().find(isMapLayerBackground);
 
-    if (isVectorTileLayer(backgroundLayerName)) {
-      layerToAdd = await createVectorTileLayer(backgroundLayerName);
-    } else {
-      layerToAdd = getBackgroundLayerForProjection(
-        WMTSLoadable.data,
-        projectionId,
-        backgroundLayerName,
+  if (currentBackgroundLayer) {
+    const bgLayerProjection = currentBackgroundLayer
+      .getSource()
+      ?.getProjection()
+      ?.getCode();
+
+    if (bgLayerProjection && bgLayerProjection !== projectionId) {
+      const layerConfig = allConfiguredBackgroundLayers.find(
+        (config) => config.layerName === backgroundLayerName,
       );
-      if (!layerToAdd) {
-        console.warn(
-          `Background layer ${backgroundLayerName} not available for ${projectionId}, falling back to ${DEFAULT_BACKGROUND_LAYER}`,
-        );
-        layerToAdd = getBackgroundLayerForProjection(
-          WMTSLoadable.data,
-          projectionId,
-          DEFAULT_BACKGROUND_LAYER,
-        );
+
+      if (layerConfig) {
+        getLayerFromConfig(layerConfig).then((layer) => {
+          if (layer) {
+            map.removeLayer(currentBackgroundLayer);
+            map.addLayer(layer);
+          } else {
+            console.warn(
+              `Could not create layer for ${backgroundLayerName} with projection ${projectionId}`,
+            );
+          }
+        });
       }
     }
-
-    if (!layerToAdd) {
-      console.error(`Failed to load background layer ${backgroundLayerName}`);
-      return;
-    }
-
-    const existingBgLayers = map
-      .getLayers()
-      .getArray()
-      .filter(isMapLayerBackground);
-    existingBgLayers.forEach((l) => map.removeLayer(l));
-    map.addLayer(layerToAdd);
-    setUrlParameter('backgroundLayer', backgroundLayerName);
-  };
-
-  void loadBackground();
+  }
 });

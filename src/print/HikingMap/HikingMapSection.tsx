@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { createHikingMap } from '../../api/hikingMap/hikingMapApi';
 import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
-import { useMapSettings } from '../../map/mapHooks';
+import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { utmInfoFromLonLat } from '../EmergencyPoster/utmStringUtils';
@@ -66,7 +66,7 @@ export const HikingMapSection = () => {
   const [popupBlocked, setPopupBlocked] = useState(false);
   const ph = usePostHog();
 
-  const { setBackgroundLayer } = useMapSettings();
+  const setBackgroundLayer = useSetAtom(backgroundLayerAtom);
   useEffect(() => {
     const activeBackground = getUrlParameter('backgroundLayer');
     if (activeBackground != 'toporaster' && !hasChangedBackground.current) {

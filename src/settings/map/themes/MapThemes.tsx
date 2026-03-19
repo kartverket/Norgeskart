@@ -9,30 +9,23 @@ import {
   Flex,
   Heading,
   Text,
-  toaster,
   VStack,
 } from '@kvib/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { activeThemeLayersAtom } from '../../../map/layers/atoms';
 import {
   getDirectLayersForCategory,
   getMainCategories,
   getSubcategories,
-  themeLayerConfigAtom,
-} from '../../../api/themeLayerConfigApi';
-import { currentProjectionAtom } from '../../../map/atoms';
-import {
-  activeBackgroundLayerAtom,
-  activeThemeLayersAtom,
-  preNauticalProjectionAtom,
-} from '../../../map/layers/atoms';
+  themeLayerConfig,
+} from '../../../map/layers/themeLayerConfigApi';
 import {
   MAX_THEME_LAYERS,
   useThemeLayers,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
-import { useMapSettings } from '../../../map/mapHooks';
 import { LayerLine, SubThemeSection } from './SubTheme';
 import { SubTheme, Theme } from './types';
 
@@ -40,16 +33,9 @@ export const MapThemes = () => {
   const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
     useThemeLayers();
   const { t, i18n } = useTranslation();
-  const themeConfig = useAtomValue(themeLayerConfigAtom);
+
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
-
-  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
-  const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
-  const [, setPreNauticalProjection] = useAtom(preNauticalProjectionAtom);
-  const { setBackgroundLayer } = useMapSettings();
-  const currentProjection = useAtomValue(currentProjectionAtom);
-  const setCurrentProjection = useSetAtom(currentProjectionAtom);
 
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [activeThemeLayers, setActiveThemeLayers] = useAtom(
@@ -65,13 +51,13 @@ export const MapThemes = () => {
 
   const configThemeLayers = useMemo((): Theme[] => {
     const currentLang = i18n.language as 'nb' | 'nn' | 'en';
-    const mainCategories = getMainCategories(themeConfig);
+    const mainCategories = getMainCategories(themeLayerConfig);
     const result: Theme[] = [];
 
     mainCategories.forEach((mainCategory) => {
-      const subcategories = getSubcategories(themeConfig, mainCategory.id);
+      const subcategories = getSubcategories(themeLayerConfig, mainCategory.id);
       const directLayers = getDirectLayersForCategory(
-        themeConfig,
+        themeLayerConfig,
         mainCategory.id,
       ).map((layer) => ({
         name: layer.id as ThemeLayerName,
@@ -80,7 +66,7 @@ export const MapThemes = () => {
 
       if (subcategories.length > 0) {
         const subThemes: SubTheme[] = subcategories.map((subCategory) => {
-          const layers = themeConfig.layers.filter(
+          const layers = themeLayerConfig.layers.filter(
             (layer) => layer.categoryId === subCategory.id,
           );
           return {
@@ -100,7 +86,7 @@ export const MapThemes = () => {
           directLayers,
         });
       } else {
-        const layers = themeConfig.layers.filter(
+        const layers = themeLayerConfig.layers.filter(
           (layer) => layer.categoryId === mainCategory.id,
         );
         result.push({
@@ -122,7 +108,7 @@ export const MapThemes = () => {
     });
 
     return result;
-  }, [themeConfig, i18n.language]);
+  }, [i18n.language]);
 
   const getActiveCategoryCount = useCallback(
     (theme: Theme): number => {
@@ -142,72 +128,16 @@ export const MapThemes = () => {
     }, 0);
   }, []);
 
-  const isSjoLayer = useCallback(
-    (layerName: ThemeLayerName): boolean => {
-      const layerDef = themeConfig.layers.find((l) => l.id === layerName);
-      if (!layerDef) return false;
-      const category = themeConfig.categories.find(
-        (c) => c.id === layerDef.categoryId,
-      );
-      return category?.id === 'sjo' || category?.parentId === 'sjo';
-    },
-    [themeConfig],
-  );
-
   const toggleLayer = useCallback(
     (layerName: ThemeLayerName) => {
       const checked = isLayerChecked(layerName);
       if (!checked) {
         addThemeLayerToMap(layerName);
-        if (isSjoLayer(layerName)) {
-          if (activeBackgroundLayer !== 'nautical-background') {
-            if (currentProjection !== 'EPSG:3857') {
-              setPreNauticalProjection(currentProjection);
-              setActiveBackgroundLayer('nautical-background'); // Set bg BEFORE projection so effect loads correct layer
-              setCurrentProjection('EPSG:3857');
-              toaster.create({
-                title: t('map.settings.layers.projection.forcedWebMercator'),
-                duration: 4000,
-                type: 'info',
-              });
-            } else {
-              setBackgroundLayer('nautical-background');
-              setActiveBackgroundLayer('nautical-background');
-              toaster.create({
-                title: t(
-                  'map.settings.layers.theme.switchedToNauticalBackground',
-                ),
-                duration: 4000,
-                type: 'info',
-              });
-            }
-          } else {
-            toaster.create({
-              title: t(
-                'map.settings.layers.theme.nauticalBackgroundAlreadyActive',
-              ),
-              duration: 4000,
-              type: 'info',
-            });
-          }
-        }
       } else {
         removeThemeLayerFromMap(layerName);
       }
     },
-    [
-      addThemeLayerToMap,
-      removeThemeLayerFromMap,
-      isLayerChecked,
-      isSjoLayer,
-      activeBackgroundLayer,
-      currentProjection,
-      setPreNauticalProjection,
-      setCurrentProjection,
-      setBackgroundLayer,
-      setActiveBackgroundLayer,
-      t,
-    ],
+    [addThemeLayerToMap, removeThemeLayerFromMap, isLayerChecked],
   );
 
   return (
