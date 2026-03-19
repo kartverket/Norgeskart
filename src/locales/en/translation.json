@@ -365,9 +365,6 @@
   },
   "search": {
     "actions": {
-      "print": {
-        "tooltip": "Print"
-      },
       "shareMap": {
         "success": "Url copied to clipboard",
         "tooltip": "Share map"

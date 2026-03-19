@@ -151,7 +151,7 @@
       },
       {
         "type": "list",
-        "items": ["Velg «Skriv ut».", "Velg ønsket format under «Utsnitt»."]
+        "items": ["Velg «Lag kart».", "Velg ønsket format under «Utsnitt»."]
       }
     ]
   },
@@ -231,12 +231,12 @@
     "content": [
       {
         "type": "text",
-        "text": "Høydeprofil finner du under «Skriv ut» i hovedmenyen."
+        "text": "Høydeprofil finner du under «Lag kart» i hovedmenyen."
       },
       {
         "type": "list",
         "items": [
-          "Velg «Skriv ut».",
+          "Velg ««Lag kart».",
           "Klikk et startpunkt i kartet.",
           "Klikk der du ønsker å avslutte målingen."
         ]

@@ -370,9 +370,6 @@
   },
   "search": {
     "actions": {
-      "print": {
-        "tooltip": "Skriv ut"
-      },
       "shareMap": {
         "success": "Lenkja er kopiert til utklippstavla",
         "tooltip": "Del kartet"
@@ -475,7 +472,7 @@
     }
   },
   "printdialog": {
-    "heading": "Skriv ut",
+    "heading": "Lag kart",
     "tabs": {
       "extent": {
         "heading": "Utsnitt"
