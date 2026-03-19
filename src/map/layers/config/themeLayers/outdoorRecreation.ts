@@ -24,7 +24,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'Fotrute',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '1011',
+      legacyId: 'norgeskart.1011',
       queryable: true,
       filter: `
         <Filter xmlns="http://www.opengis.net/ogc">
@@ -63,7 +63,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'Ruteinfopunkt',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '1012',
+      legacyId: 'norgeskart.1012',
       queryable: true,
       useLegendGraphic: true,
     },
@@ -77,7 +77,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'Skiloype',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '1013',
+      legacyId: 'norgeskart.1013',
       queryable: true,
     },
     {
@@ -90,7 +90,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'Sykkelrute',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '1014',
+      legacyId: 'norgeskart.1014',
       queryable: true,
     },
     {
@@ -103,7 +103,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       layers: 'AnnenRute',
       categoryId: 'outdoorRecreation',
       groupid: 5,
-      legacyId: '1015',
+      legacyId: 'norgeskart.1015',
       queryable: true,
     },
   ],

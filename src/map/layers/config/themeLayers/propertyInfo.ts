@@ -34,7 +34,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       layers: 'matrikkel:MATRIKKELADRESSEWFS,matrikkel:VEGADRESSEWFS',
       categoryId: 'cadastralData',
       groupid: 31,
-      legacyId: '1011',
+      legacyId: 'seeiendom.1011',
       queryable: true,
     },
     {
@@ -47,7 +47,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       layers: 'matrikkel:BYGNINGWFS',
       categoryId: 'cadastralData',
       groupid: 31,
-      legacyId: '1012',
+      legacyId: 'seeiendom.1012',
       queryable: true,
     },
     {
@@ -60,7 +60,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       layers: 'matrikkel:TEIGGRENSEWFS,matrikkel:TEIGWFS',
       categoryId: 'cadastralData',
       groupid: 31,
-      legacyId: '1013',
+      legacyId: 'seeiendom.1013',
       queryable: true,
       styles: ',Matrikkelnummer',
     },

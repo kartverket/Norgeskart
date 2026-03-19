@@ -1,12 +1,12 @@
-import { borderConfig } from './config/backgroundLayers/borders';
-import { dekningConfig } from './config/backgroundLayers/dekning';
-import { fastmerkerLayerConfig } from './config/backgroundLayers/fastmerker';
-import { historicalMapsConfig } from './config/backgroundLayers/historicalMaps';
-import { outdoorRecreationLayerConfig } from './config/backgroundLayers/outdoorRecreation';
-import { placeNamesConfig } from './config/backgroundLayers/placeNames';
-import { propertyInfoConfig } from './config/backgroundLayers/propertyInfo';
-import { sjoConfig } from './config/backgroundLayers/sjo';
-import { tilgjengelighetConfig } from './config/backgroundLayers/tilgjengelighet';
+import { borderConfig } from './config/themeLayers/borders';
+import { dekningConfig } from './config/themeLayers/dekning';
+import { fastmerkerLayerConfig } from './config/themeLayers/fastmerker';
+import { historicalMapsConfig } from './config/themeLayers/historicalMaps';
+import { outdoorRecreationLayerConfig } from './config/themeLayers/outdoorRecreation';
+import { placeNamesConfig } from './config/themeLayers/placeNames';
+import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
+import { sjoConfig } from './config/themeLayers/sjo';
+import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
 import { ThemeLayerName } from './themeWMS';
 
 export interface FieldConfig {

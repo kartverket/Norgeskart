@@ -38,7 +38,7 @@ export const borderConfig: ThemeLayerConfig = {
       categoryId: 'borders',
       wmsUrl: env.layerProviderParameters.geoNorgeWMS.baseUrl + '.markagrensen',
       groupid: 3,
-      legacyId: '1026',
+      legacyId: 'norgeskart.1026',
       queryable: false,
     },
     {

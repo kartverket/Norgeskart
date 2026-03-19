@@ -5,90 +5,17 @@ import { ThemeLayerName } from './themeWMS';
 
 export const MAX_THEME_LAYERS = 15; // Maximum number of theme layers allowed on the map, what is a good number here?
 
-const isProjectNameAndCategoryIdMatch = (
-  projectName: string | undefined,
-  layerCategoryId: string | undefined,
-): boolean => {
-  if (!projectName) {
-    return true;
-  }
-  if (!layerCategoryId) {
-    return false;
-  }
-
-  const normalizedProjectName = projectName.toLocaleLowerCase().trim();
-  switch (normalizedProjectName) {
-    case 'norgeskart':
-      return [
-        'facts',
-        'outdoorRecreation',
-        'historicalMaps',
-        'sjo',
-        'sjo_dybdedatakvalitet',
-        'sjo_farlige_bolger',
-        'sjo_nmg',
-      ].includes(layerCategoryId);
-    case 'seeiendom':
-      return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
-    case 'ssr':
-      return [
-        'placeNames',
-        'placeNameLanguages',
-        'placeNameTypes',
-        'placeNameWritingStatus',
-        'placeNameCaseStatus',
-        'placeNameRecentDecisions',
-      ].includes(layerCategoryId);
-    case 'tilgjengelighet':
-      return ['tilgjengelighet'].includes(layerCategoryId);
-    case 'fastmerker':
-      return ['fastmerker', 'benchmarks'].includes(layerCategoryId);
-    case 'dekning':
-      return ['dekning'].includes(layerCategoryId);
-  }
-  return false;
-};
-
 export const mapLegacyThemeLayerId = (
   legacyId: string,
-  configLoadable?: typeof themeLayerConfig,
   projectName?: string,
 ): string | undefined => {
-  if (!configLoadable) {
-    return undefined;
-  }
-
-  const layer = configLoadable.layers.find((l) => {
-    if (l.legacyId !== legacyId) return false;
-
-    const layerCategory = configLoadable.categories.find(
-      (cat) => cat.id === l.categoryId,
-    );
-
-    return (
-      isProjectNameAndCategoryIdMatch(projectName, layerCategory?.id) ||
-      isProjectNameAndCategoryIdMatch(
-        projectName,
-        layerCategory?.parentId || '',
-      )
-    );
-  });
+  const layer = themeLayerConfig.layers.find(
+    (l) => l.legacyId === `${projectName ? projectName + '.' : ''}${legacyId}`,
+  );
 
   if (layer) {
     return layer.id;
   }
-
-  const legacyMap: Record<string, string> = {
-    // Property/Cadastre
-    adresses: 'adresses',
-    buildings: 'buildings',
-    parcels: 'parcels',
-    // Historical maps
-    economicMapFirstEdition: 'economicMapFirstEdition',
-    amtMap: 'amtMap',
-  };
-
-  return legacyMap[legacyId];
 };
 
 export const useThemeLayers = () => {

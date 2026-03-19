@@ -24,7 +24,7 @@ export const dekningConfig: ThemeLayerConfig = {
       geojsonUrl: '/json/dekning/sjo/hovedserie_ny.json',
       categoryId: 'dekning',
       groupid: 18,
-      legacyId: '8011',
+      legacyId: 'dekning.8011',
       queryable: false,
       noLegend: true,
       style: {
@@ -60,7 +60,7 @@ export const dekningConfig: ThemeLayerConfig = {
       sourceEpsg: 'EPSG:25833',
       categoryId: 'dekning',
       groupid: 18,
-      legacyId: '8012',
+      legacyId: 'dekning.8012',
       queryable: false,
       noLegend: true,
       style: {
@@ -95,7 +95,7 @@ export const dekningConfig: ThemeLayerConfig = {
       geojsonUrl: '/json/dekning/sjo/overseilingskart_ny.json',
       categoryId: 'dekning',
       groupid: 18,
-      legacyId: '8013',
+      legacyId: 'dekning.8013',
       queryable: false,
       noLegend: true,
       style: {
@@ -130,7 +130,7 @@ export const dekningConfig: ThemeLayerConfig = {
       geojsonUrl: '/json/dekning/sjo/kystkart_ny.json',
       categoryId: 'dekning',
       groupid: 18,
-      legacyId: '8014',
+      legacyId: 'dekning.8014',
       queryable: false,
       noLegend: true,
       style: {
@@ -165,7 +165,7 @@ export const dekningConfig: ThemeLayerConfig = {
       geojsonUrl: '/json/dekning/sjo/havnekart_ny.json',
       categoryId: 'dekning',
       groupid: 18,
-      legacyId: '8015',
+      legacyId: 'dekning.8015',
       queryable: false,
       noLegend: true,
       style: {
@@ -200,7 +200,7 @@ export const dekningConfig: ThemeLayerConfig = {
       geojsonUrl: '/json/dekning/sjo/svalbardkart_ny.json',
       categoryId: 'dekning',
       groupid: 18,
-      legacyId: '8016',
+      legacyId: 'dekning.8016',
       queryable: false,
       noLegend: true,
       style: {
