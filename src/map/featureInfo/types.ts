@@ -1,4 +1,4 @@
-import type { FieldConfig } from '../../api/themeLayerConfigApi';
+import type { FieldConfig } from '../layers/themeLayerConfigApi';
 
 export interface FeatureProperties {
   [key: string]: string | number | boolean | null;

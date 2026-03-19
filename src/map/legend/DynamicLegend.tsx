@@ -6,7 +6,7 @@ import {
   getEffectiveLegendUrl,
   ThemeLayerConfig,
   ThemeLayerDefinition,
-} from '../../api/themeLayerConfigApi';
+} from '../layers/themeLayerConfigApi';
 import { ThemeLayerName } from '../layers/themeWMS';
 import { StyledLayerDescriptor } from '../types/StyledMapDescriptor';
 import { Symbolology } from './Symbolology';

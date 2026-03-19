@@ -3,7 +3,7 @@ import {
   getEffectiveLegendImageUrl,
   ThemeLayerConfig,
   ThemeLayerDefinition,
-} from '../../api/themeLayerConfigApi';
+} from '../layers/themeLayerConfigApi';
 import { ThemeLayerName } from '../layers/themeWMS';
 
 export const ImageLegend = ({

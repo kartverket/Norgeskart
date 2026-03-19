@@ -1,9 +1,5 @@
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
-import {
-  getThemeLayerById,
-  themeLayerConfigAtom,
-} from '../../api/themeLayerConfigApi';
 import { ProjectionIdentifier } from '../../map/projections/types';
 import {
   addToUrlListParameter,
@@ -14,25 +10,27 @@ import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
-import { BackgroundLayerName } from './backgroundLayers';
-import { DEFAULT_BACKGROUND_LAYER } from './backgroundWMTSProviders';
+import { backgroundLayerAtom } from './config/backgroundLayers/atoms';
+import { getThemeLayerById, themeLayerConfig } from './themeLayerConfigApi';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
-
-export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
-  DEFAULT_BACKGROUND_LAYER,
-);
 
 export const preNauticalProjectionAtom = atom<ProjectionIdentifier | null>(
   null,
 );
 
-export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(
-  new Set<ThemeLayerName>(),
-);
+const isSjoLayer = (layerName: ThemeLayerName): boolean => {
+  const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
+  if (!layerDef) return false;
+  const category = themeLayerConfig.categories.find(
+    (c) => c.id === layerDef.categoryId,
+  );
+  return category?.id === 'sjo' || category?.parentId === 'sjo';
+};
+
+export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(new Set([]));
 
 export const themeLayerEffect = atomEffect((get) => {
   const themeLayers = get(activeThemeLayersAtom);
-  const themeLayerConfig = get(themeLayerConfigAtom);
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
@@ -115,6 +113,21 @@ export const themeLayerEffect = atomEffect((get) => {
     }
     removeFromUrlListParameter('themeLayers', layerName);
   });
+
+  if (Array.from(themeLayers.entries()).find(([l, _]) => isSjoLayer(l))) {
+    const currentBakground = store.get(backgroundLayerAtom);
+    if (currentBakground !== 'nautical-background') {
+      store.set(
+        preNauticalProjectionAtom,
+        store
+          .get(mapAtom)
+          .getView()
+          .getProjection()
+          .getCode() as ProjectionIdentifier,
+      );
+      store.set(backgroundLayerAtom, 'nautical-background');
+    }
+  }
 
   return;
 });

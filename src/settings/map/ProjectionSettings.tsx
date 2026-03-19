@@ -1,14 +1,14 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom } from '../../map/atoms';
-import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
+import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
 
 export const ProjectionSettings = () => {
   const setCurrentProjection = useSetAtom(currentProjectionAtom);
   const currentProjection = useAtomValue(currentProjectionAtom);
   const { t } = useTranslation();
-  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const activeBackgroundLayer = useAtomValue(backgroundLayerAtom);
   const isNauticalActive = activeBackgroundLayer === 'nautical-background';
 
   return (

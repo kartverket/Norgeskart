@@ -16,7 +16,6 @@ import {
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { FieldConfig } from '../../api/themeLayerConfigApi';
 import {
   featureInfoLoadingAtom,
   featureInfoResultAtom,
@@ -26,6 +25,7 @@ import type {
   FeatureProperties,
   LayerFeatureInfo,
 } from '../../map/featureInfo/types';
+import type { FieldConfig } from '../../map/layers/themeLayerConfigApi';
 
 const IMAGE_FIELD_PATTERN = /^bildefil\d*$/i;
 
