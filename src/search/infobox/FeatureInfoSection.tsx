@@ -27,6 +27,8 @@ import type {
 } from '../../map/featureInfo/types';
 import type { FieldConfig } from '../../map/layers/themeLayerConfigApi';
 
+type Entry = [string, string | number | boolean | null];
+
 const IMAGE_FIELD_PATTERN = /^bildefil\d*$/i;
 
 const getFieldConfig = (
@@ -165,6 +167,7 @@ const formatPropertyValue = (
   return displayValue;
 };
 
+
 const isUrl = (value: string): boolean => {
   return value.startsWith('http://') || value.startsWith('https://');
 };
@@ -302,16 +305,14 @@ const FeatureProperties = ({
     return true;
   });
 
-  type Entry = [string, string | number | boolean | null];
+  const entryLookup = new Map<string, Entry>(
+    allEntries.map(([key, value]) => [key.toLowerCase(), [key, value] as Entry]),
+  );
   const entries: Entry[] = fieldConfigs
-    ? (fieldConfigs
-        .map((fc) =>
-          allEntries.find(
-            ([key]) => key.toLowerCase() === fc.name.toLowerCase(),
-          ),
-        )
-        .filter((e) => e !== undefined) as Entry[])
-    : allEntries;
+    ? fieldConfigs
+        .map((fc) => entryLookup.get(fc.name.toLowerCase()))
+        .filter((e): e is Entry => e !== undefined)
+    : (allEntries as Entry[]);
 
   if (
     entries.length === 0 &&
