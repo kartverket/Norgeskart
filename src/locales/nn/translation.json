@@ -198,13 +198,13 @@
           "placeholder": "Vel",
           "projections": {
             "epsg25833": {
-              "displayName": "ETRS89 UTM-33"
+              "displayName": "ETEUREF89 UTM-33"
             },
             "epsg25832": {
-              "displayName": "ETRS89 UTM-32"
+              "displayName": "EEUREF89 UTM-32"
             },
             "epsg25835": {
-              "displayName": "ETRS89 UTM-35"
+              "displayName": "EEUREF89 UTM-35"
             },
             "epsg3857": {
               "displayName": "Webmercator"
@@ -216,10 +216,10 @@
               "displayName": "ED50 Geografiske grader"
             },
             "epsg25834": {
-              "displayName": "ETRS89 UTM-34"
+              "displayName": "EEUREF89 UTM-34"
             },
             "epsg25836": {
-              "displayName": "ETRS89 UTM-36"
+              "displayName": "EEUREF89 UTM-36"
             },
             "epsg23031": {
               "displayName": "ED50 UTM-31"

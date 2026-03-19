@@ -48,6 +48,8 @@ export const CookieConsentDialog = () => {
       boxShadow={'md'}
       borderRadius={'md'}
       zIndex={'modal'}
+      maxHeight={{ base: '80vh', md: 'auto' }}
+      overflowY={'auto'}
     >
       <Stack gap={3}>
         <Heading as="h4" size="md">
