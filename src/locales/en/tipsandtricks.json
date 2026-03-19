@@ -118,7 +118,7 @@
       {
         "type": "list",
         "items": [
-          "Click “Share map” in the menu.",
+          "Click “Share” in the menu.",
           "A unique URL will be generated automatically.",
           "The link contains your current map view and can be shared with others."
         ]
@@ -137,7 +137,7 @@
         "items": [
           "Click the save icon at the bottom of the drawing menu.",
           "A unique URL will be generated.",
-          "Share the map using “Share map” in the menu or copy the URL from the search field."
+          "Share the map using “Share” in the menu or copy the URL from the search field."
         ]
       }
     ]
@@ -180,7 +180,7 @@
       },
       {
         "type": "text",
-        "text": "When thematic layers are enabled, you can view the legend by clicking the “Legend” button in the lower-right corner."
+        "text": "When layers are enabled, you can view the legend by clicking the “Legend” button in the lower-right corner."
       },
       {
         "type": "text",
@@ -188,7 +188,7 @@
       },
       {
         "type": "text",
-        "text": "When thematic layers are enabled, you can view the legend by tapping the info icon in the side menu."
+        "text": "When layers are enabled, you can view the legend by tapping the info icon in the side menu."
       }
     ]
   },
@@ -197,7 +197,7 @@
     "content": [
       {
         "type": "text",
-        "text": "Update frequency depends on the map layer. The standard color map is updated weekly, while thematic layers are updated at varying intervals."
+        "text": "Update frequency depends on the map layer. The standard color map is updated weekly, while other layers are updated at varying intervals."
       }
     ]
   },
