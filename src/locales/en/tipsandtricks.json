@@ -118,7 +118,7 @@
       {
         "type": "list",
         "items": [
-          "Click “Share in the menu.",
+          "Click “Share” in the menu.",
           "A unique URL will be generated automatically.",
           "The link contains your current map view and can be shared with others."
         ]
