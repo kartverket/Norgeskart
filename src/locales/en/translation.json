@@ -1,14 +1,14 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Thematic map",
-      "mobiletext": "Thematics"
+      "openText": "Layers",
+      "mobiletext": "Layers"
     },
     "print": {
       "text": "Create map"
     },
     "draw": {
-      "text": "Draw and measure",
+      "text": "Tools",
       "mobiletext": "Tools"
     },
     "settings": {
@@ -16,7 +16,7 @@
       "text": "Settings"
     },
     "sharemap": {
-      "text": "Share map",
+      "text": "Share",
       "mobiletext": "Share"
     },
     "help": {
