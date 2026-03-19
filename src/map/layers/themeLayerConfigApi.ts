@@ -16,6 +16,7 @@ export interface FieldConfig {
   baseurl?: string;
   filetype?: string;
   unit?: string;
+  decimals?: number;
 }
 
 export interface ThemeLayerCategory {

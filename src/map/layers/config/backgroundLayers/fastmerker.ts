@@ -24,56 +24,30 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
       parentId: 'fastmerker',
       featureInfoFields: [
         {
-          name: 'punktnummer',
-          alias: 'Punktnummer',
+          name: 'punkttype',
+          alias: 'Punkttype',
         },
         {
           name: 'punktnavn',
           alias: 'Punktnavn',
         },
         {
+          name: 'punktnummer',
+          alias: 'Punktnummer',
+        },
+        {
           name: 'nord',
           alias: 'Nord',
+          decimals: 3,
         },
         {
           name: 'ost',
           alias: 'Øst',
+          decimals: 3,
         },
         {
           name: 'sone',
           alias: 'Sone',
-        },
-        {
-          name: 'hoyde_nn2000',
-          alias: 'Høyde NN2000',
-          unit: 'm',
-        },
-        {
-          name: 'hoyde_nn1954',
-          alias: 'Høyde NN1954',
-          unit: 'm',
-        },
-        {
-          name: 'ellipsoidisk_hoyde',
-          alias: 'Ellipsoidisk høyde',
-        },
-        {
-          name: 'punkttype',
-          alias: 'Punkttype',
-        },
-        {
-          name: 'underlag',
-          alias: 'Underlag',
-        },
-        {
-          name: 'kvalitet_nn1954',
-          alias: 'Kvalitet NN1954',
-          unit: 'mm',
-        },
-        {
-          name: 'kvalitet_nn2000',
-          alias: 'Kvalitet NN2000',
-          unit: 'mm',
         },
         {
           name: 'kvalitet_grunnriss',
@@ -81,12 +55,30 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           unit: 'mm',
         },
         {
-          name: 'status',
-          alias: 'Status',
+          name: 'hoyde_nn2000',
+          alias: 'Høyde NN2000',
+          unit: 'm',
+          decimals: 3,
         },
         {
-          name: 'status_ar',
-          alias: 'Status år',
+          name: 'kvalitet_nn2000',
+          alias: 'Kvalitet NN2000',
+          unit: 'mm',
+        },
+        {
+          name: 'underlag',
+          alias: 'Underlag',
+        },
+        {
+          name: 'hoyde_nn1954',
+          alias: 'Høyde NN1954',
+          unit: 'm',
+          decimals: 3,
+        },
+        {
+          name: 'kvalitet_nn1954',
+          alias: 'Kvalitet NN1954',
+          unit: 'mm',
         },
         {
           name: 'beskrivelse',

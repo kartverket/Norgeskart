@@ -36,6 +36,7 @@ const icons: MaterialSymbol[] = [
   'beenhere',
   'local_see',
   'elevation',
+  'ac_unit',
 ];
 
 const iconsCollection = createListCollection({

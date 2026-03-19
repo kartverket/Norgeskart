@@ -27,6 +27,8 @@ import type {
 } from '../../map/featureInfo/types';
 import type { FieldConfig } from '../../map/layers/themeLayerConfigApi';
 
+type Entry = [string, string | number | boolean | null];
+
 const IMAGE_FIELD_PATTERN = /^bildefil\d*$/i;
 
 const getFieldConfig = (
@@ -147,9 +149,13 @@ const formatPropertyValue = (
 
   let displayValue: string;
   if (typeof value === 'number') {
-    displayValue = Number.isInteger(value)
-      ? value.toString()
-      : value.toFixed(2);
+    if (fieldConfig?.decimals !== undefined) {
+      displayValue = value.toFixed(fieldConfig.decimals);
+    } else if (Number.isInteger(value)) {
+      displayValue = value.toString();
+    } else {
+      displayValue = value.toFixed(2);
+    }
   } else {
     displayValue = String(value);
   }
@@ -288,7 +294,7 @@ const FeatureProperties = ({
   const imageFilenames = imageBaseUrl ? getImageFields(feature.properties) : [];
   const symbols = getSymbolFields(feature.properties, fieldConfigs);
 
-  const entries = Object.entries(feature.properties).filter(([key]) => {
+  const allEntries = Object.entries(feature.properties).filter(([key]) => {
     if (key.startsWith('_') && key !== '_html') return false;
     if (imageBaseUrl && IMAGE_FIELD_PATTERN.test(key)) return false;
     if (isSpecialField(key, fieldConfigs)) return false;
@@ -297,6 +303,18 @@ const FeatureProperties = ({
     if (fieldConfigs && !config) return false;
     return true;
   });
+
+  const entryLookup = new Map<string, Entry>(
+    allEntries.map(([key, value]) => [
+      key.toLowerCase(),
+      [key, value] as Entry,
+    ]),
+  );
+  const entries: Entry[] = fieldConfigs
+    ? fieldConfigs
+        .map((fc) => entryLookup.get(fc.name.toLowerCase()))
+        .filter((e): e is Entry => e !== undefined)
+    : (allEntries as Entry[]);
 
   if (
     entries.length === 0 &&
