@@ -136,6 +136,8 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   const hasMultipleAddresses =
     Array.isArray(propertyDetails) && propertyDetails.length > 1;
 
+  const addresses = property.VEGADRESSE?.filter(Boolean) ?? [];
+
   const rows = [
     [t('propertyInfo.municipalityNr'), property.KOMMUNENR],
     [t('infoBox.municipality'), capitalizeFirstLetter(property.KOMMUNENAVN)],
@@ -154,6 +156,18 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
       </AccordionItemTrigger>
       <AccordionItemContent>
         <Box>
+          {addresses.length > 0 && (
+            <Box mb={3}>
+              <Text fontSize="sm" fontWeight="semibold">
+                {t('propertyInfo.address')}
+              </Text>
+              {addresses.map((addr, i) => (
+                <Text key={i} fontSize="sm">
+                  {addr}
+                </Text>
+              ))}
+            </Box>
+          )}
           <Stack gap={0}>
             {hasMultipleAddresses && (
               <Text mb={4} fontSize="sm">

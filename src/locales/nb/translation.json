@@ -356,6 +356,7 @@
     }
   },
   "propertyInfo": {
+    "address": "Adresse",
     "holdingNr": "Gårdsnr.",
     "leaseNr": "Festenr.",
     "markProperty": {
