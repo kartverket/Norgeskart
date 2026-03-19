@@ -1,7 +1,7 @@
 import { get as getProjection } from 'ol/proj';
 import proj4 from 'proj4';
 
-export const registerETRS89Projections = () => {
+export const registerEUREF89Projections = () => {
   proj4.defs(
     'EPSG:25832',
     '+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +type=crs',
@@ -47,7 +47,7 @@ export const registerETRS89Projections = () => {
   );
 };
 
-export const setETRS89Extents = () => {
+export const setEUREF89Extents = () => {
   getProjection('EPSG:25832')?.setExtent([
     -2000000.0, 3500000.0, 3545984.0, 9045984.0,
   ]);
