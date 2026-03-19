@@ -31,6 +31,7 @@ import {
   getPropertyDetailsByMatrikkelId,
   getPropetyInfoByCoordinates,
 } from '../searchApi';
+import { getContainingExtent } from './utils';
 
 export interface PropertyInfoProps {
   lon: number;
@@ -103,6 +104,23 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
         if (features) {
           layerToAdd.getSource()?.addFeatures(features);
           map.addLayer(layerToAdd);
+          const containingExtent = getContainingExtent(features);
+
+          if (containingExtent) {
+            // Expand extent by 20%
+            const [minX, minY, maxX, maxY] = containingExtent;
+            const width = maxX - minX;
+            const height = maxY - minY;
+            const expandX = width * 0.1;
+            const expandY = height * 0.1;
+            const expandedExtent = [
+              minX - expandX,
+              minY - expandY,
+              maxX + expandX,
+              maxY + expandY,
+            ];
+            map.getView().fit(expandedExtent, { duration: 100 });
+          }
         }
       }
     };
