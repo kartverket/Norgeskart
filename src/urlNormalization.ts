@@ -86,9 +86,9 @@ export const processUrlParameters = () => {
   const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
   const newThemeLayers: string[] = [];
 
+  removeUrlParameter('project');
   if (legacyLayerParam) {
     removeUrlParameter('layers');
-    removeUrlParameter('project');
     setUrlParameter('backgroundLayer', finalLayerName);
 
     const currentThemeLayers = getListUrlParameter('themeLayers') || [];
