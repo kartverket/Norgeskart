@@ -50,23 +50,32 @@ const buildBackgroundPrintLayer = (
     console.warn(
       `Vector tile layer "${backgroundLayer}" is not supported by the print server. Falling back to "sjokartraster".`,
     );
+    const ENV = getEnv();
     return {
-      baseURL: KARTVERKET_CACHE_URL,
+      baseURL:
+        ENV.layerProviderParameters.geoNorgeWMS.baseUrl + '.sjokartraster2',
       customParams: { TRANSPARENT: 'true' },
-      style: 'default',
       imageFormat: 'image/png',
-      layer: 'sjokartraster',
+      layers: ['all'],
       opacity: 1,
-      type: 'WMTS',
-      dimensions: null,
-      requestEncoding: 'KVP',
-      dimensionParams: {},
-      matrixSet: 'utm33n',
-      matrices: WMTS_MATRICES,
+      type: 'WMS',
     };
   }
 
   // WMS background layers
+  if (backgroundLayer === 'sjokartraster') {
+    const ENV = getEnv();
+    return {
+      baseURL:
+        ENV.layerProviderParameters.geoNorgeWMS.baseUrl + '.sjokartraster2',
+      customParams: { TRANSPARENT: 'true' },
+      imageFormat: 'image/png',
+      layers: ['all'],
+      opacity: 1,
+      type: 'WMS',
+    };
+  }
+
   if (backgroundLayer === 'oceanicelectronic') {
     const ENV = getEnv();
     return {
