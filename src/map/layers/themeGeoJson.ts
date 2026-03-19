@@ -8,7 +8,7 @@ import { Fill, Stroke, Style, Text } from 'ol/style';
 import type {
   ThemeLayerDefinition,
   ThemeLayerStyle,
-} from '../../api/themeLayerConfigApi';
+} from './themeLayerConfigApi';
 
 const createStyleFromConfig = (
   styleConfig: ThemeLayerStyle | undefined,

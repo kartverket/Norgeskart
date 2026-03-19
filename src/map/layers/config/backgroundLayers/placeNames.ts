@@ -1,4 +1,4 @@
-import { ThemeLayerConfig } from '../../../api/themeLayerConfigApi';
+import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
 export const placeNamesConfig: ThemeLayerConfig = {
   categories: [

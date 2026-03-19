@@ -1,16 +1,21 @@
 import { Box, Button, Show, Stack, Tooltip } from '@kvib/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { mapAtom } from '../atoms';
 import {
   mapContextIsOpenAtom,
   mapContextXPosAtom,
   mapContextYPosAtom,
 } from './atoms';
-import { isRettIKartetDialogOpenAtom } from './dialogs/atoms';
+import {
+  isRettIKartetDialogOpenAtom,
+  rettIKartetCoordinatesAtom,
+} from './dialogs/atoms';
 
 export const MapContextMenu = () => {
   const [isOpen, setIsOpen] = useAtom(mapContextIsOpenAtom);
   const setIsModalOpen = useSetAtom(isRettIKartetDialogOpenAtom);
+  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
   const x = useAtomValue(mapContextXPosAtom);
   const y = useAtomValue(mapContextYPosAtom);
   const { t } = useTranslation();
@@ -34,6 +39,12 @@ export const MapContextMenu = () => {
             <MapContextMenuItem
               label={t('map.contextmenu.items.rettikartet.label')}
               onClick={() => {
+                const store = getDefaultStore();
+                const map = store.get(mapAtom);
+
+                const clickPos = map.getCoordinateFromPixel([x, y]);
+                setRettIKartetCoordinates(clickPos);
+
                 setIsModalOpen(true);
               }}
               isLink

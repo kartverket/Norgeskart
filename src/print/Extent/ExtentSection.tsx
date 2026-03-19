@@ -21,8 +21,9 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
-import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
-import { isVectorTileLayer } from '../../map/layers/backgroundVectorTiles';
+
+import { isVectorTileLayer } from '../../map/layers/backgroundLayers';
+import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { PrintBox } from './PrintBox';
 import { getExtentFromMap, printBoxLayoutAtom } from './atoms';
@@ -59,7 +60,7 @@ export const ExtentSection = () => {
   const { t } = useTranslation();
   const layouts: PrintLayout[] = usePrintCapabilities();
   const map = useAtomValue(mapAtom);
-  const backgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const backgroundLayer = useAtomValue(backgroundLayerAtom);
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
   const layout = useAtomValue(printBoxLayoutAtom);

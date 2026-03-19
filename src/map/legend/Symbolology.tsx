@@ -1,6 +1,6 @@
 import { Box, HStack, Text, useKvibContext, VStack } from '@kvib/react';
 import { ReactNode } from 'react';
-import { ThemeLayerDefinition } from '../../api/themeLayerConfigApi';
+import { ThemeLayerDefinition } from '../layers/themeLayerConfigApi';
 import {
   FeatureTypeStyle,
   Fill,

@@ -7,7 +7,7 @@ import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
-import type { FieldConfig } from '../../api/themeLayerConfigApi';
+import type { FieldConfig } from '../layers/themeLayerConfigApi';
 import type {
   FeatureInfoFeature,
   FeatureInfoResult,

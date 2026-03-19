@@ -15,8 +15,10 @@ import {
 } from '@kvib/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AvailableProjections } from '../../map/atoms';
-import { ProjectionIdentifier } from '../../map/projections/types';
+import {
+  AvailableProjections,
+  ProjectionIdentifier,
+} from '../../map/projections/types';
 import { ProjectionPopover } from './ProjectionPopover';
 
 const basicProjections: ProjectionIdentifier[] = [

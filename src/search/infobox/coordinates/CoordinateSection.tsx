@@ -4,7 +4,7 @@ import { transform } from 'ol/proj';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../../map/atoms';
-import { activeBackgroundLayerAtom } from '../../../map/layers/atoms';
+import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
 import { ProjectionIdentifier } from '../../../map/projections/types';
 import { decimalToDMS } from '../../../print/EmergencyPoster/utils';
 import { ProjectionSelector } from '../../../shared/Components/ProjectionSelector';
@@ -17,7 +17,7 @@ interface CoordinateInfoProps {
 }
 export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
   const map = useAtomValue(mapAtom);
-  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const activeBackgroundLayer = useAtomValue(backgroundLayerAtom);
   const { t } = useTranslation();
   const currentMapProjection = map
     .getView()
