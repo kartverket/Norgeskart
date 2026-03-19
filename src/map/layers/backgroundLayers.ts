@@ -1,10 +1,9 @@
-type WMSLayerName = 'oceanicelectronic';
-type VectorTileLayerName = 'nautical-background';
-type WMTSLayerName =
+export type WMSLayerName = 'oceanicelectronic' | 'sjokartraster';
+export type VectorTileLayerName = 'nautical-background';
+export type WMTSLayerName =
   | 'topo'
   | 'topograatone'
   | 'toporaster'
-  | 'sjokartraster'
   | 'topoProd'
   | 'Nibcache_web_mercator_v2'
   | 'Nibcache_UTM32_EUREF89_v2'

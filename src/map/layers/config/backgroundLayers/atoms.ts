@@ -7,7 +7,9 @@ import {
   setUrlParameter,
 } from '../../../../shared/utils/urlUtils';
 import { currentProjectionAtom, mapAtom } from '../../../atoms';
-import { BackgroundLayerName } from '../../backgroundLayers';
+import { ProjectionIdentifier } from '../../../projections/types';
+import { preNauticalProjectionAtom } from '../../atoms';
+import { BackgroundLayerName, WMTSLayerName } from '../../backgroundLayers';
 import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
@@ -31,6 +33,11 @@ const getDefaultBackgroundLayer = (): BackgroundLayerName => {
   const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
   return finalLayerName;
 };
+
+export const backgroundLayerCapabilitiesCacheAtom = atom<
+  Partial<Record<WMTSLayerName, string>>
+>({});
+
 export const backgroundLayerAtom = atom<BackgroundLayerName>(
   getDefaultBackgroundLayer(),
 );
@@ -65,6 +72,7 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
         const store = getDefaultStore();
         const map = store.get(mapAtom);
         const currentProjection = map.getView().getProjection().getCode();
+        const preNauticalProjection = store.get(preNauticalProjectionAtom);
         clearBackgroundLayer();
         map.addLayer(layer);
         setUrlParameter('backgroundLayer', layerName);
@@ -73,6 +81,18 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
           layerConfig.requiredProjection !== currentProjection
         ) {
           set(currentProjectionAtom, layerConfig.requiredProjection);
+          if (layerConfig.layerName === 'nautical-background') {
+            store.set(
+              preNauticalProjectionAtom,
+              currentProjection as ProjectionIdentifier,
+            );
+          }
+        } else if (
+          preNauticalProjection &&
+          layerConfig.layerName !== 'nautical-background'
+        ) {
+          set(currentProjectionAtom, preNauticalProjection);
+          store.set(preNauticalProjectionAtom, null);
         }
 
         if (layerConfig.moveToExtent) {
