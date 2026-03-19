@@ -147,9 +147,13 @@ const formatPropertyValue = (
 
   let displayValue: string;
   if (typeof value === 'number') {
-    displayValue = Number.isInteger(value)
-      ? value.toString()
-      : value.toFixed(2);
+    if (fieldConfig?.decimals !== undefined) {
+      displayValue = value.toFixed(fieldConfig.decimals);
+    } else if (Number.isInteger(value)) {
+      displayValue = value.toString();
+    } else {
+      displayValue = value.toFixed(2);
+    }
   } else {
     displayValue = String(value);
   }

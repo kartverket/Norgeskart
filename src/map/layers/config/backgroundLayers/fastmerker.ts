@@ -38,10 +38,12 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
         {
           name: 'nord',
           alias: 'Nord',
+          decimals: 3,
         },
         {
           name: 'ost',
           alias: 'Øst',
+          decimals: 3,
         },
         {
           name: 'sone',
@@ -56,6 +58,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           name: 'hoyde_nn2000',
           alias: 'Høyde NN2000',
           unit: 'm',
+          decimals: 3,
         },
         {
           name: 'kvalitet_nn2000',
@@ -70,6 +73,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           name: 'hoyde_nn1954',
           alias: 'Høyde NN1954',
           unit: 'm',
+          decimals: 3,
         },
         {
           name: 'kvalitet_nn1954',
