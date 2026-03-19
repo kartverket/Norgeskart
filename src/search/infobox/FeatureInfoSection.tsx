@@ -306,8 +306,8 @@ const FeatureProperties = ({
   const entries: Entry[] = fieldConfigs
     ? (fieldConfigs
         .map((fc) =>
-          allEntries.find(([key]) =>
-            key.toLowerCase() === fc.name.toLowerCase(),
+          allEntries.find(
+            ([key]) => key.toLowerCase() === fc.name.toLowerCase(),
           ),
         )
         .filter((e) => e !== undefined) as Entry[])
