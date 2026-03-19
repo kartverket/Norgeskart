@@ -167,7 +167,6 @@ const formatPropertyValue = (
   return displayValue;
 };
 
-
 const isUrl = (value: string): boolean => {
   return value.startsWith('http://') || value.startsWith('https://');
 };
@@ -306,7 +305,10 @@ const FeatureProperties = ({
   });
 
   const entryLookup = new Map<string, Entry>(
-    allEntries.map(([key, value]) => [key.toLowerCase(), [key, value] as Entry]),
+    allEntries.map(([key, value]) => [
+      key.toLowerCase(),
+      [key, value] as Entry,
+    ]),
   );
   const entries: Entry[] = fieldConfigs
     ? fieldConfigs
