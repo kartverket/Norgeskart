@@ -27,11 +27,11 @@ const basicProjections: ProjectionIdentifier[] = [
   'EPSG:25832', // utm32n
   'EPSG:25833', // utm33n
   'EPSG:25835', // utm35n
-  'EPSG:25836', // utm36n
 ];
 
 const allProjections: ProjectionIdentifier[] = [
   ...basicProjections,
+  'EPSG:25836', // utm36n
   'EPSG:4230', // ed50 geografisk
   'EPSG:23031', // ed50 utm31n
   'EPSG:23032', // ed50 utm32n

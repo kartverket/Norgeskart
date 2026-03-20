@@ -27,6 +27,11 @@ export const registerED50Projections = () => {
     '+proj=utm +zone=35 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs +type=crs',
   );
 
+  proj4.defs(
+    'EPSG:23036',
+    '+proj=utm +zone=36 +ellps=intl +towgs84=-89.05,-87.03,-124.56,0,0,0,0 +units=m +no_defs +type=crs',
+  );
+
   //Geografical
   proj4.defs(
     'EPSG:4230',
