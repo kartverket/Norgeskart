@@ -467,7 +467,7 @@
     }
   },
   "printdialog": {
-    "heading": "Print",
+    "heading": "Create map",
     "tabs": {
       "extent": {
         "heading": "Extent"
