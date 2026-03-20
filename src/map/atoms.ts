@@ -118,6 +118,7 @@ const getInitialMapView = () => {
     rotation: initialRotation,
     projection: initialProjection,
     constrainResolution: true,
+    smoothResolutionConstraint: false,
   });
 };
 
@@ -217,6 +218,8 @@ export const projectionEffect = atomEffect((get, set) => {
       projection,
       constrainResolution: true,
       extent: projection.getExtent(),
+
+      smoothResolutionConstraint: false,
     }),
   );
 

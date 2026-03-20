@@ -23,7 +23,7 @@ export const ProjectionPopover = (props: ProjectionPopoverProps) => {
   return (
     <PopoverRoot>
       <PopoverTrigger>
-        <Icon icon={'info'} color={iconColor} />
+        <Icon size={20} icon={'info'} color={iconColor} />
       </PopoverTrigger>
 
       <PopoverContent>

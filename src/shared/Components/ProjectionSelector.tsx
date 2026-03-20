@@ -52,7 +52,6 @@ const allProjections: ProjectionIdentifier[] = [
 export interface ProjectionSelectorProps {
   onProjectionChange: (projection: ProjectionIdentifier) => void;
   value?: ProjectionIdentifier;
-  default: ProjectionIdentifier;
   label?: string;
   textColor: 'white' | 'black';
   hideBorders?: boolean;
@@ -65,7 +64,6 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
   const [displayAllProjections, setDisplayAllProjections] =
     useState<boolean>(false);
-  const selectedProjection = props.value ?? props.default;
 
   const projectionsToDisplay = props.isToolbar
     ? AvailableProjections
@@ -89,12 +87,11 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       borderRight={props.isToolbar == true ? 'solid white 1px' : undefined}
       pr={props.isToolbar == true ? 2 : undefined}
     >
-      <HStack alignItems={'baseline'}>
+      <HStack alignItems={'baseline'} gap={1} w="200px">
         <SelectRoot
-          minWidth="180px"
           size="sm"
           collection={createListCollection({ items: projectionCollection })}
-          value={[selectedProjection]}
+          value={props.value ? [props.value] : []}
           disabled={props.disabled}
         >
           <SelectTrigger
@@ -128,6 +125,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
             ))}
           </SelectContent>
         </SelectRoot>
+
         <ProjectionPopover isToolbar={props.isToolbar == true} />
       </HStack>
       {!props.isToolbar && (
@@ -136,11 +134,11 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
           checked={displayAllProjections}
           onCheckedChange={(e) => setDisplayAllProjections(e.checked)}
         >
-          <SwitchHiddenInput />
-          <SwitchControl />
           <SwitchLabel>
             {t('map.settings.layers.projection.showAllProjections')}
           </SwitchLabel>
+          <SwitchHiddenInput />
+          <SwitchControl />
         </SwitchRoot>
       )}
     </VStack>

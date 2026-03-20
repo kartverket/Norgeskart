@@ -32,12 +32,12 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
 
   const [x, y] = transform([lon, lat], inputCRS, selectedProjection);
 
-  const isGeographic = selectedProjection === 'EPSG:4326'; // should it be flipped for others ? 4230?  || selectedProjection === 'EPSG:4230';
+  const isGeographic =
+    selectedProjection === 'EPSG:4326' || selectedProjection == 'EPSG:4258'; // should it be flipped for others ? 4230?  || selectedProjection === 'EPSG:4230';
   const showsDMS =
     selectedProjection === 'EPSG:4326' ||
-    selectedProjection === 'EPSG:3857' ||
-    selectedProjection === 'EPSG:4230';
-
+    selectedProjection === 'EPSG:4230' ||
+    selectedProjection === 'EPSG:4258';
   const onCopyClick = () => {
     const decimals = isGeographic ? 7 : 2;
     const coordString = isGeographic
@@ -71,10 +71,9 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
   return (
     <Stack>
       <HStack justifyContent="space-between" alignItems="baseline">
-        <Text w={'20%'}>{t('infoBox.coordinateSection.differentCrs')}</Text>
+        <Text>{t('infoBox.coordinateSection.differentCrs')}</Text>
 
         <ProjectionSelector
-          default={defaultProjection}
           value={selectedProjection}
           onProjectionChange={setSelectedProjection}
           label={t('infoBox.coordinateSection.differentCrs')}
@@ -82,7 +81,12 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
         />
       </HStack>
 
-      <CoordinateText x={x} y={y} projection={selectedProjection} />
+      <CoordinateText
+        x={x}
+        y={y}
+        useDMS={showsDMS}
+        isGeographicProjection={isGeographic}
+      />
       <HStack>
         <Tooltip
           content={t('infoBox.coordinateSection.copy.toast.title')}
