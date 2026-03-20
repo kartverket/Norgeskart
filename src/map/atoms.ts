@@ -6,6 +6,7 @@ import { get as getProjection, transform } from 'ol/proj';
 
 import { atomEffect } from 'jotai-effect';
 import { v4 as uuidv4 } from 'uuid';
+import { parseCoordinateInput } from '../shared/utils/coordinateParser';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { isMapLayerBackground, mapLayers } from './layers';
@@ -91,7 +92,36 @@ const getInitialMapView = () => {
     const parsedLon = parseFloat(lon);
     const parsedLat = parseFloat(lat);
     if (!Number.isNaN(parsedLon) && !Number.isNaN(parsedLat)) {
-      initialCenter = [parsedLon, parsedLat];
+      // If the values are in the WGS84 degree range they are geographic
+      // coordinates and must be transformed to the current projection.
+      // Current URLs always store the raw projected center (large UTM-range numbers),
+      // so this branch only fires for legacy / externally-generated links.
+      if (Math.abs(parsedLat) <= 90 && Math.abs(parsedLon) <= 180) {
+        let centerResolved = false;
+        // Prefer the 'sok' parameter when it encodes a valid coordinate
+        const sokParam = getUrlParameter('sok');
+        if (sokParam) {
+          const parsedCoord = parseCoordinateInput(sokParam, projectionId);
+          if (parsedCoord) {
+            initialCenter = transform(
+              [parsedCoord.lon, parsedCoord.lat],
+              parsedCoord.projection,
+              projectionId,
+            );
+            centerResolved = true;
+          }
+        }
+
+        if (!centerResolved) {
+          initialCenter = transform(
+            [parsedLon, parsedLat],
+            'EPSG:4326',
+            projectionId,
+          );
+        }
+      } else {
+        initialCenter = [parsedLon, parsedLat];
+      }
     }
   }
 
