@@ -193,73 +193,96 @@
           "placeholder": "Chose",
           "projections": {
             "epsg25833": {
-              "displayName": "EUREF89 UTM-33"
+              "displayName": "EUREF89 UTM-33",
+              "description": "EPSG 25833 · Norwegian national standard. Metric UTM coordinate system covering most of mainland Norway (zone 33, 12°E–18°E)."
             },
             "epsg25832": {
-              "displayName": "EUREF89 UTM-32"
+              "displayName": "EUREF89 UTM-32",
+              "description": "EPSG 25832 · Metric UTM coordinate system for western Norway (zone 32, 6°E–12°E)."
             },
             "epsg25835": {
-              "displayName": "EUREF89 UTM-35"
+              "displayName": "EUREF89 UTM-35",
+              "description": "EPSG 25835 · Metric UTM coordinate system for Svalbard and northeast Norway (zone 35, 24°E–30°E)."
             },
             "epsg3857": {
-              "displayName": "Webmercator"
+              "displayName": "Webmercator",
+              "description": "EPSG 3857 · Used by web maps (Google Maps, OpenStreetMap). Coordinates in meters, but distorted at high latitudes."
             },
             "epsg4326": {
-              "displayName": "WGS84 Geographical degrees (Lat/Lon)"
+              "displayName": "WGS84 Geographical degrees (Lat/Lon)",
+              "description": "EPSG 4326 · Global geographic coordinate system used by GPS. Coordinates in latitude and longitude (Lat/Lon). Recommended for global use."
             },
             "epsg4230": {
-              "displayName": "ED50 Geographical degrees"
+              "displayName": "ED50 Geographical degrees",
+              "description": "EPSG 4230 · Older European geographic coordinate system (ED50). Primarily used in older maps and offshore contexts."
             },
             "epsg25834": {
-              "displayName": "EUREF89 UTM-34"
+              "displayName": "EUREF89 UTM-34",
+              "description": "EPSG 25834 · Metric UTM coordinate system for central and northern Norway (zone 34, 18°E–24°E)."
             },
             "epsg25836": {
-              "displayName": "EUREF89 UTM-36"
+              "displayName": "EUREF89 UTM-36",
+              "description": "EPSG 25836 · Metric UTM coordinate system for eastern Finnmark (zone 36, 30°E–36°E)."
             },
             "epsg23031": {
-              "displayName": "ED50 UTM-31"
+              "displayName": "ED50 UTM-31",
+              "description": "EPSG 23031 · Older European UTM coordinate system (ED50, zone 31). Used on older maps."
             },
             "epsg23032": {
-              "displayName": "ED50 UTM-32"
+              "displayName": "ED50 UTM-32",
+              "description": "EPSG 23032 · Older European UTM coordinate system (ED50, zone 32). Used on older maps."
             },
             "epsg23033": {
-              "displayName": "ED50 UTM-33"
+              "displayName": "ED50 UTM-33",
+              "description": "EPSG 23033 · Older European UTM coordinate system (ED50, zone 33). Used on older maps."
             },
             "epsg23034": {
-              "displayName": "ED50 UTM-34"
+              "displayName": "ED50 UTM-34",
+              "description": "EPSG 23034 · Older European UTM coordinate system (ED50, zone 34). Used on older maps."
             },
             "epsg23035": {
-              "displayName": "ED50 UTM-35"
+              "displayName": "ED50 UTM-35",
+              "description": "EPSG 23035 · Older European UTM coordinate system (ED50, zone 35). Used on older maps."
             },
             "epsg23036": {
-              "displayName": "ED50 UTM-36"
+              "displayName": "ED50 UTM-36",
+              "description": "EPSG 23036 · Older European UTM coordinate system (ED50, zone 36). Used on older maps."
             },
             "epsg27391": {
-              "displayName": "NGO 1948 Gauss-Kruger zone 1"
+              "displayName": "NGO 1948 Gauss-Kruger zone 1",
+              "description": "EPSG 27391 · Old Norwegian coordinate system (NGO 1948, Gauss-Kruger zone 1). For legacy Norwegian maps only."
             },
             "epsg27392": {
-              "displayName": "NGO 1948 Gauss-Kruger zone 2"
+              "displayName": "NGO 1948 Gauss-Kruger zone 2",
+              "description": "EPSG 27392 · Old Norwegian coordinate system (NGO 1948, Gauss-Kruger zone 2). For legacy Norwegian maps only."
             },
             "epsg27393": {
-              "displayName": "NGO 1948 Gauss-Kruger zone 3"
+              "displayName": "NGO 1948 Gauss-Kruger zone 3",
+              "description": "EPSG 27393 · Old Norwegian coordinate system (NGO 1948, Gauss-Kruger zone 3). For legacy Norwegian maps only."
             },
             "epsg27394": {
-              "displayName": "NGO 1948 Gauss-Kruger zone 4"
+              "displayName": "NGO 1948 Gauss-Kruger zone 4",
+              "description": "EPSG 27394 · Old Norwegian coordinate system (NGO 1948, Gauss-Kruger zone 4). For legacy Norwegian maps only."
             },
             "epsg27395": {
-              "displayName": "NGO 1948 Gauss-Kruger zone 5"
+              "displayName": "NGO 1948 Gauss-Kruger zone 5",
+              "description": "EPSG 27395 · Old Norwegian coordinate system (NGO 1948, Gauss-Kruger zone 5). For legacy Norwegian maps only."
             },
             "epsg27396": {
-              "displayName": "NGO 1948 Gauss-Kruger zone 6"
+              "displayName": "NGO 1948 Gauss-Kruger zone 6",
+              "description": "EPSG 27396 · Old Norwegian coordinate system (NGO 1948, Gauss-Kruger zone 6). For legacy Norwegian maps only."
             },
             "epsg27397": {
-              "displayName": "NGO 1948 Gauss-Kruger zone 7"
+              "displayName": "NGO 1948 Gauss-Kruger zone 7",
+              "description": "EPSG 27397 · Old Norwegian coordinate system (NGO 1948, Gauss-Kruger zone 7). For legacy Norwegian maps only."
             },
             "epsg27398": {
-              "displayName": "NGO 1948 Gauss-Kruger zone 8"
+              "displayName": "NGO 1948 Gauss-Kruger zone 8",
+              "description": "EPSG 27398 · Old Norwegian coordinate system (NGO 1948, Gauss-Kruger zone 8). For legacy Norwegian maps only."
             },
             "epsg4258": {
-              "displayName": "EUREF89 Geographic (Lat/Lon)"
+              "displayName": "EUREF89 Geographic (Lat/Lon)",
+              "description": "EPSG 4258 · European geographic coordinate system (ETRS89), nearly identical to WGS84. Official standard for EU/EEA countries."
             }
           },
           "forcedWebMercator": "Nautical background map requires Web Mercator projection",

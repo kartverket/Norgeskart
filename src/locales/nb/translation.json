@@ -198,73 +198,96 @@
           "placeholder": "Velg",
           "projections": {
             "epsg25833": {
-              "displayName": "EUREF89 UTM-33"
+              "displayName": "EUREF89 UTM-33",
+              "description": "EPSG 25833 · Norsk nasjonalstandard. Metrisk UTM-koordinatsystem som dekker størstedelen av Fastlands-Norge (sone 33, 12°Ø–18°Ø)."
             },
             "epsg25832": {
-              "displayName": "EUREF89 UTM-32"
+              "displayName": "EUREF89 UTM-32",
+              "description": "EPSG 25832 · Metrisk UTM-koordinatsystem for vest-Norge (sone 32, 6°Ø–12°Ø)."
             },
             "epsg25835": {
-              "displayName": "EUREF89 UTM-35"
+              "displayName": "EUREF89 UTM-35",
+              "description": "EPSG 25835 · Metrisk UTM-koordinatsystem for Svalbard og nordøst-Norge (sone 35, 24°Ø–30°Ø)."
             },
             "epsg3857": {
-              "displayName": "Webmercator"
+              "displayName": "Webmercator",
+              "description": "EPSG 3857 · Brukes av nettbaserte kart (Google Maps, OpenStreetMap). Koordinater i meter, men forvrengt ved høye breddegrader."
             },
             "epsg4326": {
-              "displayName": "WGS84 Geografisk grader (Lat/Lon)"
+              "displayName": "WGS84 Geografisk grader (Lat/Lon)",
+              "description": "EPSG 4326 · Globalt geografisk koordinatsystem brukt av GPS. Koordinater i breddegrader og lengdegrader (Lat/Lon). Anbefalt for global bruk."
             },
             "epsg4230": {
-              "displayName": "ED50 Geografiske koordinater"
+              "displayName": "ED50 Geografiske koordinater",
+              "description": "EPSG 4230 · Eldre europeisk geografisk koordinatsystem (ED50). Brukes primært på eldre kart og i offshore-sammenheng."
             },
             "epsg25834": {
-              "displayName": "EUREF89 UTM-34"
+              "displayName": "EUREF89 UTM-34",
+              "description": "EPSG 25834 · Metrisk UTM-koordinatsystem for midtre og nord-Norge (sone 34, 18°Ø–24°Ø)."
             },
             "epsg25836": {
-              "displayName": "EUREF89 UTM-36"
+              "displayName": "EUREF89 UTM-36",
+              "description": "EPSG 25836 · Metrisk UTM-koordinatsystem for Øst-Finnmark (sone 36, 30°Ø–36°Ø)."
             },
             "epsg23031": {
-              "displayName": "ED50 UTM-31"
+              "displayName": "ED50 UTM-31",
+              "description": "EPSG 23031 · Eldre europeisk UTM-koordinatsystem (ED50, sone 31). Brukes på eldre kart."
             },
             "epsg23032": {
-              "displayName": "ED50 UTM-32"
+              "displayName": "ED50 UTM-32",
+              "description": "EPSG 23032 · Eldre europeisk UTM-koordinatsystem (ED50, sone 32). Brukes på eldre kart."
             },
             "epsg23033": {
-              "displayName": "ED50 UTM-33"
+              "displayName": "ED50 UTM-33",
+              "description": "EPSG 23033 · Eldre europeisk UTM-koordinatsystem (ED50, sone 33). Brukes på eldre kart."
             },
             "epsg23034": {
-              "displayName": "ED50 UTM-34"
+              "displayName": "ED50 UTM-34",
+              "description": "EPSG 23034 · Eldre europeisk UTM-koordinatsystem (ED50, sone 34). Brukes på eldre kart."
             },
             "epsg23035": {
-              "displayName": "ED50 UTM-35"
+              "displayName": "ED50 UTM-35",
+              "description": "EPSG 23035 · Eldre europeisk UTM-koordinatsystem (ED50, sone 35). Brukes på eldre kart."
             },
             "epsg23036": {
-              "displayName": "ED50 UTM-36"
+              "displayName": "ED50 UTM-36",
+              "description": "EPSG 23036 · Eldre europeisk UTM-koordinatsystem (ED50, sone 36). Brukes på eldre kart."
             },
             "epsg27391": {
-              "displayName": "NGO 1948 Gauss-Kruger sone 1"
+              "displayName": "NGO 1948 Gauss-Kruger sone 1",
+              "description": "EPSG 27391 · Gammelt norsk koordinatsystem (NGO 1948, Gauss-Kruger sone 1). Kun for eldre norske kart."
             },
             "epsg27392": {
-              "displayName": "NGO 1948 Gauss-Kruger sone 2"
+              "displayName": "NGO 1948 Gauss-Kruger sone 2",
+              "description": "EPSG 27392 · Gammelt norsk koordinatsystem (NGO 1948, Gauss-Kruger sone 2). Kun for eldre norske kart."
             },
             "epsg27393": {
-              "displayName": "NGO 1948 Gauss-Kruger sone 3"
+              "displayName": "NGO 1948 Gauss-Kruger sone 3",
+              "description": "EPSG 27393 · Gammelt norsk koordinatsystem (NGO 1948, Gauss-Kruger sone 3). Kun for eldre norske kart."
             },
             "epsg27394": {
-              "displayName": "NGO 1948 Gauss-Kruger sone 4"
+              "displayName": "NGO 1948 Gauss-Kruger sone 4",
+              "description": "EPSG 27394 · Gammelt norsk koordinatsystem (NGO 1948, Gauss-Kruger sone 4). Kun for eldre norske kart."
             },
             "epsg27395": {
-              "displayName": "NGO 1948 Gauss-Kruger sone 5"
+              "displayName": "NGO 1948 Gauss-Kruger sone 5",
+              "description": "EPSG 27395 · Gammelt norsk koordinatsystem (NGO 1948, Gauss-Kruger sone 5). Kun for eldre norske kart."
             },
             "epsg27396": {
-              "displayName": "NGO 1948 Gauss-Kruger sone 6"
+              "displayName": "NGO 1948 Gauss-Kruger sone 6",
+              "description": "EPSG 27396 · Gammelt norsk koordinatsystem (NGO 1948, Gauss-Kruger sone 6). Kun for eldre norske kart."
             },
             "epsg27397": {
-              "displayName": "NGO 1948 Gauss-Kruger sone 7"
+              "displayName": "NGO 1948 Gauss-Kruger sone 7",
+              "description": "EPSG 27397 · Gammelt norsk koordinatsystem (NGO 1948, Gauss-Kruger sone 7). Kun for eldre norske kart."
             },
             "epsg27398": {
-              "displayName": "NGO 1948 Gauss-Kruger sone 8"
+              "displayName": "NGO 1948 Gauss-Kruger sone 8",
+              "description": "EPSG 27398 · Gammelt norsk koordinatsystem (NGO 1948, Gauss-Kruger sone 8). Kun for eldre norske kart."
             },
             "epsg4258": {
-              "displayName": "EUREF89 Geografisk (Lat/Lon)"
+              "displayName": "EUREF89 Geografisk (Lat/Lon)",
+              "description": "EPSG 4258 · Europeisk geografisk koordinatsystem (ETRS89), nesten identisk med WGS84. Offisiell standard i EU/EØS-land."
             }
           },
           "forcedWebMercator": "Nautisk bakgrunnskart krever Webmercator-projeksjon",

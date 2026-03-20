@@ -1,6 +1,7 @@
 import {
   createListCollection,
   HStack,
+  Icon,
   SelectContent,
   SelectItem,
   SelectRoot,
@@ -22,7 +23,8 @@ import {
 import { ProjectionPopover } from './ProjectionPopover';
 
 const basicProjections: ProjectionIdentifier[] = [
-  'EPSG:4258', // wgs84
+  'EPSG:4326', // wgs84
+  'EPSG:4258', // ETRS89
   'EPSG:3857', // webmercator
   'EPSG:25832', // utm32n
   'EPSG:25833', // utm33n
@@ -74,12 +76,13 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
       : basicProjections;
 
   const projectionCollection = projectionsToDisplay.map((projection) => {
-    const label = t(
-      `map.settings.layers.projection.projections.${projection.replace(':', '').toLowerCase()}.displayName`,
-    );
+    const key = `map.settings.layers.projection.projections.${projection.replace(':', '').toLowerCase()}`;
+    const label = t(`${key}.displayName`);
+    const description = t(`${key}.description`);
     return {
       value: projection,
-      label: label,
+      label,
+      description,
     };
   });
 
@@ -123,7 +126,16 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
                   props.onProjectionChange(item.value as ProjectionIdentifier);
                 }}
               >
-                {item.label}
+                <HStack justify="space-between" w="100%">
+                  <span>{item.label}</span>
+                  <Tooltip
+                    content={item.description}
+                    portalled={true}
+                    positioning={{ placement: 'right' }}
+                  >
+                    <Icon icon="info" color="gray.400" />
+                  </Tooltip>
+                </HStack>
               </SelectItem>
             ))}
           </SelectContent>
