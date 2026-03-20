@@ -262,6 +262,9 @@
             },
             "epsg27398": {
               "displayName": "NGO 1948 Gauss-Kruger sone 8"
+            },
+            "epsg4258": {
+              "displayName": "EUREF89 Geografisk (Lat/Lon)"
             }
           },
           "forcedWebMercator": "Nautisk bakgrunnskart krever Webmercator-projeksjon",

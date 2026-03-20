@@ -71,9 +71,7 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
   return (
     <Stack>
       <HStack justifyContent="space-between" alignItems="baseline">
-        <Text fontWeight={'bold'}>
-          {t('infoBox.coordinateSection.differentCrs')}
-        </Text>
+        <Text w={'20%'}>{t('infoBox.coordinateSection.differentCrs')}</Text>
 
         <ProjectionSelector
           default={defaultProjection}
