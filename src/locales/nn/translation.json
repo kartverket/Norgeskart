@@ -198,13 +198,13 @@
           "placeholder": "Vel",
           "projections": {
             "epsg25833": {
-              "displayName": "ETEUREF89 UTM-33"
+              "displayName": "EUREF89 UTM-33"
             },
             "epsg25832": {
-              "displayName": "EEUREF89 UTM-32"
+              "displayName": "EUREF89 UTM-32"
             },
             "epsg25835": {
-              "displayName": "EEUREF89 UTM-35"
+              "displayName": "EUREF89 UTM-35"
             },
             "epsg3857": {
               "displayName": "Webmercator"
@@ -216,10 +216,10 @@
               "displayName": "ED50 Geografiske grader"
             },
             "epsg25834": {
-              "displayName": "EEUREF89 UTM-34"
+              "displayName": "EUREF89 UTM-34"
             },
             "epsg25836": {
-              "displayName": "EEUREF89 UTM-36"
+              "displayName": "EUREF89 UTM-36"
             },
             "epsg23031": {
               "displayName": "ED50 UTM-31"
@@ -264,7 +264,7 @@
               "displayName": "NGO 1948 Gauss-Kruger sone 8"
             },
             "epsg4258": {
-              "displayName": "EUREF89 Geografisk (Lat/Lon)"
+              "displayName": "EUREF89 lat/lon"
             }
           },
           "forcedWebMercator": "Nautisk bakgrunnskart krev Webmercator-projeksjon",
