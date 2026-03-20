@@ -152,7 +152,7 @@
       {
         "type": "list",
         "items": [
-          "Select “Print”.",
+          "Select “Create map”.",
           "Choose the desired format under “Extent”."
         ]
       }
@@ -234,12 +234,12 @@
     "content": [
       {
         "type": "text",
-        "text": "The elevation profile tool is available under “Print” in the main menu."
+        "text": "The elevation profile tool is available under “Create map” in the main menu."
       },
       {
         "type": "list",
         "items": [
-          "Select “Print”.",
+          "Select “Create map”.",
           "Click a starting point in the map.",
           "Click where you want the measurement to end."
         ]
