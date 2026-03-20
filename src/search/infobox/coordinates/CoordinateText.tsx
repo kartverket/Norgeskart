@@ -38,9 +38,7 @@ const CoordindateDigit = ({
 }) => {
   return (
     <HStack justifyContent={'space-between'} alignItems={'flex-start'}>
-      <Text fontWeight={'bold'} justifySelf={'end'}>
-        {label}:
-      </Text>
+      <Text justifySelf={'end'}>{label}:</Text>
       <VStack alignItems={'flex-end'} justifyItems={'flex-end'}>
         {formatCoordinateDigit(value, projection).map((text, index) => (
           <Text key={index}>{text}</Text>

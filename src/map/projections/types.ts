@@ -1,4 +1,5 @@
 export type ProjectionIdentifier =
+  | 'EPSG:4258' // ETRS89
   | 'EPSG:4326' // wgs84
   | 'EPSG:3857' // webmercator
   | 'EPSG:4230' // ed50 geografisk
