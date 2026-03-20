@@ -93,16 +93,12 @@ const getInitialMapView = () => {
     const parsedLat = parseFloat(lat);
     if (!Number.isNaN(parsedLon) && !Number.isNaN(parsedLat)) {
       // If the values are in the WGS84 degree range they are geographic
-      // coordinates from an older URL format and must be transformed to the
-      // current projection.  Current URLs always store the raw projected
-      // center (large UTM-range numbers), so this branch only fires for
-      // legacy / externally-generated links.
+      // coordinates and must be transformed to the current projection.
+      // Current URLs always store the raw projected center (large UTM-range numbers),
+      // so this branch only fires for legacy / externally-generated links.
       if (Math.abs(parsedLat) <= 90 && Math.abs(parsedLon) <= 180) {
         let centerResolved = false;
-
-        // Prefer the 'sok' parameter when it encodes a valid coordinate,
-        // because it contains the user's intended location and is unaffected
-        // by the sign-flip that sometimes appears in legacy 'lon' values.
+        // Prefer the 'sok' parameter when it encodes a valid coordinate
         const sokParam = getUrlParameter('sok');
         if (sokParam) {
           const parsedCoord = parseCoordinateInput(sokParam, projectionId);
