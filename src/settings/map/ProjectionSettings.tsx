@@ -15,7 +15,6 @@ export const ProjectionSettings = () => {
     <ProjectionSelector
       onProjectionChange={setCurrentProjection}
       value={currentProjection}
-      default={currentProjection}
       textColor="white"
       hideBorders
       isToolbar

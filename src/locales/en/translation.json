@@ -259,7 +259,7 @@
               "displayName": "NGO 1948 Gauss-Kruger zone 8"
             },
             "epsg4258": {
-              "displayName": "EUREF89 Geographic (Lat/Lon)"
+              "displayName": "EUREF89 lat/lon"
             }
           },
           "forcedWebMercator": "Nautical background map requires Web Mercator projection",

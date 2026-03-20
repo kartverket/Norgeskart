@@ -35,12 +35,7 @@ class ErrorBoundary extends React.Component<
         stack: info.componentStack,
       });
     }
-    console.error(
-      'Error caught in ErrorBoundary:',
-      error,
-      info,
-      React.captureOwnerStack(),
-    );
+    console.error('Error caught in ErrorBoundary:', error, info);
   }
 
   render() {
