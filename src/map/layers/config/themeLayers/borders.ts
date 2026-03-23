@@ -251,6 +251,19 @@ export const borderConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
+      id: 'sjo200_nautiske_mil',
+      name: {
+        nb: '200 nautiske mil',
+        nn: '200 nautiske mil',
+        en: '200 nautical miles',
+      },
+      layers: '200_nautiske_mil',
+      categoryId: 'sjo_nmg',
+      groupid: 14,
+      queryable: true,
+      useLegendGraphic: true,
+    },
+    {
       id: 'sjoNavnMaritime',
       name: {
         nb: 'Navn på maritime områder',
