@@ -238,6 +238,19 @@ export const borderConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
+      id: 'sjoLandareal',
+      name: {
+        nb: 'Landareal',
+        nn: 'Landareal',
+        en: 'Land area',
+      },
+      layers: 'Landareal',
+      categoryId: 'sjo_nmg',
+      groupid: 14,
+      queryable: true,
+      useLegendGraphic: true,
+    },
+    {
       id: 'sjoNavnMaritime',
       name: {
         nb: 'Navn på maritime områder',
