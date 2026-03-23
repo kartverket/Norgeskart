@@ -13,7 +13,7 @@ import {
 import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  MAX_THEME_LAYERS,
+  WARNING_THRESHOLD,
   useThemeLayers,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
@@ -53,7 +53,7 @@ export const SubThemeSection = ({
           checked={isLayerChecked(subTheme.layers[0].name)}
           disabled={
             !isLayerChecked(subTheme.layers[0].name) &&
-            activeCount >= MAX_THEME_LAYERS
+            activeCount >= WARNING_THRESHOLD
           }
         />
       ) : (
@@ -116,7 +116,8 @@ export const SubThemeSection = ({
                 layer={layer}
                 checked={isLayerChecked(layer.name)}
                 disabled={
-                  !isLayerChecked(layer.name) && activeCount >= MAX_THEME_LAYERS
+                  !isLayerChecked(layer.name) &&
+                  activeCount >= WARNING_THRESHOLD
                 }
               />
             ))}

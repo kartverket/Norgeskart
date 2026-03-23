@@ -3,7 +3,7 @@ import { activeThemeLayersAtom } from './atoms';
 import { themeLayerConfig } from './themeLayerConfigApi';
 import { ThemeLayerName } from './themeWMS';
 
-export const MAX_THEME_LAYERS = 15; // Maximum number of theme layers allowed on the map, what is a good number here?
+export const WARNING_THRESHOLD = 15;
 
 export const mapLegacyThemeLayerId = (
   legacyId: string,
@@ -35,18 +35,11 @@ export const useThemeLayers = () => {
     layerName: ThemeLayerName | ThemeLayerName[],
   ): boolean => {
     if (Array.isArray(layerName)) {
-      if (activeLayerSet.size + layerName.length > MAX_THEME_LAYERS) {
-        return false;
-      }
       addThemeLayersToMap(layerName);
-      return true;
     } else {
-      if (activeLayerSet.size >= MAX_THEME_LAYERS) {
-        return false;
-      }
       setActiveLayerSet((prev) => new Set(prev).add(layerName));
-      return true;
     }
+    return true;
   };
   const removeThemeLayersFromMap = (layerNames: ThemeLayerName[]) => {
     setActiveLayerSet((prev) => {
