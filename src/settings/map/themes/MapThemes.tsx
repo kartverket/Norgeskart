@@ -96,22 +96,10 @@ export const MapThemes = () => {
           directLayers,
         });
       } else {
-        const layers = themeLayerConfig.layers.filter(
-          (layer) => layer.categoryId === mainCategory.id,
-        );
         result.push({
           name: mainCategory.id,
           heading: mainCategory.name[currentLang] || mainCategory.name.nb,
-          subThemes: [
-            {
-              name: mainCategory.id,
-              heading: mainCategory.name[currentLang] || mainCategory.name.nb,
-              layers: layers.map((layer) => ({
-                name: layer.id as ThemeLayerName,
-                label: layer.name[currentLang] || layer.name.nb,
-              })),
-            },
-          ],
+          subThemes: [],
           directLayers,
         });
       }

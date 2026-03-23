@@ -206,14 +206,16 @@ export const getEffectiveLegendImageUrl = (
 export const getMainCategories = (
   config: ThemeLayerConfig,
 ): ThemeLayerCategory[] => {
-  return config.categories.filter((cat) => !cat.parentId);
+  return config.categories.filter(isMainCategory);
 };
 
 export const getSubcategories = (
   config: ThemeLayerConfig,
   parentId: string,
 ): ThemeLayerCategory[] => {
-  return config.categories.filter((cat) => cat.parentId === parentId);
+  return config.categories.filter(
+    (cat) => cat.parentId === parentId && !isMainCategory(cat),
+  );
 };
 
 export const getDirectLayersForCategory = (
