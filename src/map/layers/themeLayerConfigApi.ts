@@ -76,6 +76,7 @@ export interface ThemeLayerDefinition {
   legendLayerNames?: string[];
   filter?: string;
   noLegend?: boolean;
+  singleImage?: boolean;
 }
 
 export interface ThemeLayerConfig {

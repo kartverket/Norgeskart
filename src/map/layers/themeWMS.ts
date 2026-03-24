@@ -1,6 +1,7 @@
 import TileLayer from 'ol/layer/Tile';
+import ImageLayer from 'ol/layer/Image.js';
 import VectorLayer from 'ol/layer/Vector';
-import { TileWMS } from 'ol/source';
+import { TileWMS, ImageWMS  } from 'ol/source';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
 import type {
   ThemeLayerConfig,
@@ -136,7 +137,7 @@ export const createThemeLayerFromConfig = (
   config: ThemeLayerConfig,
   layerDef: ThemeLayerDefinition,
   projection: string,
-): TileLayer | VectorLayer | null => {
+): TileLayer | VectorLayer | ImageLayer<ImageWMS> | null => {
   if (layerDef.type === 'geojson' && layerDef.geojsonUrl) {
     return createGeoJsonThemeLayer(layerDef, projection);
   }
@@ -163,29 +164,44 @@ export const createThemeLayerFromConfig = (
     category?.featureInfoFields ||
     parentCategory?.featureInfoFields;
 
+
+  const layerProperties = {
+    id: `theme.${layerDef.id}`,
+    queryable: layerDef.queryable ?? false,
+    layerTitle: layerDef.name.nb || layerDef.id,
+    ...(infoFormat ? { infoFormat } : {}),
+    ...(featureInfoImageBaseUrl ? { featureInfoImageBaseUrl } : {}),
+    ...(featureInfoFields ? { featureInfoFields } : {}),
+  };
+
+  const wmsParams = {
+    LAYERS: layerDef.layers,
+    TRANSPARENT: true,
+    SRS: projection,
+    ...(layerDef.styles ? { STYLES: layerDef.styles } : {}),
+    FILTER: layerDef.filter ? layerDef.filter : undefined,
+  };
+
+  if (layerDef.singleImage) {
+    return new ImageLayer({
+      source: new ImageWMS({
+        url: wmsUrl,
+        params: wmsParams,
+        projection: projection,
+      }),
+      properties: layerProperties,
+    });
+  }
+
   return new TileLayer({
     source: new TileWMS({
       url: wmsUrl,
-      params: {
-        LAYERS: layerDef.layers,
-        TILED: true,
-        TRANSPARENT: true,
-        SRS: projection,
-        ...(layerDef.styles ? { STYLES: layerDef.styles } : {}),
-        FILTER: layerDef.filter ? layerDef.filter : undefined,
-      },
+      params: { ...wmsParams, TILED: true },
       projection: projection,
       cacheSize: 512,
       transition: 0,
     }),
-    properties: {
-      id: `theme.${layerDef.id}`,
-      queryable: layerDef.queryable ?? false,
-      layerTitle: layerDef.name.nb || layerDef.id,
-      ...(infoFormat ? { infoFormat } : {}),
-      ...(featureInfoImageBaseUrl ? { featureInfoImageBaseUrl } : {}),
-      ...(featureInfoFields ? { featureInfoFields } : {}),
-    },
+    properties: layerProperties,
     preload: 1,
   });
 };
