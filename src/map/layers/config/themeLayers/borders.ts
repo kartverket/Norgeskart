@@ -81,45 +81,6 @@ export const borderConfig: ThemeLayerConfig = {
     },
     // --- Maritime grenser layers ---
     {
-      id: 'sjoGrunnlinje',
-      name: {
-        nb: 'Grunnlinje',
-        nn: 'Grunnlinje',
-        en: 'Baseline',
-      },
-      layers: 'Grunnlinje',
-      categoryId: 'maritime_borders',
-      groupid: 3,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoTerritorialgrense',
-      name: {
-        nb: 'Territorialgrense 12 NM',
-        nn: 'Territorialgrense 12 NM',
-        en: 'Territorial border 12 NM',
-      },
-      layers: 'Territorialgrense',
-      categoryId: 'maritime_borders',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoAvtaltAvgrensningslinje',
-      name: {
-        nb: 'Avtalt avgrensningslinje',
-        nn: 'Avtalt avgrensningslinje',
-        en: 'Agreed delimitation line',
-      },
-      layers: 'Avtalt_avgrensningslinje',
-      categoryId: 'maritime_borders',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
       id: 'sjoAvgrensningslinje_for_sokkel',
       name: {
         nb: 'Avgrensningslinje for sokkel',
@@ -159,6 +120,19 @@ export const borderConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
+      id: 'sjoAvtaltAvgrensningslinje',
+      name: {
+        nb: 'Avtalt avgrensningslinje',
+        nn: 'Avtalt avgrensningslinje',
+        en: 'Agreed delimitation line',
+      },
+      layers: 'Avtalt_avgrensningslinje',
+      categoryId: 'maritime_borders',
+      groupid: 14,
+      queryable: true,
+      useLegendGraphic: true,
+    },
+    {
       id: 'sjoYttergrenseTilstodendeSone24NM',
       name: {
         nb: 'Yttergrense tilstøtende sone 24 NM',
@@ -168,6 +142,32 @@ export const borderConfig: ThemeLayerConfig = {
       layers: 'Yttergrense_for_tilstotende_sone',
       categoryId: 'maritime_borders',
       groupid: 14,
+      queryable: true,
+      useLegendGraphic: true,
+    },
+    {
+      id: 'sjoTerritorialgrense',
+      name: {
+        nb: 'Territorialgrense 12 NM',
+        nn: 'Territorialgrense 12 NM',
+        en: 'Territorial border 12 NM',
+      },
+      layers: 'Territorialgrense',
+      categoryId: 'maritime_borders',
+      groupid: 14,
+      queryable: true,
+      useLegendGraphic: true,
+    },
+    {
+      id: 'sjoGrunnlinje',
+      name: {
+        nb: 'Grunnlinje',
+        nn: 'Grunnlinje',
+        en: 'Baseline',
+      },
+      layers: 'Grunnlinje',
+      categoryId: 'maritime_borders',
+      groupid: 3,
       queryable: true,
       useLegendGraphic: true,
     },
@@ -186,6 +186,45 @@ export const borderConfig: ThemeLayerConfig = {
     },
 
     // --- Maritime områder layers ---
+    {
+      id: 'sjoIndreFarvann',
+      name: {
+        nb: 'Indre farvann',
+        nn: 'Indre farvann',
+        en: 'Internal waters',
+      },
+      layers: 'Indre_farvann',
+      categoryId: 'maritime_areas',
+      groupid: 14,
+      queryable: true,
+      useLegendGraphic: true,
+    },
+    {
+      id: 'sjoTerritorialfarvann',
+      name: {
+        nb: 'Territorialfarvann',
+        nn: 'Territorialfarvann',
+        en: 'Territorial waters',
+      },
+      layers: 'Territorialfarvann',
+      categoryId: 'maritime_areas',
+      groupid: 14,
+      queryable: true,
+      useLegendGraphic: true,
+    },
+    {
+      id: 'sjoSjoterritorium',
+      name: {
+        nb: 'Sjøterritorium',
+        nn: 'Sjøterritorium',
+        en: 'Maritime territory',
+      },
+      layers: 'Sjoterritorium',
+      categoryId: 'maritime_areas',
+      groupid: 14,
+      queryable: true,
+      useLegendGraphic: true,
+    },
     {
       id: 'sjoTilstotendeSone',
       name: {
@@ -246,45 +285,6 @@ export const borderConfig: ThemeLayerConfig = {
         en: "Norway's continental shelf",
       },
       layers: 'Norges_kontinentalsokkel',
-      categoryId: 'maritime_areas',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoIndreFarvann',
-      name: {
-        nb: 'Indre farvann',
-        nn: 'Indre farvann',
-        en: 'Internal waters',
-      },
-      layers: 'Indre_farvann',
-      categoryId: 'maritime_areas',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoTerritorialfarvann',
-      name: {
-        nb: 'Territorialfarvann',
-        nn: 'Territorialfarvann',
-        en: 'Territorial waters',
-      },
-      layers: 'Territorialfarvann',
-      categoryId: 'maritime_areas',
-      groupid: 14,
-      queryable: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'sjoSjoterritorium',
-      name: {
-        nb: 'Sjøterritorium',
-        nn: 'Sjøterritorium',
-        en: 'Maritime territory',
-      },
-      layers: 'Sjoterritorium',
       categoryId: 'maritime_areas',
       groupid: 14,
       queryable: true,
