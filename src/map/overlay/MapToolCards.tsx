@@ -28,16 +28,13 @@ const MapLayersCardHeader = () => {
     activeThemeLayersAtom,
   );
   return (
-    <Box position={'relative'}>
-      <Heading fontWeight="bold" mb={{ base: '0', md: '2' }} size="md">
+    <HStack mb={{ base: '0', md: '2' }} h={6}>
+      <Heading fontWeight="bold" size="md">
         {t('mapLayers.label')}
       </Heading>
       {activeThemeLayers.size > 0 && (
-        <>
+        <HStack gap={0.5}>
           <Text
-            position={'absolute'}
-            top={-3}
-            right={-7 - (activeThemeLayers.size >= 10 ? 3 : 0)}
             backgroundColor={'#FFDD9D'}
             borderRadius="full"
             borderWidth={'2px'}
@@ -49,25 +46,21 @@ const MapLayersCardHeader = () => {
           >
             {activeThemeLayers.size}
           </Text>
-          <Tooltip content={'tøm alle'}>
+          <Tooltip content={t('map.settings.layers.theme.resetbutton.text')}>
             <IconButton
-              position={'absolute'}
               variant="tertiary"
-              top={-2.5}
-              right={-70 - (activeThemeLayers.size >= 10 ? 8 : 0)}
+              colorPalette={'red'}
               size={'md'}
               visibility={activeThemeLayers.size > 0 ? 'visible' : 'hidden'}
               onClick={() => {
                 setActiveThemeLayers(new Set());
               }}
               icon={'playlist_remove'}
-            >
-              {t('map.settings.layers.theme.resetbutton.text')}
-            </IconButton>
+            />
           </Tooltip>
-        </>
+        </HStack>
       )}
-    </Box>
+    </HStack>
   );
 };
 
