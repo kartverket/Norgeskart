@@ -11,7 +11,13 @@ import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
 import { DrawToolSelector } from '../DrawToolSelector.tsx';
-import { distanceUnitAtomEffect } from '../effects.ts';
+import {
+  distanceUnitAtomEffect,
+  drawStyleEffect,
+  editPrimaryColorEffect,
+  editSecondaryColorEffect,
+  lineWidthEffect,
+} from '../effects.ts';
 import { LineWidthControl } from '../LineWidthControl.tsx';
 import { MeasurementControls } from '../MeasurementControls.tsx';
 import { PointStyleSelector } from '../PointStyleSelector.tsx';
@@ -29,6 +35,10 @@ export const DrawControls = () => {
   useAtom(drawTypeEffect);
   useAtom(distanceUnitAtomEffect);
   useAtom(snapEffect);
+  useAtom(drawStyleEffect);
+  useAtom(editPrimaryColorEffect);
+  useAtom(editSecondaryColorEffect);
+  useAtom(lineWidthEffect);
 
   useDrawControlsKeyboardEffects();
   useEffect(() => {
