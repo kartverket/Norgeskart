@@ -65,6 +65,7 @@ export const borderConfig: ThemeLayerConfig = {
       wmsUrl: env.layerProviderParameters.geoNorgeWMS.baseUrl + '.adm_enheter2',
       groupid: 3,
       queryable: false,
+      useLegendGraphic: true,
     },
     {
       id: 'municipalityBorders',
@@ -78,6 +79,7 @@ export const borderConfig: ThemeLayerConfig = {
       wmsUrl: env.layerProviderParameters.geoNorgeWMS.baseUrl + '.adm_enheter2',
       groupid: 3,
       queryable: false,
+      useLegendGraphic: true,
     },
     // --- Maritime grenser layers ---
     {
