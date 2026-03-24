@@ -61,7 +61,11 @@
         "placeholder": "Select draw tool"
       },
       "color": "Colors",
-      "edit": "Edit"
+      "edit": "Edit",
+      "defaults": {
+        "primary": "Primary",
+        "secondary": "Secondary"
+      }
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
