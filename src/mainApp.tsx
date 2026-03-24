@@ -8,7 +8,6 @@ import { AtomWrapper } from './AtomWrapper.tsx';
 import { CookieConsentDialog } from './CookieConsentDialog.tsx';
 import './index.css';
 import { projInit } from './map/projections/proj/projInit.ts';
-import { Observers } from './Observers.tsx';
 import { PostHogWrapper } from './PosthogWrapper.tsx';
 projInit();
 
@@ -19,7 +18,6 @@ createRoot(document.getElementById('root')!).render(
         <KvibProvider>
           <PostHogWrapper>
             <App />
-            <Observers />
             <Toaster />
             <CookieConsentDialog />
           </PostHogWrapper>

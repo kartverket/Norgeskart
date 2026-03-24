@@ -10,6 +10,7 @@ import { Compass } from './map/overlay/Compass';
 import { LinkLogo } from './map/overlay/LinkLogo';
 import { MapToolButtons } from './map/overlay/MapToolButtons';
 import { MapToolCards } from './map/overlay/MapToolCards';
+import { isPrintDialogOpenAtom } from './print/atoms';
 import { PrintDialog } from './print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from './search/atoms';
 import { useMapClickSearch } from './search/hooks';
@@ -31,6 +32,7 @@ export const Layout = () => {
   });
   const selectedResult = useAtomValue(selectedResultAtom);
   const currentMapTool = useAtomValue(mapToolAtom);
+  const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
 
   useFeatureInfoClick();
   useSearchEffects();
@@ -119,7 +121,7 @@ export const Layout = () => {
               <InfoBox />
             </ErrorBoundary>
             <ErrorBoundary fallback={undefined} name={'PrintDialog'}>
-              <PrintDialog />
+              {isPrintDialogOpen && <PrintDialog />}
             </ErrorBoundary>
           </Flex>
         </GridItem>

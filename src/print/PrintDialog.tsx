@@ -9,10 +9,14 @@ import {
   TabsList,
   TabsTrigger,
 } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useSetAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getEnvName } from '../env';
-import { mapToolAtom } from '../map/overlay/atoms';
+import {
+  getUrlParameter,
+  removeUrlParameter,
+  setUrlParameter,
+} from '../shared/utils/urlUtils';
 import { isPrintDialogOpenAtom } from './atoms';
 import { ElevationProfileSection } from './ElevationProfile/ElevationProfileSection';
 import { EmergencyPosterSection } from './EmergencyPoster/EmergencyPosterSection';
@@ -28,19 +32,30 @@ const printTabNames = [
 
 type PrintTabName = (typeof printTabNames)[number];
 
-const envName = getEnvName();
+const getDefaultPrintTab = (): PrintTabName => {
+  const printToolParam = getUrlParameter('printTool');
+  if (
+    printToolParam &&
+    printTabNames.includes(printToolParam as PrintTabName)
+  ) {
+    return printToolParam as PrintTabName;
+  }
+  return 'extent';
+};
 
 export const PrintDialog = () => {
-  const currentMapTool = useAtomValue(mapToolAtom);
-  const [isPrintDialogOpen, setIsPrintDialogOpen] = useAtom(
-    isPrintDialogOpenAtom,
-  );
+  const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
+  const [selectedPrintTool, setSelectedPrintTool] =
+    useState<PrintTabName>(getDefaultPrintTab());
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
+  useEffect(() => {
+    setUrlParameter('printTool', selectedPrintTool);
+    return () => {
+      removeUrlParameter('printTool');
+    };
+  }, [selectedPrintTool]);
 
-  if (!isPrintDialogOpen) {
-    return null;
-  }
   const tabsListConfig: { label: string; value: PrintTabName }[] = printTabNames
     .filter((tabName) => {
       return currentLanguage !== 'en' || tabName !== 'emergencyPoster';
@@ -77,19 +92,17 @@ export const PrintDialog = () => {
           />
         </Flex>
         <Tabs
-          defaultValue={envName == 'prod' ? 'elevationProfile' : 'extent'}
+          defaultValue={'extent'}
           lazyMount
           unmountOnExit
+          value={selectedPrintTool}
+          onValueChange={(value) =>
+            setSelectedPrintTool(value.value as PrintTabName)
+          }
         >
           <TabsList>
             {tabsListConfig.map((tab) => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                disabled={
-                  tab.value === 'elevationProfile' && currentMapTool === 'draw'
-                }
-              >
+              <TabsTrigger key={tab.value} value={tab.value}>
                 {tab.label}
               </TabsTrigger>
             ))}

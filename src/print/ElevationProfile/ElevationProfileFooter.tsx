@@ -29,13 +29,14 @@ export const ElevationProfileFooter = ({
       clearFiles();
     }
   };
+  if (profileLine == null) {
+    return;
+  }
   return (
     <ButtonGroup justify="space-between" mt={4}>
-      {profileLine != null && (
-        <Button onClick={onReset}>
-          {t('printdialog.elevationProfile.buttons.reset.label')}
-        </Button>
-      )}
+      <Button onClick={onReset}>
+        {t('printdialog.elevationProfile.buttons.reset.label')}
+      </Button>
 
       <ElevationProfileExport chartRef={chartRef} />
     </ButtonGroup>
