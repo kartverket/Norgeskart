@@ -183,6 +183,7 @@ export const borderConfig: ThemeLayerConfig = {
       groupid: 14,
       queryable: true,
       useLegendGraphic: true,
+      singleImage: true,
     },
 
     // --- Maritime områder layers ---
@@ -315,6 +316,7 @@ export const borderConfig: ThemeLayerConfig = {
       groupid: 14,
       queryable: true,
       useLegendGraphic: true,
+      singleImage: true,
     },
   ],
 };
