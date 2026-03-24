@@ -101,6 +101,10 @@ export const HikingMapSection = () => {
       const center = map.getCoordinateFromPixel([size[0] / 2, size[1] / 2]);
       overlay.setPosition(center);
 
+      if (!center) {
+        return;
+      }
+
       const projection = map.getView().getProjection();
       if (!projection) {
         return;

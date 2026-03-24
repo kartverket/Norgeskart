@@ -235,8 +235,10 @@ export const selectedResultAtom = atom<SearchResult | null>(
 );
 
 export const selectedResultEffect = atomEffect((get, set) => {
-  get(selectedResultAtom);
-  set(isPrintDialogOpenAtom, false);
+  const selectedResult = get(selectedResultAtom);
+  if (selectedResult !== null) {
+    set(isPrintDialogOpenAtom, false);
+  }
 });
 
 export const useResetSearchResults = () => {
