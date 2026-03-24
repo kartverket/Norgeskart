@@ -1,7 +1,7 @@
-import TileLayer from 'ol/layer/Tile';
 import ImageLayer from 'ol/layer/Image.js';
+import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import { TileWMS, ImageWMS  } from 'ol/source';
+import { ImageWMS, TileWMS } from 'ol/source';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
 import type {
   ThemeLayerConfig,
@@ -163,7 +163,6 @@ export const createThemeLayerFromConfig = (
     layerDef.featureInfoFields ||
     category?.featureInfoFields ||
     parentCategory?.featureInfoFields;
-
 
   const layerProperties = {
     id: `theme.${layerDef.id}`,
