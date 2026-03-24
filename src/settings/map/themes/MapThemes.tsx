@@ -9,10 +9,9 @@ import {
   Text,
   VStack,
 } from '@kvib/react';
-import { getDefaultStore, useAtom } from 'jotai';
+import { getDefaultStore } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { activeThemeLayersAtom } from '../../../map/layers/atoms';
 import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
 import {
   getDirectLayersForCategory,
@@ -37,9 +36,6 @@ export const MapThemes = () => {
   const showLimitWarning = activeCount >= WARNING_THRESHOLD;
 
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
-    activeThemeLayersAtom,
-  );
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
