@@ -4,8 +4,6 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   Alert,
-  Box,
-  Button,
   Flex,
   Heading,
   Text,
@@ -149,29 +147,13 @@ export const MapThemes = () => {
 
   return (
     <VStack gap={0} align="stretch">
-      <Box marginBottom={0}>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text fontSize="sm" colorPalette="gray">
-            {t('map.settings.layers.theme.activeLayersCount')}: {activeCount}
+      {showLimitWarning && (
+        <Alert status="info" marginTop={2}>
+          <Text fontSize="sm">
+            {t('map.settings.layers.theme.warningPerformance')}
           </Text>
-          <Button
-            size={'sm'}
-            visibility={activeThemeLayers.size > 0 ? 'visible' : 'hidden'}
-            onClick={() => {
-              setActiveThemeLayers(new Set());
-            }}
-          >
-            {t('map.settings.layers.theme.resetbutton.text')}
-          </Button>
-        </Flex>
-        {showLimitWarning && (
-          <Alert status="info" marginTop={2}>
-            <Text fontSize="sm">
-              {t('map.settings.layers.theme.warningPerformance')}
-            </Text>
-          </Alert>
-        )}
-      </Box>
+        </Alert>
+      )}
 
       <Accordion
         collapsible

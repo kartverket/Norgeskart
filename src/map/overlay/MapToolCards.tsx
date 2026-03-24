@@ -5,8 +5,11 @@ import {
   Heading,
   HStack,
   IconButton,
+  Text,
+  Tooltip,
   VStack,
 } from '@kvib/react';
+
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +19,72 @@ import { MapThemes } from '../../settings/map/themes/MapThemes';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { InfoDrawer } from '../../sidePanel/InfoDrawer';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
+import { activeThemeLayersAtom } from '../layers/atoms';
 import { drawPanelCollapsedAtom, mapToolAtom } from './atoms';
+
+const MapLayersCardHeader = () => {
+  const { t } = useTranslation();
+  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
+    activeThemeLayersAtom,
+  );
+  return (
+    <Box position={'relative'}>
+      <Heading fontWeight="bold" mb={{ base: '0', md: '2' }} size="md">
+        {t('mapLayers.label')}
+      </Heading>
+      {activeThemeLayers.size > 0 && (
+        <>
+          <Text
+            position={'absolute'}
+            top={-3}
+            right={-7 - (activeThemeLayers.size >= 10 ? 3 : 0)}
+            backgroundColor={'#FFDD9D'}
+            borderRadius="full"
+            borderWidth={'2px'}
+            borderColor={'white'}
+            px={2}
+            py={0.5}
+            pointerEvents={'none'}
+            fontSize={'sm'}
+          >
+            {activeThemeLayers.size}
+          </Text>
+          <Tooltip content={'tøm alle'}>
+            <IconButton
+              position={'absolute'}
+              variant="tertiary"
+              top={-2.5}
+              right={-70 - (activeThemeLayers.size >= 10 ? 8 : 0)}
+              size={'md'}
+              visibility={activeThemeLayers.size > 0 ? 'visible' : 'hidden'}
+              onClick={() => {
+                setActiveThemeLayers(new Set());
+              }}
+              icon={'playlist_remove'}
+            >
+              {t('map.settings.layers.theme.resetbutton.text')}
+            </IconButton>
+          </Tooltip>
+        </>
+      )}
+    </Box>
+  );
+};
+
+const MapToolCardHeader = ({ label }: { label: string | React.ReactNode }) => {
+  const isLabelString = typeof label === 'string';
+  return isLabelString ? (
+    <Heading
+      fontWeight="bold"
+      mb={{ base: '0', md: '2' }}
+      size={{ base: 'sm', md: 'md' }}
+    >
+      {label}
+    </Heading>
+  ) : (
+    <>{label}</>
+  );
+};
 
 export const MapToolCards = () => {
   const currentMapTool = useAtomValue(mapToolAtom);
@@ -75,7 +143,7 @@ const MapToolCardsBody = () => {
   }
   if (currentMapTool === 'layers') {
     return (
-      <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
+      <MapToolCard label={<MapLayersCardHeader />} onClose={onClose}>
         <MapThemes />
       </MapToolCard>
     );
@@ -97,7 +165,7 @@ const MapToolCardsBody = () => {
 };
 
 interface MapToolCardProps {
-  label: string;
+  label: string | React.ReactNode;
   children: React.ReactNode | React.ReactNode[] | undefined;
   onClose: () => void;
   hideHeader?: boolean;
@@ -132,17 +200,7 @@ const MapToolCard = ({
       overflowY="auto"
     >
       <Flex justify="space-between" gap="2" w="100%" align="center">
-        {!hideHeader ? (
-          <Heading
-            fontWeight="bold"
-            mb={{ base: '0', md: '2' }}
-            size={{ base: 'sm', md: 'md' }}
-          >
-            {label}
-          </Heading>
-        ) : (
-          <Box />
-        )}
+        {!hideHeader ? <MapToolCardHeader label={label} /> : <Box />}
 
         <HStack>
           {showCollapse && onCollapse && (
