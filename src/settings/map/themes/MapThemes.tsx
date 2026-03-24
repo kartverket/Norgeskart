@@ -4,17 +4,14 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   Alert,
-  Box,
-  Button,
   Flex,
   Heading,
   Text,
   VStack,
 } from '@kvib/react';
-import { getDefaultStore, useAtom } from 'jotai';
+import { getDefaultStore } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { activeThemeLayersAtom } from '../../../map/layers/atoms';
 import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
 import {
   getDirectLayersForCategory,
@@ -23,7 +20,7 @@ import {
   themeLayerConfig,
 } from '../../../map/layers/themeLayerConfigApi';
 import {
-  MAX_THEME_LAYERS,
+  WARNING_THRESHOLD,
   useThemeLayers,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
@@ -36,12 +33,9 @@ export const MapThemes = () => {
   const { t, i18n } = useTranslation();
 
   const activeCount = activeLayerSet.size;
-  const showLimitWarning = activeCount >= MAX_THEME_LAYERS;
+  const showLimitWarning = activeCount >= WARNING_THRESHOLD;
 
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
-    activeThemeLayersAtom,
-  );
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -96,22 +90,10 @@ export const MapThemes = () => {
           directLayers,
         });
       } else {
-        const layers = themeLayerConfig.layers.filter(
-          (layer) => layer.categoryId === mainCategory.id,
-        );
         result.push({
           name: mainCategory.id,
           heading: mainCategory.name[currentLang] || mainCategory.name.nb,
-          subThemes: [
-            {
-              name: mainCategory.id,
-              heading: mainCategory.name[currentLang] || mainCategory.name.nb,
-              layers: layers.map((layer) => ({
-                name: layer.id as ThemeLayerName,
-                label: layer.name[currentLang] || layer.name.nb,
-              })),
-            },
-          ],
+          subThemes: [],
           directLayers,
         });
       }
@@ -161,46 +143,13 @@ export const MapThemes = () => {
 
   return (
     <VStack gap={0} align="stretch">
-      <Box marginBottom={0}>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text
-            fontSize="sm"
-            colorPalette={
-              activeCount >= MAX_THEME_LAYERS
-                ? 'red'
-                : activeCount >= MAX_THEME_LAYERS * 0.8
-                  ? 'orange'
-                  : 'gray'
-            }
-          >
-            {t('map.settings.layers.theme.activeLayersCount')}: {activeCount} /{' '}
-            {MAX_THEME_LAYERS}
+      {showLimitWarning && (
+        <Alert status="info" marginTop={2}>
+          <Text fontSize="sm">
+            {t('map.settings.layers.theme.warningPerformance')}
           </Text>
-          <Button
-            size={'sm'}
-            visibility={activeThemeLayers.size > 0 ? 'visible' : 'hidden'}
-            onClick={() => {
-              setActiveThemeLayers(new Set());
-            }}
-          >
-            {t('map.settings.layers.theme.resetbutton.text')}
-          </Button>
-        </Flex>
-        {showLimitWarning && (
-          <Alert status="warning" marginTop={2}>
-            <Text fontSize="sm">
-              {t('map.settings.layers.theme.warningLimit')}
-            </Text>
-          </Alert>
-        )}
-        {activeCount >= MAX_THEME_LAYERS * 0.7 && !showLimitWarning && (
-          <Alert status="info" marginTop={2}>
-            <Text fontSize="sm">
-              {t('map.settings.layers.theme.warningPerformance')}
-            </Text>
-          </Alert>
-        )}
-      </Box>
+        </Alert>
+      )}
 
       <Accordion
         collapsible
@@ -253,7 +202,7 @@ export const MapThemes = () => {
                     checked={isLayerChecked(layer.name)}
                     disabled={
                       !isLayerChecked(layer.name) &&
-                      activeCount >= MAX_THEME_LAYERS
+                      activeCount >= WARNING_THRESHOLD
                     }
                   />
                 ))}
