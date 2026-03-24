@@ -95,6 +95,7 @@ export const sjoConfig: ThemeLayerConfig = {
       groupid: 14,
       queryable: true,
       useLegendGraphic: true,
+      singleImage: true,
     },
   ],
 };

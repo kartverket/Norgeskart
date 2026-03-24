@@ -61,7 +61,11 @@
         "placeholder": "Velg tegnemåte"
       },
       "color": "Farger",
-      "edit": "Rediger"
+      "edit": "Rediger",
+      "defaults": {
+        "primary": "Hovedfarge",
+        "secondary": "Sekundær"
+      }
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -280,7 +284,6 @@
           "nauticalBackgroundAlreadyActive": "Nautisk bakgrunnskart er allerede aktivt",
           "label": "Velg temakart",
           "activeLayersCount": "Aktive lag",
-          "warningLimit": "Maksimalt antall lag nådd. Vennligst deaktiver noen lag før du legger til flere for bedre ytelse.",
           "warningPerformance": "Aktivering av mange lag kan påvirke ytelsen. Vurder å deaktivere ubrukte lag.",
           "resetbutton": {
             "text": "Nullstill"

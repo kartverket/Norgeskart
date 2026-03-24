@@ -103,7 +103,7 @@ export const getPropertyGeometry = async (
   });
 
   const style = new Style({
-    stroke: new Stroke({ color: 'blue', width: 2 }),
+    stroke: new Stroke({ color: '#E54848FF', width: 2 }),
     fill: new Fill({ color: 'rgba(255, 255, 0, 0.25)' }),
   });
 
