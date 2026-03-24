@@ -61,7 +61,11 @@
         "placeholder": "Velg tegnemåte"
       },
       "color": "Farger",
-      "edit": "Rediger"
+      "edit": "Rediger",
+      "defaults": {
+        "primary": "Hovedfarge",
+        "secondary": "Sekundær"
+      }
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",

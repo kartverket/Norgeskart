@@ -61,7 +61,11 @@
         "placeholder": "Vel teiknemåte"
       },
       "color": "Fargar",
-      "edit": "Rediger"
+      "edit": "Rediger",
+      "defaults": {
+        "primary": "Hovedfarve",
+        "secondary": "Sekundær"
+      }
     },
     "deleteSelection": "Fjern valde",
     "end": "Ferdig",

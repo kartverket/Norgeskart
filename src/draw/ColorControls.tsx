@@ -166,6 +166,9 @@ const useColorLabels = () => {
         secondaryLabel: t(p + 'colorFill'),
       };
     default:
-      return { primaryLabel: 'Primary', secondaryLabel: 'Secondary' };
+      return {
+        primaryLabel: t(p + 'defaults.primary'),
+        secondaryLabel: t(p + 'defaults.secondary'),
+      };
   }
 };
