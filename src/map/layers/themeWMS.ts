@@ -64,6 +64,56 @@ type StedsnavnLayerName =
   | 'collectiveDecision3MonthsPlaceNames'
   | 'collectiveDecision1MonthPlaceNames';
 
+type TopoMapserverLayerName =
+  | 'topoMs_lag01_hav'
+  | 'topoMs_lag02_dybdelag_gebco'
+  | 'topoMs_lag03_dybdelag_sjo'
+  | 'topoMs_lag04_Europa'
+  | 'topoMs_lag05_hoydelag'
+  | 'topoMs_lag06_elveflate'
+  | 'topoMs_lag07_sjodybde'
+  | 'topoMs_lag08_arealdekke'
+  | 'topoMs_lag09_relieff_sol'
+  | 'topoMs_lag10_hoydekurve_og_n50bre'
+  | 'topoMs_lag11_relieff_skygge'
+  | 'topoMs_lag12_innsjoflate'
+  | 'topoMs_lag13_grense_adm_maritim_fare_naturvern'
+  | 'topoMs_lag14_vannkontur_elvbekk'
+  | 'topoMs_lag15_fkb_bygnanlegg'
+  | 'topoMs_lag16_fkb_samferdselflate_terreng'
+  | 'topoMs_lag17_samferdsel_anlegg'
+  | 'topoMs_lag18_samferdsel_tunnel'
+  | 'topoMs_lag19_samferdsel_batrute'
+  | 'topoMs_lag20_samferdsel_terreng'
+  | 'topoMs_lag21_bygning_anlegg'
+  | 'topoMs_lag22_samferdsel_bru'
+  | 'topoMs_lag23_bygning_bygningslinje'
+  | 'topoMs_lag24_lufthavn'
+  | 'topoMs_lag24_lufthavn_S3'
+  | 'topoMs_lag25_kraftlinje_taubane'
+  | 'topoMs_lag26_hoydepunkt'
+  | 'topoMs_lag27_sykehus_m_akuttmottak'
+  | 'topoMs_lag28_adm_grensepunkt'
+  | 'topoMs_lag29_hoydetall'
+  | 'topoMs_lag29_n5000_stedsnavn_matview'
+  | 'topoMs_lag30_n2000_stedsnavn_matview'
+  | 'topoMs_lag30_stedsnavn_vegnummer_og_adresse'
+  | 'topoMs_lag31_n1000_stedsnavn_matview'
+  | 'topoMs_lag32_n500_hoydetall_matview_geometri'
+  | 'topoMs_lag33_n500_stedsnavn_matview'
+  | 'topoMs_lag34_n250_hoydetall_matview_geometri'
+  | 'topoMs_lag35_n250_stedsnavn_matview'
+  | 'topoMs_lag36_n100_hoydetall_matview_geometri'
+  | 'topoMs_lag37_n100_stedsnavn_matview'
+  | 'topoMs_lag38_n50_hoydetall_matview_geometri'
+  | 'topoMs_lag39_n50_stedsnavn_matview'
+  | 'topoMs_lag40_n5_stedsnavn_og_hoydetall'
+  | 'topoMs_lag41_vegnummer'
+  | 'topoMs_lag42_adresse'
+  | 'topoMs_lag43_gatenavn'
+  | 'topoMs_lag44_Svalbard'
+  | 'topoMs_lag45_Jan_Mayen';
+
 type PropertyLayerName = 'adresses' | 'buildings' | 'parcels';
 type OutdoorsLifeLayerName =
   | 'hikingTrails'
@@ -120,7 +170,8 @@ export type ThemeLayerName =
   | HistoricalMapsLayerName
   | StedsnavnLayerName
   | ConfigThemeLayerName
-  | SjoLayerName;
+  | SjoLayerName
+  | TopoMapserverLayerName;
 
 export const QUERYABLE_LAYERS: ThemeLayerName[] = [
   'adresses',
