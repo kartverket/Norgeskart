@@ -34,6 +34,10 @@ route {
                 rewrite * /skwms1/wms.ecc_enc
                 reverse_proxy https://wms.geonorge.no {
                         header_up Host wms.geonorge.no
+                        transport http {
+                                versions 1.1
+                                tls_server_name wms.geonorge.no
+                        }
                 }
         }
 
