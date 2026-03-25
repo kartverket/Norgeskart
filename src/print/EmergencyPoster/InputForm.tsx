@@ -170,7 +170,9 @@ export const InputForm = ({
                 ),
                 type: 'error',
               });
-              ph.captureException('print_emergency_poster_failed');
+              ph.captureException('print_emergency_poster_failed', {
+                errorType: 'print_emergency_poster_failed',
+              });
               return;
             }
 
