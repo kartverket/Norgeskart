@@ -107,6 +107,7 @@ export const ExtentSection = () => {
       },
       onError: (msg) => {
         ph.captureException('print_extent_error', {
+          errorType: 'print_extent_error',
           format,
           orientation,
           errorMessage: msg,
