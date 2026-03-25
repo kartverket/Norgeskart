@@ -19,7 +19,7 @@ export const nauticalBackgroundLayers: BackgroundLayer[] = [
   {
     type: 'WMS',
     layerName: 'oceanicelectronic',
-    url: env.layerProviderParameters.geoNorgeWMS.baseUrl + '.ecc_enc',
+    url: window.location.origin + '/api/proxy/ecc-enc',
     props: { LAYERS: 'cells', TILED: true, VERSION: '1.1.0' },
   },
 ];

@@ -22,6 +22,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/api/proxy/ecc-enc': {
+        target: 'https://wms.geonorge.no',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/proxy\/ecc-enc/, '/skwms1/wms.ecc_enc'),
+      },
     },
   },
   test: {
