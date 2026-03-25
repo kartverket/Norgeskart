@@ -78,6 +78,7 @@ export const profileEffect = atomEffect((get, set) => {
         break;
       } else if (status.jobStatus === 'esriJobFailed') {
         posthog.captureException('elevation_profile_job_failed', {
+          errorType: 'elevation_profile_job_failed',
           jobId: submitResponse.jobId,
           feature: lineCoordinates,
           sampleDistance: stepLength,
