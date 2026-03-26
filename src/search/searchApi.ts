@@ -1,6 +1,8 @@
+import { transform } from 'ol/proj';
 import posthog from 'posthog-js';
 import { getEnv } from '../env.ts';
 import { ProjectionIdentifier } from '../map/projections/types.ts';
+import { isNumberOk } from '../shared/utils/numberUtils.ts';
 import {
   AddressApiResponse,
   EmergencyPosterResponse,
@@ -198,12 +200,21 @@ export const getProperties = async (query: string): Promise<Property[]> => {
   }
 };
 
-export const getElevation = async (x: number, y: number) => {
+export const getElevation = async (
+  x: number,
+  y: number,
+  srs: ProjectionIdentifier,
+) => {
+  if (!isNumberOk(x) || !isNumberOk(y)) {
+    return;
+  }
+  const [xTransformed, yTransformed] = transform([x, y], srs, 'EPSG:25833');
+
   const url = new URL(
     'https://hoydedata.no/arcgis/rest/services/NHM_DTM_TOPOBATHY_25833/ImageServer/identify',
   );
   url.searchParams.append('f', 'json');
-  url.searchParams.append('geometry', `${x},${y}`);
+  url.searchParams.append('geometry', `${xTransformed},${yTransformed}`);
   url.searchParams.append('geometryType', 'esriGeometryPoint');
   url.searchParams.append('sr', '25833'); //TODO ta denne som input
   url.searchParams.append('returnGeometry', 'false');
