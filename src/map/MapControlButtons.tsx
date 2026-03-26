@@ -1,5 +1,4 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties } from 'react';
@@ -8,8 +7,8 @@ import {
   displayMapLegendAtom,
   displayMapLegendControlAtom,
   mapOrientationDegreesAtom,
-  trackPositionAtom,
 } from './atoms';
+import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
 
 export const MapControlButtons = () => {
@@ -44,9 +43,10 @@ export const MapControlButtons = () => {
       bg="#FFFF"
       borderRadius="xl"
       alignItems="center"
-      w={{ base: '10', md: '12' }}
+      w={{ base: '8', md: '10' }}
       pointerEvents="auto"
       py={1}
+      shadow="lg"
     >
       {displayMapLegendControl && (
         <ControlButton
@@ -102,17 +102,19 @@ export const MapControlButtons = () => {
         hide={isMobile}
         displayTooltip
       />
-      <ControlButton
-        id={trackPosition ? 'location_disabled' : 'location_enabled'}
-        icon={trackPosition ? 'location_disabled' : 'my_location'}
-        onClick={handleMapLocationClick}
-        label={
-          trackPosition
-            ? t('map.controls.myLocation.disable.label')
-            : t('map.controls.myLocation.enable.label')
-        }
-        displayTooltip
-      />
+      {navigator.geolocation && (
+        <ControlButton
+          id={trackPosition ? 'location_disabled' : 'location_enabled'}
+          icon={trackPosition ? 'location_disabled' : 'my_location'}
+          onClick={handleMapLocationClick}
+          label={
+            trackPosition
+              ? t('map.controls.myLocation.disable.label')
+              : t('map.controls.myLocation.enable.label')
+          }
+          displayTooltip
+        />
+      )}
       <ControlButton
         id="fullscreen"
         icon="fullscreen"
@@ -137,16 +139,14 @@ interface ControlButtonProps {
 }
 
 const ControlIconButton = (props: ControlButtonProps) => {
-  const ph = usePostHog();
   return (
     <IconButton
       variant={props.variant || 'ghost'}
       colorPalette="green"
-      size={{ base: 'xs', md: 'sm' }}
+      size="xs"
       icon={props.icon}
       aria-label={props.label}
       onClick={() => {
-        ph.capture('map_control_clicked', { control: props.id });
         props.onClick();
       }}
       style={props.style}

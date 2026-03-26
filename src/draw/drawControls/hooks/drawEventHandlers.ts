@@ -9,6 +9,7 @@ import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../../map/atoms';
 import { showMeasurementsAtom } from '../../../settings/draw/atoms';
+import { getFeatureIcon } from '../../utils/featureUtils';
 import {
   addInteractiveMeasurementOverlayToFeature,
   clearStaticOverlaysForFeature,
@@ -51,23 +52,6 @@ export const getFeatureOverlayIconProperties = (
   const fontSize =
     (element.style.fontSize.replace('px', '') as unknown as number) / 10; //This is bad
   return { icon: iconChar, color: color, size: fontSize };
-};
-
-export const getFeatureIcon = (
-  feature: Feature<Geometry>,
-): PointIcon | null => {
-  let icon = null;
-  const props = feature.getProperties();
-  if ('overlayIcon' in props) {
-    icon = props['overlayIcon'] as PointIcon;
-  } else {
-    try {
-      icon = feature.getGeometry()?.getProperties()['overlayIcon'] as PointIcon;
-    } catch {
-      icon = null;
-    }
-  }
-  return icon;
 };
 
 //Create a function to compare two styles

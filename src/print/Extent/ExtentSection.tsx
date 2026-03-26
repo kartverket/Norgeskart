@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   createListCollection,
@@ -16,19 +17,16 @@ import {
   Text,
 } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../map/atoms';
-import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
+
+import { isVectorTileLayer } from '../../map/layers/backgroundLayers';
+import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { PrintBox } from './PrintBox';
-import {
-  printBoxCenterAtom,
-  printBoxExtentAtom,
-  printBoxExtentEffect,
-  printBoxLayoutAtom,
-} from './atoms';
+import { getExtentFromMap, printBoxLayoutAtom } from './atoms';
 import { generateMapPdf } from './generateMapPdf';
 import { PrintLayout, usePrintCapabilities } from './usePrintCapabilities';
 
@@ -62,12 +60,10 @@ export const ExtentSection = () => {
   const { t } = useTranslation();
   const layouts: PrintLayout[] = usePrintCapabilities();
   const map = useAtomValue(mapAtom);
-  const backgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const backgroundLayer = useAtomValue(backgroundLayerAtom);
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
-  const setPrintBoxCenter = useSetAtom(printBoxCenterAtom);
   const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
-  const printBoxExtent = useAtomValue(printBoxExtentAtom);
-  useAtom(printBoxExtentEffect);
+  const layout = useAtomValue(printBoxLayoutAtom);
   const ph = usePostHog();
 
   const [format, setFormat] = useState('A4');
@@ -76,12 +72,6 @@ export const ExtentSection = () => {
 
   const formatOptions = getFormatOptions(layouts);
   const selectedLayout = getSelectedLayout(layouts, format, orientation);
-
-  useEffect(() => {
-    if (!map) return;
-    const center = map.getView().getCenter();
-    if (center) setPrintBoxCenter(center as [number, number]);
-  }, [map, setPrintBoxCenter]);
 
   useEffect(() => {
     if (!selectedLayout) return;
@@ -95,6 +85,7 @@ export const ExtentSection = () => {
   }, [selectedLayout, setPrintBoxLayout]);
 
   const handlePrint = async () => {
+    const printBoxExtent = getExtentFromMap(map, layout);
     if (!selectedLayout || !printBoxExtent) return;
 
     ph.capture('print_extent_initiated', {
@@ -115,7 +106,8 @@ export const ExtentSection = () => {
         });
       },
       onError: (msg) => {
-        ph.capture('print_extent_error', {
+        ph.captureException('print_extent_error', {
+          errorType: 'print_extent_error',
           format,
           orientation,
           errorMessage: msg,
@@ -127,6 +119,21 @@ export const ExtentSection = () => {
   return (
     <>
       <PrintBox map={map} />
+      {isVectorTileLayer(backgroundLayer) && (
+        <Alert status="warning" mb={2}>
+          {t('printExtent.vectorTileFallbackWarning')}
+        </Alert>
+      )}
+      {backgroundLayer.startsWith('Nibcache_') && (
+        <Alert status="warning" mb={2}>
+          {t('printExtent.aerialImageryNotSupported')}
+        </Alert>
+      )}
+      {map && map.getView().getProjection().getCode() !== 'EPSG:25833' && (
+        <Alert status="warning" mb={2}>
+          {t('printExtent.projectionWarning')}
+        </Alert>
+      )}
       <Text>{t('printExtent.label')}</Text>
       <SelectRoot
         collection={createListCollection({ items: formatOptions })}

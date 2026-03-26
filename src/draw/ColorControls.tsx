@@ -32,10 +32,10 @@ export const ColorControls = () => {
     <VStack
       align="stretch"
       w="100%"
-      mt={isMobile ? 1 : 2}
-      gap={isMobile ? 1 : 2}
+      mt={isMobile ? 1 : 1}
+      gap={isMobile ? 1 : 1}
     >
-      <Heading fontWeight="semibold" size={{ base: 'sm', md: 'md' }}>
+      <Heading fontWeight="semibold" size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.color')}
       </Heading>
 
@@ -109,8 +109,8 @@ const ColorRow = ({
         <ColorPickerTrigger asChild>
           <HStack
             w={isMobile ? 'auto' : '100%'}
-            minW={isMobile ? '160px' : undefined}
-            maxW={isMobile ? '220px' : undefined}
+            minW={isMobile ? '50px' : undefined}
+            maxW={isMobile ? '155px' : undefined}
             role="button"
             tabIndex={0}
             align="center"
@@ -123,13 +123,13 @@ const ColorRow = ({
             _hover={{ bg: 'gray.50' }}
           >
             <ColorPickerSwatch value={color} />
-            <Text fontSize="sm">{label}</Text>
+            <Text fontSize={{ base: 'xs', md: 'sm' }}>{label}</Text>
             <Spacer />
             <Icon
               color="colorPalette.500"
               grade={0}
               icon="chevron_right"
-              size={isMobile ? 24 : 28}
+              size={isMobile ? 16 : 18}
               weight={300}
             />
           </HStack>
@@ -166,6 +166,9 @@ const useColorLabels = () => {
         secondaryLabel: t(p + 'colorFill'),
       };
     default:
-      return { primaryLabel: 'Primary', secondaryLabel: 'Secondary' };
+      return {
+        primaryLabel: t(p + 'defaults.primary'),
+        secondaryLabel: t(p + 'defaults.secondary'),
+      };
   }
 };

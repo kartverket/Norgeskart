@@ -1,29 +1,15 @@
-import {
-  Box,
-  Button,
-  Image,
-  SimpleGrid,
-  Text,
-  toaster,
-  VStack,
-} from '@kvib/react';
-import { usePostHog } from '@posthog/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useEffect, useState } from 'react';
+import { Box, Button, Image, SimpleGrid, Text, VStack } from '@kvib/react';
+import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { getBackgroundLayerImageName, mapAtom } from '../../map/atoms';
 import {
-  activeBackgroundLayerAtom,
-  preNauticalProjectionAtom,
-} from '../../map/layers/atoms.ts';
+  currentProjectionAtom,
+  getBackgroundLayerImageName,
+} from '../../map/atoms';
 import { BackgroundLayerName } from '../../map/layers/backgroundLayers';
-import { WMSLayerName } from '../../map/layers/backgroundWMS';
 import {
-  DEFAULT_BACKGROUND_LAYER,
-  loadableWMTS,
-} from '../../map/layers/backgroundWMTSProviders';
-import { useMapSettings } from '../../map/mapHooks';
-import { getUrlParameter, setUrlParameter } from '../../shared/utils/urlUtils';
+  allConfiguredBackgroundLayers,
+  backgroundLayerAtom,
+} from '../../map/layers/config/backgroundLayers/atoms.ts';
 
 // Prioritetskart for sortering
 const layerPriorityMap = new Map<BackgroundLayerName, number>([
@@ -37,14 +23,13 @@ const layerPriorityMap = new Map<BackgroundLayerName, number>([
   ['Nibcache_UTM32_EUREF89_v2', 8],
   ['Nibcache_UTM33_EUREF89_v2', 9],
   ['Nibcache_UTM35_EUREF89_v2', 10],
+  ['Basisdata_NP_Basiskart_Svalbard_WMTS_25833', 11],
+  ['Basisdata_NP_Basiskart_JanMayen_WMTS_25833', 12],
 ]);
 
-const layerPrioritySort = (
-  a: { value: BackgroundLayerName; label: string },
-  b: { value: BackgroundLayerName; label: string },
-) => {
-  const priorityA = layerPriorityMap.get(a.value) || 0;
-  const priorityB = layerPriorityMap.get(b.value) || 0;
+const layerPrioritySort = (a: BackgroundLayerName, b: BackgroundLayerName) => {
+  const priorityA = layerPriorityMap.get(a) || 0;
+  const priorityB = layerPriorityMap.get(b) || 0;
   return priorityA - priorityB;
 };
 
@@ -113,123 +98,36 @@ export const BackgroundLayerSettings = ({
 }: {
   onSelectComplete: () => void;
 }) => {
+  const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
   const { t } = useTranslation();
-  const { setBackgroundLayer, setProjection, getMapProjectionCode } =
-    useMapSettings();
-  const WMTSProviders = useAtomValue(loadableWMTS);
-  const map = useAtomValue(mapAtom);
-  const ph = usePostHog();
-  const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
-  const [preNauticalProjection, setPreNauticalProjection] = useAtom(
-    preNauticalProjectionAtom,
+
+  const currentProjection = useAtomValue(currentProjectionAtom);
+
+  const layersToShow = allConfiguredBackgroundLayers.filter(
+    (layer) =>
+      layer.showForProjections == null ||
+      layer.showForProjections.includes(currentProjection),
   );
 
-  const initialLayer: BackgroundLayerName = (() => {
-    const currentBackgroundLayer = map
-      .getAllLayers()
-      .find((l) => l.get('id')?.startsWith('bg.'));
+  const sortedLayers = layersToShow.sort((lc1, lc2) =>
+    layerPrioritySort(lc1.layerName, lc2.layerName),
+  );
 
-    const currentLayerId = currentBackgroundLayer?.get('id');
-
-    if (currentLayerId) {
-      return currentLayerId.substring(3) as BackgroundLayerName;
-    }
-
-    const layerFromUrl = getUrlParameter(
-      'backgroundLayer',
-    ) as BackgroundLayerName;
-    return layerFromUrl || DEFAULT_BACKGROUND_LAYER;
-  })();
-
-  const [currentLayer, setCurrentLayer] =
-    useState<BackgroundLayerName>(initialLayer);
-  useEffect(() => {
-    setActiveBackgroundLayer(initialLayer);
-  }, [initialLayer, setActiveBackgroundLayer]);
-
-  if (WMTSProviders.state !== 'hasData') {
-    return null;
-  }
-
-  const projectionCode = getMapProjectionCode();
-  const providers = WMTSProviders.data.keys();
-
-  const avaiableLayers: { value: BackgroundLayerName; label: string }[] = [];
-
-  for (const providerId of providers) {
-    const projectionLayersIterator = WMTSProviders.data
-      .get(providerId)
-      ?.get(projectionCode)
-      ?.keys();
-
-    const projectionLayerNames = Array.from(projectionLayersIterator || []);
-
-    const avaialbeLayersForProvider = projectionLayerNames.map((layerName) => ({
-      value: layerName,
-      label: t(`map.settings.layers.mapNames.backgroundMaps.${layerName}`),
-    }));
-
-    avaiableLayers.push(...avaialbeLayersForProvider);
-  }
-
-  avaiableLayers.push({
-    value: 'oceanicelectronic' as WMSLayerName,
-    label: t(`map.settings.layers.mapNames.backgroundMaps.oceanicelectronic`),
-  });
-
-  // Add vector tile layers
-  avaiableLayers.push({
-    value: 'nautical-background',
-    label: t(`map.settings.layers.mapNames.backgroundMaps.nautical-background`),
-  });
-
-  const sortedLayers = avaiableLayers.sort(layerPrioritySort);
-
-  const handleSetLayer = async (layer: BackgroundLayerName) => {
-    ph.capture('map_background_layer_changed', { layerName: layer });
-
-    // Switching away from nautical: restore previous projection
-    if (
-      currentLayer === 'nautical-background' &&
-      layer !== 'nautical-background' &&
-      preNauticalProjection &&
-      preNauticalProjection !== getMapProjectionCode()
-    ) {
-      setPreNauticalProjection(null);
-      setCurrentLayer(layer);
-      setActiveBackgroundLayer(layer);
-      // Set URL first so setProjection picks up the correct background layer
-      setUrlParameter('backgroundLayer', layer);
-      await setProjection(preNauticalProjection);
-      onSelectComplete();
-      return;
-    }
-
-    // Switching to nautical: save current projection and force Web Mercator
-    if (
-      layer === 'nautical-background' &&
-      getMapProjectionCode() !== 'EPSG:3857'
-    ) {
-      setPreNauticalProjection(getMapProjectionCode());
-      await setProjection('EPSG:3857');
-      toaster.create({
-        title: t('map.settings.layers.projection.forcedWebMercator'),
-        duration: 4000,
-        type: 'info',
-      });
-    }
-
+  const handleSetLayer = (layer: BackgroundLayerName) => {
     setBackgroundLayer(layer);
-    setCurrentLayer(layer);
-    setActiveBackgroundLayer(layer);
     onSelectComplete();
   };
 
   return (
     <Box backgroundColor="#FFFF" p={2} borderRadius={10} w={'100%'}>
       <BackgroundLayerGrid
-        layers={sortedLayers}
-        currentLayer={currentLayer}
+        layers={sortedLayers.map((layer) => ({
+          value: layer.layerName,
+          label: t(
+            `map.settings.layers.mapNames.backgroundMaps.${layer.layerName}`,
+          ),
+        }))}
+        currentLayer={backgroundLayer}
         setLayer={handleSetLayer}
       />
     </Box>

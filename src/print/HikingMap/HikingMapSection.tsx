@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { createHikingMap } from '../../api/hikingMap/hikingMapApi';
 import { getEnv } from '../../env';
 import { mapAtom } from '../../map/atoms';
-import { useMapSettings } from '../../map/mapHooks';
+import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
 import { isPrintDialogOpenAtom } from '../atoms';
 import { utmInfoFromLonLat } from '../EmergencyPoster/utmStringUtils';
@@ -47,7 +47,7 @@ const yExtent1_25k = 19_500;
 type HikingMapSacles = (typeof MapScaleOptions)[number];
 export const HikingMapSection = () => {
   const [selectedScale, setSelectedScale] =
-    useState<HikingMapSacles>('1 : 50 000');
+    useState<HikingMapSacles>('1 : 25 000');
   const [mapName, setMapName] = useState<string>('');
   const { t } = useTranslation();
   const [generateButtonText, setGenerateButtonText] = useState<string>(
@@ -66,7 +66,7 @@ export const HikingMapSection = () => {
   const [popupBlocked, setPopupBlocked] = useState(false);
   const ph = usePostHog();
 
-  const { setBackgroundLayer } = useMapSettings();
+  const setBackgroundLayer = useSetAtom(backgroundLayerAtom);
   useEffect(() => {
     const activeBackground = getUrlParameter('backgroundLayer');
     if (activeBackground != 'toporaster' && !hasChangedBackground.current) {
@@ -100,6 +100,10 @@ export const HikingMapSection = () => {
       }
       const center = map.getCoordinateFromPixel([size[0] / 2, size[1] / 2]);
       overlay.setPosition(center);
+
+      if (!center) {
+        return;
+      }
 
       const projection = map.getView().getProjection();
       if (!projection) {
@@ -167,7 +171,6 @@ export const HikingMapSection = () => {
     try {
       const extent = overlayFootprint.extent;
       setStoredDownloadUrl(null);
-
       const res = await createHikingMap(
         includeLegend,
         includeSweeden,
@@ -199,6 +202,15 @@ export const HikingMapSection = () => {
     } catch (error) {
       console.error('Error generating hiking map:', error);
       setGenerateButtonText(t('printdialog.hikingMap.errors.generateFailed'));
+      ph.captureException(error, {
+        errorType: 'print_hiking_failed',
+        scale: selectedScale,
+        includeLegend,
+        includeSweeden,
+        includeCompassInstructions,
+        extent: overlayFootprint.extent,
+        errorMessage: (error as Error).message,
+      });
       setStoredDownloadUrl(null);
       setTimeout(() => {
         setGenerateButtonText(t('printdialog.hikingMap.buttons.generate'));

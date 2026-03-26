@@ -131,4 +131,5 @@ export type NKUrlParameter =
   | 'project' // Legacy project parameter from old norgeskart.no
   | 'sok'
   | 'showSelection'
-  | 'geojsonUrl';
+  | 'geojsonUrl'
+  | 'printTool';

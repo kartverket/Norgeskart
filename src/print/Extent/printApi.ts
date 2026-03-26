@@ -1,3 +1,5 @@
+import { getEnv } from '../../env';
+
 interface PdfStatusResponse {
   status: string;
   downloadURL?: string;
@@ -15,14 +17,14 @@ export type Layer = WmtsLayer | WmsLayer | GeoJsonLayer;
 
 export interface WmtsLayer {
   baseURL: string;
-  customParams: { TRANSPARENT: string };
+  customParams: { TRANSPARENT: string; token?: string };
   style: string;
   imageFormat: string;
   layer: string;
   opacity: number;
   type: 'WMTS';
   dimensions: null;
-  requestEncoding: 'KVP';
+  requestEncoding: 'KVP' | 'REST';
   dimensionParams: Record<string, unknown>;
   matrixSet: string;
   matrices: Matrix[];
@@ -34,6 +36,7 @@ export interface WmsLayer {
   imageFormat: string;
   layers: string[];
   opacity: number;
+  styles?: string[];
   type: 'WMS';
 }
 
@@ -67,12 +70,10 @@ export interface Payload {
   outputFilename: string;
 }
 
-const BASE_API_URL = 'https://print.atkv3-dev.kartverket-intern.cloud';
-
 export const requestPdfGeneration = async (
   payload: Payload,
 ): Promise<{ statusURL: string }> => {
-  const response = await fetch(`${BASE_API_URL}/print/kv/report.pdf`, {
+  const response = await fetch(`${getEnv().printApiUrl}/print/kv/report.pdf`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -86,7 +87,7 @@ export const pollPdfStatus = async (
   statusURL: string,
   maxAttempts = 10,
   interval = 2000,
-  baseURL = BASE_API_URL,
+  baseURL = getEnv().printApiUrl,
 ): Promise<string | null> => {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {

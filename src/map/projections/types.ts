@@ -1,4 +1,5 @@
 export type ProjectionIdentifier =
+  | 'EPSG:4258' // ETRS89
   | 'EPSG:4326' // wgs84
   | 'EPSG:3857' // webmercator
   | 'EPSG:4230' // ed50 geografisk
@@ -27,3 +28,12 @@ export type ProjectionIdentifier =
   | 'EPSG:27396' // NGO 1948 Gauss-Kruger sone 6
   | 'EPSG:27397' // NGO 1948 Gauss-Kruger sone 7
   | 'EPSG:27398'; //  NGO 1948 / Gauss-Kruger sone 8
+
+//The ones we can display the map in
+export const AvailableProjections: ProjectionIdentifier[] = [
+  'EPSG:3857', // webmercator
+  'EPSG:25832', // utm32n
+  'EPSG:25833', // utm33n
+  'EPSG:25835', // utm35n
+];
+export type AvailableProjectionType = (typeof AvailableProjections)[number];

@@ -1,115 +1,257 @@
 [
   {
-    "title": "Tip 1: Search for properties",
+    "title": "Can I measure distance with breakpoints?",
     "content": [
       {
         "type": "text",
-        "text": "You can search for properties using cadastral numbers, addresses, or place names."
-      }
-    ]
-  },
-  {
-    "title": "Tip 2: Use map layers for more information",
-    "content": [
-      {
-        "type": "text",
-        "text": "Kartverket provides several map layers that you can toggle on and off to display different types of information:"
+        "text": "Yes. You can measure distance with multiple breakpoints directly in the map."
       },
       {
         "type": "list",
         "items": [
-          "Property boundaries and cadastral numbers",
-          "Buildings and addresses",
-          "Place names",
-          "Aerial photos",
-          "Elevation data"
+          "Select “Draw and measure” in the menu.",
+          "Choose the line tool and click “Show measurements”.",
+          "Click in the map where you want to start the measurement.",
+          "Click additional points to create breakpoints.",
+          "Finish the measurement with a double-click."
+        ]
+      },
+      {
+        "type": "text",
+        "text": "The total length will be displayed in the map where the line ends."
+      }
+    ]
+  },
+  {
+    "title": "Can I delete individual objects when drawing?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Yes. The drawing tool allows you to select and delete individual objects."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Click the pointer icon in the upper-left corner of the drawing tool.",
+          "Click the object you want to delete.",
+          "When the object becomes dashed it is selected.",
+          "Click the trash icon to delete the selected object."
         ]
       }
     ]
   },
   {
-    "title": "Tip 3: Measure distances and areas",
+    "title": "Which search criteria are supported in the search field?",
     "content": [
       {
         "type": "text",
-        "text": "Use the measurement tool to calculate distances or areas directly on the map."
+        "text": "In addition to place names and addresses, you can search using combinations of municipality name/number and property identifiers."
       },
       {
         "type": "list",
         "items": [
-          "Click the ruler icon in the toolbar.",
-          "Choose between distance or area measurement.",
-          "Click on the map to start measuring."
+          "municipalityname-gnr/bnr",
+          "municipalityname-gnr/bnr/fnr",
+          "municipalityname-gnr/bnr/snr/fnr",
+          "municipalityname/gnr/bnr",
+          "municipalityname/gnr/bnr/fnr",
+          "municipalityname/gnr/bnr/snr/fnr",
+          "municipalitynumber-gnr/bnr",
+          "municipalitynumber-gnr/bnr/fnr",
+          "municipalitynumber-gnr/bnr/snr/fnr",
+          "municipalitynumber/gnr/bnr",
+          "municipalitynumber/gnr/bnr/fnr",
+          "municipalitynumber/gnr/bnr/snr/fnr"
         ]
       },
       {
         "type": "text",
-        "text": "The result will appear at the bottom of the map, and you can clear the measurement when finished."
+        "text": "Examples:"
+      },
+      {
+        "type": "list",
+        "items": ["Hole-195/15", "3310-195/15", "3310/195/15"]
       }
     ]
   },
   {
-    "title": "Tip 4: Share map views",
+    "title": "How do I search for coordinates?",
     "content": [
       {
         "type": "text",
-        "text": "When you find an interesting area on the map, you can easily share it with others:"
+        "text": "The search field supports several coordinate formats."
+      },
+      {
+        "type": "text",
+        "text": "Geographic coordinates:"
       },
       {
         "type": "list",
         "items": [
-          "Use the “Share” button at the top of the map view.",
-          "Copy the generated link.",
-          "Paste it into an email or message."
+          "59.9494° N, 10.7564° E",
+          "60 N, 10 E",
+          "60°10',10°10'",
+          "60°10'10,10°10'10",
+          "60°10' N,10°10' E",
+          "60°10'10 N,10°10'10 E",
+          "N 60° 5' 38'', E 10° 50' 10''",
+          "N 60° 5' 38'' E 10° 50' 10''"
         ]
       },
       {
         "type": "text",
-        "text": "The recipient will see the same map area and active layers as you."
+        "text": "UTM coordinates:"
+      },
+      {
+        "type": "text",
+        "text": "If the coordinate values are larger than 180 (which would normally indicate degrees), the search engine assumes UTM33 coordinates, which is the default coordinate system used in the map, for example: 487560,7442215."
+      },
+      {
+        "type": "text",
+        "text": "You can also specify the coordinate system using an EPSG code, for example: 306461.46,6885442.27@EPSG:25832."
       }
     ]
   },
   {
-    "title": "Tip 5: Download data from Kartverket",
+    "title": "How do I share a map view?",
     "content": [
-      {
-        "type": "text",
-        "text": "Kartverket provides many open datasets that you can download for free from Geonorge."
-      },
       {
         "type": "list",
         "items": [
-          "Go to geonorge.no",
-          "Search for the dataset you are interested in",
-          "Select the file format that best suits your needs (for example GML, GeoJSON, or Shapefile)"
+          "Click “Share” in the menu.",
+          "A unique URL will be generated automatically.",
+          "The link contains your current map view and can be shared with others."
         ]
-      },
-      {
-        "type": "text",
-        "text": "Remember to read the license terms for any data you use in your own projects."
       }
     ]
   },
   {
-    "title": "Tip 6: Search by coordinates",
+    "title": "How do I share a map with drawings?",
     "content": [
       {
         "type": "text",
-        "text": "You can search directly for coordinates in the search field. Supported formats include:"
+        "text": "To include drawings when sharing the map, you must first save the drawing."
       },
       {
         "type": "list",
         "items": [
-          "Geographic coordinates (WGS84): 59.91273, 10.74609 or 59°54'45.8\"N 10°44'45.9\"E",
-          "UTM coordinates: 598515, 6643994 or 33 598515 6643994",
-          "With EPSG code: 598515 6643994@25833 or (25833) in parentheses",
-          "Wikipedia format: 59°54′48″N 10°44′20″E (copy directly from Wikipedia)",
-          "Norwegian directional letters: 6653873 N, 227047 Ø"
+          "Click the save icon at the bottom of the drawing menu.",
+          "A unique URL will be generated.",
+          "Share the map using “Share” in the menu or copy the URL from the search field."
         ]
+      }
+    ]
+  },
+  {
+    "title": "Can I print in formats other than A4?",
+    "content": [
+      {
+        "type": "text",
+        "text": "The map can be printed in both A3 and A4 formats."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Select “Create map”.",
+          "Choose the desired format under “Extent”."
+        ]
+      }
+    ]
+  },
+  {
+    "title": "What are the terms of use?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Kartverket’s terms of use are available on kartverket.no."
+      }
+    ]
+  },
+  {
+    "title": "Is there a legend for the map layers?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Detailed map symbology for background maps is available on Geonorge.no."
       },
       {
         "type": "text",
-        "text": "The search engine automatically recognizes the coordinate format and displays the location on the map."
+        "text": "Desktop:"
+      },
+      {
+        "type": "text",
+        "text": "When layers are enabled, you can view the legend by clicking the “Legend” button in the lower-right corner."
+      },
+      {
+        "type": "text",
+        "text": "Mobile:"
+      },
+      {
+        "type": "text",
+        "text": "When layers are enabled, you can view the legend by tapping the info icon in the side menu."
+      }
+    ]
+  },
+  {
+    "title": "How often is the map updated?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Update frequency depends on the map layer. The standard color map is updated weekly, while other layers are updated at varying intervals."
+      }
+    ]
+  },
+  {
+    "title": "Where can I find property information?",
+    "content": [
+      {
+        "type": "text",
+        "text": "In Norgeskart you can view property boundaries and basic property information."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Click on a property in the map.",
+          "A result panel will appear in the upper-right corner.",
+          "Select “Property information” to view municipality number, farm number and usage number.",
+          "Click “Show on map” to highlight the property boundary.",
+          "Click “Show more” to open additional details in the Property Register."
+        ]
+      }
+    ]
+  },
+  {
+    "title": "How do I activate full screen mode?",
+    "content": [
+      {
+        "type": "text",
+        "text": "The toolbar in the lower-right corner of the map includes several functions such as zoom, rotation, location and full screen mode."
+      }
+    ]
+  },
+  {
+    "title": "How do I view an elevation profile?",
+    "content": [
+      {
+        "type": "text",
+        "text": "The elevation profile tool is available under “Create map” in the main menu."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Select “Create map”.",
+          "Click a starting point in the map.",
+          "Click where you want the measurement to end."
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Why can’t I print aerial imagery?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Printing aerial imagery (orthophotos) is currently not supported. A solution is being worked on for the future."
       }
     ]
   }

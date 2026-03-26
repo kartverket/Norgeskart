@@ -1,26 +1,20 @@
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_PROJECTION } from '../../map/atoms';
-import { activeBackgroundLayerAtom } from '../../map/layers/atoms';
-import { useMapSettings } from '../../map/mapHooks';
+import { currentProjectionAtom } from '../../map/atoms';
+import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
 import { ProjectionSelector } from '../../shared/Components/ProjectionSelector';
-import { validateProjectionIdString } from '../../shared/utils/enumUtils';
-import { getUrlParameter } from '../../shared/utils/urlUtils';
 
 export const ProjectionSettings = () => {
-  const { setProjection } = useMapSettings();
-  const projectionId = validateProjectionIdString(
-    getUrlParameter('projection'),
-  );
+  const setCurrentProjection = useSetAtom(currentProjectionAtom);
+  const currentProjection = useAtomValue(currentProjectionAtom);
   const { t } = useTranslation();
-  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
+  const activeBackgroundLayer = useAtomValue(backgroundLayerAtom);
   const isNauticalActive = activeBackgroundLayer === 'nautical-background';
 
   return (
     <ProjectionSelector
-      onProjectionChange={setProjection}
-      value={projectionId || DEFAULT_PROJECTION}
-      default={projectionId || DEFAULT_PROJECTION}
+      onProjectionChange={setCurrentProjection}
+      value={currentProjection}
       textColor="white"
       hideBorders
       isToolbar

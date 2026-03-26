@@ -1,9 +1,5 @@
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
-import {
-  getThemeLayerById,
-  themeLayerConfigAtom,
-} from '../../api/themeLayerConfigApi';
 import { ProjectionIdentifier } from '../../map/projections/types';
 import {
   addToUrlListParameter,
@@ -14,8 +10,7 @@ import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
-import { BackgroundLayerName } from './backgroundLayers';
-import { DEFAULT_BACKGROUND_LAYER } from './backgroundWMTSProviders';
+import { getThemeLayerById, themeLayerConfig } from './themeLayerConfigApi';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
 
 export type Portal = 'norgeskart' | 'geonorge';
@@ -27,21 +22,14 @@ const detectPortal = (): Portal => {
 
 export const portalAtom = atom<Portal>(detectPortal());
 
-export const activeBackgroundLayerAtom = atom<BackgroundLayerName>(
-  DEFAULT_BACKGROUND_LAYER,
-);
-
 export const preNauticalProjectionAtom = atom<ProjectionIdentifier | null>(
   null,
 );
 
-export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(
-  new Set<ThemeLayerName>(),
-);
+export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(new Set([]));
 
 export const themeLayerEffect = atomEffect((get) => {
   const themeLayers = get(activeThemeLayersAtom);
-  const themeLayerConfig = get(themeLayerConfigAtom);
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();

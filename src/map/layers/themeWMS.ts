@@ -1,16 +1,20 @@
+import ImageLayer from 'ol/layer/Image.js';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import { TileWMS } from 'ol/source';
+import { ImageWMS, TileWMS } from 'ol/source';
+import { ImageSourceEvent } from 'ol/source/Image';
+import { TileSourceEvent } from 'ol/source/Tile';
+import posthog from 'posthog-js';
+import { createGeoJsonThemeLayer } from './themeGeoJson';
 import type {
   ThemeLayerConfig,
   ThemeLayerDefinition,
-} from '../../api/themeLayerConfigApi';
+} from './themeLayerConfigApi';
 import {
   getCategoryById,
   getEffectiveWmsUrl,
   getParentCategory,
-} from '../../api/themeLayerConfigApi';
-import { createGeoJsonThemeLayer } from './themeGeoJson';
+} from './themeLayerConfigApi';
 
 type HistoricalMapsLayerName = 'economicMapFirstEdition' | 'amtMap';
 
@@ -247,7 +251,7 @@ export const createThemeLayerFromConfig = (
   config: ThemeLayerConfig,
   layerDef: ThemeLayerDefinition,
   projection: string,
-): TileLayer | VectorLayer | null => {
+): TileLayer | VectorLayer | ImageLayer<ImageWMS> | null => {
   if (layerDef.type === 'geojson' && layerDef.geojsonUrl) {
     return createGeoJsonThemeLayer(layerDef, projection);
   }
@@ -274,29 +278,57 @@ export const createThemeLayerFromConfig = (
     category?.featureInfoFields ||
     parentCategory?.featureInfoFields;
 
-  return new TileLayer({
-    source: new TileWMS({
+  const layerProperties = {
+    id: `theme.${layerDef.id}`,
+    queryable: layerDef.queryable ?? false,
+    layerTitle: layerDef.name.nb || layerDef.id,
+    ...(infoFormat ? { infoFormat } : {}),
+    ...(featureInfoImageBaseUrl ? { featureInfoImageBaseUrl } : {}),
+    ...(featureInfoFields ? { featureInfoFields } : {}),
+  };
+
+  const wmsParams = {
+    LAYERS: layerDef.layers,
+    TRANSPARENT: true,
+    SRS: projection,
+    ...(layerDef.styles ? { STYLES: layerDef.styles } : {}),
+    FILTER: layerDef.filter ? layerDef.filter : undefined,
+  };
+
+  const errorHandler = (event: ImageSourceEvent | TileSourceEvent) => {
+    posthog.captureException(event, {
+      errorType: 'wms_image_load_error',
+      layerId: layerDef.id,
+      wmsUrl,
+      params: wmsParams,
+    });
+  };
+
+  if (layerDef.singleImage) {
+    const source = new ImageWMS({
       url: wmsUrl,
-      params: {
-        LAYERS: layerDef.layers,
-        TILED: true,
-        TRANSPARENT: true,
-        SRS: projection,
-        ...(layerDef.styles ? { STYLES: layerDef.styles } : {}),
-        FILTER: layerDef.filter ? layerDef.filter : undefined,
-      },
+      params: wmsParams,
       projection: projection,
-      cacheSize: 512,
-      transition: 0,
-    }),
-    properties: {
-      id: `theme.${layerDef.id}`,
-      queryable: layerDef.queryable ?? false,
-      layerTitle: layerDef.name.nb || layerDef.id,
-      ...(infoFormat ? { infoFormat } : {}),
-      ...(featureInfoImageBaseUrl ? { featureInfoImageBaseUrl } : {}),
-      ...(featureInfoFields ? { featureInfoFields } : {}),
-    },
+    });
+    source.on('imageloaderror', errorHandler);
+    return new ImageLayer({
+      source,
+      properties: layerProperties,
+    });
+  }
+
+  const source = new TileWMS({
+    url: wmsUrl,
+    params: { ...wmsParams, TILED: true },
+    projection: projection,
+    cacheSize: 512,
+    transition: 0,
+  });
+  source.on('tileloaderror', errorHandler);
+
+  return new TileLayer({
+    source,
+    properties: layerProperties,
     preload: 1,
   });
 };

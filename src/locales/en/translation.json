@@ -1,14 +1,14 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Thematic map",
-      "mobiletext": "Thematics"
+      "openText": "Layers",
+      "mobiletext": "Layers"
     },
     "print": {
-      "text": "Print"
+      "text": "Create map"
     },
     "draw": {
-      "text": "Draw and measure",
+      "text": "Tools",
       "mobiletext": "Tools"
     },
     "settings": {
@@ -16,14 +16,14 @@
       "text": "Settings"
     },
     "sharemap": {
-      "text": "Share map",
+      "text": "Share",
       "mobiletext": "Share"
     },
     "help": {
       "mobiletext": "Help"
     },
     "export": "Export and download",
-    "hide": "Hide toolbar"
+    "hide": "Minimize"
   },
   "draw": {
     "begin": "Draw on map",
@@ -51,14 +51,21 @@
           "moveup": "Move up",
           "point": "Points",
           "polygon": "Polygon",
-          "text": "Text"
+          "text": "Text",
+          "undo": "Undo",
+          "redo": "Redo",
+          "deleteselected": "Delete selected"
         }
       },
       "toolSelect": {
         "placeholder": "Select draw tool"
       },
       "color": "Colors",
-      "edit": "Edit"
+      "edit": "Edit",
+      "defaults": {
+        "primary": "Primary",
+        "secondary": "Secondary"
+      }
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
@@ -70,7 +77,11 @@
     "textInputLabel": "Enter text",
     "tools": "Tools",
     "yesClear": "Yes clear",
-    "redoundo": "Undo / Redo "
+    "redoundo": "Undo / Redo ",
+    "download": "Download",
+    "uploadButton": {
+      "label": "Upload"
+    }
   },
   "export": {
     "format": {
@@ -86,8 +97,15 @@
     "coordinateSection": {
       "copy": {
         "label": "Copy coordinates",
+        "label_geo": "Copy as DD",
         "toast": {
-          "title": "Coordinates copied to clipboard"
+          "title": "Copy coordinates as decimal degrees (e.g., 62.0515257, 5.2972102)"
+        }
+      },
+      "copyDMS": {
+        "label": "Copy as DMS",
+        "toast": {
+          "title": "Copy coordinates in degrees–minutes–seconds (e.g., 62°03'05.49\" N, 5°17'49.96\" E)"
         }
       },
       "differentCrs": "Display in",
@@ -161,15 +179,17 @@
             "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
-            "Nibcache_web_mercator_v2": "Aerial photos",
-            "nautical-background": "Nautical Background Map",
-            "oceanicelectronic": "Electronic Nautical Charts",
-            "sjokartraster": "Nautical Charts",
-            "topo": "Topographic map",
+            "Nibcache_web_mercator_v2": "Aerial Photos",
+            "nautical-background": "Nautical Background Chart",
+            "oceanicelectronic": "Electronic Nautical Chart",
+            "sjokartraster": "Nautical Chart updated EFS",
+            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografic, grayscale",
+            "topograatone": "Standard (greyscale)",
             "topoProd": "Topographic",
-            "toporaster": "Paper map"
+            "toporaster": "Paper Map",
+            "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           }
         },
         "projection": {
@@ -177,13 +197,13 @@
           "placeholder": "Chose",
           "projections": {
             "epsg25833": {
-              "displayName": "ETRS89 UTM-33"
+              "displayName": "EUREF89 UTM-33"
             },
             "epsg25832": {
-              "displayName": "ETRS89 UTM-32"
+              "displayName": "EUREF89 UTM-32"
             },
             "epsg25835": {
-              "displayName": "ETRS89 UTM-35"
+              "displayName": "EUREF89 UTM-35"
             },
             "epsg3857": {
               "displayName": "Webmercator"
@@ -195,10 +215,10 @@
               "displayName": "ED50 Geographical degrees"
             },
             "epsg25834": {
-              "displayName": "ETRS89 UTM-34"
+              "displayName": "EUREF89 UTM-34"
             },
             "epsg25836": {
-              "displayName": "ETRS89 UTM-36"
+              "displayName": "EUREF89 UTM-36"
             },
             "epsg23031": {
               "displayName": "ED50 UTM-31"
@@ -241,6 +261,9 @@
             },
             "epsg27398": {
               "displayName": "NGO 1948 Gauss-Kruger zone 8"
+            },
+            "epsg4258": {
+              "displayName": "EUREF89 lat/lon"
             }
           },
           "forcedWebMercator": "Nautical background map requires Web Mercator projection",
@@ -256,13 +279,18 @@
           "nauticalBackgroundAlreadyActive": "Nautical Background Map is already active",
           "label": "Chose theme layers",
           "activeLayersCount": "Active layers",
-          "warningLimit": "Maximum layer limit reached. Please deactivate some layers before adding more for better performance.",
           "warningPerformance": "Activating many layers may affect performance. Consider deactivating unused layers.",
           "resetbutton": {
             "text": "Reset"
           },
           "kartverketThemes": "Kartverket themes",
-          "geonorgeThemes": "Geonorge themes"        
+          "geonorgeThemes": "Geonorge themes",
+          "subtheme": {
+            "toggleall": {
+              "addall": "Add all layers",
+              "removeall": "Remove all"
+            }
+          }
         }
       }
     },
@@ -331,6 +359,7 @@
     }
   },
   "propertyInfo": {
+    "address": "Address",
     "holdingNr": "Holding nr.",
     "leaseNr": "Lease nr.",
     "markProperty": {
@@ -344,9 +373,6 @@
   },
   "search": {
     "actions": {
-      "print": {
-        "tooltip": "Print"
-      },
       "shareMap": {
         "success": "Url copied to clipboard",
         "tooltip": "Share map"
@@ -381,7 +407,14 @@
     "locations": {
       "municipality": "municipality"
     },
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "geometry": {
+      "types": {
+        "point": "Points",
+        "linestring": "Lines",
+        "polygon": "Surfaces"
+      }
+    }
   },
   "tipsandtricks": {
     "heading": "Tips and tricks",
@@ -394,7 +427,7 @@
       "tooltip": "Report errors or things missing in the map."
     },
     "scale": {
-      "tooltip": "Select a scale",
+      "tooltip": "The selected scale is adjusted to the nearest available zoom level in the map. The actual scale may therefore differ slightly.",
       "disabledTooltip": "Scale selector is disabled because this background map uses integer zoom levels so that it's performant."
     },
     "crs": {
@@ -408,6 +441,10 @@
     "legend": {
       "tooltip": "Show map legend",
       "label": "Map legend"
+    },
+    "oldnorgeskartbutton": {
+      "tooltip": "Use old Norgeskart.no",
+      "content": "arkiv.norgeskart.no"
     }
   },
   "cookieDialog": {
@@ -438,7 +475,7 @@
     }
   },
   "printdialog": {
-    "heading": "Print",
+    "heading": "Create map",
     "tabs": {
       "extent": {
         "heading": "Extent"
@@ -447,7 +484,7 @@
         "heading": "Hiking map"
       },
       "elevationProfile": {
-        "heading": "Height profile"
+        "heading": "Elevation profile"
       },
       "emergencyPoster": {
         "heading": "Emergency poster"
@@ -489,9 +526,9 @@
       }
     },
     "elevationProfile": {
-      "heading": "Draw a line to create a height profile",
-      "infotext": "Start creating a height profile by clicking the map to place the first point and double click to finish.",
-      "jobError": "Failed to load height profile data.",
+      "heading": "Draw a line to create a elevation profile",
+      "infotext": "Start creating a elevation profile by uploading a .GPX file or by clicking the map to place the first point and double click to finish.",
+      "jobError": "Failed to load elevation profile data.",
       "jobRunning": "Creating profile",
       "buttons": {
         "exportCsv": {
@@ -502,12 +539,21 @@
         },
         "exportJpeg": {
           "label": "Download as JPEG"
+        },
+        "reset": {
+          "label": "Reset"
         }
       },
       "chartLabels": {
         "title": "elevationProfile",
         "xAxis": "Distance [m]",
         "yAxis": "Elevation [m]"
+      },
+      "fileUpload": {
+        "dragDrop": {
+          "label": "Drag file, or click, here",
+          "fileInfo": ".gpx format"
+        }
       }
     },
     "hikingMap": {
@@ -561,6 +607,38 @@
     "toast": {
       "success": "Download complete",
       "error": "Could not download map"
+    },
+    "vectorTileFallbackWarning": "The nautical background map is not supported by the print service and will be replaced with nautical chart in the print.",
+    "aerialImageryNotSupported": "Aerial imagery is not supported by the print service. Please switch to a different background map to print.",
+    "projectionWarning": "The print output will always be in UTM zone 33 (EPSG:25833), regardless of the selected map projection."
+  },
+  "about": {
+    "heading": "About us",
+    "textone": "Norgeskart is the Norwegian Mapping Authority’s most widely used map service. Whether you are planning a trip to the mountains or at sea, or need information about a property, Norgeskart provides reliable and detailed geographic information – presented in a simple and accessible way.",
+    "texttwo": "Since 1773, the Norwegian Mapping Authority has been mapping Norway. Much has changed since then. Needs evolve over time, and new technology continuously gives us new opportunities. That is why we work continuously to offer a wide range of map products that meet users’ needs – both today and in the future.",
+    "textthree": "Together with our users, we aim to be open, innovative, and reliable."
+  },
+  "importDialog": {
+    "header": "Import file for drawlayer",
+    "body": {
+      "text": "Select a file, either GPX, GML or GEOJSON to upload to the map. If you want, you can overwrite the existing drawing with the contents of the file. ",
+      "details": {
+        "heading": "Features in file"
+      }
+    },
+    "overwriteSwitch": {
+      "label": "Overwrite drawing",
+      "tooltip": "Will remove all drawings currently on the map"
+    },
+    "buttons": {
+      "confirm": {
+        "label": "Upload"
+      }
+    },
+    "fileupload": {
+      "dragdrop": {
+        "label": "Drag and drop or select a file"
+      }
     }
   }
 }

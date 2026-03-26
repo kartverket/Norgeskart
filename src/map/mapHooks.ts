@@ -1,31 +1,10 @@
 import { useAtomValue, useSetAtom } from 'jotai';
-import { View } from 'ol';
 import { get as getProjection, transform } from 'ol/proj';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
-import {
-  getListUrlParameter,
-  getUrlParameter,
-  setUrlParameter,
-} from '../shared/utils/urlUtils';
-import {
-  DEFAULT_ZOOM_LEVEL,
-  magneticDeclinationAtom,
-  mapAtom,
-  mapOrientationAtom,
-} from './atoms';
-import { isMapLayerBackground } from './layers';
-import {
-  BackgroundLayerName,
-  useBackgoundLayers,
-} from './layers/backgroundLayers';
-import {
-  DEFAULT_BACKGROUND_LAYER,
-  loadableWMTS,
-} from './layers/backgroundWMTSProviders';
-import { useThemeLayers } from './layers/themeLayers';
-import { ThemeLayerName } from './layers/themeWMS';
+import { setUrlParameter } from '../shared/utils/urlUtils';
+import { magneticDeclinationAtom, mapAtom, mapOrientationAtom } from './atoms';
 import { ProjectionIdentifier } from './projections/types';
 
 const ROTATION_ANIMATION_DURATION = 500;
@@ -111,9 +90,6 @@ const useMap = () => {
 
 const useMapSettings = () => {
   const map = useAtomValue(mapAtom);
-  const WMTSloadable = useAtomValue(loadableWMTS);
-  const { backgroundLayerState, getBackgroundLayer } = useBackgoundLayers();
-  const { removeThemeLayerFromMap, addThemeLayerToMap } = useThemeLayers();
 
   const getMapViewCenter = () => {
     const view = map.getView();
@@ -126,58 +102,6 @@ const useMapSettings = () => {
 
   const getMapProjectionCode = () => {
     return getMapProjection().getCode() as ProjectionIdentifier;
-  };
-
-  const setBackgroundLayer = async (
-    backgroundLayerName: BackgroundLayerName,
-  ) => {
-    if (backgroundLayerState !== 'hasData') {
-      console.warn('Background layers are not loaded yet');
-      return;
-    }
-
-    if (
-      backgroundLayerName === 'nautical-background' &&
-      getMapProjectionCode() !== 'EPSG:3857'
-    ) {
-      setUrlParameter('backgroundLayer', backgroundLayerName);
-      await setProjection('EPSG:3857');
-      return;
-    }
-
-    let layerToAdd = await getBackgroundLayer(backgroundLayerName);
-    let actualLayerName = backgroundLayerName;
-
-    // If requested layer is not available, fall back to default
-    if (layerToAdd == null) {
-      console.warn(
-        `Background layer ${backgroundLayerName} is not available for current projection, falling back to ${DEFAULT_BACKGROUND_LAYER}`,
-      );
-      layerToAdd = await getBackgroundLayer(DEFAULT_BACKGROUND_LAYER);
-      actualLayerName = DEFAULT_BACKGROUND_LAYER;
-
-      if (layerToAdd == null) {
-        console.error('Default background layer is also not available');
-        return;
-      }
-    }
-
-    const existingBgLayers = map
-      .getLayers()
-      .getArray()
-      .filter(isMapLayerBackground);
-
-    if (existingBgLayers.length === 1 && existingBgLayers[0] === layerToAdd) {
-      setUrlParameter('backgroundLayer', actualLayerName);
-      return;
-    }
-
-    existingBgLayers.forEach((layer) => {
-      map.removeLayer(layer);
-    });
-
-    map.addLayer(layerToAdd);
-    setUrlParameter('backgroundLayer', actualLayerName);
   };
 
   const zoomIn = () => {
@@ -202,70 +126,6 @@ const useMapSettings = () => {
       zoom: Math.round(currZoom - 1),
       duration: 200,
     });
-  };
-
-  const setProjection = async (projectionId: ProjectionIdentifier) => {
-    const projection = getProjection(projectionId)!;
-    if (WMTSloadable.state !== 'hasData') {
-      console.warn('WMTS data is not loaded yet');
-      return;
-    }
-
-    // Optionally, transform the current center to the new projection
-    const oldView = map.getView();
-    const oldCenter = oldView.getCenter();
-    const oldProjection = oldView.getProjection();
-
-    const backgroundLayerUrlParam: BackgroundLayerName =
-      (getUrlParameter('backgroundLayer') as BackgroundLayerName) ||
-      DEFAULT_BACKGROUND_LAYER;
-
-    let newCenter = undefined;
-    if (oldProjection.getCode() === projection.getCode()) {
-      newCenter = oldCenter; // No transformation needed if projections are the same
-    } else if (oldCenter && oldProjection) {
-      // Transform center to new projection
-      newCenter = transform(oldCenter, oldProjection, projection);
-    }
-
-    let newZoom = oldView.getZoom() || DEFAULT_ZOOM_LEVEL;
-    if (
-      projectionId === 'EPSG:3857' &&
-      oldProjection.getCode() !== 'EPSG:3857'
-    ) {
-      newZoom += 1;
-    }
-
-    if (
-      projectionId !== 'EPSG:3857' &&
-      oldProjection.getCode() === 'EPSG:3857'
-    ) {
-      newZoom -= 1;
-    }
-
-    // Round zoom to integer to ensure it aligns with tile matrix
-    newZoom = Math.round(newZoom);
-
-    const newView = new View({
-      center: newCenter,
-      zoom: newZoom,
-      minZoom: oldView.getMinZoom(),
-      maxZoom: oldView.getMaxZoom(),
-      projection: projection,
-      constrainResolution: true,
-      extent: projection.getExtent(),
-    });
-
-    map.setView(newView);
-    await setBackgroundLayer(backgroundLayerUrlParam);
-    const themeLayerNames = getListUrlParameter('themeLayers');
-    if (themeLayerNames) {
-      themeLayerNames.forEach((layerName) => {
-        removeThemeLayerFromMap(layerName as ThemeLayerName);
-        addThemeLayerToMap(layerName as ThemeLayerName);
-      });
-    }
-    setUrlParameter('projection', projectionId);
   };
 
   const setMapFullScreen = (shouldBeFullscreen: boolean) => {
@@ -361,8 +221,6 @@ const useMapSettings = () => {
     setMapAngle,
     setMapFullScreen,
     setMapLocation,
-    setProjection,
-    setBackgroundLayer,
     zoomIn,
     zoomOut,
   };

@@ -52,11 +52,14 @@ jobs:
         if: ${{ !github.event.inputs.bypassValidation }}
         run: npm run format-check
 
+      - name: 'Run unit tests'
+        run: npm test -- --run
+
       - name: 'Build'
         run: npm run build
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -64,7 +67,7 @@ jobs:
 
       - name: Set Docker metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
@@ -72,12 +75,23 @@ jobs:
 
       - name: Build and push Docker image
         id: docker
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Upload sourc map to PostHog
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          POSTHOG_CLI_HOST: https://eu.posthog.com
+          POSTHOG_CLI_PROJECT_ID: 102231
+          POSTHOG_CLI_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+        run: |
+          npm install -g @posthog/cli
+          posthog-cli sourcemap inject --directory dist
+          posthog-cli sourcemap upload --directory dist
 
   deploy:
     runs-on: ubuntu-latest

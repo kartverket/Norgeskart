@@ -49,13 +49,13 @@ export const InfoDrawer = () => {
   }, [i18n.language]);
 
   return (
-    <Accordion collapsible multiple variant="outline">
+    <Accordion collapsible multiple variant="outline" size="sm">
       <AccordionItem value="tips">
         <AccordionItemTrigger>
           {t('tipsandtricks.heading')}
         </AccordionItemTrigger>
         <AccordionItemContent>
-          <Accordion collapsible multiple size="md" variant="outline">
+          <Accordion collapsible multiple size="sm" variant="outline">
             {tipsData.map((tip, index) => (
               <AccordionItem key={index} value={`item${index + 1}`}>
                 <AccordionItemTrigger>{tip.title}</AccordionItemTrigger>
@@ -64,7 +64,7 @@ export const InfoDrawer = () => {
                     switch (block.type) {
                       case 'text':
                         return (
-                          <Text key={i} mb="2">
+                          <Text textStyle="sm" key={i} mb="2">
                             {block.text}
                           </Text>
                         );
@@ -72,7 +72,9 @@ export const InfoDrawer = () => {
                         return (
                           <List key={i} listStyleType="disc" mb="2" ml="4">
                             {block.items.map((item, j) => (
-                              <ListItem key={j}>{item}</ListItem>
+                              <ListItem key={j} textStyle="sm">
+                                {item}
+                              </ListItem>
                             ))}
                           </List>
                         );
@@ -108,6 +110,16 @@ export const InfoDrawer = () => {
           <Contact />
         </AccordionItemContent>
       </AccordionItem>
+      <AccordionItem value="aboutus">
+        <AccordionItemTrigger>{t('about.heading')}</AccordionItemTrigger>
+        <AccordionItemContent>
+          <Text textStyle="sm">{t('about.textone')}</Text>
+          <Text marginY="3" textStyle="sm">
+            {t('about.texttwo')}
+          </Text>
+          <Text textStyle="sm">{t('about.textthree')}</Text>
+        </AccordionItemContent>
+      </AccordionItem>
       <AccordionItem value="privacy">
         <AccordionItemTrigger>
           {t('privacyAndContact.privacy')}
@@ -121,7 +133,7 @@ export const InfoDrawer = () => {
           {t('privacyAndContact.status.heading')}
         </AccordionItemTrigger>
         <AccordionItemContent>
-          <Text>{t('privacyAndContact.status.infoText')}</Text>
+          <Text textStyle="sm">{t('privacyAndContact.status.infoText')}</Text>
           <Link
             colorPalette="green"
             href="https://status.kartverket.no/"
@@ -129,6 +141,7 @@ export const InfoDrawer = () => {
             target="_blank"
             variant="underline"
             ml={1}
+            textStyle="sm"
           >
             status.kartverket.no
           </Link>
@@ -139,7 +152,7 @@ export const InfoDrawer = () => {
           {t('draw.privacyNotice.title')}
         </AccordionItemTrigger>
         <AccordionItemContent>
-          <Text>{t('draw.privacyNotice.message')}</Text>
+          <Text textStyle="sm">{t('draw.privacyNotice.message')}</Text>
         </AccordionItemContent>
       </AccordionItem>
       <AccordionItem value="language">

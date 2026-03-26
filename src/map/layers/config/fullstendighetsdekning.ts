@@ -1,4 +1,4 @@
-import { ThemeLayerConfig } from '../../../api/themeLayerConfigApi';
+import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
 const BASE_URL =
   'https://testnedlasting.geonorge.no/geonorge/Basisdata/DOKFullstendighetsdekningskart/Kartkatalogen/';

@@ -1,9 +1,11 @@
+import posthog from 'posthog-js';
 import * as React from 'react';
 
 interface ErrorBoundaryProps {
   fallback: React.ReactNode;
   children: React.ReactNode | React.ReactNode[];
   onError?: () => void;
+  name?: string;
 }
 
 interface ErrorBoundaryState {
@@ -27,12 +29,14 @@ class ErrorBoundary extends React.Component<
     if (this.props.onError) {
       this.props.onError();
     }
-    console.error(
-      'Error caught in ErrorBoundary:',
-      error,
-      info,
-      React.captureOwnerStack(),
-    );
+    if (posthog.__loaded) {
+      posthog.captureException(error, {
+        errorType: 'error_boundary',
+        component: this.props.name,
+        stack: info.componentStack,
+      });
+    }
+    console.error('Error caught in ErrorBoundary:', error, info);
   }
 
   render() {

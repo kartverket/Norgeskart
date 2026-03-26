@@ -22,9 +22,8 @@ import {
   getMainCategories,
   getSubcategories,
   themeLayerConfigAtom,
-} from '../../api/themeLayerConfigApi';
+} from '../../map/layers/themeLayerConfigApi';
 import {
-  activeBackgroundLayerAtom,
   activeThemeLayersAtom,
   portalAtom,
   preNauticalProjectionAtom,
@@ -35,7 +34,8 @@ import {
   useThemeLayers,
 } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
-import { useMapSettings } from '../../map/mapHooks';
+import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
+import { currentProjectionAtom } from '../../map/atoms';
 
 type Theme = {
   name: string;
@@ -160,11 +160,10 @@ export const MapThemes = () => {
     activeThemeLayersAtom,
   );
   const ph = usePostHog();
-  const activeBackgroundLayer = useAtomValue(activeBackgroundLayerAtom);
-  const setActiveBackgroundLayer = useSetAtom(activeBackgroundLayerAtom);
+  const [activeBackgroundLayer, setActiveBackgroundLayer] = useAtom(backgroundLayerAtom);
+  const currentProjection = useAtomValue(currentProjectionAtom);
+  const setCurrentProjection = useSetAtom(currentProjectionAtom);
   const [, setPreNauticalProjection] = useAtom(preNauticalProjectionAtom);
-  const { setBackgroundLayer, setProjection, getMapProjectionCode } =
-    useMapSettings();
 
   const isLayerChecked = useCallback(
     (layerName: ThemeLayerName): boolean => {
@@ -264,7 +263,7 @@ export const MapThemes = () => {
   );
 
   const toggleLayer = useCallback(
-    async (layerName: ThemeLayerName) => {
+    (layerName: ThemeLayerName) => {
       const checked = isLayerChecked(layerName);
       if (!checked) {
         addThemeLayerToMap(layerName);
@@ -273,9 +272,9 @@ export const MapThemes = () => {
         });
         if (isSjoLayer(layerName)) {
           if (activeBackgroundLayer !== 'nautical-background') {
-            if (getMapProjectionCode() !== 'EPSG:3857') {
-              setPreNauticalProjection(getMapProjectionCode());
-              await setProjection('EPSG:3857');
+            if (currentProjection !== 'EPSG:3857') {
+              setPreNauticalProjection(currentProjection);
+              setCurrentProjection('EPSG:3857');
               toaster.create({
                 title: t('map.settings.layers.projection.forcedWebMercator'),
                 duration: 4000,
@@ -290,7 +289,6 @@ export const MapThemes = () => {
                 type: 'info',
               });
             }
-            setBackgroundLayer('nautical-background');
             setActiveBackgroundLayer('nautical-background');
           } else {
             toaster.create({
@@ -313,10 +311,9 @@ export const MapThemes = () => {
       ph,
       isSjoLayer,
       activeBackgroundLayer,
-      getMapProjectionCode,
       setPreNauticalProjection,
-      setProjection,
-      setBackgroundLayer,
+      currentProjection,
+      setCurrentProjection,
       setActiveBackgroundLayer,
       t,
     ],

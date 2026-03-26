@@ -1,21 +1,23 @@
 import { atom, getDefaultStore } from 'jotai';
-import { Feature, View } from 'ol';
+import { View } from 'ol';
 import { defaults as defaultControls, ScaleLine } from 'ol/control';
 import Map from 'ol/Map';
 import { get as getProjection, transform } from 'ol/proj';
 
 import { atomEffect } from 'jotai-effect';
-import { Point } from 'ol/geom';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import { Circle, Fill, Stroke, Style } from 'ol/style';
 import { v4 as uuidv4 } from 'uuid';
+import { parseCoordinateInput } from '../shared/utils/coordinateParser';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
-import { mapLayers } from './layers';
+import { isMapLayerBackground, mapLayers } from './layers';
 import { activeThemeLayersAtom } from './layers/atoms';
 import { BackgroundLayerName } from './layers/backgroundLayers';
-import { ControlPortal } from './mapControls';
+import {
+  allConfiguredBackgroundLayers,
+  backgroundLayerAtom,
+} from './layers/config/backgroundLayers/atoms';
+import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
+import { themeLayerConfig } from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
 
@@ -24,14 +26,10 @@ export const DEFAULT_ZOOM_LEVEL = 3;
 export const DEFAULT_CENTER = [396722, 7197860]; // Center in EPSG:25833
 export const DEFAULT_ROTATION = 0;
 
-//The ones we can display the map in
-export const AvailableProjections: ProjectionIdentifier[] = [
-  'EPSG:3857', // webmercator
-  'EPSG:25832', // utm32n
-  'EPSG:25833', // utm33n
-  'EPSG:25835', // utm35n
-];
-export type AvailableProjectionType = (typeof AvailableProjections)[number];
+export const currentProjectionAtom = atom<ProjectionIdentifier>(
+  validateProjectionIdString(getUrlParameter('projection')) ||
+    DEFAULT_PROJECTION,
+);
 
 export const mapOrientationAtom = atom<number>(0);
 export const mapOrientationDegreesAtom = atom<number>((get) => {
@@ -43,7 +41,12 @@ export const displayMapLegendAtom = atom<boolean>(false);
 export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
-  return !displayMapLegned && activeThemeLayers.size > 0;
+
+  const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
+    const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
+    return layerDef && !layerDef.noLegend;
+  });
+  return !displayMapLegned && hasLegend;
 });
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
@@ -60,6 +63,10 @@ export const getBackgroundLayerImageName = (
       return 'Nibcache_web_mercator_v2';
     case 'nautical-background':
       return 'sjokartraster'; // Use nautical chart image for nautical background for now
+    case 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833':
+      return 'svalbard';
+    case 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833':
+      return 'jan_mayen';
     default:
       return layerName;
   }
@@ -85,7 +92,36 @@ const getInitialMapView = () => {
     const parsedLon = parseFloat(lon);
     const parsedLat = parseFloat(lat);
     if (!Number.isNaN(parsedLon) && !Number.isNaN(parsedLat)) {
-      initialCenter = [parsedLon, parsedLat];
+      // If the values are in the WGS84 degree range they are geographic
+      // coordinates and must be transformed to the current projection.
+      // Current URLs always store the raw projected center (large UTM-range numbers),
+      // so this branch only fires for legacy / externally-generated links.
+      if (Math.abs(parsedLat) <= 90 && Math.abs(parsedLon) <= 180) {
+        let centerResolved = false;
+        // Prefer the 'sok' parameter when it encodes a valid coordinate
+        const sokParam = getUrlParameter('sok');
+        if (sokParam) {
+          const parsedCoord = parseCoordinateInput(sokParam, projectionId);
+          if (parsedCoord) {
+            initialCenter = transform(
+              [parsedCoord.lon, parsedCoord.lat],
+              parsedCoord.projection,
+              projectionId,
+            );
+            centerResolved = true;
+          }
+        }
+
+        if (!centerResolved) {
+          initialCenter = transform(
+            [parsedLon, parsedLat],
+            'EPSG:4326',
+            projectionId,
+          );
+        }
+      } else {
+        initialCenter = [parsedLon, parsedLat];
+      }
     }
   }
 
@@ -112,13 +148,13 @@ const getInitialMapView = () => {
     rotation: initialRotation,
     projection: initialProjection,
     constrainResolution: true,
+    smoothResolutionConstraint: false,
   });
 };
 
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls({ zoom: false, rotate: false }).extend([
-      new ControlPortal(),
       new ScaleLine({ minWidth: 100 }),
     ]),
     keyboardEventTarget: document,
@@ -160,121 +196,99 @@ export const availableScales = [
 
 export const scaleAtom = atom<number | null>(null);
 
-export const trackPositionAtom = atom<boolean>(false);
-const watchIdAtom = atom<number | null>(null);
-
-export const trackPostitionAtomEffect = atomEffect((get) => {
-  const trackPosition = get(trackPositionAtom);
+export const scaleToResolutionEffect = atomEffect((get) => {
+  const scale = get(scaleAtom);
   const store = getDefaultStore();
   const map = store.get(mapAtom);
-
-  if (!navigator.geolocation) return;
-  if (trackPosition) {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const { longitude, latitude } = pos.coords;
-        const transformedCoords = transform(
-          [longitude, latitude],
-          'EPSG:4326',
-          map.getView().getProjection(),
-        );
-        map.getView().setCenter(transformedCoords);
-        map.getView().setZoom(15);
-        const pointFeature = new Feature({
-          geometry: new Point(transformedCoords),
-        });
-        pointFeature.setStyle(
-          new Style({
-            image: new Circle({
-              radius: 8,
-              fill: new Fill({ color: '#245cf7' }),
-              stroke: new Stroke({ color: 'white', width: 2 }),
-            }),
-          }),
-        );
-        const positionLayer = new VectorLayer({
-          source: new VectorSource({
-            features: [pointFeature],
-          }),
-          properties: { id: 'positionLayer' },
-        });
-        map.addLayer(positionLayer);
-        const watchId = navigator.geolocation.watchPosition(
-          (pos) => {
-            const { longitude, latitude } = pos.coords;
-            const transformedCoords = transform(
-              [longitude, latitude],
-              'EPSG:4326',
-              map.getView().getProjection(),
-            );
-            const positionLayer = map
-              .getLayers()
-              .getArray()
-              .find(
-                (layer) => layer.get('id') === 'positionLayer',
-              ) as VectorLayer;
-            if (positionLayer) {
-              const source = positionLayer.getSource();
-              if (source) {
-                const feature = source.getFeatures()[0];
-                if (feature) {
-                  feature.setGeometry(new Point(transformedCoords));
-                }
-              }
-            }
-          },
-          (err) => {
-            console.error('Error getting position', err);
-          },
-          { enableHighAccuracy: true },
-        );
-        store.set(watchIdAtom, watchId);
-      },
-      (err) => {
-        console.error('Error getting position', err);
-      },
-      { enableHighAccuracy: true },
-    );
-  } else {
-    const watchId = store.get(watchIdAtom);
-    if (watchId == null) {
-      return;
-    }
-    navigator.geolocation.clearWatch(watchId);
-    if (watchId) {
-      clearInterval(watchId);
-      store.set(watchIdAtom, null);
-    }
-    const positionLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === 'positionLayer');
-    if (positionLayer) {
-      map.removeLayer(positionLayer);
-    }
-  }
-  return () => {
-    const watchId = store.get(watchIdAtom);
-    if (watchId) {
-      clearInterval(watchId);
-      store.set(watchIdAtom, null);
-    }
-    const positionLayer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get('id') === 'positionLayer');
-    if (positionLayer) {
-      map.removeLayer(positionLayer);
-    }
-  };
-});
-
-export const scaleToResolutionEffect = atomEffect((get) => {
-  const map = get(mapAtom);
-  const scale = get(scaleAtom);
   if (!map || !scale) return;
 
   const view = map.getView();
   const resolution = scaleToResolution(scale, map);
   view.setResolution(resolution);
+});
+
+export const projectionEffect = atomEffect((get, set) => {
+  const projectionId = get(currentProjectionAtom);
+  const store = getDefaultStore();
+  const map = store.get(mapAtom);
+
+  const oldView = map.getView();
+  const oldProjection = oldView.getProjection();
+  const oldProjectionCode = oldProjection.getCode();
+
+  if (oldProjectionCode === projectionId) return;
+
+  const backgroundLayerName = store.get(backgroundLayerAtom);
+  const activeThemeLayers = store.get(activeThemeLayersAtom);
+
+  const projection = getProjection(projectionId)!;
+  const oldCenter = oldView.getCenter();
+
+  const newCenter = oldCenter
+    ? transform(oldCenter, oldProjection, projection)
+    : undefined;
+
+  let newZoom = oldView.getZoom() ?? DEFAULT_ZOOM_LEVEL;
+  if (oldProjectionCode !== 'EPSG:3857' && projectionId === 'EPSG:3857') {
+    newZoom += 1;
+  } else if (
+    oldProjectionCode === 'EPSG:3857' &&
+    projectionId !== 'EPSG:3857'
+  ) {
+    newZoom -= 1;
+  }
+  newZoom = Math.round(newZoom);
+
+  map.setView(
+    new View({
+      center: newCenter,
+      zoom: newZoom,
+      minZoom: oldView.getMinZoom(),
+      maxZoom: oldView.getMaxZoom(),
+      projection,
+      constrainResolution: true,
+      extent: projection.getExtent(),
+
+      smoothResolutionConstraint: false,
+    }),
+  );
+
+  if (activeThemeLayers.size > 0) {
+    map
+      .getLayers()
+      .getArray()
+      .filter((l) => l.get('id')?.startsWith('theme.'))
+      .forEach((l) => map.removeLayer(l));
+    set(activeThemeLayersAtom, new Set(activeThemeLayers));
+  }
+
+  setUrlParameter('projection', projectionId);
+
+  const currentBackgroundLayer = map.getAllLayers().find(isMapLayerBackground);
+
+  if (currentBackgroundLayer) {
+    const bgLayerProjection = currentBackgroundLayer
+      .getSource()
+      ?.getProjection()
+      ?.getCode();
+
+    if (bgLayerProjection && bgLayerProjection !== projectionId) {
+      const layerConfig = allConfiguredBackgroundLayers.find(
+        (config) => config.layerName === backgroundLayerName,
+      );
+
+      if (layerConfig) {
+        getLayerFromConfig(layerConfig).then((layer) => {
+          if (layer) {
+            map.removeLayer(currentBackgroundLayer);
+            map.addLayer(layer);
+          } else {
+            console.warn(
+              `Could not create layer for ${backgroundLayerName} with projection ${projectionId}`,
+            );
+          }
+        });
+      }
+    }
+  }
 });

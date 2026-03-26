@@ -16,7 +16,6 @@ import {
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { FieldConfig } from '../../api/themeLayerConfigApi';
 import {
   featureInfoLoadingAtom,
   featureInfoResultAtom,
@@ -26,6 +25,9 @@ import type {
   FeatureProperties,
   LayerFeatureInfo,
 } from '../../map/featureInfo/types';
+import type { FieldConfig } from '../../map/layers/themeLayerConfigApi';
+
+type Entry = [string, string | number | boolean | null];
 
 const IMAGE_FIELD_PATTERN = /^bildefil\d*$/i;
 
@@ -147,9 +149,13 @@ const formatPropertyValue = (
 
   let displayValue: string;
   if (typeof value === 'number') {
-    displayValue = Number.isInteger(value)
-      ? value.toString()
-      : value.toFixed(2);
+    if (fieldConfig?.decimals !== undefined) {
+      displayValue = value.toFixed(fieldConfig.decimals);
+    } else if (Number.isInteger(value)) {
+      displayValue = value.toString();
+    } else {
+      displayValue = value.toFixed(2);
+    }
   } else {
     displayValue = String(value);
   }
@@ -225,12 +231,7 @@ const PropertyItem = ({
     const linkUrl = buildLinkUrl(String(value), fieldConfig);
     if (linkUrl) {
       return (
-        <Flex
-          justify="space-between"
-          py={1}
-          borderBottom="1px solid"
-          borderColor="gray.100"
-        >
+        <Box py={1} borderBottom="1px solid" borderColor="gray.100">
           <Text fontSize="sm" color="gray.600" fontWeight="medium">
             {displayName}
           </Text>
@@ -244,20 +245,15 @@ const PropertyItem = ({
           >
             {value}
           </Link>
-        </Flex>
+        </Box>
       );
     }
   }
 
   if (isUrl(displayValue)) {
     return (
-      <Flex
-        justify="space-between"
-        py={1}
-        borderBottom="1px solid"
-        borderColor="gray.100"
-      >
-        <Text fontSize="sm" color="gray.600" fontWeight="medium">
+      <Box gap={0} py={1} borderBottom="1px solid" borderColor="gray.100">
+        <Text fontSize="sm" color="gray.600" fontWeight="bold">
           {displayName}
         </Text>
         <Link
@@ -270,24 +266,17 @@ const PropertyItem = ({
         >
           Link
         </Link>
-      </Flex>
+      </Box>
     );
   }
 
   return (
-    <Flex
-      justify="space-between"
-      py={1}
-      borderBottom="1px solid"
-      borderColor="gray.100"
-    >
-      <Text fontSize="sm" color="gray.600" fontWeight="medium">
+    <Box gap={0} py={1} borderBottom="1px solid" borderColor="gray.100">
+      <Text fontSize="sm" color="gray.600" fontWeight="bold">
         {displayName}
       </Text>
-      <Text fontSize="sm" textAlign="right" maxW="60%">
-        {displayValue}
-      </Text>
-    </Flex>
+      <Text fontSize="sm">{displayValue}</Text>
+    </Box>
   );
 };
 
@@ -305,7 +294,7 @@ const FeatureProperties = ({
   const imageFilenames = imageBaseUrl ? getImageFields(feature.properties) : [];
   const symbols = getSymbolFields(feature.properties, fieldConfigs);
 
-  const entries = Object.entries(feature.properties).filter(([key]) => {
+  const allEntries = Object.entries(feature.properties).filter(([key]) => {
     if (key.startsWith('_') && key !== '_html') return false;
     if (imageBaseUrl && IMAGE_FIELD_PATTERN.test(key)) return false;
     if (isSpecialField(key, fieldConfigs)) return false;
@@ -314,6 +303,18 @@ const FeatureProperties = ({
     if (fieldConfigs && !config) return false;
     return true;
   });
+
+  const entryLookup = new Map<string, Entry>(
+    allEntries.map(([key, value]) => [
+      key.toLowerCase(),
+      [key, value] as Entry,
+    ]),
+  );
+  const entries: Entry[] = fieldConfigs
+    ? fieldConfigs
+        .map((fc) => entryLookup.get(fc.name.toLowerCase()))
+        .filter((e): e is Entry => e !== undefined)
+    : (allEntries as Entry[]);
 
   if (
     entries.length === 0 &&
@@ -398,7 +399,7 @@ const LayerFeatureInfoSection = ({
         {layerInfo.features.map((feature, index) => (
           <Box key={index} mb={index < featureCount - 1 ? 4 : 0}>
             {featureCount > 1 && (
-              <Text fontSize="xs" fontWeight="bold" color="gray.500" mb={2}>
+              <Text fontSize="lg" fontWeight="bold" color="gray.500" mb={2}>
                 Objekt {index + 1}
               </Text>
             )}

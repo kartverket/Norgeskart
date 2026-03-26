@@ -8,7 +8,6 @@ import {
   toaster,
   VStack,
 } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
@@ -22,15 +21,19 @@ export const MapToolButtons = () => {
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const isMobile = useIsMobileScreen();
   const isPrintDialogOpenDisabled = useAtomValue(isPrintDialogOpenAtom);
-  const ph = usePostHog();
   const handleShareMapClick = () => {
     const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-      toaster.create({
-        title: t('search.actions.shareMap.success'),
-        duration: 2000,
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        toaster.create({
+          title: t('search.actions.shareMap.success'),
+          duration: 2000,
+        });
+      })
+      .catch(() => {
+        // Clipboard access may be denied (e.g. in non-secure contexts)
       });
-    });
   };
   const activeLayers = useAtomValue(activeThemeLayersAtom);
 
@@ -40,6 +43,7 @@ export const MapToolButtons = () => {
       justify="space-between"
       bg="#FFFF"
       borderRadius={{ base: '', md: 'lg' }}
+      shadow="lg"
       py={{ base: 1, md: 1 }}
       px={{ base: 0, md: 1 }}
       mb={{ base: 0, md: 0 }}
@@ -80,7 +84,6 @@ export const MapToolButtons = () => {
       </Box>
       <MapButton
         onClick={() => {
-          ph.capture('map_draw_button_clicked');
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={'edit'}
@@ -109,7 +112,7 @@ export const MapToolButtons = () => {
             }
             setIsPrintDialogOpen((p) => !p);
           }}
-          icon={'print'}
+          icon={'edit_document'}
           label={t('controller.print.text')}
           ariaLabel="print"
           id="map-print-button"
@@ -146,13 +149,11 @@ const MapButton = ({
   disabled,
   id,
 }: MapButtonProps) => {
-  const ph = usePostHog();
   return (
     <Button
       disabled={disabled}
       w={'fit-content'}
       onClick={() => {
-        ph.capture('map_tool_button_clicked', { tool: id || label });
         onClick();
       }}
       variant="ghost"

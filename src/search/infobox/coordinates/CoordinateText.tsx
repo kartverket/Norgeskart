@@ -1,48 +1,33 @@
 import { HStack, Stack, Text, VStack } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
-import { ProjectionIdentifier } from '../../../map/projections/types';
 import { decimalToDMS } from '../../../print/EmergencyPoster/utils';
 
-const formatCoordinateDigit = (
-  value: number,
-  projection: ProjectionIdentifier,
-) => {
-  switch (projection) {
-    case 'EPSG:4326':
-    case 'EPSG:3857':
-    case 'EPSG:4230': {
-      const DMSformatedPosition = decimalToDMS(value);
-      return [
-        value.toFixed(7),
-        `${DMSformatedPosition.deg}° ${DMSformatedPosition.min}' ${DMSformatedPosition.sec}"`,
-      ];
-    }
-
-    default:
-      return [value.toFixed(2)];
+const formatCoordinateDigit = (value: number, useDMS: boolean) => {
+  if (useDMS) {
+    const DMSformatedPosition = decimalToDMS(value);
+    return [
+      value.toFixed(7),
+      `${DMSformatedPosition.deg}° ${DMSformatedPosition.min}' ${DMSformatedPosition.sec}"`,
+    ];
+  } else {
+    return [value.toFixed(2)];
   }
-};
-
-const isGeographicProjection = (projection: ProjectionIdentifier): boolean => {
-  return projection === 'EPSG:4326' || projection === 'EPSG:4230';
 };
 
 const CoordindateDigit = ({
   label,
   value,
-  projection,
+  useDMS,
 }: {
   label: string;
   value: number;
-  projection: ProjectionIdentifier;
+  useDMS: boolean;
 }) => {
   return (
     <HStack justifyContent={'space-between'} alignItems={'flex-start'}>
-      <Text fontWeight={'bold'} justifySelf={'end'}>
-        {label}:
-      </Text>
+      <Text justifySelf={'end'}>{label}:</Text>
       <VStack alignItems={'flex-end'} justifyItems={'flex-end'}>
-        {formatCoordinateDigit(value, projection).map((text, index) => (
+        {formatCoordinateDigit(value, useDMS).map((text, index) => (
           <Text key={index}>{text}</Text>
         ))}
       </VStack>
@@ -53,28 +38,29 @@ const CoordindateDigit = ({
 export const CoordinateText = ({
   x,
   y,
-  projection,
+  isGeographicProjection,
+  useDMS,
 }: {
   x: number;
   y: number;
-  projection: ProjectionIdentifier;
+  isGeographicProjection: boolean;
+  useDMS: boolean;
 }) => {
   const { t } = useTranslation();
-  const showNorthEast = isGeographicProjection(projection);
 
   return (
     <Stack>
-      {showNorthEast ? (
+      {isGeographicProjection ? (
         <>
           <CoordindateDigit
             label={t('infoBox.coordinateSection.north')}
             value={y}
-            projection={projection}
+            useDMS={useDMS}
           />
           <CoordindateDigit
             label={t('infoBox.coordinateSection.east')}
             value={x}
-            projection={projection}
+            useDMS={useDMS}
           />
         </>
       ) : (
@@ -82,12 +68,12 @@ export const CoordinateText = ({
           <CoordindateDigit
             label={t('infoBox.coordinateSection.east')}
             value={x}
-            projection={projection}
+            useDMS={useDMS}
           />
           <CoordindateDigit
             label={t('infoBox.coordinateSection.north')}
             value={y}
-            projection={projection}
+            useDMS={useDMS}
           />
         </>
       )}

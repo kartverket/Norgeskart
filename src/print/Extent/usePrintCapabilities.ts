@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getEnv } from '../../env';
 
 export type PrintLayoutApi = {
   name: string;
@@ -22,7 +23,7 @@ export function usePrintCapabilities() {
   const [layouts, setLayouts] = useState<PrintLayout[]>([]);
 
   useEffect(() => {
-    fetch('https://ws.geonorge.no/print/kv/capabilities.json')
+    fetch(`${getEnv().printApiUrl}/print/kv/capabilities.json`)
       .then((res) => res.json())
       .then((data) => {
         const parsedLayouts = (data.layouts as PrintLayoutApi[]).map(

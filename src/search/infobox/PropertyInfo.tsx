@@ -31,6 +31,7 @@ import {
   getPropertyDetailsByMatrikkelId,
   getPropetyInfoByCoordinates,
 } from '../searchApi';
+import { getContainingExtent } from './utils';
 
 export interface PropertyInfoProps {
   lon: number;
@@ -103,6 +104,23 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
         if (features) {
           layerToAdd.getSource()?.addFeatures(features);
           map.addLayer(layerToAdd);
+          const containingExtent = getContainingExtent(features);
+
+          if (containingExtent) {
+            // Expand extent by 20%
+            const [minX, minY, maxX, maxY] = containingExtent;
+            const width = maxX - minX;
+            const height = maxY - minY;
+            const expandX = width * 0.1;
+            const expandY = height * 0.1;
+            const expandedExtent = [
+              minX - expandX,
+              minY - expandY,
+              maxX + expandX,
+              maxY + expandY,
+            ];
+            map.getView().fit(expandedExtent, { duration: 100 });
+          }
         }
       }
     };
@@ -136,6 +154,8 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   const hasMultipleAddresses =
     Array.isArray(propertyDetails) && propertyDetails.length > 1;
 
+  const addresses = property.VEGADRESSE?.filter(Boolean) ?? [];
+
   const rows = [
     [t('propertyInfo.municipalityNr'), property.KOMMUNENR],
     [t('infoBox.municipality'), capitalizeFirstLetter(property.KOMMUNENAVN)],
@@ -154,6 +174,18 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
       </AccordionItemTrigger>
       <AccordionItemContent>
         <Box>
+          {addresses.length > 0 && (
+            <Box mb={3}>
+              <Text fontSize="sm" fontWeight="semibold">
+                {t('propertyInfo.address')}
+              </Text>
+              {addresses.map((addr, i) => (
+                <Text key={i} fontSize="sm">
+                  {addr}
+                </Text>
+              ))}
+            </Box>
+          )}
           <Stack gap={0}>
             {hasMultipleAddresses && (
               <Text mb={4} fontSize="sm">

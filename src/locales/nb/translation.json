@@ -5,7 +5,7 @@
       "mobiletext": "Temakart"
     },
     "print": {
-      "text": "Skriv ut"
+      "text": "Lag kart"
     },
     "draw": {
       "text": "Tegne og måle",
@@ -23,7 +23,7 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
-    "hide": "Skjul verktøylinje"
+    "hide": "Minimer"
   },
   "draw": {
     "begin": "Tegn på kartet",
@@ -51,14 +51,21 @@
           "moveup": "Flytt opp",
           "point": "Punkter",
           "polygon": "Flate",
-          "text": "Tekst"
+          "text": "Tekst",
+          "undo": "Angre",
+          "redo": "Gjør om",
+          "deleteselected": "Slett valgte"
         }
       },
       "toolSelect": {
         "placeholder": "Velg tegnemåte"
       },
       "color": "Farger",
-      "edit": "Rediger"
+      "edit": "Rediger",
+      "defaults": {
+        "primary": "Hovedfarge",
+        "secondary": "Sekundær"
+      }
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -75,7 +82,11 @@
     },
     "tools": "Tegneverktøy",
     "yesClear": "Ja, fjern",
-    "redoundo": "Angre / Gjør om"
+    "redoundo": "Angre / Gjør om",
+    "download": "Last ned",
+    "uploadButton": {
+      "label": "Last opp"
+    }
   },
   "export": {
     "format": {
@@ -91,8 +102,15 @@
     "coordinateSection": {
       "copy": {
         "label": "Kopier koordinater",
+        "label_geo": "Kopier som DD",
         "toast": {
-          "title": "Koordinater kopier til utklipstavlen"
+          "title": "Kopier koordinatene som desimalgrader (f.eks. 62.0515257, 5.2972102)"
+        }
+      },
+      "copyDMS": {
+        "label": "Kopier som DMS",
+        "toast": {
+          "title": "Kopier koordinater i grader–minutter–sekunder, (f.eks. 62°03'05.49\" N, 5°17'49.96\" E)"
         }
       },
       "differentCrs": "Vis i",
@@ -169,12 +187,14 @@
             "Nibcache_web_mercator_v2": "Flyfoto",
             "nautical-background": "Nautisk bakgrunnskart",
             "oceanicelectronic": "Elektronisk sjøkart",
-            "sjokartraster": "Sjøkart papir",
-            "topo": "Topo",
+            "sjokartraster": "Sjøkart oppdatert EFS",
+            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Topografisk, gråtone",
+            "topograatone": "Standard (gråtone)",
             "topoProd": "Topografisk",
-            "toporaster": "Papirkart"
+            "toporaster": "Papirkart",
+            "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           }
         },
         "projection": {
@@ -182,13 +202,13 @@
           "placeholder": "Velg",
           "projections": {
             "epsg25833": {
-              "displayName": "ETRS89 UTM-33"
+              "displayName": "EUREF89 UTM-33"
             },
             "epsg25832": {
-              "displayName": "ETRS89 UTM-32"
+              "displayName": "EUREF89 UTM-32"
             },
             "epsg25835": {
-              "displayName": "ETRS89 UTM-35"
+              "displayName": "EUREF89 UTM-35"
             },
             "epsg3857": {
               "displayName": "Webmercator"
@@ -200,10 +220,10 @@
               "displayName": "ED50 Geografiske koordinater"
             },
             "epsg25834": {
-              "displayName": "ETRS89 UTM-34"
+              "displayName": "EUREF89 UTM-34"
             },
             "epsg25836": {
-              "displayName": "ETRS89 UTM-36"
+              "displayName": "EUREF89 UTM-36"
             },
             "epsg23031": {
               "displayName": "ED50 UTM-31"
@@ -246,6 +266,9 @@
             },
             "epsg27398": {
               "displayName": "NGO 1948 Gauss-Kruger sone 8"
+            },
+            "epsg4258": {
+              "displayName": "EUREF89 lat/lon"
             }
           },
           "forcedWebMercator": "Nautisk bakgrunnskart krever Webmercator-projeksjon",
@@ -261,13 +284,18 @@
           "nauticalBackgroundAlreadyActive": "Nautisk bakgrunnskart er allerede aktivt",
           "label": "Velg temakart",
           "activeLayersCount": "Aktive lag",
-          "warningLimit": "Maksimalt antall lag nådd. Vennligst deaktiver noen lag før du legger til flere for bedre ytelse.",
           "warningPerformance": "Aktivering av mange lag kan påvirke ytelsen. Vurder å deaktivere ubrukte lag.",
           "resetbutton": {
             "text": "Nullstill"
           },
           "kartverketThemes": "Kartverket tema",
-          "geonorgeThemes": "Geonorge tema"        
+          "geonorgeThemes": "Geonorge tema",
+          "subtheme": {
+            "toggleall": {
+              "addall": "Legg til alle",
+              "removeall": "Fjern alle"
+            }
+          }
         }
       }
     },
@@ -336,6 +364,7 @@
     }
   },
   "propertyInfo": {
+    "address": "Adresse",
     "holdingNr": "Gårdsnr.",
     "leaseNr": "Festenr.",
     "markProperty": {
@@ -349,9 +378,6 @@
   },
   "search": {
     "actions": {
-      "print": {
-        "tooltip": "Skriv ut"
-      },
       "shareMap": {
         "success": "Lenken er kopiert til utklippstavlen",
         "tooltip": "Del kartet"
@@ -386,7 +412,14 @@
     "locations": {
       "municipality": "kommune"
     },
-    "cancel": "Avbryt"
+    "cancel": "Avbryt",
+    "geometry": {
+      "types": {
+        "point": "Punkter",
+        "linestring": "Linjer",
+        "polygon": "Flater"
+      }
+    }
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -399,7 +432,7 @@
       "tooltip": "Rapporter feil eller mangler i kartet."
     },
     "scale": {
-      "tooltip": "Velg målestokk",
+      "tooltip": "Valgt målestokk tilpasses nærmeste tilgjengelige zoomnivå i kartet. Faktisk målestokk kan derfor avvike noe.",
       "disabledTooltip": "Målestokkvelgeren er deaktivert fordi dette bakgrunnskartet bruker heltallige zoomnivåer for bedre ytelse."
     },
     "crs": {
@@ -413,6 +446,10 @@
     "legend": {
       "tooltip": "Vis symbolforklaring",
       "label": "Tegnforklaring"
+    },
+    "oldnorgeskartbutton": {
+      "tooltip": "Bruk gamle Norgeskart.no",
+      "content": "arkiv.norgeskart.no"
     }
   },
   "cookieDialog": {
@@ -443,7 +480,7 @@
     }
   },
   "printdialog": {
-    "heading": "Skriv ut",
+    "heading": "Lag kart",
     "tabs": {
       "extent": {
         "heading": "Utsnitt"
@@ -495,7 +532,7 @@
     },
     "elevationProfile": {
       "heading": "Tegn en linje for å lage en høydeprofil",
-      "infotext": "Opprett en høydeprofil ved å klikke i kartet for å plassere det første punktet og dobbelklikk for å avslutte.",
+      "infotext": "Opprett en høydeprofil ved å laste opp en .GPX fil eller ved å klikke i kartet for å plassere det første punktet og dobbelklikk for å avslutte.",
       "jobError": "Kunne ikke lage høydeprofil",
       "jobRunning": "Lager profil",
       "buttons": {
@@ -507,12 +544,21 @@
         },
         "exportJpeg": {
           "label": "Last ned som JPEG"
+        },
+        "reset": {
+          "label": "Nullstill"
         }
       },
       "chartLabels": {
         "title": "Høydeprofil",
         "xAxis": "Avstand [m]",
         "yAxis": "Høyde [m]"
+      },
+      "fileUpload": {
+        "dragDrop": {
+          "label": "Dra fil, eller trykk, her",
+          "fileInfo": ".gpx format"
+        }
       }
     },
     "hikingMap": {
@@ -566,6 +612,38 @@
     "toast": {
       "success": "Nedlasting fullført",
       "error": "Klarte ikke å hente kartet"
+    },
+    "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkart oppdatert EFS i utskriften.",
+    "aerialImageryNotSupported": "Flyfoto støttes ikke av utskriftstjenesten. Vennligst bytt til et annet bakgrunnskart for å skrive ut.",
+    "projectionWarning": "Utskriften vil alltid være i UTM-sone 33 (EPSG:25833), uavhengig av valgt kartprojeksjon."
+  },
+  "about": {
+    "heading": "Om oss",
+    "textone": "Norgeskart er Kartverkets mest brukte karttjeneste. Enten du planlegger en tur til fjells eller til sjøs, eller trenger informasjon om en eiendom, gir Norgeskart deg pålitelig og detaljert geografisk informasjon – presentert på en enkel og tilgjengelig måte.",
+    "texttwo": "Siden 1773 har Kartverket kartlagt Norge. Mye har endret seg siden den gang. Behov utvikler seg over tid, og ny teknologi gir oss stadig nye muligheter. Derfor jobber vi kontinuerlig med å tilby et bredt spekter av kartprodukter som møter brukernes behov – både i dag og i fremtiden.",
+    "textthree": "Sammen med brukerne skal vi være åpne, innovative og stabile."
+  },
+  "importDialog": {
+    "header": "Importer fil til tegnelag",
+    "body": {
+      "text": "Velg en fil, enten GPX, GML eller GEOJSON. Hvis du vil kan du overskrive det som allerede er tegnet på kartet med innholdet i filen.",
+      "details": {
+        "heading": "Objekter i filen"
+      }
+    },
+    "overwriteSwitch": {
+      "label": "Overskriv tegning",
+      "tooltip": "Vil fjerne all tegning gjort på karet til nå"
+    },
+    "buttons": {
+      "confirm": {
+        "label": "Last opp"
+      }
+    },
+    "fileupload": {
+      "dragdrop": {
+        "label": "Dra og slipp, eller velg en fil"
+      }
     }
   }
 }

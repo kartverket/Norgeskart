@@ -1,14 +1,16 @@
-import { useAtomValue } from 'jotai';
-import TileLayer from 'ol/layer/Tile';
-import { AvailableProjectionType, mapAtom } from '../atoms';
-import { ProjectionIdentifier } from '../projections/types';
-import {
-  createVectorTileLayer,
-  isVectorTileLayer,
-  VectorTileLayerName,
-} from './backgroundVectorTiles';
-import { getWMSLayer, WMSLayerName } from './backgroundWMS';
-import { loadableWMTS, WMTSLayerName } from './backgroundWMTSProviders';
+export type WMSLayerName = 'oceanicelectronic' | 'sjokartraster';
+export type VectorTileLayerName = 'nautical-background';
+export type WMTSLayerName =
+  | 'topo'
+  | 'topograatone'
+  | 'toporaster'
+  | 'topoProd'
+  | 'Nibcache_web_mercator_v2'
+  | 'Nibcache_UTM32_EUREF89_v2'
+  | 'Nibcache_UTM33_EUREF89_v2'
+  | 'Nibcache_UTM35_EUREF89_v2'
+  | 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833'
+  | 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833';
 
 export type BackgroundLayerName =
   | WMTSLayerName
@@ -30,101 +32,8 @@ export const mapLegacyBackgroundLayerId = (
   return legacyIdMap[layerId] || null;
 };
 
-const isLayerNiBLayer = (layerName: BackgroundLayerName) => {
-  return layerName.startsWith('Nibcache_');
-};
-
-const getNiBLayerNameForProjection = (
-  projection: AvailableProjectionType,
-): WMTSLayerName | null => {
-  switch (projection) {
-    case 'EPSG:4326':
-      return null;
-    case 'EPSG:3857':
-      return 'Nibcache_web_mercator_v2';
-    case 'EPSG:25832':
-      return 'Nibcache_UTM32_EUREF89_v2';
-    case 'EPSG:25833':
-      return 'Nibcache_UTM33_EUREF89_v2';
-    case 'EPSG:25835':
-      return 'Nibcache_UTM35_EUREF89_v2';
-    default:
-      return null;
-  }
-};
-
-export const useBackgoundLayers = () => {
-  const map = useAtomValue(mapAtom);
-  const WMTSProviders = useAtomValue(loadableWMTS);
-  const backgroundLayerState = WMTSProviders.state;
-
-  const getBackgroundLayer = async (
-    backgroundLayerName: BackgroundLayerName,
-  ) => {
-    if (WMTSProviders.state === 'loading') {
-      return null;
-    }
-    if (WMTSProviders.state === 'hasError') {
-      console.error('Error loading WMTS providers:', WMTSProviders.error);
-      return null;
-    }
-
-    if (isVectorTileLayer(backgroundLayerName)) {
-      return createVectorTileLayer(backgroundLayerName);
-    }
-
-    const currentProjection: ProjectionIdentifier = map
-      .getView()
-      .getProjection()
-      .getCode() as ProjectionIdentifier;
-
-    const wmsLayer = getWMSLayer(
-      backgroundLayerName as WMSLayerName,
-      currentProjection,
-    );
-    if (wmsLayer) {
-      return wmsLayer;
-    }
-
-    const avialableWMTSLayersForProjection: Map<WMTSLayerName, TileLayer> =
-      new Map();
-
-    WMTSProviders.data.forEach((projectionLayerMap) => {
-      const layersForProjection = projectionLayerMap.get(currentProjection);
-      if (layersForProjection) {
-        layersForProjection.forEach((source, layerName) => {
-          const layer = new TileLayer({
-            source: source,
-            preload: Infinity,
-            properties: {
-              id: `bg.${layerName}`,
-            },
-          });
-          avialableWMTSLayersForProjection.set(layerName, layer);
-        });
-      }
-    });
-
-    if (isLayerNiBLayer(backgroundLayerName)) {
-      const nibLayerName = getNiBLayerNameForProjection(currentProjection);
-      if (nibLayerName) {
-        return avialableWMTSLayersForProjection.get(nibLayerName) || null;
-      } else {
-        console.warn(
-          `NiB layer ${backgroundLayerName} is not available for projection ${currentProjection}`,
-        );
-        return null;
-      }
-    }
-
-    //Handle NiB boogaloo here
-
-    return (
-      avialableWMTSLayersForProjection.get(
-        backgroundLayerName as WMTSLayerName,
-      ) || null
-    );
-  };
-
-  return { backgroundLayerState, getBackgroundLayer };
+export const isVectorTileLayer = (
+  layerName: string,
+): layerName is VectorTileLayerName => {
+  return layerName === 'nautical-background';
 };

@@ -1,5 +1,6 @@
 import { Box, HStack, Text, useKvibContext, VStack } from '@kvib/react';
 import { ReactNode } from 'react';
+import { ThemeLayerDefinition } from '../layers/themeLayerConfigApi';
 import {
   FeatureTypeStyle,
   Fill,
@@ -92,33 +93,22 @@ const SymbolLine = ({
   );
 };
 
-const MarkSymbol = ({ mark }: { mark: Mark }) => {
+const MarkSymbol = ({ mark, rotation }: { mark: Mark; rotation?: number }) => {
   const { color } = getParamsFromFill(mark.Fill!);
+  const svgRotation = rotation ? -rotation : 0;
   switch (mark.WellKnownName) {
     case 'circle':
-      return (
-        <svg width="28" height="28">
-          <circle cx="14" cy="14" r="10" fill={color} />
-        </svg>
-      );
+      return <circle cx="14" cy="14" r="10" fill={color} />;
     case 'square':
-      return (
-        <svg width="28" height="28">
-          <rect x="4" y="4" width="20" height="20" fill={color} />
-        </svg>
-      );
+      return <rect x="4" y="4" width="20" height="20" fill={color} />;
     case 'triangle':
       return (
-        <svg width="28" height="28">
+        <g transform={`rotate(${svgRotation},14,14)`}>
           <polygon points="14,4 24,24 4,24" fill={color} />
-        </svg>
+        </g>
       );
     default:
-      return (
-        <svg width="28" height="28">
-          <rect x="4" y="4" width="20" height="20" fill={color} />
-        </svg>
-      );
+      return <rect x="4" y="4" width="20" height="20" fill={color} />;
   }
 };
 
@@ -129,13 +119,16 @@ const PointSymbolizerPart = ({
   symbolizer: PointSymbolizer;
   text?: string;
 }) => {
+  const symbolizers = Array.isArray(symbolizer) ? symbolizer : [symbolizer];
   return (
     <SymbolLine text={text}>
-      {symbolizer.Graphic?.Mark ? (
-        <MarkSymbol mark={symbolizer.Graphic.Mark} />
-      ) : (
-        <></>
-      )}
+      <svg width="28" height="28">
+        {symbolizers.map((symbolizer, i) =>
+          symbolizer.Graphic?.Mark ? (
+            <MarkSymbol key={i} mark={symbolizer.Graphic.Mark} />
+          ) : null,
+        )}
+      </svg>
     </SymbolLine>
   );
 };
@@ -146,26 +139,32 @@ const LineSymbolizerPart = ({
   symbolizer: LineSymbolizer;
   text?: string;
 }) => {
-  let color;
-  let width;
-  const svgParams = symbolizer.Stroke?.SvgParameter;
-  const cssParams = symbolizer.Stroke?.CssParameter;
-  if (svgParams) {
-    color = svgParams[0];
-    width = svgParams[1];
-  } else if (cssParams) {
-    color = cssParams[0];
-    width = cssParams[2];
-  }
+  const symbolizers = Array.isArray(symbolizer) ? symbolizer : [symbolizer];
+
   return (
     <SymbolLine text={text}>
       <svg width="28" height="28">
-        <polyline
-          points="2,14 7,7 14,21 21,7 26,14"
-          fill="none"
-          stroke={color}
-          strokeWidth={width}
-        />
+        {symbolizers.map((symbolizer, i) => {
+          let color, width;
+          const svgParams = symbolizer.Stroke?.SvgParameter;
+          const cssParams = symbolizer.Stroke?.CssParameter;
+          if (svgParams) {
+            color = svgParams[0];
+            width = svgParams[1];
+          } else if (cssParams) {
+            color = cssParams[0];
+            width = cssParams[2];
+          }
+          return (
+            <polyline
+              key={i}
+              points="2,14 7,7 14,21 21,7 26,14"
+              fill="none"
+              stroke={color}
+              strokeWidth={width}
+            />
+          );
+        })}
       </svg>
     </SymbolLine>
   );
@@ -178,6 +177,19 @@ const PolygonSymbolizerPart = ({
   text?: string;
 }) => {
   const { fill, stroke } = getParamsFromPolygonSymboliser(symbolizer);
+  const graphicFillMark = fill?.GraphicFill?.Graphic.Mark;
+  const graphicFillRotation = fill?.GraphicFill?.Graphic.Rotation;
+
+  if (graphicFillMark) {
+    return (
+      <SymbolLine text={text}>
+        <svg width="28" height="28">
+          <MarkSymbol mark={graphicFillMark} rotation={graphicFillRotation} />
+        </svg>
+      </SymbolLine>
+    );
+  }
+
   const { color, opacity } = fill
     ? getParamsFromFill(fill)
     : { color: undefined, opacity: 0 };
@@ -185,6 +197,7 @@ const PolygonSymbolizerPart = ({
   const { strokeColor, strokeWidth } = stroke
     ? getParamsFromStroke(stroke)
     : { strokeColor: undefined, strokeWidth: 0 };
+
   return (
     <SymbolLine text={text}>
       <Box
@@ -288,33 +301,31 @@ const UserStylePart = ({ style }: { style: UserStyle }) => {
 };
 
 const NamedLayerPart = ({ namedLayer }: { namedLayer: NamedLayer }) => {
-  return (
-    <>
-      {Array.isArray(namedLayer.UserStyle) ? (
-        namedLayer.UserStyle.map((s) => <UserStylePart style={s} />)
-      ) : (
-        <UserStylePart style={namedLayer.UserStyle} />
-      )}
-    </>
-  );
+  const userStyles = Array.isArray(namedLayer.UserStyle)
+    ? namedLayer.UserStyle
+    : [namedLayer.UserStyle];
+  return userStyles.map((s) => <UserStylePart style={s} />);
 };
 
 export const Symbolology = ({
-  activeThemeLayers,
+  layerDescriptor,
+  layerConfig,
   heading,
 }: {
-  activeThemeLayers: StyledLayerDescriptor;
+  layerDescriptor: StyledLayerDescriptor;
+  layerConfig: ThemeLayerDefinition;
   heading: string;
 }) => {
-  return (
-    <>
-      {Array.isArray(activeThemeLayers.NamedLayer) ? (
-        activeThemeLayers.NamedLayer.map((l) => (
-          <NamedLayerPart key={heading + l.Name} namedLayer={l} />
-        ))
-      ) : (
-        <NamedLayerPart namedLayer={activeThemeLayers.NamedLayer} />
-      )}
-    </>
+  const descriptors = (
+    Array.isArray(layerDescriptor.NamedLayer)
+      ? layerDescriptor.NamedLayer
+      : [layerDescriptor.NamedLayer]
+  ).filter(
+    (l) =>
+      layerConfig.legendLayerNames == null ||
+      layerConfig.legendLayerNames.includes(l.Name),
   );
+  return descriptors.map((l) => (
+    <NamedLayerPart key={heading + l.Name} namedLayer={l} />
+  ));
 };

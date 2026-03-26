@@ -1,17 +1,42 @@
 import { getDefaultStore } from 'jotai';
+import { Feature } from 'ol';
 import { GeoJSON, GML, GPX } from 'ol/format';
 import VectorLayer from 'ol/layer/Vector';
 import { mapAtom } from '../../map/atoms';
 import { downloadStringAsFile } from '../../shared/utils/fileOperations';
+import { getFeaturePropertiesForExport } from '../utils/featureUtils';
 
 export const handleGeoJsonExport = (layer: VectorLayer) => {
   const formater = new GeoJSON();
-  const features = layer.getSource()?.getFeatures();
+  const features = layer.getSource()?.getFeatures() as Feature[] | undefined;
   if (!features || features.length === 0) {
     console.error('No features to export');
     return;
   }
-  const geojsonStr = formater.writeFeatures(features);
+  const projection = getDefaultStore()
+    .get(mapAtom)
+    .getView()
+    .getProjection()
+    .getCode();
+  const featuresToExport = features
+    .filter(
+      (f) =>
+        f.getGeometry()?.getType() === 'LineString' ||
+        f.getGeometry()?.getType() === 'Polygon' ||
+        f.getGeometry()?.getType() === 'Point',
+    )
+    .map((f) => {
+      const props = getFeaturePropertiesForExport(f);
+      if (props) {
+        f.setProperties(props, true);
+      }
+      return f;
+    });
+
+  const geojsonStr = formater.writeFeatures(featuresToExport, {
+    dataProjection: 'EPSG:4326',
+    featureProjection: projection,
+  });
   downloadStringAsFile(
     geojsonStr,
     'Norgeskart_eksport.geojson',
@@ -25,22 +50,48 @@ export const handleGMLExport = (layer: VectorLayer) => {
     console.error('No features to export');
     return;
   }
+  const projection = getDefaultStore()
+    .get(mapAtom)
+    .getView()
+    .getProjection()
+    .getCode();
   // Use a default feature type and geometry name
   const formater = new GML({
-    featureNS: 'http://www.opengis.net/gml',
-    featureType: 'feature',
-    srsName: layer.getSource()?.getProjection()?.getCode() || 'EPSG:4326',
+    featureNS: 'http://www.norgeskart.no/drawings',
+    featureType: 'drawings',
+    srsName: 'urn:ogc:def:crs:EPSG::4326',
+    surface: false,
+    curve: false,
+    multiCurve: false,
+    multiSurface: false,
   });
 
   // Ensure all features have the correct geometry name
-  features.forEach((f) => {
-    if (f.getGeometryName() !== 'geometry') {
-      f.setGeometryName('geometry');
-    }
+  // features.forEach((f: Feature) => {
+  //   if (f.getGeometryName() !== 'geometry') {
+  //     f.setGeometryName('geometry');
+  //   }
+  // });
+
+  const gmlStr = formater.writeFeatures(features, {
+    dataProjection: 'EPSG:4326',
+    featureProjection: projection,
   });
 
-  const gmlStr = formater.writeFeatures(features);
-  downloadStringAsFile(gmlStr, 'Norgeskart_eksport.gml', 'application/gml+xml');
+  const wrappedGmlStr = `
+  <?xml version="1.0" encoding="UTF-8"?>
+    <gml:FeatureCollection  xmlns:gml="http://www.opengis.net/gml"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xsi:schemaLocation="http://www.norgeskart.no/drawings"
+                            gml:srsName="urn:ogc:def:crs:EPSG::4326">
+      ${gmlStr}
+    </gml:FeatureCollection>`.trim();
+
+  downloadStringAsFile(
+    wrappedGmlStr,
+    'Norgeskart_eksport.gml',
+    'application/gml+xml',
+  );
 };
 
 export const handleGPXExport = (layer: VectorLayer) => {

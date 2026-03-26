@@ -1,36 +1,36 @@
 import {
+  Accordion,
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
   Button,
   ButtonGroup,
-  Dialog,
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogTrigger,
-  Heading,
-  IconButton,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverRoot,
   PopoverTitle,
   PopoverTrigger,
+  VStack,
 } from '@kvib/react';
 import { Feature, FeatureCollection } from 'geojson';
 import { t } from 'i18next';
-import { useAtomValue } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
 import { Circle, Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { transform } from 'ol/proj';
-import { Style } from 'ol/style';
 import { useState } from 'react';
-import { getStyleForStorage, saveFeatures } from '../api/nkApiClient';
+import { saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
-import { canRedoAtom, canUndoAtom } from '../settings/draw/drawActions/atoms';
-import { useDrawActions } from '../settings/draw/drawActions/drawActionsHooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
-import { getFeatureIcon } from './drawControls/hooks/drawEventHandlers';
+import {
+  isExportDialogOpenAtom,
+  isImportDialogOpenAtom,
+} from './dialogs/atoms';
+import { ExportDialog } from './dialogs/ExportDialog';
+import { ImportDialog } from './dialogs/import/ImportDialog';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
-import { ExportControls } from './export/ExportControls';
+import { getFeaturePropertiesForExport } from './utils/featureUtils';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
@@ -63,20 +63,14 @@ const getGeometryType = (geo: Geometry): string => {
   return geo.getType();
 };
 
-const getRadius = (geo: Geometry): number | undefined => {
-  if (geo instanceof Circle) {
-    return geo.getRadius();
-  }
-  return undefined;
-};
-
 export const DrawControlFooter = () => {
   const { getDrawnFeatures, clearDrawing } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
-  const { undoLast, redoLastUndone } = useDrawActions();
+  const setIsExportDialogOpen = useSetAtom(isExportDialogOpenAtom);
+  const setIsImportDialogOpen = useSetAtom(isImportDialogOpenAtom);
+
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
-  const canUndoDrawAction = useAtomValue(canUndoAtom);
-  const canRedoDrawAction = useAtomValue(canRedoAtom);
+
   const onSaveFeatures = () => {
     const drawnFeatures = getDrawnFeatures();
     const mapProjection = getMapProjectionCode();
@@ -95,20 +89,15 @@ export const DrawControlFooter = () => {
           geometry,
           mapProjection,
         );
-        const featureStyle = feature.getStyle() as Style | null;
-        const icon = getFeatureIcon(feature);
-        const styleForStorage = getStyleForStorage(featureStyle);
+
+        const featureProperties = getFeaturePropertiesForExport(feature);
         return {
           type: 'Feature',
           geometry: {
             type: getGeometryType(geometry),
             coordinates: featureCoordinates,
           },
-          properties: {
-            style: styleForStorage,
-            overlayIcon: icon || undefined,
-            radius: getRadius(geometry),
-          },
+          properties: featureProperties,
         } as Feature;
       })
       .filter((f) => f !== null);
@@ -126,88 +115,78 @@ export const DrawControlFooter = () => {
   };
   return (
     <>
-      <Heading size={{ base: 'sm', md: 'md' }} marginTop={2}>
-        {t('draw.redoundo')}
-      </Heading>
-      <ButtonGroup>
-        <IconButton
-          variant="ghost"
-          disabled={!canUndoDrawAction}
-          onClick={undoLast}
-          icon={'undo'}
-        />
-        {canRedoDrawAction && (
-          <IconButton
-            variant="ghost"
-            disabled={!canRedoDrawAction}
-            onClick={redoLastUndone}
-            icon={'redo'}
-          />
-        )}
-      </ButtonGroup>
-      <Heading size={{ base: 'sm', md: 'md' }}>
-        {t('controller.export')}
-      </Heading>
-      <ButtonGroup>
-        <PopoverRoot
-          open={clearPopoverOpen}
-          onOpenChange={(e) => setClearPopoverOpen(e.open)}
-        >
-          <PopoverTrigger asChild>
-            <IconButton
-              size="lg"
-              variant="ghost"
-              iconFill
-              colorPalette={'red'}
-              icon={'delete'}
-            >
-              {t('draw.clear')}
-            </IconButton>
-          </PopoverTrigger>
-          <PopoverContent width="145px">
-            <PopoverArrow />
-            <PopoverBody>
-              <PopoverTitle fontWeight="bold">
-                {t('draw.confrimClear')}
-              </PopoverTitle>
+      <Accordion
+        collapsible
+        variant="plain"
+        size="sm"
+        paddingTop={2}
+        paddingX={0}
+        overflow={'hidden'}
+      >
+        <AccordionItem value="export" paddingX="0">
+          <AccordionItemTrigger fontWeight="600" padding="0">
+            {t('controller.export')}
+          </AccordionItemTrigger>
+          <AccordionItemContent marginX="-15px">
+            <VStack align={'flex-start'}>
+              <ButtonGroup>
+                <PopoverRoot
+                  open={clearPopoverOpen}
+                  onOpenChange={(e) => setClearPopoverOpen(e.open)}
+                >
+                  <PopoverTrigger asChild>
+                    <Button
+                      size="xs"
+                      variant="outline"
+                      iconFill
+                      colorPalette={'red'}
+                    >
+                      {t('draw.clear')}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent width="145px">
+                    <PopoverArrow />
+                    <PopoverBody>
+                      <PopoverTitle fontWeight="bold">
+                        {t('draw.confrimClear')}
+                      </PopoverTitle>
+                      <Button
+                        onClick={() => {
+                          setClearPopoverOpen(false);
+                          clearDrawing();
+                        }}
+                        colorPalette={'red'}
+                        marginTop={2}
+                      >
+                        {t('shared.yes')}
+                      </Button>
+                    </PopoverBody>
+                  </PopoverContent>
+                </PopoverRoot>
+                <Button size="xs" variant="outline" onClick={onSaveFeatures}>
+                  {t('draw.save')}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="xs"
+                  onClick={() => setIsExportDialogOpen(true)}
+                >
+                  {t('draw.download')}
+                </Button>
+              </ButtonGroup>
               <Button
-                onClick={() => {
-                  setClearPopoverOpen(false);
-                  clearDrawing();
-                }}
-                colorPalette={'red'}
-                marginTop={2}
+                size="xs"
+                variant="outline"
+                onClick={() => setIsImportDialogOpen(true)}
               >
-                {t('shared.yes')}
+                {t('draw.uploadButton.label')}
               </Button>
-            </PopoverBody>
-          </PopoverContent>
-        </PopoverRoot>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          iconFill
-          onClick={onSaveFeatures}
-          icon={'save'}
-        >
-          {t('draw.save')}
-        </IconButton>
-
-        <Dialog placement={'center'} motionPreset="slide-in-left">
-          <DialogTrigger asChild>
-            <IconButton icon={'download'} variant="ghost">
-              Open Dialog
-            </IconButton>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogBody>
-              <ExportControls />
-            </DialogBody>
-
-            <DialogCloseTrigger />
-          </DialogContent>
-        </Dialog>
-      </ButtonGroup>
+            </VStack>
+          </AccordionItemContent>
+        </AccordionItem>
+      </Accordion>
+      <ExportDialog />
+      <ImportDialog />
     </>
   );
 };
