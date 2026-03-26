@@ -6,6 +6,7 @@ import { ColorLike, PatternDescriptor } from 'ol/colorlike';
 import { GML } from 'ol/format';
 import { Polygon } from 'ol/geom';
 import { Fill, Stroke, Style } from 'ol/style';
+import posthog from 'posthog-js';
 import { getEnv } from '../env';
 import { mapAtom } from '../map/atoms';
 
@@ -32,7 +33,7 @@ export type StyleForStorage = {
 
 export const getFeatures = async (
   drawingId: string,
-): Promise<FeatureCollection> => {
+): Promise<FeatureCollection | undefined> => {
   try {
     const response = await fetch(
       `${BASE_API_URL}/get-json.py?hash=${drawingId}`,
@@ -44,7 +45,11 @@ export const getFeatures = async (
     return data;
   } catch (error) {
     console.error('Error fetching features:', error);
-    throw error;
+    posthog.captureException(error, {
+      errorType: 'draw_fetch_error',
+      drawingId,
+    });
+    return;
   }
 };
 
@@ -68,6 +73,10 @@ export const saveFeatures = async (
     const id = parts ? parts[1] : null;
     return id;
   } catch (e) {
+    posthog.captureException(e, {
+      errorType: 'draw_save_error',
+      features,
+    });
     console.error('Error saving features:', e);
     return null;
   }
