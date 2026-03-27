@@ -4,7 +4,6 @@ import { WMTSCapabilities } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
-import posthog from 'posthog-js';
 import { mapAtom } from '../../../atoms';
 import { backgroundLayerCapabilitiesCacheAtom } from './atoms';
 import { nibTileLoadFunction } from './loadFunctions';
@@ -57,13 +56,6 @@ export const getWMTSLayer = async (layerConfig: WMTSBackgroundLayer) => {
         })
       : new WMTS({ ...layerOptions });
 
-    wmts.on('tileloaderror', (event) => {
-      posthog.captureException(event, {
-        errorType: 'wmts_tile_load_error',
-        layerId: layerConfig.layerName,
-      });
-    });
-
     const layer = new TileLayer({
       source: wmts,
       properties: { id: `bg.${layerConfig.layerName}` },
@@ -89,7 +81,6 @@ export const getVectorTileLayer = (layerConfig: VectorTileBackgroundLayer) => {
       isVectorTile: true,
     },
   });
-
   return layer;
 };
 
@@ -97,20 +88,11 @@ export const getWMSLayer = (layerConfig: WMSBackgroundLayer) => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const projection = map.getView().getProjection().getCode();
-  const source = new TileWMS({
-    url: layerConfig.url,
-    params: { ...layerConfig.props, SRS: projection },
-  });
-  source.on('tileloaderror', (event) => {
-    posthog.captureException(event, {
-      errorType: 'wms_tile_load_error',
-      layerId: layerConfig.layerName,
-      wmsUrl: layerConfig.url,
-      params: { ...layerConfig.props, SRS: projection },
-    });
-  });
   const layer = new TileLayer({
-    source,
+    source: new TileWMS({
+      url: layerConfig.url,
+      params: { ...layerConfig.props, SRS: projection },
+    }),
     properties: { id: `bg.${layerConfig.layerName}` },
   });
 
