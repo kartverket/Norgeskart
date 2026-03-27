@@ -172,6 +172,7 @@ export const InputForm = ({
               });
               ph.captureException('print_emergency_poster_failed', {
                 errorType: 'print_emergency_poster_failed',
+                errorMessage: 'Could not create payload for emergency poster',
               });
               return;
             }
@@ -192,15 +193,24 @@ export const InputForm = ({
                     'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                   ),
                 );
-                ph.capture('print_emergency_poster_failed');
+                ph.captureException('print_emergency_poster_failed', {
+                  errorType: 'print_emergency_poster_failed',
+                  errorMessage:
+                    'Download URL was not available for emergency poster',
+                  payload,
+                });
               }
-            } catch {
+            } catch (e) {
               alert(
                 t(
                   'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                 ),
               );
-              ph.capture('print_emergency_poster_failed');
+              ph.captureException(e, {
+                errorType: 'print_emergency_poster_failed',
+                errorMessage: 'Error occurred while creating emergency poster',
+                payload,
+              });
             } finally {
               setIsLoading(false);
             }

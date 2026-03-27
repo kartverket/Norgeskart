@@ -2,9 +2,6 @@ import ImageLayer from 'ol/layer/Image.js';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import { ImageWMS, TileWMS } from 'ol/source';
-import { ImageSourceEvent } from 'ol/source/Image';
-import { TileSourceEvent } from 'ol/source/Tile';
-import posthog from 'posthog-js';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
 import type {
   ThemeLayerConfig,
@@ -187,39 +184,25 @@ export const createThemeLayerFromConfig = (
     FILTER: layerDef.filter ? layerDef.filter : undefined,
   };
 
-  const errorHandler = (event: ImageSourceEvent | TileSourceEvent) => {
-    posthog.captureException(event, {
-      errorType: 'wms_image_load_error',
-      layerId: layerDef.id,
-      wmsUrl,
-      params: wmsParams,
-    });
-  };
-
   if (layerDef.singleImage) {
-    const source = new ImageWMS({
-      url: wmsUrl,
-      params: wmsParams,
-      projection: projection,
-    });
-    source.on('imageloaderror', errorHandler);
     return new ImageLayer({
-      source,
+      source: new ImageWMS({
+        url: wmsUrl,
+        params: wmsParams,
+        projection: projection,
+      }),
       properties: layerProperties,
     });
   }
 
-  const source = new TileWMS({
-    url: wmsUrl,
-    params: { ...wmsParams, TILED: true },
-    projection: projection,
-    cacheSize: 512,
-    transition: 0,
-  });
-  source.on('tileloaderror', errorHandler);
-
   return new TileLayer({
-    source,
+    source: new TileWMS({
+      url: wmsUrl,
+      params: { ...wmsParams, TILED: true },
+      projection: projection,
+      cacheSize: 512,
+      transition: 0,
+    }),
     properties: layerProperties,
     preload: 1,
   });

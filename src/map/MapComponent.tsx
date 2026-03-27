@@ -65,6 +65,10 @@ export const MapComponent = () => {
       const drawingId = getUrlParameter('drawing');
       if (drawingId) {
         const features = await getFeatures(drawingId);
+        if (!features) {
+          console.warn(`No features found for drawing id: ${drawingId}`);
+          return;
+        }
         setDrawLayerFeatures(features, 'EPSG:4326');
         hasLoadedDrawingRef.current = true;
       }
