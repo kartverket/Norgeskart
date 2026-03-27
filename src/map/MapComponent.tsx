@@ -1,6 +1,7 @@
 import { Box, Text } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { createEmpty, extend as extendExtent, isEmpty } from 'ol/extent';
 import 'ol/ol.css';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +21,6 @@ import {
   urlGeoJsonLayersAtom,
 } from './layers/urlGeoJson.ts';
 import { useMap } from './mapHooks.ts';
-import { createEmpty, extend as extendExtent, isEmpty } from 'ol/extent';
 import { getScaleFromResolution } from './mapScale.ts';
 import {
   mapContextIsOpenAtom,
@@ -103,7 +103,9 @@ export const MapComponent = () => {
       });
       console.log('[urlGeoJson] fitting view to extent:', combinedExtent);
       if (!isEmpty(combinedExtent)) {
-        map.getView().fit(combinedExtent, { padding: [50, 50, 50, 50], maxZoom: 12 });
+        map
+          .getView()
+          .fit(combinedExtent, { padding: [50, 50, 50, 50], maxZoom: 12 });
       }
     })();
   }, [map, setUrlGeoJsonLayers]);

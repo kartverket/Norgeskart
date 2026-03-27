@@ -18,11 +18,17 @@ const DEFAULT_POINT_RADIUS = 6;
 
 const defaultStyle = new Style({
   fill: new Fill({ color: DEFAULT_FILL_COLOR }),
-  stroke: new Stroke({ color: DEFAULT_STROKE_COLOR, width: DEFAULT_STROKE_WIDTH }),
+  stroke: new Stroke({
+    color: DEFAULT_STROKE_COLOR,
+    width: DEFAULT_STROKE_WIDTH,
+  }),
   image: new CircleStyle({
     radius: DEFAULT_POINT_RADIUS,
     fill: new Fill({ color: DEFAULT_FILL_COLOR }),
-    stroke: new Stroke({ color: DEFAULT_STROKE_COLOR, width: DEFAULT_STROKE_WIDTH }),
+    stroke: new Stroke({
+      color: DEFAULT_STROKE_COLOR,
+      width: DEFAULT_STROKE_WIDTH,
+    }),
   }),
 });
 
@@ -76,7 +82,7 @@ const markerSizeToRadius = (size: unknown): number => {
  */
 export const simplestyleToOlStyle = (
   feature: FeatureLike,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   _resolution?: number,
 ): Style => {
   const props = feature.getProperties() as Record<string, unknown>;
@@ -94,9 +100,7 @@ export const simplestyleToOlStyle = (
       ? props['stroke']
       : DEFAULT_STROKE_COLOR;
   const strokeOpacity =
-    typeof props['stroke-opacity'] === 'number'
-      ? props['stroke-opacity']
-      : 1.0;
+    typeof props['stroke-opacity'] === 'number' ? props['stroke-opacity'] : 1.0;
   const strokeWidth =
     typeof props['stroke-width'] === 'number'
       ? props['stroke-width']
@@ -233,11 +237,24 @@ export const createUrlGeoJsonLayer = async (
     const match = /EPSG[::]+(\d+)/.exec(crsName);
     if (match) dataProjection = `EPSG:${match[1]}`;
   }
-  console.log('[urlGeoJson] dataProjection:', dataProjection, 'featureProjection:', mapProjection);
+  console.log(
+    '[urlGeoJson] dataProjection:',
+    dataProjection,
+    'featureProjection:',
+    mapProjection,
+  );
 
-  const format = new GeoJSON({ dataProjection, featureProjection: mapProjection });
+  const format = new GeoJSON({
+    dataProjection,
+    featureProjection: mapProjection,
+  });
   const features = format.readFeatures(geojsonData) as Feature<Geometry>[];
-  console.log('[urlGeoJson] loaded', features.length, 'features from', geojsonUrl);
+  console.log(
+    '[urlGeoJson] loaded',
+    features.length,
+    'features from',
+    geojsonUrl,
+  );
 
   const vectorSource = new VectorSource<Feature<Geometry>>({ features });
   console.log('[urlGeoJson] source extent:', vectorSource.getExtent());

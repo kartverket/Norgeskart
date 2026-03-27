@@ -18,24 +18,24 @@ import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { currentProjectionAtom } from '../../map/atoms';
+import {
+  activeThemeLayersAtom,
+  portalAtom,
+  preNauticalProjectionAtom,
+} from '../../map/layers/atoms';
+import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
 import {
   getMainCategories,
   getSubcategories,
   themeLayerConfigAtom,
 } from '../../map/layers/themeLayerConfigApi';
 import {
-  activeThemeLayersAtom,
-  portalAtom,
-  preNauticalProjectionAtom,
-} from '../../map/layers/atoms';
-import {
   isGeonorgeCategory,
   MAX_THEME_LAYERS,
   useThemeLayers,
 } from '../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../map/layers/themeWMS';
-import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
-import { currentProjectionAtom } from '../../map/atoms';
 
 type Theme = {
   name: string;
@@ -123,7 +123,9 @@ const ThemeAccordionItem = ({
                     onClick={() => toggleLayer(layer.name)}
                     cursor="pointer"
                   >
-                    <Text fontSize={{ base: 'sm', md: 'md' }}>{layer.label}</Text>
+                    <Text fontSize={{ base: 'sm', md: 'md' }}>
+                      {layer.label}
+                    </Text>
                     <Switch
                       colorPalette="green"
                       size="sm"
@@ -160,7 +162,8 @@ export const MapThemes = () => {
     activeThemeLayersAtom,
   );
   const ph = usePostHog();
-  const [activeBackgroundLayer, setActiveBackgroundLayer] = useAtom(backgroundLayerAtom);
+  const [activeBackgroundLayer, setActiveBackgroundLayer] =
+    useAtom(backgroundLayerAtom);
   const currentProjection = useAtomValue(currentProjectionAtom);
   const setCurrentProjection = useSetAtom(currentProjectionAtom);
   const [, setPreNauticalProjection] = useAtom(preNauticalProjectionAtom);
