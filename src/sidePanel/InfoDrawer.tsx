@@ -16,11 +16,11 @@ import { Contact, PrivacyPolicy } from './PrivacyPolicyAndContact';
 
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   nb: () =>
-    import('../locales/nb/tipsandtricks.json', { assert: { type: 'json' } }),
+    import('../locales/nb/tipsandtricks.json', { with: { type: 'json' } }),
   nn: () =>
-    import('../locales/nn/tipsandtricks.json', { assert: { type: 'json' } }),
+    import('../locales/nn/tipsandtricks.json', { with: { type: 'json' } }),
   en: () =>
-    import('../locales/en/tipsandtricks.json', { assert: { type: 'json' } }),
+    import('../locales/en/tipsandtricks.json', { with: { type: 'json' } }),
 };
 
 export const InfoDrawer = () => {
@@ -118,6 +118,10 @@ export const InfoDrawer = () => {
             {t('about.texttwo')}
           </Text>
           <Text textStyle="sm">{t('about.textthree')}</Text>
+          <Text marginTop="4" textStyle="xs" color="fg.muted">
+            {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
+            {new Date(__BUILD_DATE__).toLocaleDateString()}
+          </Text>
         </AccordionItemContent>
       </AccordionItem>
       <AccordionItem value="privacy">
