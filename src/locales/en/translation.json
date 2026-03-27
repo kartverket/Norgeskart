@@ -517,7 +517,8 @@
         },
         "errors": {
           "couldNotCreatePosterUrl": "Could not create the poster"
-        }
+        },
+        "error": "Could not fetch data for the poster. Try someplace else"
       },
       "buttons": {
         "makePoster": "Create poster"
