@@ -10,10 +10,7 @@ import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
-import {
-  getThemeLayerById,
-  themeLayerConfigAtom,
-} from './themeLayerConfigApi';
+import { getThemeLayerById, themeLayerConfigAtom } from './themeLayerConfigApi';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
 
 export type Portal = 'norgeskart' | 'geonorge';

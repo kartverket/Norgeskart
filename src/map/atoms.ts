@@ -17,9 +17,7 @@ import {
   backgroundLayerAtom,
 } from './layers/config/backgroundLayers/atoms';
 import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
-import {
-  themeLayerConfigAtom,
-} from './layers/themeLayerConfigApi';
+import { themeLayerConfigAtom } from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
 
