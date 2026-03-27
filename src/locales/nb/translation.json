@@ -522,7 +522,8 @@
         },
         "errors": {
           "couldNotCreatePosterUrl": "Kunne ikke lage nødplakat"
-        }
+        },
+        "error": "Kunne ikke hente data for plakaten. Prøv et annet sted"
       },
       "buttons": {
         "makePoster": "Lag plakat"

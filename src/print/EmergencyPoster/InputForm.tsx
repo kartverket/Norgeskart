@@ -29,7 +29,7 @@ import {
   submitEmergencyPoster,
 } from './utils';
 
-const LABEL_WIDTH = '40%';
+export const LABEL_WIDTH = '40%';
 export const InputForm = ({
   clickedCoordinates,
   emergenyPosterData,
@@ -68,27 +68,24 @@ export const InputForm = ({
           borderRadius={0}
         />
       </FieldRoot>
-      <FieldRoot orientation={'horizontal'} display={'flex'}>
-        <FieldLabel flexBasis={LABEL_WIDTH}>
-          {t('printdialog.emergencyPoster.inputform.fields.place.label')}
-        </FieldLabel>
-        <PlaceSelector
-          coordinates={clickedCoordinates}
-          range={1500}
-          onSelect={(s) => {
-            setSelectedPlace(s);
-            if (!customNameChanged) {
-              setCustomName(s);
-            }
-          }}
-          onLoadComplete={(s) => {
-            setSelectedPlace(s);
-            if (!customNameChanged) {
-              setCustomName(s);
-            }
-          }}
-        />
-      </FieldRoot>
+
+      <PlaceSelector
+        coordinates={clickedCoordinates}
+        range={1500}
+        onSelect={(s) => {
+          setSelectedPlace(s);
+          if (!customNameChanged) {
+            setCustomName(s);
+          }
+        }}
+        onLoadComplete={(s) => {
+          setSelectedPlace(s);
+          if (!customNameChanged) {
+            setCustomName(s);
+          }
+        }}
+      />
+
       {emergenyPosterData.vegliste.length > 0 && (
         <>
           <FieldRoot orientation={'horizontal'} display={'flex'}>
