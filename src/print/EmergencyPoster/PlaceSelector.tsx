@@ -1,5 +1,7 @@
 import {
   createListCollection,
+  FieldLabel,
+  FieldRoot,
   SelectContent,
   SelectItem,
   SelectRoot,
@@ -9,12 +11,14 @@ import {
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
+import { t } from 'i18next';
 import { getDefaultStore } from 'jotai';
 import { Coordinate } from 'ol/coordinate';
 import { mapAtom } from '../../map/atoms';
 import { ProjectionIdentifier } from '../../map/projections/types';
 import { getPlaceNamesByLocation } from '../../search/searchApi';
 import { Place } from '../../types/searchTypes';
+import { LABEL_WIDTH } from './InputForm';
 
 export const PlaceSelector = ({
   coordinates,
@@ -64,29 +68,39 @@ export const PlaceSelector = ({
   if (placesNearby.data == null) {
     return null;
   }
+  if (placesNearby.data.length === 0) {
+    return null;
+  }
 
   return (
-    <SelectRoot
-      collection={createListCollection({
-        items: placesNearby.data
-          ? placesNearby.data.map((place) => place.name)
-          : [],
-      })}
-      onSelect={(s) => {
-        onSelect(s.value);
-      }}
-      defaultValue={[placesNearby.data[0].name]}
-    >
-      <SelectTrigger>
-        <SelectValueText />
-      </SelectTrigger>
-      <SelectContent>
-        {placesNearby.data.map((item, i) => (
-          <SelectItem key={item.name + i} item={item.name}>
-            {item.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </SelectRoot>
+    <FieldRoot orientation={'horizontal'} display={'flex'}>
+      <FieldLabel flexBasis={LABEL_WIDTH}>
+        {t('printdialog.emergencyPoster.inputform.fields.place.label')}
+      </FieldLabel>
+      <SelectRoot
+        collection={createListCollection({
+          items: placesNearby.data
+            ? placesNearby.data.map((place) => place.name)
+            : [],
+        })}
+        onSelect={(s) => {
+          onSelect(s.value);
+        }}
+        defaultValue={
+          placesNearby.data.length > 0 ? [placesNearby.data[0].name] : undefined
+        }
+      >
+        <SelectTrigger>
+          <SelectValueText />
+        </SelectTrigger>
+        <SelectContent>
+          {placesNearby.data.map((item, i) => (
+            <SelectItem key={item.name + i} item={item.name}>
+              {item.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectRoot>
+    </FieldRoot>
   );
 };
