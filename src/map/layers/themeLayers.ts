@@ -11,52 +11,6 @@ const GEONORGE_CATEGORY_IDS = ['fullstendighetsdekning'] as const;
 export const isGeonorgeCategory = (categoryId: string): boolean =>
   (GEONORGE_CATEGORY_IDS as readonly string[]).includes(categoryId);
 
-const isProjectNameAndCategoryIdMatch = (
-  projectName: string | undefined,
-  layerCategoryId: string | undefined,
-): boolean => {
-  if (!projectName) {
-    return true;
-  }
-  if (!layerCategoryId) {
-    return false;
-  }
-
-  const normalizedProjectName = projectName.toLocaleLowerCase().trim();
-  switch (normalizedProjectName) {
-    case 'norgeskart':
-      return [
-        'facts',
-        'outdoorRecreation',
-        'historicalMaps',
-        'sjo',
-        'sjo_dybdedatakvalitet',
-        'sjo_farlige_bolger',
-        'sjo_nmg',
-      ].includes(layerCategoryId);
-    case 'seeiendom':
-      return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
-    case 'ssr':
-      return [
-        'placeNames',
-        'placeNameLanguages',
-        'placeNameTypes',
-        'placeNameWritingStatus',
-        'placeNameCaseStatus',
-        'placeNameRecentDecisions',
-      ].includes(layerCategoryId);
-    case 'tilgjengelighet':
-      return ['tilgjengelighet'].includes(layerCategoryId);
-    case 'fastmerker':
-      return ['fastmerker', 'benchmarks'].includes(layerCategoryId);
-    case 'dekning':
-      return ['dekning'].includes(layerCategoryId);
-    case 'geonorge':
-      return isGeonorgeCategory(layerCategoryId);
-  }
-  return false;
-};
-
 export const mapLegacyThemeLayerId = (
   legacyId: string,
   projectName?: string,
