@@ -614,7 +614,9 @@
     "heading": "About us",
     "textone": "Norgeskart is the Norwegian Mapping Authority’s most widely used map service. Whether you are planning a trip to the mountains or at sea, or need information about a property, Norgeskart provides reliable and detailed geographic information – presented in a simple and accessible way.",
     "texttwo": "Since 1773, the Norwegian Mapping Authority has been mapping Norway. Much has changed since then. Needs evolve over time, and new technology continuously gives us new opportunities. That is why we work continuously to offer a wide range of map products that meet users’ needs – both today and in the future.",
-    "textthree": "Together with our users, we aim to be open, innovative, and reliable."
+    "textthree": "Together with our users, we aim to be open, innovative, and reliable.",
+    "version": "Version",
+    "buildDate": "Built"
   },
   "importDialog": {
     "header": "Import file for drawlayer",

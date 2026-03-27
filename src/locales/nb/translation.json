@@ -619,7 +619,9 @@
     "heading": "Om oss",
     "textone": "Norgeskart er Kartverkets mest brukte karttjeneste. Enten du planlegger en tur til fjells eller til sjøs, eller trenger informasjon om en eiendom, gir Norgeskart deg pålitelig og detaljert geografisk informasjon – presentert på en enkel og tilgjengelig måte.",
     "texttwo": "Siden 1773 har Kartverket kartlagt Norge. Mye har endret seg siden den gang. Behov utvikler seg over tid, og ny teknologi gir oss stadig nye muligheter. Derfor jobber vi kontinuerlig med å tilby et bredt spekter av kartprodukter som møter brukernes behov – både i dag og i fremtiden.",
-    "textthree": "Sammen med brukerne skal vi være åpne, innovative og stabile."
+    "textthree": "Sammen med brukerne skal vi være åpne, innovative og stabile.",
+    "version": "Versjon",
+    "buildDate": "Bygget"
   },
   "importDialog": {
     "header": "Importer fil til tegnelag",
