@@ -10,7 +10,10 @@ import {
   featureInfoPanelOpenAtom,
   featureInfoResultAtom,
 } from '../featureInfo/atoms';
-import { getThemeLayerById, themeLayerConfig } from './themeLayerConfigApi';
+import {
+  getThemeLayerById,
+  themeLayerConfigAtom,
+} from './themeLayerConfigApi';
 import { createThemeLayerFromConfig, ThemeLayerName } from './themeWMS';
 
 export type Portal = 'norgeskart' | 'geonorge';
@@ -30,6 +33,7 @@ export const activeThemeLayersAtom = atom<Set<ThemeLayerName>>(new Set([]));
 
 export const themeLayerEffect = atomEffect((get) => {
   const themeLayers = get(activeThemeLayersAtom);
+  const config = get(themeLayerConfigAtom);
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
@@ -61,7 +65,7 @@ export const themeLayerEffect = atomEffect((get) => {
       return;
     }
 
-    const layerDef = getThemeLayerById(themeLayerConfig, layerName);
+    const layerDef = getThemeLayerById(config, layerName);
 
     if (!layerDef) {
       console.warn(`Layer definition not found for layer name: ${layerName}`);
@@ -69,7 +73,7 @@ export const themeLayerEffect = atomEffect((get) => {
     }
 
     const layerToAdd = createThemeLayerFromConfig(
-      themeLayerConfig,
+      config,
       layerDef,
       mapProjection,
     );

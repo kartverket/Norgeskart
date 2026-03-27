@@ -17,7 +17,9 @@ import {
   backgroundLayerAtom,
 } from './layers/config/backgroundLayers/atoms';
 import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
-import { themeLayerConfig } from './layers/themeLayerConfigApi';
+import {
+  themeLayerConfigAtom,
+} from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
 
@@ -41,9 +43,10 @@ export const displayMapLegendAtom = atom<boolean>(false);
 export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
+  const config = get(themeLayerConfigAtom);
 
   const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
-    const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
+    const layerDef = config.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;
   });
   return !displayMapLegned && hasLegend;
