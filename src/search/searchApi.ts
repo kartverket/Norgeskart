@@ -75,14 +75,10 @@ export const getPlaceNames = async (
   const searchPart = query.split(',')[0].trim();
   const municipalityPart = query.split(',')[1]?.trim();
 
-  const encodedMunicipality = municipalityPart
-    ? encodeURIComponent(municipalityPart)
-    : null;
-
   const url = new URL(`${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn`);
   url.searchParams.append('sok', `${searchPart}*`);
-  if (encodedMunicipality) {
-    url.searchParams.append('kommunenavn', `${encodedMunicipality}*`);
+  if (municipalityPart) {
+    url.searchParams.append('kommunenavn', `${municipalityPart}*`);
   }
   url.searchParams.append('treffPerSide', PLACE_SEARCH_PAGE_SIZE.toString());
   url.searchParams.append('side', page.toString());
