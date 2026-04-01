@@ -376,6 +376,10 @@
         "tooltip": "Share map"
       }
     },
+    "backgroundChooser": {
+      "tooltip": "Choose background map (Aerial photo, Nautical, Topographic etc.)",
+      "label": "Background"
+    },
     "addresses": "Addresses",
     "coordinates": "Coordinates",
     "houseNumber": "House nr.",

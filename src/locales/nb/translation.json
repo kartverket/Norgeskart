@@ -381,6 +381,10 @@
         "tooltip": "Del kartet"
       }
     },
+    "backgroundChooser": {
+      "tooltip": "Velg bakgrunnskart (Flyfoto, Sjøkart, Topografisk osv.)",
+      "label": "Bakgrunn"
+    },
     "addresses": "Adresser",
     "coordinates": "Koordinater",
     "houseNumber": "Husnr",
