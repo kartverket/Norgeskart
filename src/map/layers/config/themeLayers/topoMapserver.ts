@@ -1,9 +1,10 @@
+import { getEnv } from '../../../../env';
 import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
-const MS_BASE = 'http://localhost:8081/';
+const MS_BASE = getEnv().layerProviderParameters.topoMapserver.baseUrl;
 
 const mapUrl = (name: string) =>
-  `${MS_BASE}?map=/etc/mapserver/qlr/${name}.map`;
+  `${MS_BASE}/?map=/tmp/nfs/QLR/maps/${name}.map`;
 
 export const topoMapserverConfig: ThemeLayerConfig = {
   categories: [

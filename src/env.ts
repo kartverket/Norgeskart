@@ -12,6 +12,9 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
+  topoMapserver: {
+    baseUrl: string;
+  };
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -44,6 +47,10 @@ const LOCAL_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    topoMapserver: {
+      //baseUrl: 'http://localhost:8081',
+      baseUrl: 'https://mapserver.atkv3-dev.kartverket-intern.cloud',
+    },
   },
   envName: 'local',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -69,6 +76,9 @@ const DEV_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    topoMapserver: {
+      baseUrl: 'https://mapserver.atkv3-dev.kartverket-intern.cloud',
+    },
   },
   envName: 'dev',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -93,6 +103,9 @@ const PROD_ENV: Env = {
     },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
+    },
+    topoMapserver: {
+      baseUrl: 'https://mapserver.atkv3-prod.kartverket-intern.cloud',
     },
   },
   envName: 'prod',
