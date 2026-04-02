@@ -13,6 +13,7 @@ import {
 
 // Prioritetskart for sortering
 const layerPriorityMap = new Map<BackgroundLayerName, number>([
+  ['empty', 0],
   ['topo', 1],
   ['topograatone', 2],
   ['toporaster', 3],
