@@ -49,7 +49,7 @@ const LOCAL_ENV: Env = {
     },
     topoMapserver: {
       //baseUrl: 'http://localhost:8081',
-      baseUrl: 'https://mapserver.atkv3-dev.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
     },
   },
   envName: 'local',
@@ -77,7 +77,7 @@ const DEV_ENV: Env = {
       baseUrl: 'https://geodata.npolar.no',
     },
     topoMapserver: {
-      baseUrl: 'https://mapserver.atkv3-dev.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
     },
   },
   envName: 'dev',
@@ -105,7 +105,7 @@ const PROD_ENV: Env = {
       baseUrl: 'https://geodata.npolar.no',
     },
     topoMapserver: {
-      baseUrl: 'https://mapserver.atkv3-prod.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-mapserver.atkv3-prod.kartverket-intern.cloud',
     },
   },
   envName: 'prod',
