@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   CollapsibleContent,
   CollapsibleRoot,
@@ -147,7 +148,14 @@ export const LayerLine = ({
       onClick={() => toggleLayer(layer.name)}
       cursor="pointer"
     >
-      <Text fontSize={{ base: 'xs', md: 'sm' }}>{layer.label}</Text>
+      <Flex alignItems="center" gap={2}>
+        <Text fontSize={{ base: 'xs', md: 'sm' }}>{layer.label}</Text>
+        {layer.notReady && (
+          <Badge colorPalette="orange" size="sm">
+            Not Ready
+          </Badge>
+        )}
+      </Flex>
       <Switch
         marginRight={'24px'}
         colorPalette="green"

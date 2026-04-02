@@ -66,6 +66,7 @@ export const MapThemes = () => {
       ).map((layer) => ({
         name: layer.id as ThemeLayerName,
         label: layer.name[currentLang] || layer.name.nb,
+        notReady: layer.notReady,
       }));
 
       if (subcategories.length > 0) {
@@ -79,6 +80,7 @@ export const MapThemes = () => {
             layers: layers.map((layer) => ({
               name: layer.id as ThemeLayerName,
               label: layer.name[currentLang] || layer.name.nb,
+              notReady: layer.notReady,
             })),
           };
         });
