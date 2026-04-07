@@ -9,6 +9,7 @@ import {
   DistanceUnit,
   distanceUnitAtom,
   showMeasurementsAtom,
+  LineStyle
 } from '../../settings/draw/atoms';
 import { formatArea, formatDistance } from '../../shared/utils/stringUtils';
 import {
@@ -18,6 +19,7 @@ import {
   MEASUREMNT_OVERLAY_PREFIX,
 } from './hooks/drawSettings';
 import { getDrawOverlayLayer } from './hooks/mapLayers';
+import { DrawType } from './hooks/drawSettings';
 
 const getMeasurementText = (
   geometry: Geometry,
@@ -59,7 +61,15 @@ const getGeometryPositionForOverlay = (geometry: Geometry) => {
     return geometry.getCenter();
   }
   return null;
-};
+}
+
+const getLineDash = (drawType: DrawType | null, lineStyle: LineStyle) => {
+  if (drawType === 'LineString') {
+    if (lineStyle === 'dashed') return [10, 10];
+    if (lineStyle === 'dotted') return [1, 10];
+  }
+  return undefined;
+}
 
 export const isDrawIconFilled = (icon: MaterialSymbol) => {
   return ['circle', 'change_history', 'square'].includes(icon);
@@ -300,4 +310,5 @@ export {
   getMeasurementText,
   removeFeaturelessInteractiveMeasurementOverlay,
   removeInteractiveMeasurementOverlayFromFeature,
+  getLineDash,
 };

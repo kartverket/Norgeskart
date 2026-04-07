@@ -19,6 +19,7 @@ import {
   enableFeatureMeasurementOverlay,
   removeFeaturelessInteractiveMeasurementOverlay,
   removeInteractiveMeasurementOverlayFromFeature,
+  getLineDash
 } from '../../draw/drawControls/drawUtils';
 import {
   handleFeatureSelectDone,
@@ -55,9 +56,12 @@ export type DistanceUnit = 'm' | 'NM';
 
 export type TextFontSize = 12 | 16 | 24;
 
+export type LineStyle = 'solid' | 'dashed' | 'dotted';
+
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
 export const lineWidthAtom = atom<LineWidth>(2);
+export const lineStyleAtom = atom<LineStyle>('solid');
 
 export const snapEnabledAtom = atom<boolean>(true);
 
@@ -65,6 +69,8 @@ export const drawStyleReadAtom = atom((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
   const lineWidth = get(lineWidthAtom);
+  const drawType = get(drawTypeAtom);
+  const lineStyle = get(lineStyleAtom);
   return new Style({
     image: new CircleStyle({
       radius: lineWidth,
@@ -75,6 +81,8 @@ export const drawStyleReadAtom = atom((get) => {
     stroke: new Stroke({
       color: primaryColor,
       width: lineWidth,
+      lineDash: getLineDash(drawType, lineStyle)
+
     }),
     fill: new Fill({
       color: secondaryColor,
@@ -177,7 +185,7 @@ const addDrawInteractionToMap = (
   });
 
   const style = getDefaultStore().get(drawStyleReadAtom);
-  newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => {}); //Why this has to be here is beyond me
+  newDraw.addEventListener('drawend', (_event: BaseEvent | Event) => { }); //Why this has to be here is beyond me
   newDraw.getOverlay().setStyle(style);
   newDraw.addEventListener('drawend', (event: BaseEvent | Event) => {
     drawEnd(event);

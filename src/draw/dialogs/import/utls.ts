@@ -8,12 +8,12 @@ import GeoJSON from 'ol/format/GeoJSON.js';
 
 export type FeatureReadResult =
   | {
-      status: 'success';
-      features: Feature[];
-    }
+    status: 'success';
+    features: Feature[];
+  }
   | {
-      status: 'error';
-    };
+    status: 'error';
+  };
 
 import { GeoJsonProperties } from 'geojson';
 import { Point } from 'ol/geom';
@@ -186,9 +186,10 @@ export const getStyleFromProperties = (props: GeoJsonProperties) => {
 
   const stroke = styleFromProps.stroke?.color
     ? new Stroke({
-        color: styleFromProps.stroke.color,
-        width: styleFromProps.stroke.width ?? 2,
-      })
+      color: styleFromProps.stroke.color,
+      width: styleFromProps.stroke.width ?? 2,
+      lineDash: styleFromProps.stroke.lineDash,
+    })
     : undefined;
 
   const textValue =
@@ -196,24 +197,24 @@ export const getStyleFromProperties = (props: GeoJsonProperties) => {
     (styleFromProps.text as { text?: string; value?: string })?.value;
   const text = textValue
     ? new Text({
-        text: textValue,
-        font: styleFromProps.text?.font ?? '16px sans-serif',
-        fill: styleFromProps.text?.fillColor
-          ? new Fill({ color: styleFromProps.text.fillColor })
-          : new Fill({ color: '#000000' }),
-        stroke: styleFromProps.text?.stroke?.color
-          ? new Stroke({
-              color: styleFromProps.text.stroke.color,
-              width: styleFromProps.text.stroke.width ?? 1,
-            })
-          : undefined,
-        backgroundFill: styleFromProps.text?.backgroundFillColor
-          ? new Fill({ color: styleFromProps.text.backgroundFillColor })
-          : undefined,
-        offsetY: -15,
-        textAlign: 'center',
-        textBaseline: 'bottom',
-      })
+      text: textValue,
+      font: styleFromProps.text?.font ?? '16px sans-serif',
+      fill: styleFromProps.text?.fillColor
+        ? new Fill({ color: styleFromProps.text.fillColor })
+        : new Fill({ color: '#000000' }),
+      stroke: styleFromProps.text?.stroke?.color
+        ? new Stroke({
+          color: styleFromProps.text.stroke.color,
+          width: styleFromProps.text.stroke.width ?? 1,
+        })
+        : undefined,
+      backgroundFill: styleFromProps.text?.backgroundFillColor
+        ? new Fill({ color: styleFromProps.text.backgroundFillColor })
+        : undefined,
+      offsetY: -15,
+      textAlign: 'center',
+      textBaseline: 'bottom',
+    })
     : undefined;
 
   if (!fill && !stroke && !text) {

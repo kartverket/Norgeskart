@@ -25,6 +25,7 @@ import { TextStyleControl } from '../TextStyleControl.tsx';
 import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts';
 import { EditControls } from './EditControls.tsx';
 import { useDrawSettings } from './hooks/drawSettings.ts';
+import { LineStyleControl } from '../LineStyleControl.tsx';
 
 const MOBILE_TOOLBAR_RESERVE = '15px';
 
@@ -69,6 +70,7 @@ export const DrawControls = () => {
         justifyContent="space-between"
         py={1}
       >
+        {drawType === 'LineString' && <LineStyleControl />}
         <LineWidthControl />
         <MeasurementControls />
       </Flex>
