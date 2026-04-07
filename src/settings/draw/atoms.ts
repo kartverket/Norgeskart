@@ -19,7 +19,6 @@ import {
   enableFeatureMeasurementOverlay,
   removeFeaturelessInteractiveMeasurementOverlay,
   removeInteractiveMeasurementOverlayFromFeature,
-  getLineDash
 } from '../../draw/drawControls/drawUtils';
 import {
   handleFeatureSelectDone,
