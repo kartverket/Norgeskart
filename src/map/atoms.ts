@@ -278,7 +278,7 @@ export const projectionEffect = atomEffect((get, set) => {
       );
 
       if (layerConfig) {
-        getLayerFromConfig(layerConfig).then((layer) => {
+        getLayerFromConfig(layerConfig, projectionId).then((layer) => {
           if (layer) {
             map.removeLayer(currentBackgroundLayer);
             map.addLayer(layer);
