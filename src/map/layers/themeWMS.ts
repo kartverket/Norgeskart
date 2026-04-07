@@ -3,6 +3,7 @@ import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import { ImageWMS, TileWMS } from 'ol/source';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
+import { registerLayer, updateStatus } from './layerMatrixLogger';
 import type {
   ThemeLayerConfig,
   ThemeLayerDefinition,
@@ -200,6 +201,17 @@ export const createThemeLayerFromConfig = (
 
   const wmsUrl = getEffectiveWmsUrl(config, layerDef);
 
+  const provider = layerDef.id.startsWith('topoMs_')
+    ? 'Mapserver'
+    : layerDef.id.startsWith('topoQgis_')
+      ? 'QGIS'
+      : 'other';
+  registerLayer(layerDef.id, {
+    name: layerDef.name.nb,
+    provider,
+    wmsUrl,
+  });
+
   const category = getCategoryById(config, layerDef.categoryId);
   const parentCategory = category
     ? getParentCategory(config, category)
@@ -233,24 +245,34 @@ export const createThemeLayerFromConfig = (
   };
 
   if (layerDef.singleImage) {
+    const imageSource = new ImageWMS({
+      url: wmsUrl,
+      params: wmsParams,
+      projection: projection,
+    });
+    imageSource.on('imageloadstart', () =>
+      updateStatus(layerDef.id, 'loading'),
+    );
+    imageSource.on('imageloadend', () => updateStatus(layerDef.id, 'ok'));
+    imageSource.on('imageloaderror', () => updateStatus(layerDef.id, 'error'));
     return new ImageLayer({
-      source: new ImageWMS({
-        url: wmsUrl,
-        params: wmsParams,
-        projection: projection,
-      }),
+      source: imageSource,
       properties: layerProperties,
     });
   }
 
+  const tileSource = new TileWMS({
+    url: wmsUrl,
+    params: { ...wmsParams, TILED: true },
+    projection: projection,
+    cacheSize: 512,
+    transition: 0,
+  });
+  tileSource.on('tileloadstart', () => updateStatus(layerDef.id, 'loading'));
+  tileSource.on('tileloadend', () => updateStatus(layerDef.id, 'ok'));
+  tileSource.on('tileloaderror', () => updateStatus(layerDef.id, 'error'));
   return new TileLayer({
-    source: new TileWMS({
-      url: wmsUrl,
-      params: { ...wmsParams, TILED: true },
-      projection: projection,
-      cacheSize: 512,
-      transition: 0,
-    }),
+    source: tileSource,
     properties: layerProperties,
     preload: 1,
   });
