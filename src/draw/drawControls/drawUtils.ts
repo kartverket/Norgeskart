@@ -65,7 +65,7 @@ const getGeometryPositionForOverlay = (geometry: Geometry) => {
 
 const getLineDash = (drawType: DrawType | null, lineStyle: LineStyle) => {
   if (drawType === 'LineString') {
-    if (lineStyle === 'dashed') return [10, 10];
+    if (lineStyle === 'dashed') return [12, 12];
     if (lineStyle === 'dotted') return [1, 10];
   }
   return undefined;
