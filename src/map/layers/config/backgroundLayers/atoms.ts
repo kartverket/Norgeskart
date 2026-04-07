@@ -55,10 +55,16 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
 
   const effect = async () => {
     try {
+      const store = getDefaultStore();
+      const map = store.get(mapAtom);
+      const currentProjection = map.getView().getProjection().getCode();
+      const targetProjection =
+        layerConfig.requiredProjection ?? currentProjection;
+
       let layer: TileLayer | MapLibreLayer | null = null;
       switch (layerConfig.type) {
         case 'WMTS':
-          layer = await getWMTSLayer(layerConfig);
+          layer = await getWMTSLayer(layerConfig, targetProjection);
           break;
         case 'VectorTile':
           layer = getVectorTileLayer(layerConfig);
@@ -69,9 +75,6 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
       }
 
       if (layer) {
-        const store = getDefaultStore();
-        const map = store.get(mapAtom);
-        const currentProjection = map.getView().getProjection().getCode();
         const preNauticalProjection = store.get(preNauticalProjectionAtom);
         clearBackgroundLayer();
         map.addLayer(layer);
