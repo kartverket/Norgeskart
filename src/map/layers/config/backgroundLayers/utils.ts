@@ -14,7 +14,10 @@ import {
   WMTSBackgroundLayer,
 } from './types';
 
-export const getWMTSLayer = async (layerConfig: WMTSBackgroundLayer) => {
+export const getWMTSLayer = async (
+  layerConfig: WMTSBackgroundLayer,
+  projection = 'EPSG:25833',
+) => {
   const store = getDefaultStore();
 
   try {
@@ -41,6 +44,7 @@ export const getWMTSLayer = async (layerConfig: WMTSBackgroundLayer) => {
     const capabilities = parser.read(capabilitiesText);
     const layerOptions = optionsFromCapabilities(capabilities, {
       layer: layerConfig.layerName,
+      projection,
     });
 
     if (!layerOptions) {
@@ -101,9 +105,10 @@ export const getWMSLayer = (layerConfig: WMSBackgroundLayer) => {
 
 export const getLayerFromConfig = async (
   layerConfig: BackgroundLayer,
+  projection?: string,
 ): Promise<TileLayer | MapLibreLayer | null> => {
   if (layerConfig.type === 'WMTS') {
-    return await getWMTSLayer(layerConfig);
+    return await getWMTSLayer(layerConfig, projection);
   }
   if (layerConfig.type === 'VectorTile') {
     return getVectorTileLayer(layerConfig);
