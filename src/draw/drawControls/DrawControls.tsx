@@ -18,6 +18,7 @@ import {
   editSecondaryColorEffect,
   lineWidthEffect,
 } from '../effects.ts';
+import { LineStyleControl } from '../LineStyleControl.tsx';
 import { LineWidthControl } from '../LineWidthControl.tsx';
 import { MeasurementControls } from '../MeasurementControls.tsx';
 import { PointStyleSelector } from '../PointStyleSelector.tsx';
@@ -25,7 +26,6 @@ import { TextStyleControl } from '../TextStyleControl.tsx';
 import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts';
 import { EditControls } from './EditControls.tsx';
 import { useDrawSettings } from './hooks/drawSettings.ts';
-import { LineStyleControl } from '../LineStyleControl.tsx';
 
 const MOBILE_TOOLBAR_RESERVE = '15px';
 

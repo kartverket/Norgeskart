@@ -8,41 +8,41 @@ import { Layer } from './printApi';
 
 type PrintSymbolizer =
   | {
-    type: 'polygon';
-    fillColor: string;
-    fillOpacity: number;
-    strokeColor: string;
-    strokeWidth: number;
-  }
+      type: 'polygon';
+      fillColor: string;
+      fillOpacity: number;
+      strokeColor: string;
+      strokeWidth: number;
+    }
   | {
-    type: 'line';
-    strokeColor: string;
-    strokeWidth: number;
-    strokeDashstyle: string;
-  }
+      type: 'line';
+      strokeColor: string;
+      strokeWidth: number;
+      strokeDashstyle: string;
+    }
   | {
-    type: 'point';
-    fillColor: string;
-    fillOpacity: number;
-    pointRadius: number;
-    graphicName: string;
-    strokeColor: string;
-    strokeWidth: number;
-    strokeOpacity: number;
-  }
+      type: 'point';
+      fillColor: string;
+      fillOpacity: number;
+      pointRadius: number;
+      graphicName: string;
+      strokeColor: string;
+      strokeWidth: number;
+      strokeOpacity: number;
+    }
   | {
-    type: 'text';
-    label: string;
-    fontFamily: string;
-    fontSize: string;
-    fillColor: string;
-    strokeColor: string;
-    strokeWidth: number;
-    fontColor: string;
-    haloColor: string;
-    haloOpacity: string;
-    haloRadius: string;
-  };
+      type: 'text';
+      label: string;
+      fontFamily: string;
+      fontSize: string;
+      fillColor: string;
+      strokeColor: string;
+      strokeWidth: number;
+      fontColor: string;
+      haloColor: string;
+      haloOpacity: string;
+      haloRadius: string;
+    };
 
 type StyleCollection = {
   version: string;

@@ -44,7 +44,11 @@ export const getFeaturePropertiesForExport = (feature: Feature<Geometry>) => {
     return {
       style: {
         fill: { color: fillColor },
-        stroke: { color: strokeColor, width: strokeWidth, lineDash: strokeLineDash },
+        stroke: {
+          color: strokeColor,
+          width: strokeWidth,
+          lineDash: strokeLineDash,
+        },
         text,
       },
       overlayIcon: icon || undefined,
