@@ -8,40 +8,41 @@ import { Layer } from './printApi';
 
 type PrintSymbolizer =
   | {
-      type: 'polygon';
-      fillColor: string;
-      fillOpacity: number;
-      strokeColor: string;
-      strokeWidth: number;
-    }
+    type: 'polygon';
+    fillColor: string;
+    fillOpacity: number;
+    strokeColor: string;
+    strokeWidth: number;
+  }
   | {
-      type: 'line';
-      strokeColor: string;
-      strokeWidth: number;
-    }
+    type: 'line';
+    strokeColor: string;
+    strokeWidth: number;
+    strokeDashstyle: string;
+  }
   | {
-      type: 'point';
-      fillColor: string;
-      fillOpacity: number;
-      pointRadius: number;
-      graphicName: string;
-      strokeColor: string;
-      strokeWidth: number;
-      strokeOpacity: number;
-    }
+    type: 'point';
+    fillColor: string;
+    fillOpacity: number;
+    pointRadius: number;
+    graphicName: string;
+    strokeColor: string;
+    strokeWidth: number;
+    strokeOpacity: number;
+  }
   | {
-      type: 'text';
-      label: string;
-      fontFamily: string;
-      fontSize: string;
-      fillColor: string;
-      strokeColor: string;
-      strokeWidth: number;
-      fontColor: string;
-      haloColor: string;
-      haloOpacity: string;
-      haloRadius: string;
-    };
+    type: 'text';
+    label: string;
+    fontFamily: string;
+    fontSize: string;
+    fillColor: string;
+    strokeColor: string;
+    strokeWidth: number;
+    fontColor: string;
+    haloColor: string;
+    haloOpacity: string;
+    haloRadius: string;
+  };
 
 type StyleCollection = {
   version: string;
@@ -115,11 +116,15 @@ const getPolygonSymbolizer = (style: Style): PrintSymbolizer[] => {
 
 const getLineSymbolizer = (style: Style): PrintSymbolizer[] => {
   const stroke = style.getStroke();
+  const dash = stroke?.getLineDash();
+  const dashStyle = dash && dash.length > 0 ? 'dash' : 'solid';
+
   return [
     {
       type: 'line',
       strokeColor: normalizeHexColor(stroke?.getColor() as string),
       strokeWidth: stroke?.getWidth() || 2,
+      strokeDashstyle: dashStyle,
     },
   ];
 };

@@ -5,8 +5,7 @@ import { Heading, HStack, VStack, Button } from '@kvib/react';
 const lineStyles = [
     { value: 'solid' as LineStyle, label: '____' },
     { value: 'dashed' as LineStyle, label: '_ _ _' },
-    { value: 'dotted' as LineStyle, label: '. . . . . ' },
-]
+];
 
 export const LineStyleControl = () => {
     const [lineStyle, setLineStyle] = useAtom(lineStyleAtom)

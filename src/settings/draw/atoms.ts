@@ -56,7 +56,7 @@ export type DistanceUnit = 'm' | 'NM';
 
 export type TextFontSize = 12 | 16 | 24;
 
-export type LineStyle = 'solid' | 'dashed' | 'dotted';
+export type LineStyle = 'solid' | 'dashed';
 
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
@@ -69,7 +69,6 @@ export const drawStyleReadAtom = atom((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
   const lineWidth = get(lineWidthAtom);
-  const drawType = get(drawTypeAtom);
   const lineStyle = get(lineStyleAtom);
   return new Style({
     image: new CircleStyle({
@@ -81,7 +80,7 @@ export const drawStyleReadAtom = atom((get) => {
     stroke: new Stroke({
       color: primaryColor,
       width: lineWidth,
-      lineDash: getLineDash(drawType, lineStyle)
+      lineDash: lineStyle === 'dashed' ? [12, 12] : [],
 
     }),
     fill: new Fill({

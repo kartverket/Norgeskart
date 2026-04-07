@@ -63,14 +63,6 @@ const getGeometryPositionForOverlay = (geometry: Geometry) => {
   return null;
 }
 
-const getLineDash = (drawType: DrawType | null, lineStyle: LineStyle) => {
-  if (drawType === 'LineString') {
-    if (lineStyle === 'dashed') return [12, 12];
-    if (lineStyle === 'dotted') return [1, 10];
-  }
-  return undefined;
-}
-
 export const isDrawIconFilled = (icon: MaterialSymbol) => {
   return ['circle', 'change_history', 'square'].includes(icon);
 };
@@ -310,5 +302,4 @@ export {
   getMeasurementText,
   removeFeaturelessInteractiveMeasurementOverlay,
   removeInteractiveMeasurementOverlayFromFeature,
-  getLineDash,
 };
