@@ -62,6 +62,7 @@ export const DrawControls = () => {
       <HStack width="100%" align={'space-between'}>
         <ColorControls />
         {drawType === 'Point' && <PointStyleSelector />}
+        {isMobile && drawType === 'LineString' && <LineStyleControl />}
       </HStack>
       <Flex
         w="100%"
@@ -70,7 +71,7 @@ export const DrawControls = () => {
         justifyContent="space-between"
         py={1}
       >
-        {drawType === 'LineString' && <LineStyleControl />}
+        {!isMobile && drawType === 'LineString' && <LineStyleControl />}
         <LineWidthControl />
         <MeasurementControls />
       </Flex>
