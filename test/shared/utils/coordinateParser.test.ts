@@ -146,6 +146,14 @@ describe('parseCoordinateInput', () => {
       expect(result?.lon).toBeCloseTo(4.8756, 3);
     });
 
+    it('parses DM with N/Ø (Norwegian East) suffixes without apostrophe', () => {
+      const result = parseCoordinateInput('66°45.005 N, 13°08.050 Ø');
+      expect(result).not.toBeNull();
+      expect(result?.inputFormat).toBe('dms');
+      expect(result?.lat).toBeCloseTo(66.7501, 3);
+      expect(result?.lon).toBeCloseTo(13.1342, 3);
+    });
+
     it('parses DM with only first direction specified', () => {
       const result = parseCoordinateInput("58° 09.83' N, 06° 48.76'");
       expect(result).not.toBeNull();

@@ -298,6 +298,12 @@ const parseDecimalDegrees = (input: string): ParsedCoordinate | null => {
     return null;
   }
 
+  // If input has degree symbol followed by digits (e.g., "66°45.005 N"),
+  // it's DM/DMS format — let parseDMS handle it instead
+  if (/°\d/.test(input)) {
+    return null;
+  }
+
   // Remove common prefixes
   const cleaned = input
     .toLowerCase()
