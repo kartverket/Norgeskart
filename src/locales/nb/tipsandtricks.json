@@ -251,5 +251,14 @@
         "text": "Det er foreløpig ikke mulig å skrive ut flyfoto eller ortofoto. Det arbeides med en løsning for dette i fremtiden."
       }
     ]
+  },
+  {
+    "title": "Skjul menyen med tastatur",
+    "content": [
+      {
+        "type": "text",
+        "text": "Du kan skjule og vise menyen ved å trykke på «U»-tasten på tastaturet."
+      }
+    ]
   }
 ]

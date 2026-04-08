@@ -254,5 +254,14 @@
         "text": "Printing aerial imagery (orthophotos) is currently not supported. A solution is being worked on for the future."
       }
     ]
+  },
+  {
+    "title": "Hide the menu with the keyboard",
+    "content": [
+      {
+        "type": "text",
+        "text": "You can hide and show the menu by pressing the 'U' key on your keyboard."
+      }
+    ]
   }
 ]
