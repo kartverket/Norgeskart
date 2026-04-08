@@ -322,6 +322,63 @@ describe('parseCoordinateInput', () => {
     });
   });
 
+  // ─── Arctic / high-latitude coordinates ──────────────────────────────────
+
+  describe('arctic and high-latitude coordinates', () => {
+    it('parses decimal degrees where both lat and lon are >= 80', () => {
+      // Bug: isLatLon check requires (|lat| < 80 OR |lon| < 80), which fails
+      // when both values are >= 80. "80, 80" is a valid coordinate (near Svalbard).
+      const result = parseCoordinateInput('80, 80');
+      expect(result).not.toBeNull();
+      expect(result?.lat).toBeCloseTo(80, 1);
+      expect(result?.lon).toBeCloseTo(80, 1);
+      expect(result?.projection).toBe('EPSG:4326');
+      expect(result?.inputFormat).toBe('decimal');
+    });
+
+    it('parses decimal degrees at lat=85 (near North Pole area)', () => {
+      const result = parseCoordinateInput('85.0, 85.0');
+      expect(result).not.toBeNull();
+      expect(result?.lat).toBeCloseTo(85.0, 1);
+      expect(result?.lon).toBeCloseTo(85.0, 1);
+    });
+
+    it('parses decimal degrees where lat >= 80 but lon < 80', () => {
+      // Sanity check: this already works — lon < 80 satisfies the OR condition
+      const result = parseCoordinateInput('80.5, 20.0');
+      expect(result).not.toBeNull();
+      expect(result?.lat).toBeCloseTo(80.5, 1);
+      expect(result?.lon).toBeCloseTo(20.0, 1);
+    });
+
+    it('parses decimal degrees at Svalbard (high lat, moderate lon)', () => {
+      const result = parseCoordinateInput('78.9, 17.2');
+      expect(result).not.toBeNull();
+      expect(result?.lat).toBeCloseTo(78.9, 1);
+      expect(result?.lon).toBeCloseTo(17.2, 1);
+    });
+  });
+
+  // ─── DM – partial direction (S/W first) ───────────────────────────────────
+
+  describe('DM – partial direction with S or W as first direction', () => {
+    it('parses DM with S as the only direction (first coord is southern)', () => {
+      // Pattern 5: "deg° min' S, deg° min'" — lat should be negative
+      const result = parseCoordinateInput("45° 30.0' S, 10° 15.0'");
+      expect(result).not.toBeNull();
+      expect(result?.lat).toBeCloseTo(-45.5, 3);
+      expect(result?.lon).toBeCloseTo(10.25, 3);
+    });
+
+    it('parses DM with W as the only direction (first coord is western lon)', () => {
+      // Pattern 5: "deg° min' W, deg° min'" — lon should be negative, lat is second
+      const result = parseCoordinateInput("10° 15.0' W, 45° 30.0'");
+      expect(result).not.toBeNull();
+      expect(result?.lon).toBeCloseTo(-10.25, 3);
+      expect(result?.lat).toBeCloseTo(45.5, 3);
+    });
+  });
+
   // ─── Invalid input ─────────────────────────────────────────────────────────
 
   describe('invalid input', () => {
