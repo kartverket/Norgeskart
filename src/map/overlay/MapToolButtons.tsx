@@ -49,12 +49,20 @@ export const MapToolButtons = () => {
         target.isContentEditable;
 
       if (!isEditable && e.key.toLowerCase() === 'u') {
-        setMenuVisible((currentVisible) => !currentVisible);
+        if (menuVisible) {
+          toaster.create({
+            title: t('controller.menuHiddenToast'),
+            duration: 3000,
+          });
+          setMenuVisible(false);
+        } else {
+          setMenuVisible(true);
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [menuVisible, t]);
 
   if (!menuVisible) return null;
 

@@ -23,7 +23,8 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
-    "hide": "Minimer"
+    "hide": "Minimer",
+    "menuHiddenToast": "Menyen er skjult. Trykk på U-tasten for å vise."
   },
   "draw": {
     "begin": "Tegn på kartet",
