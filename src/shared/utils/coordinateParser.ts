@@ -9,8 +9,6 @@ export interface ParsedCoordinate {
   inputFormat: 'decimal' | 'dms' | 'utm';
 }
 
-// ─── Shared helpers ────────────────────────────────────────────────────────────
-
 const applyDirection = (value: number, dir: string): number =>
   dir === 'S' || dir === 'W' ? -value : value;
 
@@ -28,10 +26,7 @@ const assignLatLon = (
 
 /** Norway UTM rough bounding box (easting 0–1 200 000, northing 5 000 000–9 000 000) */
 const isValidUTMRange = (east: number, north: number): boolean =>
-  east >= -100000 &&
-  east <= 1200000 &&
-  north >= 5000000 &&
-  north <= 9000000;
+  east >= -100000 && east <= 1200000 && north >= 5000000 && north <= 9000000;
 
 const isSupportedEpsgCode = (code: number): boolean =>
   code === 4326 ||
@@ -309,12 +304,19 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m1 = input.match(dirBeforeDMSPattern);
   if (m1) {
     const [, d1, deg1, min1, sec1, d2, deg2, min2, sec2] = m1;
-    const m = parseInt(min1, 10), s = parseFloat(sec1);
-    const m2 = parseInt(min2, 10), s2 = parseFloat(sec2);
+    const m = parseInt(min1, 10),
+      s = parseFloat(sec1);
+    const m2 = parseInt(min2, 10),
+      s2 = parseFloat(sec2);
     if (m < 60 && s < 60 && m2 < 60 && s2 < 60) {
       const val1 = parseInt(deg1, 10) + m / 60 + s / 3600;
       const val2 = parseInt(deg2, 10) + m2 / 60 + s2 / 3600;
-      const { lat, lon } = assignLatLon(val1, d1.toUpperCase(), val2, d2.toUpperCase());
+      const { lat, lon } = assignLatLon(
+        val1,
+        d1.toUpperCase(),
+        val2,
+        d2.toUpperCase(),
+      );
       return validateAndReturnDMS(lat, lon);
     }
   }
@@ -325,11 +327,17 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m2 = input.match(dirBeforeDMPattern);
   if (m2) {
     const [, d1, deg1, min1, d2, deg2, min2] = m2;
-    const mm1 = parseFloat(min1), mm2 = parseFloat(min2);
+    const mm1 = parseFloat(min1),
+      mm2 = parseFloat(min2);
     if (mm1 < 60 && mm2 < 60) {
       const val1 = parseInt(deg1, 10) + mm1 / 60;
       const val2 = parseInt(deg2, 10) + mm2 / 60;
-      const { lat, lon } = assignLatLon(val1, d1.toUpperCase(), val2, d2.toUpperCase());
+      const { lat, lon } = assignLatLon(
+        val1,
+        d1.toUpperCase(),
+        val2,
+        d2.toUpperCase(),
+      );
       return validateAndReturnDMS(lat, lon);
     }
   }
@@ -340,8 +348,10 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m3 = input.match(dmsNoDirectionPattern);
   if (m3) {
     const [, deg1, min1, sec1, deg2, min2, sec2] = m3;
-    const mm1 = parseInt(min1, 10), ss1 = parseFloat(sec1);
-    const mm2 = parseInt(min2, 10), ss2 = parseFloat(sec2);
+    const mm1 = parseInt(min1, 10),
+      ss1 = parseFloat(sec1);
+    const mm2 = parseInt(min2, 10),
+      ss2 = parseFloat(sec2);
     if (mm1 < 60 && ss1 < 60 && mm2 < 60 && ss2 < 60) {
       const lat = parseInt(deg1, 10) + mm1 / 60 + ss1 / 3600;
       const lon = parseInt(deg2, 10) + mm2 / 60 + ss2 / 3600;
@@ -355,7 +365,8 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m4 = input.match(dmNoDirectionPattern);
   if (m4) {
     const [, deg1, min1, deg2, min2] = m4;
-    const mm1 = parseFloat(min1), mm2 = parseFloat(min2);
+    const mm1 = parseFloat(min1),
+      mm2 = parseFloat(min2);
     if (mm1 < 60 && mm2 < 60) {
       const lat = parseInt(deg1, 10) + mm1 / 60;
       const lon = parseInt(deg2, 10) + mm2 / 60;
@@ -370,7 +381,8 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   if (m5) {
     const [, deg1, min1, d1, deg2, min2] = m5;
     const dir1 = d1.toUpperCase();
-    const mm1 = parseFloat(min1), mm2 = parseFloat(min2);
+    const mm1 = parseFloat(min1),
+      mm2 = parseFloat(min2);
     if (mm1 < 60 && mm2 < 60) {
       const val1 = parseInt(deg1, 10) + mm1 / 60;
       const val2 = parseInt(deg2, 10) + mm2 / 60;
