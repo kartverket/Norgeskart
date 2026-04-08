@@ -511,7 +511,7 @@ const parseUTM = (
   const directionPattern =
     /(\d+(?:\.\d+)?)\s*([NE])\s*[,;]\s*(\d+(?:\.\d+)?)\s*([NE])/i;
   const dirMatch = input.match(directionPattern);
-  const firstIsNorthing = dirMatch?.at(2)?.toUpperCase() === 'N';
+  const firstIsNorthing = dirMatch?.[2]?.toUpperCase() === 'N';
 
   // Strip common label prefixes
   const cleaned = input
