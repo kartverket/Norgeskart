@@ -28,13 +28,48 @@ const assignLatLon = (
 const isValidUTMRange = (east: number, north: number): boolean =>
   east >= -100000 && east <= 1200000 && north >= 5000000 && north <= 9000000;
 
-const isSupportedEpsgCode = (code: number): boolean =>
-  code === 4326 ||
-  code === 3857 ||
-  code === 4230 ||
-  (code >= 25832 && code <= 25836) ||
-  (code >= 23031 && code <= 23036) ||
-  (code >= 27391 && code <= 27398);
+/**
+ * Typed lookup of every EPSG code the parser accepts.
+ * TypeScript validates each literal against the ProjectionIdentifier union, so
+ * adding an unsupported code here is a compile-time error.
+ * Note: EPSG:4258 (ETRS89) is intentionally absent — the parser normalises it
+ * to EPSG:4326 before calling this lookup (the two datums are identical for
+ * display purposes at the precision the parser uses).
+ */
+const SUPPORTED_PROJECTIONS = new Set<ProjectionIdentifier>([
+  'EPSG:4326',
+  'EPSG:3857',
+  'EPSG:4230', // ED50 geographic — accepted as-is; no datum shift is applied
+  'EPSG:25832',
+  'EPSG:25833',
+  'EPSG:25834',
+  'EPSG:25835',
+  'EPSG:25836',
+  'EPSG:23031',
+  'EPSG:23032',
+  'EPSG:23033',
+  'EPSG:23034',
+  'EPSG:23035',
+  'EPSG:23036',
+  'EPSG:27391',
+  'EPSG:27392',
+  'EPSG:27393',
+  'EPSG:27394',
+  'EPSG:27395',
+  'EPSG:27396',
+  'EPSG:27397',
+  'EPSG:27398',
+]);
+
+/**
+ * Converts a numeric EPSG code to a typed ProjectionIdentifier.
+ * Returns null for codes not supported by the parser.
+ * Eliminates the need for `as ProjectionIdentifier` casts elsewhere.
+ */
+const toProjectionIdentifier = (code: number): ProjectionIdentifier | null => {
+  const key = `EPSG:${code}` as ProjectionIdentifier;
+  return SUPPORTED_PROJECTIONS.has(key) ? key : null;
+};
 
 const formatDMS = (value: number, isLat: boolean): string => {
   const abs = Math.abs(value);
@@ -76,34 +111,51 @@ const normalizeDecimalSeparators = (input: string): string => {
   //                               "60,13,10,61"         → "60.13,10.61"
   // Examples that must NOT convert: "500000,7000000", "60,10" (two coords)
 
+  // Pre-scan: count occurrences of "digit,1-2-digits" at a separator boundary.
+  // Two or more such patterns strongly implies European decimal notation.
   const shortPatterns = input.match(/\d,\d{1,2}(?=,|;|\s|@|$)/g) ?? [];
   const hasMultipleShortPatterns = shortPatterns.length >= 2;
 
-  return input.replace(/(\d),(\d+)/g, (match, before, after, offset, str) => {
+  const replaceComma = (
+    match: string,
+    before: string,
+    after: string,
+    offset: number,
+    str: string,
+  ): string => {
     const textBefore = str.slice(0, offset + 1);
     const numberBeforeComma = textBefore.match(/[\d.]+$/);
 
-    // Number before comma already has a dot → comma is a coordinate separator
+    // Number before the comma already contains a dot → this comma separates
+    // two coordinates, not a decimal separator (e.g. "60.5,10.5").
     if (numberBeforeComma?.[0].includes('.')) return match;
 
-    // Both sides are large numbers (≥ 1 000) → coordinate separator
+    // Both sides of the comma are large integers (≥ 1 000) → coordinate pair
+    // such as a UTM easting/northing (e.g. "500000,6000000").
     if (numberBeforeComma) {
       const fullBefore = parseInt(numberBeforeComma[0], 10);
       const fullAfter = parseInt(after, 10);
       if (fullBefore >= 1000 && fullAfter >= 1000) return match;
     }
 
-    // 3+ digits after comma → definitely European decimal
+    // 3+ digits after the comma → unambiguously a European decimal fraction
+    // (e.g. "60,135106").
     if (after.length >= 3) return `${before}.${after}`;
 
-    // 1–2 digits: convert when context makes it unambiguous
+    // 1–2 digits after the comma: ambiguous on its own.
+    // Convert when context provides enough evidence:
+    //   a) two or more such patterns in the whole string ("60,13,10,61")
+    //   b) another coordinate follows immediately after ("60,13 10,61")
     if (hasMultipleShortPatterns) return `${before}.${after}`;
 
     const rest = str.slice(offset + match.length);
     if (/^[,;]\s*\d|^\s+\d|^@/.test(rest)) return `${before}.${after}`;
 
+    // Cannot determine intent — leave as-is (treat as coordinate separator).
     return match;
-  });
+  };
+
+  return input.replace(/(\d),(\d+)/g, replaceComma);
 };
 
 /**
@@ -159,11 +211,12 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   if (!epsgMatch) return null;
 
   const rawCode = parseInt(epsgMatch[1], 10);
-  const epsgCode = rawCode === 4258 ? 4326 : rawCode; // Normalize EPSG:4258 → 4326
+  // EPSG:4258 (ETRS89) is geographically equivalent to WGS84 at display precision.
+  const epsgCode = rawCode === 4258 ? 4326 : rawCode;
 
-  if (!isSupportedEpsgCode(epsgCode)) return null;
+  const projection = toProjectionIdentifier(epsgCode);
+  if (!projection) return null;
 
-  const projection = `EPSG:${epsgCode}` as ProjectionIdentifier;
   const translationKey = `map.settings.layers.projection.projections.${projection.replace(':', '').toLowerCase()}.displayName`;
   const translated = i18n.t(translationKey);
   const formatName = translated.startsWith(
@@ -188,7 +241,7 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   const coord2 = parseFloat(coordParts[1]);
   if (isNaN(coord1) || isNaN(coord2)) return null;
 
-  if (epsgCode === 4326) {
+  if (projection === 'EPSG:4326') {
     // Geographic: coord1 = lat, coord2 = lon
     return {
       lat: coord1,
@@ -299,13 +352,13 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m1 = input.match(dirBeforeDMSPattern);
   if (m1) {
     const [, d1, deg1, min1, sec1, d2, deg2, min2, sec2] = m1;
-    const m = parseInt(min1, 10),
-      s = parseFloat(sec1);
-    const m2 = parseInt(min2, 10),
-      s2 = parseFloat(sec2);
-    if (m < 60 && s < 60 && m2 < 60 && s2 < 60) {
-      const val1 = parseInt(deg1, 10) + m / 60 + s / 3600;
-      const val2 = parseInt(deg2, 10) + m2 / 60 + s2 / 3600;
+    const min1Val = parseInt(min1, 10),
+      sec1Val = parseFloat(sec1);
+    const min2Val = parseInt(min2, 10),
+      sec2Val = parseFloat(sec2);
+    if (min1Val < 60 && sec1Val < 60 && min2Val < 60 && sec2Val < 60) {
+      const val1 = parseInt(deg1, 10) + min1Val / 60 + sec1Val / 3600;
+      const val2 = parseInt(deg2, 10) + min2Val / 60 + sec2Val / 3600;
       const { lat, lon } = assignLatLon(
         val1,
         d1.toUpperCase(),
@@ -394,14 +447,18 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     /(\d+)[°\s]+(\d+)['\u2032'\s]+(\d+(?:\.\d+)?)["\u2033"']{0,2}\s*([NSEW])/gi;
   let matches = Array.from(input.matchAll(dmsAfterPattern));
 
+  // isDMS tracks whether Pattern 6 (DMS, 4 capture groups) or
+  // Pattern 7 (DM, 3 capture groups) produced the matches.
+  // Setting it here — rather than deriving it from match array length — makes
+  // the intent explicit and immune to regex group count changes.
+  const isDMS = matches.length === 2;
+
   // Pattern 7: DM with direction AFTER — "60° 50.466' N, 04° 52.535' E"
-  if (matches.length !== 2) {
+  if (!isDMS) {
     const dmAfterPattern = /(\d+)[°\s]+(\d+(?:\.\d+)?)['\u2032'\s]*([NSEW])/gi;
     matches = Array.from(input.matchAll(dmAfterPattern));
     if (matches.length !== 2) return null;
   }
-
-  const isDMS = matches[0].length === 5; // DMS match has 5 groups (index 1-4)
   let lat: number | null = null;
   let lon: number | null = null;
 
@@ -577,6 +634,17 @@ const parseUTM = (
   };
 };
 
+/**
+ * Heuristic: returns true when a WGS84 coordinate pair looks like the user
+ * entered (longitude, latitude) instead of the expected (latitude, longitude).
+ *
+ * The bounding box (lat 0–45, lon 50–90) covers Central and South Asia
+ * (e.g. Afghanistan, Iran, Kazakhstan, Pakistan) — a region where GIS tools
+ * often produce coordinates in lon/lat order and where swapped input would still
+ * pass basic range checks. If the parsed "lat" falls in the northern part of
+ * this box and the parsed "lon" is in the eastern part, the values are more
+ * likely to be a swapped (lon, lat) pair than genuine WGS84 (lat, lon).
+ */
 export const isLikelyLonLatSwap = (parsed: ParsedCoordinate): boolean => {
   if (parsed.projection !== 'EPSG:4326') return false;
   const { lat, lon } = parsed;

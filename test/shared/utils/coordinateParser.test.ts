@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
+import type { ParsedCoordinate } from '../../../src/shared/utils/coordinateParser';
 import {
   isLikelyLonLatSwap,
   parseCoordinateInput,
 } from '../../../src/shared/utils/coordinateParser';
-import type { ParsedCoordinate } from '../../../src/shared/utils/coordinateParser';
 
 // i18n returns the key as-is when not initialized; the parser uses this as a
 // fallback display name (which is fine) but crashes if t() returns undefined.
@@ -466,11 +466,11 @@ describe('parseCoordinateInput', () => {
 
   describe('DMS – invalid minutes and seconds', () => {
     it('returns null when minutes = 60 (direction after)', () => {
-      expect(parseCoordinateInput("59°60'00\"N 10°44'45\"E")).toBeNull();
+      expect(parseCoordinateInput('59°60\'00"N 10°44\'45"E')).toBeNull();
     });
 
     it('returns null when seconds = 60 (direction after)', () => {
-      expect(parseCoordinateInput("59°54'60\"N 10°44'45\"E")).toBeNull();
+      expect(parseCoordinateInput('59°54\'60"N 10°44\'45"E')).toBeNull();
     });
 
     it('returns null when DM minutes = 60 (direction after)', () => {
@@ -490,7 +490,7 @@ describe('parseCoordinateInput', () => {
     });
 
     it('parses correctly when seconds approach but do not reach 60', () => {
-      const result = parseCoordinateInput("59°54'59.9\"N 10°44'45.9\"E");
+      const result = parseCoordinateInput('59°54\'59.9"N 10°44\'45.9"E');
       expect(result).not.toBeNull();
       expect(result?.lat).toBeCloseTo(59.916, 2);
     });
@@ -582,7 +582,11 @@ describe('parseCoordinateInput', () => {
 // ─── isLikelyLonLatSwap ───────────────────────────────────────────────────────
 
 describe('isLikelyLonLatSwap', () => {
-  const make = (lat: number, lon: number, projection = 'EPSG:4326'): ParsedCoordinate => ({
+  const make = (
+    lat: number,
+    lon: number,
+    projection = 'EPSG:4326',
+  ): ParsedCoordinate => ({
     lat,
     lon,
     projection: projection as ParsedCoordinate['projection'],
