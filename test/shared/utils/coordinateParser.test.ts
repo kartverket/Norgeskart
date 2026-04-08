@@ -59,6 +59,13 @@ describe('parseCoordinateInput', () => {
       expect(result?.lon).toBeCloseTo(10.61, 2);
     });
 
+    it('parses European decimal format with space after comma-separator', () => {
+      const result = parseCoordinateInput('60,13, 10,61');
+      expect(result).not.toBeNull();
+      expect(result?.lat).toBeCloseTo(60.13, 2);
+      expect(result?.lon).toBeCloseTo(10.61, 2);
+    });
+
     it('parses with degree symbol and N/E suffix', () => {
       const result = parseCoordinateInput('59.9494° N, 10.7564° E');
       expect(result).not.toBeNull();
