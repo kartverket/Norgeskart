@@ -65,7 +65,8 @@
       "defaults": {
         "primary": "Hovedfarve",
         "secondary": "Sekundær"
-      }
+      },
+      "lineType": "Linjetype"
     },
     "deleteSelection": "Fjern valde",
     "end": "Ferdig",

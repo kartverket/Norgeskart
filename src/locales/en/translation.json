@@ -65,7 +65,8 @@
       "defaults": {
         "primary": "Primary",
         "secondary": "Secondary"
-      }
+      },
+      "lineType": "Line type"
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
