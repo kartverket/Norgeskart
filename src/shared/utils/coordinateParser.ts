@@ -24,7 +24,7 @@ const assignLatLon = (
   return { lon: applyDirection(val1, dir1), lat: applyDirection(val2, dir2) };
 };
 
-/** Norway UTM rough bounding box (easting 0–1 200 000, northing 5 000 000–9 000 000) */
+/** Norway UTM rough bounding box (easting -100 000–1 200 000, northing 5 000 000–9 000 000) */
 const isValidUTMRange = (east: number, north: number): boolean =>
   east >= -100000 && east <= 1200000 && north >= 5000000 && north <= 9000000;
 
@@ -243,6 +243,8 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
 
   if (projection === 'EPSG:4326') {
     // Geographic: coord1 = lat, coord2 = lon
+    if (coord1 < -90 || coord1 > 90 || coord2 < -180 || coord2 > 180)
+      return null;
     return {
       lat: coord1,
       lon: coord2,
@@ -253,6 +255,7 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   }
 
   // Projected: coord1 = easting, coord2 = northing
+  if (!isValidUTMRange(coord1, coord2)) return null;
   return {
     lat: coord2,
     lon: coord1,
@@ -455,7 +458,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
 
   // Pattern 7: DM with direction AFTER — "60° 50.466' N, 04° 52.535' E"
   if (!isDMS) {
-    const dmAfterPattern = /(\d+)[°\s]+(\d+(?:\.\d+)?)['\u2032'\s]*([NSEW])/gi;
+    const dmAfterPattern = /(\d+)[°\s]+(\d+(?:\.\d+)?)['\u2032\s]*([NSEW])/gi;
     matches = Array.from(input.matchAll(dmAfterPattern));
     if (matches.length !== 2) return null;
   }
@@ -621,7 +624,6 @@ const parseUTM = (
     // Default: UTM 33N
     if (!isValidUTMRange(east, north)) return null;
     projection = 'EPSG:25833';
-    zone = 33;
     projectionName = 'UTM 33N';
   }
 

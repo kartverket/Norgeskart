@@ -337,8 +337,8 @@ describe('parseCoordinateInput', () => {
 
   describe('arctic and high-latitude coordinates', () => {
     it('parses decimal degrees where both lat and lon are >= 80', () => {
-      // Bug: isLatLon check requires (|lat| < 80 OR |lon| < 80), which fails
-      // when both values are >= 80. "80, 80" is a valid coordinate (near Svalbard).
+      // Regression test: previously failed when both values were >= 80 due to
+      // the old isLatLon heuristic. "80, 80" is a valid coordinate (near Svalbard).
       const result = parseCoordinateInput('80, 80');
       expect(result).not.toBeNull();
       expect(result?.lat).toBeCloseTo(80, 1);
