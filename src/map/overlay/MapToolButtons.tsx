@@ -9,6 +9,7 @@ import {
   VStack,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
@@ -21,6 +22,8 @@ export const MapToolButtons = () => {
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const isMobile = useIsMobileScreen();
   const isPrintDialogOpenDisabled = useAtomValue(isPrintDialogOpenAtom);
+  const [menuVisible, setMenuVisible] = useState(true);
+
   const handleShareMapClick = () => {
     const url = window.location.href;
     navigator.clipboard
@@ -36,6 +39,32 @@ export const MapToolButtons = () => {
       });
   };
   const activeLayers = useAtomValue(activeThemeLayersAtom);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isEditable =
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable;
+
+      if (!isEditable && e.key.toLowerCase() === 'u') {
+        if (menuVisible) {
+          toaster.create({
+            title: t('controller.menuHiddenToast'),
+            duration: 3000,
+          });
+          setMenuVisible(false);
+        } else {
+          setMenuVisible(true);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [menuVisible, t]);
+
+  if (!menuVisible) return null;
 
   return (
     <HStack

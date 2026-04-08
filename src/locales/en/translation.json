@@ -23,7 +23,8 @@
       "mobiletext": "Help"
     },
     "export": "Export and download",
-    "hide": "Minimize"
+    "hide": "Minimize",
+    "menuHiddenToast": "The menu is hidden. Press the U key to show."
   },
   "draw": {
     "begin": "Draw on map",
