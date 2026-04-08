@@ -275,12 +275,7 @@ const parseDecimalDegrees = (input: string): ParsedCoordinate | null => {
   const num2 = parseFloat(parts[1]);
   if (isNaN(num1) || isNaN(num2)) return null;
 
-  const isLatLon =
-    Math.abs(num1) <= 90 &&
-    Math.abs(num2) <= 180 &&
-    (Math.abs(num1) < 80 || Math.abs(num2) < 80);
-
-  if (!isLatLon) return null;
+  if (Math.abs(num1) > 90 || Math.abs(num2) > 180) return null;
 
   return {
     lat: num1,
