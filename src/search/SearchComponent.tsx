@@ -7,6 +7,7 @@ import {
   Image,
   Search,
   Spinner,
+  Tooltip,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useState } from 'react';
@@ -86,26 +87,28 @@ export const SearchComponent = () => {
           <Flex alignItems="center" gap={2}>
             {/* Kart-flis til venstre */}
 
-            <Button
-              width="46px"
-              height="44px"
-              borderRadius={8}
-              overflow="hidden"
-              cursor="pointer"
-              padding={0}
-              onClick={() => {
-                setShowBackgroundSettings((s) => !s);
-              }}
-              boxShadow="md"
-            >
-              <Image
-                src={backgroundImageUrl}
-                alt="Velg bakgrunnskart"
-                width="100%"
-                height="100%"
-                objectFit="cover"
-              />
-            </Button>
+            <Tooltip content={t('search.backgroundChooser.tooltip')}>
+              <Button
+                width="46px"
+                height="44px"
+                borderRadius={8}
+                overflow="hidden"
+                cursor="pointer"
+                padding={0}
+                onClick={() => {
+                  setShowBackgroundSettings((s) => !s);
+                }}
+                boxShadow="md"
+              >
+                <Image
+                  src={backgroundImageUrl}
+                  alt={t('search.backgroundChooser.tooltip')}
+                  width="100%"
+                  height="100%"
+                  objectFit="cover"
+                />
+              </Button>
+            </Tooltip>
 
             <Box position="relative" width="100%">
               <Search

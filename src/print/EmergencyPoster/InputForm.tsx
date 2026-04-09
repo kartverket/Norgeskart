@@ -29,7 +29,7 @@ import {
   submitEmergencyPoster,
 } from './utils';
 
-const LABEL_WIDTH = '40%';
+export const LABEL_WIDTH = '40%';
 export const InputForm = ({
   clickedCoordinates,
   emergenyPosterData,
@@ -68,27 +68,24 @@ export const InputForm = ({
           borderRadius={0}
         />
       </FieldRoot>
-      <FieldRoot orientation={'horizontal'} display={'flex'}>
-        <FieldLabel flexBasis={LABEL_WIDTH}>
-          {t('printdialog.emergencyPoster.inputform.fields.place.label')}
-        </FieldLabel>
-        <PlaceSelector
-          coordinates={clickedCoordinates}
-          range={1500}
-          onSelect={(s) => {
-            setSelectedPlace(s);
-            if (!customNameChanged) {
-              setCustomName(s);
-            }
-          }}
-          onLoadComplete={(s) => {
-            setSelectedPlace(s);
-            if (!customNameChanged) {
-              setCustomName(s);
-            }
-          }}
-        />
-      </FieldRoot>
+
+      <PlaceSelector
+        coordinates={clickedCoordinates}
+        range={1500}
+        onSelect={(s) => {
+          setSelectedPlace(s);
+          if (!customNameChanged) {
+            setCustomName(s);
+          }
+        }}
+        onLoadComplete={(s) => {
+          setSelectedPlace(s);
+          if (!customNameChanged) {
+            setCustomName(s);
+          }
+        }}
+      />
+
       {emergenyPosterData.vegliste.length > 0 && (
         <>
           <FieldRoot orientation={'horizontal'} display={'flex'}>
@@ -170,7 +167,10 @@ export const InputForm = ({
                 ),
                 type: 'error',
               });
-              ph.captureException('print_emergency_poster_failed');
+              ph.captureException('print_emergency_poster_failed', {
+                errorType: 'print_emergency_poster_failed',
+                errorMessage: 'Could not create payload for emergency poster',
+              });
               return;
             }
 
@@ -190,15 +190,24 @@ export const InputForm = ({
                     'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                   ),
                 );
-                ph.capture('print_emergency_poster_failed');
+                ph.captureException('print_emergency_poster_failed', {
+                  errorType: 'print_emergency_poster_failed',
+                  errorMessage:
+                    'Download URL was not available for emergency poster',
+                  payload,
+                });
               }
-            } catch {
+            } catch (e) {
               alert(
                 t(
                   'printdialog.emergencyPoster.inputform.errors.couldNotCreatePosterUrl',
                 ),
               );
-              ph.capture('print_emergency_poster_failed');
+              ph.captureException(e, {
+                errorType: 'print_emergency_poster_failed',
+                errorMessage: 'Error occurred while creating emergency poster',
+                payload,
+              });
             } finally {
               setIsLoading(false);
             }

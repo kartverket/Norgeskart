@@ -202,7 +202,8 @@ export const HikingMapSection = () => {
     } catch (error) {
       console.error('Error generating hiking map:', error);
       setGenerateButtonText(t('printdialog.hikingMap.errors.generateFailed'));
-      ph.captureException('print_hiking_map_error', {
+      ph.captureException(error, {
+        errorType: 'print_hiking_failed',
         scale: selectedScale,
         includeLegend,
         includeSweeden,

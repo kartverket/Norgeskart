@@ -35,6 +35,7 @@ export const getFeaturePropertiesForExport = (feature: Feature<Geometry>) => {
     const fillColor = fill ? fill.getColor() : null;
     const strokeColor = stroke ? stroke.getColor() : undefined;
     const strokeWidth = stroke ? stroke.getWidth() : 1;
+    const strokeLineDash = stroke ? stroke.getLineDash() : undefined;
 
     const text = getTextFromStyle(style);
     const icon = getFeatureIcon(feature);
@@ -43,7 +44,11 @@ export const getFeaturePropertiesForExport = (feature: Feature<Geometry>) => {
     return {
       style: {
         fill: { color: fillColor },
-        stroke: { color: strokeColor, width: strokeWidth },
+        stroke: {
+          color: strokeColor,
+          width: strokeWidth,
+          lineDash: strokeLineDash,
+        },
         text,
       },
       overlayIcon: icon || undefined,
