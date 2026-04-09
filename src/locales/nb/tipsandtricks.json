@@ -169,11 +169,12 @@
     "content": [
       {
         "type": "text",
-        "text": "Detaljert skjermkartografi for bakgrunnskartene finnes på Geonorge.no."
+        "text": "Detaljert skjermkartografi for standard bakgrunnskart finnes på "
       },
       {
-        "type": "text",
-        "text": "Desktop:"
+        "type": "link",
+        "text": "Geonorge",
+        "href": "https://register.geonorge.no/tegneregler/spesifikasjon-for-skjermkartografi"
       },
       {
         "type": "text",
@@ -181,11 +182,7 @@
       },
       {
         "type": "text",
-        "text": "Mobil:"
-      },
-      {
-        "type": "text",
-        "text": "Når temakart er aktivert kan du vise tegnforklaring ved å trykke på info-ikonet i sidemenyen."
+        "text": "På mobil aktiverer du tegnforklaringen ved å trykke på info-ikonet i sidemenyen."
       }
     ]
   },
