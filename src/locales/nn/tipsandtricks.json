@@ -207,5 +207,14 @@
         "text": "Det er dessverre ikkje mogleg å skrive ut flyfoto per i dag, men det blir jobba med ei løysing for framtida."
       }
     ]
+  },
+  {
+    "title": "Gøym menyen med tastaturet",
+    "content": [
+      {
+        "type": "text",
+        "text": "Du kan gøyme og vise menyen ved å trykkje på «U»-tasten på tastaturet."
+      }
+    ]
   }
 ]

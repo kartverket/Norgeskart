@@ -1,6 +1,8 @@
+import { transform } from 'ol/proj';
 import posthog from 'posthog-js';
 import { getEnv } from '../env.ts';
 import { ProjectionIdentifier } from '../map/projections/types.ts';
+import { isNumberOk } from '../shared/utils/numberUtils.ts';
 import {
   AddressApiResponse,
   EmergencyPosterResponse,
@@ -14,13 +16,18 @@ const env = getEnv();
 
 const trackApiError = (
   error: unknown,
-  context: { url?: string; httpStatus?: number; query?: string; type: string },
+  context: {
+    url?: string;
+    httpStatus?: number;
+    query?: string;
+    searchType: string;
+  },
 ) => {
-  console.error(`Search API error [${context.type}]:`, error);
+  console.error(`Search API error [${context.searchType}]:`, error);
   if (posthog.__loaded) {
     console.warn('PostHog is not loaded, cannot track search API error');
-    posthog.captureException('search_api_error', {
-      error,
+    posthog.captureException(error, {
+      errorType: 'search_api_error',
       ...context,
     });
   }
@@ -44,7 +51,7 @@ export const getAddresses = async (
     }
     return res.json();
   } catch (error) {
-    trackApiError(error, { url, httpStatus, query, type: 'addresses' });
+    trackApiError(error, { url, httpStatus, query, searchType: 'addresses' });
     return {
       adresser: [],
       metadata: {
@@ -68,14 +75,10 @@ export const getPlaceNames = async (
   const searchPart = query.split(',')[0].trim();
   const municipalityPart = query.split(',')[1]?.trim();
 
-  const encodedMunicipality = municipalityPart
-    ? encodeURIComponent(municipalityPart)
-    : null;
-
   const url = new URL(`${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn`);
   url.searchParams.append('sok', `${searchPart}*`);
-  if (encodedMunicipality) {
-    url.searchParams.append('kommunenavn', `${encodedMunicipality}*`);
+  if (municipalityPart) {
+    url.searchParams.append('kommunenavn', `${municipalityPart}*`);
   }
   url.searchParams.append('treffPerSide', PLACE_SEARCH_PAGE_SIZE.toString());
   url.searchParams.append('side', page.toString());
@@ -90,7 +93,11 @@ export const getPlaceNames = async (
     }
     return res.json();
   } catch (error) {
-    trackApiError(error, { query, url: url.toString(), type: 'placeNames' });
+    trackApiError(error, {
+      query,
+      url: url.toString(),
+      searchType: 'placeNames',
+    });
 
     return {
       navn: [],
@@ -127,7 +134,7 @@ export const getPlaceNamesByLocation = async (
       url,
       httpStatus,
       query: `x:${x}, y:${y}, radius:${radius}, projection:${projection}`,
-      type: 'placeNamesByLocation',
+      searchType: 'placeNamesByLocation',
     });
     throw error;
   }
@@ -144,7 +151,7 @@ export const getRoads = async (query: string): Promise<Road[]> => {
     }
     return res.json();
   } catch (error) {
-    trackApiError(error, { query, url, type: 'roads' });
+    trackApiError(error, { query, url, searchType: 'roads' });
     return [];
   }
 };
@@ -184,17 +191,26 @@ export const getProperties = async (query: string): Promise<Property[]> => {
     }
     return res.json();
   } catch (error) {
-    trackApiError(error, { query, url, httpStatus, type: 'properties' });
+    trackApiError(error, { query, url, httpStatus, searchType: 'properties' });
     return [];
   }
 };
 
-export const getElevation = async (x: number, y: number) => {
+export const getElevation = async (
+  x: number,
+  y: number,
+  srs: ProjectionIdentifier,
+) => {
+  if (!isNumberOk(x) || !isNumberOk(y)) {
+    return;
+  }
+  const [xTransformed, yTransformed] = transform([x, y], srs, 'EPSG:25833');
+
   const url = new URL(
     'https://hoydedata.no/arcgis/rest/services/NHM_DTM_TOPOBATHY_25833/ImageServer/identify',
   );
   url.searchParams.append('f', 'json');
-  url.searchParams.append('geometry', `${x},${y}`);
+  url.searchParams.append('geometry', `${xTransformed},${yTransformed}`);
   url.searchParams.append('geometryType', 'esriGeometryPoint');
   url.searchParams.append('sr', '25833'); //TODO ta denne som input
   url.searchParams.append('returnGeometry', 'false');
@@ -213,7 +229,7 @@ export const getElevation = async (x: number, y: number) => {
     trackApiError(error, {
       url: url.toString(),
       httpStatus,
-      type: 'elevation',
+      searchType: 'elevation',
     });
     throw error;
   }
@@ -235,7 +251,7 @@ export const getEmergecyPosterInfoByCoordinates = async (
     }
     return res.json();
   } catch (error) {
-    trackApiError(error, { url, httpStatus, type: 'emergencyPoster' });
+    trackApiError(error, { url, httpStatus, searchType: 'emergencyPoster' });
     throw error;
   }
 };
@@ -261,7 +277,7 @@ export const getPropetyInfoByCoordinates = async (lat: number, lon: number) => {
     trackApiError(error, {
       url: url.toString(),
       httpStatus,
-      type: 'propertyInfoByCoordinates',
+      searchType: 'propertyInfoByCoordinates',
     });
     throw error;
   }
@@ -311,7 +327,7 @@ export const getPropertyDetailsByMatrikkelId = async (
     trackApiError(error, {
       url,
       httpStatus,
-      type: 'propertyDetailsByMatrikkelId',
+      searchType: 'propertyDetailsByMatrikkelId',
     });
     throw error;
   }
@@ -340,7 +356,7 @@ export const getPlaceNamesByCoordinates = async (
       url: url.toString(),
       httpStatus,
       query: `north:${north}, east:${east}`,
-      type: 'placeNamesByCoordinates',
+      searchType: 'placeNamesByCoordinates',
     });
     throw error;
   }

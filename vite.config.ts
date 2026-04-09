@@ -1,5 +1,9 @@
 import react from '@vitejs/plugin-react';
+import { execSync } from 'child_process';
 import { defineConfig } from 'vitest/config';
+
+const commitHash = execSync('git rev-parse --short HEAD').toString().trim();
+const buildDate = new Date().toISOString();
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,6 +14,10 @@ export default defineConfig({
       },
     }),
   ],
+  define: {
+    __COMMIT_HASH__: JSON.stringify(commitHash),
+    __BUILD_DATE__: JSON.stringify(buildDate),
+  },
   build: {
     sourcemap: true,
   },

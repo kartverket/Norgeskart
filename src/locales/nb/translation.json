@@ -23,7 +23,8 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
-    "hide": "Minimer"
+    "hide": "Minimer",
+    "menuHiddenToast": "Menyen er skjult. Trykk på U-tasten for å vise."
   },
   "draw": {
     "begin": "Tegn på kartet",
@@ -65,7 +66,8 @@
       "defaults": {
         "primary": "Hovedfarge",
         "secondary": "Sekundær"
-      }
+      },
+      "lineType": "Linjetype"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
@@ -381,6 +383,10 @@
         "tooltip": "Del kartet"
       }
     },
+    "backgroundChooser": {
+      "tooltip": "Velg bakgrunnskart (Flyfoto, Sjøkart, Topografisk osv.)",
+      "label": "Bakgrunn"
+    },
     "addresses": "Adresser",
     "coordinates": "Koordinater",
     "houseNumber": "Husnr",
@@ -522,7 +528,8 @@
         },
         "errors": {
           "couldNotCreatePosterUrl": "Kunne ikke lage nødplakat"
-        }
+        },
+        "error": "Kunne ikke hente data for plakaten. Prøv et annet sted"
       },
       "buttons": {
         "makePoster": "Lag plakat"
@@ -619,7 +626,9 @@
     "heading": "Om oss",
     "textone": "Norgeskart er Kartverkets mest brukte karttjeneste. Enten du planlegger en tur til fjells eller til sjøs, eller trenger informasjon om en eiendom, gir Norgeskart deg pålitelig og detaljert geografisk informasjon – presentert på en enkel og tilgjengelig måte.",
     "texttwo": "Siden 1773 har Kartverket kartlagt Norge. Mye har endret seg siden den gang. Behov utvikler seg over tid, og ny teknologi gir oss stadig nye muligheter. Derfor jobber vi kontinuerlig med å tilby et bredt spekter av kartprodukter som møter brukernes behov – både i dag og i fremtiden.",
-    "textthree": "Sammen med brukerne skal vi være åpne, innovative og stabile."
+    "textthree": "Sammen med brukerne skal vi være åpne, innovative og stabile.",
+    "version": "Versjon",
+    "buildDate": "Bygget"
   },
   "importDialog": {
     "header": "Importer fil til tegnelag",

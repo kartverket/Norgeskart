@@ -18,6 +18,7 @@ type PrintSymbolizer =
       type: 'line';
       strokeColor: string;
       strokeWidth: number;
+      strokeDashstyle: string;
     }
   | {
       type: 'point';
@@ -115,11 +116,15 @@ const getPolygonSymbolizer = (style: Style): PrintSymbolizer[] => {
 
 const getLineSymbolizer = (style: Style): PrintSymbolizer[] => {
   const stroke = style.getStroke();
+  const dash = stroke?.getLineDash();
+  const dashStyle = dash && dash.length > 0 ? 'dash' : 'solid';
+
   return [
     {
       type: 'line',
       strokeColor: normalizeHexColor(stroke?.getColor() as string),
       strokeWidth: stroke?.getWidth() || 2,
+      strokeDashstyle: dashStyle,
     },
   ];
 };
