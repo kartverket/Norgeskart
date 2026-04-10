@@ -2,9 +2,18 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { get as getProjection, transform } from 'ol/proj';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { calculateAzimuth, calculateGridConvergence, getCentralMeridianDeg } from '../shared/utils/coordinateCalculations';
+import {
+  calculateAzimuth,
+  calculateGridConvergence,
+  getCentralMeridianDeg,
+} from '../shared/utils/coordinateCalculations';
 import { setUrlParameter } from '../shared/utils/urlUtils';
-import { gridConvergenceAtom, magneticDeclinationAtom, mapAtom, mapOrientationAtom } from './atoms';
+import {
+  gridConvergenceAtom,
+  magneticDeclinationAtom,
+  mapAtom,
+  mapOrientationAtom,
+} from './atoms';
 import { ProjectionIdentifier } from './projections/types';
 
 const ROTATION_ANIMATION_DURATION = 500;

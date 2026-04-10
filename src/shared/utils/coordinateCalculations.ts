@@ -60,31 +60,53 @@ const OSLO_PRIME_MERIDIAN = 10.722916667;
  * / UTM projections used in Norgeskart.
  * Returns null for geographic or Web Mercator projections where grid north = true north.
  */
-export const getCentralMeridianDeg = (projectionCode: string): number | null => {
+export const getCentralMeridianDeg = (
+  projectionCode: string,
+): number | null => {
   switch (projectionCode) {
     // EUREF89 UTM
-    case 'EPSG:25832': return 9;
-    case 'EPSG:25833': return 15;
-    case 'EPSG:25834': return 21;
-    case 'EPSG:25835': return 27;
-    case 'EPSG:25836': return 33;
+    case 'EPSG:25832':
+      return 9;
+    case 'EPSG:25833':
+      return 15;
+    case 'EPSG:25834':
+      return 21;
+    case 'EPSG:25835':
+      return 27;
+    case 'EPSG:25836':
+      return 33;
     // ED50 UTM
-    case 'EPSG:23031': return 3;
-    case 'EPSG:23032': return 9;
-    case 'EPSG:23033': return 15;
-    case 'EPSG:23034': return 21;
-    case 'EPSG:23035': return 27;
-    case 'EPSG:23036': return 33;
+    case 'EPSG:23031':
+      return 3;
+    case 'EPSG:23032':
+      return 9;
+    case 'EPSG:23033':
+      return 15;
+    case 'EPSG:23034':
+      return 21;
+    case 'EPSG:23035':
+      return 27;
+    case 'EPSG:23036':
+      return 33;
     // NGO 1948 Gauss-Kruger (lon_0 is relative to Oslo prime meridian)
-    case 'EPSG:27391': return -4.666666667 + OSLO_PRIME_MERIDIAN;
-    case 'EPSG:27392': return -2.333333333 + OSLO_PRIME_MERIDIAN;
-    case 'EPSG:27393': return OSLO_PRIME_MERIDIAN;
-    case 'EPSG:27394': return 2.5 + OSLO_PRIME_MERIDIAN;
-    case 'EPSG:27395': return 6.166666667 + OSLO_PRIME_MERIDIAN;
-    case 'EPSG:27396': return 10.166666667 + OSLO_PRIME_MERIDIAN;
-    case 'EPSG:27397': return 14.166666667 + OSLO_PRIME_MERIDIAN;
-    case 'EPSG:27398': return 18.333333333 + OSLO_PRIME_MERIDIAN;
+    case 'EPSG:27391':
+      return -4.666666667 + OSLO_PRIME_MERIDIAN;
+    case 'EPSG:27392':
+      return -2.333333333 + OSLO_PRIME_MERIDIAN;
+    case 'EPSG:27393':
+      return OSLO_PRIME_MERIDIAN;
+    case 'EPSG:27394':
+      return 2.5 + OSLO_PRIME_MERIDIAN;
+    case 'EPSG:27395':
+      return 6.166666667 + OSLO_PRIME_MERIDIAN;
+    case 'EPSG:27396':
+      return 10.166666667 + OSLO_PRIME_MERIDIAN;
+    case 'EPSG:27397':
+      return 14.166666667 + OSLO_PRIME_MERIDIAN;
+    case 'EPSG:27398':
+      return 18.333333333 + OSLO_PRIME_MERIDIAN;
     // Geographic (EPSG:4326, EPSG:4258, EPSG:4230) and Web Mercator (EPSG:3857)
-    default: return null;
+    default:
+      return null;
   }
 };
