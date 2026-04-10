@@ -100,6 +100,8 @@
   "infoBox": {
     "address": "Adresse",
     "cadastralIdentifier": "Gards- og bruksnummer",
+    "showContent": "Vis innhald",
+    "hideContent": "Skjul innhald",
     "coordinateInfo": "Sjå koordinatar",
     "coordinateSection": {
       "copy": {

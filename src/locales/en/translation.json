@@ -95,6 +95,8 @@
   "infoBox": {
     "address": "Address",
     "cadastralIdentifier": "Cadastral identifier",
+    "showContent": "Show content",
+    "hideContent": "Hide content",
     "coordinateInfo": "Coordinates",
     "coordinateSection": {
       "copy": {

@@ -50,7 +50,7 @@ export const InfoBox = () => {
       overflowY={'hidden'}
       maxHeight="55vh"
       width="100%"
-      maxWidth={isMinimized ? '200px' : '355px'}
+      maxWidth={isMinimized ? '190px' : '355px'}
     >
       <Flex justifyContent={'flex-end'} alignItems="center" gap={1}>
         <Button
@@ -58,9 +58,9 @@ export const InfoBox = () => {
           variant="ghost"
           leftIcon={isMinimized ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}
           size="sm"
-          style={{ gap: 1 }}
+          p={1}
         >
-          {isMinimized ? 'Vis innhold' : 'Skjul innhold'}
+          {isMinimized ? t('infoBox.showContent') : t('infoBox.hideContent')}
         </Button>
         <IconButton
           onClick={onClose}
@@ -72,7 +72,7 @@ export const InfoBox = () => {
         />
       </Flex>
       {showHeading && (
-        <Heading fontWeight="bold" size={'lg'} mt={2}>
+        <Heading fontWeight="bold" size={'lg'}>
           {selectedResult.name}
         </Heading>
       )}
