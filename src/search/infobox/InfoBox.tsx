@@ -8,7 +8,7 @@ import {
   Stack,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   isRettIKartetDialogOpenAtom,
@@ -26,6 +26,7 @@ export const InfoBox = () => {
   const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
   const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
   const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   const onClose = useCallback(() => {
     setSelectedResult(null);
@@ -35,6 +36,9 @@ export const InfoBox = () => {
   if (selectedResult === null || isPrintDialogOpen) {
     return null;
   }
+
+  const showHeading =
+    selectedResult.type !== 'Coordinate' && selectedResult.name && !isMinimized;
 
   return (
     <Stack
@@ -46,12 +50,18 @@ export const InfoBox = () => {
       overflowY={'hidden'}
       maxHeight="55vh"
       width="100%"
-      maxWidth="355px"
+      maxWidth={isMinimized ? '200px' : '355px'}
     >
-      <Flex justifyContent={'space-between'} alignItems="center">
-        <Heading fontWeight="bold" size={'lg'}>
-          {selectedResult.type !== 'Coordinate' && selectedResult.name}
-        </Heading>
+      <Flex justifyContent={'flex-end'} alignItems="center" gap={1}>
+        <Button
+          onClick={() => setIsMinimized((prev) => !prev)}
+          variant="ghost"
+          leftIcon={isMinimized ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}
+          size="sm"
+          style={{ gap: 1 }}
+        >
+          {isMinimized ? 'Vis innhold' : 'Skjul innhold'}
+        </Button>
         <IconButton
           onClick={onClose}
           icon={'close'}
@@ -61,13 +71,25 @@ export const InfoBox = () => {
           alignSelf={'flex-end'}
         />
       </Flex>
-      <InfoBoxPreamble result={selectedResult} />
-      <Box overflowY="auto" overflowX="auto">
+      {showHeading && (
+        <Heading fontWeight="bold" size={'lg'} mt={2}>
+          {selectedResult.name}
+        </Heading>
+      )}
+      <Box display={isMinimized ? 'none' : 'block'}>
+        <InfoBoxPreamble result={selectedResult} />
+      </Box>
+      <Box
+        overflowY="auto"
+        overflowX="auto"
+        display={isMinimized ? 'none' : 'block'}
+      >
         <AccordionRoot collapsible multiple defaultValue={[]}>
           <InfoboxAccordionContent />
         </AccordionRoot>
       </Box>
       <Button
+        display={isMinimized ? 'none ' : 'flex'}
         variant="plain"
         size="sm"
         onClick={() => {
