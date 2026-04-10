@@ -25,6 +25,7 @@ export const mapLegacyBackgroundLayerId = (
     '1003': 'topograatone',
     '1004': 'toporaster',
     '1002': 'Nibcache_UTM33_EUREF89_v2',
+    '1009': 'sjokartraster',
     '10088': 'sjokartraster',
   };
 
