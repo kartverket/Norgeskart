@@ -36,6 +36,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       groupid: 31,
       legacyId: 'seeiendom.1011',
       queryable: true,
+      singleImage: true,
     },
     {
       id: 'buildings',
@@ -49,6 +50,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       groupid: 31,
       legacyId: 'seeiendom.1012',
       queryable: true,
+      singleImage: true,
     },
     {
       id: 'borders',
@@ -63,6 +65,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       legacyId: 'seeiendom.1013',
       queryable: true,
       styles: ',Matrikkelnummer',
+      singleImage: true,
     },
   ],
 };
