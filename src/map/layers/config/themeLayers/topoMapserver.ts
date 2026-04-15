@@ -214,7 +214,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag01_hav'),
       layers: 'lag01_hav',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag02_dybdelag_gebco',
@@ -253,7 +252,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag05_hoydelag'),
       layers: 'lag05_hoydelag',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag06_arealdekke',
@@ -263,7 +261,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag06_arealdekke'),
       layers: 'lag06_arealdekke',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag07_elveflate',
@@ -319,7 +316,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag12_innsjoflate'),
       layers: 'lag12_innsjoflate',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag13_grense_adm_maritim_fare_naturvern',
