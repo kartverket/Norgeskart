@@ -232,7 +232,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag03_dybdelag_sjo'),
       layers: 'lag03_dybdelag_sjo',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag04_Europa',
@@ -242,7 +241,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag04_Europa'),
       layers: 'lag04_Europa',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag05_hoydelag',
@@ -270,7 +268,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag07_elveflate'),
       layers: 'lag07_elveflate',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag08_sjodybde',
@@ -334,7 +331,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag14_vannkontur_elvbekk'),
       layers: 'lag14_vannkontur_elvbekk',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag15_fkb_bygnanlegg',
@@ -362,7 +358,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag17_samferdsel_anlegg'),
       layers: 'lag17_samferdsel_anlegg',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag18_samferdsel_tunnel',
@@ -372,7 +367,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag18_samferdsel_tunnel'),
       layers: 'lag18_samferdsel_tunnel',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag19_samferdsel_batrute',
@@ -382,7 +376,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag19_samferdsel_batrute'),
       layers: 'lag19_samferdsel_batrute',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag20_samferdsel_terreng',
@@ -392,7 +385,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag20_samferdsel_terreng'),
       layers: 'lag20_samferdsel_terreng',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag21_bygning_anlegg',
@@ -411,7 +403,6 @@ export const topoMapserverConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag22_samferdsel_bru'),
       layers: 'lag22_samferdsel_bru',
       singleImage: true,
-      notReady: true,
     },
     {
       id: 'topoMs_lag23_bygning_bygningslinje',
