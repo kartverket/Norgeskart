@@ -34,6 +34,14 @@ export const Contact = () => {
       >
         {t('privacyAndContact.formsLinkText')}
       </Link>
+      <Link
+        href="https://forms.office.com/Pages/ResponsePage.aspx?id=osh0f85Dskaw6LYwbLpzowd74bOuerVDuw5mpLK4z-tUMVBSVjA1VTc5OFlZTFVQSlA4TVU5QVBBSC4u"
+        target="_blank"
+        external
+        textStyle="sm"
+      >
+        {t('privacyAndContact.userSurveyLinkText')}
+      </Link>
     </VStack>
   );
 };

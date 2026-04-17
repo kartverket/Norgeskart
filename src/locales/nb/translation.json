@@ -363,7 +363,8 @@
       "granted": "Godtatt",
       "denied": "Avslått",
       "pending": "Ikke valgt"
-    }
+    },
+    "userSurveyLinkText": "Brukerundersøkelse 2026"
   },
   "propertyInfo": {
     "address": "Adresse",

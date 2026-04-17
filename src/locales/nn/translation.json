@@ -363,7 +363,8 @@
       "granted": "Godteke",
       "denied": "Avslege",
       "pending": "Ikkje vald"
-    }
+    },
+    "userSurveyLinkText": "Brukarundersøking 2026"
   },
   "propertyInfo": {
     "address": "Adresse",

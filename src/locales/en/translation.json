@@ -358,7 +358,8 @@
       "granted": "Accepted",
       "denied": "Declined",
       "pending": "Not set"
-    }
+    },
+    "userSurveyLinkText": "User survey 2026"
   },
   "propertyInfo": {
     "address": "Address",
