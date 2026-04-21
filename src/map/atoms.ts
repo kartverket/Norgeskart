@@ -28,7 +28,7 @@ export const DEFAULT_ROTATION = 0;
 
 export const currentProjectionAtom = atom<ProjectionIdentifier>(
   validateProjectionIdString(getUrlParameter('projection')) ||
-    DEFAULT_PROJECTION,
+  DEFAULT_PROJECTION,
 );
 
 export const mapOrientationAtom = atom<number>(0);
@@ -156,7 +156,7 @@ const getInitialMapView = () => {
 export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls({ zoom: false, rotate: false }).extend([
-      new ScaleLine({ minWidth: 100 }),
+      // new ScaleLine({ minWidth: 100 }),
     ]),
     keyboardEventTarget: document,
   });
