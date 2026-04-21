@@ -18,6 +18,9 @@ type layerProviderParameters = {
   topoQgis: {
     baseUrl: string;
   };
+  topoCache: {
+    baseUrl: string;
+  };
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -57,6 +60,9 @@ const LOCAL_ENV: Env = {
     topoQgis: {
       baseUrl: 'https://qlr-qgis.atkv3-dev.kartverket-intern.cloud',
     },
+    topoCache: {
+      baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket-intern.cloud',
+    },
   },
   envName: 'local',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -88,6 +94,9 @@ const DEV_ENV: Env = {
     topoQgis: {
       baseUrl: 'https://qlr-qgis.atkv3-dev.kartverket-intern.cloud',
     },
+    topoCache: {
+      baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket-intern.cloud',
+    },
   },
   envName: 'dev',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -118,6 +127,9 @@ const PROD_ENV: Env = {
     },
     topoQgis: {
       baseUrl: 'https://qlr-qgis.atkv3-prod.kartverket-intern.cloud',
+    },
+    topoCache: {
+      baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket-intern.cloud',
     },
   },
   envName: 'prod',

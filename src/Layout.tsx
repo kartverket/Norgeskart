@@ -52,7 +52,6 @@ export const Layout = () => {
           md: 'repeat(4, 1fr)  120px 40px',
         }}
         pointerEvents="auto"
-        bg="gray.200"
         style={{ overflowY: 'hidden' }}
       >
         <GridItem

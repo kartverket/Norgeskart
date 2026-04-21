@@ -23,6 +23,7 @@ type BackgroundLayerBase = {
 export type WMTSBackgroundLayer = BackgroundLayerBase & {
   type: 'WMTS';
   layerName: WMTSLayerName;
+  wmtsLayerName?: string;
   provider: LayerProvider;
 };
 

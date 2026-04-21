@@ -40,7 +40,7 @@ export const getWMTSLayer = async (layerConfig: WMTSBackgroundLayer) => {
     const parser = new WMTSCapabilities();
     const capabilities = parser.read(capabilitiesText);
     const layerOptions = optionsFromCapabilities(capabilities, {
-      layer: layerConfig.layerName,
+      layer: layerConfig.wmtsLayerName ?? layerConfig.layerName,
     });
 
     if (!layerOptions) {
