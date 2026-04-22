@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, VStack, useBreakpointValue } from '@kvib/react';
+import { Box, Flex, Grid, GridItem, VStack, useBreakpointValue } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
 import { displayCompassOverlayAtom } from './map/atoms';
@@ -40,6 +40,8 @@ export const Layout = () => {
   useMapClickSearch();
 
   const isToolOpen = currentMapTool !== null;
+  const hideLogo = selectedResult !== null || isPrintDialogOpen;
+
   return (
     <ErrorBoundary fallback={undefined}>
       {displayCompassOverlay && <Compass />}
@@ -117,6 +119,12 @@ export const Layout = () => {
           zIndex={2}
           pointerEvents={'none'}
         >
+          <Box position="absolute" top={{ base: 3, md: 4 }} right={{ base: 2, md: 3 }} display={hideLogo ? 'none' : 'block'}>
+            <LinkLogo />
+
+          </Box>
+
+
           <Flex justifyContent={'flex-end'}>
             <ErrorBoundary fallback={undefined} name={'InfoBox'}>
               <InfoBox />
@@ -137,7 +145,6 @@ export const Layout = () => {
           zIndex={1}
           pointerEvents={'none'}
         >
-          <LinkLogo />
         </GridItem>
 
         <GridItem
@@ -176,12 +183,14 @@ export const Layout = () => {
             <ErrorBoundary fallback={undefined} name={'MapControlButtons'}>
               <MapControlButtons />
             </ErrorBoundary>
-            <ErrorBoundary
-              fallback={undefined}
-              name={'BackgroundLayerSwitcher'}
-            >
-              <BackgroundLayerSwitcher />
-            </ErrorBoundary>
+            <Box display={{ base: 'none', md: 'block' }}>
+              <ErrorBoundary
+                fallback={undefined}
+                name={'BackgroundLayerSwitcher'}
+              >
+                <BackgroundLayerSwitcher />
+              </ErrorBoundary>
+            </Box>
           </VStack>
         </GridItem>
 

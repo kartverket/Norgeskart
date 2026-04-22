@@ -1,7 +1,7 @@
 /* --- Scale & Mouse Position --- */
 .ol-scale-line {
   position: absolute;
-  left: 90px;
+  left: 10px;
   bottom: 52px;
   right: auto;
 }
