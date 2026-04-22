@@ -1,7 +1,15 @@
-import { Flex, Grid, GridItem, useBreakpointValue } from '@kvib/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  VStack,
+  useBreakpointValue,
+} from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
 import { displayCompassOverlayAtom } from './map/atoms';
+import { BackgroundLayerPopover } from './map/backgroundLayer/BackgroundLayerPopover';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
 import { MapComponent } from './map/MapComponent';
 import { MapControlButtons } from './map/MapControlButtons';
@@ -39,6 +47,10 @@ export const Layout = () => {
   useMapClickSearch();
 
   const isToolOpen = currentMapTool !== null;
+  const hideLogo = selectedResult !== null || isPrintDialogOpen;
+  const showDesktopLogo = !isMobile && !hideLogo;
+  const showMobileLogo = isMobile && !hideLogo && !isToolOpen;
+
   return (
     <ErrorBoundary fallback={undefined}>
       {displayCompassOverlay && <Compass />}
@@ -116,6 +128,11 @@ export const Layout = () => {
           zIndex={2}
           pointerEvents={'none'}
         >
+          {showDesktopLogo && (
+            <Box position="absolute" top={4} right={3}>
+              <LinkLogo />
+            </Box>
+          )}
           <Flex justifyContent={'flex-end'}>
             <ErrorBoundary fallback={undefined} name={'InfoBox'}>
               <InfoBox />
@@ -132,11 +149,11 @@ export const Layout = () => {
           alignContent={{ base: 'end', md: 'end' }}
           mb={{ base: 3, md: 4 }}
           ml={{ base: 2, md: 3 }}
-          display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
+          display={{ base: 'block', md: 'none' }}
           zIndex={1}
           pointerEvents={'none'}
         >
-          <LinkLogo />
+          {showMobileLogo && <LinkLogo />}
         </GridItem>
 
         <GridItem
@@ -148,7 +165,7 @@ export const Layout = () => {
           gridRow={5}
           alignContent={'end'}
           justifySelf={{ md: 'center' }}
-          mb={{ base: 0, md: 4 }}
+          mb={{ base: 0, md: 2 }}
           zIndex={1}
           pointerEvents={'none'}
         >
@@ -162,15 +179,28 @@ export const Layout = () => {
           alignContent="end"
           gridRow={{ base: 4, md: '3 / span 3' }}
           gridColumn={'12 / span 3'}
-          mb={{ base: 3, md: 16 }}
+          mb={{
+            base: 3,
+            md: 2,
+          }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
           zIndex={1}
           pointerEvents={'none'}
         >
-          <ErrorBoundary fallback={undefined} name={'MapControlButtons'}>
-            <MapControlButtons />
-          </ErrorBoundary>
+          <VStack alignItems="flex-end" gap={2} pointerEvents="auto">
+            <ErrorBoundary fallback={undefined} name={'MapControlButtons'}>
+              <MapControlButtons />
+            </ErrorBoundary>
+            <Box display={{ base: 'none', md: 'block' }}>
+              <ErrorBoundary
+                fallback={undefined}
+                name={'BackgroundLayerPopover'}
+              >
+                <BackgroundLayerPopover />
+              </ErrorBoundary>
+            </Box>
+          </VStack>
         </GridItem>
 
         {!isMobile && (

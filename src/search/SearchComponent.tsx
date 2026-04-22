@@ -7,15 +7,14 @@ import {
   Image,
   Search,
   Spinner,
-  Tooltip,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
 
+import { BackgroundLayerPanel } from '../map/backgroundLayer/BackgroundLayerPanel.tsx';
 import { backgroundLayerAtom } from '../map/layers/config/backgroundLayers/atoms.ts';
-import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { SearchResult } from '../types/searchTypes.ts';
 import {
@@ -87,29 +86,27 @@ export const SearchComponent = () => {
           <Flex alignItems="center" gap={2}>
             {/* Kart-flis til venstre */}
 
-            <Tooltip content={t('search.backgroundChooser.tooltip')}>
-              <Button
-                width="46px"
-                height="44px"
-                borderRadius={8}
-                overflow="hidden"
-                cursor="pointer"
-                padding={0}
-                onClick={() => {
-                  setShowBackgroundSettings((s) => !s);
-                }}
-                boxShadow="md"
-              >
-                <Image
-                  src={backgroundImageUrl}
-                  alt={t('search.backgroundChooser.tooltip')}
-                  width="100%"
-                  height="100%"
-                  objectFit="cover"
-                />
-              </Button>
-            </Tooltip>
-
+            <Button
+              display={{ md: 'none' }}
+              width="46px"
+              height="44px"
+              borderRadius={8}
+              overflow="hidden"
+              cursor="pointer"
+              padding={0}
+              onClick={() => {
+                setShowBackgroundSettings((s) => !s);
+              }}
+              boxShadow="md"
+            >
+              <Image
+                src={backgroundImageUrl}
+                alt={t('search.backgroundChooser.tooltip')}
+                width="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            </Button>
             <Box position="relative" width="100%">
               <Search
                 width="100%"
@@ -141,7 +138,7 @@ export const SearchComponent = () => {
         />
         {showBackgroundSettings && (
           <Box>
-            <BackgroundLayerSettings
+            <BackgroundLayerPanel
               onSelectComplete={() => setShowBackgroundSettings(false)}
             />
           </Box>

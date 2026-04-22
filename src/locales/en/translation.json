@@ -325,6 +325,9 @@
       },
       "symbols": {
         "label": "Map legend"
+      },
+      "backgroundLayer": {
+        "label": "Map"
       }
     }
   },

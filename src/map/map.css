@@ -1,9 +1,9 @@
 /* --- Scale & Mouse Position --- */
 .ol-scale-line {
   position: absolute;
-  right: 10px;
-  bottom: 48px;
-  left: auto;
+  left: 10px;
+  bottom: 46px;
+  right: auto;
 }
 
 /* Mobile: center scale line above toolbar */
