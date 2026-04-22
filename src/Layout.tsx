@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem, VStack, useBreakpointValue } from '@kvib/react';
+import { Box, Flex, Grid, GridItem, Link, VStack, useBreakpointValue } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
 import { displayCompassOverlayAtom } from './map/atoms';
@@ -41,6 +41,8 @@ export const Layout = () => {
 
   const isToolOpen = currentMapTool !== null;
   const hideLogo = selectedResult !== null || isPrintDialogOpen;
+  const showDesktopLogo = !isMobile && !hideLogo;
+  const showMobileLogo = isMobile && !hideLogo && !isToolOpen;
 
   return (
     <ErrorBoundary fallback={undefined}>
@@ -119,12 +121,11 @@ export const Layout = () => {
           zIndex={2}
           pointerEvents={'none'}
         >
-          <Box position="absolute" top={{ base: 3, md: 4 }} right={{ base: 2, md: 3 }} display={hideLogo ? 'none' : 'block'}>
-            <LinkLogo />
-
-          </Box>
-
-
+          {showDesktopLogo && (
+            <Box position="absolute" top={4} right={3}>
+              <LinkLogo />
+            </Box>
+          )}
           <Flex justifyContent={'flex-end'}>
             <ErrorBoundary fallback={undefined} name={'InfoBox'}>
               <InfoBox />
@@ -141,10 +142,11 @@ export const Layout = () => {
           alignContent={{ base: 'end', md: 'end' }}
           mb={{ base: 3, md: 4 }}
           ml={{ base: 2, md: 3 }}
-          display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
+          display={{ base: 'block', md: 'none' }}
           zIndex={1}
           pointerEvents={'none'}
         >
+          {showMobileLogo && <LinkLogo />}
         </GridItem>
 
         <GridItem
