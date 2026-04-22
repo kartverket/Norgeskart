@@ -4,10 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom } from '../atoms.ts';
 import { BackgroundLayerName } from '../layers/backgroundLayers.ts';
 import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms.ts';
-import {
-  BackgroundLayerGrid,
-  getAvailableBackgroundLayers,
-} from './BackgroundLayerGrid.tsx';
+import { BackgroundLayerGrid } from './BackgroundLayerGrid.tsx';
+import { getAvailableBackgroundLayers } from './utils';
 
 export const BackgroundLayerPanel = ({
   onSelectComplete,

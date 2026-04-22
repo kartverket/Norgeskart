@@ -14,10 +14,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom, getBackgroundLayerImageName } from '../atoms';
 import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
-import {
-  BackgroundLayerGrid,
-  getAvailableBackgroundLayers,
-} from './BackgroundLayerGrid';
+import { BackgroundLayerGrid } from './BackgroundLayerGrid';
+import { getAvailableBackgroundLayers } from './utils';
 
 export const BackgroundLayerPopover = () => {
   const [open, setOpen] = useState(false);
