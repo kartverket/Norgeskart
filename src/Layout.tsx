@@ -195,7 +195,7 @@ export const Layout = () => {
             <Box display={{ base: 'none', md: 'block' }}>
               <ErrorBoundary
                 fallback={undefined}
-                name={'BackgroundLayerSwitcher'}
+                name={'BackgroundLayerPopover'}
               >
                 <BackgroundLayerPopover />
               </ErrorBoundary>
