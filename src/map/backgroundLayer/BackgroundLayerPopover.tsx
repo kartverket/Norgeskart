@@ -73,7 +73,7 @@ export const BackgroundLayerPopover = () => {
               textAlign="center"
               lineHeight="short"
             >
-              Kart
+              {t('map.controls.backgroundLayer.label')}
             </Text>
           </Box>
         </Button>

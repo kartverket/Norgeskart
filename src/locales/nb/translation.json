@@ -330,6 +330,9 @@
       },
       "symbols": {
         "label": "Tegnforklaring"
+      },
+      "backgroundLayer": {
+        "label": "Kart"
       }
     }
   },
