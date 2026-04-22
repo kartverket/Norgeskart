@@ -48,7 +48,7 @@ export const InfoBox = () => {
       bg="white"
       pointerEvents={'auto'}
       overflowY={'hidden'}
-      maxHeight="55vh"
+      maxHeight="52vh"
       width="100%"
       maxWidth={isMinimized ? '190px' : '355px'}
     >

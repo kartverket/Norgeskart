@@ -43,7 +43,7 @@ export const BackgroundLayerPopover = () => {
           cursor="pointer"
           padding={0}
           aria-label={t('search.backgroundChooser.label')}
-          border="2px solid"
+          border="3px solid"
           borderColor="white"
           boxShadow="0 2px 10px rgba(0, 0, 0, 0.35)"
         >

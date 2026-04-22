@@ -165,7 +165,7 @@ export const Layout = () => {
           gridRow={5}
           alignContent={'end'}
           justifySelf={{ md: 'center' }}
-          mb={{ base: 0, md: 4 }}
+          mb={{ base: 0, md: 2 }}
           zIndex={1}
           pointerEvents={'none'}
         >
@@ -181,7 +181,7 @@ export const Layout = () => {
           gridColumn={'12 / span 3'}
           mb={{
             base: 3,
-            md: 4,
+            md: 2,
           }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
