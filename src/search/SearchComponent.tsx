@@ -7,7 +7,6 @@ import {
   Image,
   Search,
   Spinner,
-  Tooltip,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useState } from 'react';
