@@ -31,17 +31,14 @@ const sortBackgroundLayers = (
 export const getAvailableBackgroundLayers = (
   currentProjection: ProjectionIdentifier,
 ) =>
-  Array.from(
-    new Set(
-      allConfiguredBackgroundLayers
-        .filter(
-          (layer) =>
-            layer.showForProjections == null ||
-            layer.showForProjections.includes(currentProjection),
-        )
-        .map((layer) => layer.layerName),
-    ),
-  ).sort(sortBackgroundLayers);
+  allConfiguredBackgroundLayers
+    .filter(
+      (layer) =>
+        layer.showForProjections == null ||
+        layer.showForProjections.includes(currentProjection),
+    )
+    .map((layer) => layer.layerName)
+    .sort(sortBackgroundLayers);
 
 interface LayerCardProps {
   label: string;
