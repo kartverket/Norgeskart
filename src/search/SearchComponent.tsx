@@ -87,29 +87,27 @@ export const SearchComponent = () => {
           <Flex alignItems="center" gap={2}>
             {/* Kart-flis til venstre */}
 
-            <Tooltip content={t('search.backgroundChooser.tooltip')}>
-              <Button
-                width="46px"
-                height="44px"
-                borderRadius={8}
-                overflow="hidden"
-                cursor="pointer"
-                padding={0}
-                onClick={() => {
-                  setShowBackgroundSettings((s) => !s);
-                }}
-                boxShadow="md"
-              >
-                <Image
-                  src={backgroundImageUrl}
-                  alt={t('search.backgroundChooser.tooltip')}
-                  width="100%"
-                  height="100%"
-                  objectFit="cover"
-                />
-              </Button>
-            </Tooltip>
-
+            <Button
+              display={{ md: 'none' }}
+              width="46px"
+              height="44px"
+              borderRadius={8}
+              overflow="hidden"
+              cursor="pointer"
+              padding={0}
+              onClick={() => {
+                setShowBackgroundSettings((s) => !s);
+              }}
+              boxShadow="md"
+            >
+              <Image
+                src={backgroundImageUrl}
+                alt={t('search.backgroundChooser.tooltip')}
+                width="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            </Button>
             <Box position="relative" width="100%">
               <Search
                 width="100%"
