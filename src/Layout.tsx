@@ -2,10 +2,10 @@ import { Flex, Grid, GridItem, VStack, useBreakpointValue } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
 import { displayCompassOverlayAtom } from './map/atoms';
+import { BackgroundLayerSwitcher } from './map/BackgroundLayerSwitcher';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
 import { MapComponent } from './map/MapComponent';
 import { MapControlButtons } from './map/MapControlButtons';
-import { BackgroundLayerSwitcher } from './map/BackgroundLayerSwitcher';
 import { mapToolAtom, showSearchComponentAtom } from './map/overlay/atoms';
 import { Compass } from './map/overlay/Compass';
 import { LinkLogo } from './map/overlay/LinkLogo';
@@ -164,7 +164,8 @@ export const Layout = () => {
           gridRow={{ base: 4, md: '3 / span 3' }}
           gridColumn={'12 / span 3'}
           mb={{
-            base: 3, md: 12
+            base: 3,
+            md: 4,
           }}
           mr={{ base: 2, md: 3 }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
@@ -175,7 +176,10 @@ export const Layout = () => {
             <ErrorBoundary fallback={undefined} name={'MapControlButtons'}>
               <MapControlButtons />
             </ErrorBoundary>
-            <ErrorBoundary fallback={undefined} name={'BackgroundLayerSwitcher'}>
+            <ErrorBoundary
+              fallback={undefined}
+              name={'BackgroundLayerSwitcher'}
+            >
               <BackgroundLayerSwitcher />
             </ErrorBoundary>
           </VStack>
