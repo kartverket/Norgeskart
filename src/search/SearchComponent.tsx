@@ -13,8 +13,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
 
+import { BackgroundLayerPanel } from '../map/backgroundLayer/BackgroundLayerPanel.tsx';
 import { backgroundLayerAtom } from '../map/layers/config/backgroundLayers/atoms.ts';
-import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { SearchResult } from '../types/searchTypes.ts';
 import {
@@ -138,7 +138,7 @@ export const SearchComponent = () => {
         />
         {showBackgroundSettings && (
           <Box>
-            <BackgroundLayerSettings
+            <BackgroundLayerPanel
               onSelectComplete={() => setShowBackgroundSettings(false)}
             />
           </Box>

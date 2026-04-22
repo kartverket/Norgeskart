@@ -1,8 +1,15 @@
-import { Box, Flex, Grid, GridItem, Link, VStack, useBreakpointValue } from '@kvib/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  VStack,
+  useBreakpointValue,
+} from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
 import { displayCompassOverlayAtom } from './map/atoms';
-import { BackgroundLayerSwitcher } from './map/BackgroundLayerSwitcher';
+import { BackgroundLayerPopover } from './map/backgroundLayer/BackgroundLayerPopover';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
 import { MapComponent } from './map/MapComponent';
 import { MapControlButtons } from './map/MapControlButtons';
@@ -190,7 +197,7 @@ export const Layout = () => {
                 fallback={undefined}
                 name={'BackgroundLayerSwitcher'}
               >
-                <BackgroundLayerSwitcher />
+                <BackgroundLayerPopover />
               </ErrorBoundary>
             </Box>
           </VStack>
