@@ -114,10 +114,18 @@ const getPolygonSymbolizer = (style: Style): PrintSymbolizer[] => {
   ];
 };
 
+const hasValidDashPattern = (dash: number[] | null | undefined): boolean => {
+  if (!dash || dash.length < 2) return false;
+  const validSegments = dash.filter(
+    (value) => Number.isFinite(value) && value > 0,
+  );
+  return validSegments.length >= 2;
+};
+
 const getLineSymbolizer = (style: Style): PrintSymbolizer[] => {
   const stroke = style.getStroke();
   const dash = stroke?.getLineDash();
-  const dashStyle = dash && dash.length > 0 ? 'dash' : 'solid';
+  const dashStyle = hasValidDashPattern(dash) ? 'dash' : 'solid';
 
   return [
     {
