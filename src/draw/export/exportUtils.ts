@@ -154,9 +154,12 @@ export const handleGPXExport = (layer: VectorLayer) => {
       const clone = f.clone();
       clone.setId(f.getId());
       const geom = clone.getGeometry();
+      const exteriorRing =
+        geom instanceof Polygon ? geom.getLinearRing(0) : null;
+      if (geom instanceof Polygon && !exteriorRing) return null;
       const effectiveGeom =
-        geom instanceof Polygon
-          ? new LineString(geom.getLinearRing(0)!.getCoordinates())
+        exteriorRing !== null
+          ? new LineString(exteriorRing.getCoordinates())
           : geom;
       if (
         effectiveGeom instanceof Point ||
@@ -171,7 +174,8 @@ export const handleGPXExport = (layer: VectorLayer) => {
         clone.set('name', textLabel);
       }
       return clone;
-    });
+    })
+    .filter((f) => f !== null);
 
   const gpxString = gpxFormat.writeFeatures(featuresToExport, {
     dataProjection: 'EPSG:4326',
