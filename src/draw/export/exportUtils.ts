@@ -23,9 +23,9 @@ const to2DGeometry = (
     return new LineString(coords2d);
   }
   if (geom instanceof MultiLineString) {
-    const lines2d = geom.getCoordinates().map((line) =>
-      line.map(([x, y]) => [x, y]),
-    );
+    const lines2d = geom
+      .getCoordinates()
+      .map((line) => line.map(([x, y]) => [x, y]));
     return new MultiLineString(lines2d);
   }
   return geom;
