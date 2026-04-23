@@ -130,5 +130,8 @@ export const getHighestZIndex = () => {
     return 0;
   }
   const zIndecies = drawnFeatures.map((f) => f.get('zIndex') | 0);
-  return Math.max(0, ...zIndecies);
+  if (zIndecies.length === 0) {
+    return 0;
+  }
+  return Math.max(...zIndecies);
 };
