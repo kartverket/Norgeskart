@@ -220,10 +220,13 @@ export const getSymbolizersFromStyle = (
 
   switch (geometryType) {
     case 'Polygon':
+    case 'MultiPolygon':
       return getPolygonSymbolizer(style);
     case 'LineString':
+    case 'MultiLineString':
       return getLineSymbolizer(style);
-    case 'Point': {
+    case 'Point':
+    case 'MultiPoint': {
       const text = style.getText();
       if (text) {
         return getTextSymbolizer(text as OlText);
@@ -234,6 +237,39 @@ export const getSymbolizersFromStyle = (
       return [];
   }
 };
+// Strip null/undefined extra dimensions from GeoJSON coordinates so all coords are [x, y].
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const to2DCoords = (coords: any[], depth: number): any[] => {
+  if (depth === 1) {
+    return coords.map(([x, y]: number[]) => [x, y]);
+  }
+  return coords.map((c) => to2DCoords(c, depth - 1));
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const to2DGeometry = (geometry: any): any => {
+  if (!geometry) return null;
+  switch (geometry.type) {
+    case 'Point':
+      return {
+        ...geometry,
+        coordinates: [geometry.coordinates[0], geometry.coordinates[1]],
+      };
+    case 'LineString':
+    case 'MultiPoint':
+      return { ...geometry, coordinates: to2DCoords(geometry.coordinates, 1) };
+    case 'MultiLineString':
+    case 'Polygon':
+      return { ...geometry, coordinates: to2DCoords(geometry.coordinates, 2) };
+    case 'MultiPolygon':
+      return { ...geometry, coordinates: to2DCoords(geometry.coordinates, 3) };
+    case 'GeometryCollection':
+      return { ...geometry, geometries: geometry.geometries.map(to2DGeometry) };
+    default:
+      return geometry;
+  }
+};
+
 export const createGeoJsonLayerWithStyles = (
   features: OlFeature<Geometry>[],
   sourceProjection: string,
@@ -297,7 +333,7 @@ export const createGeoJsonLayerWithStyles = (
       type: 'FeatureCollection',
       features: geoJson.features.map((f) => ({
         type: 'Feature',
-        geometry: f.geometry,
+        geometry: to2DGeometry(f.geometry),
         properties: f.properties || {},
         id: f.id,
       })),
