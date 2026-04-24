@@ -241,28 +241,50 @@ export const getSymbolizersFromStyle = (
 // Reduce all coordinates to 2D [x, y], discarding any Z/M/null extra dimensions.
 type NestedPositions = Position | NestedPositions[];
 
-const to2DCoords = (coords: NestedPositions[], depth: number): NestedPositions[] => {
+const to2DCoords = (
+  coords: NestedPositions[],
+  depth: number,
+): NestedPositions[] => {
   if (depth === 1) {
     return (coords as Position[]).map(([x, y]) => [x, y]);
   }
   return (coords as NestedPositions[][]).map((c) => to2DCoords(c, depth - 1));
 };
 
-const to2DGeometry = (geometry: GeoJsonGeometry | null | undefined): GeoJsonGeometry | null => {
+const to2DGeometry = (
+  geometry: GeoJsonGeometry | null | undefined,
+): GeoJsonGeometry | null => {
   if (!geometry) return null;
   switch (geometry.type) {
     case 'Point':
-      return { ...geometry, coordinates: [geometry.coordinates[0], geometry.coordinates[1]] };
+      return {
+        ...geometry,
+        coordinates: [geometry.coordinates[0], geometry.coordinates[1]],
+      };
     case 'LineString':
     case 'MultiPoint':
-      return { ...geometry, coordinates: to2DCoords(geometry.coordinates, 1) as Position[] };
+      return {
+        ...geometry,
+        coordinates: to2DCoords(geometry.coordinates, 1) as Position[],
+      };
     case 'MultiLineString':
     case 'Polygon':
-      return { ...geometry, coordinates: to2DCoords(geometry.coordinates, 2) as Position[][] };
+      return {
+        ...geometry,
+        coordinates: to2DCoords(geometry.coordinates, 2) as Position[][],
+      };
     case 'MultiPolygon':
-      return { ...geometry, coordinates: to2DCoords(geometry.coordinates, 3) as Position[][][] };
+      return {
+        ...geometry,
+        coordinates: to2DCoords(geometry.coordinates, 3) as Position[][][],
+      };
     case 'GeometryCollection':
-      return { ...geometry, geometries: geometry.geometries.map((g) => to2DGeometry(g) as GeoJsonGeometry) };
+      return {
+        ...geometry,
+        geometries: geometry.geometries.map(
+          (g) => to2DGeometry(g) as GeoJsonGeometry,
+        ),
+      };
     default:
       return geometry;
   }
