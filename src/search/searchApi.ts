@@ -33,9 +33,9 @@ const trackApiError = (
   }
 };
 
-const normalizeAddressQuery = (query: string): string => {
-  return query.replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
-}
+const normalizeAddressQuery = (query: string): string =>
+  query.replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
+
 
 export const getAddresses = async (
   query: string,
