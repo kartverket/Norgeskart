@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Divider,
   Image,
   PopoverArrow,
   PopoverBody,
@@ -15,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom, getBackgroundLayerImageName } from '../atoms';
 import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
 import { BackgroundLayerGrid } from './BackgroundLayerGrid';
+import { EccStylePanel } from './EccStylePanel';
 import { getAvailableBackgroundLayers } from './utils';
 
 export const BackgroundLayerPopover = () => {
@@ -78,7 +80,7 @@ export const BackgroundLayerPopover = () => {
       </PopoverTrigger>
       <PopoverContent width="350px" p={0} borderRadius="2xl" boxShadow="lg">
         <PopoverArrow />
-        <PopoverBody p={0} maxHeight="420px" overflowY="auto">
+        <PopoverBody p={0} maxHeight="520px" overflowY="auto">
           <Box p={1}>
             <BackgroundLayerGrid
               layers={backgroundLayers.map((layerName) => ({
@@ -94,6 +96,12 @@ export const BackgroundLayerPopover = () => {
               }}
             />
           </Box>
+          {backgroundLayer === 'oceanicelectronic' && (
+            <>
+              <Divider />
+              <EccStylePanel />
+            </>
+          )}
         </PopoverBody>
       </PopoverContent>
     </PopoverRoot>

@@ -5,6 +5,7 @@ import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import { mapAtom } from '../../../atoms';
+import { eccStyleAtom } from '../../eccStyle';
 import { backgroundLayerCapabilitiesCacheAtom } from './atoms';
 import { nibTileLoadFunction } from './loadFunctions';
 import {
@@ -92,10 +93,17 @@ export const getWMSLayer = (layerConfig: WMSBackgroundLayer) => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const projection = map.getView().getProjection().getCode();
+
+  const extraParams: Record<string, string> = {};
+  if (layerConfig.layerName === 'oceanicelectronic') {
+    const style = store.get(eccStyleAtom);
+    if (style) extraParams.STYLES = style;
+  }
+
   const layer = new TileLayer({
     source: new TileWMS({
       url: layerConfig.url,
-      params: { ...layerConfig.props, SRS: projection },
+      params: { ...layerConfig.props, SRS: projection, ...extraParams },
     }),
     properties: { id: `bg.${layerConfig.layerName}` },
   });

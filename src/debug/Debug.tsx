@@ -15,6 +15,7 @@ import { getEnvName } from '../env';
 import { drawActionsAtom } from '../settings/draw/drawActions/atoms';
 import { Actions } from './Actions';
 import { DrawLayer } from './DrawLayer';
+import { EccStyles } from './EccStyles';
 import { Layers } from './Layers';
 import { Print } from './Print';
 import { Selected } from './Selected';
@@ -108,6 +109,7 @@ export const Debug = () => {
             <TabsTrigger value="drawLayer">Draw Layer</TabsTrigger>
             <TabsTrigger value="themeLayers">Theme Layers</TabsTrigger>
             <TabsTrigger value="print">Print</TabsTrigger>
+            <TabsTrigger value="eccStyles">ECC Styles</TabsTrigger>
           </TabsList>
           <TabsContent value="actions">
             <Actions />
@@ -123,6 +125,9 @@ export const Debug = () => {
           </TabsContent>
           <TabsContent value="print">
             <Print />
+          </TabsContent>
+          <TabsContent value="eccStyles">
+            <EccStyles />
           </TabsContent>
         </Tabs>
       </Box>

@@ -1,10 +1,11 @@
-import { Box } from '@kvib/react';
+import { Box, Divider } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom } from '../atoms.ts';
 import { BackgroundLayerName } from '../layers/backgroundLayers.ts';
 import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms.ts';
 import { BackgroundLayerGrid } from './BackgroundLayerGrid.tsx';
+import { EccStylePanel } from './EccStylePanel.tsx';
 import { getAvailableBackgroundLayers } from './utils';
 
 export const BackgroundLayerPanel = ({
@@ -35,6 +36,12 @@ export const BackgroundLayerPanel = ({
         setLayer={handleSetLayer}
         width={'inherit'}
       />
+      {backgroundLayer === 'oceanicelectronic' && (
+        <>
+          <Divider mt={2} mb={1} />
+          <EccStylePanel />
+        </>
+      )}
     </Box>
   );
 };

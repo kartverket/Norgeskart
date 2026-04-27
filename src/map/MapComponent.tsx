@@ -10,6 +10,7 @@ import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { getUrlParameter } from '../shared/utils/urlUtils.ts';
 import { mapAtom, projectionEffect, scaleAtom } from './atoms.ts';
 import { trackPostitionAtomEffect } from './geolocation/atoms.ts';
+import { eccStyleEffect } from './layers/eccStyleEffect.ts';
 import { themeLayerEffect } from './layers/atoms.ts';
 import { backgroundLayerAtomEffect } from './layers/config/backgroundLayers/atoms.ts';
 import { useMap } from './mapHooks.ts';
@@ -37,6 +38,7 @@ export const MapComponent = () => {
   useAtom(trackPostitionAtomEffect);
   useAtom(projectionEffect);
   useAtom(backgroundLayerAtomEffect);
+  useAtom(eccStyleEffect);
 
   useEffect(() => {
     if (mapRef.current) {
