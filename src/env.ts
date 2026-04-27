@@ -73,7 +73,7 @@ const DEV_ENV: Env = {
       baseUrl: 'https://wms.geonorge.no/skwms1/wms',
     },
     eccProxy: {
-      wmsUrl: 'https://tnt-proxy.atkv3-dev.kartverket-intern.cloud/wms',
+      wmsUrl: 'https://tnt-proxy.atkv3-prod.kartverket.cloud/wms',
     },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
