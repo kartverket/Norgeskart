@@ -9,6 +9,9 @@ type layerProviderParameters = {
   geoNorgeWMS: {
     baseUrl: string;
   };
+  eccProxy: {
+    wmsUrl: string;
+  };
   npolar: {
     baseUrl: string;
   };
@@ -41,6 +44,9 @@ const LOCAL_ENV: Env = {
     geoNorgeWMS: {
       baseUrl: 'https://wms.geonorge.no/skwms1/wms',
     },
+    eccProxy: {
+      wmsUrl: 'https://tnt-proxy.atkv3-dev.kartverket-intern.cloud/wms',
+    },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
@@ -66,6 +72,9 @@ const DEV_ENV: Env = {
     geoNorgeWMS: {
       baseUrl: 'https://wms.geonorge.no/skwms1/wms',
     },
+    eccProxy: {
+      wmsUrl: 'https://tnt-proxy.atkv3-prod.kartverket.cloud/wms',
+    },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
@@ -90,6 +99,9 @@ const PROD_ENV: Env = {
     },
     geoNorgeWMS: {
       baseUrl: 'https://wms.geonorge.no/skwms1/wms',
+    },
+    eccProxy: {
+      wmsUrl: 'https://tnt-proxy.atkv3-prod.kartverket.cloud/wms',
     },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
