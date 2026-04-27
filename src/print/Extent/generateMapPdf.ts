@@ -76,6 +76,18 @@ const buildBackgroundPrintLayer = (
     };
   }
 
+  if (backgroundLayer === 'oceanicelectronic') {
+    const ENV = getEnv();
+    return {
+      baseURL: ENV.layerProviderParameters.eccProxy.wmsUrl,
+      customParams: { TRANSPARENT: 'true' },
+      imageFormat: 'image/png',
+      layers: ['cells'],
+      opacity: 1,
+      type: 'WMS',
+    };
+  }
+
   if (backgroundLayer.startsWith('Nibcache_')) {
     const ENV = getEnv();
     const nibLayer = map
