@@ -34,7 +34,7 @@ const trackApiError = (
 };
 
 const normalizeAddressQuery = (query: string): string =>
-  query.replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
+  query.replace(/\s+/g, ' ').trim();
 
 
 export const getAddresses = async (
@@ -45,7 +45,7 @@ export const getAddresses = async (
   try {
     const normalizedQuery = normalizeAddressQuery(query);
     const encodedQuery = encodeURIComponent(normalizedQuery);
-    const url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100`;
+    url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100`;
     const res = await fetch(url);
     httpStatus = res.status;
 
