@@ -33,14 +33,18 @@ const trackApiError = (
   }
 };
 
+const normalizeAddressQuery = (query: string): string =>
+  query.replace(/\s+/g, ' ').trim();
+
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
   let url;
   let httpStatus;
   try {
-    const encodedQuery = encodeURIComponent(query);
-    const url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`;
+    const normalizedQuery = normalizeAddressQuery(query);
+    const encodedQuery = encodeURIComponent(normalizedQuery);
+    url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100`;
     const res = await fetch(url);
     httpStatus = res.status;
 
