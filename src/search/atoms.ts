@@ -86,7 +86,6 @@ const performAddressSearch = async (
   return null;
 };
 
-
 const searchQueryEffect = atomEffect((get, set) => {
   const searchQuery = get(searchQueryAtom);
   const store = getDefaultStore();

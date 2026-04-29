@@ -36,7 +36,6 @@ const trackApiError = (
 const normalizeAddressQuery = (query: string): string =>
   query.replace(/\s+/g, ' ').trim();
 
-
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
