@@ -137,7 +137,10 @@ const addSelectedOutlineToStyle = (style: Style) => {
   style.setStroke(newStroke);
 };
 
-const removeSelectedOutlineToStyle = (style: Style) => {
+const removeSelectedOutlineToStyle = (
+  style: Style,
+  originalLineDash: number[] = [],
+) => {
   const newStroke = style.getStroke();
   const image = style.getImage();
   if (image) {
@@ -147,7 +150,7 @@ const removeSelectedOutlineToStyle = (style: Style) => {
       style.setImage(newImage);
     }
   }
-  newStroke?.setLineDash([]);
+  newStroke?.setLineDash(originalLineDash);
   style.setStroke(newStroke);
 };
 
@@ -199,14 +202,15 @@ const handleUpdateStyle = (features: Feature<Geometry>[]) => {
     handleFeatureSetZIndex(feature);
     const style = feature.getStyle();
     if (style && style instanceof Style) {
-      removeSelectedOutlineToStyle(style);
+      const featureStylePreSelect = feature.get('stylePreSelect') as Style;
+      const originalLineDash =
+        featureStylePreSelect?.getStroke()?.getLineDash() ?? [];
+      removeSelectedOutlineToStyle(style, originalLineDash);
       const styleStroke = style.getStroke();
       if (styleStroke) {
-        styleStroke.setLineDash([]);
         style.setStroke(styleStroke);
         feature.setStyle(style);
       }
-      const featureStylePreSelect = feature.get('stylePreSelect') as Style;
       const iconPreSelect = feature.get('iconPreSelect') as PointIcon | null;
       const featureId = feature.getId();
 
@@ -297,7 +301,9 @@ const handleFeatureSelectDone = (f: Feature) => {
   handleFeatureSetZIndex(f);
   const featureStyle = f.getStyle();
   if (featureStyle instanceof Style) {
-    removeSelectedOutlineToStyle(featureStyle);
+    const stylePreSelect = f.get('stylePreSelect') as Style | undefined;
+    const originalLineDash = stylePreSelect?.getStroke()?.getLineDash() ?? [];
+    removeSelectedOutlineToStyle(featureStyle, originalLineDash);
   }
 };
 
