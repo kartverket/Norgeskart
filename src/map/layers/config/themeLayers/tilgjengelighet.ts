@@ -104,8 +104,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Eier',
         },
         {
-          name: 'veitype',
-          alias: 'Vegtype',
+          name: 'gatetype',
+          alias: 'Gatetype',
         },
         {
           name: 'spesialfotrutetype',
