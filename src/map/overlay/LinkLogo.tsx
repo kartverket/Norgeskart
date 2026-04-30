@@ -23,7 +23,7 @@ export const LinkLogo: React.FC = () => {
         <Image
           src="/logos/KV_logo_staa_color.svg"
           alt="Logo"
-          height={{ base: '42px', md: '64px' }}
+          height={{ base: '42px', md: '60px' }}
         />
       </Link>
       {isPolarLayer && (
@@ -37,7 +37,7 @@ export const LinkLogo: React.FC = () => {
           <Image
             src="/logos/npolar_logo.svg"
             alt="Norsk Polarinstitutt"
-            height={{ base: '42px', md: '64px' }}
+            height={{ base: '42px', md: '60px' }}
           />
         </Link>
       )}

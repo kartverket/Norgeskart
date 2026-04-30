@@ -8,9 +8,9 @@ import {
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
-import { transform } from 'ol/proj';
 import { useTranslation } from 'react-i18next';
 import { getInputCRS } from '../../shared/utils/crsUtils';
+import { isNumberOk } from '../../shared/utils/numberUtils';
 import { SearchResult } from '../../types/searchTypes';
 import { getElevation } from '../searchApi';
 
@@ -50,13 +50,14 @@ const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
       );
   }
 };
-const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
+const InfoBoxElevationContent = ({ result }: { result: SearchResult }) => {
   const { t } = useTranslation();
+  const inputCRS = getInputCRS(result);
 
   const { data: elevationData, status } = useQuery<{ value: string }>({
-    queryKey: ['elevation', x, y],
-    queryFn: () => getElevation(x, y),
-    enabled: x != null && y != null,
+    queryKey: ['elevation', result.lon, result.lat],
+    queryFn: () => getElevation(result.lon, result.lat, inputCRS),
+    enabled: isNumberOk(result.lat) && isNumberOk(result.lon),
   });
   if (status !== 'success') {
     return null;
@@ -90,12 +91,10 @@ const InfoBoxElevationContent = ({ x, y }: { x: number; y: number }) => {
 };
 
 export const InfoBoxPreamble = ({ result }: InfoBoxContentProps) => {
-  const inputCRS = getInputCRS(result);
-  const [x, y] = transform([result.lon, result.lat], inputCRS, 'EPSG:25833');
   return (
     <Box userSelect={'text'}>
       <InfoBoxTextContent result={result} />
-      <InfoBoxElevationContent x={x} y={y} />{' '}
+      <InfoBoxElevationContent result={result} />{' '}
     </Box>
   );
 };

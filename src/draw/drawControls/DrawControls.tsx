@@ -18,6 +18,7 @@ import {
   editSecondaryColorEffect,
   lineWidthEffect,
 } from '../effects.ts';
+import { LineStyleControl } from '../LineStyleControl.tsx';
 import { LineWidthControl } from '../LineWidthControl.tsx';
 import { MeasurementControls } from '../MeasurementControls.tsx';
 import { PointStyleSelector } from '../PointStyleSelector.tsx';
@@ -61,6 +62,7 @@ export const DrawControls = () => {
       <HStack width="100%" align={'space-between'}>
         <ColorControls />
         {drawType === 'Point' && <PointStyleSelector />}
+        {isMobile && drawType === 'LineString' && <LineStyleControl />}
       </HStack>
       <Flex
         w="100%"
@@ -69,6 +71,7 @@ export const DrawControls = () => {
         justifyContent="space-between"
         py={1}
       >
+        {!isMobile && drawType === 'LineString' && <LineStyleControl />}
         <LineWidthControl />
         <MeasurementControls />
       </Flex>

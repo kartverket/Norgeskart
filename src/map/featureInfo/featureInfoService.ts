@@ -2,10 +2,11 @@ import { Feature } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import { Geometry } from 'ol/geom';
 import BaseLayer from 'ol/layer/Base';
+import ImageLayer from 'ol/layer/Image';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
-import { TileWMS } from 'ol/source';
+import { ImageWMS, TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import type { FieldConfig } from '../layers/themeLayerConfigApi';
 import type {
@@ -17,14 +18,18 @@ import type {
 } from './types';
 import { DEFAULT_INFO_FORMAT } from './types';
 
-export const getQueryableWMSLayers = (map: Map): TileLayer[] => {
+export type QueryableWMSLayer = TileLayer | ImageLayer<ImageWMS>;
+
+export const getQueryableWMSLayers = (map: Map): QueryableWMSLayer[] => {
   return map
     .getLayers()
     .getArray()
-    .filter((layer): layer is TileLayer => {
-      if (!(layer instanceof TileLayer)) return false;
-      const source = layer.getSource();
-      if (!(source instanceof TileWMS)) return false;
+    .filter((layer): layer is QueryableWMSLayer => {
+      const isTileWMS =
+        layer instanceof TileLayer && layer.getSource() instanceof TileWMS;
+      const isImageWMS =
+        layer instanceof ImageLayer && layer.getSource() instanceof ImageWMS;
+      if (!isTileWMS && !isImageWMS) return false;
 
       const id = layer.get('id');
       const isThemeLayer = typeof id === 'string' && id.startsWith('theme.');
@@ -55,13 +60,14 @@ export const getVisibleVectorLayers = (
 };
 
 export const buildFeatureInfoUrl = (
-  layer: TileLayer,
+  layer: QueryableWMSLayer,
   coordinate: Coordinate,
   map: Map,
   infoFormat: InfoFormat = DEFAULT_INFO_FORMAT,
 ): string | null => {
   const source = layer.getSource();
-  if (!(source instanceof TileWMS)) return null;
+  if (!(source instanceof TileWMS) && !(source instanceof ImageWMS))
+    return null;
 
   const view = map.getView();
   const resolution = view.getResolution();
@@ -338,7 +344,7 @@ export const parseFeatureInfo = (
 };
 
 export const fetchLayerFeatureInfo = async (
-  layer: TileLayer,
+  layer: QueryableWMSLayer,
   coordinate: Coordinate,
   map: Map,
 ): Promise<LayerFeatureInfo> => {
@@ -541,9 +547,11 @@ export const fetchAllFeatureInfo = async (
 };
 
 export const isQueryableLayer = (layer: BaseLayer): boolean => {
-  if (!(layer instanceof TileLayer)) return false;
-  const source = layer.getSource();
-  if (!(source instanceof TileWMS)) return false;
+  const isTileWMS =
+    layer instanceof TileLayer && layer.getSource() instanceof TileWMS;
+  const isImageWMS =
+    layer instanceof ImageLayer && layer.getSource() instanceof ImageWMS;
+  if (!isTileWMS && !isImageWMS) return false;
 
   const id = layer.get('id');
   const isThemeLayer = typeof id === 'string' && id.startsWith('theme.');

@@ -91,6 +91,7 @@
           "59.9494° N, 10.7564° E",
           "60 N, 10 E",
           "60°10',10°10'",
+          "60.112233, 10.112233",
           "60°10'10,10°10'10",
           "60°10' N,10°10' E",
           "60°10'10 N,10°10'10 E",
@@ -172,23 +173,20 @@
     "content": [
       {
         "type": "text",
-        "text": "Detailed map symbology for background maps is available on Geonorge.no."
+        "text": "Detailed map symbology for standard background maps is available at "
+      },
+      {
+        "type": "link",
+        "text": "Geonorge",
+        "href": "https://register.geonorge.no/tegneregler/spesifikasjon-for-skjermkartografi"
       },
       {
         "type": "text",
-        "text": "Desktop:"
+        "text": "When thematic maps are enabled, you can view the legend by clicking the “Legend” button in the lower-right corner."
       },
       {
         "type": "text",
-        "text": "When layers are enabled, you can view the legend by clicking the “Legend” button in the lower-right corner."
-      },
-      {
-        "type": "text",
-        "text": "Mobile:"
-      },
-      {
-        "type": "text",
-        "text": "When layers are enabled, you can view the legend by tapping the info icon in the side menu."
+        "text": "On mobile, you can view the legend by tapping the info icon in the side menu."
       }
     ]
   },
@@ -252,6 +250,15 @@
       {
         "type": "text",
         "text": "Printing aerial imagery (orthophotos) is currently not supported. A solution is being worked on for the future."
+      }
+    ]
+  },
+  {
+    "title": "Hide the menu with the keyboard",
+    "content": [
+      {
+        "type": "text",
+        "text": "You can hide and show the menu by pressing the 'U' key on your keyboard."
       }
     ]
   }

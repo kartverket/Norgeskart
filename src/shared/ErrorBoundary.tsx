@@ -31,6 +31,7 @@ class ErrorBoundary extends React.Component<
     }
     if (posthog.__loaded) {
       posthog.captureException(error, {
+        errorType: 'error_boundary',
         component: this.props.name,
         stack: info.componentStack,
       });

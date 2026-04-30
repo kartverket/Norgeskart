@@ -52,8 +52,8 @@ const getSelectedLayout = (
 const LAYOUT_SCALE: Record<string, number> = {
   '1_A4_portrait': 0.9,
   '2_A4_landscape': 1.0,
-  '3_A3_portrait': 0.65,
-  '4_A3_landscape': 0.8,
+  '3_A3_portrait': 0.8,
+  '4_A3_landscape': 0.9,
 };
 
 export const ExtentSection = () => {
@@ -107,6 +107,7 @@ export const ExtentSection = () => {
       },
       onError: (msg) => {
         ph.captureException('print_extent_error', {
+          errorType: 'print_extent_error',
           format,
           orientation,
           errorMessage: msg,

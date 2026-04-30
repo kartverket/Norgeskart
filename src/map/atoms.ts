@@ -51,6 +51,7 @@ export const displayMapLegendControlAtom = atom<boolean>((get) => {
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
 export const magneticDeclinationAtom = atom<number>(0);
+export const gridConvergenceAtom = atom<number>(0);
 
 export const getBackgroundLayerImageName = (
   layerName: BackgroundLayerName,
@@ -280,7 +281,7 @@ export const projectionEffect = atomEffect((get, set) => {
       );
 
       if (layerConfig) {
-        getLayerFromConfig(layerConfig).then((layer) => {
+        getLayerFromConfig(layerConfig, projectionId).then((layer) => {
           if (layer) {
             map.removeLayer(currentBackgroundLayer);
             map.addLayer(layer);

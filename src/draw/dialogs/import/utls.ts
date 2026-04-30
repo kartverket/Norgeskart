@@ -188,6 +188,7 @@ export const getStyleFromProperties = (props: GeoJsonProperties) => {
     ? new Stroke({
         color: styleFromProps.stroke.color,
         width: styleFromProps.stroke.width ?? 2,
+        lineDash: styleFromProps.stroke.lineDash,
       })
     : undefined;
 
