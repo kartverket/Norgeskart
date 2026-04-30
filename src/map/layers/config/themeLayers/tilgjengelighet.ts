@@ -168,6 +168,14 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Nedsenk 2',
         },
         {
+          name: 'trapp',
+          alias: 'Trapp',
+        },
+        {
+          name: 'trappkontrast',
+          alias: 'Trapp kontrast',
+        },
+        {
           name: 'kommentar',
           alias: 'Kommentar',
         },
