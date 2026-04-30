@@ -160,6 +160,10 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Ledelinje',
         },
         {
+          name: 'ledelinjekontrast',
+          alias: 'Ledelinje kontrast',
+        },
+        {
           name: 'nedsenk1',
           alias: 'Nedsenk 1',
         },
