@@ -60,7 +60,7 @@ jobs:
           node-version: '24'
 
       - name: 'Install dependencies'
-        run: npm install --legacy-peer-deps
+        run: npm install
 
       - name: 'Verify linting'
         if: ${{ !github.event.inputs.bypassValidation }}
