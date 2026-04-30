@@ -160,6 +160,14 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Ledelinje',
         },
         {
+          name: 'nedsenk1',
+          alias: 'Nedsenk 1',
+        },
+        {
+          name: 'nedsenk2',
+          alias: 'Nedsenk 2',
+        },
+        {
           name: 'kommentar',
           alias: 'Kommentar',
         },
