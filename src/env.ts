@@ -19,7 +19,7 @@ type layerProviderParameters = {
     baseUrl: string;
   };
   topoQgis: {
-    baseUrl: string;
+    baseUrls: string[];
   };
   topoCache: {
     baseUrl: string;
@@ -64,8 +64,14 @@ const LOCAL_ENV: Env = {
       baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
     },
     topoQgis: {
-      // baseUrl: 'http://localhost:8082',
-      baseUrl: 'https://qlr-qgis.atkv3-dev.kartverket-intern.cloud',
+      // baseUrls: ['http://localhost:8082'],
+      baseUrls: [
+        'https://qlr-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr1-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr2-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr3-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr4-qgis.atkv3-dev.kartverket-intern.cloud',
+      ],
     },
     topoCache: {
       // baseUrl: 'http://localhost:8085',
@@ -103,7 +109,13 @@ const DEV_ENV: Env = {
       baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
     },
     topoQgis: {
-      baseUrl: 'https://qlr-qgis.atkv3-dev.kartverket-intern.cloud',
+      baseUrls: [
+        'https://qlr-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr1-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr2-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr3-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr4-qgis.atkv3-dev.kartverket-intern.cloud',
+      ],
     },
     topoCache: {
       baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket-intern.cloud',
@@ -140,7 +152,7 @@ const PROD_ENV: Env = {
       baseUrl: 'https://tnt-mapserver.atkv3-prod.kartverket-intern.cloud',
     },
     topoQgis: {
-      baseUrl: 'https://qlr-qgis.atkv3-prod.kartverket-intern.cloud',
+      baseUrls: ['https://qlr-qgis.atkv3-prod.kartverket-intern.cloud'],
     },
     topoCache: {
       baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket-intern.cloud',

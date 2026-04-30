@@ -1,10 +1,14 @@
 import { getEnv } from '../../../../env';
 import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
-const QGIS_BASE = getEnv().layerProviderParameters.topoQgis.baseUrl;
+const QGIS_BASES = getEnv().layerProviderParameters.topoQgis.baseUrls;
 
-const mapUrl = (name: string) =>
-  `${QGIS_BASE}/qgis/QLR/${name}`;
+let _rrIndex = 0;
+const mapUrl = (name: string) => {
+  const base = QGIS_BASES[_rrIndex % QGIS_BASES.length];
+  _rrIndex++;
+  return `${base}/qgis/QLR/${name}`;
+};
 
 export const topoQgisConfig: ThemeLayerConfig = {
   categories: [
