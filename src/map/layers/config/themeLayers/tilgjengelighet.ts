@@ -134,6 +134,11 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           unit: 'cm',
         },
         {
+          name: 'lengde',
+          alias: 'Lengde',
+          unit: 'cm',
+        },
+        {
           name: 'stigning',
           alias: 'Stigning',
           unit: '°',
