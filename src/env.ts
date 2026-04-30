@@ -58,9 +58,11 @@ const LOCAL_ENV: Env = {
       baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
     },
     topoQgis: {
+      // baseUrl: 'http://localhost:8082',
       baseUrl: 'https://qlr-qgis.atkv3-dev.kartverket-intern.cloud',
     },
     topoCache: {
+      // baseUrl: 'http://localhost:8085',
       baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket-intern.cloud',
     },
   },
