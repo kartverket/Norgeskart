@@ -148,6 +148,10 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Belysning',
         },
         {
+          name: 'varmekabel',
+          alias: 'Varmekabel',
+        },
+        {
           name: 'frihoyde',
           alias: 'Fri høyde',
         },
