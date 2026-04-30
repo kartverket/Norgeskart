@@ -275,8 +275,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Merket',
         },
         {
-          name: 'avstandfasilitet',
-          alias: 'Avstand fasilitet',
+          name: 'avstandservicebygg',
+          alias: 'Avstand servicebygg',
           unit: 'm',
         },
         {
