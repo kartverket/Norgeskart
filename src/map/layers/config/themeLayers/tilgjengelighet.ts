@@ -104,8 +104,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Eier',
         },
         {
-          name: 'veitype',
-          alias: 'Vegtype',
+          name: 'gatetype',
+          alias: 'Gatetype',
         },
         {
           name: 'spesialfotrutetype',
@@ -134,6 +134,84 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           unit: 'cm',
         },
         {
+          name: 'lengde',
+          alias: 'Lengde',
+          unit: 'cm',
+        },
+        {
+          name: 'gatelangsparkering',
+          alias: 'Gatelangsparkering',
+        },
+        {
+          name: 'tryggovergang',
+          alias: 'Trygg overgang',
+        },
+        {
+          name: 'brukbartbetjeningsareal',
+          alias: 'Brukbart betjeningsareal',
+        },
+        {
+          name: 'automathoyde',
+          alias: 'Automat høyde',
+          unit: 'cm',
+        },
+        {
+          name: 'adkomstkant',
+          alias: 'Adkomst kant',
+        },
+        {
+          name: 'adkomsttilgjengelig',
+          alias: 'Adkomst tilgjengelig',
+        },
+        {
+          name: 'helning',
+          alias: 'Helning',
+        },
+        {
+          name: 'hoydebenk',
+          alias: 'Høyde benk',
+        },
+        {
+          name: 'armlene',
+          alias: 'Armlene',
+        },
+        {
+          name: 'ryggstotte',
+          alias: 'Ryggstøtte',
+        },
+        {
+          name: 'hoydebord',
+          alias: 'Høyde bord',
+        },
+        {
+          name: 'utstikkbord',
+          alias: 'Utstikk bord',
+        },
+        {
+          name: 'oppstillingsplass',
+          alias: 'Oppstillingsplass',
+        },
+        {
+          name: 'byggtype',
+          alias: 'Byggtype',
+        },
+        {
+          name: 'servanttilgjengelig',
+          alias: 'Servant tilgjengelig',
+        },
+        {
+          name: 'wctilgjengelig',
+          alias: 'WC tilgjengelig',
+        },
+        {
+          name: 'omkledningtilgjengelig',
+          alias: 'Omkledning tilgjengelig',
+        },
+        {
+          name: 'belysninginne',
+          alias: 'Belysning inne',
+        },
+        {
           name: 'stigning',
           alias: 'Stigning',
           unit: '°',
@@ -148,12 +226,76 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Belysning',
         },
         {
+          name: 'varmekabel',
+          alias: 'Varmekabel',
+        },
+        {
           name: 'frihoyde',
           alias: 'Fri høyde',
         },
         {
           name: 'ledelinje',
           alias: 'Ledelinje',
+        },
+        {
+          name: 'ledelinjekontrast',
+          alias: 'Ledelinje kontrast',
+        },
+        {
+          name: 'nedsenk1',
+          alias: 'Nedsenk 1',
+        },
+        {
+          name: 'nedsenk2',
+          alias: 'Nedsenk 2',
+        },
+        {
+          name: 'trapp',
+          alias: 'Trapp',
+        },
+        {
+          name: 'trappkontrast',
+          alias: 'Trapp kontrast',
+        },
+        {
+          name: 'trappenesekontrast',
+          alias: 'Trappenesekontrast',
+        },
+        {
+          name: 'opptrinn',
+          alias: 'Opptrinn',
+        },
+        {
+          name: 'inntrinn',
+          alias: 'Inntrinn',
+        },
+        {
+          name: 'horisontalfelt',
+          alias: 'Horisontalt felt',
+        },
+        {
+          name: 'dortype',
+          alias: 'Dørtype',
+        },
+        {
+          name: 'dorapner',
+          alias: 'Døråpner',
+        },
+        {
+          name: 'manoverknapphoyde',
+          alias: 'Manøverknapp høyde',
+        },
+        {
+          name: 'ringeklokke',
+          alias: 'Ringeklokke',
+        },
+        {
+          name: 'ringeklokkehoyde',
+          alias: 'Ringeklokke høyde',
+        },
+        {
+          name: 'kontrastinngang',
+          alias: 'Inngang kontrast',
         },
         {
           name: 'kommentar',
@@ -166,6 +308,10 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
         {
           name: 'lokalid',
           alias: 'Lokal ID',
+        },
+        {
+          name: 'rampe',
+          alias: 'Rampe',
         },
         {
           name: 'rampebredde',
@@ -234,6 +380,14 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Rekkverk',
         },
         {
+          name: 'farefeltovert',
+          alias: 'Farefelt øvert',
+        },
+        {
+          name: 'oppmerksamhetsfeltnederst',
+          alias: 'Oppmerksomhetsfelt nederst',
+        },
+        {
           name: 'stoppkant',
           alias: 'Stoppkant',
         },
@@ -251,8 +405,8 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Merket',
         },
         {
-          name: 'avstandfasilitet',
-          alias: 'Avstand fasilitet',
+          name: 'avstandservicebygg',
+          alias: 'Avstand servicebygg',
           unit: 'm',
         },
         {
