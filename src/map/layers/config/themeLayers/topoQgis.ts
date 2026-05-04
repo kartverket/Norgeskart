@@ -84,6 +84,12 @@ export const topoQgisConfig: ThemeLayerConfig = {
       name: { nb: 'Relieff skygge', nn: 'Relieff skugge', en: 'Relief (shadow)' },
     },
     {
+      id: 'topoQgis_lag11_relieff_skygge_blaagraa',
+      groupid: 99,
+      parentId: 'topoQgis',
+      name: { nb: 'Relieff skygge blågrå', nn: 'Relieff skugge blågrå', en: 'Relief (shadow) blue-gray' },
+    },
+    {
       id: 'topoQgis_lag12_innsjoflate',
       groupid: 99,
       parentId: 'topoQgis',
@@ -308,6 +314,15 @@ export const topoQgisConfig: ThemeLayerConfig = {
       name: { nb: 'Relieff skygge', nn: 'Relieff skugge', en: 'Relief (shadow)' },
       wmsUrl: mapUrl('lag11_relieff_skygge'),
       layers: 'lag11_relieff_skygge',
+      singleImage: true,
+    },
+    {
+      id: 'topoQgis_lag11_relieff_skygge_blaagraa',
+      categoryId: 'topoQgis_lag11_relieff_skygge_blaagraa',
+      groupid: 99,
+      name: { nb: 'Relieff skygge blågrå', nn: 'Relieff skugge blågrå', en: 'Relief (shadow) blue-gray' },
+      wmsUrl: mapUrl('lag11_relieff_skygge_blaagraa'),
+      layers: 'lag11_relieff_skygge_blaagraa',
       singleImage: true,
     },
     {

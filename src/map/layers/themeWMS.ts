@@ -77,6 +77,7 @@ type TopoMapserverLayerName =
   | 'topoMs_lag09_relieff_sol'
   | 'topoMs_lag10_hoydekurve_og_n50bre'
   | 'topoMs_lag11_relieff_skygge'
+  | 'topoMs_lag11_relieff_skygge_blaagraa'
   | 'topoMs_lag12_innsjoflate'
   | 'topoMs_lag13_grense_adm_maritim_fare_naturvern'
   | 'topoMs_lag14_vannkontur_elvbekk'
