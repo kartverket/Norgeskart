@@ -126,6 +126,13 @@ export const MapThemes = () => {
       if (!checked) {
         addThemeLayerToMap(layerName);
 
+        const store = getDefaultStore();
+
+        if (layerName === 'economicMapFirstEdition') {
+          store.set(backgroundLayerAtom, 'empty');
+          return;
+        }
+
         if (isSjoLayer(layerName)) {
           const store = getDefaultStore();
           const currentBakground = store.get(backgroundLayerAtom);
