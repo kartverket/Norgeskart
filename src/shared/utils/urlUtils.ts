@@ -43,6 +43,14 @@ export const removeUrlParameter = (key: NKUrlParameter): void => {
   updateUrl(url, (params) => params.delete(key));
 };
 
+export const appendUrlParameter = (
+  key: NKUrlParameter,
+  value: string | number | boolean,
+): void => {
+  const url = new URL(window.location.href);
+  updateUrl(url, (params) => params.append(key, String(value)));
+};
+
 export const getUrlParameter = (key: NKUrlParameter): string | null => {
   return getSearchParams().get(key);
 };
@@ -129,6 +137,10 @@ export type NKUrlParameter =
   | 'drawing'
   | 'layers' // Legacy parameter from old norgeskart.no
   | 'project' // Legacy project parameter from old norgeskart.no
+  | 'wms' // Legacy WMS URLs parameter from old norgeskart.no
+  | 'addLayers' // Legacy layer names parameter from old norgeskart.no
+  | 'geojson' // Legacy GeoJSON URL parameter from old norgeskart.no
+  | 'type' // Legacy type parameter from old norgeskart.no
   | 'sok'
   | 'showSelection'
   | 'geojsonUrl'

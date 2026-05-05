@@ -8,6 +8,7 @@ import {
   getUrlParameter,
   removeUrlParameter,
   setUrlParameter,
+  appendUrlParameter,
   transitionHashToQuery,
 } from './shared/utils/urlUtils.ts';
 
@@ -68,5 +69,43 @@ export const processUrlParameters = () => {
     if (newThemeLayers.length > currentThemeLayers.length) {
       setUrlParameter('themeLayers', newThemeLayers.join(','));
     }
+  }
+
+  // Handle legacy wms/addLayers/geojson/type parameters from old norgeskart.no
+  const legacyWmsParam = getUrlParameter('wms');
+  const legacyAddLayersParam = getUrlParameter('addLayers');
+  const legacyGeojsonParam = getUrlParameter('geojson');
+
+  if (legacyWmsParam ?? legacyGeojsonParam) {
+    if (legacyWmsParam) {
+      const wmsUrls = legacyWmsParam
+        .split(',')
+        .map((u) => u.trim())
+        .filter((u) => u.length > 0);
+
+      // addLayers items that are not 'geojson' are WMS layer names, one per WMS URL
+      const wmsLayerNames = legacyAddLayersParam
+        ? legacyAddLayersParam
+            .split(',')
+            .map((l) => l.trim())
+            .filter((l) => l !== 'geojson' && l.length > 0)
+        : [];
+
+      wmsUrls.forEach((wmsUrl, index) => {
+        appendUrlParameter('wmsUrl', wmsUrl);
+        if (wmsLayerNames[index]) {
+          appendUrlParameter('wmsLayer', wmsLayerNames[index]);
+        }
+      });
+    }
+
+    if (legacyGeojsonParam) {
+      appendUrlParameter('geojsonUrl', legacyGeojsonParam);
+    }
+
+    removeUrlParameter('wms');
+    removeUrlParameter('addLayers');
+    removeUrlParameter('geojson');
+    removeUrlParameter('type');
   }
 };
