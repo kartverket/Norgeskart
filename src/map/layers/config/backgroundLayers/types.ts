@@ -4,9 +4,10 @@ import {
   VectorTileLayerName,
   WMSLayerName,
   WMTSLayerName,
+  EmptyLayerName,
 } from '../../backgroundLayers';
 
-export type LayerType = 'WMTS' | 'WMS' | 'VectorTile';
+export type LayerType = 'WMTS' | 'WMS' | 'VectorTile' | 'Empty';
 
 export type LayerProvider = {
   capabilitiesUrl: string;
@@ -38,7 +39,13 @@ export type WMSBackgroundLayer = BackgroundLayerBase & {
   props?: Record<string, string | number | boolean>;
 };
 
+export type EmptyBackgroundLayer = BackgroundLayerBase & {
+  type: 'Empty';
+  layerName: EmptyLayerName;
+}
+
 export type BackgroundLayer =
   | WMTSBackgroundLayer
   | VectorTileBackgroundLayer
-  | WMSBackgroundLayer;
+  | WMSBackgroundLayer
+  | EmptyBackgroundLayer;

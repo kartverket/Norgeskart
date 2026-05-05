@@ -20,8 +20,15 @@ import {
   getWMSLayer,
   getWMTSLayer,
 } from './utils';
+import { EmptyBackgroundLayer } from './types';
+
+const emptyBackgroundLayer: EmptyBackgroundLayer = {
+  type: 'Empty',
+  layerName: 'empty',
+}
 
 export const allConfiguredBackgroundLayers = [
+  emptyBackgroundLayer,
   ...KvCacheBackgroundLayers,
   ...nibBackgroundLayers,
   ...npolarBackgroundLayers,
@@ -44,6 +51,12 @@ export const backgroundLayerAtom = atom<BackgroundLayerName>(
 
 export const backgroundLayerAtomEffect = atomEffect((get, set) => {
   const layerName = get(backgroundLayerAtom);
+
+  if (layerName === 'empty') {
+    clearBackgroundLayer();
+    setUrlParameter('backgroundLayer', 'empty')
+    return;
+  }
   const layerConfig = allConfiguredBackgroundLayers.find(
     (layer) => layer.layerName === layerName,
   );

@@ -1,5 +1,6 @@
 export type WMSLayerName = 'oceanicelectronic' | 'sjokartraster';
 export type VectorTileLayerName = 'nautical-background';
+export type EmptyLayerName = 'empty';
 export type WMTSLayerName =
   | 'topo'
   | 'topograatone'
@@ -15,7 +16,8 @@ export type WMTSLayerName =
 export type BackgroundLayerName =
   | WMTSLayerName
   | WMSLayerName
-  | VectorTileLayerName;
+  | VectorTileLayerName
+  | EmptyLayerName;
 
 export const mapLegacyBackgroundLayerId = (
   layerId: string,
