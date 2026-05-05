@@ -151,12 +151,7 @@ export const simplestyleToOlStyle = (
 // styled by their 'dekningsstatus' property using the official colour scheme.
 // ---------------------------------------------------------------------------
 
-const DEKNINGSSTATUS_COLORS: Record<string, string> = {
-  fullstendig: '#a6d388',
-  ufullstendig: '#e8d38a',
-  ikkeKartlagt: '#f09c5a',
-  ikkeRelevant: '#b4b4b4',
-};
+import { DEKNINGSSTATUS_COLORS } from './dekningsstatusColors';
 
 export const dekningsstatusToOlStyle = (feature: FeatureLike): Style => {
   const status = feature.get('dekningsstatus') as string | undefined;

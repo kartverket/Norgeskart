@@ -12,6 +12,7 @@ import {
   themeLayerConfig,
 } from '../layers/themeLayerConfigApi';
 import { ThemeLayerName } from '../layers/themeWMS';
+import { DekningsstatusLegend } from './DekningsstatusLegend';
 import { DynamicLegend } from './DynamicLegend';
 import { ImageLegend } from './ImageLegend';
 
@@ -41,7 +42,9 @@ export const SingleLayerLegend = ({
           <Heading size={'sm'}>{layer.name[currentLang]}</Heading>
         </AccordionItemTrigger>
         <AccordionItemContent>
-          {layer.useLegendGraphic ? (
+          {layer.styleType === 'dekningsstatus' ? (
+            <DekningsstatusLegend />
+          ) : layer.useLegendGraphic ? (
             <ImageLegend config={themeLayerConfig} layer={layer} />
           ) : (
             <DynamicLegend config={themeLayerConfig} layer={layer} />

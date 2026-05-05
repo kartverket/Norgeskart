@@ -489,6 +489,12 @@
     },
     "item": {
       "fallbackMessage": "har ingen symbolforklaring."
+    },
+    "dekningsstatus": {
+      "fullstendig": "Fullstendig",
+      "ufullstendig": "Ufullstendig",
+      "ikkeKartlagt": "Ikkje kartlagt",
+      "ikkeRelevant": "Ikkje relevant"
     }
   },
   "printdialog": {

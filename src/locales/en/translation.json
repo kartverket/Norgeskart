@@ -484,6 +484,12 @@
     },
     "item": {
       "fallbackMessage": "has no legend"
+    },
+    "dekningsstatus": {
+      "fullstendig": "Complete",
+      "ufullstendig": "Incomplete",
+      "ikkeKartlagt": "Not mapped",
+      "ikkeRelevant": "Not relevant"
     }
   },
   "printdialog": {
