@@ -68,6 +68,8 @@ export const getBackgroundLayerImageName = (
       return 'svalbard';
     case 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833':
       return 'jan_mayen';
+    case 'empty':
+      return 'empty';
     default:
       return layerName;
   }
