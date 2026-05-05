@@ -39,8 +39,16 @@ const fetchRootLayerName = async (baseUrl: string): Promise<string> => {
   const result = parser.read(await resp.text()) as WmsCapResult;
 
   const rootLayer = result?.Capability?.Layer;
-  if (!rootLayer?.Name) throw new Error('No root layer name in capabilities');
-  return rootLayer.Name;
+  if (!rootLayer) throw new Error('No layer in capabilities');
+  if (rootLayer.Name) return rootLayer.Name;
+
+  // Root layer has no Name (e.g. ArcGIS Server WMS) — fall back to first child layer
+  const firstChild = (
+    rootLayer.Layer as Array<{ Name?: string }> | undefined
+  )?.[0];
+  if (firstChild?.Name) return firstChild.Name;
+
+  throw new Error('No layer name found in capabilities');
 };
 
 export const createUrlWmsLayer = async (

@@ -4,11 +4,11 @@ import {
 } from './map/layers/backgroundLayers.ts';
 import { mapLegacyThemeLayerId } from './map/layers/themeLayers.ts';
 import {
+  appendUrlParameter,
   getListUrlParameter,
   getUrlParameter,
   removeUrlParameter,
   setUrlParameter,
-  appendUrlParameter,
   transitionHashToQuery,
 } from './shared/utils/urlUtils.ts';
 
@@ -73,7 +73,6 @@ export const processUrlParameters = () => {
 
   // Handle legacy wms/addLayers/geojson/type parameters from old norgeskart.no
   const legacyWmsParam = getUrlParameter('wms');
-  const legacyAddLayersParam = getUrlParameter('addLayers');
   const legacyGeojsonParam = getUrlParameter('geojson');
 
   if (legacyWmsParam ?? legacyGeojsonParam) {
@@ -83,19 +82,10 @@ export const processUrlParameters = () => {
         .map((u) => u.trim())
         .filter((u) => u.length > 0);
 
-      // addLayers items that are not 'geojson' are WMS layer names, one per WMS URL
-      const wmsLayerNames = legacyAddLayersParam
-        ? legacyAddLayersParam
-            .split(',')
-            .map((l) => l.trim())
-            .filter((l) => l !== 'geojson' && l.length > 0)
-        : [];
-
-      wmsUrls.forEach((wmsUrl, index) => {
+      // addLayers items were internal old-system identifiers, NOT WMS LAYERS params.
+      // Let fetchRootLayerName resolve the correct layer name from GetCapabilities.
+      wmsUrls.forEach((wmsUrl) => {
         appendUrlParameter('wmsUrl', wmsUrl);
-        if (wmsLayerNames[index]) {
-          appendUrlParameter('wmsLayer', wmsLayerNames[index]);
-        }
       });
     }
 

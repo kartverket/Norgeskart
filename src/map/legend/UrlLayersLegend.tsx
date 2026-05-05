@@ -26,7 +26,16 @@ const WmsLegendItem = ({ layer }: { layer: TileLayer }) => {
   const params = source?.getParams() as { LAYERS?: string } | undefined;
   const legendUrl =
     baseUrl && params?.LAYERS
-      ? `${baseUrl}?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image%2Fpng&LAYER=${encodeURIComponent(params.LAYERS)}`
+      ? (() => {
+          const u = new URL(baseUrl);
+          u.searchParams.set('SERVICE', 'WMS');
+          u.searchParams.set('REQUEST', 'GetLegendGraphic');
+          u.searchParams.set('VERSION', '1.3.0');
+          u.searchParams.set('SLD_VERSION', '1.1.0');
+          u.searchParams.set('FORMAT', 'image/png');
+          u.searchParams.set('LAYER', params.LAYERS!);
+          return u.toString();
+        })()
       : null;
 
   return (
