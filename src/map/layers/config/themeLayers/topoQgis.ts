@@ -3,11 +3,10 @@ import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
 const QGIS_BASES = getEnv().layerProviderParameters.topoQgis.baseUrls;
 
-let _rrIndex = 0;
 const mapUrl = (name: string) => {
-  const base = QGIS_BASES[_rrIndex % QGIS_BASES.length];
-  _rrIndex++;
-  return `${base}/qgis/QLR/${name}`;
+  const num = parseInt(name.match(/^lag(\d+)/)?.[1] ?? '0');
+  const idx = Math.min(Math.ceil(num / 2) - 1, QGIS_BASES.length - 1);
+  return `${QGIS_BASES[idx]}/qgis/QLR/${name}`;
 };
 
 export const topoQgisConfig: ThemeLayerConfig = {
