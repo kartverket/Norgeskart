@@ -266,6 +266,7 @@ export const createUrlGeoJsonLayer = async (
       id: `theme.urlGeojson.${index}`,
       queryable: true,
       layerTitle: titleFromUrl(geojsonUrl, index),
+      styleType: isDekningUrl(geojsonUrl) ? 'dekningsstatus' : undefined,
     },
   });
 };

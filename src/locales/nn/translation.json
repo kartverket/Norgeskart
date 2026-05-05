@@ -482,6 +482,9 @@
     "title": "Objektinformasjon",
     "loading": "Hentar informasjon..."
   },
+  "activeLayers": {
+    "title": "Lag lagt til frå URL"
+  },
   "legend": {
     "heading": {
       "title": "Symbolforklaring",

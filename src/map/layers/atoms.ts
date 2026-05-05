@@ -34,13 +34,18 @@ export const themeLayerEffect = atomEffect((get) => {
   const store = getDefaultStore();
   const map = store.get(mapAtom);
   const mapProjection = map.getView().getProjection().getCode();
+  // URL-loaded layers (theme.urlWms.N, theme.urlGeojson.N) have a second dot
+  // in their ID and must not be managed by this effect.
+  const isManagedThemeId = (id: string) =>
+    id.startsWith('theme.') && id.indexOf('.', 6) === -1;
+
   const themelayersActive = new Set(
     map
       .getLayers()
       .getArray()
       .filter((layer) => {
         const id = layer.get('id');
-        return typeof id === 'string' && id.startsWith('theme.');
+        return typeof id === 'string' && isManagedThemeId(id);
       })
       .map((layer) => layer.get('id').substring(6) as ThemeLayerName),
   );

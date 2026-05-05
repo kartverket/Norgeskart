@@ -4,16 +4,31 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { displayMapLegendAtom } from '../atoms';
 import { activeThemeLayersAtom } from '../layers/atoms';
+import { urlGeoJsonLayersAtom } from '../layers/urlGeoJson';
+import { hasUrlLayersAtom, urlWmsLayersAtom } from '../layers/urlWms';
 import { SingleLayerLegend } from './SingleLayerLegend';
+import { UrlLayersLegend } from './UrlLayersLegend';
 
 export const MapLegend = () => {
   const { t } = useTranslation();
   const activeThemeLayers = useAtomValue(activeThemeLayersAtom);
   const setShowMapLegend = useSetAtom(displayMapLegendAtom);
-  const layers = Array.from(activeThemeLayers);
-  if (layers.length === 0) {
+  const urlWmsLayers = useAtomValue(urlWmsLayersAtom);
+  const urlGeoJsonLayers = useAtomValue(urlGeoJsonLayersAtom);
+  const hasUrlLayers = useAtomValue(hasUrlLayersAtom);
+
+  const themeLayers = Array.from(activeThemeLayers);
+
+  if (themeLayers.length === 0 && !hasUrlLayers) {
     return null;
   }
+
+  const allDefaultValues = [
+    ...themeLayers,
+    ...urlWmsLayers.map((l) => l.get('id') as string),
+    ...urlGeoJsonLayers.map((l) => l.get('id') as string),
+  ];
+
   return (
     <Stack
       w={'100%'}
@@ -36,14 +51,15 @@ export const MapLegend = () => {
       <AccordionRoot
         collapsible
         multiple
-        defaultValue={layers}
+        defaultValue={allDefaultValues}
         overflowY={'auto'}
       >
-        {layers.map((l) => (
+        {themeLayers.map((l) => (
           <React.Fragment key={l}>
             <SingleLayerLegend layerName={l} />
           </React.Fragment>
         ))}
+        <UrlLayersLegend />
       </AccordionRoot>
     </Stack>
   );

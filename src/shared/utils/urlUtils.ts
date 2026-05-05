@@ -132,4 +132,6 @@ export type NKUrlParameter =
   | 'sok'
   | 'showSelection'
   | 'geojsonUrl'
+  | 'wmsUrl'
+  | 'wmsLayer'
   | 'printTool';

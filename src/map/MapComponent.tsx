@@ -12,7 +12,12 @@ import {
   getAllUrlParameters,
   getUrlParameter,
 } from '../shared/utils/urlUtils.ts';
-import { mapAtom, projectionEffect, scaleAtom } from './atoms.ts';
+import {
+  displayMapLegendAtom,
+  mapAtom,
+  projectionEffect,
+  scaleAtom,
+} from './atoms.ts';
 import { trackPostitionAtomEffect } from './geolocation/atoms.ts';
 import { themeLayerEffect } from './layers/atoms.ts';
 import { backgroundLayerAtomEffect } from './layers/config/backgroundLayers/atoms.ts';
@@ -20,6 +25,7 @@ import {
   createUrlGeoJsonLayer,
   urlGeoJsonLayersAtom,
 } from './layers/urlGeoJson.ts';
+import { createUrlWmsLayer, urlWmsLayersAtom } from './layers/urlWms.ts';
 import { useMap } from './mapHooks.ts';
 import { getScaleFromResolution } from './mapScale.ts';
 import {
@@ -40,7 +46,10 @@ export const MapComponent = () => {
   const setYPos = useSetAtom(mapContextYPosAtom);
   const hasLoadedDrawingRef = useRef(false);
   const hasLoadedGeoJsonRef = useRef(false);
+  const hasLoadedWmsRef = useRef(false);
   const setUrlGeoJsonLayers = useSetAtom(urlGeoJsonLayersAtom);
+  const setUrlWmsLayers = useSetAtom(urlWmsLayersAtom);
+  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
   const setScale = useSetAtom(scaleAtom);
   const { setTargetElement } = useMap();
   useAtom(themeLayerEffect);
@@ -95,6 +104,7 @@ export const MapComponent = () => {
       );
       layers.forEach((layer) => map.addLayer(layer));
       setUrlGeoJsonLayers(layers);
+      if (layers.length > 0) setDisplayMapLegend(true);
       console.log('[urlGeoJson] layers added:', layers.length);
       const combinedExtent = createEmpty();
       layers.forEach((layer) => {
@@ -108,7 +118,32 @@ export const MapComponent = () => {
           .fit(combinedExtent, { padding: [50, 50, 50, 50], maxZoom: 12 });
       }
     })();
-  }, [map, setUrlGeoJsonLayers]);
+  }, [map, setUrlGeoJsonLayers, setDisplayMapLegend]);
+
+  useEffect(() => {
+    if (!map || hasLoadedWmsRef.current) return;
+
+    const wmsUrls = getAllUrlParameters('wmsUrl');
+    if (wmsUrls.length === 0) return;
+
+    hasLoadedWmsRef.current = true;
+    const mapProjection = map.getView().getProjection().getCode();
+    const wmsLayerParams = getAllUrlParameters('wmsLayer');
+
+    void (async () => {
+      const layers = (
+        await Promise.all(
+          wmsUrls.map((url, index) =>
+            createUrlWmsLayer(url, wmsLayerParams[index], mapProjection, index),
+          ),
+        )
+      ).filter((l) => l !== null);
+
+      layers.forEach((layer) => map.addLayer(layer));
+      setUrlWmsLayers(layers);
+      if (layers.length > 0) setDisplayMapLegend(true);
+    })();
+  }, [map, setUrlWmsLayers, setDisplayMapLegend]);
 
   useEffect(() => {
     if (!map) return;

@@ -9,6 +9,8 @@ tilnærminger:
 2. **URL-parameter `geojsonUrl`** – vilkårlige GeoJSON-filer kan lastes inn
    direkte via en URL-lenke, for eksempel fra Kartkatalogen eller
    Dekningskartappen.
+3. **URL-parametere `wmsUrl` + `wmsLayer`** – viser WMS-laget til et datasett
+   side om side med tilhørende fullstendighetsdekning GeoJSON (dekningskart).
 
 ---
 
@@ -110,7 +112,38 @@ URL-enkodes: `dekning_n5%20kartdata.geojson`.
 
 ---
 
-## 3. Kartografi og stilsetting
+## 3. URL-parametere: `wmsUrl` + `wmsLayer` (Dekningskart)
+
+Kartkatalogen kan vise et fullstendig dekningskart for et datasett ved å koble
+WMS-laget til datasettet med tilhørende fullstendighetsdekning GeoJSON.
+
+### Eksempel – Reinbeiteområde
+
+```
+https://norgeskart-preview-geonorge.atkv3-dev.kartverket-intern.cloud/?wmsUrl=https%3A%2F%2Freindrift.nibio.no%2Fcgi-bin%2Freindrift%3Frequest%3DGetCapabilities%26service%3DWMS&wmsLayer=Reinbeiteomrade&geojsonUrl=https%3A%2F%2Ftestnedlasting.geonorge.no%2Fgeonorge%2FBasisdata%2FDOKFullstendighetsdekningskart%2FKartkatalogen%2Fdekning_reinbeiteomrade.geojson
+```
+
+Dette laster:
+1. WMS-lag `Reinbeiteomrade` fra reindrift-tjenesten (zIndex 8)
+2. Fullstendighetsdekning GeoJSON med `dekningsstatus`-farger (zIndex 10, øverst)
+
+Kartet zoomer automatisk inn på utstrekningen av GeoJSON-laget.
+
+### Parameterbeskrivelse
+
+| Parameter | Beskrivelse |
+|---|---|
+| `wmsUrl` | WMS-tjenesteURL. GetCapabilities-parametere (`request`, `service`, `version`) strippes automatisk. Kan gjentas for flere tjenester. |
+| `wmsLayer` | Lagnavn (LAYERS-parameteren i WMS). Korresponderer med `wmsUrl` på samme indeks. |
+
+### Kun WMS uten GeoJSON
+
+Det er mulig å bruke `wmsUrl` + `wmsLayer` alene (uten `geojsonUrl`). Da vises
+bare WMS-laget, uten automatisk zoom – bruk `lat`/`lon`/`zoom` for posisjonering.
+
+---
+
+## 4. Kartografi og stilsetting
 
 ### Prioriteringsrekkefølge
 
@@ -154,12 +187,13 @@ For vilkårlige GeoJSON-filer (ikke `dekning_*`) støttes
 | Fil | Endring |
 |---|---|
 | `src/map/layers/urlGeoJson.ts` | Ny – atom + lagfabrikk for URL-lastede GeoJSON-lag, simplestyle-tolker, `dekningsstatus`-stil |
+| `src/map/layers/urlWms.ts` | Ny – atom + lagfabrikk for URL-lastede WMS-lag (dekningskart) |
 | `src/map/layers/config/fullstendighetsdekning.ts` | Ny – konfig for alle 108 DOK-datasett |
 | `src/map/layers/themeGeoJson.ts` | Oppdatert – støtter `styleType: 'dekningsstatus'` og setter `layerTitle` |
 | `src/api/themeLayerConfigApi.ts` | Oppdatert – `styleType`-felt på `ThemeLayerDefinition`; registrerer ny konfig |
 | `src/map/layers/themeWMS.ts` | Oppdatert – `FullstendighetsdekningLayerName` union-type (108 lag) |
-| `src/shared/utils/urlUtils.ts` | Oppdatert – `geojsonUrl` lagt til `NKUrlParameter`; ny `getAllUrlParameters()`-hjelper |
-| `src/map/MapComponent.tsx` | Oppdatert – laster GeoJSON-lag fra `geojsonUrl`-parametere ved oppstart |
+| `src/shared/utils/urlUtils.ts` | Oppdatert – `geojsonUrl`, `wmsUrl`, `wmsLayer` lagt til `NKUrlParameter` |
+| `src/map/MapComponent.tsx` | Oppdatert – laster GeoJSON- og WMS-lag fra URL-parametere ved oppstart |
 
 ### Atom-basert tilstand
 
