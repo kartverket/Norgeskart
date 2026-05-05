@@ -1,10 +1,10 @@
 import { ProjectionIdentifier } from '../../../projections/types';
 import {
   BackgroundLayerName,
+  EmptyLayerName,
   VectorTileLayerName,
   WMSLayerName,
   WMTSLayerName,
-  EmptyLayerName,
 } from '../../backgroundLayers';
 
 export type LayerType = 'WMTS' | 'WMS' | 'VectorTile' | 'Empty';
@@ -42,7 +42,7 @@ export type WMSBackgroundLayer = BackgroundLayerBase & {
 export type EmptyBackgroundLayer = BackgroundLayerBase & {
   type: 'Empty';
   layerName: EmptyLayerName;
-}
+};
 
 export type BackgroundLayer =
   | WMTSBackgroundLayer

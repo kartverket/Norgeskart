@@ -28,7 +28,7 @@ export const DEFAULT_ROTATION = 0;
 
 export const currentProjectionAtom = atom<ProjectionIdentifier>(
   validateProjectionIdString(getUrlParameter('projection')) ||
-  DEFAULT_PROJECTION,
+    DEFAULT_PROJECTION,
 );
 
 export const mapOrientationAtom = atom<number>(0);
@@ -69,7 +69,7 @@ export const getBackgroundLayerImageName = (
     case 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833':
       return 'jan_mayen';
     case 'empty':
-      return 'empty'
+      return 'empty';
     default:
       return layerName;
   }

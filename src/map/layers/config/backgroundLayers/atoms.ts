@@ -14,18 +14,18 @@ import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
 import { npolarBackgroundLayers } from './npolar';
+import { EmptyBackgroundLayer } from './types';
 import {
   clearBackgroundLayer,
   getVectorTileLayer,
   getWMSLayer,
   getWMTSLayer,
 } from './utils';
-import { EmptyBackgroundLayer } from './types';
 
 const emptyBackgroundLayer: EmptyBackgroundLayer = {
   type: 'Empty',
   layerName: 'empty',
-}
+};
 
 export const allConfiguredBackgroundLayers = [
   emptyBackgroundLayer,
@@ -54,7 +54,7 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
 
   if (layerName === 'empty') {
     clearBackgroundLayer();
-    setUrlParameter('backgroundLayer', 'empty')
+    setUrlParameter('backgroundLayer', 'empty');
     return;
   }
   const layerConfig = allConfiguredBackgroundLayers.find(
