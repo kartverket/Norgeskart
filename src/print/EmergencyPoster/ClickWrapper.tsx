@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getDefaultStore, useAtomValue } from 'jotai';
+import { getDefaultStore } from 'jotai';
 import { MapBrowserEvent } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import BaseEvent from 'ol/events/Event';
@@ -9,14 +9,13 @@ import { mapAtom } from '../../map/atoms';
 import { selectedResultAtom } from '../../search/atoms';
 import { createMarkerFromCoordinate } from '../../search/searchmarkers/marker';
 
-import { Heading, Separator, Stack } from '@kvib/react';
+import { Heading, Separator, Spinner, Stack } from '@kvib/react';
 import { t } from 'i18next';
 import { transform } from 'ol/proj';
 import { getEmergecyPosterInfoByCoordinates } from '../../search/searchApi';
 import { InputForm } from './InputForm';
 
 export const ClickWrapper = () => {
-  const map = useAtomValue(mapAtom);
   const [clickedCoordinates, setClickedCoordinates] =
     useState<Coordinate | null>(() => {
       const selectedResult = getDefaultStore().get(selectedResultAtom);
@@ -31,13 +30,38 @@ export const ClickWrapper = () => {
       setClickedCoordinates(coordinate);
     }
   };
+  const emergenyPosterData = useQuery({
+    queryKey: ['emergencyPosterData', clickedCoordinates],
+    queryFn: async () => {
+      if (!clickedCoordinates) {
+        return null;
+      }
+      const store = getDefaultStore();
+      const map = store.get(mapAtom);
+      const projection = map.getView().getProjection();
+      const transformedCoordinates = transform(
+        clickedCoordinates,
+        projection.getCode(),
+        'EPSG:4326',
+      );
+
+      const response = await getEmergecyPosterInfoByCoordinates(
+        transformedCoordinates[0],
+        transformedCoordinates[1],
+      );
+
+      return response;
+    },
+  });
 
   useEffect(() => {
+    const store = getDefaultStore();
+    const map = store.get(mapAtom);
     map.addEventListener('click', posterClickHandler);
     return () => {
       map.removeEventListener('click', posterClickHandler);
     };
-  }, [map]);
+  }, []);
 
   useEffect(() => {
     if (!clickedCoordinates) {
@@ -60,27 +84,6 @@ export const ClickWrapper = () => {
     };
   }, [clickedCoordinates]);
 
-  const emergenyPosterData = useQuery({
-    queryKey: ['emergencyPosterData', clickedCoordinates],
-    queryFn: async () => {
-      if (!clickedCoordinates) {
-        return null;
-      }
-      const transformedCoordinates = transform(
-        clickedCoordinates,
-        map.getView().getProjection(),
-        'EPSG:4326',
-      );
-
-      const response = await getEmergecyPosterInfoByCoordinates(
-        transformedCoordinates[0],
-        transformedCoordinates[1],
-      );
-
-      return response;
-    },
-  });
-
   return (
     <Stack>
       <Heading size={'md'}>
@@ -95,6 +98,12 @@ export const ClickWrapper = () => {
             emergenyPosterData={emergenyPosterData.data}
           />
         )}
+      {emergenyPosterData.status === 'pending' && <Spinner size={'lg'} />}
+      {emergenyPosterData.status === 'error' && (
+        <Heading size={'sm'} color={'red'}>
+          {t('printdialog.emergencyPoster.inputform.error')}
+        </Heading>
+      )}
     </Stack>
   );
 };

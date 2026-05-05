@@ -1,6 +1,7 @@
 import { Image } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import {
+  gridConvergenceAtom,
   magneticDeclinationAtom,
   mapOrientationDegreesAtom,
   useMagneticNorthAtom,
@@ -9,10 +10,13 @@ import { useCompassFileName } from '../mapHooks';
 export const Compass = () => {
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const magneticDeclination = useAtomValue(magneticDeclinationAtom);
+  const gridConvergence = useAtomValue(gridConvergenceAtom);
   const useMagneticNorth = useAtomValue(useMagneticNorthAtom);
   const compassFileName = useCompassFileName();
   const compassOrientation =
-    mapOrientation + (useMagneticNorth ? magneticDeclination : 0);
+    mapOrientation -
+    gridConvergence +
+    (useMagneticNorth ? magneticDeclination : 0);
   return (
     <Image
       rotate={compassOrientation + 'deg'}

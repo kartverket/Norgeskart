@@ -79,7 +79,7 @@ const buildBackgroundPrintLayer = (
   if (backgroundLayer === 'oceanicelectronic') {
     const ENV = getEnv();
     return {
-      baseURL: ENV.layerProviderParameters.geoNorgeWMS.baseUrl + '.ecc_enc',
+      baseURL: ENV.layerProviderParameters.eccProxy.wmsUrl,
       customParams: { TRANSPARENT: 'true' },
       imageFormat: 'image/png',
       layers: ['cells'],

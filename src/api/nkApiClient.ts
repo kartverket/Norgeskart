@@ -17,6 +17,7 @@ export type StyleForStorage = {
   stroke: {
     color: Color | ColorLike | undefined;
     width: number | undefined;
+    lineDash?: number[];
   };
   text?: {
     text?: string | undefined; // Preferred/current format; 'value' is supported for backward compatibility

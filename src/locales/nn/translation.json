@@ -23,7 +23,8 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
-    "hide": "Minimer"
+    "hide": "Minimer",
+    "menuHiddenToast": "Menyen er skjult. Trykk på U-tasten for å vise."
   },
   "draw": {
     "begin": "Teikn på kartet",
@@ -65,7 +66,8 @@
       "defaults": {
         "primary": "Hovedfarve",
         "secondary": "Sekundær"
-      }
+      },
+      "lineType": "Linjetype"
     },
     "deleteSelection": "Fjern valde",
     "end": "Ferdig",
@@ -98,6 +100,8 @@
   "infoBox": {
     "address": "Adresse",
     "cadastralIdentifier": "Gards- og bruksnummer",
+    "showContent": "Vis innhald",
+    "hideContent": "Skjul innhald",
     "coordinateInfo": "Sjå koordinatar",
     "coordinateSection": {
       "copy": {
@@ -328,6 +332,9 @@
       },
       "symbols": {
         "label": "Teknforklaring"
+      },
+      "backgroundLayer": {
+        "label": "Kart"
       }
     }
   },
@@ -361,7 +368,8 @@
       "granted": "Godteke",
       "denied": "Avslege",
       "pending": "Ikkje vald"
-    }
+    },
+    "userSurveyLinkText": "Brukarundersøking 2026"
   },
   "propertyInfo": {
     "address": "Adresse",
@@ -382,6 +390,10 @@
         "success": "Lenkja er kopiert til utklippstavla",
         "tooltip": "Del kartet"
       }
+    },
+    "backgroundChooser": {
+      "tooltip": "Vel bakgrunnskart (Flyfoto, Sjøkart, Topografisk osv.)",
+      "label": "Bakgrunn"
     },
     "addresses": "Adresser",
     "coordinates": "Koordinatar",
@@ -524,7 +536,8 @@
         },
         "errors": {
           "couldNotCreatePosterUrl": "Kunne ikkje lage nødplakat"
-        }
+        },
+        "error": "Kunne ikkje hente data for plakaten. Prøv ein annan stad"
       },
       "buttons": {
         "makePoster": "Lag plakat"
@@ -621,7 +634,9 @@
     "heading": "Om oss",
     "textone": "Norgeskart er Kartverket si mest brukte kartteneste. Enten du planlegg ein tur til fjells eller til sjøs, eller treng informasjon om ein eigedom, gir Norgeskart deg påliteleg og detaljert geografisk informasjon – presentert på ein enkel og tilgjengeleg måte.",
     "texttwo": "Sidan 1773 har Kartverket kartlagt Noreg. Mykje har endra seg sidan den gong. Behov utviklar seg over tid, og ny teknologi gir oss stadig nye moglegheiter. Difor arbeider vi kontinuerleg med å tilby eit breitt spekter av kartprodukt som møter behova til brukarane – både i dag og i framtida.",
-    "textthree": "Saman med brukarane skal vi vere opne, innovative og stabile."
+    "textthree": "Saman med brukarane skal vi vere opne, innovative og stabile.",
+    "version": "Versjon",
+    "buildDate": "Bygd"
   },
   "importDialog": {
     "header": "Importer fil til teknelag",

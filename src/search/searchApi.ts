@@ -33,14 +33,18 @@ const trackApiError = (
   }
 };
 
+const normalizeAddressQuery = (query: string): string =>
+  query.replace(/\s+/g, ' ').trim();
+
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
   let url;
   let httpStatus;
   try {
-    const encodedQuery = encodeURIComponent(query);
-    const url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100&fuzzy=true`;
+    const normalizedQuery = normalizeAddressQuery(query);
+    const encodedQuery = encodeURIComponent(normalizedQuery);
+    url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100`;
     const res = await fetch(url);
     httpStatus = res.status;
 
@@ -75,14 +79,10 @@ export const getPlaceNames = async (
   const searchPart = query.split(',')[0].trim();
   const municipalityPart = query.split(',')[1]?.trim();
 
-  const encodedMunicipality = municipalityPart
-    ? encodeURIComponent(municipalityPart)
-    : null;
-
   const url = new URL(`${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn`);
   url.searchParams.append('sok', `${searchPart}*`);
-  if (encodedMunicipality) {
-    url.searchParams.append('kommunenavn', `${encodedMunicipality}*`);
+  if (municipalityPart) {
+    url.searchParams.append('kommunenavn', `${municipalityPart}*`);
   }
   url.searchParams.append('treffPerSide', PLACE_SEARCH_PAGE_SIZE.toString());
   url.searchParams.append('side', page.toString());

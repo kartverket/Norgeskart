@@ -48,6 +48,8 @@ export const searchPendingAtom = atom<boolean>(false);
 export const placeNamePageAtom = atom<number>(1);
 export const displaySearchResultsAtom = atom<boolean>(true);
 
+let latestSearchRequestId = 0;
+
 const searchCoordinatesEffect = atomEffect((get, set) => {
   const coords = get(searchCoordinatesAtom);
   if (coords === null) {
@@ -83,9 +85,11 @@ const performAddressSearch = async (
   }
   return null;
 };
+
 const searchQueryEffect = atomEffect((get, set) => {
   const searchQuery = get(searchQueryAtom);
   const store = getDefaultStore();
+  const requestId = ++latestSearchRequestId;
 
   if (searchQuery) {
     setUrlParameter('sok', searchQuery);
@@ -132,6 +136,10 @@ const searchQueryEffect = atomEffect((get, set) => {
   };
   fetchData()
     .then((r) => {
+      if (requestId !== latestSearchRequestId) {
+        return;
+      }
+
       const [addresResult, placeResult, roadsResult, propertiesResult] = r;
       if (addresResult?.adresser) {
         if (addresResult.adresser.length === 1) {
@@ -167,7 +175,9 @@ const searchQueryEffect = atomEffect((get, set) => {
       set(searchPendingAtom, false);
     })
     .finally(() => {
-      set(searchPendingAtom, false);
+      if (requestId === latestSearchRequestId) {
+        set(searchPendingAtom, false);
+      }
     });
 });
 

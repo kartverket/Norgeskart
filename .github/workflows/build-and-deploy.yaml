@@ -42,7 +42,7 @@ jobs:
         run: npm audit --production --audit-level=high
 
       - name: 'Install dependencies'
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: 'Verify linting'
         if: ${{ !github.event.inputs.bypassValidation }}
@@ -125,6 +125,7 @@ jobs:
         run: |
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-version
+          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-test-version
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push

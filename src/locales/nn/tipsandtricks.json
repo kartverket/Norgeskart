@@ -85,6 +85,7 @@
           "59.9494° N, 10.7564° E",
           "60 N, 10 E",
           "60°10',10°10'",
+          "60.112233, 10.112233",
           "60°10'10,10°10'10",
           "60°10' N,10°10' E",
           "60°10'10 N,10°10'10 E",
@@ -147,19 +148,20 @@
     "content": [
       {
         "type": "text",
-        "text": "Desktop:"
+        "text": "Detaljert skjermkartografi for standard bakgrunnskart finst på "
+      },
+      {
+        "type": "link",
+        "text": "Geonorge",
+        "href": "https://register.geonorge.no/tegneregler/spesifikasjon-for-skjermkartografi"
       },
       {
         "type": "text",
-        "text": "Det manglar dessverre ei god nettbasert løysing for bakgrunnskarta. Ei detaljert skjermkartografi finst på Geonorge.no. Når du aktiverer temakarta får du moglegheit til å vise teiknforklaring ved å trykke på knappen «teiknforklaring» nedst i høgre hjørne."
+        "text": "Når temakart er aktivert kan du vise teiknforklaring ved å trykke på «Teiknforklaring» nedst i høgre hjørne."
       },
       {
         "type": "text",
-        "text": "Mobil:"
-      },
-      {
-        "type": "text",
-        "text": "Det manglar dessverre ei god nettbasert løysing for bakgrunnskarta. Ei detaljert skjermkartografi finst på Geonorge.no. Når du aktiverer temakarta får du moglegheit til å vise teiknforklaring ved å trykke på info-symbolet i sidemenyen."
+        "text": "På mobil aktiverer du teiknforklaringa ved å trykke på info-symbolet i sidemenyen."
       }
     ]
   },
@@ -205,6 +207,15 @@
       {
         "type": "text",
         "text": "Det er dessverre ikkje mogleg å skrive ut flyfoto per i dag, men det blir jobba med ei løysing for framtida."
+      }
+    ]
+  },
+  {
+    "title": "Gøym menyen med tastaturet",
+    "content": [
+      {
+        "type": "text",
+        "text": "Du kan gøyme og vise menyen ved å trykkje på «U»-tasten på tastaturet."
       }
     ]
   }

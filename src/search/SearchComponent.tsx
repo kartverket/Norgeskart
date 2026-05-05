@@ -13,8 +13,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../map/atoms';
 
+import { BackgroundLayerPanel } from '../map/backgroundLayer/BackgroundLayerPanel.tsx';
 import { backgroundLayerAtom } from '../map/layers/config/backgroundLayers/atoms.ts';
-import { BackgroundLayerSettings } from '../settings/map/BackgroundLayerSettings.tsx';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
 import { SearchResult } from '../types/searchTypes.ts';
 import {
@@ -87,6 +87,7 @@ export const SearchComponent = () => {
             {/* Kart-flis til venstre */}
 
             <Button
+              display={{ md: 'none' }}
               width="46px"
               height="44px"
               borderRadius={8}
@@ -100,13 +101,12 @@ export const SearchComponent = () => {
             >
               <Image
                 src={backgroundImageUrl}
-                alt="Velg bakgrunnskart"
+                alt={t('search.backgroundChooser.tooltip')}
                 width="100%"
                 height="100%"
                 objectFit="cover"
               />
             </Button>
-
             <Box position="relative" width="100%">
               <Search
                 width="100%"
@@ -138,7 +138,7 @@ export const SearchComponent = () => {
         />
         {showBackgroundSettings && (
           <Box>
-            <BackgroundLayerSettings
+            <BackgroundLayerPanel
               onSelectComplete={() => setShowBackgroundSettings(false)}
             />
           </Box>

@@ -2,9 +2,18 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { get as getProjection, transform } from 'ol/proj';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { calculateAzimuth } from '../shared/utils/coordinateCalculations';
+import {
+  calculateAzimuth,
+  calculateGridConvergence,
+  getCentralMeridianDeg,
+} from '../shared/utils/coordinateCalculations';
 import { setUrlParameter } from '../shared/utils/urlUtils';
-import { magneticDeclinationAtom, mapAtom, mapOrientationAtom } from './atoms';
+import {
+  gridConvergenceAtom,
+  magneticDeclinationAtom,
+  mapAtom,
+  mapOrientationAtom,
+} from './atoms';
 import { ProjectionIdentifier } from './projections/types';
 
 const ROTATION_ANIMATION_DURATION = 500;
@@ -14,6 +23,7 @@ const useMap = () => {
 
   const setMapOrientation = useSetAtom(mapOrientationAtom);
   const setMagneticDeclination = useSetAtom(magneticDeclinationAtom);
+  const setGridConvergence = useSetAtom(gridConvergenceAtom);
 
   const setTargetElement = useCallback(
     (element: HTMLDivElement | null) => {
@@ -37,11 +47,12 @@ const useMap = () => {
 
         const projection = view.getProjection();
         const angleCoords = transform(newCenter, projection, 'EPSG:4326');
+        const [lon, lat] = angleCoords;
 
         const magneticNorth = [162.867, 86.494];
         const azimuth = calculateAzimuth(
-          angleCoords[1],
-          angleCoords[0],
+          lat,
+          lon,
           magneticNorth[1],
           magneticNorth[0],
         );
@@ -53,7 +64,16 @@ const useMap = () => {
           }
           return azimuth;
         });
+
+        const centralMeridian = getCentralMeridianDeg(projection.getCode());
+        setGridConvergence(
+          centralMeridian !== null
+            ? calculateGridConvergence(lat, lon, centralMeridian)
+            : 0,
+        );
       };
+
+      onCenterChange();
 
       const onRotationChange = () => {
         const rotation = view.getRotation();
@@ -82,7 +102,7 @@ const useMap = () => {
       cleanupViewListeners();
       map.un('change:view', onViewChange);
     };
-  }, [map, setMapOrientation, setMagneticDeclination]);
+  }, [map, setMapOrientation, setMagneticDeclination, setGridConvergence]);
 
   const mapElement = map.getTarget() as HTMLElement | undefined;
   return { mapElement, setTargetElement };
