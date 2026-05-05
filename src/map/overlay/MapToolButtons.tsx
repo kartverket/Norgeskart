@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
+import { getUrlParameter } from '../../shared/utils/urlUtils';
 import { activeThemeLayersAtom } from '../layers/atoms';
 import { mapToolAtom } from './atoms';
 
@@ -22,7 +23,9 @@ export const MapToolButtons = () => {
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const isMobile = useIsMobileScreen();
   const isPrintDialogOpenDisabled = useAtomValue(isPrintDialogOpenAtom);
-  const [menuVisible, setMenuVisible] = useState(true);
+  const [menuVisible, setMenuVisible] = useState(
+    () => getUrlParameter('showMenu') !== 'false',
+  );
 
   const handleShareMapClick = () => {
     const url = window.location.href;

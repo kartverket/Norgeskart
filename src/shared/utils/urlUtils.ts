@@ -143,6 +143,7 @@ export type NKUrlParameter =
   | 'type' // Legacy type parameter from old norgeskart.no
   | 'sok'
   | 'showSelection'
+  | 'showMenu'
   | 'geojsonUrl'
   | 'wmsUrl'
   | 'wmsLayer'
