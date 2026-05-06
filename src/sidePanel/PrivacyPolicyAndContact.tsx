@@ -95,28 +95,29 @@ export const PrivacyPolicy = () => {
         {t('privacyAndContact.cookieConsent.currentStatus')}{' '}
         {t(
           consentStatusKey[consentStatus] ??
-            'privacyAndContact.cookieConsent.pending',
+          'privacyAndContact.cookieConsent.pending',
         )}
-        <HStack mt={2}>
-          <Button
-            colorPalette="green"
-            size="sm"
-            onClick={handleEnableCookies}
-            disabled={consentStatus === 'granted'}
-          >
-            {t('cookieDialog.buttons.accept')}
-          </Button>
-          <Button
-            colorPalette="red"
-            variant="outline"
-            size="sm"
-            onClick={handleDisableCookies}
-            disabled={consentStatus === 'denied'}
-          >
-            {t('cookieDialog.buttons.reject')}
-          </Button>
-        </HStack>
       </Text>
+
+      <HStack mt={2}>
+        <Button
+          colorPalette="green"
+          size="sm"
+          onClick={handleEnableCookies}
+          disabled={consentStatus === 'granted'}
+        >
+          {t('cookieDialog.buttons.accept')}
+        </Button>
+        <Button
+          colorPalette="red"
+          variant="outline"
+          size="sm"
+          onClick={handleDisableCookies}
+          disabled={consentStatus === 'denied'}
+        >
+          {t('cookieDialog.buttons.reject')}
+        </Button>
+      </HStack>
     </VStack>
   );
 };

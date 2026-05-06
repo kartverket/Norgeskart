@@ -16,11 +16,11 @@ import { Contact, PrivacyPolicy } from './PrivacyPolicyAndContact';
 
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   nb: () =>
-    import('../locales/nb/tipsandtricks.json', { with: { type: 'json' } }),
+    import('../locales/nb/tipsandtricks.json'),
   nn: () =>
-    import('../locales/nn/tipsandtricks.json', { with: { type: 'json' } }),
+    import('../locales/nn/tipsandtricks.json'),
   en: () =>
-    import('../locales/en/tipsandtricks.json', { with: { type: 'json' } }),
+    import('../locales/en/tipsandtricks.json'),
 };
 
 export const InfoDrawer = () => {
