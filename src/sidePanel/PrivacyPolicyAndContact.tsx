@@ -95,7 +95,7 @@ export const PrivacyPolicy = () => {
         {t('privacyAndContact.cookieConsent.currentStatus')}{' '}
         {t(
           consentStatusKey[consentStatus] ??
-          'privacyAndContact.cookieConsent.pending',
+            'privacyAndContact.cookieConsent.pending',
         )}
       </Text>
 
