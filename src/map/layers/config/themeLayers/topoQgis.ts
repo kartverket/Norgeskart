@@ -5,6 +5,7 @@ const QGIS_BASES = getEnv().layerProviderParameters.topoQgis.baseUrls;
 
 const mapUrl = (name: string) => {
   const num = parseInt(name.match(/^lag(\d+)/)?.[1] ?? '0');
+  if (num === 8 && QGIS_BASES.length > 16) return `${QGIS_BASES[16]}/qgis/QLR/${name}`;
   const idx = Math.min(Math.ceil(num / 2) - 1, QGIS_BASES.length - 1);
   return `${QGIS_BASES[idx]}/qgis/QLR/${name}`;
 };
