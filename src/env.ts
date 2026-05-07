@@ -92,7 +92,7 @@ const LOCAL_ENV: Env = {
   },
   envName: 'local',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
-  printApiUrl: 'https://testapi.norgeskart.no',
+  printApiUrl: 'https://api.norgeskart.no',
 };
 
 const DEV_ENV: Env = {
@@ -184,7 +184,7 @@ const PROD_ENV: Env = {
   },
   envName: 'prod',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
-  printApiUrl: 'https://testapi.norgeskart.no',
+  printApiUrl: 'https://api.norgeskart.no',
 };
 
 const getEnvName = (): EnvName => {
