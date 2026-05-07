@@ -30,7 +30,7 @@ export const borderConfig: ThemeLayerConfig = {
       groupid: 3,
       name: {
         nb: 'Maritime områder',
-        nn: 'Maritime områder',
+        nn: 'Maritime område',
         en: 'Maritime areas',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.nmg',
@@ -125,7 +125,7 @@ export const borderConfig: ThemeLayerConfig = {
       id: 'sjoAvtaltAvgrensningslinje',
       name: {
         nb: 'Avtalt avgrensningslinje',
-        nn: 'Avtalt avgrensningslinje',
+        nn: 'Avtalt avgrensingslinje',
         en: 'Agreed delimitation line',
       },
       layers: 'Avtalt_avgrensningslinje',
@@ -138,7 +138,7 @@ export const borderConfig: ThemeLayerConfig = {
       id: 'sjoYttergrenseTilstodendeSone24NM',
       name: {
         nb: 'Yttergrense tilstøtende sone 24 NM',
-        nn: 'Yttergrense tilstøtende sone 24 NM',
+        nn: 'Yttergrense tilstøytande sone 24 NM',
         en: 'Outer limit of contiguous zone 24 NM',
       },
       layers: 'Yttergrense_for_tilstotende_sone',
@@ -193,7 +193,7 @@ export const borderConfig: ThemeLayerConfig = {
       id: 'sjoIndreFarvann',
       name: {
         nb: 'Indre farvann',
-        nn: 'Indre farvann',
+        nn: 'Indre farvatn',
         en: 'Internal waters',
       },
       layers: 'Indre_farvann',
@@ -206,7 +206,7 @@ export const borderConfig: ThemeLayerConfig = {
       id: 'sjoTerritorialfarvann',
       name: {
         nb: 'Territorialfarvann',
-        nn: 'Territorialfarvann',
+        nn: 'Territorialfarvatn',
         en: 'Territorial waters',
       },
       layers: 'Territorialfarvann',
