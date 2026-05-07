@@ -243,7 +243,7 @@ export const placeNamesConfig: ThemeLayerConfig = {
       id: 'freshwaterPlaceNames',
       name: {
         nb: 'Ferskvann',
-        nn: 'Ferskvann',
+        nn: 'Ferskvatn',
         en: 'Freshwater',
       },
       layers: 'ferskvann',

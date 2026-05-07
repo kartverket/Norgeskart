@@ -64,7 +64,7 @@
       "color": "Fargar",
       "edit": "Rediger",
       "defaults": {
-        "primary": "Hovedfarve",
+        "primary": "Hovudfarge",
         "secondary": "Sekundær"
       },
       "lineType": "Linjetype"
@@ -330,7 +330,7 @@
         "label": "Bruk fullskjerm"
       },
       "symbols": {
-        "label": "Teknforklaring"
+        "label": "Teiknforklaring"
       },
       "backgroundLayer": {
         "label": "Kart"
@@ -513,7 +513,7 @@
           "section2": "Brukaren har ansvar for å kontrollere at det er korrekt hytte eller stad som blir vist på plakaten.",
           "section3": "Kartverket tek ikkje ansvar for moglege feil som skuldast brukaren, datagrunnlaget eller teknologien."
         },
-        "accept": "Eg skjønar og godtar",
+        "accept": "Eg skjønar og godtek",
         "reject": "Avbryt"
       },
       "inputform": {
@@ -542,8 +542,8 @@
       }
     },
     "elevationProfile": {
-      "heading": "Teikn ei linje for å lage ei høgdeprofil",
-      "infotext": "Opprett ei høgdeprofil ved å laste opp ei .GPX-fil eller ved å klikke i kartet for å plassere det første punktet og dobbelklikke for å avslutte.",
+      "heading": "Teikn ei linje for å lage ein høgdeprofil",
+      "infotext": "Opprett ein høgdeprofil ved å laste opp ei .GPX-fil eller ved å klikke i kartet for å plassere det første punktet og dobbelklikke for å avslutte.",
       "jobError": "Kunne ikkje lage høgdeprofil",
       "jobRunning": "Lagar profil",
       "buttons": {

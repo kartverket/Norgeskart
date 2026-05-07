@@ -121,7 +121,7 @@
     "content": [
       {
         "type": "text",
-        "text": "For å få med innhaldet i teikninga må du først lagre det du har gjort. Ved å trykke på lagresymbolet nedst i teiknemenyen blir det generert ein unik URL. Når du har lagra, kan du dele kartet ved å trykkje på «del kart» i menyen eller ved å kopiere URL-en i søkjefeltet."
+        "text": "For å få med innhaldet i teikninga må du først lagre det du har gjort. Ved å trykkje på lagresymbolet nedst i teiknemenyen blir det generert ein unik URL. Når du har lagra, kan du dele kartet ved å trykkje på «del kart» i menyen eller ved å kopiere URL-en i søkjefeltet."
       }
     ]
   },
@@ -170,7 +170,7 @@
     "content": [
       {
         "type": "text",
-        "text": "Det kjem an på kva kart som blir vist. Standardkartet i fargar blir oppdatert kvar veke, men dei ulike temalagna varierer."
+        "text": "Det kjem an på kva kart som blir vist. Standardkartet i fargar blir oppdatert kvar veke, men dei ulike temalaga varierer."
       }
     ]
   },
