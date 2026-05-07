@@ -281,7 +281,7 @@ const useDrawSettings = () => {
     selectInteraction.getFeatures().forEach((feature) => {
       clearStaticOverlaysForFeature(feature);
       const overlay = map.getOverlayById(
-        `${ICON_OVERLAY_PREFIX}${feature.getId()}`
+        `${ICON_OVERLAY_PREFIX}${feature.getId()}`,
       );
 
       if (overlay) {
