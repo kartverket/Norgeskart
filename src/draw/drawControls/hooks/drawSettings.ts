@@ -272,6 +272,7 @@ const useDrawSettings = () => {
     if (!selectInteraction) {
       return;
     }
+
     const drawLayerSource = getDrawLayer()?.getSource() as VectorSource | null;
     if (!drawLayerSource) {
       return;
@@ -279,6 +280,13 @@ const useDrawSettings = () => {
 
     selectInteraction.getFeatures().forEach((feature) => {
       clearStaticOverlaysForFeature(feature);
+      const overlay = map.getOverlayById(
+        `${ICON_OVERLAY_PREFIX}${feature.getId()}`
+      );
+
+      if (overlay) {
+        map.removeOverlay(overlay);
+      }
       drawLayerSource.removeFeature(feature);
     });
     addDrawAction({
