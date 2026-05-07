@@ -278,6 +278,7 @@ const useDrawSettings = () => {
     }
 
     selectInteraction.getFeatures().forEach((feature) => {
+      clearStaticOverlaysForFeature(feature);
       drawLayerSource.removeFeature(feature);
     });
     addDrawAction({
