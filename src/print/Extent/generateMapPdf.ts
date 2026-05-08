@@ -130,7 +130,10 @@ const buildBackgroundPrintLayer = (
         const isRestUrl = rawUrl.includes('{');
         const requestEncoding: 'KVP' | 'REST' = isRestUrl ? 'REST' : 'KVP';
 
-        const baseURL = rawUrl.split('?')[0];
+        const rawBaseUrl = rawUrl.split('?')[0];
+        const baseURL = isRestUrl
+          ? `${rawBaseUrl}?token=${ENV.layerProviderParameters.norgeIBilder.apiKey}`
+          : rawBaseUrl;
 
         return {
           baseURL,
