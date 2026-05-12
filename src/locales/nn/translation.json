@@ -625,7 +625,6 @@
       "error": "Klarte ikkje å hente kartet"
     },
     "vectorTileFallbackWarning": "Nautisk bakgrunnskart er ikkje støtta av utskriftstenesta og vert erstatta med sjøkart oppdatert EFS i utskrifta.",
-    "aerialImageryNotSupported": "Flyfoto er ikkje støtta av utskriftstenesta. Byt til eit anna bakgrunnskart for å skrive ut.",
     "projectionWarning": "Utskrifta vil alltid vere i UTM-sone 33 (EPSG:25833), uavhengig av vald kartprojeksjon."
   },
   "about": {

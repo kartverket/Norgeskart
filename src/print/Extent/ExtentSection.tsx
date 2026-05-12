@@ -124,11 +124,6 @@ export const ExtentSection = () => {
           {t('printExtent.vectorTileFallbackWarning')}
         </Alert>
       )}
-      {backgroundLayer.startsWith('Nibcache_') && (
-        <Alert status="warning" mb={2}>
-          {t('printExtent.aerialImageryNotSupported')}
-        </Alert>
-      )}
       {map && map.getView().getProjection().getCode() !== 'EPSG:25833' && (
         <Alert status="warning" mb={2}>
           {t('printExtent.projectionWarning')}
