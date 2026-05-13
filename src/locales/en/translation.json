@@ -150,12 +150,12 @@
             "category": {
               "label": "Select map category"
             },
-            "description": "Report something wrong with a map in rettikartet.no. Select a category below to open rettikartet in a new window.",
+            "description": "Report something wrong with a map in rettikartet.no. Select a category below to open Rett i kartet in a new window. If you believe a property boundary is shown incorrectly on the map, this must be addressed with the local cadastral authority, meaning the municipality where the property is located. The Norwegian Mapping Authority does not have the authority to make changes to property boundaries.",
             "link": {
               "label": "Open rettikartet.no in a new tab"
             },
             "rettikartetcategories": {
-              "n50kartdata": "N50 maps",
+              "n50kartdata": "Hikingmap",
               "sjo": "Nautical charts",
               "turruter": "Hiking trails",
               "veger": "Roads and adresses"
