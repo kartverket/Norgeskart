@@ -295,6 +295,28 @@
               "addall": "Add all layers",
               "removeall": "Remove all"
             }
+          },
+          "geonorgeSearch": {
+            "heading": "Search Geonorge for WMS",
+            "placeholder": "Search for map service...",
+            "searchButton": "Search",
+            "addButton": "Add to map",
+            "added": "Added",
+            "noResults": "No WMS services found.",
+            "searchError": "Search failed. Please try again.",
+            "addError": "Could not load the WMS service.",
+            "noUrl": "No WMS URL available"
+          },
+          "addWms": {
+            "heading": "Add WMS manually",
+            "placeholder": "WMS URL",
+            "addButton": "Add",
+            "removeButton": "Remove layer",
+            "moveUp": "Move up",
+            "moveDown": "Move down",
+            "opacity": "Opacity",
+            "geonorgeLink": "Open in Geonorge",
+            "error": "Could not load the WMS layer. Check that the URL is correct."
           }
         }
       }

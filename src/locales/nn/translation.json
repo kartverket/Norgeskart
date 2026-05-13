@@ -300,6 +300,28 @@
               "addall": "Legg til alle",
               "removeall": "Fjern alle"
             }
+          },
+          "geonorgeSearch": {
+            "heading": "Søk i Geonorge etter WMS",
+            "placeholder": "Søk etter karttjeneste...",
+            "searchButton": "Søk",
+            "addButton": "Legg til i kartet",
+            "added": "Lagt til",
+            "noResults": "Ingen WMS-tenester funne.",
+            "searchError": "Søket feila. Prøv igjen.",
+            "addError": "Kunne ikkje laste WMS-tenesta.",
+            "noUrl": "Ingen WMS-URL tilgjengeleg"
+          },
+          "addWms": {
+            "heading": "Legg til WMS manuelt",
+            "placeholder": "WMS-URL",
+            "addButton": "Legg til",
+            "removeButton": "Fjern lag",
+            "moveUp": "Flytt opp",
+            "moveDown": "Flytt ned",
+            "opacity": "Gjennomsiktigheit",
+            "geonorgeLink": "Opne i Geonorge",
+            "error": "Kunne ikkje laste WMS-laget. Sjekk at URL-en er korrekt."
           }
         }
       }

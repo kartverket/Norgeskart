@@ -24,6 +24,7 @@ import {
   useThemeLayers,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
+import { AddWmsSection } from './AddWmsSection';
 import { LayerLine, SubThemeSection } from './SubTheme';
 import { SubTheme, Theme } from './types';
 
@@ -218,6 +219,8 @@ export const MapThemes = () => {
           );
         })}
       </Accordion>
+
+      <AddWmsSection />
     </VStack>
   );
 };
