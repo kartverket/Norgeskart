@@ -32,7 +32,7 @@
     "jotai-effect": "^2.2.3",
     "maplibre-gl": "^5.24.0",
     "ol": "^10.9.0",
-    "posthog-js": "^1.372.10",
+    "posthog-js": "^1.373.4",
     "proj4": "^2.20.8",
     "react": "^19.2.5",
     "react-chartjs-2": "^5.3.1",
