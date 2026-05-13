@@ -146,12 +146,14 @@ const addSelectMoveInteractionToMap = (drawLayer: VectorLayer, map: Map) => {
   const selectInteraction = new Select({
     layers: [drawLayer],
     style: null,
+    hitTolerance: 12,
   });
   selectInteraction.addEventListener('select', handleSelect);
   map.addInteraction(selectInteraction);
 
   const translateInteraction = new Translate({
     features: selectInteraction.getFeatures(),
+    hitTolerance: 12,
   });
 
   translateInteraction.addEventListener('translatestart', handleModifyStart);
