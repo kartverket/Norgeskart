@@ -173,7 +173,6 @@ export const GeonorgeWmsSearch = () => {
           onClick={() => void handleSearch()}
           disabled={!query.trim() || searching}
           colorPalette="blue"
-          variant="surface"
         />
       </Flex>
 
