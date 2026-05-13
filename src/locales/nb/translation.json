@@ -155,12 +155,12 @@
             "category": {
               "label": "Velg kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne rettikartet i nytt vindu.",
+            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne Rett i kartet i nytt vindu. Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. Kartverket har ikke myndighet til å gjøre endringer på eiendomsgrenser.",
             "link": {
               "label": "Åpne rettikartet.no i en ny fane"
             },
             "rettikartetcategories": {
-              "n50kartdata": "N50 kart",
+              "n50kartdata": "Turkart",
               "sjo": "Sjøkart",
               "turruter": "Turruter",
               "veger": "Veger og adresser"
@@ -198,7 +198,8 @@
             "topoProd": "Topografisk",
             "toporaster": "Papirkart",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
-            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
+            "empty": "Ingen bakgrunn"
           }
         },
         "projection": {
@@ -368,8 +369,7 @@
       "granted": "Godtatt",
       "denied": "Avslått",
       "pending": "Ikke valgt"
-    },
-    "userSurveyLinkText": "Brukerundersøkelse 2026"
+    }
   },
   "propertyInfo": {
     "address": "Adresse",
@@ -636,7 +636,6 @@
       "error": "Klarte ikke å hente kartet"
     },
     "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkart oppdatert EFS i utskriften.",
-    "aerialImageryNotSupported": "Flyfoto støttes ikke av utskriftstjenesten. Vennligst bytt til et annet bakgrunnskart for å skrive ut.",
     "projectionWarning": "Utskriften vil alltid være i UTM-sone 33 (EPSG:25833), uavhengig av valgt kartprojeksjon."
   },
   "about": {

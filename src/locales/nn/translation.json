@@ -64,7 +64,7 @@
       "color": "Fargar",
       "edit": "Rediger",
       "defaults": {
-        "primary": "Hovedfarve",
+        "primary": "Hovudfarge",
         "secondary": "Sekundær"
       },
       "lineType": "Linjetype"
@@ -155,12 +155,12 @@
             "category": {
               "label": "Vel kartkategori"
             },
-            "description": "Meld frå om feil i kartet på rettikartet.no. Vel frå kategoriane under for å opne Rett i kartet i nytt vindauge.",
+            "description": "Meld frå om feil i kartet på rettikartet.no. Vel frå kategoriane under for å opne Rett i kartet i nytt vindauge. Dersom du meiner ei eigedomsgrense er vist feil i kartet, må dette takast opp med lokal matrikkelstyresmakt. Det vil seie kommunen eigedomen ligg i. Kartverket har ikkje mynde til å gjere endringar på eigedomsgrenser.",
             "link": {
               "label": "Opne rettikartet.no i ei ny fane"
             },
             "rettikartetcategories": {
-              "n50kartdata": "N50-kart",
+              "n50kartdata": "Turkart",
               "sjo": "Sjøkart",
               "turruter": "Turruter",
               "veger": "Vegar og adresser"
@@ -198,7 +198,8 @@
             "topoProd": "Topografisk",
             "toporaster": "Papirkart",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
-            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
+            "empty": "Ingen bakgrunn"
           }
         },
         "projection": {
@@ -331,7 +332,7 @@
         "label": "Bruk fullskjerm"
       },
       "symbols": {
-        "label": "Teknforklaring"
+        "label": "Teiknforklaring"
       },
       "backgroundLayer": {
         "label": "Kart"
@@ -368,8 +369,7 @@
       "granted": "Godteke",
       "denied": "Avslege",
       "pending": "Ikkje vald"
-    },
-    "userSurveyLinkText": "Brukarundersøking 2026"
+    }
   },
   "propertyInfo": {
     "address": "Adresse",
@@ -524,7 +524,7 @@
           "section2": "Brukaren har ansvar for å kontrollere at det er korrekt hytte eller stad som blir vist på plakaten.",
           "section3": "Kartverket tek ikkje ansvar for moglege feil som skuldast brukaren, datagrunnlaget eller teknologien."
         },
-        "accept": "Eg skjønar og godtar",
+        "accept": "Eg skjønar og godtek",
         "reject": "Avbryt"
       },
       "inputform": {
@@ -553,8 +553,8 @@
       }
     },
     "elevationProfile": {
-      "heading": "Teikn ei linje for å lage ei høgdeprofil",
-      "infotext": "Opprett ei høgdeprofil ved å laste opp ei .GPX-fil eller ved å klikke i kartet for å plassere det første punktet og dobbelklikke for å avslutte.",
+      "heading": "Teikn ei linje for å lage ein høgdeprofil",
+      "infotext": "Opprett ein høgdeprofil ved å laste opp ei .GPX-fil eller ved å klikke i kartet for å plassere det første punktet og dobbelklikke for å avslutte.",
       "jobError": "Kunne ikkje lage høgdeprofil",
       "jobRunning": "Lagar profil",
       "buttons": {
@@ -636,7 +636,6 @@
       "error": "Klarte ikkje å hente kartet"
     },
     "vectorTileFallbackWarning": "Nautisk bakgrunnskart er ikkje støtta av utskriftstenesta og vert erstatta med sjøkart oppdatert EFS i utskrifta.",
-    "aerialImageryNotSupported": "Flyfoto er ikkje støtta av utskriftstenesta. Byt til eit anna bakgrunnskart for å skrive ut.",
     "projectionWarning": "Utskrifta vil alltid vere i UTM-sone 33 (EPSG:25833), uavhengig av vald kartprojeksjon."
   },
   "about": {

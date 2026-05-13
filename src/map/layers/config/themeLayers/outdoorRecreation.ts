@@ -38,7 +38,7 @@ export const outdoorRecreationLayerConfig: ThemeLayerConfig = {
       id: 'hikingTrailsUnmarked',
       name: {
         nb: 'Umerkede fotruter',
-        nn: 'Umerka fotruter',
+        nn: 'Umerkte fotruter',
         en: 'Unmarked hiking trails',
       },
       layers: 'Fotrute',

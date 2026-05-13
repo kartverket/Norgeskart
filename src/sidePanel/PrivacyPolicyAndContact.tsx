@@ -34,14 +34,6 @@ export const Contact = () => {
       >
         {t('privacyAndContact.formsLinkText')}
       </Link>
-      <Link
-        href="https://forms.office.com/Pages/ResponsePage.aspx?id=osh0f85Dskaw6LYwbLpzowd74bOuerVDuw5mpLK4z-tUMVBSVjA1VTc5OFlZTFVQSlA4TVU5QVBBSC4u"
-        target="_blank"
-        external
-        textStyle="sm"
-      >
-        {t('privacyAndContact.userSurveyLinkText')}
-      </Link>
     </VStack>
   );
 };
@@ -97,26 +89,27 @@ export const PrivacyPolicy = () => {
           consentStatusKey[consentStatus] ??
             'privacyAndContact.cookieConsent.pending',
         )}
-        <HStack mt={2}>
-          <Button
-            colorPalette="green"
-            size="sm"
-            onClick={handleEnableCookies}
-            disabled={consentStatus === 'granted'}
-          >
-            {t('cookieDialog.buttons.accept')}
-          </Button>
-          <Button
-            colorPalette="red"
-            variant="outline"
-            size="sm"
-            onClick={handleDisableCookies}
-            disabled={consentStatus === 'denied'}
-          >
-            {t('cookieDialog.buttons.reject')}
-          </Button>
-        </HStack>
       </Text>
+
+      <HStack mt={2}>
+        <Button
+          colorPalette="green"
+          size="sm"
+          onClick={handleEnableCookies}
+          disabled={consentStatus === 'granted'}
+        >
+          {t('cookieDialog.buttons.accept')}
+        </Button>
+        <Button
+          colorPalette="red"
+          variant="outline"
+          size="sm"
+          onClick={handleDisableCookies}
+          disabled={consentStatus === 'denied'}
+        >
+          {t('cookieDialog.buttons.reject')}
+        </Button>
+      </HStack>
     </VStack>
   );
 };

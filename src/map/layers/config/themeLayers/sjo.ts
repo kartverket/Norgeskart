@@ -16,7 +16,7 @@ export const sjoConfig: ThemeLayerConfig = {
       groupid: 14,
       name: {
         nb: 'Dybdedatakvalitet i sjøkart',
-        nn: 'Djupdatakvalitet i sjøkart',
+        nn: 'Djupnedatakvalitet i sjøkart',
         en: 'Depth data quality in nautical chart',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.dybdedatakvalitet_navigasjon',
@@ -59,7 +59,7 @@ export const sjoConfig: ThemeLayerConfig = {
       id: 'sjoDybdedatakvalitetSjokart',
       name: {
         nb: 'Dybdedatakvalitet i sjøkart',
-        nn: 'Djupdatakvalitet i sjøkart',
+        nn: 'Djupnedatakvalitet i sjøkart',
         en: 'Depth data quality in nautical chart',
       },
       layers: 'Dybdedatakvalitet_sjokart',

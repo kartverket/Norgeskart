@@ -109,7 +109,7 @@ const PROD_ENV: Env = {
   },
   envName: 'prod',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
-  printApiUrl: 'https://testapi.norgeskart.no',
+  printApiUrl: 'https://api.norgeskart.no',
 };
 
 const getEnvName = (): EnvName => {
