@@ -14,11 +14,14 @@ import {
   VStack,
 } from '@kvib/react';
 import { useAtomValue, useSetAtom } from 'jotai';
+import type TileLayer from 'ol/layer/Tile';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type TileLayer from 'ol/layer/Tile';
 import { mapAtom } from '../../../map/atoms';
-import { createUrlWmsLayer, urlWmsLayersAtom } from '../../../map/layers/urlWms';
+import {
+  createUrlWmsLayer,
+  urlWmsLayersAtom,
+} from '../../../map/layers/urlWms';
 import { GeonorgeWmsSearch } from './GeonorgeWmsSearch';
 
 // URL WMS layers occupy z-indices in the range [8, 9) so they sit above
@@ -29,7 +32,9 @@ const WMS_ZINDEX_STEP = 0.1;
 const assignZIndices = (layers: TileLayer[]) => {
   layers.forEach((layer, i) => {
     // Index 0 = top of list = highest z-index (rendered on top)
-    layer.setZIndex(WMS_ZINDEX_BASE + (layers.length - 1 - i) * WMS_ZINDEX_STEP);
+    layer.setZIndex(
+      WMS_ZINDEX_BASE + (layers.length - 1 - i) * WMS_ZINDEX_STEP,
+    );
   });
 };
 
@@ -82,7 +87,9 @@ const WmsLayerList = () => {
         const id = layer.get('id') as string;
         const title = layer.get('layerTitle') as string;
         const opacity = opacities[id] ?? layer.getOpacity();
-        const detailsUrl = layer.get('geonorgeDetailsUrl') as string | undefined;
+        const detailsUrl = layer.get('geonorgeDetailsUrl') as
+          | string
+          | undefined;
         const isFirst = index === 0;
         const isLast = index === urlWmsLayers.length - 1;
 
@@ -117,18 +124,33 @@ const WmsLayerList = () => {
                 />
               </Tooltip>
 
-              <Text fontSize="xs" fontWeight="medium" flex={1} lineClamp={1} title={title}>
+              <Text
+                fontSize="xs"
+                fontWeight="medium"
+                flex={1}
+                lineClamp={1}
+                title={title}
+              >
                 {title}
               </Text>
 
               {detailsUrl && (
-                <Tooltip content={t('map.settings.layers.theme.addWms.geonorgeLink')}>
-                  <Link href={detailsUrl} target="_blank" rel="noopener noreferrer" lineHeight={0}>
+                <Tooltip
+                  content={t('map.settings.layers.theme.addWms.geonorgeLink')}
+                >
+                  <Link
+                    href={detailsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    lineHeight={0}
+                  >
                     <IconButton
                       variant="ghost"
                       size="xs"
                       icon="open_in_new"
-                      aria-label={t('map.settings.layers.theme.addWms.geonorgeLink')}
+                      aria-label={t(
+                        'map.settings.layers.theme.addWms.geonorgeLink',
+                      )}
                       colorPalette="blue"
                       as="span"
                     />
@@ -136,12 +158,16 @@ const WmsLayerList = () => {
                 </Tooltip>
               )}
 
-              <Tooltip content={t('map.settings.layers.theme.addWms.removeButton')}>
+              <Tooltip
+                content={t('map.settings.layers.theme.addWms.removeButton')}
+              >
                 <IconButton
                   variant="ghost"
                   size="xs"
                   icon="delete"
-                  aria-label={t('map.settings.layers.theme.addWms.removeButton')}
+                  aria-label={t(
+                    'map.settings.layers.theme.addWms.removeButton',
+                  )}
                   colorPalette="red"
                   onClick={() => handleRemove(index)}
                 />
@@ -197,7 +223,12 @@ export const AddWmsSection = () => {
     try {
       const mapProjection = map.getView().getProjection().getCode();
       const index = urlWmsLayers.length;
-      const layer = await createUrlWmsLayer(trimmed, undefined, mapProjection, index);
+      const layer = await createUrlWmsLayer(
+        trimmed,
+        undefined,
+        mapProjection,
+        index,
+      );
       if (!layer) {
         setError(t('map.settings.layers.theme.addWms.error'));
         return;
@@ -247,7 +278,11 @@ export const AddWmsSection = () => {
             disabled={!url.trim() || loading}
             colorPalette="blue"
           >
-            {loading ? <Spinner size="xs" /> : t('map.settings.layers.theme.addWms.addButton')}
+            {loading ? (
+              <Spinner size="xs" />
+            ) : (
+              t('map.settings.layers.theme.addWms.addButton')
+            )}
           </Button>
         </Flex>
 

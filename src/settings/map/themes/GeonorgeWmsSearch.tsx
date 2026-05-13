@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   Heading,
-  Icon,
   IconButton,
   Input,
   InputGroup,
@@ -16,7 +15,10 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../../map/atoms';
-import { createUrlWmsLayer, urlWmsLayersAtom } from '../../../map/layers/urlWms';
+import {
+  createUrlWmsLayer,
+  urlWmsLayersAtom,
+} from '../../../map/layers/urlWms';
 
 const KARTKATALOG_SEARCH_URL = 'https://kartkatalog.geonorge.no/api/search';
 
@@ -113,7 +115,12 @@ export const GeonorgeWmsSearch = () => {
     try {
       const mapProjection = map.getView().getProjection().getCode();
       const index = urlWmsLayers.length;
-      const layer = await createUrlWmsLayer(wmsUrl, undefined, mapProjection, index);
+      const layer = await createUrlWmsLayer(
+        wmsUrl,
+        undefined,
+        mapProjection,
+        index,
+      );
       if (!layer) {
         setAddError(t('map.settings.layers.theme.geonorgeSearch.addError'));
         return;
@@ -140,10 +147,15 @@ export const GeonorgeWmsSearch = () => {
       </Heading>
 
       <Flex gap={2} align="flex-start">
-        <InputGroup flex={1} endElement={searching ? <Spinner size="xs" /> : undefined}>
+        <InputGroup
+          flex={1}
+          endElement={searching ? <Spinner size="xs" /> : undefined}
+        >
           <Input
             size="sm"
-            placeholder={t('map.settings.layers.theme.geonorgeSearch.placeholder')}
+            placeholder={t(
+              'map.settings.layers.theme.geonorgeSearch.placeholder',
+            )}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
@@ -155,7 +167,9 @@ export const GeonorgeWmsSearch = () => {
         <IconButton
           size="sm"
           icon="search"
-          aria-label={t('map.settings.layers.theme.geonorgeSearch.searchButton')}
+          aria-label={t(
+            'map.settings.layers.theme.geonorgeSearch.searchButton',
+          )}
           onClick={() => void handleSearch()}
           disabled={!query.trim() || searching}
           colorPalette="blue"
@@ -176,7 +190,13 @@ export const GeonorgeWmsSearch = () => {
       )}
 
       {results.length > 0 && (
-        <VStack align="stretch" gap={0} marginTop={2} maxH="240px" overflowY="auto">
+        <VStack
+          align="stretch"
+          gap={0}
+          marginTop={2}
+          maxH="240px"
+          overflowY="auto"
+        >
           {results.map((result) => {
             const wmsUrl = getWmsUrl(result);
             const isAdded = addedIds.has(result.Uuid);
@@ -192,7 +212,12 @@ export const GeonorgeWmsSearch = () => {
                 _hover={{ bg: 'gray.50' }}
               >
                 <Box flex={1} minW={0}>
-                  <Text fontSize="xs" fontWeight="medium" lineClamp={1} title={result.Title}>
+                  <Text
+                    fontSize="xs"
+                    fontWeight="medium"
+                    lineClamp={1}
+                    title={result.Title}
+                  >
                     {result.Title}
                   </Text>
                   {result.Organization && (
@@ -207,14 +232,18 @@ export const GeonorgeWmsSearch = () => {
                       ? t('map.settings.layers.theme.geonorgeSearch.noUrl')
                       : isAdded
                         ? t('map.settings.layers.theme.geonorgeSearch.added')
-                        : t('map.settings.layers.theme.geonorgeSearch.addButton')
+                        : t(
+                            'map.settings.layers.theme.geonorgeSearch.addButton',
+                          )
                   }
                 >
                   <IconButton
                     size="xs"
                     variant="ghost"
                     icon={isAdded ? 'check' : 'add'}
-                    aria-label={t('map.settings.layers.theme.geonorgeSearch.addButton')}
+                    aria-label={t(
+                      'map.settings.layers.theme.geonorgeSearch.addButton',
+                    )}
                     colorPalette={isAdded ? 'green' : 'blue'}
                     disabled={!wmsUrl || isAdded || isAdding}
                     onClick={() => void handleAdd(result)}
