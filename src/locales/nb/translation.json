@@ -155,12 +155,12 @@
             "category": {
               "label": "Velg kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne rettikartet i nytt vindu.",
+            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne Rett i kartet i nytt vindu. Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. Kartverket har ikke myndighet til å gjøre endringer på eiendomsgrenser.",
             "link": {
               "label": "Åpne rettikartet.no i en ny fane"
             },
             "rettikartetcategories": {
-              "n50kartdata": "N50 kart",
+              "n50kartdata": "Turkart",
               "sjo": "Sjøkart",
               "turruter": "Turruter",
               "veger": "Veger og adresser"
