@@ -49,7 +49,10 @@ export const displayMapLegendControlAtom = atom<boolean>((get) => {
   });
 
   const hasBackgroundLegend = allConfiguredBackgroundLayers.some(
-    (config) => config.layerName === backgroundLayerName && 'legendUrl' in config && !!config.legendUrl,
+    (config) =>
+      config.layerName === backgroundLayerName &&
+      'legendUrl' in config &&
+      !!config.legendUrl,
   );
 
   return !displayMapLegned && (hasThemeLegend || hasBackgroundLegend);

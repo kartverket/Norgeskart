@@ -5,7 +5,8 @@ const QGIS_BASES = getEnv().layerProviderParameters.topoQgis.baseUrls;
 
 const mapUrl = (name: string) => {
   const num = parseInt(name.match(/^lag(\d+)/)?.[1] ?? '0');
-  if (num === 8 && QGIS_BASES.length > 16) return `${QGIS_BASES[16]}/qgis/QLR/${name}`;
+  if (num === 8 && QGIS_BASES.length > 16)
+    return `${QGIS_BASES[16]}/qgis/QLR/${name}`;
   const idx = Math.min(Math.ceil(num / 2) - 1, QGIS_BASES.length - 1);
   return `${QGIS_BASES[idx]}/qgis/QLR/${name}`;
 };
@@ -81,13 +82,21 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag11_relieff_skygge',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Relieff skygge', nn: 'Relieff skugge', en: 'Relief (shadow)' },
+      name: {
+        nb: 'Relieff skygge',
+        nn: 'Relieff skugge',
+        en: 'Relief (shadow)',
+      },
     },
     {
       id: 'topoQgis_lag11_relieff_skygge_blaagraa',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Relieff skygge blågrå', nn: 'Relieff skugge blågrå', en: 'Relief (shadow) blue-gray' },
+      name: {
+        nb: 'Relieff skygge blågrå',
+        nn: 'Relieff skugge blågrå',
+        en: 'Relief (shadow) blue-gray',
+      },
     },
     {
       id: 'topoQgis_lag12_innsjoflate',
@@ -99,37 +108,61 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag13_grense_adm_maritim_fare_naturvern',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Grense, adm., maritim, fare, naturvern', nn: 'Grense, adm., maritim, fare, naturvern', en: 'Boundaries, admin, maritime, hazard, nature' },      
+      name: {
+        nb: 'Grense, adm., maritim, fare, naturvern',
+        nn: 'Grense, adm., maritim, fare, naturvern',
+        en: 'Boundaries, admin, maritime, hazard, nature',
+      },
     },
     {
       id: 'topoQgis_lag14_vannkontur_elvbekk',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Vannkontur, elv og bekk', nn: 'Vasskontur, elv og bekk', en: 'Water contour, rivers, streams' },
+      name: {
+        nb: 'Vannkontur, elv og bekk',
+        nn: 'Vasskontur, elv og bekk',
+        en: 'Water contour, rivers, streams',
+      },
     },
     {
       id: 'topoQgis_lag15_fkb_bygnanlegg',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'FKB bygg og anlegg', nn: 'FKB bygg og anlegg', en: 'FKB buildings and infrastructure' },
+      name: {
+        nb: 'FKB bygg og anlegg',
+        nn: 'FKB bygg og anlegg',
+        en: 'FKB buildings and infrastructure',
+      },
     },
     {
       id: 'topoQgis_lag16_fkb_samferdselflate_terreng',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'FKB samferdselflate terreng', nn: 'FKB samferdselflate terreng', en: 'FKB transport surface terrain' },
+      name: {
+        nb: 'FKB samferdselflate terreng',
+        nn: 'FKB samferdselflate terreng',
+        en: 'FKB transport surface terrain',
+      },
     },
     {
       id: 'topoQgis_lag17_samferdsel_anlegg',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Samferdsel anlegg', nn: 'Samferdsel anlegg', en: 'Transport infrastructure' },
+      name: {
+        nb: 'Samferdsel anlegg',
+        nn: 'Samferdsel anlegg',
+        en: 'Transport infrastructure',
+      },
     },
     {
       id: 'topoQgis_lag18_samferdsel_tunnel',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Samferdsel tunnel', nn: 'Samferdsel tunnel', en: 'Transport tunnels' },
+      name: {
+        nb: 'Samferdsel tunnel',
+        nn: 'Samferdsel tunnel',
+        en: 'Transport tunnels',
+      },
     },
     {
       id: 'topoQgis_lag19_samferdsel_batrute',
@@ -141,13 +174,21 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag20_samferdsel_terreng',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Samferdsel terreng', nn: 'Samferdsel terreng', en: 'Transport terrain' },
+      name: {
+        nb: 'Samferdsel terreng',
+        nn: 'Samferdsel terreng',
+        en: 'Transport terrain',
+      },
     },
     {
       id: 'topoQgis_lag21_bygning_anlegg',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Bygning og anlegg', nn: 'Bygning og anlegg', en: 'Buildings and facilities' },
+      name: {
+        nb: 'Bygning og anlegg',
+        nn: 'Bygning og anlegg',
+        en: 'Buildings and facilities',
+      },
     },
     {
       id: 'topoQgis_lag22_samferdsel_bru',
@@ -171,7 +212,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag25_kraftlinje_taubane',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Kraftlinje og taubane', nn: 'Kraftlinje og taubane', en: 'Power lines and cable cars' },
+      name: {
+        nb: 'Kraftlinje og taubane',
+        nn: 'Kraftlinje og taubane',
+        en: 'Power lines and cable cars',
+      },
     },
     {
       id: 'topoQgis_lag26_hoydepunkt',
@@ -183,13 +228,21 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag27_sykehus_m_akuttmottak',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Sykehus m/ akuttmottak', nn: 'Sjukehus m/ akuttmottak', en: 'Hospitals with A&E' },
+      name: {
+        nb: 'Sykehus m/ akuttmottak',
+        nn: 'Sjukehus m/ akuttmottak',
+        en: 'Hospitals with A&E',
+      },
     },
     {
       id: 'topoQgis_lag28_adm_grensepunkt',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Adm. grensepunkt', nn: 'Adm. grensepunkt', en: 'Admin boundary points' },
+      name: {
+        nb: 'Adm. grensepunkt',
+        nn: 'Adm. grensepunkt',
+        en: 'Admin boundary points',
+      },
     },
     {
       id: 'topoQgis_lag29_hoydetall',
@@ -201,7 +254,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag30_stedsnavn_vegnummer_og_adresse',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Stedsnavn, vegnummer og adresse', nn: 'Stadnamn, vegnummer og adresse', en: 'Place names, road numbers and addresses' },
+      name: {
+        nb: 'Stedsnavn, vegnummer og adresse',
+        nn: 'Stadnamn, vegnummer og adresse',
+        en: 'Place names, road numbers and addresses',
+      },
     },
     {
       id: 'topoQgis_lag31_Svalbard',
@@ -321,7 +378,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag11_relieff_skygge',
       categoryId: 'topoQgis_lag11_relieff_skygge',
       groupid: 99,
-      name: { nb: 'Relieff skygge', nn: 'Relieff skugge', en: 'Relief (shadow)' },
+      name: {
+        nb: 'Relieff skygge',
+        nn: 'Relieff skugge',
+        en: 'Relief (shadow)',
+      },
       wmsUrl: mapUrl('lag11_relieff_skygge'),
       layers: 'lag11_relieff_skygge',
       singleImage: true,
@@ -331,7 +392,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag11_relieff_skygge_blaagraa',
       categoryId: 'topoQgis_lag11_relieff_skygge_blaagraa',
       groupid: 99,
-      name: { nb: 'Relieff skygge blågrå', nn: 'Relieff skugge blågrå', en: 'Relief (shadow) blue-gray' },
+      name: {
+        nb: 'Relieff skygge blågrå',
+        nn: 'Relieff skugge blågrå',
+        en: 'Relief (shadow) blue-gray',
+      },
       wmsUrl: mapUrl('lag11_relieff_skygge_blaagraa'),
       layers: 'lag11_relieff_skygge_blaagraa',
       singleImage: true,
@@ -351,7 +416,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag13_grense_adm_maritim_fare_naturvern',
       categoryId: 'topoQgis_lag13_grense_adm_maritim_fare_naturvern',
       groupid: 99,
-      name: { nb: 'Grense, adm., maritim, fare, naturvern', nn: 'Grense, adm., maritim, fare, naturvern', en: 'Boundaries, admin, maritime, hazard, nature' },
+      name: {
+        nb: 'Grense, adm., maritim, fare, naturvern',
+        nn: 'Grense, adm., maritim, fare, naturvern',
+        en: 'Boundaries, admin, maritime, hazard, nature',
+      },
       wmsUrl: mapUrl('lag13_grense_adm_maritim_fare_naturvern'),
       layers: 'lag13_grense_adm_maritim_fare_naturvern',
       singleImage: true,
@@ -361,7 +430,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag14_vannkontur_elvbekk',
       categoryId: 'topoQgis_lag14_vannkontur_elvbekk',
       groupid: 99,
-      name: { nb: 'Vannkontur, elv og bekk', nn: 'Vasskontur, elv og bekk', en: 'Water contour, rivers, streams' },
+      name: {
+        nb: 'Vannkontur, elv og bekk',
+        nn: 'Vasskontur, elv og bekk',
+        en: 'Water contour, rivers, streams',
+      },
       wmsUrl: mapUrl('lag14_vannkontur_elvbekk'),
       layers: 'lag14_vannkontur_elvbekk',
       singleImage: true,
@@ -371,7 +444,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag15_fkb_bygnanlegg',
       categoryId: 'topoQgis_lag15_fkb_bygnanlegg',
       groupid: 99,
-      name: { nb: 'FKB bygg og anlegg', nn: 'FKB bygg og anlegg', en: 'FKB buildings and infrastructure' },
+      name: {
+        nb: 'FKB bygg og anlegg',
+        nn: 'FKB bygg og anlegg',
+        en: 'FKB buildings and infrastructure',
+      },
       wmsUrl: mapUrl('lag15_fkb_bygnanlegg'),
       layers: 'lag15_fkb_bygnanlegg',
       singleImage: true,
@@ -381,7 +458,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag16_fkb_samferdselflate_terreng',
       categoryId: 'topoQgis_lag16_fkb_samferdselflate_terreng',
       groupid: 99,
-      name: { nb: 'FKB samferdselflate terreng', nn: 'FKB samferdselflate terreng', en: 'FKB transport surface terrain' },
+      name: {
+        nb: 'FKB samferdselflate terreng',
+        nn: 'FKB samferdselflate terreng',
+        en: 'FKB transport surface terrain',
+      },
       wmsUrl: mapUrl('lag16_fkb_samferdselflate_terreng'),
       layers: 'lag16_fkb_samferdselflate_terreng',
       singleImage: true,
@@ -391,7 +472,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag17_samferdsel_anlegg',
       categoryId: 'topoQgis_lag17_samferdsel_anlegg',
       groupid: 99,
-      name: { nb: 'Samferdsel anlegg', nn: 'Samferdsel anlegg', en: 'Transport infrastructure' },
+      name: {
+        nb: 'Samferdsel anlegg',
+        nn: 'Samferdsel anlegg',
+        en: 'Transport infrastructure',
+      },
       wmsUrl: mapUrl('lag17_samferdsel_anlegg'),
       layers: 'lag17_samferdsel_anlegg',
       singleImage: true,
@@ -401,7 +486,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag18_samferdsel_tunnel',
       categoryId: 'topoQgis_lag18_samferdsel_tunnel',
       groupid: 99,
-      name: { nb: 'Samferdsel tunnel', nn: 'Samferdsel tunnel', en: 'Transport tunnels' },
+      name: {
+        nb: 'Samferdsel tunnel',
+        nn: 'Samferdsel tunnel',
+        en: 'Transport tunnels',
+      },
       wmsUrl: mapUrl('lag18_samferdsel_tunnel'),
       layers: 'lag18_samferdsel_tunnel',
       singleImage: true,
@@ -421,7 +510,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag20_samferdsel_terreng',
       categoryId: 'topoQgis_lag20_samferdsel_terreng',
       groupid: 99,
-      name: { nb: 'Samferdsel terreng', nn: 'Samferdsel terreng', en: 'Transport terrain' },
+      name: {
+        nb: 'Samferdsel terreng',
+        nn: 'Samferdsel terreng',
+        en: 'Transport terrain',
+      },
       wmsUrl: mapUrl('lag20_samferdsel_terreng'),
       layers: 'lag20_samferdsel_terreng',
       singleImage: true,
@@ -431,7 +524,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag21_bygning_anlegg',
       categoryId: 'topoQgis_lag21_bygning_anlegg',
       groupid: 99,
-      name: { nb: 'Bygning og anlegg', nn: 'Bygning og anlegg', en: 'Buildings and facilities' },
+      name: {
+        nb: 'Bygning og anlegg',
+        nn: 'Bygning og anlegg',
+        en: 'Buildings and facilities',
+      },
       wmsUrl: mapUrl('lag21_bygning_anlegg'),
       layers: 'lag21_bygning_anlegg',
       singleImage: true,
@@ -471,7 +568,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag25_kraftlinje_taubane',
       categoryId: 'topoQgis_lag25_kraftlinje_taubane',
       groupid: 99,
-      name: { nb: 'Kraftlinje og taubane', nn: 'Kraftlinje og taubane', en: 'Power lines and cable cars' },
+      name: {
+        nb: 'Kraftlinje og taubane',
+        nn: 'Kraftlinje og taubane',
+        en: 'Power lines and cable cars',
+      },
       wmsUrl: mapUrl('lag25_kraftlinje_taubane'),
       layers: 'lag25_kraftlinje_taubane',
       singleImage: true,
@@ -491,7 +592,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag27_sykehus_m_akuttmottak',
       categoryId: 'topoQgis_lag27_sykehus_m_akuttmottak',
       groupid: 99,
-      name: { nb: 'Sykehus m/ akuttmottak', nn: 'Sjukehus m/ akuttmottak', en: 'Hospitals with A&E' },
+      name: {
+        nb: 'Sykehus m/ akuttmottak',
+        nn: 'Sjukehus m/ akuttmottak',
+        en: 'Hospitals with A&E',
+      },
       wmsUrl: mapUrl('lag27_sykehus_m_akuttmottak'),
       layers: 'lag27_sykehus_m_akuttmottak',
       singleImage: true,
@@ -501,7 +606,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag28_adm_grensepunkt',
       categoryId: 'topoQgis_lag28_adm_grensepunkt',
       groupid: 99,
-      name: { nb: 'Adm. grensepunkt', nn: 'Adm. grensepunkt', en: 'Admin boundary points' },
+      name: {
+        nb: 'Adm. grensepunkt',
+        nn: 'Adm. grensepunkt',
+        en: 'Admin boundary points',
+      },
       wmsUrl: mapUrl('lag28_adm_grensepunkt'),
       layers: 'lag28_adm_grensepunkt',
       singleImage: true,
@@ -521,7 +630,11 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag30_stedsnavn_vegnummer_og_adresse',
       categoryId: 'topoQgis_lag30_stedsnavn_vegnummer_og_adresse',
       groupid: 99,
-      name: { nb: 'Stedsnavn, vegnummer og adresse', nn: 'Stadnamn, vegnummer og adresse', en: 'Place names, road numbers and addresses' },
+      name: {
+        nb: 'Stedsnavn, vegnummer og adresse',
+        nn: 'Stadnamn, vegnummer og adresse',
+        en: 'Place names, road numbers and addresses',
+      },
       wmsUrl: mapUrl('lag30_stedsnavn_vegnummer_og_adresse'),
       layers: 'lag30_stedsnavn_vegnummer_og_adresse',
       singleImage: true,

@@ -2,8 +2,8 @@ import ImageLayer from 'ol/layer/Image.js';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import { ImageWMS, TileWMS } from 'ol/source';
-import { createGeoJsonThemeLayer } from './themeGeoJson';
 import { registerLayer, updateStatus } from './layerMatrixLogger';
+import { createGeoJsonThemeLayer } from './themeGeoJson';
 import type {
   ThemeLayerConfig,
   ThemeLayerDefinition,

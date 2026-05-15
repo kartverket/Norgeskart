@@ -35,7 +35,11 @@ export function registerLayer(layerId: string, info: LayerInfo): void {
   if (!matrix[layerId]) matrix[layerId] = {};
 }
 
-const STATUS_RANK: Record<LayerStatus, number> = { error: 2, ok: 1, loading: 0 };
+const STATUS_RANK: Record<LayerStatus, number> = {
+  error: 2,
+  ok: 1,
+  loading: 0,
+};
 
 export function updateStatus(layerId: string, status: LayerStatus): void {
   const zoom = getCurrentZoom();
@@ -137,8 +141,12 @@ window.copyLayerMatrix = () => {
   };
   navigator.clipboard
     .writeText(JSON.stringify(summary, null, 2))
-    .then(() => console.log('%c[LayerMatrix] ✓ Copied to clipboard!', 'color: #0a6'))
-    .catch(() => console.warn('[LayerMatrix] Clipboard write failed — see JSON above'));
+    .then(() =>
+      console.log('%c[LayerMatrix] ✓ Copied to clipboard!', 'color: #0a6'),
+    )
+    .catch(() =>
+      console.warn('[LayerMatrix] Clipboard write failed — see JSON above'),
+    );
 };
 
 console.info(

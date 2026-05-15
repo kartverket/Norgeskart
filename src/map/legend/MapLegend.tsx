@@ -4,7 +4,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { displayMapLegendAtom } from '../atoms';
 import { activeThemeLayersAtom } from '../layers/atoms';
-import { allConfiguredBackgroundLayers, backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
+import {
+  allConfiguredBackgroundLayers,
+  backgroundLayerAtom,
+} from '../layers/config/backgroundLayers/atoms';
 import { BackgroundLegend } from './BackgroundLegend';
 import { SingleLayerLegend } from './SingleLayerLegend';
 
@@ -16,7 +19,10 @@ export const MapLegend = () => {
   const layers = Array.from(activeThemeLayers);
 
   const hasBackgroundLegend = allConfiguredBackgroundLayers.some(
-    (config) => config.layerName === backgroundLayerName && 'legendUrl' in config && !!config.legendUrl,
+    (config) =>
+      config.layerName === backgroundLayerName &&
+      'legendUrl' in config &&
+      !!config.legendUrl,
   );
 
   if (layers.length === 0 && !hasBackgroundLegend) {

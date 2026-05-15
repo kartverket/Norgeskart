@@ -15,6 +15,8 @@ export const topoCacheBackgroundLayers: BackgroundLayer[] = [
     layerName: 'topo_test',
     wmtsLayerName: 'topo',
     provider: TopoCacheProvider,
-    legendUrl: env.layerProviderParameters.topoCache.baseUrl + '/legend/topo-{scale}.png',
+    legendUrl:
+      env.layerProviderParameters.topoCache.baseUrl +
+      '/legend/topo-{scale}.png',
   },
 ];
