@@ -1,4 +1,6 @@
-import { Image } from '@kvib/react';
+import { Box, Image } from '@kvib/react';
+import { useAtomValue } from 'jotai';
+import { scaleAtom } from '../atoms';
 import {
   getEffectiveLegendImageUrl,
   ThemeLayerConfig,
@@ -13,6 +15,8 @@ export const ImageLegend = ({
   config: ThemeLayerConfig;
   layer: ThemeLayerDefinition;
 }) => {
+  const scale = useAtomValue(scaleAtom);
+
   if (!layer.useLegendGraphic) {
     return null;
   }
@@ -20,9 +24,14 @@ export const ImageLegend = ({
   const imageUrl = getEffectiveLegendImageUrl(
     config,
     layer.id as ThemeLayerName,
+    scale,
   );
   if (!imageUrl) {
     return null;
   }
-  return <Image src={imageUrl} />;
+  return (
+    <Box maxW="100%" overflowX="auto">
+      <Image src={imageUrl} />
+    </Box>
+  );
 };

@@ -192,6 +192,7 @@ export const getEffectiveLegendUrl = (
 export const getEffectiveLegendImageUrl = (
   config: ThemeLayerConfig,
   id: ThemeLayerName,
+  scale?: number | null,
 ) => {
   const layer = getThemeLayerById(config, id);
   if (!layer) {
@@ -199,10 +200,12 @@ export const getEffectiveLegendImageUrl = (
   }
   if (layer.useLegendGraphic) {
     const wmsUrl = getEffectiveWmsUrl(config, layer);
+    const scaleParam = scale ? `&SCALE=${scale}` : '';
     return (
       wmsUrl +
-      '?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image/png&LAYER=' +
-      layer.layers
+      '?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image/png&STYLE=default&LAYERTITLE=false&LAYER=' +
+      layer.layers +
+      scaleParam
     );
   }
   return undefined;
