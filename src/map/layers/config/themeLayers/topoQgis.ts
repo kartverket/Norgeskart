@@ -99,7 +99,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       id: 'topoQgis_lag13_grense_adm_maritim_fare_naturvern',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Grense, adm., maritim, fare, naturvern', nn: 'Grense, adm., maritim, fare, naturvern', en: 'Boundaries, admin, maritime, hazard, nature' },
+      name: { nb: 'Grense, adm., maritim, fare, naturvern', nn: 'Grense, adm., maritim, fare, naturvern', en: 'Boundaries, admin, maritime, hazard, nature' },      
     },
     {
       id: 'topoQgis_lag14_vannkontur_elvbekk',
@@ -225,6 +225,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag01_hav'),
       layers: 'lag01_hav',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag02_dybdelag_gebco',
@@ -234,6 +235,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag02_dybdelag_gebco'),
       layers: 'lag02_dybdelag_gebco',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag03_dybdelag_sjo',
@@ -243,6 +245,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag03_dybdelag_sjo'),
       layers: 'lag03_dybdelag_sjo',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag04_Europa',
@@ -252,6 +255,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag04_Europa'),
       layers: 'lag04_Europa',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag05_hoydelag',
@@ -261,6 +265,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag05_hoydelag'),
       layers: 'lag05_hoydelag',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag06_arealdekke',
@@ -270,6 +275,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag06_arealdekke'),
       layers: 'lag06_arealdekke',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag07_elveflate',
@@ -279,6 +285,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag07_elveflate'),
       layers: 'lag07_elveflate',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag08_sjodybde',
@@ -288,6 +295,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag08_sjodybde'),
       layers: 'lag08_sjodybde',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag09_relieff_sol',
@@ -297,6 +305,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag09_relieff_sol'),
       layers: 'lag09_relieff_sol',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag10_hoydekurve',
@@ -306,6 +315,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag10_hoydekurve'),
       layers: 'lag10_hoydekurve',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag11_relieff_skygge',
@@ -315,6 +325,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag11_relieff_skygge'),
       layers: 'lag11_relieff_skygge',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag11_relieff_skygge_blaagraa',
@@ -324,6 +335,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag11_relieff_skygge_blaagraa'),
       layers: 'lag11_relieff_skygge_blaagraa',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag12_innsjoflate',
@@ -333,6 +345,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag12_innsjoflate'),
       layers: 'lag12_innsjoflate',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag13_grense_adm_maritim_fare_naturvern',
@@ -342,6 +355,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag13_grense_adm_maritim_fare_naturvern'),
       layers: 'lag13_grense_adm_maritim_fare_naturvern',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag14_vannkontur_elvbekk',
@@ -351,6 +365,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag14_vannkontur_elvbekk'),
       layers: 'lag14_vannkontur_elvbekk',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag15_fkb_bygnanlegg',
@@ -360,6 +375,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag15_fkb_bygnanlegg'),
       layers: 'lag15_fkb_bygnanlegg',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag16_fkb_samferdselflate_terreng',
@@ -369,6 +385,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag16_fkb_samferdselflate_terreng'),
       layers: 'lag16_fkb_samferdselflate_terreng',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag17_samferdsel_anlegg',
@@ -378,6 +395,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag17_samferdsel_anlegg'),
       layers: 'lag17_samferdsel_anlegg',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag18_samferdsel_tunnel',
@@ -387,6 +405,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag18_samferdsel_tunnel'),
       layers: 'lag18_samferdsel_tunnel',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag19_samferdsel_batrute',
@@ -396,6 +415,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag19_samferdsel_batrute'),
       layers: 'lag19_samferdsel_batrute',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag20_samferdsel_terreng',
@@ -405,6 +425,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag20_samferdsel_terreng'),
       layers: 'lag20_samferdsel_terreng',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag21_bygning_anlegg',
@@ -414,6 +435,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag21_bygning_anlegg'),
       layers: 'lag21_bygning_anlegg',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag22_samferdsel_bru',
@@ -423,6 +445,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag22_samferdsel_bru'),
       layers: 'lag22_samferdsel_bru',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag23_bygning_bygningslinje',
@@ -432,6 +455,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag23_bygning_bygningslinje'),
       layers: 'lag23_bygning_bygningslinje',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag24_lufthavn_S3',
@@ -441,6 +465,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag24_lufthavn_S3'),
       layers: 'lag24_lufthavn_S3',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag25_kraftlinje_taubane',
@@ -450,6 +475,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag25_kraftlinje_taubane'),
       layers: 'lag25_kraftlinje_taubane',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag26_hoydepunkt',
@@ -459,6 +485,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag26_hoydepunkt'),
       layers: 'lag26_hoydepunkt',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag27_sykehus_m_akuttmottak',
@@ -468,6 +495,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag27_sykehus_m_akuttmottak'),
       layers: 'lag27_sykehus_m_akuttmottak',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag28_adm_grensepunkt',
@@ -477,6 +505,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag28_adm_grensepunkt'),
       layers: 'lag28_adm_grensepunkt',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag29_hoydetall',
@@ -486,6 +515,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag29_hoydetall'),
       layers: 'lag29_hoydetall',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag30_stedsnavn_vegnummer_og_adresse',
@@ -495,6 +525,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag30_stedsnavn_vegnummer_og_adresse'),
       layers: 'lag30_stedsnavn_vegnummer_og_adresse',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag31_Svalbard',
@@ -504,6 +535,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag31_Svalbard'),
       layers: 'lag31_Svalbard',
       singleImage: true,
+      useLegendGraphic: true,
     },
     {
       id: 'topoQgis_lag32_Jan_Mayen',
@@ -513,6 +545,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       wmsUrl: mapUrl('lag32_Jan_Mayen'),
       layers: 'lag32_Jan_Mayen',
       singleImage: true,
+      useLegendGraphic: true,
     },
   ],
 };
