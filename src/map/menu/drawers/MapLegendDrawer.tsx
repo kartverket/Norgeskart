@@ -2,29 +2,18 @@ import { DrawerContent } from '@chakra-ui/react';
 import { Drawer, DrawerPositioner, useBreakpointValue } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { displayMapLegendAtom } from '../../atoms';
+import { displayMapLegendAtom, hasBackgroundLegendAtom } from '../../atoms';
 import { activeThemeLayersAtom } from '../../layers/atoms';
-import {
-  allConfiguredBackgroundLayers,
-  backgroundLayerAtom,
-} from '../../layers/config/backgroundLayers/atoms';
 import { MapLegend } from '../../legend/MapLegend';
 
 export const MapLegendDrawer = () => {
   const [isOpen, setIsOpen] = useAtom(displayMapLegendAtom);
   const [activeLayers] = useAtom(activeThemeLayersAtom);
-  const backgroundLayerName = useAtomValue(backgroundLayerAtom);
+  const hasBackgroundLegend = useAtomValue(hasBackgroundLegendAtom);
   const isSmallScreen = useBreakpointValue({
     base: true,
     lg: false,
   });
-
-  const hasBackgroundLegend = allConfiguredBackgroundLayers.some(
-    (config) =>
-      config.layerName === backgroundLayerName &&
-      'legendUrl' in config &&
-      !!config.legendUrl,
-  );
 
   useEffect(() => {
     if (isOpen && activeLayers.size === 0 && !hasBackgroundLegend) {

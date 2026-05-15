@@ -1,10 +1,6 @@
 import { Box, Image } from '@kvib/react';
 import { useAtomValue } from 'jotai';
-import { availableScales, scaleAtom } from '../atoms';
-import {
-  allConfiguredBackgroundLayers,
-  backgroundLayerAtom,
-} from '../layers/config/backgroundLayers/atoms';
+import { availableScales, backgroundLegendUrlAtom, scaleAtom } from '../atoms';
 
 const snapToNearest = (scale: number): number =>
   availableScales.reduce((prev, curr) =>
@@ -13,21 +9,14 @@ const snapToNearest = (scale: number): number =>
 
 export const BackgroundLegend = () => {
   const scale = useAtomValue(scaleAtom);
-  const backgroundLayerName = useAtomValue(backgroundLayerAtom);
+  const legendUrl = useAtomValue(backgroundLegendUrlAtom);
 
-  const layerConfig = allConfiguredBackgroundLayers.find(
-    (config) => config.layerName === backgroundLayerName,
-  );
-
-  if (!layerConfig || !('legendUrl' in layerConfig) || !layerConfig.legendUrl) {
+  if (!legendUrl) {
     return null;
   }
 
   const snappedScale = scale ? snapToNearest(scale) : availableScales[4];
-  const imageUrl = layerConfig.legendUrl.replace(
-    '{scale}',
-    String(snappedScale),
-  );
+  const imageUrl = legendUrl.replace('{scale}', String(snappedScale));
 
   return (
     <Box maxW="100%" overflowX="auto">

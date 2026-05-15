@@ -38,24 +38,36 @@ export const mapOrientationDegreesAtom = atom<number>((get) => {
 });
 
 export const displayMapLegendAtom = atom<boolean>(false);
+
+export const hasBackgroundLegendAtom = atom<boolean>((get) => {
+  const backgroundLayerName = get(backgroundLayerAtom);
+  return allConfiguredBackgroundLayers.some(
+    (config) =>
+      config.layerName === backgroundLayerName &&
+      'legendUrl' in config &&
+      !!config.legendUrl,
+  );
+});
+
+export const backgroundLegendUrlAtom = atom<string | undefined>((get) => {
+  const backgroundLayerName = get(backgroundLayerAtom);
+  const layerConfig = allConfiguredBackgroundLayers.find(
+    (config) => config.layerName === backgroundLayerName,
+  );
+  if (!layerConfig || !('legendUrl' in layerConfig)) return undefined;
+  return (layerConfig as { legendUrl?: string }).legendUrl;
+});
+
 export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
-  const backgroundLayerName = get(backgroundLayerAtom);
 
   const hasThemeLegend = Array.from(activeThemeLayers).some((layerName) => {
     const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;
   });
 
-  const hasBackgroundLegend = allConfiguredBackgroundLayers.some(
-    (config) =>
-      config.layerName === backgroundLayerName &&
-      'legendUrl' in config &&
-      !!config.legendUrl,
-  );
-
-  return !displayMapLegned && (hasThemeLegend || hasBackgroundLegend);
+  return !displayMapLegned && (hasThemeLegend || get(hasBackgroundLegendAtom));
 });
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
