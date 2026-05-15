@@ -4,16 +4,25 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { displayMapLegendAtom } from '../atoms';
 import { activeThemeLayersAtom } from '../layers/atoms';
+import { allConfiguredBackgroundLayers, backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
+import { BackgroundLegend } from './BackgroundLegend';
 import { SingleLayerLegend } from './SingleLayerLegend';
 
 export const MapLegend = () => {
   const { t } = useTranslation();
   const activeThemeLayers = useAtomValue(activeThemeLayersAtom);
   const setShowMapLegend = useSetAtom(displayMapLegendAtom);
+  const backgroundLayerName = useAtomValue(backgroundLayerAtom);
   const layers = Array.from(activeThemeLayers);
-  if (layers.length === 0) {
+
+  const hasBackgroundLegend = allConfiguredBackgroundLayers.some(
+    (config) => config.layerName === backgroundLayerName && 'legendUrl' in config && !!config.legendUrl,
+  );
+
+  if (layers.length === 0 && !hasBackgroundLegend) {
     return null;
   }
+
   return (
     <Stack
       w={'100%'}
@@ -33,6 +42,7 @@ export const MapLegend = () => {
           onClick={() => setShowMapLegend(false)}
         />
       </HStack>
+      <BackgroundLegend />
       <AccordionRoot
         collapsible
         multiple

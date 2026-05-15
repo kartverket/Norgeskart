@@ -41,12 +41,18 @@ export const displayMapLegendAtom = atom<boolean>(false);
 export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
+  const backgroundLayerName = get(backgroundLayerAtom);
 
-  const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
+  const hasThemeLegend = Array.from(activeThemeLayers).some((layerName) => {
     const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;
   });
-  return !displayMapLegned && hasLegend;
+
+  const hasBackgroundLegend = allConfiguredBackgroundLayers.some(
+    (config) => config.layerName === backgroundLayerName && 'legendUrl' in config && !!config.legendUrl,
+  );
+
+  return !displayMapLegned && (hasThemeLegend || hasBackgroundLegend);
 });
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);

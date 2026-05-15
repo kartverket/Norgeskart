@@ -25,6 +25,7 @@ export type WMTSBackgroundLayer = BackgroundLayerBase & {
   layerName: WMTSLayerName;
   wmtsLayerName?: string;
   provider: LayerProvider;
+  legendUrl?: string;
 };
 
 export type VectorTileBackgroundLayer = BackgroundLayerBase & {
