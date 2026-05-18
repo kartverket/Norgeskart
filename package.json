@@ -51,7 +51,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@vitejs/plugin-react": "^6.0.1",
-    "@vitest/coverage-v8": "^4.1.4",
+    "@vitest/coverage-v8": "^4.1.6",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^10.4.0",
     "eslint-plugin-compat": "^7.0.2",
