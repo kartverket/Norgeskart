@@ -37,7 +37,7 @@ export const formatArea = (areaInSquareMeters: number, unit?: DistanceUnit) => {
       return `${formatNumberWithThousandSeparators(areaInSquareNauticalMiles, 2)} NM²`;
     }
 
-    case undefined:
+    case undefined: // Default to square meters if no unit is specified
     case 'm': {
       if (areaInSquareMeters < 1000) {
         return `${formatNumberWithThousandSeparators(areaInSquareMeters, 2)} m²`;
