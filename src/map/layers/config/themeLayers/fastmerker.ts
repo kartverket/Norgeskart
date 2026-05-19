@@ -81,6 +81,12 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           unit: 'mm',
         },
         {
+          name: 'ellipsoidisk_hoyde',
+          alias: 'Ellipsoidisk høyde',
+          unit: 'm',
+          decimals: 3,
+        },
+        {
           name: 'beskrivelse',
           alias: 'Beskrivelse',
         },
