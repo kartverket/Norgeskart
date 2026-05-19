@@ -86,7 +86,10 @@ export const getVectorTileLayer = (layerConfig: VectorTileBackgroundLayer) => {
     },
   });
 
-  // temp fix for typeErrors from ol-maplibre-layer, to be removed in future versions of ol-maplibre-layer!
+  // TODO(ol-maplibre-layer): Remove this workaround after upgrading
+  // `@geoblocks/ol-maplibre-layer` to a version that correctly exposes source
+  // attributions without manually reading `sourceCaches` / `tileManagers`.
+  // Upstream package: https://github.com/geoblocks/ol-maplibre-layer
   layer.getSource()?.setAttributions(() => {
     const mlMap = layer.mapLibreMap;
     if (!mlMap?.style) return [];
