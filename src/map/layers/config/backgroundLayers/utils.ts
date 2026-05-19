@@ -85,6 +85,22 @@ export const getVectorTileLayer = (layerConfig: VectorTileBackgroundLayer) => {
       isVectorTile: true,
     },
   });
+  
+  // temp fix for typeErrors from ol-maplibre-layer, to be removed in future versions of ol-maplibre-layer!
+  layer.getSource()?.setAttributions(() => {
+    const mlMap = layer.mapLibreMap;
+    if (!mlMap?.style) return [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const caches = (mlMap.style as any).sourceCaches ?? (mlMap.style as any).tileManagers;
+    if (!caches) return [];
+    return Object.values(caches).flatMap((cache: any) => {
+      if (!cache.used) return [];
+      const { attribution } = cache.getSource() as { attribution?: string };
+      return attribution
+        ? attribution.replace(/&copy;/g, '©').split(/(<a.*?<\/a>)/).filter(Boolean)
+        : [];
+    });
+  });
   return layer;
 };
 
