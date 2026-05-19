@@ -4,6 +4,7 @@ import { Geometry } from 'ol/geom';
 import BaseLayer from 'ol/layer/Base';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
+import VectorTileLayer from 'ol/layer/VectorTile';
 import Map from 'ol/Map';
 import { TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
@@ -425,18 +426,29 @@ export const getVectorFeaturesAtPixel = (
   pixel: [number, number],
 ): LayerFeatureInfo[] => {
   const visibleVectorLayers = getVisibleVectorLayers(map);
+  const visibleMvtLayers = map
+    .getLayers()
+    .getArray()
+    .filter((layer): layer is VectorTileLayer => {
+      if (!(layer instanceof VectorTileLayer)) return false;
+      const id = layer.get('id');
+      return (
+        typeof id === 'string' && id.startsWith('theme.') && layer.getVisible()
+      );
+    });
 
-  if (visibleVectorLayers.length === 0) {
+  const allLayers: BaseLayer[] = [...visibleVectorLayers, ...visibleMvtLayers];
+
+  if (allLayers.length === 0) {
     return [];
   }
 
-  type VectorLayerType = VectorLayer<VectorSource<Feature<Geometry>>>;
   const layerFeaturesRecord: Record<
     string,
-    { layer: VectorLayerType; features: FeatureInfoFeature[] }
+    { layer: BaseLayer; features: FeatureInfoFeature[] }
   > = {};
 
-  visibleVectorLayers.forEach((layer) => {
+  allLayers.forEach((layer) => {
     const id = (layer.get('id') as string) || String(Math.random());
     layerFeaturesRecord[id] = { layer, features: [] };
   });
@@ -444,47 +456,51 @@ export const getVectorFeaturesAtPixel = (
   map.forEachFeatureAtPixel(
     pixel,
     (feature, layer) => {
-      if (layer instanceof VectorLayer) {
-        const layerId = (layer.get('id') as string) || '';
-        const record = layerFeaturesRecord[layerId];
+      if (
+        !(layer instanceof VectorLayer) &&
+        !(layer instanceof VectorTileLayer)
+      ) {
+        return;
+      }
+      const layerId = (layer.get('id') as string) || '';
+      const record = layerFeaturesRecord[layerId];
 
-        if (record) {
-          const properties = feature.getProperties();
-          const featureInfo: FeatureInfoFeature = {
-            properties: {},
-          };
+      if (record) {
+        const properties = feature.getProperties();
+        const featureInfo: FeatureInfoFeature = {
+          properties: {},
+        };
 
-          const featureId = feature.getId();
-          if (featureId !== undefined) {
-            featureInfo.id = String(featureId);
+        const featureId = feature.getId();
+        if (featureId !== undefined) {
+          featureInfo.id = String(featureId);
+        }
+
+        for (const [key, value] of Object.entries(properties)) {
+          if (
+            key === 'geometry' ||
+            key.startsWith('_') ||
+            value instanceof Geometry
+          ) {
+            continue;
           }
 
-          for (const [key, value] of Object.entries(properties)) {
-            if (
-              key === 'geometry' ||
-              key.startsWith('_') ||
-              value instanceof Geometry
-            ) {
-              continue;
-            }
-
-            if (value === null || value === undefined) {
-              continue;
-            } else if (typeof value === 'object') {
-              featureInfo.properties[key] = JSON.stringify(value);
-            } else {
-              featureInfo.properties[key] = value;
-            }
+          if (value === null || value === undefined) {
+            continue;
+          } else if (typeof value === 'object') {
+            featureInfo.properties[key] = JSON.stringify(value);
+          } else {
+            featureInfo.properties[key] = value;
           }
+        }
 
-          if (Object.keys(featureInfo.properties).length > 0) {
-            record.features.push(featureInfo);
-          }
+        if (Object.keys(featureInfo.properties).length > 0) {
+          record.features.push(featureInfo);
         }
       }
     },
     {
-      hitTolerance: 5, // Allow clicking slightly off the feature, adjust later
+      hitTolerance: 5,
     },
   );
 

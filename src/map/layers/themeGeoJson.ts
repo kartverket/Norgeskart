@@ -10,7 +10,7 @@ import type {
   ThemeLayerStyle,
 } from '../../api/themeLayerConfigApi';
 
-const createStyleFromConfig = (
+export const createStyleFromConfig = (
   styleConfig: ThemeLayerStyle | undefined,
 ): ((feature: FeatureLike) => Style) => {
   return (feature: FeatureLike) => {
@@ -59,6 +59,12 @@ export const createGeoJsonThemeLayer = (
       dataProjection: sourceEpsg,
       featureProjection: mapProjection,
     }),
+  });
+
+  vectorSource.on('featuresloaderror', () => {
+    console.error(
+      `Failed to load GeoJSON for layer: ${layerDef.id} (${layerDef.geojsonUrl})`,
+    );
   });
 
   return new VectorLayer({

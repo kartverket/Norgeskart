@@ -1,10 +1,10 @@
 import { atom } from 'jotai';
 import { borderConfig } from '../map/layers/config/borders';
 import { dekningConfig } from '../map/layers/config/dekning';
-import { ogcApiFylkerConfig } from '../map/layers/config/ogcApiFylker';
-import { ogcApiKommunerConfig } from '../map/layers/config/ogcApiKommuner';
 import { fastmerkerLayerConfig } from '../map/layers/config/fastmerker';
 import { historicalMapsConfig } from '../map/layers/config/historicalMaps';
+import { ogcApiFylkerConfig } from '../map/layers/config/ogcApiFylker';
+import { ogcApiKommunerConfig } from '../map/layers/config/ogcApiKommuner';
 import { outdoorRecreationLayerConfig } from '../map/layers/config/outdoorRecreation';
 import { placeNamesConfig } from '../map/layers/config/placeNames';
 import { propertyInfoConfig } from '../map/layers/config/propertyInfo';
@@ -59,9 +59,10 @@ export interface ThemeLayerDefinition {
     nn: string;
     en: string;
   };
-  type?: 'wms' | 'geojson';
+  type?: 'wms' | 'geojson' | 'mvt';
   wmsUrl?: string;
   geojsonUrl?: string;
+  mvtUrl?: string;
   sourceEpsg?: string;
   style?: ThemeLayerStyle;
   legendUrl?: string;

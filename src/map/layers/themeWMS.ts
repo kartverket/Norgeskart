@@ -1,5 +1,6 @@
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
+import VectorTileLayer from 'ol/layer/VectorTile';
 import { TileWMS } from 'ol/source';
 import type {
   ThemeLayerConfig,
@@ -11,6 +12,7 @@ import {
   getParentCategory,
 } from '../../api/themeLayerConfigApi';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
+import { createMvtThemeLayer } from './themeMvt';
 
 type HistoricalMapsLayerName = 'economicMapFirstEdition' | 'amtMap';
 
@@ -85,6 +87,12 @@ type SjoLayerName =
   | 'sjoKontinentalsokkel'
   | 'sjoAvtaltAvgrensningslinje';
 
+type OgcApiLayerName =
+  | 'ogcApiFylkerLayer'
+  | 'ogcApiKommunerLayer'
+  | 'ogcApiFylkerKystkonturLayer'
+  | 'ogcApiKommunerKystkonturLayer';
+
 type ConfigThemeLayerName =
   | 'historicalRoute'
   | 'coastalTrail'
@@ -119,7 +127,8 @@ export type ThemeLayerName =
   | HistoricalMapsLayerName
   | StedsnavnLayerName
   | ConfigThemeLayerName
-  | SjoLayerName;
+  | SjoLayerName
+  | OgcApiLayerName;
 
 export const QUERYABLE_LAYERS: ThemeLayerName[] = [
   'adresses',
@@ -136,7 +145,11 @@ export const createThemeLayerFromConfig = (
   config: ThemeLayerConfig,
   layerDef: ThemeLayerDefinition,
   projection: string,
-): TileLayer | VectorLayer | null => {
+): TileLayer | VectorLayer | VectorTileLayer | null => {
+  if (layerDef.type === 'mvt' && layerDef.mvtUrl) {
+    return createMvtThemeLayer(layerDef);
+  }
+
   if (layerDef.type === 'geojson' && layerDef.geojsonUrl) {
     return createGeoJsonThemeLayer(layerDef, projection);
   }

@@ -29,6 +29,8 @@ const isProjectNameAndCategoryIdMatch = (
         'sjo_nmg',
         'ogcApiFylker',
         'ogcApiKommuner',
+        'ogcApiFylkerKystkontur',
+        'ogcApiKommunerKystkontur',
       ].includes(layerCategoryId);
     case 'seeiendom':
       return ['propertyInfo', 'cadastralData'].includes(layerCategoryId);
