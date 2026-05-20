@@ -336,7 +336,9 @@ export const createGeoJsonLayerWithStyles = (
   const styleCollection: StyleCollection = { version: '2' };
   for (let i = 0; i < geoJson.features.length; i++) {
     const f = geoJson.features[i];
-    if (!f.id) f.id = features[i].getId();
+    if (!f.id) {
+      f.id = `feature-${i}`;
+    }
 
     if (!f.properties) f.properties = {};
     if (f.properties) {

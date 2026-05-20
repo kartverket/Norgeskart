@@ -33,7 +33,7 @@ export const InfoBox = () => {
     setClickedCoordinate(null);
   }, [setSelectedResult, setClickedCoordinate]);
 
-  if (selectedResult === null || isPrintDialogOpen) {
+  if (selectedResult === null) {
     return null;
   }
 
@@ -50,6 +50,7 @@ export const InfoBox = () => {
       overflowY={'hidden'}
       maxHeight="52vh"
       width="100%"
+      display={isPrintDialogOpen ? 'none' : 'flex'}
       maxWidth={isMinimized ? '190px' : '355px'}
     >
       <Flex justifyContent={'flex-end'} alignItems="center" gap={1}>
