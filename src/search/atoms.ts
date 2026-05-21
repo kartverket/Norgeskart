@@ -117,7 +117,7 @@ const searchQueryEffect = atomEffect((get, set) => {
   }
   const currentProjection = (store
     .get(mapAtom)
-    ?.getView()
+    .getView()
     .getProjection()
     .getCode() ?? DEFAULT_PROJECTION) as ProjectionIdentifier;
   const parsedCoordinate = parseCoordinateInput(searchQuery, currentProjection);
