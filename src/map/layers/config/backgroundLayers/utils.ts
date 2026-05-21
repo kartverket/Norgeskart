@@ -107,13 +107,19 @@ export const getVectorTileLayer = (layerConfig: VectorTileBackgroundLayer) => {
     if (!caches) return [];
     return Object.values(caches).flatMap((cache) => {
       if (!cache.used) return [];
-      const { attribution } = cache.getSource();
-      return attribution
-        ? attribution
-            .replace(/&copy;/g, '©')
-            .split(/(<a.*?<\/a>)/)
-            .filter(Boolean)
-        : [];
+      try {
+        const { attribution } = cache.getSource();
+        return attribution
+          ? attribution
+              .replace(/&copy;/g, '©')
+              .split(/(<a.*?<\/a>)/)
+              .filter(Boolean)
+          : [];
+      } catch {
+        // getSource() can throw when a MapLibre source has not yet loaded its
+        // first tile (internal state not ready). Skip such caches silently.
+        return [];
+      }
     });
   });
   return layer;
