@@ -132,7 +132,7 @@ export const SearchComponent = () => {
               </Box>
               {searchQuery.length >= 100 && (
                 <Text fontSize="xs" color="red.500" mt={1}>
-                  Maks 100 tegn
+                  {t('search.maxLength')}
                 </Text>
               )}
             </Box>

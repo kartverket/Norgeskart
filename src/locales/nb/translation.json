@@ -403,7 +403,8 @@
     "tabHeading": "Søk",
     "noResults": "Ingen treff",
     "coordinateSwapWarning": "Koordinatene ser ikke ut til å være i Norge. De kan ha blitt limt inn i feil rekkefølge (lon/lat i stedet for lat/lon).",
-    "coordinateSwapButton": "Bytt rekkefølge"
+    "coordinateSwapButton": "Bytt rekkefølge",
+    "maxLength": "Maks 100 tegn"
   },
   "shared": {
     "actions": {
