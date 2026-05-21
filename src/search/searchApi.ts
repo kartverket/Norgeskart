@@ -71,18 +71,38 @@ export const getAddresses = async (
   }
 };
 
+export const normalizePlaceQuery = (input: string) => {
+  const cleaned = input
+    .replace(/["']/g, '')
+    .replace(/^\s*,+/, '')
+    .replace(/,+\s*$/, '')
+    .trim();
+
+  if (!cleaned) return null;
+
+  const [searchPart, municipalityPart] = cleaned
+    .split(',')
+    .map((p) => p?.trim());
+
+  if (!searchPart) return null;
+
+  return {
+    searchPart,
+    municipalityPart,
+  };
+};
+
 export const PLACE_SEARCH_PAGE_SIZE = 10;
 export const getPlaceNames = async (
   query: string,
   page: number,
 ): Promise<PlaceNameApiResponse> => {
-  const searchPart = query.split(',')[0].trim();
-  const municipalityPart = query.split(',')[1]?.trim();
+  const normalized = normalizePlaceQuery(query);
 
   const url = new URL(`${env.geoNorgeApiBaseUrl}/stedsnavn/v1/navn`);
-  url.searchParams.append('sok', `${searchPart}*`);
-  if (municipalityPart) {
-    url.searchParams.append('kommunenavn', `${municipalityPart}*`);
+  url.searchParams.append('sok', `${normalized?.searchPart}*`);
+  if (normalized?.municipalityPart) {
+    url.searchParams.append('kommunenavn', `${normalized?.municipalityPart}*`);
   }
   url.searchParams.append('treffPerSide', PLACE_SEARCH_PAGE_SIZE.toString());
   url.searchParams.append('side', page.toString());
