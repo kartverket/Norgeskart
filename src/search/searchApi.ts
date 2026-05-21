@@ -73,9 +73,9 @@ export const getAddresses = async (
 
 export const normalizePlaceQuery = (input: string) => {
   const cleaned = input
-    .replace(/["']/g, '')
-    .replace(/^\s*,+/, '')
-    .replace(/,+\s*$/, '')
+    .replace(/["]/g, '') //fjerner fnutter
+    .replace(/^\s*,+/, '') //fjerner komma i starten
+    .replace(/[?\\]/g, '') //fjerner / og ?
     .trim();
 
   if (!cleaned) return null;

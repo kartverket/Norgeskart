@@ -138,7 +138,6 @@ export const SearchComponent = () => {
             </Box>
           </Flex>
         </Box>
-
         <SearchResults
           hoveredResult={hoveredResult}
           setHoveredResult={setHoveredResult}
