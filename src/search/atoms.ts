@@ -115,11 +115,11 @@ const searchQueryEffect = atomEffect((get, set) => {
     clearResults();
     return;
   }
-  const currentProjection = store
+  const currentProjection = (store
     .get(mapAtom)
-    .getView()
+    ?.getView()
     .getProjection()
-    .getCode() as ProjectionIdentifier;
+    .getCode() ?? DEFAULT_PROJECTION) as ProjectionIdentifier;
   const parsedCoordinate = parseCoordinateInput(searchQuery, currentProjection);
 
   set(coordinateResultsAtom, parsedCoordinate);
