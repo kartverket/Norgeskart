@@ -85,6 +85,43 @@ export const getVectorTileLayer = (layerConfig: VectorTileBackgroundLayer) => {
       isVectorTile: true,
     },
   });
+
+  // TODO(ol-maplibre-layer): Remove this workaround after upgrading
+  // `@geoblocks/ol-maplibre-layer` to a version that correctly exposes source
+  // attributions without manually reading `sourceCaches` / `tileManagers`.
+  // Upstream package: https://github.com/geoblocks/ol-maplibre-layer
+  layer.getSource()?.setAttributions(() => {
+    const mlMap = layer.mapLibreMap;
+    if (!mlMap?.style) return [];
+
+    type SourceCache = {
+      used: boolean;
+      getSource: () => { attribution?: string };
+    };
+    type MlStyleInternal = {
+      sourceCaches?: Record<string, SourceCache>;
+      tileManagers?: Record<string, SourceCache>;
+    };
+    const style = mlMap.style as unknown as MlStyleInternal;
+    const caches = style.sourceCaches ?? style.tileManagers;
+    if (!caches) return [];
+    return Object.values(caches).flatMap((cache) => {
+      if (!cache.used) return [];
+      try {
+        const { attribution } = cache.getSource();
+        return attribution
+          ? attribution
+              .replace(/&copy;/g, '©')
+              .split(/(<a.*?<\/a>)/)
+              .filter(Boolean)
+          : [];
+      } catch {
+        // getSource() can throw when a MapLibre source has not yet loaded its
+        // first tile (internal state not ready). Skip such caches silently.
+        return [];
+      }
+    });
+  });
   return layer;
 };
 

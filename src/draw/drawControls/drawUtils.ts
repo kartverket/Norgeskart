@@ -125,6 +125,8 @@ const enableFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
     const radiusText = getCircleRadiusMeasurementText(geometry, unit);
     const areaText = getCircleAreaMeasurementText(geometry, unit);
 
+    feature.set('measurementText', `${areaText}\n${radiusText}`);
+
     const elmArea = document.createElement('div');
     elmArea.id = MEASUREMNT_ELEMENT_PREFIX + featId + 'area';
     elmArea.classList.add(
@@ -195,6 +197,8 @@ const enableFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
     map.addOverlay(radiusOverlay);
   } else {
     const measurementText = getMeasurementText(geometry, projection, unit);
+
+    feature.set('measurementText', measurementText);
 
     const overlayPosition = getGeometryPositionForOverlay(geometry);
     if (!overlayPosition) {

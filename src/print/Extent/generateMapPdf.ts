@@ -5,7 +5,10 @@ import TileLayer from 'ol/layer/Tile';
 import { transform } from 'ol/proj';
 import WMTSSource from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
-import { getDrawLayer } from '../../draw/drawControls/hooks/mapLayers';
+import {
+  getDrawLayer,
+  getPropertyGeometryLayer,
+} from '../../draw/drawControls/hooks/mapLayers';
 import { getEnv } from '../../env';
 import { activeThemeLayersAtom } from '../../map/layers/atoms';
 
@@ -130,7 +133,10 @@ const buildBackgroundPrintLayer = (
         const isRestUrl = rawUrl.includes('{');
         const requestEncoding: 'KVP' | 'REST' = isRestUrl ? 'REST' : 'KVP';
 
-        const baseURL = rawUrl.split('?')[0];
+        const rawBaseUrl = rawUrl.split('?')[0];
+        const baseURL = isRestUrl
+          ? `${rawBaseUrl}?token=${ENV.layerProviderParameters.norgeIBilder.apiKey}`
+          : rawBaseUrl;
 
         return {
           baseURL,
@@ -246,9 +252,12 @@ export const generateMapPdf = async ({
       }
     }
 
-    const drawLayer = getDrawLayer();
-    const source = drawLayer?.getSource();
-    const features = source?.getFeatures() ?? [];
+    const drawFeatures = getDrawLayer()?.getSource()?.getFeatures() ?? [];
+
+    const propertyFeatures =
+      getPropertyGeometryLayer()?.getSource()?.getFeatures() ?? [];
+
+    const features = [...drawFeatures, ...propertyFeatures];
 
     if (features.length > 0) {
       const geoJsonLayer = createGeoJsonLayerWithStyles(

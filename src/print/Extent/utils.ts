@@ -238,6 +238,28 @@ export const getSymbolizersFromStyle = (
       return [];
   }
 };
+
+export const getMeasurementSymbolizer = (feature: OlFeature<Geometry>) => {
+  const text = feature.get('measurementText') as string | undefined;
+  if (!text) return [];
+
+  const symbolizer: PrintSymbolizer = {
+    type: 'text',
+    label: text,
+    fontFamily: 'Arial',
+    fontSize: '12px',
+    fillColor: '#000000',
+    strokeColor: '#ffffff',
+    strokeWidth: 2,
+    fontColor: '#000000',
+    haloColor: '#ffffff',
+    haloOpacity: '1',
+    haloRadius: '2',
+  };
+
+  return [symbolizer];
+};
+
 // Reduce all coordinates to 2D [x, y], discarding any Z/M/null extra dimensions.
 type NestedPositions = Position | NestedPositions[];
 
@@ -314,7 +336,9 @@ export const createGeoJsonLayerWithStyles = (
   const styleCollection: StyleCollection = { version: '2' };
   for (let i = 0; i < geoJson.features.length; i++) {
     const f = geoJson.features[i];
-    if (!f.id) f.id = features[i].getId();
+    if (!f.id) {
+      f.id = `feature-${i}`;
+    }
 
     if (!f.properties) f.properties = {};
     if (f.properties) {
@@ -338,11 +362,14 @@ export const createGeoJsonLayerWithStyles = (
     }
 
     styleCollection[`[IN('${f.id}')]`] = {
-      symbolizers: getSymbolizersFromStyle(
-        features[i].getStyle() as Style,
-        f.geometry?.type,
-        overlayIcon,
-      ),
+      symbolizers: [
+        ...getSymbolizersFromStyle(
+          features[i].getStyle() as Style,
+          f.geometry?.type,
+          overlayIcon,
+        ),
+        ...getMeasurementSymbolizer(features[i]),
+      ],
     };
   }
 

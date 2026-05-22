@@ -7,6 +7,7 @@ import {
   Image,
   Search,
   Spinner,
+  Text,
 } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useState } from 'react';
@@ -116,6 +117,7 @@ export const SearchComponent = () => {
                 height="45px"
                 fontSize="1.1rem"
                 bg="white"
+                maxLength={100}
                 onClick={() => {
                   setDisplaySearchResults(true);
                 }}
@@ -128,10 +130,14 @@ export const SearchComponent = () => {
               >
                 <SearchIcon />
               </Box>
+              {searchQuery.length >= 100 && (
+                <Text fontSize="xs" color="red.500" mt={1}>
+                  {t('search.maxLength')}
+                </Text>
+              )}
             </Box>
           </Flex>
         </Box>
-
         <SearchResults
           hoveredResult={hoveredResult}
           setHoveredResult={setHoveredResult}

@@ -150,12 +150,12 @@
             "category": {
               "label": "Select map category"
             },
-            "description": "Report something wrong with a map in rettikartet.no. Select a category below to open rettikartet in a new window.",
+            "description": "Report something wrong with a map in rettikartet.no. Select from the categories below to open a new window. If you believe a property boundary is shown incorrectly on the map, this must be addressed with the local cadastral authority, meaning the municipality where the property is located. The Norwegian Mapping Authority does not have the authority to make changes to property boundaries.",
             "link": {
               "label": "Open rettikartet.no in a new tab"
             },
             "rettikartetcategories": {
-              "n50kartdata": "N50 maps",
+              "n50kartdata": "Hikingmap",
               "sjo": "Nautical charts",
               "turruter": "Hiking trails",
               "veger": "Roads and adresses"
@@ -195,7 +195,8 @@
             "topoProd": "Topographic",
             "toporaster": "Paper Map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
-            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
+            "empty": "No background"
           }
         },
         "projection": {
@@ -363,8 +364,7 @@
       "granted": "Accepted",
       "denied": "Declined",
       "pending": "Not set"
-    },
-    "userSurveyLinkText": "User survey 2026"
+    }
   },
   "propertyInfo": {
     "address": "Address",
@@ -400,7 +400,8 @@
     "tabHeading": "Search",
     "noResults": "No results found",
     "coordinateSwapWarning": "These coordinates do not appear to be in Norway. They may have been pasted in the wrong order (lon/lat instead of lat/lon).",
-    "coordinateSwapButton": "Swap order"
+    "coordinateSwapButton": "Swap order",
+    "maxLength": "Max 100 characters"
   },
   "shared": {
     "actions": {
@@ -622,7 +623,6 @@
       "error": "Could not download map"
     },
     "vectorTileFallbackWarning": "The nautical background map is not supported by the print service and will be replaced with nautical chart in the print.",
-    "aerialImageryNotSupported": "Aerial imagery is not supported by the print service. Please switch to a different background map to print.",
     "projectionWarning": "The print output will always be in UTM zone 33 (EPSG:25833), regardless of the selected map projection."
   },
   "about": {
