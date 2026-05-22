@@ -25,11 +25,12 @@ const trackApiError = (
 ) => {
   console.error(`Search API error [${context.searchType}]:`, error);
   if (posthog.__loaded) {
-    console.warn('PostHog is not loaded, cannot track search API error');
     posthog.captureException(error, {
       errorType: 'search_api_error',
       ...context,
     });
+  } else {
+    console.warn('PostHog is not loaded, cannot track search API error');
   }
 };
 
