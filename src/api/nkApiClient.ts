@@ -46,10 +46,12 @@ export const getFeatures = async (
     return data;
   } catch (error) {
     console.error('Error fetching features:', error);
-    posthog.captureException(error, {
-      errorType: 'draw_fetch_error',
-      drawingId,
-    });
+    if (posthog.__loaded) {
+      posthog.captureException(error, {
+        errorType: 'draw_fetch_error',
+        drawingId,
+      });
+    }
     return;
   }
 };
@@ -74,10 +76,12 @@ export const saveFeatures = async (
     const id = parts ? parts[1] : null;
     return id;
   } catch (e) {
-    posthog.captureException(e, {
-      errorType: 'draw_save_error',
-      features,
-    });
+    if (posthog.__loaded) {
+      posthog.captureException(e, {
+        errorType: 'draw_save_error',
+        features,
+      });
+    }
     console.error('Error saving features:', e);
     return null;
   }
