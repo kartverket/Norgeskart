@@ -110,6 +110,7 @@ export const SearchComponent = () => {
             </Button>
             <Box position="relative" width="100%">
               <Search
+                autoFocus
                 width="100%"
                 placeholder={t('search.placeholder')}
                 value={searchQuery}
