@@ -158,7 +158,7 @@ const useColorLabels = () => {
     case 'Point':
       return { primaryLabel: t(p + 'colorPoint'), secondaryLabel: null };
     case 'LineString':
-      return { primaryLabel: t(p + 'colorStroke'), secondaryLabel: null };
+      return { primaryLabel: t(p + 'defaults.primary'), secondaryLabel: null };
     case 'Polygon':
     case 'Circle':
       return {
