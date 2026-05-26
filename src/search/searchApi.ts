@@ -37,6 +37,30 @@ const trackApiError = (
 const normalizeAddressQuery = (query: string): string =>
   query.replace(/\s+/g, ' ').trim();
 
+const isInvalidAddressSearch = (query: string): boolean => {
+  const q = query.trim().toLowerCase();
+
+  const directionWithNumber =
+    /^(nord|sør|øst|vest|north|south|east|west|n|s|e|w)\s*[:\s]\s*\d+/i;
+
+  const latLonLike = /-?\d{1,3}\.\d+\s*,?\s*-?\d{1,3}\.\d+/;
+
+  return directionWithNumber.test(q) || latLonLike.test(q);
+};
+
+const emptyAddressResult = (query: string): AddressApiResponse => ({
+  adresser: [],
+  metadata: {
+    side: 1,
+    totaltAntallTreff: 0,
+    treffPerSide: 100,
+    viserFra: 0,
+    viserTil: 0,
+    sokeStreng: query,
+    utkoordsys: 4258,
+  },
+});
+
 export const getAddresses = async (
   query: string,
 ): Promise<AddressApiResponse> => {
@@ -44,6 +68,9 @@ export const getAddresses = async (
   let httpStatus;
   try {
     const normalizedQuery = normalizeAddressQuery(query);
+    if (isInvalidAddressSearch(normalizedQuery)) {
+      return emptyAddressResult(query);
+    }
     const encodedQuery = encodeURIComponent(normalizedQuery);
     url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100`;
     const res = await fetch(url);
