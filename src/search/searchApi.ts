@@ -37,22 +37,18 @@ const trackApiError = (
 const normalizeAddressQuery = (query: string): string =>
   query.replace(/\s+/g, ' ').trim();
 
-
 const isInvalidAddressSearch = (query: string): boolean => {
   const q = query.trim().toLowerCase();
 
-  const directionWithNumber = 
-      /^(nord|sør|øst|vest|north|south|east|west|n|s|e|w)\s*[:\s]\s*\d+/i;
+  const directionWithNumber =
+    /^(nord|sør|øst|vest|north|south|east|west|n|s|e|w)\s*[:\s]\s*\d+/i;
 
-  const latLonLike = 
-    /-?\d{1,3}\.\d+\s*,?\s*-?\d{1,3}\.\d+/;
+  const latLonLike = /-?\d{1,3}\.\d+\s*,?\s*-?\d{1,3}\.\d+/;
 
   return directionWithNumber.test(q) || latLonLike.test(q);
-}
+};
 
-const emptyAddressResult = (
-  query: string,
-): AddressApiResponse => ({
+const emptyAddressResult = (query: string): AddressApiResponse => ({
   adresser: [],
   metadata: {
     side: 1,
@@ -72,7 +68,7 @@ export const getAddresses = async (
   let httpStatus;
   try {
     const normalizedQuery = normalizeAddressQuery(query);
-       if (isInvalidAddressSearch(normalizedQuery)) {
+    if (isInvalidAddressSearch(normalizedQuery)) {
       return emptyAddressResult(query);
     }
     const encodedQuery = encodeURIComponent(normalizedQuery);
