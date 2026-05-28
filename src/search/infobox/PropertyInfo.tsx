@@ -79,7 +79,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     enabled: lat4326 != null && lon4326 != null,
   });
 
-  const property = Array.isArray(propertyDetails)
+  const property: Property | undefined = Array.isArray(propertyDetails)
     ? propertyDetails?.[0]
     : propertyDetails;
 
