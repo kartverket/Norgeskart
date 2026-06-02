@@ -65,6 +65,7 @@ const MATERIAL_SYMBOL_CODEPOINTS: Record<string, number> = {
   beenhere: 0xe52d,
   local_see: 0xe557,
   elevation: 0xf6e7,
+  ac_unit: 0xeb3b
 };
 
 const getMaterialSymbolGraphicName = (iconName: string): string => {
