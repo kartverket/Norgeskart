@@ -87,6 +87,12 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           decimals: 3,
         },
         {
+          name: 'høydeGammelNN2000_2018',
+          alias: 'Høyde NN2000:2018',
+          unit: 'm',
+          decimals: 3,
+        },
+        {
           name: 'beskrivelse',
           alias: 'Beskrivelse',
         },
