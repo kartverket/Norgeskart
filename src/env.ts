@@ -142,7 +142,7 @@ const DEV_ENV: Env = {
       ],
     },
     topoCache: {
-      baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket.cloud',
     },
   },
   envName: 'dev',
@@ -179,7 +179,7 @@ const PROD_ENV: Env = {
       baseUrls: ['https://qlr-qgis.atkv3-prod.kartverket-intern.cloud'],
     },
     topoCache: {
-      baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket.cloud',
     },
   },
   envName: 'prod',
