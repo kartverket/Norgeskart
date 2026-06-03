@@ -125,7 +125,7 @@ jobs:
         run: |
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-version
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-test-version
+          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-test/norgeskart5-test-version
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push
