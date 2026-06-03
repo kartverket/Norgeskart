@@ -192,15 +192,26 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
                 {t('propertyInfo.multipleAddressesText')}
               </Text>
             )}
-            <Switch
-              mb={2}
-              checked={showGeometry}
-              onCheckedChange={(e) => {
-                handleSwitchChange(e.checked);
-              }}
-            >
-              <SwitchLabel>{t('propertyInfo.markProperty.label')}</SwitchLabel>
-            </Switch>
+            <Flex justify="space-between" align="center" mb={2}>
+              <Switch
+                checked={showGeometry}
+                onCheckedChange={(e) => {
+                  handleSwitchChange(e.checked);
+                }}
+              >
+                <SwitchLabel>
+                  {t('propertyInfo.markProperty.label')}
+                </SwitchLabel>
+              </Switch>
+              <Link
+                href={propertyRegisterUrl}
+                target="_blank"
+                fontSize="sm"
+                external
+              >
+                {t('propertyInfo.moreInformation')}
+              </Link>
+            </Flex>
             {rows.map(([label, value], index) => (
               <Flex
                 key={label}
@@ -213,14 +224,6 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
               </Flex>
             ))}
           </Stack>
-          <Link
-            href={propertyRegisterUrl}
-            target="_blank"
-            fontSize="sm"
-            external
-          >
-            {t('propertyInfo.moreInformation')}
-          </Link>
         </Box>
       </AccordionItemContent>
     </AccordionItem>
