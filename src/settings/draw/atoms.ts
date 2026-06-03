@@ -335,6 +335,7 @@ const drawEnd = (event: BaseEvent | Event) => {
   const zIndex = getHighestZIndex() + 1;
   const featureId = uuidv4();
   eventFeature.setId(featureId);
+
   if (drawType === 'Point') {
     const icon = store.get(pointIconAtom);
     if (icon) {
