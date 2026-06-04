@@ -26,7 +26,7 @@ import {
   getCircleRadiusFromProperties,
   getOverlayIconFromProperties,
   getStyleFromProperties,
-} from '../../dialogs/import/utls';
+} from '../../dialogs/import/utils';
 import { getFeatureIcon } from '../../utils/featureUtils';
 import { isDrawIconFilled } from '../drawUtils';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
