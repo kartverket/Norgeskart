@@ -607,6 +607,10 @@
       "popupblockedalert": {
         "title": "Popup blokkert",
         "body": "Popup blokkert. Vennligst fjern blokkeringen og prøv igjen, eller bruk nedlastingsknappen"
+      },
+      "printinstructions": {
+        "title": "Viktig for korrekt målestokk",
+        "body": "Når du skriver ut kartet må du velge \"Faktisk størrelse\" (Actual Size / 100%) i utskriftsdialogen. Ikke bruk \"Tilpass til side\" (Fit to Page). Da blir målestokken feil."
       }
     }
   },

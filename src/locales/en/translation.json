@@ -602,6 +602,10 @@
       "popupblockedalert": {
         "title": "Popup blocked",
         "body": "Popups are blocked. Please unblock them and try again, or use the download button"
+      },
+      "printinstructions": {
+        "title": "Important for correct scale",
+        "body": "When printing the map, you must select \"Actual Size\" (100%) in the print dialog. Do not use \"Fit to Page\". That will result in an incorrect scale."
       }
     }
   },

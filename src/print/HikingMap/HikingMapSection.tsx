@@ -64,6 +64,8 @@ export const HikingMapSection = () => {
     null,
   );
   const [popupBlocked, setPopupBlocked] = useState(false);
+  const [showPrintInstructions, setShowPrintInstructions] =
+    useState<boolean>(false);
   const ph = usePostHog();
 
   const setBackgroundLayer = useSetAtom(backgroundLayerAtom);
@@ -145,6 +147,7 @@ export const HikingMapSection = () => {
 
   const printHikingMap = async () => {
     setPopupBlocked(false);
+    setShowPrintInstructions(true);
     setPrintLoading(true);
     ph.capture('print_hiking_started', {
       scale: selectedScale,
@@ -358,6 +361,11 @@ export const HikingMapSection = () => {
           {t('printdialog.hikingMap.buttons.cancel')}
         </Button>
       </ButtonGroup>
+      {showPrintInstructions && (
+        <Alert status="info" title={t('printdialog.hikingMap.printinstructions.title')} mb={3}>
+          {t('printdialog.hikingMap.printinstructions.body')}
+        </Alert>
+      )}
       {popupBlocked && (
         <Alert
           status="error"
