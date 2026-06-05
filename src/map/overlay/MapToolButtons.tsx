@@ -127,6 +127,12 @@ export const MapToolButtons = () => {
         id="map-draw-button"
       />
       <MapButton
+        onClick={() => (currentMapTool === 'measure' ? null : 'measure')}
+        icon={'straighten'}
+        label="Måle"
+        id="map-measure-button"
+      ></MapButton>
+      <MapButton
         onClick={handleShareMapClick}
         icon={'share'}
         label={
