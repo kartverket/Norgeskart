@@ -114,7 +114,8 @@ export const MapToolButtons = () => {
           </Text>
         )}
       </Box>
-      <MapButton
+      {!isMobile && (
+        <MapButton
         onClick={() => {
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
@@ -126,6 +127,7 @@ export const MapToolButtons = () => {
         disabled={isPrintDialogOpenDisabled}
         id="map-draw-button"
       />
+      )}
       <MapButton
         onClick={() => (currentMapTool === 'measure' ? null : 'measure')}
         icon={'straighten'}
