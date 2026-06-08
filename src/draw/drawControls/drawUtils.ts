@@ -200,7 +200,14 @@ const enableFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
 
     feature.set('measurementText', measurementText);
 
-    const overlayPosition = getGeometryPositionForOverlay(geometry);
+    let overlayPosition;
+
+    if (geometry instanceof LineString) {
+      overlayPosition = geometry.getCoordinateAt(0.5);
+    } else {
+      overlayPosition = getGeometryPositionForOverlay(geometry);
+    }
+
     if (!overlayPosition) {
       return;
     }
