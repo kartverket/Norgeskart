@@ -1,6 +1,7 @@
 import Map from 'ol/Map';
 import { getPointResolution } from 'ol/proj';
 
+// CSS reference pixel density (96 px/in). This is a reference value (not physical screen DPI) used for scale calculations.
 const DPI = 96;
 const METERS_PER_INCH = 0.0254;
 
