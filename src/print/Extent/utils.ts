@@ -66,11 +66,18 @@ const MATERIAL_SYMBOL_CODEPOINTS: Record<string, number> = {
   local_see: 0xe557,
   elevation: 0xf6e7,
   ac_unit: 0xeb3b,
+};
+
+// Icons that should render as solid filled glyphs (uses the FILL=1 font instance)
+const FILLED_MATERIAL_SYMBOL_CODEPOINTS: Record<string, number> = {
   square: 0xeb36,
   change_history: 0xe86b,
 };
 
 const getMaterialSymbolGraphicName = (iconName: string): string => {
+  const filledCodepoint = FILLED_MATERIAL_SYMBOL_CODEPOINTS[iconName];
+  if (filledCodepoint !== undefined)
+    return `ttf://Material Symbols Rounded Filled#0x${filledCodepoint.toString(16).toUpperCase()}`;
   const codepoint = MATERIAL_SYMBOL_CODEPOINTS[iconName];
   if (codepoint === undefined) return 'circle';
   return `ttf://Material Symbols Outlined#0x${codepoint.toString(16).toUpperCase()}`;
