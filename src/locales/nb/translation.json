@@ -625,6 +625,8 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikke å hente kartet"
     },
+    "scale": "Utskriftsmålestokk",
+    "scaleNote": "Skjermens målestokk er 1 : {{screenScale}}. Avviket skyldes at papir (72 pt/tomme) og skjerm (96 px/tomme) bruker ulike referanseverdier for pikselstørrelse.",
     "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkart oppdatert EFS i utskriften.",
     "projectionWarning": "Utskriften vil alltid være i UTM-sone 33 (EPSG:25833), uavhengig av valgt kartprojeksjon."
   },

@@ -1,9 +1,8 @@
 import Map from 'ol/Map';
 import { getPointResolution } from 'ol/proj';
 
-//DPI (dots per inch) based on the standard 0.28 mm per pixel used by OpenLayers
-// Note: This is not the actual screen DPI, but a reference value for map scale calculations.
-const DPI = 25.4 / 0.28;
+// CSS reference pixel density (96 px/in). This is a reference value (not physical screen DPI) used for scale calculations.
+const DPI = 96;
 const METERS_PER_INCH = 0.0254;
 
 //Converts map resolutions to a map scale
@@ -15,9 +14,7 @@ export const getScaleFromResolution = (resolution: number, map: Map) => {
 
   const pointResolution = getPointResolution(projection, resolution, center);
 
-  const metersPerPixel = pointResolution;
-
-  const scale = (metersPerPixel * DPI) / METERS_PER_INCH;
+  const scale = (pointResolution * DPI) / METERS_PER_INCH;
   return Math.round(scale);
 };
 
