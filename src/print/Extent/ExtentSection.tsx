@@ -76,7 +76,9 @@ export const ExtentSection = () => {
 
   const printScale =
     selectedLayout?.width && selectedLayout.width > 0 && screenScale
-      ? Math.round(screenScale * (layout.widthPx / selectedLayout.width) * (72 / 96))
+      ? Math.round(
+          screenScale * (layout.widthPx / selectedLayout.width) * (72 / 96),
+        )
       : undefined;
 
   useEffect(() => {
