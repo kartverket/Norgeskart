@@ -1,7 +1,7 @@
-import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
+import { Box, IconButton, MaterialSymbol, Popover, PopoverCloseTrigger, PopoverContent, PopoverTrigger, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { CSSProperties } from 'react';
+import { CSSProperties, useState } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
 import {
   displayMapLegendAtom,
@@ -10,6 +10,8 @@ import {
 } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
+import { MeasurePanel } from '../measure/MeasurePanel';
+import { measureTypeAtom } from '../measure/atoms';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
@@ -17,6 +19,8 @@ export const MapControlButtons = () => {
   const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
+  const [openMeasureTool, setOpenMeasureTool] = useState(false);
+  const setMeasureType = useSetAtom(measureTypeAtom);
   const {
     rotateSnappy,
     setMapAngle,
@@ -75,6 +79,37 @@ export const MapControlButtons = () => {
         label={t('map.controls.zoomOut.label')}
         hide={isMobile}
       />
+     <Popover
+  open={openMeasureTool}
+  onOpenChange={({ open }) => {
+      setMeasureType('length');
+
+    setOpenMeasureTool(open);
+
+    if (!open) {
+      setMeasureType(null);
+    }
+  }}
+  positioning={{ placement: 'left' }}
+    closeOnInteractOutside={false}
+
+>
+  <PopoverTrigger>
+    <IconButton
+      variant="ghost"
+      colorPalette="green"
+      size="xs"
+      icon="straighten"
+      aria-label="Måle"
+      backgroundColor={openMeasureTool ? '#D0ECD6' : undefined}
+
+    />
+  </PopoverTrigger>
+<PopoverContent maxW="77px">
+  <MeasurePanel
+  />
+</PopoverContent>
+</Popover>
       <ControlButton
         id="rotate_left"
         icon="rotate_left"

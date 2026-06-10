@@ -20,6 +20,7 @@ export type MapLayers = {
   posterMarkerLayer: MapLayer;
   clusterLayer: MapLayer;
   propertyGeometryLayer: MapLayer;
+  measureLayer: MapLayer;
 };
 
 const mapLayers: MapLayers = {
@@ -78,6 +79,15 @@ const mapLayers: MapLayers = {
       });
     },
   },
+  measureLayer: {
+  getLayer: () => {
+    return new VectorLayer({
+      zIndex: 3, 
+      source: new VectorSource({ wrapX: false }),
+      properties: { id: 'measureLayer' },
+    });
+  },
+},
 };
 
 export { mapLayers };
