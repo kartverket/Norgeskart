@@ -80,14 +80,14 @@ const mapLayers: MapLayers = {
     },
   },
   measureLayer: {
-  getLayer: () => {
-    return new VectorLayer({
-      zIndex: 3, 
-      source: new VectorSource({ wrapX: false }),
-      properties: { id: 'measureLayer' },
-    });
+    getLayer: () => {
+      return new VectorLayer({
+        zIndex: 3,
+        source: new VectorSource({ wrapX: false }),
+        properties: { id: 'measureLayer' },
+      });
+    },
   },
-},
 };
 
 export { mapLayers };

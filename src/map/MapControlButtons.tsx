@@ -1,4 +1,14 @@
-import { Box, IconButton, MaterialSymbol, Popover, PopoverCloseTrigger, PopoverContent, PopoverTrigger, Tooltip, VStack } from '@kvib/react';
+import {
+  Box,
+  HStack,
+  IconButton,
+  MaterialSymbol,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Tooltip,
+  VStack,
+} from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties, useState } from 'react';
@@ -10,8 +20,8 @@ import {
 } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
-import { MeasurePanel } from '../measure/MeasurePanel';
-import { measureTypeAtom } from '../measure/atoms';
+import { MeasureToolButton } from '../measure/MeasureToolButton';
+import { MapOrientationControl } from './MapOrientationControl';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
@@ -19,8 +29,7 @@ export const MapControlButtons = () => {
   const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
-  const [openMeasureTool, setOpenMeasureTool] = useState(false);
-  const setMeasureType = useSetAtom(measureTypeAtom);
+  const [openOrientationMenu, setOpenOrientationMenu] = useState(false);
   const {
     rotateSnappy,
     setMapAngle,
@@ -79,64 +88,7 @@ export const MapControlButtons = () => {
         label={t('map.controls.zoomOut.label')}
         hide={isMobile}
       />
-     <Popover
-  open={openMeasureTool}
-  onOpenChange={({ open }) => {
-      setMeasureType('length');
-
-    setOpenMeasureTool(open);
-
-    if (!open) {
-      setMeasureType(null);
-    }
-  }}
-  positioning={{ placement: 'left' }}
-    closeOnInteractOutside={false}
-
->
-  <PopoverTrigger>
-    <IconButton
-      variant="ghost"
-      colorPalette="green"
-      size="xs"
-      icon="straighten"
-      aria-label="Måle"
-      backgroundColor={openMeasureTool ? '#D0ECD6' : undefined}
-
-    />
-  </PopoverTrigger>
-<PopoverContent maxW="77px">
-  <MeasurePanel
-  />
-</PopoverContent>
-</Popover>
-      <ControlButton
-        id="rotate_left"
-        icon="rotate_left"
-        onClick={() => rotateSnappy('left')}
-        label={t('map.controls.rotateLeft.label')}
-        displayTooltip
-        hide={isMobile}
-      />
-      <ControlButton
-        id="reset_orientation"
-        icon="navigation"
-        onClick={() => setMapAngle(0)}
-        label={t('map.controls.orientation.label')}
-        style={{
-          transform: `rotate(${mapOrientation}deg)`,
-          transition: 'none',
-        }}
-        displayTooltip
-      />
-      <ControlButton
-        id="rotate_right"
-        icon="rotate_right"
-        onClick={() => rotateSnappy('right')}
-        label={t('map.controls.rotateRight.label')}
-        hide={isMobile}
-        displayTooltip
-      />
+     <MeasureToolButton />
       {navigator.geolocation && (
         <ControlButton
           id={trackPosition ? 'location_disabled' : 'location_enabled'}
@@ -158,6 +110,7 @@ export const MapControlButtons = () => {
         displayTooltip
         hide={isMobile}
       />
+      <MapOrientationControl />
     </VStack>
   );
 };

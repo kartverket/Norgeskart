@@ -24,14 +24,11 @@ export const measureEnabledEffect = atomEffect((get, set) => {
   const measureLayer = getMeasureLayer();
 
   clearInteractions();
-    
-
 
   if (!type) {
     set(showMeasurementsAtom, false);
 
     measureLayer.getSource()?.clear();
-
 
     return;
   }

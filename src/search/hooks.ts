@@ -7,12 +7,12 @@ import { mapAtom } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { ProjectionIdentifier } from '../map/projections/types';
+import { measureTypeAtom } from '../measure/atoms';
 import { isPrintDialogOpenAtom } from '../print/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
 import { SearchResult } from '../types/searchTypes';
 import { searchCoordinatesAtom, selectedResultAtom } from './atoms';
 import { updateSearchMarkers } from './searchmarkers/updateSearchMarkers';
-import { measureTypeAtom } from '../measure/atoms';
 
 export const useMapClickSearch = () => {
   const setSearchCoordinates = useSetAtom(searchCoordinatesAtom);
