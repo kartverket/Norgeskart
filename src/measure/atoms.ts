@@ -3,12 +3,8 @@ import { atomEffect } from 'jotai-effect';
 import { Feature } from 'ol';
 import { getMeasureLayer } from '../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../map/atoms';
-import {
-  addDrawInteractionToMap,
-  clearInteractions,
-  setDisplayInteractiveMeasurementForDrawInteraction,
-  showMeasurementsAtom,
-} from '../settings/draw/atoms';
+
+import { addMeasureInteractionToMap } from './measureInteractions';
 
 export type MeasureType = 'length' | 'area' | null;
 
@@ -23,25 +19,16 @@ export const measureEnabledEffect = atomEffect((get, set) => {
   const map = store.get(mapAtom);
   const measureLayer = getMeasureLayer();
 
-  clearInteractions();
-
   if (!type) {
-    set(showMeasurementsAtom, false);
-
     measureLayer.getSource()?.clear();
-
     return;
   }
 
-  set(showMeasurementsAtom, true);
-
   if (type === 'length') {
-    addDrawInteractionToMap('LineString', measureLayer, map);
+    addMeasureInteractionToMap('LineString', measureLayer, map);
   }
 
   if (type === 'area') {
-    addDrawInteractionToMap('Polygon', measureLayer, map);
+    addMeasureInteractionToMap('Polygon', measureLayer, map);
   }
-
-  setDisplayInteractiveMeasurementForDrawInteraction(true);
 });

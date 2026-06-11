@@ -114,7 +114,6 @@ export const MapToolButtons = () => {
           </Text>
         )}
       </Box>
-      {!isMobile && (
         <MapButton
           onClick={() => {
             setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
@@ -129,7 +128,6 @@ export const MapToolButtons = () => {
           disabled={isPrintDialogOpenDisabled}
           id="map-draw-button"
         />
-      )}
       <MapButton
         onClick={handleShareMapClick}
         icon={'share'}
