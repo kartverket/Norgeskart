@@ -1,33 +1,20 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { CSSProperties, useState } from 'react';
+import { CSSProperties } from 'react';
 import { MeasureToolButton } from '../measure/MeasureToolButton';
 import { useIsMobileScreen } from '../shared/hooks';
-import {
-  displayMapLegendAtom,
-  displayMapLegendControlAtom,
-  mapOrientationDegreesAtom,
-} from './atoms';
+import { displayMapLegendAtom, displayMapLegendControlAtom } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
 import { MapOrientationControl } from './MapOrientationControl';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
-  const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
-  const [openOrientationMenu, setOpenOrientationMenu] = useState(false);
-  const {
-    rotateSnappy,
-    setMapAngle,
-
-    setMapFullScreen,
-    zoomIn,
-    zoomOut,
-  } = useMapSettings();
+  const { setMapFullScreen, zoomIn, zoomOut } = useMapSettings();
 
   const handleMapLocationClick = () => {
     setTrackPosition((p) => !p);

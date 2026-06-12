@@ -4,13 +4,13 @@ import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import { Geometry, LineString, Polygon } from 'ol/geom';
 import Draw from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
+import { unByKey } from 'ol/Observable';
 import VectorSource from 'ol/source/Vector';
 import { getArea, getLength } from 'ol/sphere';
 import { Fill, Stroke, Style } from 'ol/style';
 import Text from 'ol/style/Text';
 import { DistanceUnit, distanceUnitAtom } from '../settings/draw/atoms';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
-import { unByKey } from 'ol/Observable';
 
 export const getMeasurementText = (
   geometry: Geometry,
@@ -77,38 +77,32 @@ export const addMeasureInteractionToMap = (
     type,
     condition: (e) => noModifierKeys(e) && primaryAction(e),
     style: new Style({
-    stroke: new Stroke({
-      color: '#0e5aa0ff',
-      width: 4,
+      stroke: new Stroke({
+        color: '#0e5aa0ff',
+        width: 4,
+      }),
+      fill: new Fill({
+        color: '#1d823b80',
+      }),
     }),
-    fill: new Fill({
-      color: '#1d823b80',
-    }),
-  }),
-
   });
 
- 
   draw.on('drawstart', (event) => {
-  const feature = event.feature;
-  const geometry = feature.getGeometry();
+    const feature = event.feature;
+    const geometry = feature.getGeometry();
 
-  if (!geometry) return;
+    if (!geometry) return;
 
-  const listener = geometry.on('change', () => {
-    const text = getMeasurementText(
-      geometry,
-      projection,
-      unit,
-    );
+    const listener = geometry.on('change', () => {
+      const text = getMeasurementText(geometry, projection, unit);
 
-    feature.setStyle(createMeasureStyle(text));
+      feature.setStyle(createMeasureStyle(text));
+    });
+
+    draw.once('drawend', () => {
+      unByKey(listener);
+    });
   });
-
-  draw.once('drawend', () => {
-    unByKey(listener);
-  });
-});
 
   map.addInteraction(draw);
 

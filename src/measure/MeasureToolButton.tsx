@@ -29,17 +29,16 @@ export const MeasureToolButton = () => {
       positioning={{ placement: 'left' }}
       closeOnInteractOutside={false}
     >
-
-      <PopoverTrigger  >
+      <PopoverTrigger>
         <Tooltip content="Måleverktøy" positioning={{ placement: 'left' }}>
-        <IconButton
-          variant="ghost"
-          colorPalette="green"
-          size="xs"
-          icon="straighten"
-          aria-label="Måle"
-          backgroundColor={openMeasureTool ? '#D0ECD6' : undefined}
-        />
+          <IconButton
+            variant="ghost"
+            colorPalette="green"
+            size="xs"
+            icon="straighten"
+            aria-label="Måle"
+            backgroundColor={openMeasureTool ? '#D0ECD6' : undefined}
+          />
         </Tooltip>
       </PopoverTrigger>
       <PopoverContent maxW="77px">
