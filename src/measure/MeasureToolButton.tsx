@@ -1,8 +1,14 @@
-import { useSetAtom } from "jotai";
-import { useState } from "react";
-import { measureTypeAtom } from "./atoms";
-import { IconButton, Popover, PopoverContent, PopoverTrigger } from "@kvib/react";
-import { MeasurePanel } from "./MeasurePanel";
+import {
+  IconButton,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Tooltip,
+} from '@kvib/react';
+import { useSetAtom } from 'jotai';
+import { useState } from 'react';
+import { measureTypeAtom } from './atoms';
+import { MeasurePanel } from './MeasurePanel';
 
 export const MeasureToolButton = () => {
   const [openMeasureTool, setOpenMeasureTool] = useState(false);
@@ -23,7 +29,9 @@ export const MeasureToolButton = () => {
       positioning={{ placement: 'left' }}
       closeOnInteractOutside={false}
     >
-      <PopoverTrigger asChild>
+
+      <PopoverTrigger  >
+        <Tooltip content="Måleverktøy" positioning={{ placement: 'left' }}>
         <IconButton
           variant="ghost"
           colorPalette="green"
@@ -32,8 +40,8 @@ export const MeasureToolButton = () => {
           aria-label="Måle"
           backgroundColor={openMeasureTool ? '#D0ECD6' : undefined}
         />
+        </Tooltip>
       </PopoverTrigger>
-
       <PopoverContent maxW="77px">
         <MeasurePanel />
       </PopoverContent>

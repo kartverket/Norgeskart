@@ -114,20 +114,18 @@ export const MapToolButtons = () => {
           </Text>
         )}
       </Box>
-        <MapButton
-          onClick={() => {
-            setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
-          }}
-          icon={'edit'}
-          label={
-            isMobile
-              ? t('controller.draw.mobiletext')
-              : t('controller.draw.text')
-          }
-          active={currentMapTool === 'draw'}
-          disabled={isPrintDialogOpenDisabled}
-          id="map-draw-button"
-        />
+      <MapButton
+        onClick={() => {
+          setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
+        }}
+        icon={'edit'}
+        label={
+          isMobile ? t('controller.draw.mobiletext') : t('controller.draw.text')
+        }
+        active={currentMapTool === 'draw'}
+        disabled={isPrintDialogOpenDisabled}
+        id="map-draw-button"
+      />
       <MapButton
         onClick={handleShareMapClick}
         icon={'share'}

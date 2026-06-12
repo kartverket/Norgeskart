@@ -1,9 +1,15 @@
-import { useAtomValue } from "jotai";
-import { useState } from "react";
-import { useMapSettings } from "./mapHooks";
-import { mapOrientationDegreesAtom } from "./atoms";
-import { HStack, IconButton, Popover, PopoverContent, PopoverTrigger } from "@kvib/react";
-import { t } from "i18next";
+import {
+  HStack,
+  IconButton,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@kvib/react';
+import { t } from 'i18next';
+import { useAtomValue } from 'jotai';
+import { useState } from 'react';
+import { mapOrientationDegreesAtom } from './atoms';
+import { useMapSettings } from './mapHooks';
 
 export const MapOrientationControl = () => {
   const [open, setOpen] = useState(false);
@@ -11,21 +17,24 @@ export const MapOrientationControl = () => {
   const { rotateSnappy, setMapAngle } = useMapSettings();
 
   return (
-    <Popover open={open} onOpenChange={({ open }) => setOpen(open)} positioning={{ placement: 'left'}}>
+    <Popover
+      open={open}
+      onOpenChange={({ open }) => setOpen(open)}
+      positioning={{ placement: 'left' }}
+    >
       <PopoverTrigger asChild>
         <IconButton
           variant="ghost"
           size="xs"
           icon="more_horiz"
-        aria-label={t('map.controls.more.label')}
-         
+          aria-label={t('map.controls.more.label')}
         />
       </PopoverTrigger>
 
-      <PopoverContent maxW="113px" >
+      <PopoverContent maxW="113px">
         <HStack>
           <IconButton
-          variant="ghost"
+            variant="ghost"
             icon="rotate_left"
             size="xs"
             aria-label={t('map.controls.rotateLeft.label')}
@@ -33,19 +42,19 @@ export const MapOrientationControl = () => {
           />
 
           <IconButton
-          variant="ghost"
+            variant="ghost"
             icon="navigation"
             size="xs"
             aria-label={t('map.controls.orientation.label')}
             onClick={() => setMapAngle(0)}
             style={{
-                transform: `rotate(${mapOrientation}deg)`,
-                transition: 'none',
-              }}
+              transform: `rotate(${mapOrientation}deg)`,
+              transition: 'none',
+            }}
           />
 
           <IconButton
-          variant="ghost"
+            variant="ghost"
             icon="rotate_right"
             size="xs"
             aria-label="Rotate right"

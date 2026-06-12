@@ -1,16 +1,16 @@
-import Draw from 'ol/interaction/Draw';
-import { noModifierKeys, primaryAction } from 'ol/events/condition';
+import { getDefaultStore } from 'jotai';
 import { Map } from 'ol';
+import { noModifierKeys, primaryAction } from 'ol/events/condition';
+import { Geometry, LineString, Polygon } from 'ol/geom';
+import Draw from 'ol/interaction/Draw';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { Fill, Stroke, Style } from 'ol/style';
 import { getArea, getLength } from 'ol/sphere';
-import { Geometry, LineString, Polygon } from 'ol/geom';
+import { Fill, Stroke, Style } from 'ol/style';
+import Text from 'ol/style/Text';
 import { DistanceUnit, distanceUnitAtom } from '../settings/draw/atoms';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
-import { getDefaultStore } from 'jotai';
-import Text from 'ol/style/Text';
-
+import { unByKey } from 'ol/Observable';
 
 export const getMeasurementText = (
   geometry: Geometry,
@@ -31,7 +31,7 @@ export const getMeasurementText = (
 };
 
 const createMeasureStyle = (text: string): Style => {
-   return new Style({
+  return new Style({
     stroke: new Stroke({
       color: '#0e5aa0ff',
       width: 4,
@@ -44,13 +44,13 @@ const createMeasureStyle = (text: string): Style => {
       font: '14px sans-serif',
       fill: new Fill({ color: '#000' }),
       backgroundFill: new Fill({
-        color: '#FFFF',
+        color: 'rgba(255,255,255,0.9)',
       }),
+      padding: [3, 6, 3, 6],
     }),
-   });
-}
+  });
+};
 
-// 👇 viktig: kun én aktiv interaction
 let activeMeasureInteraction: Draw | null = null;
 
 export type MeasureDrawType = 'LineString' | 'Polygon';
@@ -60,7 +60,6 @@ export const addMeasureInteractionToMap = (
   measureLayer: VectorLayer,
   map: Map,
 ) => {
-  // 🧹 cleanup gammel interaction
   if (activeMeasureInteraction) {
     const oldMap = activeMeasureInteraction.getMap();
     if (oldMap) {
@@ -69,43 +68,47 @@ export const addMeasureInteractionToMap = (
     activeMeasureInteraction = null;
   }
 
+  const store = getDefaultStore();
+  const unit = store.get(distanceUnitAtom);
+  const projection = map.getView().getProjection().getCode();
+
   const draw = new Draw({
     source: measureLayer.getSource() as VectorSource,
     type,
     condition: (e) => noModifierKeys(e) && primaryAction(e),
+    style: new Style({
+    stroke: new Stroke({
+      color: '#0e5aa0ff',
+      width: 4,
+    }),
+    fill: new Fill({
+      color: '#1d823b80',
+    }),
+  }),
+
   });
 
+ 
   draw.on('drawstart', (event) => {
-     const feature = event.feature;
-  const geom = feature.getGeometry();
+  const feature = event.feature;
+  const geometry = feature.getGeometry();
 
-  if (!geom) return;
+  if (!geometry) return;
 
-  const store = getDefaultStore();
-  const unit = store.get(distanceUnitAtom);
-  const projection = map.getView().getProjection().getCode();
-
-  geom.on('change', () => {
-    const text = getMeasurementText(geom, projection, unit);
+  const listener = geometry.on('change', () => {
+    const text = getMeasurementText(
+      geometry,
+      projection,
+      unit,
+    );
 
     feature.setStyle(createMeasureStyle(text));
   });
+
+  draw.once('drawend', () => {
+    unByKey(listener);
   });
-
-  draw.on('drawend', (event) => {
-     const feature = event.feature;
-  const geom = feature.getGeometry();
-
-  if (!geom) return;
-
-  const store = getDefaultStore();
-  const unit = store.get(distanceUnitAtom);
-  const projection = map.getView().getProjection().getCode();
-
-  const text = getMeasurementText(geom, projection, unit);
-
-  feature.setStyle(createMeasureStyle(text));
-  });
+});
 
   map.addInteraction(draw);
 

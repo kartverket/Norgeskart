@@ -1,17 +1,8 @@
-import {
-  Box,
-  HStack,
-  IconButton,
-  MaterialSymbol,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Tooltip,
-  VStack,
-} from '@kvib/react';
+import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties, useState } from 'react';
+import { MeasureToolButton } from '../measure/MeasureToolButton';
 import { useIsMobileScreen } from '../shared/hooks';
 import {
   displayMapLegendAtom,
@@ -20,7 +11,6 @@ import {
 } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
-import { MeasureToolButton } from '../measure/MeasureToolButton';
 import { MapOrientationControl } from './MapOrientationControl';
 
 export const MapControlButtons = () => {
@@ -88,7 +78,7 @@ export const MapControlButtons = () => {
         label={t('map.controls.zoomOut.label')}
         hide={isMobile}
       />
-     <MeasureToolButton />
+      <MeasureToolButton />
       {navigator.geolocation && (
         <ControlButton
           id={trackPosition ? 'location_disabled' : 'location_enabled'}
