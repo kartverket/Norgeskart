@@ -1,4 +1,5 @@
 import {
+  Box,
   IconButton,
   Popover,
   PopoverContent,
@@ -29,17 +30,20 @@ export const MeasureToolButton = () => {
       positioning={{ placement: 'left' }}
       closeOnInteractOutside={false}
     >
-      <PopoverTrigger>
-        <Tooltip content="Måleverktøy" positioning={{ placement: 'left' }}>
-          <IconButton
-            variant="ghost"
-            colorPalette="green"
-            size="xs"
-            icon="straighten"
-            aria-label="Måle"
-            backgroundColor={openMeasureTool ? '#D0ECD6' : undefined}
-          />
-        </Tooltip>
+      <PopoverTrigger asChild>
+        <Box as="span">{/* Needed for popover positioning with tooltip */}
+          <Tooltip content="Måleverktøy" positioning={{ placement: 'left' }}>
+            <IconButton
+              title="Måleverktøy"
+              variant="ghost"
+              colorPalette="green"
+              size="xs"
+              icon="straighten"
+              aria-label="Måle"
+              backgroundColor={openMeasureTool ? '#D0ECD6' : undefined}
+            />
+          </Tooltip>
+        </Box>
       </PopoverTrigger>
       <PopoverContent maxW="77px">
         <MeasurePanel />

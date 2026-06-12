@@ -1,4 +1,4 @@
-import { HStack, IconButton } from '@kvib/react';
+import { HStack, IconButton, Tooltip } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { measureTypeAtom } from './atoms';
 
@@ -8,6 +8,7 @@ export const MeasurePanel = () => {
   return (
     <>
       <HStack boxShadow="md" gap={1}>
+        <Tooltip content="Lengde">
         <IconButton
           size="sm"
           variant="ghost"
@@ -15,7 +16,9 @@ export const MeasurePanel = () => {
           backgroundColor={measureType === 'length' ? '#D0ECD6' : ''}
           onClick={() => setMeasureType('length')}
         ></IconButton>
+        </Tooltip>
 
+        <Tooltip content="Areal">
         <IconButton
           size="sm"
           variant="ghost"
@@ -23,6 +26,7 @@ export const MeasurePanel = () => {
           backgroundColor={measureType === 'area' ? '#D0ECD6' : ''}
           onClick={() => setMeasureType('area')}
         ></IconButton>
+        </Tooltip>
       </HStack>
     </>
   );

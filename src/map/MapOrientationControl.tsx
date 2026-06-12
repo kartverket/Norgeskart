@@ -4,12 +4,14 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Tooltip
 } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { mapOrientationDegreesAtom } from './atoms';
 import { useMapSettings } from './mapHooks';
+
 
 export const MapOrientationControl = () => {
   const [open, setOpen] = useState(false);
@@ -33,6 +35,7 @@ export const MapOrientationControl = () => {
 
       <PopoverContent maxW="113px">
         <HStack>
+          <Tooltip content={t('map.controls.rotateLeft.label')}>
           <IconButton
             variant="ghost"
             icon="rotate_left"
@@ -40,7 +43,9 @@ export const MapOrientationControl = () => {
             aria-label={t('map.controls.rotateLeft.label')}
             onClick={() => rotateSnappy('left')}
           />
+          </Tooltip>
 
+          <Tooltip content={t('map.controls.orientation.label')}>
           <IconButton
             variant="ghost"
             icon="navigation"
@@ -52,14 +57,17 @@ export const MapOrientationControl = () => {
               transition: 'none',
             }}
           />
+          </Tooltip>
 
+          <Tooltip content={t('map.controls.rotateRight.label')}>
           <IconButton
             variant="ghost"
             icon="rotate_right"
             size="xs"
-            aria-label="Rotate right"
+            aria-label={t('map.controls.rotateRight.label')}
             onClick={() => rotateSnappy('right')}
           />
+          </Tooltip>
         </HStack>
       </PopoverContent>
     </Popover>
