@@ -34,7 +34,6 @@ export type MapTool =
   | 'draw'
   | 'info'
   | 'settings'
-  | 'measure'
   | null;
 
 export const Layout = () => {
