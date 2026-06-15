@@ -6,25 +6,28 @@ import {
   PopoverTrigger,
   Tooltip,
 } from '@kvib/react';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { useState } from 'react';
 import { measureTypeAtom } from './atoms';
 import { MeasurePanel } from './MeasurePanel';
+import { mapToolAtom } from '../map/overlay/atoms';
 
 export const MeasureToolButton = () => {
-  const [openMeasureTool, setOpenMeasureTool] = useState(false);
   const setMeasureType = useSetAtom(measureTypeAtom);
+  const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom)
+
+  const open = currentMapTool === 'measure'
 
   return (
     <Popover
-      open={openMeasureTool}
+      open={open}
       onOpenChange={({ open }) => {
-        setOpenMeasureTool(open);
-
         if (open) {
           setMeasureType('length');
+          setCurrentMapTool('measure')
         } else {
           setMeasureType(null);
+          setCurrentMapTool(null);
         }
       }}
       positioning={{ placement: 'left' }}
@@ -40,7 +43,7 @@ export const MeasureToolButton = () => {
               size="xs"
               icon="straighten"
               aria-label="Måle"
-              backgroundColor={openMeasureTool ? '#D0ECD6' : undefined}
+              backgroundColor={open ? '#D0ECD6' : ''}
             />
           </Tooltip>
         </Box>

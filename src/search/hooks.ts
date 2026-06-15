@@ -89,12 +89,6 @@ export const useMapClickSearch = () => {
         return;
       }
 
-      const measureType = store.get(measureTypeAtom);
-
-      if (measureType) {
-        return;
-      }
-
       if (currentTool === 'layers') {
         store.set(mapToolAtom, null);
       }

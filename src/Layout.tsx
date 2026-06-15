@@ -6,7 +6,7 @@ import {
   VStack,
   useBreakpointValue,
 } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
 import { displayCompassOverlayAtom } from './map/atoms';
 import { BackgroundLayerPopover } from './map/backgroundLayer/BackgroundLayerPopover';
@@ -18,7 +18,6 @@ import { Compass } from './map/overlay/Compass';
 import { LinkLogo } from './map/overlay/LinkLogo';
 import { MapToolButtons } from './map/overlay/MapToolButtons';
 import { MapToolCards } from './map/overlay/MapToolCards';
-import { measureEnabledEffect } from './measure/atoms';
 import { isPrintDialogOpenAtom } from './print/atoms';
 import { PrintDialog } from './print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from './search/atoms';
@@ -34,6 +33,7 @@ export type MapTool =
   | 'draw'
   | 'info'
   | 'settings'
+  | 'measure'
   | null;
 
 export const Layout = () => {
@@ -48,7 +48,6 @@ export const Layout = () => {
   const currentMapTool = useAtomValue(mapToolAtom);
   const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
 
-  useAtom(measureEnabledEffect);
   useFeatureInfoClick();
   useSearchEffects();
   useMapClickSearch();

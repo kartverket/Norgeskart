@@ -9,7 +9,7 @@ import VectorSource from 'ol/source/Vector';
 import { getArea, getLength } from 'ol/sphere';
 import { Fill, Stroke, Style } from 'ol/style';
 import Text from 'ol/style/Text';
-import { DistanceUnit, distanceUnitAtom } from '../settings/draw/atoms';
+import { clearInteractions, DistanceUnit, distanceUnitAtom } from '../settings/draw/atoms';
 import { formatArea, formatDistance } from '../shared/utils/stringUtils';
 
 export const getMeasurementText = (
@@ -60,13 +60,7 @@ export const addMeasureInteractionToMap = (
   measureLayer: VectorLayer,
   map: Map,
 ) => {
-  if (activeMeasureInteraction) {
-    const oldMap = activeMeasureInteraction.getMap();
-    if (oldMap) {
-      oldMap.removeInteraction(activeMeasureInteraction);
-    }
-    activeMeasureInteraction = null;
-  }
+
 
   const store = getDefaultStore();
   const unit = store.get(distanceUnitAtom);
