@@ -7,16 +7,15 @@ import {
   Tooltip,
 } from '@kvib/react';
 import { useAtom, useSetAtom } from 'jotai';
-import { useState } from 'react';
+import { mapToolAtom } from '../map/overlay/atoms';
 import { measureTypeAtom } from './atoms';
 import { MeasurePanel } from './MeasurePanel';
-import { mapToolAtom } from '../map/overlay/atoms';
 
 export const MeasureToolButton = () => {
   const setMeasureType = useSetAtom(measureTypeAtom);
-  const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom)
+  const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
 
-  const open = currentMapTool === 'measure'
+  const open = currentMapTool === 'measure';
 
   return (
     <Popover
@@ -24,7 +23,7 @@ export const MeasureToolButton = () => {
       onOpenChange={({ open }) => {
         if (open) {
           setMeasureType('length');
-          setCurrentMapTool('measure')
+          setCurrentMapTool('measure');
         } else {
           setMeasureType(null);
           setCurrentMapTool(null);
@@ -34,7 +33,8 @@ export const MeasureToolButton = () => {
       closeOnInteractOutside={false}
     >
       <PopoverTrigger asChild>
-        <Box as="span">{/* Needed for popover positioning with tooltip */}
+        <Box as="span">
+          {/* Needed for popover positioning with tooltip */}
           <Tooltip content="Måleverktøy" positioning={{ placement: 'left' }}>
             <IconButton
               title="Måleverktøy"

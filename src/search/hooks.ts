@@ -7,7 +7,6 @@ import { mapAtom } from '../map/atoms';
 import { mapContextIsOpenAtom } from '../map/menu/atoms';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { ProjectionIdentifier } from '../map/projections/types';
-import { measureTypeAtom } from '../measure/atoms';
 import { isPrintDialogOpenAtom } from '../print/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
 import { SearchResult } from '../types/searchTypes';

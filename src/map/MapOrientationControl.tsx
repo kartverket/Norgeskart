@@ -4,14 +4,13 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Tooltip
+  Tooltip,
 } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { mapOrientationDegreesAtom } from './atoms';
 import { useMapSettings } from './mapHooks';
-
 
 export const MapOrientationControl = () => {
   const [open, setOpen] = useState(false);
@@ -36,37 +35,37 @@ export const MapOrientationControl = () => {
       <PopoverContent maxW="113px">
         <HStack>
           <Tooltip content={t('map.controls.rotateLeft.label')}>
-          <IconButton
-            variant="ghost"
-            icon="rotate_left"
-            size="xs"
-            aria-label={t('map.controls.rotateLeft.label')}
-            onClick={() => rotateSnappy('left')}
-          />
+            <IconButton
+              variant="ghost"
+              icon="rotate_left"
+              size="xs"
+              aria-label={t('map.controls.rotateLeft.label')}
+              onClick={() => rotateSnappy('left')}
+            />
           </Tooltip>
 
           <Tooltip content={t('map.controls.orientation.label')}>
-          <IconButton
-            variant="ghost"
-            icon="navigation"
-            size="xs"
-            aria-label={t('map.controls.orientation.label')}
-            onClick={() => setMapAngle(0)}
-            style={{
-              transform: `rotate(${mapOrientation}deg)`,
-              transition: 'none',
-            }}
-          />
+            <IconButton
+              variant="ghost"
+              icon="navigation"
+              size="xs"
+              aria-label={t('map.controls.orientation.label')}
+              onClick={() => setMapAngle(0)}
+              style={{
+                transform: `rotate(${mapOrientation}deg)`,
+                transition: 'none',
+              }}
+            />
           </Tooltip>
 
           <Tooltip content={t('map.controls.rotateRight.label')}>
-          <IconButton
-            variant="ghost"
-            icon="rotate_right"
-            size="xs"
-            aria-label={t('map.controls.rotateRight.label')}
-            onClick={() => rotateSnappy('right')}
-          />
+            <IconButton
+              variant="ghost"
+              icon="rotate_right"
+              size="xs"
+              aria-label={t('map.controls.rotateRight.label')}
+              onClick={() => rotateSnappy('right')}
+            />
           </Tooltip>
         </HStack>
       </PopoverContent>
