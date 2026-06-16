@@ -2,29 +2,19 @@ import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties } from 'react';
+import { MeasurePopover } from '../measure/MeasurePopover';
 import { useIsMobileScreen } from '../shared/hooks';
-import {
-  displayMapLegendAtom,
-  displayMapLegendControlAtom,
-  mapOrientationDegreesAtom,
-} from './atoms';
+import { displayMapLegendAtom, displayMapLegendControlAtom } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
+import { MapOrientationControl } from './MapOrientationControl';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
-  const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
-  const {
-    rotateSnappy,
-    setMapAngle,
-
-    setMapFullScreen,
-    zoomIn,
-    zoomOut,
-  } = useMapSettings();
+  const { setMapFullScreen, zoomIn, zoomOut } = useMapSettings();
 
   const handleMapLocationClick = () => {
     setTrackPosition((p) => !p);
@@ -75,33 +65,7 @@ export const MapControlButtons = () => {
         label={t('map.controls.zoomOut.label')}
         hide={isMobile}
       />
-      <ControlButton
-        id="rotate_left"
-        icon="rotate_left"
-        onClick={() => rotateSnappy('left')}
-        label={t('map.controls.rotateLeft.label')}
-        displayTooltip
-        hide={isMobile}
-      />
-      <ControlButton
-        id="reset_orientation"
-        icon="navigation"
-        onClick={() => setMapAngle(0)}
-        label={t('map.controls.orientation.label')}
-        style={{
-          transform: `rotate(${mapOrientation}deg)`,
-          transition: 'none',
-        }}
-        displayTooltip
-      />
-      <ControlButton
-        id="rotate_right"
-        icon="rotate_right"
-        onClick={() => rotateSnappy('right')}
-        label={t('map.controls.rotateRight.label')}
-        hide={isMobile}
-        displayTooltip
-      />
+      <MeasurePopover />
       {navigator.geolocation && (
         <ControlButton
           id={trackPosition ? 'location_disabled' : 'location_enabled'}
@@ -123,6 +87,7 @@ export const MapControlButtons = () => {
         displayTooltip
         hide={isMobile}
       />
+      <MapOrientationControl />
     </VStack>
   );
 };

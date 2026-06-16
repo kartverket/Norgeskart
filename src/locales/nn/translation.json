@@ -660,5 +660,10 @@
         "label": "Dra og slipp, eller vel ei fil"
       }
     }
+  },
+  "measure": {
+    "label": "Måleverktøy",
+    "length": "Lengd",
+    "area": "Areal"
   }
 }

@@ -87,6 +87,7 @@ export const useMapClickSearch = () => {
       if (currentTool && currentTool !== 'layers') {
         return;
       }
+
       if (currentTool === 'layers') {
         store.set(mapToolAtom, null);
       }
