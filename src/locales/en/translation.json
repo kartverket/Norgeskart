@@ -44,15 +44,17 @@
       "pointType": "Select icon",
       "showMeasurements": "Show measurements on map",
       "tool": {
-        "tooltip": {
+        "label": {
           "circle": "Circle",
-          "edit": "Edit and move",
-          "linestring": "Line segments",
+          "edit": "Edit",
+          "linestring": "Line",
+          "point": "Point",
+          "polygon": "Polygon",
+          "text": "Text"
+        },
+        "tooltip": {
           "movedown": "Move down",
           "moveup": "Move up",
-          "point": "Points",
-          "polygon": "Polygon",
-          "text": "Text",
           "undo": "Undo",
           "redo": "Redo",
           "deleteselected": "Delete selected"

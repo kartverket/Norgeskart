@@ -20,34 +20,32 @@ export const DrawToolSelector = () => {
     {
       value: 'Move',
       icon: 'arrow_selector_tool',
-      // label: t('draw.controls.tool.tooltip.edit'),
-      label: 'Rediger'
+      label: t('draw.controls.tool.label.edit'),
     },
     {
       value: 'Polygon',
       icon: 'pentagon',
-      label: t('draw.controls.tool.tooltip.polygon'),
+      label: t('draw.controls.tool.label.polygon'),
     },
     {
       value: 'Point',
       icon: 'atr',
-      label: t('draw.controls.tool.tooltip.point'),
+      label: t('draw.controls.tool.label.point'),
     },
     {
       value: 'LineString',
       icon: 'diagonal_line',
-      // label: t('draw.controls.tool.tooltip.linestring'),
-      label: 'Linje'
+      label: t('draw.controls.tool.label.linestring'),
     },
     {
       value: 'Circle',
       icon: 'circle',
-      label: t('draw.controls.tool.tooltip.circle'),
+      label: t('draw.controls.tool.label.circle'),
     },
     {
       value: 'Text',
       icon: 'text_fields',
-      label: t('draw.controls.tool.tooltip.text'),
+      label: t('draw.controls.tool.label.text'),
     },
   ];
   return (
@@ -92,6 +90,7 @@ const DrawTypeButton = ({
     <Flex direction="column" align="center" gap={1}>
       <IconButton
         variant="ghost"
+        iconFill  
         icon={effectiveIcon}
         backgroundColor={isCurrentTool ? '#D0ECD6' : ''}
         size={{ base: 'xs', md: 'sm' }}

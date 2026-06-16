@@ -44,15 +44,17 @@
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål i kartet",
       "tool": {
-        "tooltip": {
+        "label": {
           "circle": "Sirkel",
-          "edit": "Rediger og flytt",
-          "linestring": "Linjesegmenter",
+          "edit": "Rediger",
+          "linestring": "Linje",
+          "point": "Punkt",
+          "polygon": "Flate", 
+          "text": "Tekst"
+        },
+        "tooltip": {
           "movedown": "Flytt ned",
           "moveup": "Flytt opp",
-          "point": "Punkter",
-          "polygon": "Flate",
-          "text": "Tekst",
           "undo": "Angre",
           "redo": "Gjør om",
           "deleteselected": "Slett valgte"
