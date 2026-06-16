@@ -36,9 +36,8 @@ export const MeasurePopover = () => {
       closeOnInteractOutside={false}
     >
       <PopoverTrigger asChild>
+        {/* Needed for popover positioning with tooltip */}
         <Box as="span">
-          {' '}
-          {/* Needed for popover positioning with tooltip */}
           <Tooltip
             content={t('measure.label')}
             positioning={{ placement: 'left' }}
