@@ -655,5 +655,10 @@
         "label": "Drag and drop or select a file"
       }
     }
+  },
+  "measure": {
+    "label": "Measuring tool",
+    "length": "Length",
+    "area": "Area"
   }
 }

@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
   Tooltip,
 } from '@kvib/react';
+import { t } from 'i18next';
 import { useAtom, useSetAtom } from 'jotai';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { measureEnabledEffect, measureTypeAtom } from './atoms';
@@ -36,15 +37,18 @@ export const MeasurePopover = () => {
     >
       <PopoverTrigger asChild>
         <Box as="span">
+          {' '}
           {/* Needed for popover positioning with tooltip */}
-          <Tooltip content="Måleverktøy" positioning={{ placement: 'left' }}>
+          <Tooltip
+            content={t('measure.label')}
+            positioning={{ placement: 'left' }}
+          >
             <IconButton
-              title="Måleverktøy"
               variant="ghost"
               colorPalette="green"
               size="xs"
               icon="straighten"
-              aria-label="Måle"
+              aria-label={t('measure.label')}
               backgroundColor={open ? '#D0ECD6' : ''}
             />
           </Tooltip>
