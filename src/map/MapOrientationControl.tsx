@@ -9,13 +9,34 @@ import {
 import { t } from 'i18next';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
+import { useIsMobileScreen } from '../shared/hooks';
 import { mapOrientationDegreesAtom } from './atoms';
 import { useMapSettings } from './mapHooks';
 
 export const MapOrientationControl = () => {
+  const isMobile = useIsMobileScreen();
+
   const [open, setOpen] = useState(false);
   const mapOrientation = useAtomValue(mapOrientationDegreesAtom);
   const { rotateSnappy, setMapAngle } = useMapSettings();
+
+  if (isMobile) {
+    return (
+      <Tooltip content={t('map.controls.orientation.label')}>
+        <IconButton
+          variant="ghost"
+          size="xs"
+          icon="navigation"
+          aria-label={t('map.controls.orientation.label')}
+          onClick={() => setMapAngle(0)}
+          style={{
+            transform: `rotate(${mapOrientation}deg)`,
+            transition: 'none',
+          }}
+        />
+      </Tooltip>
+    );
+  }
 
   return (
     <Popover
