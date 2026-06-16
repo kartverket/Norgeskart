@@ -9,14 +9,12 @@ import {
 import { t } from 'i18next';
 import { useAtom, useSetAtom } from 'jotai';
 import { mapToolAtom } from '../map/overlay/atoms';
-import { measureEnabledEffect, measureTypeAtom } from './atoms';
+import { measureTypeAtom } from './atoms';
 import { MeasurePopoverContent } from './MeasurePopoverContent';
 
 export const MeasurePopover = () => {
   const setMeasureType = useSetAtom(measureTypeAtom);
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
-
-  useAtom(measureEnabledEffect);
 
   const open = currentMapTool === 'measure';
 
