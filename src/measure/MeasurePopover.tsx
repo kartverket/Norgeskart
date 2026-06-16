@@ -48,7 +48,7 @@ export const MeasurePopover = () => {
               colorPalette="green"
               size="xs"
               icon="straighten"
-              aria-label={t('measure.label')}
+              aria-label="Måle"
               backgroundColor={open ? '#D0ECD6' : ''}
             />
           </Tooltip>

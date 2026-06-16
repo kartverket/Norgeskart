@@ -52,7 +52,7 @@ export const Layout = () => {
   useSearchEffects();
   useMapClickSearch();
 
-  const isToolOpen = currentMapTool !== null;
+  const isToolOpen = currentMapTool !== null && currentMapTool !== 'measure';
   const hideLogo = selectedResult !== null || isPrintDialogOpen;
   const showDesktopLogo = !isMobile && !hideLogo;
   const showMobileLogo = isMobile && !hideLogo && !isToolOpen;
