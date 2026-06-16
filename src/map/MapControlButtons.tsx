@@ -65,7 +65,7 @@ export const MapControlButtons = () => {
         label={t('map.controls.zoomOut.label')}
         hide={isMobile}
       />
-      <MeasurePopover />
+      {!isMobile && <MeasurePopover />}
       {navigator.geolocation && (
         <ControlButton
           id={trackPosition ? 'location_disabled' : 'location_enabled'}
