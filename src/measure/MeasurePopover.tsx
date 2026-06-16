@@ -19,14 +19,14 @@ export const MeasurePopover = () => {
   const open = currentMapTool === 'measure';
 
   const toggleMeasureTool = () => {
-  if (open) {
-    setCurrentMapTool(null);
-    setMeasureType(null);
-  } else {
-    setCurrentMapTool('measure');
-    setMeasureType('length');
-  }
-};
+    if (open) {
+      setCurrentMapTool(null);
+      setMeasureType(null);
+    } else {
+      setCurrentMapTool('measure');
+      setMeasureType('length');
+    }
+  };
 
   return (
     <Popover

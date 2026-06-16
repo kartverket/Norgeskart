@@ -169,7 +169,7 @@ const addSelectMoveInteractionToMap = (drawLayer: VectorLayer, map: Map) => {
   map.addInteraction(modifyInteraction);
 };
 
-export const addDrawInteractionToMap = (
+const addDrawInteractionToMap = (
   type: DrawType,
   drawLayer: VectorLayer,
   map: Map,
@@ -238,7 +238,7 @@ const getMeasurementOverlays = (map: Map) => {
   });
 };
 
-export const setDisplayInteractiveMeasurementForDrawInteraction = (
+const setDisplayInteractiveMeasurementForDrawInteraction = (
   enable: boolean,
 ) => {
   const drawInteraction = getDrawInteraction();
