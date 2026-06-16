@@ -2,7 +2,7 @@ import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties } from 'react';
-import { MeasureToolButton } from '../measure/MeasureToolButton';
+import { MeasurePopover } from '../measure/MeasureToolButton';
 import { useIsMobileScreen } from '../shared/hooks';
 import { displayMapLegendAtom, displayMapLegendControlAtom } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';
@@ -65,7 +65,7 @@ export const MapControlButtons = () => {
         label={t('map.controls.zoomOut.label')}
         hide={isMobile}
       />
-      <MeasureToolButton />
+      <MeasurePopover />
       {navigator.geolocation && (
         <ControlButton
           id={trackPosition ? 'location_disabled' : 'location_enabled'}
