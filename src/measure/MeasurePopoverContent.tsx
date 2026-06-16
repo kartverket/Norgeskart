@@ -1,10 +1,9 @@
 import { HStack, IconButton, Tooltip } from '@kvib/react';
 import { useAtom } from 'jotai';
-import { measureEnabledEffect, measureTypeAtom } from './atoms';
+import { measureTypeAtom } from './atoms';
 
-export const MeasurePanel = () => {
+export const MeasurePopoverContent = () => {
   const [measureType, setMeasureType] = useAtom(measureTypeAtom);
-  useAtom(measureEnabledEffect);
 
   return (
     <>

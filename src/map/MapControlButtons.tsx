@@ -2,7 +2,7 @@ import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { CSSProperties } from 'react';
-import { MeasurePopover } from '../measure/MeasureToolButton';
+import { MeasurePopover } from '../measure/MeasurePopover';
 import { useIsMobileScreen } from '../shared/hooks';
 import { displayMapLegendAtom, displayMapLegendControlAtom } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';

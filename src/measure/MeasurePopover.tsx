@@ -1,19 +1,21 @@
 import {
   Box,
-  HStack,
   IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Tooltip,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { mapToolAtom } from '../map/overlay/atoms';
-import { measureTypeAtom } from './atoms';
+import { measureEnabledEffect, measureTypeAtom } from './atoms';
+import { MeasurePopoverContent } from './MeasurePopoverContent';
 
 export const MeasurePopover = () => {
-  const [measureType, setMeasureType] = useAtom(measureTypeAtom);
+  const setMeasureType = useSetAtom(measureTypeAtom);
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
+
+  useAtom(measureEnabledEffect);
 
   const open = currentMapTool === 'measure';
 
@@ -49,27 +51,7 @@ export const MeasurePopover = () => {
         </Box>
       </PopoverTrigger>
       <PopoverContent maxW="77px">
-        <HStack boxShadow="md" gap={1}>
-          <Tooltip content="Lengde">
-            <IconButton
-              size="sm"
-              variant="ghost"
-              icon="straighten"
-              backgroundColor={measureType === 'length' ? '#D0ECD6' : ''}
-              onClick={() => setMeasureType('length')}
-            ></IconButton>
-          </Tooltip>
-
-          <Tooltip content="Areal">
-            <IconButton
-              size="sm"
-              variant="ghost"
-              icon="square_foot"
-              backgroundColor={measureType === 'area' ? '#D0ECD6' : ''}
-              onClick={() => setMeasureType('area')}
-            ></IconButton>
-          </Tooltip>
-        </HStack>
+        <MeasurePopoverContent />
       </PopoverContent>
     </Popover>
   );
