@@ -49,7 +49,7 @@
           "edit": "Rediger",
           "linestring": "Linje",
           "point": "Punkt",
-          "polygon": "Flate", 
+          "polygon": "Flate",
           "text": "Tekst"
         },
         "tooltip": {

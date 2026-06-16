@@ -46,9 +46,9 @@
       "tool": {
         "label": {
           "circle": "Sirkel",
-          "edit": "Rediger", 
+          "edit": "Rediger",
           "linestring": "Linje",
-          "point":"Punkt",
+          "point": "Punkt",
           "polygon": "Flate",
           "text": "Tekst"
         },

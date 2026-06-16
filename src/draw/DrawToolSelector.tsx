@@ -1,4 +1,4 @@
-import { Flex, IconButton, MaterialSymbol, Tooltip } from '@kvib/react';
+import { Flex, IconButton, MaterialSymbol, Text } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
@@ -90,7 +90,7 @@ const DrawTypeButton = ({
     <Flex direction="column" align="center" gap={1}>
       <IconButton
         variant="ghost"
-        iconFill  
+        iconFill
         icon={effectiveIcon}
         backgroundColor={isCurrentTool ? '#D0ECD6' : ''}
         size={{ base: 'xs', md: 'sm' }}
@@ -117,9 +117,7 @@ const DrawTypeButton = ({
           setDrawType(type);
         }}
       />
-      <span style={{fontSize: 12, textAlign: 'center'}}>
-        {label}
-      </span>
+      <Text fontSize={12}>{label}</Text>
     </Flex>
   );
 };
