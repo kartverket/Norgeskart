@@ -18,18 +18,19 @@ export const MeasurePopover = () => {
 
   const open = currentMapTool === 'measure';
 
+  const toggleMeasureTool = () => {
+  if (open) {
+    setCurrentMapTool(null);
+    setMeasureType(null);
+  } else {
+    setCurrentMapTool('measure');
+    setMeasureType('length');
+  }
+};
+
   return (
     <Popover
       open={open}
-      onOpenChange={({ open }) => {
-        if (open) {
-          setMeasureType('length');
-          setCurrentMapTool('measure');
-        } else {
-          setMeasureType(null);
-          setCurrentMapTool(null);
-        }
-      }}
       positioning={{ placement: 'left' }}
       closeOnInteractOutside={false}
     >
@@ -47,6 +48,7 @@ export const MeasurePopover = () => {
               icon="straighten"
               aria-label="Måle"
               backgroundColor={open ? '#D0ECD6' : ''}
+              onClick={toggleMeasureTool}
             />
           </Tooltip>
         </Box>
