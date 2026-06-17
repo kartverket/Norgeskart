@@ -15,11 +15,9 @@ import {
 } from '../../settings/draw/drawActions/drawActionsHooks';
 import { StyleChangeDetail } from './hooks/drawEventHandlers';
 import { useDrawSettings } from './hooks/drawSettings';
-import { useVerticalMove } from './hooks/verticalMove';
 
 export const EditControls = () => {
-  const { moveSelectedUp, moveSelectedDown } = useVerticalMove();
-  const { drawType, deleteSelected } = useDrawSettings();
+  const { deleteSelected } = useDrawSettings();
   const { addDrawAction } = useDrawActionsState();
   const { undoLast, redoLastUndone } = useDrawActions();
   const canUndoDrawAction = useAtomValue(canUndoAtom);
@@ -76,27 +74,6 @@ export const EditControls = () => {
   return (
     <>
       <HStack marginTop={2} wrap="wrap">
-        {drawType === 'Move' && (
-          <ButtonGroup>
-            <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
-              <IconButton
-                onClick={moveSelectedUp}
-                icon="arrow_cool_down"
-                variant="plain"
-                size={{ base: 'xs', md: 'sm' }}
-              />
-            </Tooltip>
-
-            <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
-              <IconButton
-                onClick={moveSelectedDown}
-                icon="arrow_warm_up"
-                variant="ghost"
-                size={{ base: 'xs', md: 'sm' }}
-              />
-            </Tooltip>
-          </ButtonGroup>
-        )}
         <ButtonGroup>
           <Tooltip content={t('draw.controls.tool.tooltip.undo')}>
             <IconButton
