@@ -17,7 +17,7 @@ export const DrawToolSelector = () => {
     icon: MaterialSymbol;
     label: string;
   }[] = [
-     {
+    {
       value: 'LineString',
       icon: 'diagonal_line',
       label: t('draw.controls.tool.label.linestring'),
@@ -42,7 +42,7 @@ export const DrawToolSelector = () => {
       icon: 'text_fields',
       label: t('draw.controls.tool.label.text'),
     },
-       {
+    {
       value: 'Move',
       icon: 'arrow_selector_tool',
       label: t('draw.controls.tool.label.edit'),
