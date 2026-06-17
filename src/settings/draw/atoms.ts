@@ -126,7 +126,7 @@ export const drawEnabledEffect = atomEffect((get, set) => {
   const translateInteraction = getTranslateInteraction();
 
   if (drawEnabled) {
-    set(drawTypeAtom, 'Move');
+    set(drawTypeAtom, 'LineString');
   } else {
     if (drawInteraction) {
       map.removeInteraction(drawInteraction);

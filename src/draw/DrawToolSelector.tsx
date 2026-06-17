@@ -17,10 +17,10 @@ export const DrawToolSelector = () => {
     icon: MaterialSymbol;
     label: string;
   }[] = [
-    {
-      value: 'Move',
-      icon: 'arrow_selector_tool',
-      label: t('draw.controls.tool.label.edit'),
+     {
+      value: 'LineString',
+      icon: 'diagonal_line',
+      label: t('draw.controls.tool.label.linestring'),
     },
     {
       value: 'Polygon',
@@ -33,11 +33,6 @@ export const DrawToolSelector = () => {
       label: t('draw.controls.tool.label.point'),
     },
     {
-      value: 'LineString',
-      icon: 'diagonal_line',
-      label: t('draw.controls.tool.label.linestring'),
-    },
-    {
       value: 'Circle',
       icon: 'circle',
       label: t('draw.controls.tool.label.circle'),
@@ -46,6 +41,11 @@ export const DrawToolSelector = () => {
       value: 'Text',
       icon: 'text_fields',
       label: t('draw.controls.tool.label.text'),
+    },
+       {
+      value: 'Move',
+      icon: 'arrow_selector_tool',
+      label: t('draw.controls.tool.label.edit'),
     },
   ];
   return (
