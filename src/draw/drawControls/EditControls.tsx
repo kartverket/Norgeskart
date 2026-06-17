@@ -14,9 +14,13 @@ import {
   useDrawActionsState,
 } from '../../settings/draw/drawActions/drawActionsHooks';
 import { StyleChangeDetail } from './hooks/drawEventHandlers';
-import { useDrawSettings } from './hooks/drawSettings';
+import { DrawType, useDrawSettings } from './hooks/drawSettings';
 
-export const EditControls = () => {
+type EditControlsProps = {
+  drawType: DrawType | null;
+};
+
+export const EditControls = ({ drawType }: EditControlsProps) => {
   const { deleteSelected } = useDrawSettings();
   const { addDrawAction } = useDrawActionsState();
   const { undoLast, redoLastUndone } = useDrawActions();
@@ -71,6 +75,8 @@ export const EditControls = () => {
       );
   }, [featureStyleChangedListener]);
 
+  const showSnapControl = drawType === 'LineString' || drawType === 'Polygon';
+
   return (
     <>
       <HStack marginTop={2} wrap="wrap">
@@ -104,13 +110,15 @@ export const EditControls = () => {
             variant="ghost"
           />
         </Tooltip>
-        <Switch
-          size="sm"
-          checked={snapEnabled}
-          onCheckedChange={(e) => setSnapEnabled(e.checked)}
-        >
-          Snap
-        </Switch>
+        {showSnapControl && (
+          <Switch
+            size="sm"
+            checked={snapEnabled}
+            onCheckedChange={(e) => setSnapEnabled(e.checked)}
+          >
+            Snap
+          </Switch>
+        )}
       </HStack>
     </>
   );

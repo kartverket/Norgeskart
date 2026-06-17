@@ -55,8 +55,8 @@ export const DrawControls = () => {
     };
   }, []);
 
-  const showMeasurementControls = drawType != null && MEASUREMENT_TYPES.includes(drawType);
-
+  const showMeasurementControls =
+    drawType != null && MEASUREMENT_TYPES.includes(drawType);
 
   return (
     <VStack
@@ -85,7 +85,7 @@ export const DrawControls = () => {
         <LineWidthControl />
         {showMeasurementControls && <MeasurementControls />}
       </Flex>
-      <EditControls />
+      <EditControls drawType={drawType} />
       <DrawControlFooter />
     </VStack>
   );
