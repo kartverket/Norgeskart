@@ -75,12 +75,9 @@
     "end": "Ferdig",
     "save": "Lagre teikning",
     "size": {
-      "label": "Linjetjukkleik"
-    },
-    "point": {
-      "size": {
-        "label": "Punktstorleik"
-      }
+      "label": "Linjetjukkleik",
+      "pointLabel": "Punktstorleik",
+      "textLabel": "Tekststorleik"
     },
     "tabHeading": "Teikne og måle",
     "textInputLabel": "Skriv inn tekst",

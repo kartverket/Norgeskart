@@ -1,4 +1,4 @@
-import { HStack, Input, Radio, RadioGroup, Text, VStack } from '@kvib/react';
+import { Box, HStack, Input, Text, VStack, Heading } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import {
@@ -17,23 +17,47 @@ export const TextStyleControl = () => {
   const [textValue, setTextValue] = useAtom(textInputAtom);
   const [fontSize, setFontSize] = useAtom(textFontSizeAtom);
   return (
-    <VStack alignItems="flex-start" gap={2}>
-      <Text fontSize="sm">{t('draw.textInputLabel')}</Text>
+    <VStack alignItems="flex-start" gap={2} mt={2}>
+      <Heading size={{base: 'xs', md: 'sm'}}>{t('draw.textInputLabel')}</Heading>
+
       <Input value={textValue} onChange={(e) => setTextValue(e.target.value)} />
-      <Text fontSize="sm">{t('draw.size.label')}</Text>
-      <RadioGroup value={fontSize.toString()}>
-        <HStack>
-          {fontSizeCollection.map((item) => (
-            <Radio
+
+      <Heading size={{base:'xs', md: 'sm'}}>{t('draw.size.textLabel')}</Heading>
+
+      <HStack>
+        {fontSizeCollection.map((item) => {
+          const isSelected = fontSize === item.value;
+
+          const buttonSize =
+            item.value === 12 ? 28 : item.value === 16 ? 34 : 40;
+
+          return (
+            <Box
               key={item.value}
-              value={item.value.toString()}
+              as="button"
               onClick={() => setFontSize(item.value as TextFontSize)}
+              w={`${buttonSize}px`}
+              h={`${buttonSize}px`}
+              borderRadius="full"
+              borderWidth="1px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              cursor="pointer"
+              borderColor="green.500"
+              bg={isSelected ? 'green.100' : 'transparent'}
             >
-              {item.label}
-            </Radio>
-          ))}
-        </HStack>
-      </RadioGroup>
+              <Text
+                fontSize={`${item.value}px`}
+                color="green.600"
+                fontWeight="bold"
+              >
+                Aa
+              </Text>
+            </Box>
+          );
+        })}
+      </HStack>
     </VStack>
   );
 };

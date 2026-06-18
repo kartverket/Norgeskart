@@ -35,7 +35,7 @@ export const LineWidthControl = () => {
   return (
     <VStack align="stretch" paddingY={2}>
       <Heading size={{ base: 'xs', md: 'sm' }}>
-        {isPoint ? t('draw.point.size.label') : t('draw.size.label')}
+        {isPoint ? t('draw.size.pointLabel') : t('draw.size.label')}
       </Heading>
       <HStack>
         {lineWidthCollection.map((item) => {

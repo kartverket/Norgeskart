@@ -75,12 +75,9 @@
     "end": "Ferdig",
     "save": "Lagre tegning",
     "size": {
-      "label": "Linjetykkelse"
-    },
-    "point": {
-      "size": {
-        "label": "Punktstørrelse"
-      }
+      "label": "Linjetykkelse",
+      "pointLabel": "Punktstørrelse",
+      "textLabel": "Tekststørrelse"
     },
     "tabHeading": "Velg tegnetype",
     "textInputLabel": "Skriv inn tekst",
