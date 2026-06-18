@@ -30,7 +30,7 @@
     "begin": "Tegn på kartet",
     "clear": "Fjern tegning",
     "close": "Lukk",
-    "confrimClear": "Er du sikker?",
+    "confrimClear": "Nå fjernes alt som er tegnet. Er du sikker?",
     "privacyNotice": {
       "title": "Lagring av tegning",
       "message": "Når du lagrer en tegning, lagres det i 2 år på Kartverkets servere. Alle med lenken kan se tegningen. For å slette tegninger kontakt post@kartverket.no."
@@ -73,7 +73,7 @@
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
-    "save": "Lagre",
+    "save": "Lagre tegning",
     "size": {
       "label": "Elementstørrelse"
     },

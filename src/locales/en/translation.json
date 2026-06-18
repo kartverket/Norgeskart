@@ -34,7 +34,7 @@
       "message": "When you save a drawing, it is stored for 2 years on Kartverket's servers. Anyone with the link can view the drawing. To delete drawings, contact post@kartverket.no."
     },
     "close": "Close",
-    "confrimClear": "Are you sure?",
+    "confrimClear": "Now everything that has been drawn will be removed. Are you sure?",
     "controls": {
       "colorBackground": "Background ",
       "colorFill": "Fill",
@@ -73,7 +73,7 @@
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
-    "save": "Save",
+    "save": "Save drawing",
     "size": {
       "label": "Element size"
     },

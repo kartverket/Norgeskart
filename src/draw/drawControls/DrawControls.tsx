@@ -25,9 +25,16 @@ import { PointStyleSelector } from '../PointStyleSelector.tsx';
 import { TextStyleControl } from '../TextStyleControl.tsx';
 import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts';
 import { EditControls } from './EditControls.tsx';
-import { useDrawSettings } from './hooks/drawSettings.ts';
+import { DrawType, useDrawSettings } from './hooks/drawSettings.ts';
 
 const MOBILE_TOOLBAR_RESERVE = '15px';
+
+const MEASUREMENT_TYPES: DrawType[] = [
+  'LineString',
+  'Polygon',
+  'Circle',
+  'Move',
+];
 
 export const DrawControls = () => {
   const { drawType } = useDrawSettings();
@@ -47,6 +54,9 @@ export const DrawControls = () => {
       clearInteractions();
     };
   }, []);
+
+  const showMeasurementControls =
+    drawType != null && MEASUREMENT_TYPES.includes(drawType);
 
   return (
     <VStack
@@ -73,9 +83,9 @@ export const DrawControls = () => {
       >
         {!isMobile && drawType === 'LineString' && <LineStyleControl />}
         <LineWidthControl />
-        <MeasurementControls />
+        {showMeasurementControls && <MeasurementControls />}
       </Flex>
-      <EditControls />
+      <EditControls drawType={drawType} />
       <DrawControlFooter />
     </VStack>
   );

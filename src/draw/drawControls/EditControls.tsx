@@ -14,12 +14,14 @@ import {
   useDrawActionsState,
 } from '../../settings/draw/drawActions/drawActionsHooks';
 import { StyleChangeDetail } from './hooks/drawEventHandlers';
-import { useDrawSettings } from './hooks/drawSettings';
-import { useVerticalMove } from './hooks/verticalMove';
+import { DrawType, useDrawSettings } from './hooks/drawSettings';
 
-export const EditControls = () => {
-  const { moveSelectedUp, moveSelectedDown } = useVerticalMove();
-  const { drawType, deleteSelected } = useDrawSettings();
+type EditControlsProps = {
+  drawType: DrawType | null;
+};
+
+export const EditControls = ({ drawType }: EditControlsProps) => {
+  const { deleteSelected } = useDrawSettings();
   const { addDrawAction } = useDrawActionsState();
   const { undoLast, redoLastUndone } = useDrawActions();
   const canUndoDrawAction = useAtomValue(canUndoAtom);
@@ -73,30 +75,12 @@ export const EditControls = () => {
       );
   }, [featureStyleChangedListener]);
 
+  const showSnapControl = drawType === 'LineString' || drawType === 'Polygon';
+  const showDeleteControl = drawType === 'Move';
+
   return (
     <>
       <HStack marginTop={2} wrap="wrap">
-        {drawType === 'Move' && (
-          <ButtonGroup>
-            <Tooltip content={t('draw.controls.tool.tooltip.movedown')}>
-              <IconButton
-                onClick={moveSelectedUp}
-                icon="arrow_cool_down"
-                variant="plain"
-                size={{ base: 'xs', md: 'sm' }}
-              />
-            </Tooltip>
-
-            <Tooltip content={t('draw.controls.tool.tooltip.moveup')}>
-              <IconButton
-                onClick={moveSelectedDown}
-                icon="arrow_warm_up"
-                variant="ghost"
-                size={{ base: 'xs', md: 'sm' }}
-              />
-            </Tooltip>
-          </ButtonGroup>
-        )}
         <ButtonGroup>
           <Tooltip content={t('draw.controls.tool.tooltip.undo')}>
             <IconButton
@@ -118,22 +102,26 @@ export const EditControls = () => {
             />
           </Tooltip>
         </ButtonGroup>
-        <Tooltip content={t('draw.controls.tool.tooltip.deleteselected')}>
-          <IconButton
-            onClick={deleteSelected}
-            colorPalette="red"
-            icon="delete"
+        {showDeleteControl && (
+          <Tooltip content={t('draw.controls.tool.tooltip.deleteselected')}>
+            <IconButton
+              onClick={deleteSelected}
+              colorPalette="red"
+              icon="delete"
+              size="sm"
+              variant="ghost"
+            />
+          </Tooltip>
+        )}
+        {showSnapControl && (
+          <Switch
             size="sm"
-            variant="ghost"
-          />
-        </Tooltip>
-        <Switch
-          size="sm"
-          checked={snapEnabled}
-          onCheckedChange={(e) => setSnapEnabled(e.checked)}
-        >
-          Snap
-        </Switch>
+            checked={snapEnabled}
+            onCheckedChange={(e) => setSnapEnabled(e.checked)}
+          >
+            Snap
+          </Switch>
+        )}
       </HStack>
     </>
   );
