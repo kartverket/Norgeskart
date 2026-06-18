@@ -20,7 +20,7 @@ export const LineStyleControl = () => {
       <HStack>
         {lineStyles.map((style) => (
           <Button
-          variant="outline"
+            variant="outline"
             key={style.value}
             size="xs"
             color="green.500"

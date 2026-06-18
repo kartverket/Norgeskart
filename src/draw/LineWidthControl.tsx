@@ -24,15 +24,24 @@ export const LineWidthControl = () => {
     return null;
   }
 
+  const isPoint = drawType === 'Point';
+
+  const getButtonSize = (value: number) => {
+    return value === 2 ? 24 : value === 4 ? 30 : 36;
+  };
+
+  const getPointSize = (value: number) => value * 2.2;
+
   return (
     <VStack align="stretch" paddingY={2}>
-      <Heading size={{ base: 'xs', md: 'sm' }}>{t('draw.size.label')}</Heading>
-
+      <Heading size={{ base: 'xs', md: 'sm' }}>
+        {isPoint ? t('draw.point.size.label') : t('draw.size.label')}
+      </Heading>
       <HStack>
         {lineWidthCollection.map((item) => {
           const isSelected = lineWidth === item.value;
-
-          const buttonSize = item.value === 2 ? 24 : item.value === 4 ? 30 : 36;
+          const buttonSize = getButtonSize(item.value);
+          const pointSize = getPointSize(item.value);
 
           return (
             <Box
@@ -52,12 +61,21 @@ export const LineWidthControl = () => {
               borderColor="green.500"
               bg={isSelected ? 'green.100' : 'transparent'}
             >
-              <Box
-                w="80%"
-                h={`${item.value}px`}
-                borderRadius="full"
-                bg={'green.500'}
-              />
+              {isPoint ? (
+                <Box
+                  w={`${pointSize}px`}
+                  h={`${pointSize}px`}
+                  borderRadius="full"
+                  bg="green.500"
+                />
+              ) : (
+                <Box
+                  w="80%"
+                  h={`${item.value}px`}
+                  borderRadius="full"
+                  bg="green.500"
+                />
+              )}
             </Box>
           );
         })}

@@ -75,7 +75,12 @@
     "end": "Done",
     "save": "Save drawing",
     "size": {
-      "label": "Element size"
+      "label": "Stroke width"
+    },
+    "point": {
+      "size": {
+        "label": "Point size"
+      }
     },
     "tabHeading": "Draw and measure",
     "textInputLabel": "Enter text",
