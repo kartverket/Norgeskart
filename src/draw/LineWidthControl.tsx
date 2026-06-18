@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Text, VStack } from '@kvib/react';
+import { Box, Heading, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { LineWidth, lineWidthAtom } from '../settings/draw/atoms';
@@ -32,6 +32,8 @@ export const LineWidthControl = () => {
         {lineWidthCollection.map((item) => {
           const isSelected = lineWidth === item.value;
 
+          const buttonSize = item.value === 2 ? 24 : item.value === 4 ? 30 : 36;
+
           return (
             <Box
               key={item.value}
@@ -39,23 +41,23 @@ export const LineWidthControl = () => {
               onClick={() => setLineWidth(item.value)}
               aria-pressed={isSelected}
               aria-label={`${t('draw.size.label')} ${item.label}`}
-              w={{ base: '16px', md: '22px' }}
-              h={{ base: '16px', md: '22px' }}
+              w={`${buttonSize}px`}
+              h={`${buttonSize}px`}
               borderRadius="full"
               borderWidth="1px"
               display="inline-flex"
               alignItems="center"
               justifyContent="center"
               cursor="pointer"
-              bg={isSelected ? 'colorPalette.500' : 'white'}
-              color={isSelected ? 'white' : 'inherit'}
-              borderColor={isSelected ? 'colorPalette.500' : 'gray.300'}
-              _hover={{ bg: isSelected ? 'colorPalette.600' : 'gray.50' }}
-              _active={{ transform: 'scale(0.98)' }}
+              borderColor="green.500"
+              bg={isSelected ? 'green.100' : 'transparent'}
             >
-              <Text fontSize="xs" fontWeight="semibold">
-                {item.label}
-              </Text>
+              <Box
+                w="80%"
+                h={`${item.value}px`}
+                borderRadius="full"
+                bg={'green.500'}
+              />
             </Box>
           );
         })}
