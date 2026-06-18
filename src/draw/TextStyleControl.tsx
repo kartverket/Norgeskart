@@ -1,4 +1,4 @@
-import { Box, HStack, Input, Text, VStack, Heading } from '@kvib/react';
+import { Box, Heading, HStack, Input, Text, VStack } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import {
@@ -18,11 +18,15 @@ export const TextStyleControl = () => {
   const [fontSize, setFontSize] = useAtom(textFontSizeAtom);
   return (
     <VStack alignItems="flex-start" gap={2} mt={2}>
-      <Heading size={{base: 'xs', md: 'sm'}}>{t('draw.textInputLabel')}</Heading>
+      <Heading size={{ base: 'xs', md: 'sm' }}>
+        {t('draw.textInputLabel')}
+      </Heading>
 
       <Input value={textValue} onChange={(e) => setTextValue(e.target.value)} />
 
-      <Heading size={{base:'xs', md: 'sm'}}>{t('draw.size.textLabel')}</Heading>
+      <Heading size={{ base: 'xs', md: 'sm' }}>
+        {t('draw.size.textLabel')}
+      </Heading>
 
       <HStack>
         {fontSizeCollection.map((item) => {
