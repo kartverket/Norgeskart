@@ -5,13 +5,13 @@ import {
   AccordionItemTrigger,
   Button,
   Grid,
+  HStack,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverRoot,
   PopoverTitle,
   PopoverTrigger,
-  HStack,
 } from '@kvib/react';
 import { Feature, FeatureCollection } from 'geojson';
 import { t } from 'i18next';
@@ -164,29 +164,27 @@ export const DrawControlFooter = () => {
                 <PopoverContent width="250px">
                   <PopoverArrow />
                   <PopoverBody>
-                    <PopoverTitle>
-                      {t('draw.confrimClear')}
-                    </PopoverTitle>
+                    <PopoverTitle>{t('draw.confrimClear')}</PopoverTitle>
                     <HStack mt={2} justifyContent="space-between">
-                    <Button
-                      onClick={() => {
-                        setClearPopoverOpen(false);
-                        clearDrawing();
-                      }}
-                      colorPalette={'red'}
-                      size="xs"
-                    >
-                      {t('shared.yes')}
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setClearPopoverOpen(false);
-                      }}
-                      variant="ghost"
-                      size="xs"
-                    >
-                      {t('shared.cancel')}
-                    </Button>
+                      <Button
+                        onClick={() => {
+                          setClearPopoverOpen(false);
+                          clearDrawing();
+                        }}
+                        colorPalette={'red'}
+                        size="xs"
+                      >
+                        {t('shared.yes')}
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setClearPopoverOpen(false);
+                        }}
+                        variant="ghost"
+                        size="xs"
+                      >
+                        {t('shared.cancel')}
+                      </Button>
                     </HStack>
                   </PopoverBody>
                 </PopoverContent>
