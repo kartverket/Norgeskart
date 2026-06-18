@@ -30,7 +30,7 @@
     "begin": "Teikn på kartet",
     "clear": "Fjern teikninga",
     "close": "Lukk",
-    "confrimClear": "Er du sikker på dette?",
+    "confrimClear": "No blir alt som er teikna, fjerna. Er du sikker?",
     "privacyNotice": {
       "title": "Lagring av teikning",
       "message": "Når du lagrar ei teikning, vert ho lagra i 2 år på Kartverkets tenarar. Alle med lenkja kan sjå teikninga. For å slette teikningar, kontakt post@kartverket.no."
@@ -73,7 +73,7 @@
     },
     "deleteSelection": "Fjern valde",
     "end": "Ferdig",
-    "save": "Lagra",
+    "save": "Lagre teikning",
     "size": {
       "label": "Storleik"
     },
