@@ -76,6 +76,7 @@ export const EditControls = ({ drawType }: EditControlsProps) => {
   }, [featureStyleChangedListener]);
 
   const showSnapControl = drawType === 'LineString' || drawType === 'Polygon';
+  const showDeleteControl = drawType === 'Move';
 
   return (
     <>
@@ -101,15 +102,17 @@ export const EditControls = ({ drawType }: EditControlsProps) => {
             />
           </Tooltip>
         </ButtonGroup>
-        <Tooltip content={t('draw.controls.tool.tooltip.deleteselected')}>
-          <IconButton
-            onClick={deleteSelected}
-            colorPalette="red"
-            icon="delete"
-            size="sm"
-            variant="ghost"
-          />
-        </Tooltip>
+        {showDeleteControl && (
+          <Tooltip content={t('draw.controls.tool.tooltip.deleteselected')}>
+            <IconButton
+              onClick={deleteSelected}
+              colorPalette="red"
+              icon="delete"
+              size="sm"
+              variant="ghost"
+            />
+          </Tooltip>
+        )}
         {showSnapControl && (
           <Switch
             size="sm"
