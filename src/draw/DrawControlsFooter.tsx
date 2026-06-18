@@ -22,6 +22,7 @@ import { transform } from 'ol/proj';
 import { useState } from 'react';
 import { saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
+import { useIsMobileScreen } from '../shared/hooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import {
   isExportDialogOpenAtom,
@@ -31,7 +32,6 @@ import { ExportDialog } from './dialogs/ExportDialog';
 import { ImportDialog } from './dialogs/import/ImportDialog';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 import { getFeaturePropertiesForExport } from './utils/featureUtils';
-import { useIsMobileScreen } from '../shared/hooks';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
