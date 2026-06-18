@@ -31,6 +31,7 @@ import { ExportDialog } from './dialogs/ExportDialog';
 import { ImportDialog } from './dialogs/import/ImportDialog';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 import { getFeaturePropertiesForExport } from './utils/featureUtils';
+import { useIsMobileScreen } from '../shared/hooks';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
   let coordinates: Coordinate[][] | Coordinate[] | Coordinate = [];
@@ -70,6 +71,8 @@ export const DrawControlFooter = () => {
   const setIsImportDialogOpen = useSetAtom(isImportDialogOpenAtom);
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
+
+  const isMobile = useIsMobileScreen();
 
   const onSaveFeatures = () => {
     const drawnFeatures = getDrawnFeatures();
@@ -113,6 +116,9 @@ export const DrawControlFooter = () => {
       }
     });
   };
+
+  const defaultAccordionValue: string[] = isMobile ? [] : ['export'];
+
   return (
     <>
       <Accordion
@@ -122,6 +128,7 @@ export const DrawControlFooter = () => {
         paddingTop={2}
         paddingX={0}
         overflow={'hidden'}
+        defaultValue={defaultAccordionValue}
       >
         <AccordionItem value="export" paddingX="0">
           <AccordionItemTrigger fontWeight="600" padding="0">
