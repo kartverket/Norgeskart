@@ -2,7 +2,11 @@ import {
   Alert,
   Box,
   Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   createListCollection,
+  Flex,
   HStack,
   Radio,
   RadioGroup,
@@ -70,6 +74,7 @@ export const ExtentSection = () => {
   const [format, setFormat] = useState('A4');
   const [orientation, setOrientation] = useState('portrait');
   const [loading, setLoading] = useState(false);
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   const formatOptions = getFormatOptions(layouts);
   const selectedLayout = getSelectedLayout(layouts, format, orientation);
@@ -182,17 +187,31 @@ export const ExtentSection = () => {
         </RadioGroup>
       </Box>
       {printScale && (
-        <Alert status="info" mt={4}>
-          <Box>
-            <Text fontWeight="bold">
-              {t('printExtent.scale')}: 1 : {printScale.toLocaleString('no-NO')}
-            </Text>
-            <Text fontSize="sm" mt={1}>
-              {t('printExtent.scaleNote', {
-                screenScale: screenScale?.toLocaleString('no-NO'),
-              })}
-            </Text>
-          </Box>
+        <Alert status="info" width="400px">
+          <Collapsible>
+            <Box>
+              <Flex align="center" justifyContent="space-between">
+                <Text fontWeight="bold">
+                  {t('printExtent.scale')}: 1 :{' '}
+                  {printScale.toLocaleString('no-NO')}
+                </Text>
+
+                <CollapsibleTrigger>
+                  <Button variant="ghost" size="sm" colorPalette="blue">
+                    Mer info
+                  </Button>
+                </CollapsibleTrigger>
+              </Flex>
+
+              <CollapsibleContent>
+                <Text fontSize="sm" mt={1}>
+                  {t('printExtent.scaleNote', {
+                    screenScale: screenScale?.toLocaleString('no-NO'),
+                  })}
+                </Text>
+              </CollapsibleContent>
+            </Box>
+          </Collapsible>
         </Alert>
       )}
       <Text mt={4}>{t('printExtent.description')}</Text>
