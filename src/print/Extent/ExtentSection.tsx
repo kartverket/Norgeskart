@@ -74,7 +74,6 @@ export const ExtentSection = () => {
   const [format, setFormat] = useState('A4');
   const [orientation, setOrientation] = useState('portrait');
   const [loading, setLoading] = useState(false);
-  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   const formatOptions = getFormatOptions(layouts);
   const selectedLayout = getSelectedLayout(layouts, format, orientation);
@@ -198,7 +197,7 @@ export const ExtentSection = () => {
 
                 <CollapsibleTrigger>
                   <Button variant="ghost" size="sm" colorPalette="blue">
-                    Mer info
+                    {t('shared.moreInfo')}
                   </Button>
                 </CollapsibleTrigger>
               </Flex>

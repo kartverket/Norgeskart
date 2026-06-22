@@ -429,7 +429,8 @@
         "linestring": "Lines",
         "polygon": "Surfaces"
       }
-    }
+    },
+    "moreInfo": "More info"
   },
   "tipsandtricks": {
     "heading": "Tips and tricks",
