@@ -434,7 +434,8 @@
         "linestring": "Linjer",
         "polygon": "Flater"
       }
-    }
+    },
+    "moreInfo": "Mer info"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
