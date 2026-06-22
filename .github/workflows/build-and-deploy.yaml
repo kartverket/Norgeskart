@@ -30,7 +30,7 @@ jobs:
       docker_tag: ${{ steps.meta.outputs.tags }}
     steps:
       - name: 'Checkout code'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Setup node.js'
         uses: actions/setup-node@v6
@@ -108,7 +108,7 @@ jobs:
           identity: norgeskart5
 
       - name: Checkout apps repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: kartverket/tnt-apps
           ref: main

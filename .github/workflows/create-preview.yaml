@@ -35,7 +35,7 @@ jobs:
       target_branch_short_name: ${{ steps.get_sanatized_name.outputs.branchname }}
     steps:
       - name: 'Checkout code'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.targetBranch }}
 
@@ -115,7 +115,7 @@ jobs:
           identity: norgeskart5
 
       - name: Checkout apps repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: kartverket/tnt-apps
           ref: main
