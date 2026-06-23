@@ -8,6 +8,8 @@ import { useMapSettings } from './map/mapHooks.ts';
 import { RettIKartetDialog } from './map/menu/dialogs/RettIKartetDialog.tsx';
 import { MapLegendDrawer } from './map/menu/drawers/MapLegendDrawer.tsx';
 import { MessageBox } from './messages/MessageBox.tsx';
+import { Route, Routes } from 'react-router-dom';
+import { HelpPage } from './pages/HelpPage.tsx';
 
 export const App = () => {
   const { setMapFullScreen } = useMapSettings();
@@ -33,7 +35,10 @@ export const App = () => {
       <RettIKartetDialog />
       <MapLegendDrawer />
       <Debug />
-      <Layout />
+      <Routes>
+        <Route path="/" element={<Layout />} />
+        <Route path="/hjelp" element={<HelpPage />} />
+      </Routes>
     </PostHogErrorBoundary>
   );
 };
