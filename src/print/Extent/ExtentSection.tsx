@@ -2,12 +2,11 @@ import {
   Alert,
   Box,
   Button,
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
   createListCollection,
-  Flex,
   HStack,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Radio,
   RadioGroup,
   SelectContent,
@@ -186,32 +185,27 @@ export const ExtentSection = () => {
         </RadioGroup>
       </Box>
       {printScale && (
-        <Alert status="info" width="400px">
-          <Collapsible>
-            <Box>
-              <Flex align="center" justifyContent="space-between">
-                <Text fontWeight="bold">
-                  {t('printExtent.scale')}: 1 :{' '}
-                  {printScale.toLocaleString('no-NO')}
-                </Text>
+        <HStack>
+          <Text fontSize="sm" fontWeight="bold">
+            {t('printExtent.scale')}: 1 : {printScale.toLocaleString('no-NO')}
+          </Text>
 
-                <CollapsibleTrigger>
-                  <Button variant="ghost" size="sm" colorPalette="blue">
-                    {t('shared.moreInfo')}
-                  </Button>
-                </CollapsibleTrigger>
-              </Flex>
+          <Popover>
+            <PopoverTrigger>
+              <Button size="sm" variant="ghost" leftIcon="info">
+                {t('shared.moreInfo')}
+              </Button>
+            </PopoverTrigger>
 
-              <CollapsibleContent>
-                <Text fontSize="sm" mt={1}>
-                  {t('printExtent.scaleNote', {
-                    screenScale: screenScale?.toLocaleString('no-NO'),
-                  })}
-                </Text>
-              </CollapsibleContent>
-            </Box>
-          </Collapsible>
-        </Alert>
+            <PopoverContent p={4}>
+              <Text>
+                {t('printExtent.scaleNote', {
+                  screenScale: screenScale?.toLocaleString('no-NO'),
+                })}
+              </Text>
+            </PopoverContent>
+          </Popover>
+        </HStack>
       )}
       <Text mt={4}>{t('printExtent.description')}</Text>
       <HStack mt={4}>
