@@ -445,6 +445,69 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     }
   }
 
+  // Pattern 5b: DM without degree symbol, with direction AFTER — "67 24.5536 N 015 34.7826 E"
+  const dmNoDegreeSymbolAfterPattern =
+    /(\d{1,3})\s+(\d{1,2}(?:\.\d+)?)\s*([NSEW])\s*[,;\s]+(\d{1,3})\s+(\d{1,2}(?:\.\d+)?)\s*([NSEW])/i;
+  const m5b = input.match(dmNoDegreeSymbolAfterPattern);
+  if (m5b) {
+    const [, deg1, min1, d1, deg2, min2, d2] = m5b;
+    const mm1 = parseFloat(min1),
+      mm2 = parseFloat(min2);
+    if (mm1 < 60 && mm2 < 60) {
+      const val1 = parseInt(deg1, 10) + mm1 / 60;
+      const val2 = parseInt(deg2, 10) + mm2 / 60;
+      const { lat, lon } = assignLatLon(
+        val1,
+        d1.toUpperCase(),
+        val2,
+        d2.toUpperCase(),
+      );
+      return validateAndReturnDMS(lat, lon);
+    }
+  }
+
+  // Pattern 5c: DM without degree symbol, with direction BEFORE — "N 67 24.5536 E 015 34.7826"
+  const dmNoDegreeSymbolBeforePattern =
+    /([NSEW])\s*(\d{1,3})\s+(\d{1,2}(?:\.\d+)?)\s*[,;\s]+([NSEW])\s*(\d{1,3})\s+(\d{1,2}(?:\.\d+)?)/i;
+  const m5c = input.match(dmNoDegreeSymbolBeforePattern);
+  if (m5c) {
+    const [, d1, deg1, min1, d2, deg2, min2] = m5c;
+    const mm1 = parseFloat(min1),
+      mm2 = parseFloat(min2);
+    if (mm1 < 60 && mm2 < 60) {
+      const val1 = parseInt(deg1, 10) + mm1 / 60;
+      const val2 = parseInt(deg2, 10) + mm2 / 60;
+      const { lat, lon } = assignLatLon(
+        val1,
+        d1.toUpperCase(),
+        val2,
+        d2.toUpperCase(),
+      );
+      return validateAndReturnDMS(lat, lon);
+    }
+  }
+
+  // Pattern 5d: DM without degree symbol and without direction — "67 24.5536 015 34.7826"
+  // Must be careful not to match decimal degrees or UTM coordinates.
+  // Key heuristic: if the second number in each pair has 3+ decimal places and is < 60, it's likely decimal minutes.
+  const dmNoDegreeSymbolNoDirectionPattern =
+    /^(\d{1,3})\s+(\d{1,2}(?:\.\d{3,})?)[\s,;]+(\d{1,3})\s+(\d{1,2}(?:\.\d{3,})?)$/;
+  const m5d = input.match(dmNoDegreeSymbolNoDirectionPattern);
+  if (m5d) {
+    const [, deg1, min1, deg2, min2] = m5d;
+    const deg1Val = parseInt(deg1, 10);
+    const deg2Val = parseInt(deg2, 10);
+    const mm1 = parseFloat(min1);
+    const mm2 = parseFloat(min2);
+
+    // Validate degrees are within lat/lon range and minutes are < 60
+    if (deg1Val <= 90 && deg2Val <= 180 && mm1 < 60 && mm2 < 60) {
+      const lat = deg1Val + mm1 / 60;
+      const lon = deg2Val + mm2 / 60;
+      return validateAndReturnDMS(lat, lon);
+    }
+  }
+
   // Pattern 6: DMS with direction AFTER — "59°54'45.8\"N 10°44'45.9\"E"
   const dmsAfterPattern =
     /(\d+)[°\s]+(\d+)['\u2032'\s]+(\d+(?:\.\d+)?)["\u2033"']{0,2}\s*([NSEW])/gi;

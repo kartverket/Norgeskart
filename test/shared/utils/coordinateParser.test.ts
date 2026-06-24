@@ -197,7 +197,56 @@ describe('parseCoordinateInput', () => {
     });
   });
 
-  // ─── UTM ──────────────────────────────────────────────────────────────────
+  describe('DM – without degree symbol (maritime format)', () => {
+    it('parses DM without degree symbol and without direction', () => {
+      const result = parseCoordinateInput('67 24.5536 015 34.7826');
+      expect(result).not.toBeNull();
+      expect(result?.inputFormat).toBe('dms');
+      expect(result?.lat).toBeCloseTo(67.4092, 3);
+      expect(result?.lon).toBeCloseTo(15.5797, 3);
+    });
+
+    it('parses DM without degree symbol with direction after', () => {
+      const result = parseCoordinateInput('67 24.5536 N 015 34.7826 E');
+      expect(result).not.toBeNull();
+      expect(result?.inputFormat).toBe('dms');
+      expect(result?.lat).toBeCloseTo(67.4092, 3);
+      expect(result?.lon).toBeCloseTo(15.5797, 3);
+    });
+
+    it('parses DM without degree symbol with direction before', () => {
+      const result = parseCoordinateInput('N 67 24.5536 E 015 34.7826');
+      expect(result).not.toBeNull();
+      expect(result?.inputFormat).toBe('dms');
+      expect(result?.lat).toBeCloseTo(67.4092, 3);
+      expect(result?.lon).toBeCloseTo(15.5797, 3);
+    });
+
+    it('parses DM without degree symbol with comma separator', () => {
+      const result = parseCoordinateInput('67 24.5536, 015 34.7826');
+      expect(result).not.toBeNull();
+      expect(result?.inputFormat).toBe('dms');
+      expect(result?.lat).toBeCloseTo(67.4092, 3);
+      expect(result?.lon).toBeCloseTo(15.5797, 3);
+    });
+
+    it('parses DM without degree symbol for southern/western hemispheres', () => {
+      const result = parseCoordinateInput('45 30.0 S 10 15.0 W');
+      expect(result).not.toBeNull();
+      expect(result?.lat).toBeCloseTo(-45.5, 3);
+      expect(result?.lon).toBeCloseTo(-10.25, 3);
+    });
+
+    it('rejects invalid minutes >= 60', () => {
+      const result = parseCoordinateInput('67 60.0 015 34.7826');
+      expect(result).toBeNull();
+    });
+
+    it('rejects when degrees exceed valid lat/lon range', () => {
+      const result = parseCoordinateInput('91 24.5536 015 34.7826');
+      expect(result).toBeNull();
+    });
+  });
 
   describe('UTM – no zone specified', () => {
     it('parses default UTM 33N pair (space-separated)', () => {
