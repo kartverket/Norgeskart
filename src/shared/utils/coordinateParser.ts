@@ -100,16 +100,28 @@ const validateAndReturnDMS = (
     : null;
 
 const tryDMSWithDirections = (
-  d1: string, deg1: string, min1: string,
-  d2: string, deg2: string, min2: string,
-  sec1 = '0', sec2 = '0',
+  d1: string,
+  deg1: string,
+  min1: string,
+  d2: string,
+  deg2: string,
+  min2: string,
+  sec1 = '0',
+  sec2 = '0',
 ): ParsedCoordinate | null => {
-  const mm1 = parseFloat(min1), mm2 = parseFloat(min2);
-  const ss1 = parseFloat(sec1), ss2 = parseFloat(sec2);
+  const mm1 = parseFloat(min1),
+    mm2 = parseFloat(min2);
+  const ss1 = parseFloat(sec1),
+    ss2 = parseFloat(sec2);
   if (mm1 >= 60 || mm2 >= 60 || ss1 >= 60 || ss2 >= 60) return null;
   const val1 = dmsToDecimal(parseInt(deg1, 10), mm1, ss1);
   const val2 = dmsToDecimal(parseInt(deg2, 10), mm2, ss2);
-  const { lat, lon } = assignLatLon(val1, d1.toUpperCase(), val2, d2.toUpperCase());
+  const { lat, lon } = assignLatLon(
+    val1,
+    d1.toUpperCase(),
+    val2,
+    d2.toUpperCase(),
+  );
   return validateAndReturnDMS(lat, lon);
 };
 
@@ -461,7 +473,10 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
 
     // Validate degrees are within lat/lon range and minutes are < 60
     if (deg1Val <= 90 && deg2Val <= 180 && mm1 < 60 && mm2 < 60)
-      return validateAndReturnDMS(dmsToDecimal(deg1Val, mm1), dmsToDecimal(deg2Val, mm2));
+      return validateAndReturnDMS(
+        dmsToDecimal(deg1Val, mm1),
+        dmsToDecimal(deg2Val, mm2),
+      );
   }
 
   // Pattern 6: DMS with direction AFTER — "59°54'45.8\"N 10°44'45.9\"E"
