@@ -9,11 +9,11 @@ export const Contact = () => {
   const { t } = useTranslation();
   return (
     <VStack alignItems="start" gap={4}>
-      <Text textStyle="sm">{t('privacyAndContact.dialogContent')}</Text>
+      <Text textStyle="md">{t('privacyAndContact.dialogContent')}</Text>
       <Link
         colorPalette="green"
         href="tel:+4732118000"
-        textStyle="sm"
+        textStyle="md"
         variant="underline"
       >
         +47 32 11 80 00
@@ -21,7 +21,7 @@ export const Contact = () => {
       <Link
         colorPalette="green"
         href="mailto:post@kartverket.no"
-        textStyle="sm"
+        textStyle="md"
         variant="underline"
       >
         {t('privacyAndContact.sendEmail')}
@@ -30,7 +30,7 @@ export const Contact = () => {
         href="https://forms.office.com/e/PPTcK53z83"
         target="_blank"
         external
-        textStyle="sm"
+        textStyle="md"
       >
         {t('privacyAndContact.formsLinkText')}
       </Link>
@@ -70,7 +70,7 @@ export const PrivacyPolicy = () => {
 
   return (
     <VStack alignItems="start" gap={4}>
-      <Text textStyle="sm">
+      <Text textStyle="md">
         {t('privacyAndContact.infoText')}
         <Link
           colorPalette="green"
@@ -83,7 +83,7 @@ export const PrivacyPolicy = () => {
           {t('privacyAndContact.privacyPolicy')}
         </Link>
       </Text>
-      <Text textStyle="sm">
+      <Text textStyle="md">
         {t('privacyAndContact.cookieConsent.currentStatus')}{' '}
         {t(
           consentStatusKey[consentStatus] ??

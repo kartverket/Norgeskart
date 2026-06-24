@@ -12,12 +12,11 @@ import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { activeThemeLayersAtom } from '../layers/atoms';
 import { mapToolAtom } from './atoms';
-import { useNavigate } from 'react-router-dom';
-
 
 export const MapToolButtons = () => {
   const { t } = useTranslation();

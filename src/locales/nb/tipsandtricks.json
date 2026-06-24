@@ -1,5 +1,6 @@
 [
   {
+    "category": "drawing",
     "title": "Kan jeg måle avstand med knekkpunkt?",
     "content": [
       {
@@ -23,6 +24,7 @@
     ]
   },
   {
+    "category": "drawing",
     "title": "Kan jeg slette enkeltobjekter når jeg tegner?",
     "content": [
       {
@@ -41,6 +43,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Hvilke søkekriterier støttes i søkefeltet?",
     "content": [
       {
@@ -75,6 +78,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Hvordan søker jeg på koordinater?",
     "content": [
       {
@@ -114,6 +118,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Hvordan deler jeg kartutsnitt?",
     "content": [
       {
@@ -127,6 +132,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Hvordan deler jeg kart med tegninger?",
     "content": [
       {
@@ -144,6 +150,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Kan jeg skrive ut i andre formater enn A4?",
     "content": [
       {
@@ -166,6 +173,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Finnes det tegnforklaring for kartlagene?",
     "content": [
       {
@@ -188,6 +196,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Hvor ofte oppdateres kartet?",
     "content": [
       {
@@ -197,6 +206,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Hvor finner jeg eiendomsinformasjon?",
     "content": [
       {
@@ -216,6 +226,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Hvordan aktiverer jeg fullskjermsmodus?",
     "content": [
       {
@@ -225,6 +236,7 @@
     ]
   },
   {
+    "category": "drawing",
     "title": "Hvordan finner jeg høydeprofil?",
     "content": [
       {
@@ -242,6 +254,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Hvorfor kan jeg ikke skrive ut flyfoto?",
     "content": [
       {
@@ -251,6 +264,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Skjul menyen med tastatur",
     "content": [
       {
