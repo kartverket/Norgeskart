@@ -12,6 +12,9 @@ export interface ParsedCoordinate {
 const applyDirection = (value: number, dir: string): number =>
   dir === 'S' || dir === 'W' ? -value : value;
 
+const dmsToDecimal = (deg: number, min: number, sec = 0): number =>
+  deg + min / 60 + sec / 3600;
+
 const assignLatLon = (
   val1: number,
   dir1: string,
@@ -95,6 +98,20 @@ const validateAndReturnDMS = (
   Math.abs(lat) <= 90 && Math.abs(lon) <= 180
     ? createDMSResult(lat, lon)
     : null;
+
+const tryDMSWithDirections = (
+  d1: string, deg1: string, min1: string,
+  d2: string, deg2: string, min2: string,
+  sec1 = '0', sec2 = '0',
+): ParsedCoordinate | null => {
+  const mm1 = parseFloat(min1), mm2 = parseFloat(min2);
+  const ss1 = parseFloat(sec1), ss2 = parseFloat(sec2);
+  if (mm1 >= 60 || mm2 >= 60 || ss1 >= 60 || ss2 >= 60) return null;
+  const val1 = dmsToDecimal(parseInt(deg1, 10), mm1, ss1);
+  const val2 = dmsToDecimal(parseInt(deg2, 10), mm2, ss2);
+  const { lat, lon } = assignLatLon(val1, d1.toUpperCase(), val2, d2.toUpperCase());
+  return validateAndReturnDMS(lat, lon);
+};
 
 const normalizeDirections = (input: string): string =>
   input
@@ -287,17 +304,9 @@ const parseDecimalDegrees = (input: string): ParsedCoordinate | null => {
         const dir1 = (m[1] ?? m[3])?.toUpperCase();
         const dir2 = (m[4] ?? m[6])?.toUpperCase();
 
-        let lat: number, lon: number;
-        if (dir1 === 'N' || dir1 === 'S') {
-          lat = dir1 === 'S' ? -num1 : num1;
-          lon = dir2 === 'W' ? -num2 : num2;
-        } else if (dir1 === 'E' || dir1 === 'W') {
-          lon = dir1 === 'W' ? -num1 : num1;
-          lat = dir2 === 'S' ? -num2 : num2;
-        } else {
-          lat = num1;
-          lon = num2;
-        }
+        const { lat, lon } = dir1
+          ? assignLatLon(num1, dir1, num2, dir2 ?? '')
+          : { lat: num1, lon: num2 };
 
         if (Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
           return {
@@ -355,21 +364,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m1 = input.match(dirBeforeDMSPattern);
   if (m1) {
     const [, d1, deg1, min1, sec1, d2, deg2, min2, sec2] = m1;
-    const min1Val = parseInt(min1, 10),
-      sec1Val = parseFloat(sec1);
-    const min2Val = parseInt(min2, 10),
-      sec2Val = parseFloat(sec2);
-    if (min1Val < 60 && sec1Val < 60 && min2Val < 60 && sec2Val < 60) {
-      const val1 = parseInt(deg1, 10) + min1Val / 60 + sec1Val / 3600;
-      const val2 = parseInt(deg2, 10) + min2Val / 60 + sec2Val / 3600;
-      const { lat, lon } = assignLatLon(
-        val1,
-        d1.toUpperCase(),
-        val2,
-        d2.toUpperCase(),
-      );
-      return validateAndReturnDMS(lat, lon);
-    }
+    return tryDMSWithDirections(d1, deg1, min1, d2, deg2, min2, sec1, sec2);
   }
 
   // Pattern 2: Direction BEFORE, DM — "N 60° 44.077 E 011° 15.943"
@@ -378,19 +373,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m2 = input.match(dirBeforeDMPattern);
   if (m2) {
     const [, d1, deg1, min1, d2, deg2, min2] = m2;
-    const mm1 = parseFloat(min1),
-      mm2 = parseFloat(min2);
-    if (mm1 < 60 && mm2 < 60) {
-      const val1 = parseInt(deg1, 10) + mm1 / 60;
-      const val2 = parseInt(deg2, 10) + mm2 / 60;
-      const { lat, lon } = assignLatLon(
-        val1,
-        d1.toUpperCase(),
-        val2,
-        d2.toUpperCase(),
-      );
-      return validateAndReturnDMS(lat, lon);
-    }
+    return tryDMSWithDirections(d1, deg1, min1, d2, deg2, min2);
   }
 
   // Pattern 3: DMS without direction — "60°10'10,10°10'10" or "60° 14' 18.306\", 9° 55' 45.113\""
@@ -403,11 +386,11 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
       ss1 = parseFloat(sec1);
     const mm2 = parseInt(min2, 10),
       ss2 = parseFloat(sec2);
-    if (mm1 < 60 && ss1 < 60 && mm2 < 60 && ss2 < 60) {
-      const lat = parseInt(deg1, 10) + mm1 / 60 + ss1 / 3600;
-      const lon = parseInt(deg2, 10) + mm2 / 60 + ss2 / 3600;
-      return validateAndReturnDMS(lat, lon);
-    }
+    if (mm1 < 60 && ss1 < 60 && mm2 < 60 && ss2 < 60)
+      return validateAndReturnDMS(
+        dmsToDecimal(parseInt(deg1, 10), mm1, ss1),
+        dmsToDecimal(parseInt(deg2, 10), mm2, ss2),
+      );
   }
 
   // Pattern 4: DM without direction — "60°10.5',10°10.5'"
@@ -418,11 +401,11 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     const [, deg1, min1, deg2, min2] = m4;
     const mm1 = parseFloat(min1),
       mm2 = parseFloat(min2);
-    if (mm1 < 60 && mm2 < 60) {
-      const lat = parseInt(deg1, 10) + mm1 / 60;
-      const lon = parseInt(deg2, 10) + mm2 / 60;
-      return validateAndReturnDMS(lat, lon);
-    }
+    if (mm1 < 60 && mm2 < 60)
+      return validateAndReturnDMS(
+        dmsToDecimal(parseInt(deg1, 10), mm1),
+        dmsToDecimal(parseInt(deg2, 10), mm2),
+      );
   }
 
   // Pattern 5: DM with only first direction — "58° 09.83' N, 06° 48.76'"
@@ -435,8 +418,8 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     const mm1 = parseFloat(min1),
       mm2 = parseFloat(min2);
     if (mm1 < 60 && mm2 < 60) {
-      const val1 = parseInt(deg1, 10) + mm1 / 60;
-      const val2 = parseInt(deg2, 10) + mm2 / 60;
+      const val1 = dmsToDecimal(parseInt(deg1, 10), mm1);
+      const val2 = dmsToDecimal(parseInt(deg2, 10), mm2);
       const lat =
         dir1 === 'N' || dir1 === 'S' ? applyDirection(val1, dir1) : val2;
       const lon =
@@ -451,19 +434,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m5b = input.match(dmNoDegreeSymbolAfterPattern);
   if (m5b) {
     const [, deg1, min1, d1, deg2, min2, d2] = m5b;
-    const mm1 = parseFloat(min1),
-      mm2 = parseFloat(min2);
-    if (mm1 < 60 && mm2 < 60) {
-      const val1 = parseInt(deg1, 10) + mm1 / 60;
-      const val2 = parseInt(deg2, 10) + mm2 / 60;
-      const { lat, lon } = assignLatLon(
-        val1,
-        d1.toUpperCase(),
-        val2,
-        d2.toUpperCase(),
-      );
-      return validateAndReturnDMS(lat, lon);
-    }
+    return tryDMSWithDirections(d1, deg1, min1, d2, deg2, min2);
   }
 
   // Pattern 5c: DM without degree symbol, with direction BEFORE — "N 67 24.5536 E 015 34.7826"
@@ -472,19 +443,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
   const m5c = input.match(dmNoDegreeSymbolBeforePattern);
   if (m5c) {
     const [, d1, deg1, min1, d2, deg2, min2] = m5c;
-    const mm1 = parseFloat(min1),
-      mm2 = parseFloat(min2);
-    if (mm1 < 60 && mm2 < 60) {
-      const val1 = parseInt(deg1, 10) + mm1 / 60;
-      const val2 = parseInt(deg2, 10) + mm2 / 60;
-      const { lat, lon } = assignLatLon(
-        val1,
-        d1.toUpperCase(),
-        val2,
-        d2.toUpperCase(),
-      );
-      return validateAndReturnDMS(lat, lon);
-    }
+    return tryDMSWithDirections(d1, deg1, min1, d2, deg2, min2);
   }
 
   // Pattern 5d: DM without degree symbol and without direction — "67 24.5536 015 34.7826"
@@ -501,11 +460,8 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
     const mm2 = parseFloat(min2);
 
     // Validate degrees are within lat/lon range and minutes are < 60
-    if (deg1Val <= 90 && deg2Val <= 180 && mm1 < 60 && mm2 < 60) {
-      const lat = deg1Val + mm1 / 60;
-      const lon = deg2Val + mm2 / 60;
-      return validateAndReturnDMS(lat, lon);
-    }
+    if (deg1Val <= 90 && deg2Val <= 180 && mm1 < 60 && mm2 < 60)
+      return validateAndReturnDMS(dmsToDecimal(deg1Val, mm1), dmsToDecimal(deg2Val, mm2));
   }
 
   // Pattern 6: DMS with direction AFTER — "59°54'45.8\"N 10°44'45.9\"E"
@@ -541,11 +497,11 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
       if (isNaN(minutes) || isNaN(seconds) || minutes >= 60 || seconds >= 60) {
         return null;
       }
-      decimal = degrees + minutes / 60 + seconds / 3600;
+      decimal = dmsToDecimal(degrees, minutes, seconds);
     } else {
       direction = match[3].toUpperCase();
       if (isNaN(minutesValue) || minutesValue >= 60) return null;
-      decimal = degrees + minutesValue / 60;
+      decimal = dmsToDecimal(degrees, minutesValue);
     }
 
     if (isNaN(degrees)) return null;
@@ -650,15 +606,9 @@ const parseUTM = (
   if (explicitZone && zone !== null) {
     if (!isValidUTMRange(east, north)) return null;
 
-    const zoneMap: Record<number, [ProjectionIdentifier, string]> = {
-      32: ['EPSG:25832', 'UTM 32N'],
-      33: ['EPSG:25833', 'UTM 33N'],
-      34: ['EPSG:25834', 'UTM 34N'],
-      35: ['EPSG:25835', 'UTM 35N'],
-      36: ['EPSG:25836', 'UTM 36N'],
-    };
-    const entry = zoneMap[zone] ?? ['EPSG:25833', 'UTM 33N'];
-    [projection, projectionName] = entry;
+    const resolvedZone = zone >= 32 && zone <= 36 ? zone : 33;
+    projection = toProjectionIdentifier(25800 + resolvedZone) ?? 'EPSG:25833';
+    projectionName = `UTM ${resolvedZone}N`;
   } else if (fallbackProjection?.startsWith('EPSG:258')) {
     if (!isValidUTMRange(east, north)) return null;
     projection = fallbackProjection;
