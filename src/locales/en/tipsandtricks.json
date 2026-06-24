@@ -1,5 +1,6 @@
 [
   {
+    "category": "drawing",
     "title": "Can I measure distance with breakpoints?",
     "content": [
       {
@@ -23,6 +24,7 @@
     ]
   },
   {
+    "category": "drawing",
     "title": "Can I delete individual objects when drawing?",
     "content": [
       {
@@ -41,6 +43,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Which search criteria are supported in the search field?",
     "content": [
       {
@@ -75,6 +78,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "How do I search for coordinates?",
     "content": [
       {
@@ -114,6 +118,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "How do I share a map view?",
     "content": [
       {
@@ -127,6 +132,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "How do I share a map with drawings?",
     "content": [
       {
@@ -144,6 +150,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Can I print in formats other than A4?",
     "content": [
       {
@@ -169,6 +176,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Is there a legend for the map layers?",
     "content": [
       {
@@ -191,6 +199,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "How often is the map updated?",
     "content": [
       {
@@ -200,6 +209,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Where can I find property information?",
     "content": [
       {
@@ -219,6 +229,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "How do I activate full screen mode?",
     "content": [
       {
@@ -228,6 +239,7 @@
     ]
   },
   {
+    "category": "drawing",
     "title": "How do I view an elevation profile?",
     "content": [
       {
@@ -245,6 +257,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Why can’t I print aerial imagery?",
     "content": [
       {
@@ -254,6 +267,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Hide the menu with the keyboard",
     "content": [
       {

@@ -1,5 +1,6 @@
 [
   {
+    "category": "drawing",
     "title": "Er det mogleg å måle avstand med knekkpunkt?",
     "content": [
       {
@@ -22,6 +23,7 @@
     ]
   },
   {
+    "category": "drawing",
     "title": "Er det mogleg å slette enkeltobjekt når eg teiknar?",
     "content": [
       {
@@ -39,6 +41,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Kva søkjekriterium blir handterte i søkjefeltet?",
     "content": [
       {
@@ -73,6 +76,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Korleis søkjer eg på koordinatar i søkjefeltet?",
     "content": [
       {
@@ -108,6 +112,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Korleis deler eg kartutsnitt?",
     "content": [
       {
@@ -117,6 +122,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Korleis kan eg dele kart med teikningar?",
     "content": [
       {
@@ -126,6 +132,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Er det mogleg å skrive ut i eit anna format enn A4?",
     "content": [
       {
@@ -144,6 +151,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Finst det teiknforklaring / skjermkartografi for dei ulike laga?",
     "content": [
       {
@@ -166,6 +174,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Kor ofte blir kartet oppdatert?",
     "content": [
       {
@@ -175,6 +184,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Kvar finn eg eigedomsinformasjon?",
     "content": [
       {
@@ -184,6 +194,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Korleis aktiverer eg fullskjermsmodus?",
     "content": [
       {
@@ -193,6 +204,7 @@
     ]
   },
   {
+    "category": "drawing",
     "title": "Korleis finn eg høgdeprofil?",
     "content": [
       {
@@ -202,6 +214,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Kvifor får eg ikkje skrive ut flyfoto/ortofoto?",
     "content": [
       {
@@ -211,6 +224,7 @@
     ]
   },
   {
+    "category": "map",
     "title": "Gøym menyen med tastaturet",
     "content": [
       {
