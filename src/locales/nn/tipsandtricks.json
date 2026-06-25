@@ -232,5 +232,15 @@
         "text": "Du kan gøyme og vise menyen ved å trykkje på «U»-tasten på tastaturet."
       }
     ]
+  },
+  {
+    "category": "drawing",
+    "title": "Lagring av teikning",
+    "content": [
+      {
+        "type":"text",
+        "text": "Når du lagrar ei teikning, vert ho lagra i 2 år på Kartverkets tenarar. Alle med lenkja kan sjå teikninga. For å slette teikningar, kontakt post@kartverket.no"
+      }
+    ]
   }
 ]

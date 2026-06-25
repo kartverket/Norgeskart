@@ -16,21 +16,21 @@ import {
   SimpleGrid,
   Text,
 } from '@kvib/react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Contact, PrivacyPolicy } from '../sidePanel/PrivacyPolicyAndContact';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
-import { useEffect, useState } from 'react';
 
 type TipsContentProps = {
   content: ContentBlock[];
 };
 
-type IconName = "edit" | "map" | "search" | "share";
+type IconName = 'edit' | 'map' | 'search' | 'share';
 
 const categories: {
-    id: string,
-    title: string,
-    icon: IconName,
+  id: string;
+  title: string;
+  icon: IconName;
 }[] = [
   {
     id: 'drawing',
@@ -70,7 +70,7 @@ const TipsAndTricksContent = ({ content }: TipsContentProps) => {
           return (
             <List key={i} listStyleType="disc" mb="2" ml="4">
               {block.items.map((item, j) => (
-                <ListItem key={j} textStyle="sm">
+                <ListItem key={j} textStyle="md">
                   {item}
                 </ListItem>
               ))}
@@ -107,7 +107,7 @@ const loaders: Record<string, () => Promise<{ default: unknown }>> = {
 
 export const HelpPage = () => {
   const { i18n, t } = useTranslation();
-const [tipsData, setTipsData] = useState<Tip[]>([]);
+  const [tipsData, setTipsData] = useState<Tip[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -129,53 +129,49 @@ const [tipsData, setTipsData] = useState<Tip[]>([]);
       cancelled = true;
     };
   }, [i18n.language]);
-  
 
   return (
-    <Box minH="100vh" bg="green.100" p={10}>
+    <Box minH="100vh" bg="green.50" p={10}>
       <Heading size="5xl">Noe du trenger hjelp med?</Heading>
       <Text mt={2} fontSize="xl">
         Finn svar på vanlige spørsmål og bla bla bla
       </Text>
       <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
         <Heading size="3xl" fontWeight="bold">
-          Tips og triks
+          {t('tipsandtricks.heading')}
         </Heading>
         <Text mt={1}>Vanlige spørsmål og nyttige tips</Text>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4} mt={4}>
+          {categories.map((category) => {
+            const items = tipsData.filter(
+              (tip) => tip.category === category.id,
+            );
 
-             {categories.map((category) => {
-    const items = tipsData.filter(
-      (faq) => faq.category === category.id
-    );
+            if (!items.length) return null;
 
-    if (!items.length) return null;
+            return (
+              <Card key={category.id} borderRadius={10} boxShadow="lg">
+                <CardBody>
+                  <Flex align="center" gap={2}>
+                    <Icon icon={category.icon} />
+                    <CardTitle>{category.title}</CardTitle>
+                  </Flex>
 
-    return (
-      <Card key={category.id}>
-        <CardBody>
-          <Flex align="center" gap={2}>
-            <Icon icon={category.icon} />
-            <CardTitle>{category.title}</CardTitle>
-          </Flex>
+                  <Accordion mt={2} collapsible>
+                    {items.map((tip) => (
+                      <AccordionItem key={tip.title} value={tip.title}>
+                        <AccordionItemTrigger>{tip.title}</AccordionItemTrigger>
 
-          <Accordion mt={2} collapsible>
-            {items.map((faq) => (
-              <AccordionItem key={faq.title} value={faq.title}>
-                <AccordionItemTrigger>
-                  {faq.title}
-                </AccordionItemTrigger>
-
-                <AccordionItemContent>
-                  <TipsAndTricksContent content={faq.content} />
-                </AccordionItemContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </CardBody>
-      </Card>
-    );
-  })}
+                        <AccordionItemContent>
+                          <TipsAndTricksContent content={tip.content} />
+                        </AccordionItemContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </CardBody>
+              </Card>
+            );
+          })}
 
           {/* <Card borderRadius={10} boxShadow="lg">
             <CardBody>
@@ -237,14 +233,14 @@ const [tipsData, setTipsData] = useState<Tip[]>([]);
 
       <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
         <Heading size="3xl" fontWeight="bold">
-          Kontakt oss
+          {t('privacyAndContact.contactUs')}
         </Heading>
         <Contact />
       </Box>
 
       <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
         <Heading size="3xl" fontWeight="bold">
-          Personvernerklæring
+          {t('privacyAndContact.privacy')}
         </Heading>
         <PrivacyPolicy />
       </Box>
@@ -271,7 +267,7 @@ const [tipsData, setTipsData] = useState<Tip[]>([]);
 
       <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
         <Heading size="3xl" fontWeight="bold">
-          Status
+          {t('privacyAndContact.status.heading')}
         </Heading>
         <Text mt={2} textStyle="md">
           {t('privacyAndContact.status.infoText')}

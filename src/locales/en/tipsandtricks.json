@@ -275,5 +275,15 @@
         "text": "You can hide and show the menu by pressing the 'U' key on your keyboard."
       }
     ]
+  },
+  {
+    "category": "drawing",
+    "title": "Drawing storage",
+    "content": [
+      {
+        "type": "text",
+        "text": "When you save a drawing, it is stored for 2 years on Kartverket's servers. Anyone with the link can view the drawing. To delete drawings, contact post@kartverket.no"
+      }
+    ]
   }
 ]

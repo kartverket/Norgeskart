@@ -272,5 +272,15 @@
         "text": "Du kan skjule og vise menyen ved å trykke på «U»-tasten på tastaturet."
       }
     ]
+  },
+  {
+    "category": "drawing",
+    "title": "Lagring av tegning",
+    "content": [
+      {
+        "type": "text",
+        "text": "Når du lagrer en tegning, lagres det i 2 år på Kartverkets servere. Alle med lenken kan se tegningen. For å slette tegninger kontakt post@kartverket.no"
+      }
+    ]
   }
 ]
