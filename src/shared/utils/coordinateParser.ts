@@ -460,7 +460,7 @@ const parseDMS = (input: string): ParsedCoordinate | null => {
 
   // Pattern 5d: DM without degree symbol and without direction — "67 24.5536 015 34.7826"
   // Must be careful not to match decimal degrees or UTM coordinates.
-  // Key heuristic: if the second number in each pair has 3+ decimal places and is < 60, it's likely decimal minutes.
+  // Heuristic: treat 4-number input as DM when minute values are < 60 (3+ decimal places helps disambiguate).
   const dmNoDegreeSymbolNoDirectionPattern =
     /^(\d{1,3})\s+(\d{1,2}(?:\.\d{3,})?)[\s,;]+(\d{1,3})\s+(\d{1,2}(?:\.\d{3,})?)$/;
   const m5d = input.match(dmNoDegreeSymbolNoDirectionPattern);
