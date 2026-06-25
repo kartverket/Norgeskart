@@ -105,12 +105,12 @@ const MapToolCardsBody = () => {
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
 
   const drawTypeLabels: Record<string, string> = {
-    Move: t('draw.controls.tool.tooltip.edit'),
-    Polygon: t('draw.controls.tool.tooltip.polygon'),
-    Point: t('draw.controls.tool.tooltip.point'),
-    LineString: t('draw.controls.tool.tooltip.linestring'),
-    Circle: t('draw.controls.tool.tooltip.circle'),
-    Text: t('draw.controls.tool.tooltip.text'),
+    Move: t('draw.controls.tool.label.edit'),
+    Polygon: t('draw.controls.tool.label.polygon'),
+    Point: t('draw.controls.tool.label.point'),
+    LineString: t('draw.controls.tool.label.linestring'),
+    Circle: t('draw.controls.tool.label.circle'),
+    Text: t('draw.controls.tool.label.text'),
   };
 
   const activeToolLabel = drawType

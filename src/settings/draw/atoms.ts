@@ -126,7 +126,7 @@ export const drawEnabledEffect = atomEffect((get, set) => {
   const translateInteraction = getTranslateInteraction();
 
   if (drawEnabled) {
-    set(drawTypeAtom, 'Move');
+    set(drawTypeAtom, 'LineString');
   } else {
     if (drawInteraction) {
       map.removeInteraction(drawInteraction);
@@ -146,12 +146,14 @@ const addSelectMoveInteractionToMap = (drawLayer: VectorLayer, map: Map) => {
   const selectInteraction = new Select({
     layers: [drawLayer],
     style: null,
+    hitTolerance: 12,
   });
   selectInteraction.addEventListener('select', handleSelect);
   map.addInteraction(selectInteraction);
 
   const translateInteraction = new Translate({
     features: selectInteraction.getFeatures(),
+    hitTolerance: 12,
   });
 
   translateInteraction.addEventListener('translatestart', handleModifyStart);
@@ -333,6 +335,7 @@ const drawEnd = (event: BaseEvent | Event) => {
   const zIndex = getHighestZIndex() + 1;
   const featureId = uuidv4();
   eventFeature.setId(featureId);
+
   if (drawType === 'Point') {
     const icon = store.get(pointIconAtom);
     if (icon) {

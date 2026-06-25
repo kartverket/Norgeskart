@@ -28,7 +28,9 @@ export const BackgroundLayerPopover = () => {
   return (
     <PopoverRoot
       open={open}
-      onOpenChange={(e) => setOpen(e.open)}
+      onOpenChange={(e) => {
+        setOpen(e.open);
+      }}
       positioning={{ placement: 'top', offset: { mainAxis: 2 } }}
     >
       <PopoverTrigger asChild>

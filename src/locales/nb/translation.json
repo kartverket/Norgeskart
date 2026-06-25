@@ -30,7 +30,7 @@
     "begin": "Tegn på kartet",
     "clear": "Fjern tegning",
     "close": "Lukk",
-    "confrimClear": "Er du sikker?",
+    "confrimClear": "Nå fjernes alt som er tegnet. Er du sikker?",
     "privacyNotice": {
       "title": "Lagring av tegning",
       "message": "Når du lagrer en tegning, lagres det i 2 år på Kartverkets servere. Alle med lenken kan se tegningen. For å slette tegninger kontakt post@kartverket.no."
@@ -44,15 +44,17 @@
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål i kartet",
       "tool": {
-        "tooltip": {
+        "label": {
           "circle": "Sirkel",
-          "edit": "Rediger og flytt",
-          "linestring": "Linjesegmenter",
+          "edit": "Rediger",
+          "linestring": "Linje",
+          "point": "Punkt",
+          "polygon": "Flate",
+          "text": "Tekst"
+        },
+        "tooltip": {
           "movedown": "Flytt ned",
           "moveup": "Flytt opp",
-          "point": "Punkter",
-          "polygon": "Flate",
-          "text": "Tekst",
           "undo": "Angre",
           "redo": "Gjør om",
           "deleteselected": "Slett valgte"
@@ -71,9 +73,11 @@
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
-    "save": "Lagre",
+    "save": "Lagre tegning",
     "size": {
-      "label": "Elementstørrelse"
+      "label": "Linjetykkelse",
+      "pointLabel": "Punktstørrelse",
+      "textLabel": "Tekststørrelse"
     },
     "tabHeading": "Velg tegnetype",
     "textInputLabel": "Skriv inn tekst",
@@ -155,7 +159,7 @@
             "category": {
               "label": "Velg kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne Rett i kartet i nytt vindu. Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. Kartverket har ikke myndighet til å gjøre endringer på eiendomsgrenser.",
+            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne et nytt vindu. Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. Kartverket har ikke myndighet til å gjøre endringer på eiendomsgrenser.",
             "link": {
               "label": "Åpne rettikartet.no i en ny fane"
             },
@@ -341,7 +345,7 @@
   },
   "mapLayers": {
     "close": "Lukk kartlaginstillinger",
-    "label": "Kartlag",
+    "label": "Temakart",
     "open": "Åpne kartlaginnstillinger"
   },
   "placeInfo": {
@@ -405,7 +409,8 @@
     "tabHeading": "Søk",
     "noResults": "Ingen treff",
     "coordinateSwapWarning": "Koordinatene ser ikke ut til å være i Norge. De kan ha blitt limt inn i feil rekkefølge (lon/lat i stedet for lat/lon).",
-    "coordinateSwapButton": "Bytt rekkefølge"
+    "coordinateSwapButton": "Bytt rekkefølge",
+    "maxLength": "Maks 100 tegn"
   },
   "shared": {
     "actions": {
@@ -431,7 +436,8 @@
         "linestring": "Linjer",
         "polygon": "Flater"
       }
-    }
+    },
+    "moreInfo": "Mer info"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -635,6 +641,8 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikke å hente kartet"
     },
+    "scale": "Utskriftsmålestokk",
+    "scaleNote": "Skjermens målestokk er 1 : {{screenScale}}. Avviket skyldes at papir (72 pt/tomme) og skjerm (96 px/tomme) bruker ulike referanseverdier for pikselstørrelse.",
     "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkart oppdatert EFS i utskriften.",
     "projectionWarning": "Utskriften vil alltid være i UTM-sone 33 (EPSG:25833), uavhengig av valgt kartprojeksjon."
   },
@@ -668,5 +676,10 @@
         "label": "Dra og slipp, eller velg en fil"
       }
     }
+  },
+  "measure": {
+    "label": "Måleverktøy",
+    "length": "Lengde",
+    "area": "Areal"
   }
 }

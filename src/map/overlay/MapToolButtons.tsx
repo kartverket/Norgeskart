@@ -8,6 +8,7 @@ import {
   toaster,
   VStack,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,8 +27,10 @@ export const MapToolButtons = () => {
   const [menuVisible, setMenuVisible] = useState(
     () => getUrlParameter('showMenu') !== 'false',
   );
+  const ph = usePostHog();
 
   const handleShareMapClick = () => {
+    ph.capture('share_map_clicked');
     const url = window.location.href;
     navigator.clipboard
       .writeText(url)

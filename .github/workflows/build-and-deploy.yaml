@@ -30,7 +30,7 @@ jobs:
       docker_tag: ${{ steps.meta.outputs.tags }}
     steps:
       - name: 'Checkout code'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Setup node.js'
         uses: actions/setup-node@v6
@@ -108,7 +108,7 @@ jobs:
           identity: norgeskart5
 
       - name: Checkout apps repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: kartverket/tnt-apps
           ref: main
@@ -125,7 +125,7 @@ jobs:
         run: |
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-version
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-test-version
+          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-test/norgeskart5-test-version
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push

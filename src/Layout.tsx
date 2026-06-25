@@ -29,7 +29,13 @@ import { ErrorBoundary } from './shared/ErrorBoundary';
 import { useIsMobileScreen } from './shared/hooks';
 import { Toolbar } from './toolbar/Toolbar';
 
-export type MapTool = 'layers' | 'draw' | 'info' | 'settings' | null;
+export type MapTool =
+  | 'layers'
+  | 'draw'
+  | 'info'
+  | 'settings'
+  | 'measure'
+  | null;
 
 export const Layout = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
@@ -47,7 +53,7 @@ export const Layout = () => {
   useSearchEffects();
   useMapClickSearch();
 
-  const isToolOpen = currentMapTool !== null;
+  const isToolOpen = currentMapTool !== null && currentMapTool !== 'measure';
   const hideLogo = selectedResult !== null || isPrintDialogOpen;
   const showDesktopLogo = !isMobile && !hideLogo;
   const showMobileLogo = isMobile && !hideLogo && !isToolOpen;
