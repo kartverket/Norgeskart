@@ -14,25 +14,14 @@ type AnyLayer = TileLayer | VectorLayer<VectorSource<Feature<Geometry>>>;
 
 const LayerIndicatorRow = ({
   title,
-  color,
   visible,
   onToggle,
 }: {
   title: string;
-  color: 'blue' | 'green';
   visible: boolean;
   onToggle: () => void;
 }) => (
   <HStack gap={2} align="center">
-    <Box
-      w={3}
-      h={3}
-      borderRadius="sm"
-      bg={visible ? `${color}.100` : 'gray.100'}
-      border="2px solid"
-      borderColor={visible ? `${color}.400` : 'gray.300'}
-      flexShrink={0}
-    />
     <Text
       fontSize="xs"
       lineClamp={1}
@@ -47,11 +36,11 @@ const LayerIndicatorRow = ({
       as="button"
       aria-label={visible ? 'Hide layer' : 'Show layer'}
       onClick={onToggle}
-      color={visible ? `${color}.500` : 'gray.400'}
+      color={visible ? 'green.500' : 'gray.400'}
       cursor="pointer"
       flexShrink={0}
       lineHeight={0}
-      _hover={{ color: visible ? `${color}.700` : 'gray.600' }}
+      _hover={{ color: visible ? 'green.700' : 'gray.600' }}
     >
       <Icon icon={visible ? 'visibility' : 'visibility_off'} size={14} />
     </Box>
@@ -109,7 +98,6 @@ export const ActiveLayersPanel = () => {
             <LayerIndicatorRow
               key={id}
               title={layer.get('layerTitle') as string}
-              color="blue"
               visible={wmsVisibility[id] ?? true}
               onToggle={() => toggleWms(layer)}
             />
@@ -121,7 +109,6 @@ export const ActiveLayersPanel = () => {
             <LayerIndicatorRow
               key={id}
               title={layer.get('layerTitle') as string}
-              color="green"
               visible={geoJsonVisibility[id] ?? true}
               onToggle={() => toggleGeoJson(layer)}
             />
