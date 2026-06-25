@@ -68,7 +68,7 @@ const useLayerVisibility = (layers: AnyLayer[]) => {
 
   const toggle = (layer: AnyLayer) => {
     const id = layer.get('id') as string;
-    const next = !visibilityMap[id];
+    const next = !(visibilityMap[id] ?? layer.getVisible());
     layer.setVisible(next);
     setVisibilityMap((prev) => ({ ...prev, [id]: next }));
   };
