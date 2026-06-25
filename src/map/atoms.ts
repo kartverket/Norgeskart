@@ -12,6 +12,7 @@ import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
 import { isMapLayerBackground, mapLayers } from './layers';
 import { activeThemeLayersAtom } from './layers/atoms';
 import { BackgroundLayerName } from './layers/backgroundLayers';
+import { hasUrlLayersAtom } from './layers/urlWms';
 import {
   allConfiguredBackgroundLayers,
   backgroundLayerAtom,
@@ -42,12 +43,13 @@ export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
   const config = get(themeLayerConfigAtom);
+  const hasUrlLayers = get(hasUrlLayersAtom);
 
-  const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
+  const hasThemeLegend = Array.from(activeThemeLayers).some((layerName) => {
     const layerDef = config.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;
   });
-  return !displayMapLegned && hasLegend;
+  return !displayMapLegned && (hasThemeLegend || hasUrlLayers);
 });
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
