@@ -24,7 +24,7 @@ export type ContentBlock = TextBlock | ListBlock | LinkBlock;
 export interface Tip {
   title: string;
   content: ContentBlock[];
-  category: "drawing" | "map" | "search" | "sharing"
+  category: 'drawing' | 'map' | 'search' | 'sharing';
 }
 
 // Typen som ESM-import av JSON returnerer
