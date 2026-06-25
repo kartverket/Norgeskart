@@ -238,7 +238,7 @@ describe('parseCoordinateInput', () => {
     });
 
     it('rejects invalid minutes >= 60', () => {
-      const result = parseCoordinateInput('67 60.0 015 34.7826');
+      const result = parseCoordinateInput('67 60.000 015 34.7826');
       expect(result).toBeNull();
     });
 
