@@ -1,4 +1,4 @@
-import { Button, HStack, Link, Text, VStack } from '@kvib/react';
+import { Button, Card, CardBody, CardTitle, Flex, Grid, Heading, HStack, Icon, Link, SimpleGrid, Text, VStack } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,33 +8,100 @@ import { disableCookies, enableCookies } from '../cookieBlocker';
 export const Contact = () => {
   const { t } = useTranslation();
   return (
-    <VStack alignItems="start" gap={4}>
-      <Text textStyle="md">{t('privacyAndContact.dialogContent')}</Text>
-      <Link
-        colorPalette="green"
-        href="tel:+4732118000"
-        textStyle="md"
-        variant="underline"
+   <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} alignItems="start">
+  <VStack align="start">
+    <Heading size="3xl" fontWeight="bold">
+      {t('privacyAndContact.contactUs')}
+    </Heading>
+
+    <Text fontSize="md">
+      {t('privacyAndContact.dialogContent')}
+    </Text>
+  </VStack>
+
+   <SimpleGrid columns={{ base: 1, md: 1, lg: 3}} gap={4} mt={2}>
+      <Card borderRadius={10} boxShadow="lg">
+      <CardBody>
+        <Flex align="center" gap={2}>
+          <Icon icon="rate_review" />
+          <CardTitle>Tilbakemeldingsskjema</CardTitle>
+        </Flex>
+        <Text mt={2} fontSize="sm">Rapporter feil eller foreslå forbedringer</Text>
+          <Link
+          mt={2}
+        href="https://forms.office.com/e/PPTcK53z83"
+        target="_blank"
+        external
+        textStyle="sm"
       >
-        +47 32 11 80 00
+        {t('privacyAndContact.formsLinkText')}
       </Link>
-      <Link
+      </CardBody>
+    </Card>
+    <Card borderRadius={10} boxShadow="lg">
+      <CardBody>
+        <Flex align="center" gap={2}>
+        <Icon icon="mail" />
+        <CardTitle>E-post</CardTitle>
+        </Flex>
+        <Text mt={2}fontSize="sm">Kontakt oss på e-post, så svarer vi så fort vi kan.</Text>
+        <Link
+        mt={2}
         colorPalette="green"
         href="mailto:post@kartverket.no"
-        textStyle="md"
+        textStyle="sm"
         variant="underline"
       >
         {t('privacyAndContact.sendEmail')}
       </Link>
-      <Link
-        href="https://forms.office.com/e/PPTcK53z83"
-        target="_blank"
-        external
-        textStyle="md"
+      </CardBody>
+    </Card>
+    <Card borderRadius={10} boxShadow="lg">
+      <CardBody>
+        <Flex align="center" gap={2}>
+          <Icon icon="phone_enabled" />
+          <CardTitle>Telefon</CardTitle>
+        </Flex>
+          <Link
+        colorPalette="green"
+        href="tel:+4732118000"
+        textStyle="sm"
+        variant="underline"
+        mt={2}
       >
-        {t('privacyAndContact.formsLinkText')}
+        +47 32 11 80 00
       </Link>
-    </VStack>
+      </CardBody>
+    </Card>
+  </SimpleGrid>
+</Grid>
+    // <VStack alignItems="start" gap={4}>
+    //   <Text textStyle="md">{t('privacyAndContact.dialogContent')}</Text>
+    //   <Link
+    //     colorPalette="green"
+    //     href="tel:+4732118000"
+    //     textStyle="md"
+    //     variant="underline"
+    //   >
+    //     +47 32 11 80 00
+    //   </Link>
+    //   <Link
+    //     colorPalette="green"
+    //     href="mailto:post@kartverket.no"
+    //     textStyle="md"
+    //     variant="underline"
+    //   >
+    //     {t('privacyAndContact.sendEmail')}
+    //   </Link>
+    //   <Link
+    //     href="https://forms.office.com/e/PPTcK53z83"
+    //     target="_blank"
+    //     external
+    //     textStyle="md"
+    //   >
+    //     {t('privacyAndContact.formsLinkText')}
+    //   </Link>
+    // </VStack>
   );
 };
 
