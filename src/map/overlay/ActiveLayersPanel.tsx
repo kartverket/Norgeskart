@@ -1,4 +1,4 @@
-import { Box, HStack, Icon, Stack, Text } from '@kvib/react';
+import { Box, HStack, Stack, Switch, Text } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import type { Feature } from 'ol';
 import type { Geometry } from 'ol/geom';
@@ -21,29 +21,20 @@ const LayerIndicatorRow = ({
   visible: boolean;
   onToggle: () => void;
 }) => (
-  <HStack gap={2} align="center">
+  <HStack gap={2} align="center" onClick={onToggle} cursor="pointer">
     <Text
       fontSize="xs"
       lineClamp={1}
       title={title}
       flex={1}
-      opacity={visible ? 1 : 0.45}
-      textDecoration={visible ? 'none' : 'line-through'}
     >
       {title}
     </Text>
-    <Box
-      as="button"
-      aria-label={visible ? 'Hide layer' : 'Show layer'}
-      onClick={onToggle}
-      color={visible ? 'green.500' : 'gray.400'}
-      cursor="pointer"
-      flexShrink={0}
-      lineHeight={0}
-      _hover={{ color: visible ? 'green.700' : 'gray.600' }}
-    >
-      <Icon icon={visible ? 'visibility' : 'visibility_off'} size={14} />
-    </Box>
+    <Switch
+      colorPalette="green"
+      size="xs"
+      checked={visible}
+    />
   </HStack>
 );
 
