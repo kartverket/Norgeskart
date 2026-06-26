@@ -131,6 +131,7 @@ export const HelpPage = () => {
   }, [i18n.language]);
 
   return (
+    
     <Box minH="100vh" bg="green.50" p={10}>
       <Heading size="5xl">Noe du trenger hjelp med?</Heading>
       <Text mt={2} fontSize="xl">
@@ -232,9 +233,9 @@ export const HelpPage = () => {
       </Box>
 
       <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-        <Heading size="3xl" fontWeight="bold">
+        {/* <Heading size="3xl" fontWeight="bold">
           {t('privacyAndContact.contactUs')}
-        </Heading>
+        </Heading> */}
         <Contact />
       </Box>
 
@@ -284,6 +285,7 @@ export const HelpPage = () => {
           status.kartverket.no
         </Link>
       </Box>
+      
 
       {/* <VStack>
             

@@ -3,13 +3,14 @@ import { PostHogErrorBoundary } from '@posthog/react';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Debug } from './debug/Debug.tsx';
+import { HelpPage2 } from './help/HelpPage2.tsx';
 import './i18n';
 import { Layout } from './Layout.tsx';
 import { useMapSettings } from './map/mapHooks.ts';
 import { RettIKartetDialog } from './map/menu/dialogs/RettIKartetDialog.tsx';
 import { MapLegendDrawer } from './map/menu/drawers/MapLegendDrawer.tsx';
 import { MessageBox } from './messages/MessageBox.tsx';
-import { HelpPage } from './pages/HelpPage.tsx';
+import { HelpPage } from './help/HelpPage.tsx';
 
 export const App = () => {
   const { setMapFullScreen } = useMapSettings();
