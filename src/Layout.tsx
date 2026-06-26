@@ -8,9 +8,10 @@ import {
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
-import { displayCompassOverlayAtom } from './map/atoms';
+import { displayCompassOverlayAtom, displayMapLegendAtom } from './map/atoms';
 import { BackgroundLayerPopover } from './map/backgroundLayer/BackgroundLayerPopover';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
+import { activeThemeLayersAtom } from './map/layers/atoms';
 import { MapComponent } from './map/MapComponent';
 import { MapControlButtons } from './map/MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './map/overlay/atoms';
@@ -20,9 +21,9 @@ import { MapToolButtons } from './map/overlay/MapToolButtons';
 import { MapToolCards } from './map/overlay/MapToolCards';
 import { isPrintDialogOpenAtom } from './print/atoms';
 import { PrintDialog } from './print/PrintDialog';
+import { RightPanel } from './RightPanel';
 import { selectedResultAtom, useSearchEffects } from './search/atoms';
 import { useMapClickSearch } from './search/hooks';
-import { InfoBox } from './search/infobox/InfoBox';
 import { SearchComponent } from './search/SearchComponent';
 import { ErrorBoundary } from './shared/ErrorBoundary';
 import { useIsMobileScreen } from './shared/hooks';
@@ -47,13 +48,18 @@ export const Layout = () => {
   const selectedResult = useAtomValue(selectedResultAtom);
   const currentMapTool = useAtomValue(mapToolAtom);
   const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
+  const isLegendOpen = useAtomValue(displayMapLegendAtom);
+  const activeLayers = useAtomValue(activeThemeLayersAtom);
 
   useFeatureInfoClick();
   useSearchEffects();
   useMapClickSearch();
 
   const isToolOpen = currentMapTool !== null && currentMapTool !== 'measure';
-  const hideLogo = selectedResult !== null || isPrintDialogOpen;
+  const hideLogo =
+    selectedResult !== null ||
+    isPrintDialogOpen ||
+    (isLegendOpen && activeLayers.size > 0);
   const showDesktopLogo = !isMobile && !hideLogo;
   const showMobileLogo = isMobile && !hideLogo && !isToolOpen;
 
@@ -140,8 +146,8 @@ export const Layout = () => {
             </Box>
           )}
           <Flex justifyContent={'flex-end'}>
-            <ErrorBoundary fallback={undefined} name={'InfoBox'}>
-              <InfoBox />
+            <ErrorBoundary fallback={undefined} name={'RightPanel'}>
+              <RightPanel />
             </ErrorBoundary>
             <ErrorBoundary fallback={undefined} name={'PrintDialog'}>
               {isPrintDialogOpen && <PrintDialog />}

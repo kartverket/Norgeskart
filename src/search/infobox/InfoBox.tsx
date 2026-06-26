@@ -19,7 +19,11 @@ import { searchCoordinatesAtom, selectedResultAtom } from '../atoms';
 import { InfoboxAccordionContent } from './InfoboxAccordionContent';
 import { InfoBoxPreamble } from './InfoBoxPreamble';
 
-export const InfoBox = () => {
+interface InfoBoxProps {
+  inPanel?: boolean;
+}
+
+export const InfoBox = ({ inPanel = false }: InfoBoxProps) => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
   const { t } = useTranslation();
@@ -37,8 +41,69 @@ export const InfoBox = () => {
     return null;
   }
 
+  const effectiveMinimized = inPanel ? false : isMinimized;
   const showHeading =
-    selectedResult.type !== 'Coordinate' && selectedResult.name && !isMinimized;
+    selectedResult.type !== 'Coordinate' &&
+    selectedResult.name &&
+    !effectiveMinimized;
+
+  const content = (
+    <>
+      {!inPanel && (
+        <Flex justifyContent={'flex-end'} alignItems="center" gap={1}>
+          <Button
+            onClick={() => setIsMinimized((prev) => !prev)}
+            variant="ghost"
+            leftIcon={isMinimized ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}
+            size="sm"
+            p={1}
+          >
+            {isMinimized ? t('infoBox.showContent') : t('infoBox.hideContent')}
+          </Button>
+          <IconButton
+            onClick={onClose}
+            icon={'close'}
+            colorPalette="red"
+            size={'sm'}
+            variant="ghost"
+            alignSelf={'flex-end'}
+          />
+        </Flex>
+      )}
+      {showHeading && (
+        <Heading fontWeight="bold" size={'lg'}>
+          {selectedResult.name}
+        </Heading>
+      )}
+      <Box display={effectiveMinimized ? 'none' : 'block'}>
+        <InfoBoxPreamble result={selectedResult} />
+      </Box>
+      <Box
+        overflowY="auto"
+        overflowX="auto"
+        display={effectiveMinimized ? 'none' : 'block'}
+      >
+        <AccordionRoot collapsible multiple defaultValue={[]}>
+          <InfoboxAccordionContent />
+        </AccordionRoot>
+      </Box>
+      <Button
+        display={effectiveMinimized ? 'none ' : 'flex'}
+        variant="plain"
+        size="sm"
+        onClick={() => {
+          setRettIKartetCoordinates([selectedResult.lon, selectedResult.lat]);
+          setRettIKartetDialogOpen(true);
+        }}
+      >
+        {t('toolbar.reportError.label')}
+      </Button>
+    </>
+  );
+
+  if (inPanel) {
+    return content;
+  }
 
   return (
     <Stack
@@ -53,53 +118,7 @@ export const InfoBox = () => {
       display={isPrintDialogOpen ? 'none' : 'flex'}
       maxWidth={isMinimized ? '190px' : '355px'}
     >
-      <Flex justifyContent={'flex-end'} alignItems="center" gap={1}>
-        <Button
-          onClick={() => setIsMinimized((prev) => !prev)}
-          variant="ghost"
-          leftIcon={isMinimized ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}
-          size="sm"
-          p={1}
-        >
-          {isMinimized ? t('infoBox.showContent') : t('infoBox.hideContent')}
-        </Button>
-        <IconButton
-          onClick={onClose}
-          icon={'close'}
-          colorPalette="red"
-          size={'sm'}
-          variant="ghost"
-          alignSelf={'flex-end'}
-        />
-      </Flex>
-      {showHeading && (
-        <Heading fontWeight="bold" size={'lg'}>
-          {selectedResult.name}
-        </Heading>
-      )}
-      <Box display={isMinimized ? 'none' : 'block'}>
-        <InfoBoxPreamble result={selectedResult} />
-      </Box>
-      <Box
-        overflowY="auto"
-        overflowX="auto"
-        display={isMinimized ? 'none' : 'block'}
-      >
-        <AccordionRoot collapsible multiple defaultValue={[]}>
-          <InfoboxAccordionContent />
-        </AccordionRoot>
-      </Box>
-      <Button
-        display={isMinimized ? 'none ' : 'flex'}
-        variant="plain"
-        size="sm"
-        onClick={() => {
-          setRettIKartetCoordinates([selectedResult.lon, selectedResult.lat]);
-          setRettIKartetDialogOpen(true);
-        }}
-      >
-        {t('toolbar.reportError.label')}
-      </Button>
+      {content}
     </Stack>
   );
 };

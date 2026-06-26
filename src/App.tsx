@@ -6,7 +6,6 @@ import './i18n';
 import { Layout } from './Layout.tsx';
 import { useMapSettings } from './map/mapHooks.ts';
 import { RettIKartetDialog } from './map/menu/dialogs/RettIKartetDialog.tsx';
-import { MapLegendDrawer } from './map/menu/drawers/MapLegendDrawer.tsx';
 import { MessageBox } from './messages/MessageBox.tsx';
 
 export const App = () => {
@@ -31,7 +30,6 @@ export const App = () => {
     <PostHogErrorBoundary fallback={ErrorFallback}>
       <MessageBox />
       <RettIKartetDialog />
-      <MapLegendDrawer />
       <Debug />
       <Layout />
     </PostHogErrorBoundary>

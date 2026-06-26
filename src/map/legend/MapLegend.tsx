@@ -1,27 +1,60 @@
 import { AccordionRoot, Heading, HStack, IconButton, Stack } from '@kvib/react';
-import { useAtomValue, useSetAtom } from 'jotai';
-import React from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { displayMapLegendAtom } from '../atoms';
 import { activeThemeLayersAtom } from '../layers/atoms';
 import { SingleLayerLegend } from './SingleLayerLegend';
 
-export const MapLegend = () => {
+interface MapLegendProps {
+  inPanel?: boolean;
+}
+
+export const MapLegend = ({ inPanel = false }: MapLegendProps) => {
   const { t } = useTranslation();
   const activeThemeLayers = useAtomValue(activeThemeLayersAtom);
-  const setShowMapLegend = useSetAtom(displayMapLegendAtom);
+  const [isOpen, setShowMapLegend] = useAtom(displayMapLegendAtom);
   const layers = Array.from(activeThemeLayers);
-  if (layers.length === 0) {
+
+  useEffect(() => {
+    if (isOpen && layers.length === 0) {
+      setShowMapLegend(false);
+    }
+  }, [layers.length, isOpen, setShowMapLegend]);
+
+  if (!isOpen || layers.length === 0) {
     return null;
   }
+
+  const accordion = (
+    <AccordionRoot
+      collapsible
+      multiple
+      defaultValue={layers}
+      overflowY={'auto'}
+    >
+      {layers.map((l) => (
+        <React.Fragment key={l}>
+          <SingleLayerLegend layerName={l} />
+        </React.Fragment>
+      ))}
+    </AccordionRoot>
+  );
+
+  if (inPanel) {
+    return accordion;
+  }
+
   return (
     <Stack
-      w={'100%'}
+      width="100%"
+      maxWidth="355px"
+      m="1"
       bgColor={'white'}
       p={4}
       borderRadius="16px"
       pointerEvents="auto"
-      maxH={'100%'}
+      maxHeight="80vh"
       overflowY={'hidden'}
     >
       <HStack justify={'space-between'}>
@@ -33,18 +66,7 @@ export const MapLegend = () => {
           onClick={() => setShowMapLegend(false)}
         />
       </HStack>
-      <AccordionRoot
-        collapsible
-        multiple
-        defaultValue={layers}
-        overflowY={'auto'}
-      >
-        {layers.map((l) => (
-          <React.Fragment key={l}>
-            <SingleLayerLegend layerName={l} />
-          </React.Fragment>
-        ))}
-      </AccordionRoot>
+      {accordion}
     </Stack>
   );
 };
