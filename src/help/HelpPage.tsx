@@ -8,8 +8,11 @@ import {
   CardBody,
   CardTitle,
   Flex,
+  Header,
   Heading,
+  HStack,
   Icon,
+  Image,
   Link,
   List,
   ListItem,
@@ -18,6 +21,7 @@ import {
 } from '@kvib/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Contact, PrivacyPolicy } from '../sidePanel/PrivacyPolicyAndContact';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
 
@@ -108,6 +112,7 @@ const loaders: Record<string, () => Promise<{ default: unknown }>> = {
 export const HelpPage = () => {
   const { i18n, t } = useTranslation();
   const [tipsData, setTipsData] = useState<Tip[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
@@ -131,50 +136,54 @@ export const HelpPage = () => {
   }, [i18n.language]);
 
   return (
-    
-    <Box minH="100vh" bg="green.50" p={10}>
-      <Heading size="5xl">Noe du trenger hjelp med?</Heading>
-      <Text mt={2} fontSize="xl">
-        Finn svar på vanlige spørsmål og bla bla bla
-      </Text>
-      <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-        <Heading size="3xl" fontWeight="bold">
-          {t('tipsandtricks.heading')}
-        </Heading>
-        <Text mt={1}>Vanlige spørsmål og nyttige tips</Text>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4} mt={4}>
-          {categories.map((category) => {
-            const items = tipsData.filter(
-              (tip) => tip.category === category.id,
-            );
+    <>
+    <Header title="Norgeskart" titleLink="/" logoLink="https://kartverket.no" content={ <Link onClick={() => navigate(-1)}>Tilbake til kartet</Link>}>      
+    </Header>
+      <Box minH="100vh" bg="green.50" p={10}>
+        <Heading size="5xl">Hva trenger du hjelp med?</Heading>
+        <Text mt={2} fontSize="xl">
+          Finn svar på vanlige spørsmål og bla bla bla
+        </Text>
+        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+          <Heading size="3xl" fontWeight="bold">
+            {t('tipsandtricks.heading')}
+          </Heading>
+          <Text mt={1}>Vanlige spørsmål og nyttige tips</Text>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4} mt={4}>
+            {categories.map((category) => {
+              const items = tipsData.filter(
+                (tip) => tip.category === category.id,
+              );
 
-            if (!items.length) return null;
+              if (!items.length) return null;
 
-            return (
-              <Card key={category.id} borderRadius={10} boxShadow="lg">
-                <CardBody>
-                  <Flex align="center" gap={2}>
-                    <Icon icon={category.icon} />
-                    <CardTitle>{category.title}</CardTitle>
-                  </Flex>
+              return (
+                <Card key={category.id} borderRadius={10} boxShadow="lg">
+                  <CardBody>
+                    <Flex align="center" gap={2}>
+                      <Icon icon={category.icon} />
+                      <CardTitle>{category.title}</CardTitle>
+                    </Flex>
 
-                  <Accordion mt={2} collapsible>
-                    {items.map((tip) => (
-                      <AccordionItem key={tip.title} value={tip.title}>
-                        <AccordionItemTrigger>{tip.title}</AccordionItemTrigger>
+                    <Accordion mt={2} collapsible>
+                      {items.map((tip) => (
+                        <AccordionItem key={tip.title} value={tip.title}>
+                          <AccordionItemTrigger>
+                            {tip.title}
+                          </AccordionItemTrigger>
 
-                        <AccordionItemContent>
-                          <TipsAndTricksContent content={tip.content} />
-                        </AccordionItemContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </CardBody>
-              </Card>
-            );
-          })}
+                          <AccordionItemContent>
+                            <TipsAndTricksContent content={tip.content} />
+                          </AccordionItemContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </CardBody>
+                </Card>
+              );
+            })}
 
-          {/* <Card borderRadius={10} boxShadow="lg">
+            {/* <Card borderRadius={10} boxShadow="lg">
             <CardBody>
               <Flex align="center" gap={2}>
                 <Icon color="green" icon="edit"></Icon>
@@ -229,65 +238,64 @@ export const HelpPage = () => {
               </Flex>
             </CardBody>
           </Card> */}
-        </SimpleGrid>
-      </Box>
-
-      <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-        {/* <Heading size="3xl" fontWeight="bold">
-          {t('privacyAndContact.contactUs')}
-        </Heading> */}
-        <Contact />
-      </Box>
-
-      <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-        <Heading size="3xl" fontWeight="bold">
-          {t('privacyAndContact.privacy')}
-        </Heading>
-        <PrivacyPolicy />
-      </Box>
-
-      <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-        <Heading size="3xl" fontWeight="bold">
-          Vilkår for bruk
-        </Heading>
-      </Box>
-
-      <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-        <Heading size="3xl" fontWeight="bold">
-          {t('about.heading')}
-        </Heading>
-        <Text mt={2} textStyle="md">
-          {t('about.textone')} {t('about.texttwo')}{' '}
-        </Text>
-        <Text>{t('about.textthree')}</Text>
-        <Text marginTop="4" textStyle="xs" color="fg.muted">
-          {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
-          {new Date(__BUILD_DATE__).toLocaleDateString()}
-        </Text>
-      </Box>
-
-      <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-        <Heading size="3xl" fontWeight="bold">
-          {t('privacyAndContact.status.heading')}
-        </Heading>
-        <Text mt={2} textStyle="md">
-          {t('privacyAndContact.status.infoText')}
-        </Text>
-        <Link
-          colorPalette="green"
-          href="https://status.kartverket.no/"
-          external={true}
-          target="_blank"
-          variant="underline"
-          mt={2}
-          textStyle="md"
-        >
-          status.kartverket.no
-        </Link>
-      </Box>
+          </SimpleGrid>
+          
+        </Box>
+            <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+          <Heading size="3xl" fontWeight="bold">
+            {t('about.heading')}
+          </Heading>
+          <Text>  {t('about.textone')}</Text>
+          <Text textStyle="md">
+           {t('about.texttwo')}{' '}
+          </Text>
+          <Text>{t('about.textthree')}</Text>
+          <Text marginTop="4" textStyle="xs" color="fg.muted">
+            {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
+            {new Date(__BUILD_DATE__).toLocaleDateString()}
+          </Text>
+        </Box>
       
-
-      {/* <VStack>
+        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+          <Contact />
+        </Box>
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
+          <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+          <PrivacyPolicy />
+        </Box>
+        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+          <Heading size="3xl" fontWeight="bold">
+            Vilkår for bruk
+          </Heading>
+            <Text mt={2}>Kartverkets vilkår for bruk finner du på </Text>
+              <Link mt={2} colorPalette="green" href="https://www.kartverket.no/api-og-data/vilkar-for-bruk" external target="_blank" variant="underline">kartverket.no</Link>
+        </Box>
+        
+   
+        </SimpleGrid >
+             <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+          <Heading size="3xl" fontWeight="bold">
+            {t('privacyAndContact.status.heading')}
+          </Heading>
+          <Text mt={2} textStyle="md">
+            {t('privacyAndContact.status.infoText')}
+          </Text>
+          <Link
+            colorPalette="green"
+            href="https://status.kartverket.no/"
+            external={true}
+            target="_blank"
+            variant="underline"
+            mt={2}
+            textStyle="md"
+          >
+            status.kartverket.no
+          </Link>
+        </Box>
+    
+        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+        </Box> 
+        {/* <VStack>
             
             <Heading  size="2xl" mt={4}>Hva trenger du hjelp med?</Heading>
 
@@ -439,6 +447,7 @@ export const HelpPage = () => {
                 </SimpleGrid>
         
         </VStack> */}
-    </Box>
+      </Box>
+    </>
   );
 };
