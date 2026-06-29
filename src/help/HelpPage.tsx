@@ -150,7 +150,7 @@ export const HelpPage = () => {
         content={
           <Link onClick={() => navigate(-1)}>{t('helpPage.header.link')}</Link>
         }
-      ></Header>
+      />
       <Box minH="100vh" bg="green.50" p={10}>
         <Heading size="5xl">{t('helpPage.title')}</Heading>
         <Box {...boxStyles}>
@@ -193,23 +193,7 @@ export const HelpPage = () => {
             })}
           </SimpleGrid>
         </Box>
-        <Box {...boxStyles}>
-          <Heading size="3xl" fontWeight="bold">
-            {t('about.heading')}
-          </Heading>
-          <Text> {t('about.textone')}</Text>
-          <Text textStyle="md">{t('about.texttwo')} </Text>
-          <Text>{t('about.textthree')}</Text>
-          <Text marginTop="4" textStyle="xs" color="fg.muted">
-            {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
-            {new Date(__BUILD_DATE__).toLocaleDateString()}
-          </Text>
-        </Box>
-
-        <Box {...boxStyles}>
-          <Contact />
-        </Box>
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
           <Box {...boxStyles}>
             <PrivacyPolicy />
           </Box>
@@ -230,6 +214,23 @@ export const HelpPage = () => {
             </Link>
           </Box>
         </SimpleGrid>
+        <Box {...boxStyles}>
+          <Heading size="3xl" fontWeight="bold">
+            {t('about.heading')}
+          </Heading>
+          <Text> {t('about.textone')}</Text>
+          <Text textStyle="md">{t('about.texttwo')} </Text>
+          <Text>{t('about.textthree')}</Text>
+          <Text marginTop="4" textStyle="xs" color="fg.muted">
+            {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
+            {new Date(__BUILD_DATE__).toLocaleDateString()}
+          </Text>
+        </Box>
+
+        <Box {...boxStyles}>
+          <Contact />
+        </Box>
+      
         <Box {...boxStyles}>
           <Heading size="3xl" fontWeight="bold">
             {t('privacyAndContact.status.heading')}

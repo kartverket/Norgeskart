@@ -676,6 +676,17 @@
     "termsOfUse": {
       "heading": "Vilkår for bruk",
       "text": "Kartverket's vilkår for bruk kan du finne på"
+    },
+    "feedback": {
+      "title": "Tilbakemeldingsskjema",
+      "text": "Rapporter feil eller foreslå forbedringer"
+    },
+    "email": {
+      "title": "E-post",
+      "text": "Kontakt oss på e-post, så svarer vi så fort vi kan."
+    },
+    "phone": {
+      "title": "Telefon"
     }
   }
 }

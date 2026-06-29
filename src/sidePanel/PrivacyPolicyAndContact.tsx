@@ -1,10 +1,9 @@
 import {
+  Box,
   Button,
   Card,
   CardBody,
   CardTitle,
-  Flex,
-  Grid,
   Heading,
   HStack,
   Icon,
@@ -22,24 +21,20 @@ import { disableCookies, enableCookies } from '../cookieBlocker';
 export const Contact = () => {
   const { t } = useTranslation();
   return (
-    <Grid templateColumns={{ base: '1fr', md: '1fr 2fr' }} alignItems="start">
-      <VStack align="start">
+  <Box>
         <Heading size="3xl" fontWeight="bold">
           {t('privacyAndContact.contactUs')}
         </Heading>
-
-        <Text fontSize="md">{t('privacyAndContact.dialogContent')}</Text>
-      </VStack>
-
-      <SimpleGrid columns={{ base: 1, md: 1, lg: 3 }} gap={4} mt={2}>
-        <Card borderRadius={10} boxShadow="lg" w="full" minW={0}>
+        <Text mt={2} fontSize="md">{t('privacyAndContact.dialogContent')}</Text>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4} mt={2}>
+        <Card borderRadius={10} boxShadow="lg">
           <CardBody>
-            <Flex align="center" gap={2}>
+            <HStack align="center" gap={2} minW={0}>
               <Icon icon="rate_review" />
-              <CardTitle>Tilbakemeldingsskjema</CardTitle>
-            </Flex>
+              <CardTitle>{t('helpPage.feedback.title')}</CardTitle>
+            </HStack>
             <Text mt={2} fontSize="sm">
-              Rapporter feil eller foreslå forbedringer
+              {t('helpPage.feedback.text')}
             </Text>
             <Link
               mt={2}
@@ -54,12 +49,12 @@ export const Contact = () => {
         </Card>
         <Card borderRadius={10} boxShadow="lg">
           <CardBody>
-            <Flex align="center" gap={2}>
+            <HStack align="center" gap={2}>
               <Icon icon="mail" />
-              <CardTitle>E-post</CardTitle>
-            </Flex>
+              <CardTitle>{t('helpPage.email.title')}</CardTitle>
+            </HStack>
             <Text mt={2} fontSize="sm">
-              Kontakt oss på e-post, så svarer vi så fort vi kan.
+              {t('helpPage.email.text')}
             </Text>
             <Link
               mt={2}
@@ -74,10 +69,10 @@ export const Contact = () => {
         </Card>
         <Card borderRadius={10} boxShadow="lg">
           <CardBody>
-            <Flex align="center" gap={2}>
+            <HStack align="center" gap={2}>
               <Icon icon="phone_enabled" />
-              <CardTitle>Telefon</CardTitle>
-            </Flex>
+              <CardTitle>{t('helpPage.phone.title')}</CardTitle>
+            </HStack>
             <Link
               colorPalette="green"
               href="tel:+4732118000"
@@ -90,7 +85,7 @@ export const Contact = () => {
           </CardBody>
         </Card>
       </SimpleGrid>
-    </Grid>
+      </Box>
   );
 };
 

@@ -671,6 +671,17 @@
     "termsOfUse": {
       "heading": "Terms of Use",
       "text": "Kartverket's Terms of Use can be found at"
+    },
+    "feedback": {
+      "title": "Feedback form",
+      "text": "Report a bug or suggest improvements"
+    },
+    "email": {
+      "title": "Email",
+      "text": "Contact us by email, and we will respond as soon as possible."
+    },
+    "phone": {
+      "title": "Phone"
     }
   }
 }

@@ -676,6 +676,17 @@
     "termsOfUse": {
       "heading": "Vilkår for bruk",
       "text": "Karterket's sine brukervilkår finn du på"
+    },
+    "feedback": {
+      "title": "Tilbakemeldingsskjema",
+      "text": "Meld frå om feil eller føreslå forbetringar"
+    },
+    "email": {
+      "title": "E-post",
+      "text": "Kontakt oss på e-post, så svarar vi så fort vi kan."
+    },
+    "phone": {
+      "title": "Telefon"
     }
   }
 }
