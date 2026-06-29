@@ -101,6 +101,14 @@ const TipsAndTricksContent = ({ content }: TipsContentProps) => {
   );
 };
 
+const boxStyles = {
+  bg: "white",
+  boxShadow: "md",
+  borderRadius: "lg",
+  mt: 4,
+  p: 5,
+}
+
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   nb: () => import('../locales/nb/tipsandtricks.json'),
   nn: () => import('../locales/nn/tipsandtricks.json'),
@@ -145,7 +153,7 @@ export const HelpPage = () => {
       ></Header>
       <Box minH="100vh" bg="green.50" p={10}>
         <Heading size="5xl">{t('helpPage.title')}</Heading>
-        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+        <Box {...boxStyles}>
           <Heading size="3xl" fontWeight="bold">
             {t('tipsandtricks.heading')}
           </Heading>
@@ -185,7 +193,7 @@ export const HelpPage = () => {
             })}
           </SimpleGrid>
         </Box>
-        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+        <Box {...boxStyles}>
           <Heading size="3xl" fontWeight="bold">
             {t('about.heading')}
           </Heading>
@@ -198,14 +206,14 @@ export const HelpPage = () => {
           </Text>
         </Box>
 
-        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+        <Box {...boxStyles}>
           <Contact />
         </Box>
         <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
-          <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+          <Box {...boxStyles}>
             <PrivacyPolicy />
           </Box>
-          <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+          <Box {...boxStyles}>
             <Heading size="3xl" fontWeight="bold">
               {t('helpPage.termsOfUse.heading')}
             </Heading>
@@ -222,7 +230,7 @@ export const HelpPage = () => {
             </Link>
           </Box>
         </SimpleGrid>
-        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+        <Box {...boxStyles}>
           <Heading size="3xl" fontWeight="bold">
             {t('privacyAndContact.status.heading')}
           </Heading>
