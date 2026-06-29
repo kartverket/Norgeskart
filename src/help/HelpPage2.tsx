@@ -1,8 +1,20 @@
-import { Box, Card, CardBody, CardTitle, Drawer, Flex, Heading, Link, List, ListItem, SimpleGrid, Text, VStack } from '@kvib/react';
+import {
+  Box,
+  Card,
+  CardBody,
+  CardTitle,
+  Flex,
+  Heading,
+  Link,
+  List,
+  ListItem,
+  SimpleGrid,
+  Text,
+} from '@kvib/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
-import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
 
 type TipsContentProps = {
   content: ContentBlock[];
@@ -88,33 +100,31 @@ const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   en: () => import('../locales/en/tipsandtricks.json'),
 };
 
-
 export const HelpPage2 = () => {
   const navigate = useNavigate();
-   const { i18n, t } = useTranslation();
-    const [tipsData, setTipsData] = useState<Tip[]>([]);
-  
-    useEffect(() => {
-      let cancelled = false;
-      const lang = (i18n.language || 'nb').split('-')[0];
-      const load = loaders[lang] || loaders.nb;
-  
-      load()
-        .then((m) => {
-          if (cancelled) return;
-          const data = unwrapJsonModule<Tip[]>(m);
-          setTipsData(data);
-        })
-        .catch((err) => {
-          console.error('Feil ved lasting av tips:', err);
-          if (!cancelled) setTipsData([]);
-        });
-  
-      return () => {
-        cancelled = true;
-      };
-    }, [i18n.language]);
-  
+  const { i18n, t } = useTranslation();
+  const [tipsData, setTipsData] = useState<Tip[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const lang = (i18n.language || 'nb').split('-')[0];
+    const load = loaders[lang] || loaders.nb;
+
+    load()
+      .then((m) => {
+        if (cancelled) return;
+        const data = unwrapJsonModule<Tip[]>(m);
+        setTipsData(data);
+      })
+      .catch((err) => {
+        console.error('Feil ved lasting av tips:', err);
+        if (!cancelled) setTipsData([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [i18n.language]);
 
   return (
     <>
@@ -132,33 +142,28 @@ export const HelpPage2 = () => {
         <Link onClick={() => navigate(-1)}>Tilbake til kartet</Link>
       </Flex>
 
-
       <Box bg="green.50" p={10} minH="100vh">
         <Heading size="3xl">Hvordan kan vi hjelpe deg?</Heading>
         <Text mt={2} fontSize="xl">
           Finn nyttig informasjon, tips og triks for å få mest mulig ut av
           Norgeskart
         </Text>
-        <SimpleGrid mt={4} columns={{ base: 1, md: 2, lg: 2}} gap={4}>
-            <Card borderRadius={10} boxShadow="lg">
-                <CardBody>
-        <CardTitle>Tips og triks</CardTitle>
-        </CardBody>
-      </Card>
+        <SimpleGrid mt={4} columns={{ base: 1, md: 2, lg: 2 }} gap={4}>
+          <Card borderRadius={10} boxShadow="lg">
+            <CardBody>
+              <CardTitle>Tips og triks</CardTitle>
+            </CardBody>
+          </Card>
 
-            <Card>
-        <CardTitle>Tips og triks</CardTitle>
-      </Card>
+          <Card>
+            <CardTitle>Tips og triks</CardTitle>
+          </Card>
 
-            <Card>
-        <CardTitle>Tips og triks</CardTitle>
-      </Card>
-
+          <Card>
+            <CardTitle>Tips og triks</CardTitle>
+          </Card>
         </SimpleGrid>
-         
       </Box>
-
-     
     </>
   );
 };
