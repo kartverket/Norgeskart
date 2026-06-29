@@ -32,11 +32,11 @@ export const Contact = () => {
       </VStack>
 
       <SimpleGrid columns={{ base: 1, md: 1, lg: 3 }} gap={4} mt={2}>
-        <Card borderRadius={10} boxShadow="lg"  w="full" minW={0}>
+        <Card borderRadius={10} boxShadow="lg" w="full" minW={0}>
           <CardBody>
             <Flex align="center" gap={2}>
               <Icon icon="rate_review" />
-              <CardTitle >Tilbakemeldingsskjema</CardTitle>
+              <CardTitle>Tilbakemeldingsskjema</CardTitle>
             </Flex>
             <Text mt={2} fontSize="sm">
               Rapporter feil eller foreslå forbedringer
