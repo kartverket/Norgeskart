@@ -436,7 +436,8 @@
   "tipsandtricks": {
     "heading": "Tips og triks",
     "headingClosed": "Vis tips og triks",
-    "headingOpen": "Lukk"
+    "headingOpen": "Lukk",
+    "description": "Vanlege spørsmål og nyttige tips"
   },
   "toolbar": {
     "reportError": {
@@ -666,5 +667,15 @@
     "label": "Måleverktøy",
     "length": "Lengd",
     "area": "Areal"
+  },
+  "helpPage": {
+    "header": {
+      "link": "Tilbake til kartet"
+    },
+    "title": "Kva treng du hjelp med?",
+    "termsOfUse": {
+      "heading": "Vilkår for bruk",
+      "text": "Karterket's sine brukervilkår finn du på"
+    }
   }
 }

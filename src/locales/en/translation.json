@@ -431,7 +431,8 @@
   "tipsandtricks": {
     "heading": "Tips and tricks",
     "headingClosed": "Show tips and tricks",
-    "headingOpen": "Close tips and tricks"
+    "headingOpen": "Close tips and tricks",
+    "description": "Common questions and useful tips"
   },
   "toolbar": {
     "reportError": {
@@ -661,5 +662,15 @@
     "label": "Measuring tool",
     "length": "Length",
     "area": "Area"
+  },
+  "helpPage": {
+    "header": {
+      "link": "Back to map"
+    },
+    "title": "How can we help you?",
+    "termsOfUse": {
+      "heading": "Terms of Use",
+      "text": "Kartverket's Terms of Use can be found at"
+    }
   }
 }

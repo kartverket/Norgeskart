@@ -10,9 +10,7 @@ import {
   Flex,
   Header,
   Heading,
-  HStack,
   Icon,
-  Image,
   Link,
   List,
   ListItem,
@@ -137,18 +135,21 @@ export const HelpPage = () => {
 
   return (
     <>
-    <Header title="Norgeskart" titleLink="/" logoLink="https://kartverket.no" content={ <Link onClick={() => navigate(-1)}>Tilbake til kartet</Link>}>      
-    </Header>
+      <Header
+        title="Norgeskart"
+        titleLink="/"
+        logoLink="https://kartverket.no"
+        content={
+          <Link onClick={() => navigate(-1)}>{t('helpPage.header.link')}</Link>
+        }
+      ></Header>
       <Box minH="100vh" bg="green.50" p={10}>
-        <Heading size="5xl">Hva trenger du hjelp med?</Heading>
-        <Text mt={2} fontSize="xl">
-          Finn svar på vanlige spørsmål og bla bla bla
-        </Text>
+        <Heading size="5xl">{t('helpPage.title')}</Heading>
         <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
           <Heading size="3xl" fontWeight="bold">
             {t('tipsandtricks.heading')}
           </Heading>
-          <Text mt={1}>Vanlige spørsmål og nyttige tips</Text>
+          <Text mt={1}>{t('tipsandtricks.description')}</Text>
           <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4} mt={4}>
             {categories.map((category) => {
               const items = tipsData.filter(
@@ -182,98 +183,46 @@ export const HelpPage = () => {
                 </Card>
               );
             })}
-
-            {/* <Card borderRadius={10} boxShadow="lg">
-            <CardBody>
-              <Flex align="center" gap={2}>
-                <Icon color="green" icon="edit"></Icon>
-                <CardTitle>Tegne og måle</CardTitle>
-              </Flex>
-              <Accordion collapsible mt={2}>
-                <AccordionItem value="knekkpunkt">
-                  <AccordionItemTrigger>
-                    Kan jeg måle avstand med knekkpunkt?
-                  </AccordionItemTrigger>
-                  <AccordionItemContent>
-                    Ja. Du kan måle avstand med flere knekkpunkter i kartet.
-                  </AccordionItemContent>
-                </AccordionItem>
-              </Accordion>
-            </CardBody>
-          </Card>
-
-          <Card borderRadius={10} gap={2} boxShadow="lg">
-            <CardBody>
-              <Flex align="center" gap={2}>
-                <Icon color="green" icon="map" />
-                <CardTitle>Kart og visning</CardTitle>
-              </Flex>
-              <Accordion>
-                <AccordionItem value="">
-                  <AccordionItemTrigger></AccordionItemTrigger>
-                </AccordionItem>
-              </Accordion>
-            </CardBody>
-          </Card>
-
-          <Card borderRadius={10} gap={2} boxShadow="lg">
-            <CardBody>
-              <Flex align="center" gap={2}>
-                <Icon color="green" icon="search" />
-                <CardTitle>Søk</CardTitle>
-              </Flex>
-              <Accordion>
-                <AccordionItem value="">
-                  <AccordionItemTrigger></AccordionItemTrigger>
-                </AccordionItem>
-              </Accordion>
-            </CardBody>
-          </Card>
-
-          <Card borderRadius={10} gap={2} boxShadow="lg">
-            <CardBody>
-              <Flex align="center" gap={2}>
-                <Icon color="green" icon="share" />
-                <CardTitle>Deling og eksport</CardTitle>
-              </Flex>
-            </CardBody>
-          </Card> */}
           </SimpleGrid>
-          
         </Box>
-            <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
           <Heading size="3xl" fontWeight="bold">
             {t('about.heading')}
           </Heading>
-          <Text>  {t('about.textone')}</Text>
-          <Text textStyle="md">
-           {t('about.texttwo')}{' '}
-          </Text>
+          <Text> {t('about.textone')}</Text>
+          <Text textStyle="md">{t('about.texttwo')} </Text>
           <Text>{t('about.textthree')}</Text>
           <Text marginTop="4" textStyle="xs" color="fg.muted">
             {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
             {new Date(__BUILD_DATE__).toLocaleDateString()}
           </Text>
         </Box>
-      
+
         <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
           <Contact />
         </Box>
         <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
           <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-          <PrivacyPolicy />
-        </Box>
+            <PrivacyPolicy />
+          </Box>
+          <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
+            <Heading size="3xl" fontWeight="bold">
+              {t('helpPage.termsOfUse.heading')}
+            </Heading>
+            <Text mt={2}>{t('helpPage.termsOfUse.text')}</Text>
+            <Link
+              mt={2}
+              colorPalette="green"
+              href="https://www.kartverket.no/api-og-data/vilkar-for-bruk"
+              external
+              target="_blank"
+              variant="underline"
+            >
+              kartverket.no
+            </Link>
+          </Box>
+        </SimpleGrid>
         <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-          <Heading size="3xl" fontWeight="bold">
-            Vilkår for bruk
-          </Heading>
-            <Text mt={2}>Kartverkets vilkår for bruk finner du på </Text>
-              <Link mt={2} colorPalette="green" href="https://www.kartverket.no/api-og-data/vilkar-for-bruk" external target="_blank" variant="underline">kartverket.no</Link>
-        </Box>
-        
-   
-        </SimpleGrid >
-             <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
           <Heading size="3xl" fontWeight="bold">
             {t('privacyAndContact.status.heading')}
           </Heading>
@@ -292,161 +241,6 @@ export const HelpPage = () => {
             status.kartverket.no
           </Link>
         </Box>
-    
-        <Box bg="white" boxShadow="md" borderRadius="lg" mt={4} p={5}>
-        </Box> 
-        {/* <VStack>
-            
-            <Heading  size="2xl" mt={4}>Hva trenger du hjelp med?</Heading>
-
-        
-
-            <SimpleGrid columns={{base: 1, md: 2, lg: 3}} gap={4} mt={4}>
-
-                <Card backgroundColor="">
-                    <CardBody>
-                        <Heading>Tegning og måling</Heading>
-                        <Accordion collapsible>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Kan jeg måle avstand med knekkpunkt?</AccordionItemTrigger>
-                                <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Kan jeg slette enkeltobjekter når jeg tegner?</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Hvordan finner jeg høydeprofil?</AccordionItemTrigger>
-                            </AccordionItem>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Lagring av tegninger</AccordionItemTrigger>
-                                <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                        </Accordion>
-                        
-                    </CardBody>
-                </Card>
-
-                <Card>
-                    <CardBody>
-                        <Heading>Kart og visning</Heading>
-                         <Accordion collapsible>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Hvordan aktiverer jeg fullskjermsmodus?</AccordionItemTrigger>
-                                <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Skjul menyen med tastatur</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                             <AccordionItem value="">
-                                <AccordionItemTrigger>Hvor ofte oppdateres kartet?</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                             <AccordionItem value="">
-                                <AccordionItemTrigger>Finnes det tegnforklaring for kartlagene?</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                        </Accordion>
-                    </CardBody>
-                </Card>
-
-                <Card>
-                    <CardBody>
-                        <Heading>Søk</Heading>
-                         <Accordion collapsible>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Hvilke søkekriterier støttes i søkefeltet?</AccordionItemTrigger>
-                                <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Hvordan søker jeg på koordinater?</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                             <AccordionItem value="">
-                                <AccordionItemTrigger>Hvor finner jeg eiendomsinformasjon?</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                        </Accordion>
-                    </CardBody>
-                </Card>
-
-                <Card>
-                    <CardBody>
-                        <Heading>Deling og eskport</Heading>
-                         <Accordion collapsible>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Hvordan deler jeg kartutsnitt?</AccordionItemTrigger>
-                                <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Hvordan deler jeg kart med tegninger?</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                             <AccordionItem value="">
-                                <AccordionItemTrigger>Kan jeg skrive ut i andre formater enn A4?</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                             <AccordionItem value="">
-                                <AccordionItemTrigger>Hvorfor kan jeg ikke skrive ut i flyfoto?</AccordionItemTrigger>
-                                    <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                        </Accordion>
-                    </CardBody>
-                </Card>
-
-                     <Card>
-                    <CardBody>
-                        <Heading>Regler og info</Heading>
-                         <Accordion collapsible>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Hva er vilkårene for bruk?</AccordionItemTrigger>
-                                <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                            <AccordionItem value="">
-                                <AccordionItemTrigger>Status</AccordionItemTrigger>
-                                <AccordionItemContent>
-                                    Blablablablabla
-                                </AccordionItemContent>
-                            </AccordionItem>
-                            
-                        </Accordion>
-                    </CardBody>
-                </Card>
-
-                </SimpleGrid>
-        
-        </VStack> */}
       </Box>
     </>
   );
