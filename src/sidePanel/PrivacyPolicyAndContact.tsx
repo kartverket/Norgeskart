@@ -22,7 +22,7 @@ export const Contact = () => {
   const { t } = useTranslation();
   return (
   <Box>
-        <Heading size="3xl" fontWeight="bold">
+        <Heading size={{ base: '2xl', md: '3xl'}} fontWeight="bold">
           {t('privacyAndContact.contactUs')}
         </Heading>
         <Text mt={2} fontSize="md">{t('privacyAndContact.dialogContent')}</Text>
@@ -121,7 +121,7 @@ export const PrivacyPolicy = () => {
 
   return (
     <VStack alignItems="start" gap={4}>
-      <Heading size="3xl" fontWeight="bold">
+      <Heading size={{ base: '2xl', md: '3xl'}} fontWeight="bold">
         {t('privacyAndContact.privacy')}
       </Heading>
       <Text textStyle="md">
