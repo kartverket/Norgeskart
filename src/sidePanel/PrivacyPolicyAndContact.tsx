@@ -21,11 +21,13 @@ import { disableCookies, enableCookies } from '../cookieBlocker';
 export const Contact = () => {
   const { t } = useTranslation();
   return (
-  <Box>
-        <Heading size={{ base: '2xl', md: '3xl'}} fontWeight="bold">
-          {t('privacyAndContact.contactUs')}
-        </Heading>
-        <Text mt={2} fontSize="md">{t('privacyAndContact.dialogContent')}</Text>
+    <Box>
+      <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+        {t('privacyAndContact.contactUs')}
+      </Heading>
+      <Text mt={2} fontSize="md">
+        {t('privacyAndContact.dialogContent')}
+      </Text>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4} mt={2}>
         <Card borderRadius={10} boxShadow="lg">
           <CardBody>
@@ -85,7 +87,7 @@ export const Contact = () => {
           </CardBody>
         </Card>
       </SimpleGrid>
-      </Box>
+    </Box>
   );
 };
 
@@ -121,7 +123,7 @@ export const PrivacyPolicy = () => {
 
   return (
     <VStack alignItems="start" gap={4}>
-      <Heading size={{ base: '2xl', md: '3xl'}} fontWeight="bold">
+      <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
         {t('privacyAndContact.privacy')}
       </Heading>
       <Text textStyle="md">
