@@ -16,6 +16,7 @@ import {
   Text,
   VStack,
 } from '@kvib/react';
+import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
@@ -25,7 +26,6 @@ import {
 } from '../settings/draw/atoms';
 import { useIsMobileScreen } from '../shared/hooks';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
-import { t } from 'i18next';
 
 export const ColorControls = () => {
   const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
@@ -153,9 +153,7 @@ const ColorRow = ({
         <ColorPickerSliders />
         {recentColors.length > 0 && (
           <VStack align="start" mt={2} gap={1}>
-            <Text fontSize="xs">
-              {t('draw.controls.recentColors')}
-            </Text>
+            <Text fontSize="xs">{t('draw.controls.recentColors')}</Text>
 
             <SimpleGrid mt={1} columns={8} gap={1}>
               {recentColors.map((c) => (
