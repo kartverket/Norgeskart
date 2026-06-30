@@ -41,6 +41,7 @@
       "colorPoint": "Point",
       "colorStroke": "Stroke",
       "colorText": "Text",
+      "recentColors": "Recent colors",
       "pointType": "Select icon",
       "showMeasurements": "Show measurements on map",
       "tool": {

@@ -1,6 +1,7 @@
 import { MaterialSymbol } from '@kvib/react';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import { atomWithStorage } from 'jotai/utils';
 import { Map } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
@@ -59,6 +60,8 @@ export type LineStyle = 'solid' | 'dashed';
 
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
+export const recentColorsAtom = atomWithStorage<string[]>('recent-colors', []);
+
 export const lineWidthAtom = atom<LineWidth>(2);
 export const lineStyleAtom = atom<LineStyle>('solid');
 
