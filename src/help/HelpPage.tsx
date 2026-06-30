@@ -22,7 +22,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Contact, PrivacyPolicy } from '../sidePanel/PrivacyPolicyAndContact';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
-import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 
 type TipsContentProps = {
   content: ContentBlock[];
@@ -103,12 +102,12 @@ const TipsAndTricksContent = ({ content }: TipsContentProps) => {
 };
 
 const boxStyles = {
-  bg: "white",
-  boxShadow: "md",
-  borderRadius: "lg",
+  bg: 'white',
+  boxShadow: 'md',
+  borderRadius: 'lg',
   mt: 4,
   p: 5,
-}
+};
 
 const loaders: Record<string, () => Promise<{ default: unknown }>> = {
   nb: () => import('../locales/nb/tipsandtricks.json'),
@@ -149,13 +148,20 @@ export const HelpPage = () => {
         titleLink="/"
         logoLink="https://kartverket.no"
         content={
-          <Link fontSize={{ base: 'sm', md: 'md'}} onClick={() => navigate(-1)}>{t('helpPage.header.link')}</Link>
+          <Link
+            fontSize={{ base: 'sm', md: 'md' }}
+            onClick={() => navigate(-1)}
+          >
+            {t('helpPage.header.link')}
+          </Link>
         }
       />
       <Box minH="100vh" bg="green.50" p={10}>
-        <Heading size={{ base: '3xl', md: '4xl', lg: '5xl'}}>{t('helpPage.title')}</Heading>
+        <Heading size={{ base: '3xl', md: '4xl', lg: '5xl' }}>
+          {t('helpPage.title')}
+        </Heading>
         <Box {...boxStyles}>
-          <Heading size={{ base: '2xl', md: '3xl'}} fontWeight="bold">
+          <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
             {t('tipsandtricks.heading')}
           </Heading>
           <Text mt={1}>{t('tipsandtricks.description')}</Text>
@@ -194,12 +200,12 @@ export const HelpPage = () => {
             })}
           </SimpleGrid>
         </Box>
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
           <Box {...boxStyles}>
             <PrivacyPolicy />
           </Box>
           <Box {...boxStyles}>
-            <Heading size={{ base: '2xl', md: '3xl'}} fontWeight="bold">
+            <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
               {t('helpPage.termsOfUse.heading')}
             </Heading>
             <Text mt={2}>{t('helpPage.termsOfUse.text')}</Text>
@@ -216,7 +222,7 @@ export const HelpPage = () => {
           </Box>
         </SimpleGrid>
         <Box {...boxStyles}>
-          <Heading size={{ base: '2xl', md: '3xl'}} fontWeight="bold">
+          <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
             {t('about.heading')}
           </Heading>
           <Text> {t('about.textone')}</Text>
@@ -231,9 +237,9 @@ export const HelpPage = () => {
         <Box {...boxStyles}>
           <Contact />
         </Box>
-      
+
         <Box {...boxStyles}>
-          <Heading size={{ base: '2xl', md: '3xl'}} fontWeight="bold">
+          <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
             {t('privacyAndContact.status.heading')}
           </Heading>
           <Text mt={2} textStyle="md">
