@@ -103,7 +103,7 @@ export const normalizePlaceQuery = (input: string) => {
   const cleaned = input
     .replace(/["]/g, '') // remove "
     .replace(/^\s*,+/, '') //remove leading ,
-    .replace(/[?\\]/g, '') //remove ?\
+    .replace(/[?\\*;%]/g, '') //remove ?\*;%
     .trim();
 
   if (!cleaned) return null;
