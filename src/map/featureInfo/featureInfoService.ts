@@ -134,17 +134,19 @@ const parsePlainTextFeatureInfo = (text: string): FeatureInfoFeature[] => {
 
   const lines = text.split('\n');
   const properties: FeatureProperties = {};
+  let currentKey: string | null = null;
 
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
 
     const match = trimmed.match(/^(.+?)\s*[=:]\s*(.+)$/);
+
     if (match) {
       const key = match[1].trim();
-      const value: string | number = match[2]
-        .trim()
-        .replace(/^['"]|['"]$/g, '');
+      currentKey = key;
+
+      const value = match[2].trim().replace(/^['"]|['"]$/g, '');
 
       const numValue = parseFloat(value);
       if (!isNaN(numValue) && value === numValue.toString()) {
@@ -152,6 +154,12 @@ const parsePlainTextFeatureInfo = (text: string): FeatureInfoFeature[] => {
       } else {
         properties[key] = value;
       }
+
+      continue;
+    }
+
+    if (currentKey) {
+      properties[currentKey] = String(properties[currentKey]) + '\n' + trimmed;
     }
   }
 
