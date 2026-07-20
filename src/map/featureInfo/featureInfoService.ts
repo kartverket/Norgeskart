@@ -362,11 +362,9 @@ export const fetchLayerFeatureInfo = async (
 
   const preferredFormat = layer.get('infoFormat') as InfoFormat | undefined;
   const imageBaseUrl = layer.get('featureInfoImageBaseUrl') as
-    | string
-    | undefined;
+    string | undefined;
   const fieldConfigs = layer.get('featureInfoFields') as
-    | FieldConfig[]
-    | undefined;
+    FieldConfig[] | undefined;
 
   const formatsToTry: InfoFormat[] = preferredFormat
     ? [preferredFormat]

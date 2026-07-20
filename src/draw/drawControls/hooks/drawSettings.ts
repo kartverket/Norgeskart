@@ -52,12 +52,7 @@ export type PointIcon = {
 };
 
 export type DrawType =
-  | 'Point'
-  | 'Polygon'
-  | 'LineString'
-  | 'Circle'
-  | 'Move'
-  | 'Text';
+  'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move' | 'Text';
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
@@ -69,8 +64,7 @@ const useDrawSettings = () => {
   const mapProjection = map.getView().getProjection().getCode();
   const getDrawnFeatures = () => {
     return getDrawLayer()?.getSource()?.getFeatures() as
-      | Feature<Geometry>[]
-      | undefined;
+      Feature<Geometry>[] | undefined;
   };
 
   const getDrawType = () => {

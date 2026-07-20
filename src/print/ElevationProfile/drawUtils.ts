@@ -17,8 +17,7 @@ export const addFeatureToLayer = (geometry: Feature) => {
     .getLayers()
     .getArray()
     .find((layer) => layer.get('id') === ELEVATION_LAYER_ID) as
-    | VectorLayer
-    | undefined;
+    VectorLayer | undefined;
   if (drawLayer) {
     drawLayer.getSource()?.addFeature(geometry);
   }
@@ -31,8 +30,7 @@ export const clearDrawLayer = () => {
     .getLayers()
     .getArray()
     .find((layer) => layer.get('id') === ELEVATION_LAYER_ID) as
-    | VectorLayer
-    | undefined;
+    VectorLayer | undefined;
   if (drawLayer) {
     drawLayer.getSource()?.clear();
   }
@@ -96,8 +94,7 @@ export const removeDrawInteractionFromMap = () => {
     .getLayers()
     .getArray()
     .find((layer) => layer.get('id') === ELEVATION_LAYER_ID) as
-    | VectorLayer
-    | undefined;
+    VectorLayer | undefined;
 
   if (drawLayer) {
     map.removeLayer(drawLayer);
