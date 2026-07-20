@@ -55,7 +55,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD | cut -c1-6)" >> $GITHUB_OUTPUT
 
       - name: 'Setup node.js'
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '24'
 
