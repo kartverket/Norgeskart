@@ -199,11 +199,7 @@ export type SearchResultBase = {
 };
 
 export type SearchResultType =
-  | 'Property'
-  | 'Road'
-  | 'Place'
-  | 'Address'
-  | 'Coordinate';
+  'Property' | 'Road' | 'Place' | 'Address' | 'Coordinate';
 
 export type SearchResult = SearchResultBase &
   (

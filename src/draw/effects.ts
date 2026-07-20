@@ -28,8 +28,7 @@ const getDrawInteraction = (map: Map) => {
     .getInteractions()
     .getArray()
     .filter((interaction) => interaction instanceof Draw)[0] as
-    | Draw
-    | undefined;
+    Draw | undefined;
   return drawInteraction;
 };
 
@@ -38,8 +37,7 @@ const getSelectInteraction = (map: Map) => {
     .getInteractions()
     .getArray()
     .filter((interaction) => interaction instanceof Select)[0] as
-    | Select
-    | undefined;
+    Select | undefined;
   return selectInteraction;
 };
 
