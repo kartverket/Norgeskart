@@ -13,6 +13,9 @@ export default defineConfig({
     __COMMIT_HASH__: JSON.stringify(commitHash),
     __BUILD_DATE__: JSON.stringify(buildDate),
   },
+  optimizeDeps: {
+    exclude: ['maplibre-gl'],
+  },
   build: {
     sourcemap: true,
   },
