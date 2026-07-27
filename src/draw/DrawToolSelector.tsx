@@ -1,4 +1,4 @@
-import { Flex, IconButton, MaterialSymbol, Tooltip } from '@kvib/react';
+import { Flex, IconButton, MaterialSymbol, Text } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
@@ -15,37 +15,37 @@ export const DrawToolSelector = () => {
   const drawTypeButtons: {
     value: DrawType;
     icon: MaterialSymbol;
-    tooltip: string;
+    label: string;
   }[] = [
     {
-      value: 'Move',
-      icon: 'arrow_selector_tool',
-      tooltip: t('draw.controls.tool.tooltip.edit'),
+      value: 'LineString',
+      icon: 'diagonal_line',
+      label: t('draw.controls.tool.label.linestring'),
     },
     {
       value: 'Polygon',
       icon: 'pentagon',
-      tooltip: t('draw.controls.tool.tooltip.polygon'),
+      label: t('draw.controls.tool.label.polygon'),
     },
     {
       value: 'Point',
       icon: 'atr',
-      tooltip: t('draw.controls.tool.tooltip.point'),
-    },
-    {
-      value: 'LineString',
-      icon: 'polyline',
-      tooltip: t('draw.controls.tool.tooltip.linestring'),
+      label: t('draw.controls.tool.label.point'),
     },
     {
       value: 'Circle',
       icon: 'circle',
-      tooltip: t('draw.controls.tool.tooltip.circle'),
+      label: t('draw.controls.tool.label.circle'),
     },
     {
       value: 'Text',
       icon: 'text_fields',
-      tooltip: t('draw.controls.tool.tooltip.text'),
+      label: t('draw.controls.tool.label.text'),
+    },
+    {
+      value: 'Move',
+      icon: 'arrow_selector_tool',
+      label: t('draw.controls.tool.label.edit'),
     },
   ];
   return (
@@ -55,7 +55,7 @@ export const DrawToolSelector = () => {
           key={button.value}
           type={button.value}
           icon={button.icon}
-          tooltip={button.tooltip}
+          label={button.label}
         />
       ))}
     </Flex>
@@ -65,11 +65,11 @@ export const DrawToolSelector = () => {
 const DrawTypeButton = ({
   type,
   icon,
-  tooltip,
+  label,
 }: {
   type: DrawType;
   icon: MaterialSymbol;
-  tooltip: string;
+  label: string;
 }) => {
   const [drawType, setDrawType] = useAtom(drawTypeAtom);
   const isCurrentTool = drawType === type;
@@ -84,14 +84,15 @@ const DrawTypeButton = ({
   const effectiveIcon: MaterialSymbol =
     isCurrentTool && collapsed ? 'keyboard_arrow_up' : icon;
 
-  const effectiveTooltip = isCurrentTool && collapsed ? 'Vis panel' : tooltip;
+  // const effectiveTooltip = isCurrentTool && collapsed ? 'Vis panel' : tooltip;
 
   return (
-    <Tooltip content={effectiveTooltip}>
+    <Flex direction="column" align="center" gap={1}>
       <IconButton
-        variant={isCurrentTool ? 'outline' : 'ghost'}
-        icon={effectiveIcon}
+        variant="ghost"
         iconFill
+        icon={effectiveIcon}
+        backgroundColor={isCurrentTool ? '#D0ECD6' : ''}
         size={{ base: 'xs', md: 'sm' }}
         onClick={() => {
           // Hvis panelet er skjult og du trykker på aktiv knapp -> åpne panelet
@@ -116,6 +117,7 @@ const DrawTypeButton = ({
           setDrawType(type);
         }}
       />
-    </Tooltip>
+      <Text fontSize={12}>{label}</Text>
+    </Flex>
   );
 };

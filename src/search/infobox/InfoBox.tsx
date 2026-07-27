@@ -46,6 +46,7 @@ export const InfoBox = () => {
       m="1"
       borderRadius={'16px'}
       bg="white"
+      boxShadow="lg"
       pointerEvents={'auto'}
       overflowY={'hidden'}
       maxHeight="52vh"

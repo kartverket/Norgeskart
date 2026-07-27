@@ -20,9 +20,11 @@ export const LineStyleControl = () => {
       <HStack>
         {lineStyles.map((style) => (
           <Button
+            variant="outline"
             key={style.value}
             size="xs"
-            variant={lineStyle === style.value ? 'solid' : 'outline'}
+            color="green.500"
+            bg={lineStyle === style.value ? 'green.100' : 'transparent'}
             onClick={() => setLineStyle(style.value)}
           >
             {style.label}

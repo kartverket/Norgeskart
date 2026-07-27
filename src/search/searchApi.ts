@@ -25,16 +25,41 @@ const trackApiError = (
 ) => {
   console.error(`Search API error [${context.searchType}]:`, error);
   if (posthog.__loaded) {
-    console.warn('PostHog is not loaded, cannot track search API error');
     posthog.captureException(error, {
       errorType: 'search_api_error',
       ...context,
     });
+  } else {
+    console.warn('PostHog is not loaded, cannot track search API error');
   }
 };
 
 const normalizeAddressQuery = (query: string): string =>
   query.replace(/\s+/g, ' ').trim();
+
+const isInvalidAddressSearch = (query: string): boolean => {
+  const q = query.trim().toLowerCase();
+
+  const directionWithNumber =
+    /^(nord|sør|øst|vest|north|south|east|west|n|s|e|w)\s*[:\s]\s*\d+/i;
+
+  const latLonLike = /-?\d{1,3}\.\d+\s*,?\s*-?\d{1,3}\.\d+/;
+
+  return directionWithNumber.test(q) || latLonLike.test(q);
+};
+
+const emptyAddressResult = (query: string): AddressApiResponse => ({
+  adresser: [],
+  metadata: {
+    side: 1,
+    totaltAntallTreff: 0,
+    treffPerSide: 100,
+    viserFra: 0,
+    viserTil: 0,
+    sokeStreng: query,
+    utkoordsys: 4258,
+  },
+});
 
 export const getAddresses = async (
   query: string,
@@ -43,6 +68,9 @@ export const getAddresses = async (
   let httpStatus;
   try {
     const normalizedQuery = normalizeAddressQuery(query);
+    if (isInvalidAddressSearch(normalizedQuery)) {
+      return emptyAddressResult(query);
+    }
     const encodedQuery = encodeURIComponent(normalizedQuery);
     url = `${env.geoNorgeApiBaseUrl}/adresser/v1/sok?sok=${encodedQuery}&treffPerSide=100`;
     const res = await fetch(url);
@@ -75,7 +103,7 @@ export const normalizePlaceQuery = (input: string) => {
   const cleaned = input
     .replace(/["]/g, '') // remove "
     .replace(/^\s*,+/, '') //remove leading ,
-    .replace(/[?\\]/g, '') //remove ?\
+    .replace(/[?\\*;%]/g, '') //remove ?\*;%
     .trim();
 
   if (!cleaned) return null;

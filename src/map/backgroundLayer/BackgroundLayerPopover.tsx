@@ -9,7 +9,6 @@ import {
   PopoverTrigger,
   Text,
 } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +22,6 @@ export const BackgroundLayerPopover = () => {
   const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
   const currentProjection = useAtomValue(currentProjectionAtom);
   const { t } = useTranslation();
-  const ph = usePostHog();
 
   const backgroundLayers = getAvailableBackgroundLayers(currentProjection);
 
@@ -32,7 +30,6 @@ export const BackgroundLayerPopover = () => {
       open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
-        if (e.open) ph.capture('background_layer_picker_opened');
       }}
       positioning={{ placement: 'top', offset: { mainAxis: 2 } }}
     >
@@ -94,10 +91,6 @@ export const BackgroundLayerPopover = () => {
               }))}
               currentLayer={backgroundLayer}
               setLayer={(layerName) => {
-                ph.capture('background_layer_changed', {
-                  layer: layerName,
-                  source: 'popover',
-                });
                 setBackgroundLayer(layerName);
                 setOpen(false);
               }}

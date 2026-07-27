@@ -1,5 +1,4 @@
 import { Box } from '@kvib/react';
-import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom } from '../atoms.ts';
@@ -15,14 +14,12 @@ export const BackgroundLayerPanel = ({
 }) => {
   const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
   const { t } = useTranslation();
-  const ph = usePostHog();
 
   const currentProjection = useAtomValue(currentProjectionAtom);
 
   const sortedLayers = getAvailableBackgroundLayers(currentProjection);
 
   const handleSetLayer = (layer: BackgroundLayerName) => {
-    ph.capture('background_layer_changed', { layer, source: 'panel' });
     setBackgroundLayer(layer);
     onSelectComplete();
   };

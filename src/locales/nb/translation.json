@@ -30,7 +30,7 @@
     "begin": "Tegn på kartet",
     "clear": "Fjern tegning",
     "close": "Lukk",
-    "confrimClear": "Er du sikker?",
+    "confrimClear": "Nå fjernes alt som er tegnet. Er du sikker?",
     "privacyNotice": {
       "title": "Lagring av tegning",
       "message": "Når du lagrer en tegning, lagres det i 2 år på Kartverkets servere. Alle med lenken kan se tegningen. For å slette tegninger kontakt post@kartverket.no."
@@ -41,18 +41,21 @@
       "colorPoint": "Punkt",
       "colorStroke": "Omriss",
       "colorText": "Tekst",
+      "recentColors": "Nylige farger",
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål i kartet",
       "tool": {
-        "tooltip": {
+        "label": {
           "circle": "Sirkel",
-          "edit": "Rediger og flytt",
-          "linestring": "Linjesegmenter",
+          "edit": "Rediger",
+          "linestring": "Linje",
+          "point": "Punkt",
+          "polygon": "Flate",
+          "text": "Tekst"
+        },
+        "tooltip": {
           "movedown": "Flytt ned",
           "moveup": "Flytt opp",
-          "point": "Punkter",
-          "polygon": "Flate",
-          "text": "Tekst",
           "undo": "Angre",
           "redo": "Gjør om",
           "deleteselected": "Slett valgte"
@@ -71,9 +74,11 @@
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
-    "save": "Lagre",
+    "save": "Lagre tegning",
     "size": {
-      "label": "Elementstørrelse"
+      "label": "Linjetykkelse",
+      "pointLabel": "Punktstørrelse",
+      "textLabel": "Tekststørrelse"
     },
     "tabHeading": "Velg tegnetype",
     "textInputLabel": "Skriv inn tekst",
@@ -432,7 +437,8 @@
         "linestring": "Linjer",
         "polygon": "Flater"
       }
-    }
+    },
+    "moreInfo": "Mer info"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -627,6 +633,8 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikke å hente kartet"
     },
+    "scale": "Utskriftsmålestokk",
+    "scaleNote": "Skjermens målestokk er 1 : {{screenScale}}. Avviket skyldes at papir (72 pt/tomme) og skjerm (96 px/tomme) bruker ulike referanseverdier for pikselstørrelse.",
     "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkart oppdatert EFS i utskriften.",
     "projectionWarning": "Utskriften vil alltid være i UTM-sone 33 (EPSG:25833), uavhengig av valgt kartprojeksjon."
   },
@@ -660,5 +668,10 @@
         "label": "Dra og slipp, eller velg en fil"
       }
     }
+  },
+  "measure": {
+    "label": "Måleverktøy",
+    "length": "Lengde",
+    "area": "Areal"
   }
 }

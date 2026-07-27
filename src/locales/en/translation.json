@@ -34,25 +34,28 @@
       "message": "When you save a drawing, it is stored for 2 years on Kartverket's servers. Anyone with the link can view the drawing. To delete drawings, contact post@kartverket.no."
     },
     "close": "Close",
-    "confrimClear": "Are you sure?",
+    "confrimClear": "Now everything that has been drawn will be removed. Are you sure?",
     "controls": {
       "colorBackground": "Background ",
       "colorFill": "Fill",
       "colorPoint": "Point",
       "colorStroke": "Stroke",
       "colorText": "Text",
+      "recentColors": "Recent colors",
       "pointType": "Select icon",
       "showMeasurements": "Show measurements on map",
       "tool": {
-        "tooltip": {
+        "label": {
           "circle": "Circle",
-          "edit": "Edit and move",
-          "linestring": "Line segments",
+          "edit": "Edit",
+          "linestring": "Line",
+          "point": "Point",
+          "polygon": "Polygon",
+          "text": "Text"
+        },
+        "tooltip": {
           "movedown": "Move down",
           "moveup": "Move up",
-          "point": "Points",
-          "polygon": "Polygon",
-          "text": "Text",
           "undo": "Undo",
           "redo": "Redo",
           "deleteselected": "Delete selected"
@@ -71,9 +74,11 @@
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
-    "save": "Save",
+    "save": "Save drawing",
     "size": {
-      "label": "Element size"
+      "label": "Stroke width",
+      "pointLabel": "Point size",
+      "textLabel": "Text size"
     },
     "tabHeading": "Draw and measure",
     "textInputLabel": "Enter text",
@@ -427,7 +432,8 @@
         "linestring": "Lines",
         "polygon": "Surfaces"
       }
-    }
+    },
+    "moreInfo": "More info"
   },
   "tipsandtricks": {
     "heading": "Tips and tricks",
@@ -622,6 +628,8 @@
       "success": "Download complete",
       "error": "Could not download map"
     },
+    "scale": "Print scale",
+    "scaleNote": "The screen scale is 1 : {{screenScale}}. The difference is because paper (72 pt/inch) and screen (96 px/inch) use different reference values for pixel size.",
     "vectorTileFallbackWarning": "The nautical background map is not supported by the print service and will be replaced with nautical chart in the print.",
     "projectionWarning": "The print output will always be in UTM zone 33 (EPSG:25833), regardless of the selected map projection."
   },
@@ -655,5 +663,10 @@
         "label": "Drag and drop or select a file"
       }
     }
+  },
+  "measure": {
+    "label": "Measuring tool",
+    "length": "Length",
+    "area": "Area"
   }
 }

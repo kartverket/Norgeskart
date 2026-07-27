@@ -40,7 +40,10 @@ export const MeasurementControls = () => {
           <Button
             key={u.value}
             size="xs"
-            variant={isActive(u.value) ? 'solid' : 'outline'}
+            variant="outline"
+            borderColor="green.500"
+            color="green.500"
+            bg={isActive(u.value) ? 'green.100' : 'transparent'}
             onClick={() => onPick(u.value)}
           >
             {u.label}

@@ -113,7 +113,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
         },
         {
           name: 'dekkemateriale',
-          alias: 'Dekke materiale',
+          alias: 'Dekke material',
         },
         {
           name: 'plankeavstand',
@@ -295,15 +295,11 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
         },
         {
           name: 'kontrastinngang',
-          alias: 'Inngang kontrast',
+          alias: 'Kontrast inngang',
         },
         {
           name: 'kommentar',
           alias: 'Kommentar',
-        },
-        {
-          name: 'objektnr',
-          alias: 'Objekt ID',
         },
         {
           name: 'lokalid',
@@ -469,7 +465,7 @@ export const tilgjengelighetConfig: ThemeLayerConfig = {
           alias: 'Grillbålplass',
         },
         {
-          name: 'sittegruppe',
+          name: 'sittegruppebenk',
           alias: 'Sittegruppe',
         },
         {

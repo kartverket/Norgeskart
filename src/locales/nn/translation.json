@@ -30,7 +30,7 @@
     "begin": "Teikn på kartet",
     "clear": "Fjern teikninga",
     "close": "Lukk",
-    "confrimClear": "Er du sikker på dette?",
+    "confrimClear": "No blir alt som er teikna, fjerna. Er du sikker?",
     "privacyNotice": {
       "title": "Lagring av teikning",
       "message": "Når du lagrar ei teikning, vert ho lagra i 2 år på Kartverkets tenarar. Alle med lenkja kan sjå teikninga. For å slette teikningar, kontakt post@kartverket.no."
@@ -41,18 +41,21 @@
       "colorPoint": "Punkt",
       "colorStroke": "Omriss",
       "colorText": "Tekst",
+      "recentColors": "Nylege fargar",
       "pointType": "Punkttype",
       "showMeasurements": "Vis målingar",
       "tool": {
-        "tooltip": {
+        "label": {
           "circle": "Sirkel",
-          "edit": "Endre og flytt",
+          "edit": "Rediger",
           "linestring": "Linje",
+          "point": "Punkt",
+          "polygon": "Flate",
+          "text": "Tekst"
+        },
+        "tooltip": {
           "movedown": "Flytt ned",
           "moveup": "Flytt opp",
-          "point": "Punkt",
-          "polygon": "Område",
-          "text": "Tekst",
           "undo": "Angre",
           "redo": "Gjer om",
           "deleteselected": "Slett valde element"
@@ -71,9 +74,11 @@
     },
     "deleteSelection": "Fjern valde",
     "end": "Ferdig",
-    "save": "Lagra",
+    "save": "Lagre teikning",
     "size": {
-      "label": "Storleik"
+      "label": "Linjetjukkleik",
+      "pointLabel": "Punktstorleik",
+      "textLabel": "Tekststorleik"
     },
     "tabHeading": "Teikne og måle",
     "textInputLabel": "Skriv inn tekst",
@@ -432,7 +437,8 @@
         "linestring": "Linjer",
         "polygon": "Flateer"
       }
-    }
+    },
+    "moreInfo": "Meir info"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
@@ -627,6 +633,8 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikkje å hente kartet"
     },
+    "scale": "Utskriftsmålestokk",
+    "scaleNote": "Skjermens målestokk er 1 : {{screenScale}}. Avviket skuldast at papir (72 pt/tomme) og skjerm (96 px/tomme) nyttar ulike referanseverdiar for pikselstorleik.",
     "vectorTileFallbackWarning": "Nautisk bakgrunnskart er ikkje støtta av utskriftstenesta og vert erstatta med sjøkart oppdatert EFS i utskrifta.",
     "projectionWarning": "Utskrifta vil alltid vere i UTM-sone 33 (EPSG:25833), uavhengig av vald kartprojeksjon."
   },
@@ -660,5 +668,10 @@
         "label": "Dra og slipp, eller vel ei fil"
       }
     }
+  },
+  "measure": {
+    "label": "Måleverktøy",
+    "length": "Lengd",
+    "area": "Areal"
   }
 }

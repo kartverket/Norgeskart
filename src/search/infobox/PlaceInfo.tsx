@@ -28,6 +28,7 @@ export const PlaceInfo = ({ place }: PlaceInfoProps) => {
         <Separator mt={2} />
       </VStack>
       <Link
+        target="_blank"
         key={place.name}
         href={`https://stadnamn.kartverket.no/fakta/${place.placeNumber}`}
         w={'100%'}

@@ -42,9 +42,7 @@ export const PrivacyPolicy = () => {
   const { t } = useTranslation();
   const ph = usePostHog();
   const previousConsent = localStorage.getItem(LOCALSTORAGE_CONSENT_KEY) as
-    | 'granted'
-    | 'denied'
-    | null;
+    'granted' | 'denied' | null;
   const [consentStatus, setConsentStatus] = useState(
     previousConsent ?? ph.get_explicit_consent_status(),
   );

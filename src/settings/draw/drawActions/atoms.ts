@@ -4,11 +4,7 @@ import { Geometry } from 'ol/geom';
 import { StyleChangeDetail } from '../../../draw/drawControls/hooks/drawEventHandlers';
 
 export type DrawActionType =
-  | 'CREATE'
-  | 'EDIT_GEOMETRY'
-  | 'MOVE'
-  | 'DELETE'
-  | 'EDIT_STYLE';
+  'CREATE' | 'EDIT_GEOMETRY' | 'MOVE' | 'DELETE' | 'EDIT_STYLE';
 
 export type DrawAction =
   | CreateFeatureData
