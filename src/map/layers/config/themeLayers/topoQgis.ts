@@ -79,16 +79,6 @@ export const topoQgisConfig: ThemeLayerConfig = {
       name: { nb: 'Høydekurve', nn: 'Høgdekurve', en: 'Contours' },
     },
     {
-      id: 'topoQgis_lag11_relieff_skygge',
-      groupid: 99,
-      parentId: 'topoQgis',
-      name: {
-        nb: 'Relieff skygge',
-        nn: 'Relieff skugge',
-        en: 'Relief (shadow)',
-      },
-    },
-    {
       id: 'topoQgis_lag11_relieff_skygge_blaagraa',
       groupid: 99,
       parentId: 'topoQgis',
@@ -125,7 +115,7 @@ export const topoQgisConfig: ThemeLayerConfig = {
       },
     },
     {
-      id: 'topoQgis_lag15_fkb_bygnanlegg',
+      id: 'topoQgis_lag15_fkb_bygnanlegg_flate',
       groupid: 99,
       parentId: 'topoQgis',
       name: {
@@ -203,10 +193,10 @@ export const topoQgisConfig: ThemeLayerConfig = {
       name: { nb: 'Bygningslinje', nn: 'Bygningslinje', en: 'Building lines' },
     },
     {
-      id: 'topoQgis_lag24_lufthavn_S3',
+      id: 'topoQgis_lag24_lufthavn',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Lufthavn S3', nn: 'Lufthamn S3', en: 'Airport S3' },
+      name: { nb: 'Lufthavn', nn: 'Lufthamn', en: 'Airport' },
     },
     {
       id: 'topoQgis_lag25_kraftlinje_taubane',
@@ -375,20 +365,6 @@ export const topoQgisConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
-      id: 'topoQgis_lag11_relieff_skygge',
-      categoryId: 'topoQgis_lag11_relieff_skygge',
-      groupid: 99,
-      name: {
-        nb: 'Relieff skygge',
-        nn: 'Relieff skugge',
-        en: 'Relief (shadow)',
-      },
-      wmsUrl: mapUrl('lag11_relieff_skygge'),
-      layers: 'lag11_relieff_skygge',
-      singleImage: true,
-      useLegendGraphic: true,
-    },
-    {
       id: 'topoQgis_lag11_relieff_skygge_blaagraa',
       categoryId: 'topoQgis_lag11_relieff_skygge_blaagraa',
       groupid: 99,
@@ -441,16 +417,16 @@ export const topoQgisConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
-      id: 'topoQgis_lag15_fkb_bygnanlegg',
-      categoryId: 'topoQgis_lag15_fkb_bygnanlegg',
+      id: 'topoQgis_lag15_fkb_bygnanlegg_flate',
+      categoryId: 'topoQgis_lag15_fkb_bygnanlegg_flate',
       groupid: 99,
       name: {
         nb: 'FKB bygg og anlegg',
         nn: 'FKB bygg og anlegg',
         en: 'FKB buildings and infrastructure',
       },
-      wmsUrl: mapUrl('lag15_fkb_bygnanlegg'),
-      layers: 'lag15_fkb_bygnanlegg',
+      wmsUrl: mapUrl('lag15_fkb_bygnanlegg_flate'),
+      layers: 'lag15_fkb_bygnanlegg_flate',
       singleImage: true,
       useLegendGraphic: true,
     },
@@ -555,12 +531,12 @@ export const topoQgisConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
-      id: 'topoQgis_lag24_lufthavn_S3',
-      categoryId: 'topoQgis_lag24_lufthavn_S3',
+      id: 'topoQgis_lag24_lufthavn',
+      categoryId: 'topoQgis_lag24_lufthavn',
       groupid: 99,
-      name: { nb: 'Lufthavn S3', nn: 'Lufthamn S3', en: 'Airport S3' },
-      wmsUrl: mapUrl('lag24_lufthavn_S3'),
-      layers: 'lag24_lufthavn_S3',
+      name: { nb: 'Lufthavn', nn: 'Lufthamn', en: 'Airport' },
+      wmsUrl: mapUrl('lag24_lufthavn'),
+      layers: 'lag24_lufthavn',
       singleImage: true,
       useLegendGraphic: true,
     },
