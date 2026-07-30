@@ -83,6 +83,9 @@ const LOCAL_ENV: Env = {
         'https://qlr15-qgis.atkv3-dev.kartverket-intern.cloud',
         'https://qlr16-qgis.atkv3-dev.kartverket-intern.cloud',
         'https://qlr04b-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr01b-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr10b-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr13b-qgis.atkv3-dev.kartverket-intern.cloud',
       ],
     },
     topoCache: {
@@ -139,6 +142,9 @@ const DEV_ENV: Env = {
         'https://qlr15-qgis.atkv3-dev.kartverket-intern.cloud',
         'https://qlr16-qgis.atkv3-dev.kartverket-intern.cloud',
         'https://qlr04b-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr01b-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr10b-qgis.atkv3-dev.kartverket-intern.cloud',
+        'https://qlr13b-qgis.atkv3-dev.kartverket-intern.cloud',
       ],
     },
     topoCache: {

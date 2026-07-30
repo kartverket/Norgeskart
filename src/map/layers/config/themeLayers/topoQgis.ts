@@ -7,6 +7,12 @@ const mapUrl = (name: string) => {
   const num = parseInt(name.match(/^lag(\d+)/)?.[1] ?? '0');
   if (num === 8 && QGIS_BASES.length > 16)
     return `${QGIS_BASES[16]}/qgis/QLR/${name}`;
+  if (num === 2 && QGIS_BASES.length > 17)
+    return `${QGIS_BASES[17]}/qgis/QLR/${name}`;
+  if (num === 20 && QGIS_BASES.length > 18)
+    return `${QGIS_BASES[18]}/qgis/QLR/${name}`;
+  if (num === 26 && QGIS_BASES.length > 19)
+    return `${QGIS_BASES[19]}/qgis/QLR/${name}`;
   const idx = Math.min(Math.ceil(num / 2) - 1, QGIS_BASES.length - 1);
   return `${QGIS_BASES[idx]}/qgis/QLR/${name}`;
 };
