@@ -29,9 +29,9 @@ export const RoadsResults = ({
 }: RoadsResultsProps) => {
   const { t } = useTranslation();
   const roads = useAtomValue(roadResultsAtom).filter(
-    (road) => 
+    (road) =>
       Number.isFinite(Number(road.LATITUDE)) &&
-      Number.isFinite(Number(road.LONGITUDE))
+      Number.isFinite(Number(road.LONGITUDE)),
   );
 
   const [openRoads, setOpenRoads] = useState<string[]>([]);
