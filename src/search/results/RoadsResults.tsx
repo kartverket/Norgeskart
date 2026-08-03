@@ -28,7 +28,11 @@ export const RoadsResults = ({
   onTabClick,
 }: RoadsResultsProps) => {
   const { t } = useTranslation();
-  const roads = useAtomValue(roadResultsAtom);
+  const roads = useAtomValue(roadResultsAtom).filter(
+    (road) => 
+      Number.isFinite(Number(road.LATITUDE)) &&
+      Number.isFinite(Number(road.LONGITUDE))
+  );
 
   const [openRoads, setOpenRoads] = useState<string[]>([]);
 
