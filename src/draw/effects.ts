@@ -54,6 +54,17 @@ export const editPrimaryColorEffect = atomEffect((get) => {
     selectInteraction.getFeatures().forEach((feature) => {
       const featureStyle = feature.getStyle() as Style | undefined;
 
+      if (!featureStyle) {
+        return;
+      }
+
+      const textStyle = featureStyle.getText();
+      if (textStyle) {
+        textStyle.getFill()?.setColor(primaryColor);
+        feature.setStyle(featureStyle);
+        return;
+      }
+
       if (feature.getGeometry()?.getType() === 'Point') {
         const id = feature.getId();
         const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
@@ -69,9 +80,7 @@ export const editPrimaryColorEffect = atomEffect((get) => {
         }
         return;
       }
-      if (!featureStyle) {
-        return;
-      }
+
       const currentStroke = featureStyle.getStroke();
       if (currentStroke) {
         currentStroke.setColor(primaryColor);
@@ -103,6 +112,15 @@ export const editSecondaryColorEffect = atomEffect((get) => {
       if (!featureStyle) {
         return;
       }
+
+      const textStyle = featureStyle.getText();
+
+      if (textStyle) {
+        textStyle.getBackgroundFill()?.setColor(secondaryColor);
+        feature.setStyle(featureStyle);
+        return;
+      }
+
       const currentFill = featureStyle.getFill();
       if (currentFill) {
         currentFill.setColor(secondaryColor);

@@ -143,12 +143,17 @@ const removeSelectedOutlineToStyle = (
 ) => {
   const newStroke = style.getStroke();
   const image = style.getImage();
+  const text = style.getText();
   if (image) {
     if (image instanceof Circle || image instanceof RegularShape) {
       const newImage = image.clone();
       newImage.setStroke(null);
       style.setImage(newImage);
     }
+  }
+
+  if (text) {
+    text.setBackgroundStroke(null);
   }
   newStroke?.setLineDash(originalLineDash);
   style.setStroke(newStroke);
@@ -164,7 +169,31 @@ const handleSelection = (e: BaseEvent | Event) => {
 const handleSelected = (selected: Feature<Geometry>[]) => {
   selected.forEach((f) => {
     const style = f.getStyle();
+
+    const isText = style instanceof Style && style.getText();
+
+    if (isText) {
+      f.set('stylePreSelect', style);
+
+      const newStyle = style.clone();
+      const text = newStyle.getText();
+
+      if (text) {
+        text.setBackgroundStroke(
+          new Stroke({
+            color: 'black',
+            width: 2,
+          }),
+        );
+      }
+
+      f.setStyle(newStyle);
+
+      return;
+    }
+
     const geometry = f.getGeometry();
+
     if (geometry && geometry.getType() === 'Point') {
       const icon = getFeatureIcon(f);
       f.set('iconPreSelect', icon);
