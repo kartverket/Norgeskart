@@ -303,12 +303,37 @@ const removeFeaturelessInteractiveMeasurementOverlay = () => {
   }
 };
 
+  const getFeatureType = (feature: Feature<Geometry>) => {
+  const style = feature.getStyle();
+
+  if (style instanceof Style && style.getText()) {
+    return 'Text';
+  }
+
+  const geometryType = feature.getGeometry()?.getType();
+
+  switch (geometryType) {
+    case 'Point':
+      return 'Point';
+    case 'LineString':
+      return 'LineString';
+    case 'Polygon':
+      return 'Polygon';
+    case 'Circle':
+      return 'Circle';
+    default:
+      return null;
+  }
+};
+
+
 export {
   addInteractiveMeasurementOverlayToFeature,
   clearStaticOverlaysForFeature,
   enableFeatureMeasurementOverlay,
   getGeometryPositionForOverlay,
   getMeasurementText,
+  getFeatureType,
   removeFeaturelessInteractiveMeasurementOverlay,
   removeInteractiveMeasurementOverlayFromFeature,
 };

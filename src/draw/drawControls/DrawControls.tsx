@@ -6,6 +6,7 @@ import {
   drawEnabledEffect,
   drawTypeEffect,
   snapEffect,
+  selectedFeatureAtom
 } from '../../settings/draw/atoms.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
@@ -26,6 +27,8 @@ import { TextStyleControl } from '../TextStyleControl.tsx';
 import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts';
 import { EditControls } from './EditControls.tsx';
 import { DrawType, useDrawSettings } from './hooks/drawSettings.ts';
+import { getFeatureType } from './drawUtils.ts';
+
 
 const MOBILE_TOOLBAR_RESERVE = '15px';
 
@@ -36,8 +39,11 @@ const MEASUREMENT_TYPES: DrawType[] = [
   'Move',
 ];
 
+
+
 export const DrawControls = () => {
   const { drawType } = useDrawSettings();
+   const [selectedFeature] = useAtom(selectedFeatureAtom);
   const isMobile = useIsMobileScreen();
   useAtom(drawEnabledEffect);
   useAtom(drawTypeEffect);
@@ -58,6 +64,8 @@ export const DrawControls = () => {
   const showMeasurementControls =
     drawType != null && MEASUREMENT_TYPES.includes(drawType);
 
+  const selectedFeatureType = selectedFeature ? getFeatureType(selectedFeature) : null;
+
   return (
     <VStack
       alignItems="flex-start"
@@ -67,7 +75,10 @@ export const DrawControls = () => {
     >
       {!isMobile && <DrawToolSelector />}
 
-      {drawType === 'Text' && <TextStyleControl />}
+      {(drawType === 'Text' ||
+  (drawType === 'Move' && selectedFeatureType === 'Text')) && (
+  <TextStyleControl />
+)}
 
       <HStack width="100%" align={'space-between'}>
         <ColorControls />
@@ -90,3 +101,5 @@ export const DrawControls = () => {
     </VStack>
   );
 };
+
+

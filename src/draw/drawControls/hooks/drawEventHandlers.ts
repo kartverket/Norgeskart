@@ -8,7 +8,7 @@ import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../../map/atoms';
-import { showMeasurementsAtom } from '../../../settings/draw/atoms';
+import { selectedFeatureAtom, showMeasurementsAtom } from '../../../settings/draw/atoms';
 import { getFeatureIcon } from '../../utils/featureUtils';
 import {
   addInteractiveMeasurementOverlayToFeature,
@@ -167,6 +167,11 @@ const handleSelection = (e: BaseEvent | Event) => {
 };
 
 const handleSelected = (selected: Feature<Geometry>[]) => {
+  const store = getDefaultStore();
+
+    const selectedFeature = selected.length > 0 ? selected[0] : null;
+  store.set(selectedFeatureAtom, selectedFeature);
+
   selected.forEach((f) => {
     const style = f.getStyle();
 
@@ -221,6 +226,9 @@ const handleSelected = (selected: Feature<Geometry>[]) => {
 };
 
 const handleDeselected = (deselected: Feature<Geometry>[]) => {
+  const store = getDefaultStore();
+  store.set(selectedFeatureAtom, null)
+
   handleUpdateStyle(deselected);
 };
 

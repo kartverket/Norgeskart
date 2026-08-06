@@ -2,7 +2,7 @@ import { MaterialSymbol } from '@kvib/react';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { atomWithStorage } from 'jotai/utils';
-import { Map } from 'ol';
+import { Feature, Map } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
@@ -46,6 +46,7 @@ import { getHighestZIndex } from '../../draw/drawControls/hooks/verticalMove';
 import { mapAtom } from '../../map/atoms';
 import { mapToolAtom } from '../../map/overlay/atoms';
 import { addDrawAction } from './drawActions/drawActionsHooks';
+import { Geometry } from 'ol/geom';
 
 export const DEFAULT_PRIMARY_COLOR = '#0e5aa0ff';
 export const DEFAULT_SECONDARY_COLOR = '#1d823b80';
@@ -118,6 +119,8 @@ export const drawEnabledAtom = atom<boolean>((get) => {
   const currentMapTool = get(mapToolAtom);
   return currentMapTool === 'draw';
 });
+
+export const selectedFeatureAtom = atom<Feature<Geometry> | null>(null);
 
 export const drawEnabledEffect = atomEffect((get, set) => {
   const drawEnabled = get(drawEnabledAtom);
