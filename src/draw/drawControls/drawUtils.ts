@@ -303,7 +303,7 @@ const removeFeaturelessInteractiveMeasurementOverlay = () => {
   }
 };
 
-  const getFeatureType = (feature: Feature<Geometry>) => {
+const getFeatureType = (feature: Feature<Geometry>) => {
   const style = feature.getStyle();
 
   if (style instanceof Style && style.getText()) {
@@ -326,14 +326,13 @@ const removeFeaturelessInteractiveMeasurementOverlay = () => {
   }
 };
 
-
 export {
   addInteractiveMeasurementOverlayToFeature,
   clearStaticOverlaysForFeature,
   enableFeatureMeasurementOverlay,
+  getFeatureType,
   getGeometryPositionForOverlay,
   getMeasurementText,
-  getFeatureType,
   removeFeaturelessInteractiveMeasurementOverlay,
   removeInteractiveMeasurementOverlayFromFeature,
 };

@@ -5,6 +5,7 @@ import { atomWithStorage } from 'jotai/utils';
 import { Feature, Map } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
+import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify';
 import Select from 'ol/interaction/Select';
@@ -46,7 +47,6 @@ import { getHighestZIndex } from '../../draw/drawControls/hooks/verticalMove';
 import { mapAtom } from '../../map/atoms';
 import { mapToolAtom } from '../../map/overlay/atoms';
 import { addDrawAction } from './drawActions/drawActionsHooks';
-import { Geometry } from 'ol/geom';
 
 export const DEFAULT_PRIMARY_COLOR = '#0e5aa0ff';
 export const DEFAULT_SECONDARY_COLOR = '#1d823b80';
