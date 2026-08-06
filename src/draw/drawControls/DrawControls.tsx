@@ -1,4 +1,4 @@
-import { Flex, HStack, VStack } from '@kvib/react';
+import { Flex, HStack, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import {
@@ -66,8 +66,9 @@ export const DrawControls = () => {
     : null;
 
   const currentType = drawType === 'Move' ? selectedFeatureType : drawType;
-  
-  const showMeasurementControls = currentType != null && MEASUREMENT_TYPES.includes(currentType);
+
+  const showMeasurementControls =
+    currentType != null && MEASUREMENT_TYPES.includes(currentType);
 
   return (
     <VStack
@@ -78,10 +79,15 @@ export const DrawControls = () => {
     >
       {!isMobile && <DrawToolSelector />}
 
+      {drawType === 'Move' && !selectedFeature && (
+        <Text fontSize="md" mt={4}>Velg et element du vil redigere eller flytte</Text>
+      )}
+
       {currentType === 'Text' && <TextStyleControl />}
 
       <HStack width="100%" align={'space-between'}>
-        <ColorControls />
+        {currentType && <ColorControls />}
+
         {currentType === 'Point' && <PointStyleSelector />}
         {isMobile && currentType === 'LineString' && <LineStyleControl />}
       </HStack>
