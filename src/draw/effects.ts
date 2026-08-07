@@ -14,7 +14,10 @@ import {
   lineWidthAtom,
   primaryColorAtom,
   secondaryColorAtom,
+  selectedFeatureAtom,
   showMeasurementsAtom,
+  textFontSizeAtom,
+  textInputAtom,
 } from '../settings/draw/atoms';
 import { enableFeatureMeasurementOverlay } from './drawControls/drawUtils';
 import {
@@ -130,7 +133,36 @@ export const editSecondaryColorEffect = atomEffect((get) => {
     });
   }
 });
+export const editTextEffect = atomEffect((get) => {
+  const text = get(textInputAtom);
+  const fontSize = get(textFontSizeAtom);
 
+  const map = get(mapAtom);
+  const selectInteraction = getSelectInteraction(map);
+
+  if (!selectInteraction) {
+    return;
+  }
+
+  selectInteraction.getFeatures().forEach((feature) => {
+    const style = feature.getStyle() as Style | undefined;
+
+    if (!style) {
+      return;
+    }
+
+    const textStyle = style.getText();
+
+    if (!textStyle) {
+      return;
+    }
+
+    textStyle.setText(text);
+    textStyle.setFont(`${fontSize}px Mulish`);
+
+    feature.setStyle(style);
+  });
+});
 export const lineWidthEffect = atomEffect((get) => {
   const lineWidth = get(lineWidthAtom);
   const map = get(mapAtom);

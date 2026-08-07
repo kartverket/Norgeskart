@@ -17,6 +17,7 @@ import {
   drawStyleEffect,
   editPrimaryColorEffect,
   editSecondaryColorEffect,
+  editTextEffect,
   lineWidthEffect,
 } from '../effects.ts';
 import { LineStyleControl } from '../LineStyleControl.tsx';
@@ -50,6 +51,7 @@ export const DrawControls = () => {
   useAtom(editPrimaryColorEffect);
   useAtom(editSecondaryColorEffect);
   useAtom(lineWidthEffect);
+  useAtom(editTextEffect);
 
   useDrawControlsKeyboardEffects();
   useEffect(() => {
