@@ -82,7 +82,9 @@ export const DrawControls = () => {
       {!isMobile && <DrawToolSelector />}
 
       {drawType === 'Move' && !selectedFeature && (
-        <Text fontSize="md" mt={4}>Velg et element du vil redigere eller flytte</Text>
+        <Text fontSize="md" mt={4}>
+          Velg et element du vil redigere eller flytte
+        </Text>
       )}
 
       {currentType === 'Text' && <TextStyleControl />}
@@ -91,7 +93,7 @@ export const DrawControls = () => {
         {currentType && <ColorControls />}
 
         {currentType === 'Point' && <PointStyleSelector />}
-        {isMobile && currentType === 'LineString' && <LineStyleControl />}
+        {isMobile && drawType === 'LineString' && <LineStyleControl />}
       </HStack>
       <Flex
         w="100%"
@@ -100,7 +102,7 @@ export const DrawControls = () => {
         justifyContent="space-between"
         py={1}
       >
-        {!isMobile && currentType === 'LineString' && <LineStyleControl />}
+        {!isMobile && drawType === 'LineString' && <LineStyleControl />}
         <LineWidthControl />
         {showMeasurementControls && <MeasurementControls />}
       </Flex>

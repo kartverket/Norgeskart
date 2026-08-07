@@ -14,7 +14,6 @@ import {
   lineWidthAtom,
   primaryColorAtom,
   secondaryColorAtom,
-  selectedFeatureAtom,
   showMeasurementsAtom,
   textFontSizeAtom,
   textInputAtom,
@@ -170,6 +169,18 @@ export const lineWidthEffect = atomEffect((get) => {
   if (selectInteraction) {
     selectInteraction.getFeatures().forEach((feature) => {
       const featuretype = feature.getGeometry()?.getType();
+
+      const style = feature.getStyle() as Style;
+
+      if (featuretype === 'LineString' || featuretype === 'Polygon') {
+        const stroke = style.getStroke();
+
+        if (stroke) {
+          stroke.setWidth(lineWidth);
+          feature.setStyle(style);
+        }
+      }
+
       if (featuretype === 'Point') {
         const id = feature.getId();
         const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
