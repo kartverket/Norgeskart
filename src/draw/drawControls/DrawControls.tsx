@@ -53,7 +53,7 @@ export const DrawControls = () => {
   useAtom(editSecondaryColorEffect);
   useAtom(lineWidthEffect);
   useAtom(editTextEffect);
-  useAtom(editPointIconEffect)
+  useAtom(editPointIconEffect);
 
   useDrawControlsKeyboardEffects();
   useEffect(() => {

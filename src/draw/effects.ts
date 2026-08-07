@@ -26,7 +26,6 @@ import {
   ICON_OVERLAY_PREFIX,
   INTERACTIVE_OVERLAY_PREFIX,
   MEASUREMNT_OVERLAY_PREFIX,
-  updateIconOverlayForPointFeature,
 } from './drawControls/hooks/drawSettings';
 
 const getDrawInteraction = (map: Map) => {
@@ -205,7 +204,7 @@ export const lineWidthEffect = atomEffect((get) => {
 });
 
 export const editPointIconEffect = atomEffect((get) => {
-   const pointIcon = get(pointIconAtom);
+  const pointIcon = get(pointIconAtom);
   const selectedFeature = get(selectedFeatureAtom);
   const primaryColor = get(primaryColorAtom);
   const lineWidth = get(lineWidthAtom);
