@@ -154,7 +154,7 @@ const DEV_ENV: Env = {
       ],
     },
     topoCache: {
-      baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket.cloud',
+      baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket.cloud',
     },
   },
   envName: 'dev',
