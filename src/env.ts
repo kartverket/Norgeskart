@@ -93,7 +93,7 @@ const LOCAL_ENV: Env = {
     },
     topoCache: {
       // baseUrl: 'http://localhost:8085',
-      baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket-intern.cloud',
     },
   },
   envName: 'local',
