@@ -12,17 +12,21 @@ import {
   distanceUnitAtom,
   drawTypeAtom,
   lineWidthAtom,
+  pointIconAtom,
   primaryColorAtom,
   secondaryColorAtom,
+  selectedFeatureAtom,
   showMeasurementsAtom,
   textFontSizeAtom,
   textInputAtom,
 } from '../settings/draw/atoms';
 import { enableFeatureMeasurementOverlay } from './drawControls/drawUtils';
 import {
+  addIconOverlayToPointFeature,
   ICON_OVERLAY_PREFIX,
   INTERACTIVE_OVERLAY_PREFIX,
   MEASUREMNT_OVERLAY_PREFIX,
+  updateIconOverlayForPointFeature,
 } from './drawControls/hooks/drawSettings';
 
 const getDrawInteraction = (map: Map) => {
@@ -200,6 +204,32 @@ export const lineWidthEffect = atomEffect((get) => {
   }
 });
 
+export const editPointIconEffect = atomEffect((get) => {
+   const pointIcon = get(pointIconAtom);
+  const selectedFeature = get(selectedFeatureAtom);
+  const primaryColor = get(primaryColorAtom);
+  const lineWidth = get(lineWidthAtom);
+
+  if (!selectedFeature) {
+    return;
+  }
+
+  if (selectedFeature.getGeometry()?.getType() !== 'Point') {
+    return;
+  }
+
+  const icon = {
+    icon: pointIcon,
+    color: primaryColor,
+    size: lineWidth,
+  };
+
+  selectedFeature.setProperties({
+    overlayIcon: icon,
+  });
+
+  addIconOverlayToPointFeature(selectedFeature, icon);
+});
 export const drawStyleEffect = atomEffect((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);

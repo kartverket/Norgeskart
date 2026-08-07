@@ -15,6 +15,7 @@ import { DrawToolSelector } from '../DrawToolSelector.tsx';
 import {
   distanceUnitAtomEffect,
   drawStyleEffect,
+  editPointIconEffect,
   editPrimaryColorEffect,
   editSecondaryColorEffect,
   editTextEffect,
@@ -52,6 +53,7 @@ export const DrawControls = () => {
   useAtom(editSecondaryColorEffect);
   useAtom(lineWidthEffect);
   useAtom(editTextEffect);
+  useAtom(editPointIconEffect)
 
   useDrawControlsKeyboardEffects();
   useEffect(() => {
@@ -59,9 +61,6 @@ export const DrawControls = () => {
       clearInteractions();
     };
   }, []);
-
-  // const showMeasurementControls =
-  //   drawType != null && MEASUREMENT_TYPES.includes(drawType);
 
   const selectedFeatureType = selectedFeature
     ? getFeatureType(selectedFeature)
