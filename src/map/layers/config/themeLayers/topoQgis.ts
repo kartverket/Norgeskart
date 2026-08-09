@@ -5,6 +5,8 @@ const QGIS_BASES = getEnv().layerProviderParameters.topoQgis.baseUrls;
 
 const mapUrl = (name: string) => {
   const num = parseInt(name.match(/^lag(\d+)/)?.[1] ?? '0');
+  if (name === 'lag08_sjodybde_linje' && QGIS_BASES.length > 24)
+    return `${QGIS_BASES[24]}/qgis/QLR/${name}`;
   if (num === 8 && QGIS_BASES.length > 16)
     return `${QGIS_BASES[16]}/qgis/QLR/${name}`;
   if (num === 2 && QGIS_BASES.length > 17)
@@ -75,10 +77,16 @@ export const topoQgisConfig: ThemeLayerConfig = {
       name: { nb: 'Elveflate', nn: 'Elveflate', en: 'River surface' },
     },
     {
-      id: 'topoQgis_lag08_sjodybde',
+      id: 'topoQgis_lag08_sjodybde_punkt',
       groupid: 99,
       parentId: 'topoQgis',
-      name: { nb: 'Sjødybde', nn: 'Sjødjupne', en: 'Sea depth data' },
+      name: { nb: 'Sjødybde – punkt', nn: 'Sjødjupne – punkt', en: 'Sea depth – points' },
+    },
+    {
+      id: 'topoQgis_lag08_sjodybde_linje',
+      groupid: 99,
+      parentId: 'topoQgis',
+      name: { nb: 'Sjødybde – linje/flate', nn: 'Sjødjupne – linje/flate', en: 'Sea depth – lines/polygons' },
     },
     {
       id: 'topoQgis_lag09_relieff_sol',
@@ -349,12 +357,22 @@ export const topoQgisConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
-      id: 'topoQgis_lag08_sjodybde',
-      categoryId: 'topoQgis_lag08_sjodybde',
+      id: 'topoQgis_lag08_sjodybde_punkt',
+      categoryId: 'topoQgis_lag08_sjodybde_punkt',
       groupid: 99,
-      name: { nb: 'Sjødybde', nn: 'Sjødjupne', en: 'Sea depth data' },
-      wmsUrl: mapUrl('lag08_sjodybde'),
-      layers: 'lag08_sjodybde',
+      name: { nb: 'Sjødybde – punkt', nn: 'Sjødjupne – punkt', en: 'Sea depth – points' },
+      wmsUrl: mapUrl('lag08_sjodybde_punkt'),
+      layers: 'lag08_sjodybde_punkt',
+      singleImage: true,
+      useLegendGraphic: true,
+    },
+    {
+      id: 'topoQgis_lag08_sjodybde_linje',
+      categoryId: 'topoQgis_lag08_sjodybde_linje',
+      groupid: 99,
+      name: { nb: 'Sjødybde – linje/flate', nn: 'Sjødjupne – linje/flate', en: 'Sea depth – lines/polygons' },
+      wmsUrl: mapUrl('lag08_sjodybde_linje'),
+      layers: 'lag08_sjodybde_linje',
       singleImage: true,
       useLegendGraphic: true,
     },

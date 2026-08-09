@@ -90,6 +90,10 @@ const LOCAL_ENV: Env = {
         'https://qlr11b-qgis.atkv3-prod.kartverket-intern.cloud',
         'https://qlr12b-qgis.atkv3-prod.kartverket-intern.cloud',
         'https://qlr15b-qgis.atkv3-prod.kartverket-intern.cloud',
+        // lag08_sjodybde's own QLR file was split in two — punkt (skjer/grunne/
+        // dybdepunkt) stays on qlr04b (index 16 above), linje/flate
+        // (dybdekurve/mudretomradegrense/mudretomrade) moved to this new pod.
+        'https://qlr04c-qgis.atkv3-prod.kartverket-intern.cloud',
       ],
     },
     topoCache: {
@@ -153,6 +157,10 @@ const DEV_ENV: Env = {
         'https://qlr11b-qgis.atkv3-prod.kartverket-intern.cloud',
         'https://qlr12b-qgis.atkv3-prod.kartverket-intern.cloud',
         'https://qlr15b-qgis.atkv3-prod.kartverket-intern.cloud',
+        // lag08_sjodybde's own QLR file was split in two — punkt (skjer/grunne/
+        // dybdepunkt) stays on qlr04b (index 16 above), linje/flate
+        // (dybdekurve/mudretomradegrense/mudretomrade) moved to this new pod.
+        'https://qlr04c-qgis.atkv3-prod.kartverket-intern.cloud',
       ],
     },
     topoCache: {
@@ -215,6 +223,10 @@ const PROD_ENV: Env = {
         'https://qlr11b-qgis.atkv3-prod.kartverket-intern.cloud',
         'https://qlr12b-qgis.atkv3-prod.kartverket-intern.cloud',
         'https://qlr15b-qgis.atkv3-prod.kartverket-intern.cloud',
+        // lag08_sjodybde's own QLR file was split in two — punkt (skjer/grunne/
+        // dybdepunkt) stays on qlr04b (index 16 above), linje/flate
+        // (dybdekurve/mudretomradegrense/mudretomrade) moved to this new pod.
+        'https://qlr04c-qgis.atkv3-prod.kartverket-intern.cloud',
       ],
     },
     topoCache: {
