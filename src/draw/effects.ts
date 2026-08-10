@@ -15,7 +15,6 @@ import {
   pointIconAtom,
   primaryColorAtom,
   secondaryColorAtom,
-  selectedFeatureAtom,
   showMeasurementsAtom,
   textFontSizeAtom,
   textInputAtom,

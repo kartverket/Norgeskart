@@ -12,6 +12,7 @@ import { mapAtom } from '../../../map/atoms';
 import {
   drawEnabledAtom,
   drawTypeAtom,
+  selectedFeatureAtom,
   showMeasurementsAtom,
 } from '../../../settings/draw/atoms';
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
@@ -369,6 +370,10 @@ export const addIconOverlayToPointFeature = (
   if (isDrawIconFilled(icon.icon)) {
     elm.style.fontVariationSettings = '"FILL" 1, "wght" 300, "GRAD" 0';
   }
+
+  if (feature === getDefaultStore().get(selectedFeatureAtom)){
+      elm.style.border = '2px solid black';
+  }
   const overlayId = `${ICON_OVERLAY_PREFIX}${featureId}`;
   const existingOverlay = map.getOverlayById(overlayId);
   if (existingOverlay) {
@@ -403,4 +408,5 @@ export const addIconOverlayToPointFeature = (
       }),
     }),
   );
+
 };
