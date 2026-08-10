@@ -203,38 +203,40 @@ export const lineWidthEffect = atomEffect((get) => {
     });
   }
 });
-
 export const editPointIconEffect = atomEffect((get) => {
   const pointIcon = get(pointIconAtom);
-  const selectedFeature = get(selectedFeatureAtom);
   const lineWidth = get(lineWidthAtom);
+  const map = get(mapAtom);
 
-  if (!selectedFeature) {
+  const selectInteraction = getSelectInteraction(map);
+
+  if (!selectInteraction) {
     return;
   }
 
-  if (selectedFeature.getGeometry()?.getType() !== 'Point') {
-    return;
-  }
+  selectInteraction.getFeatures().forEach((feature) => {
+    if (feature.getGeometry()?.getType() !== 'Point') {
+      return;
+    }
 
+    const currentIcon = getFeatureIcon(feature);
 
-  const currentIcon = getFeatureIcon(selectedFeature);
+    if (!currentIcon) {
+      return;
+    }
 
-  if (!currentIcon) {
-    return;
-  }
+    const icon = {
+      icon: pointIcon,
+      color: currentIcon.color,
+      size: lineWidth,
+    };
 
-  const icon = {
-    icon: pointIcon,
-    color: currentIcon.color,
-    size: lineWidth,
-  };
+    feature.setProperties({
+      overlayIcon: icon,
+    });
 
-  selectedFeature.setProperties({
-    overlayIcon: icon,
+    addIconOverlayToPointFeature(feature, icon);
   });
-
-  addIconOverlayToPointFeature(selectedFeature, icon);
 });
 
 export const drawStyleEffect = atomEffect((get) => {
