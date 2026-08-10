@@ -70,7 +70,8 @@
         "primary": "Hovudfarge",
         "secondary": "Sekundær"
       },
-      "lineType": "Linjetype"
+      "lineType": "Linjetype",
+      "editInstruction": "Vel eit element du vil redigere eller flytte"
     },
     "deleteSelection": "Fjern valde",
     "end": "Ferdig",

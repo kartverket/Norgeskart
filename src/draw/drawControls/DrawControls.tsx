@@ -1,6 +1,7 @@
 import { Flex, HStack, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   clearInteractions,
   drawEnabledEffect,
@@ -44,6 +45,7 @@ export const DrawControls = () => {
   const { drawType } = useDrawSettings();
   const [selectedFeature] = useAtom(selectedFeatureAtom);
   const isMobile = useIsMobileScreen();
+  const { t } = useTranslation();
   useAtom(drawEnabledEffect);
   useAtom(drawTypeEffect);
   useAtom(distanceUnitAtomEffect);
@@ -84,7 +86,7 @@ export const DrawControls = () => {
 
       {drawType === 'Move' && !selectedFeature && (
         <Text fontSize="md" mt={4}>
-          Velg et element du vil redigere eller flytte
+          {t('draw.controls.editInstruction')}
         </Text>
       )}
 
