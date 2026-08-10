@@ -69,9 +69,9 @@ export const DrawControls = () => {
   const currentType = drawType === 'Move' ? selectedFeatureType : drawType;
 
   const showMeasurementControls =
-  drawType !== 'Move' &&
-  currentType != null &&
-  MEASUREMENT_TYPES.includes(currentType);
+    drawType !== 'Move' &&
+    currentType != null &&
+    MEASUREMENT_TYPES.includes(currentType);
 
   return (
     <VStack
