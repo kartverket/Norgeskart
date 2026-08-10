@@ -27,6 +27,7 @@ import {
   INTERACTIVE_OVERLAY_PREFIX,
   MEASUREMNT_OVERLAY_PREFIX,
 } from './drawControls/hooks/drawSettings';
+import { getFeatureIcon } from './utils/featureUtils';
 
 const getDrawInteraction = (map: Map) => {
   const drawInteraction = map
@@ -206,7 +207,6 @@ export const lineWidthEffect = atomEffect((get) => {
 export const editPointIconEffect = atomEffect((get) => {
   const pointIcon = get(pointIconAtom);
   const selectedFeature = get(selectedFeatureAtom);
-  const primaryColor = get(primaryColorAtom);
   const lineWidth = get(lineWidthAtom);
 
   if (!selectedFeature) {
@@ -217,9 +217,16 @@ export const editPointIconEffect = atomEffect((get) => {
     return;
   }
 
+
+  const currentIcon = getFeatureIcon(selectedFeature);
+
+  if (!currentIcon) {
+    return;
+  }
+
   const icon = {
     icon: pointIcon,
-    color: primaryColor,
+    color: currentIcon.color,
     size: lineWidth,
   };
 
@@ -229,6 +236,7 @@ export const editPointIconEffect = atomEffect((get) => {
 
   addIconOverlayToPointFeature(selectedFeature, icon);
 });
+
 export const drawStyleEffect = atomEffect((get) => {
   const primaryColor = get(primaryColorAtom);
   const secondaryColor = get(secondaryColorAtom);
