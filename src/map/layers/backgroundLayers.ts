@@ -2,7 +2,6 @@ export type WMSLayerName = 'oceanicelectronic' | 'sjokartraster';
 export type VectorTileLayerName = 'nautical-background';
 export type EmptyLayerName = 'empty';
 export type WMTSLayerName =
-  | 'topo'
   | 'topograatone'
   | 'toporaster'
   | 'topoProd'
@@ -21,7 +20,7 @@ export const mapLegacyBackgroundLayerId = (
   layerId: string,
 ): BackgroundLayerName | null => {
   const legacyIdMap: Record<string, BackgroundLayerName> = {
-    '1001': 'topo',
+    '1001': 'topo_test',
     '1003': 'topograatone',
     '1004': 'toporaster',
     '1002': 'Nibcache_UTM33_EUREF89_v2',

@@ -39,7 +39,8 @@ export const allConfiguredBackgroundLayers = [
 
 const getDefaultBackgroundLayer = (): BackgroundLayerName => {
   const layerNameFromUrl = getUrlParameter('backgroundLayer');
-  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
+  const finalLayerName = (layerNameFromUrl ||
+    'topo_test') as BackgroundLayerName;
   return finalLayerName;
 };
 

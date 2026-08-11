@@ -15,9 +15,6 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
-  topoMapserver: {
-    baseUrl: string;
-  };
   topoQgis: {
     baseUrls: string[];
   };
@@ -58,10 +55,6 @@ const LOCAL_ENV: Env = {
     },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
-    },
-    topoMapserver: {
-      //baseUrl: 'http://localhost:8081',
-      baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
     },
     topoQgis: {
       // baseUrls: ['http://localhost:8082'],
@@ -128,9 +121,6 @@ const DEV_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoMapserver: {
-      baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
-    },
     topoQgis: {
       baseUrls: [
         'https://qlr01-qgis.atkv3-prod.kartverket-intern.cloud',
@@ -193,9 +183,6 @@ const PROD_ENV: Env = {
     },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
-    },
-    topoMapserver: {
-      baseUrl: 'https://tnt-mapserver.atkv3-prod.kartverket-intern.cloud',
     },
     topoQgis: {
       baseUrls: [
