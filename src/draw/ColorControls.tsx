@@ -191,7 +191,6 @@ const addRecentColor = (list: string[], color: string) => {
 };
 
 const useColorLabels = (drawType: string | null) => {
-  // const { drawType } = useDrawSettings();
   const { t } = useTranslation();
   const p = 'draw.controls.';
 

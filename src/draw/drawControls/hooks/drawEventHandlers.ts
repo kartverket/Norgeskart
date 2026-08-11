@@ -192,7 +192,7 @@ const updateSelectedFeatureColors = (
     }
 
     if (secondaryColor) {
-      store.set(secondaryColorAtom, secondaryColor as string)
+      store.set(secondaryColorAtom, secondaryColor as string);
     }
 
     return;
@@ -222,10 +222,9 @@ const handleSelected = (selected: Feature<Geometry>[]) => {
       const icon = getFeatureOverlayIconProperties(selectedFeature);
 
       if (icon) {
-        store.set(primaryColorAtom, icon.color)
+        store.set(primaryColorAtom, icon.color);
       }
     }
-
   }
 
   selected.forEach((f) => {
