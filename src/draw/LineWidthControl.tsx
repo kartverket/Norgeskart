@@ -1,7 +1,12 @@
 import { Box, Heading, HStack, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { LineWidth, lineWidthAtom } from '../settings/draw/atoms';
+import {
+  LineWidth,
+  lineWidthAtom,
+  selectedFeatureAtom,
+} from '../settings/draw/atoms';
+import { getFeatureType } from './drawControls/drawUtils';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 const lineWidthCollection: { value: LineWidth; label: string }[] = [
@@ -12,19 +17,24 @@ const lineWidthCollection: { value: LineWidth; label: string }[] = [
 
 export const LineWidthControl = () => {
   const [lineWidth, setLineWidth] = useAtom(lineWidthAtom);
+  const [selectedFeature] = useAtom(selectedFeatureAtom);
+
   const { drawType } = useDrawSettings();
   const { t } = useTranslation();
+  const selectedFeatureType = selectedFeature
+    ? getFeatureType(selectedFeature)
+    : null;
+
+  const currentType = drawType === 'Move' ? selectedFeatureType : drawType;
 
   if (
-    drawType !== 'LineString' &&
-    drawType !== 'Point' &&
-    drawType !== 'Polygon' &&
-    drawType !== 'Move'
+    currentType !== 'LineString' &&
+    currentType !== 'Point' &&
+    currentType !== 'Polygon'
   ) {
     return null;
   }
-
-  const isPoint = drawType === 'Point';
+  const isPoint = currentType === 'Point';
 
   const getButtonSize = (value: number) => {
     return value === 2 ? 24 : value === 4 ? 30 : 36;
