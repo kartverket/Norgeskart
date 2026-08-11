@@ -9,6 +9,8 @@ import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../../map/atoms';
 import {
+  primaryColorAtom,
+  secondaryColorAtom,
   selectedFeatureAtom,
   showMeasurementsAtom,
 } from '../../../settings/draw/atoms';
@@ -169,11 +171,62 @@ const handleSelection = (e: BaseEvent | Event) => {
   }
 };
 
+const updateSelectedFeatureColors = (
+  feature: Feature<Geometry>,
+  store: ReturnType<typeof getDefaultStore>,
+) => {
+  const style = feature.getStyle();
+
+  if (!(style instanceof Style)) {
+    return;
+  }
+
+  const textStyle = style.getText();
+
+  if (textStyle) {
+    const primaryColor = textStyle.getFill()?.getColor();
+    const secondaryColor = textStyle.getBackgroundFill()?.getColor();
+
+    if (primaryColor) {
+      store.set(primaryColorAtom, primaryColor as string);
+    }
+
+    if (secondaryColor) {
+      store.set(secondaryColorAtom, secondaryColor as string)
+    }
+
+    return;
+  }
+
+  const primaryColor = style.getStroke()?.getColor();
+  const secondaryColor = style.getFill()?.getColor();
+
+  if (primaryColor) {
+    store.set(primaryColorAtom, primaryColor as string);
+  }
+
+  if (secondaryColor) {
+    store.set(secondaryColorAtom, secondaryColor as string);
+  }
+};
 const handleSelected = (selected: Feature<Geometry>[]) => {
   const store = getDefaultStore();
 
   const selectedFeature = selected.length > 0 ? selected[0] : null;
   store.set(selectedFeatureAtom, selectedFeature);
+
+  if (selectedFeature) {
+    updateSelectedFeatureColors(selectedFeature, store);
+
+    if (selectedFeature.getGeometry()?.getType() === 'Point') {
+      const icon = getFeatureOverlayIconProperties(selectedFeature);
+
+      if (icon) {
+        store.set(primaryColorAtom, icon.color)
+      }
+    }
+
+  }
 
   selected.forEach((f) => {
     const style = f.getStyle();
