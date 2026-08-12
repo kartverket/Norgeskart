@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { Contact, PrivacyPolicy } from '../sidePanel/PrivacyPolicyAndContact';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
+import { useIsMobileScreen } from '../shared/hooks';
 
 type TipsContentProps = {
   content: ContentBlock[];
@@ -120,6 +121,8 @@ export const HelpPage = () => {
   const { i18n, t } = useTranslation();
   const [tipsData, setTipsData] = useState<Tip[]>([]);
   const navigate = useNavigate();
+  const isMobile = useIsMobileScreen();
+
 
   useEffect(() => {
     let cancelled = false;
@@ -259,10 +262,13 @@ export const HelpPage = () => {
           </Link>
         </Box>
 
-        <Box {...boxStyles}>
-          <Heading>{t('languageSelector.chooseLanguage')}</Heading>
+        {isMobile && (
+          <Box {...boxStyles}>
+          <Heading mb={2} size="2xl" fontWeight="bold">{t('languageSelector.chooseLanguage')}</Heading>
           <LanguageSwitcher />
         </Box>
+        )}    
+        
       </Box>
     </>
   );
