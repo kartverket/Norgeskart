@@ -20,6 +20,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { Contact, PrivacyPolicy } from '../sidePanel/PrivacyPolicyAndContact';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
 
@@ -256,6 +257,11 @@ export const HelpPage = () => {
           >
             status.kartverket.no
           </Link>
+        </Box>
+
+        <Box {...boxStyles}>
+          <Heading>{t('languageSelector.chooseLanguage')}</Heading>
+          <LanguageSwitcher />
         </Box>
       </Box>
     </>
