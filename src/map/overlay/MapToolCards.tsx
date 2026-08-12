@@ -17,7 +17,6 @@ import { DrawControls } from '../../draw/drawControls/DrawControls';
 import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { MapThemes } from '../../settings/map/themes/MapThemes';
 import { useIsMobileScreen } from '../../shared/hooks';
-import { InfoDrawer } from '../../sidePanel/InfoDrawer';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
 import { activeThemeLayersAtom } from '../layers/atoms';
 import { drawPanelCollapsedAtom, mapToolAtom } from './atoms';
@@ -141,13 +140,7 @@ const MapToolCardsBody = () => {
       </MapToolCard>
     );
   }
-  if (currentMapTool === 'info') {
-    return (
-      <MapToolCard label={t('controller.help.mobiletext')} onClose={onClose}>
-        <InfoDrawer />
-      </MapToolCard>
-    );
-  }
+  
   if (currentMapTool === 'settings') {
     return (
       <MapToolCard label={t('info.settings.text')} onClose={onClose}>

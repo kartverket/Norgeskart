@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
-import { Contact, PrivacyPolicy } from '../sidePanel/PrivacyPolicyAndContact';
+import { Contact, PrivacyPolicy } from './PrivacyPolicyAndContact';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
 import { useIsMobileScreen } from '../shared/hooks';
 
