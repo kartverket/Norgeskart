@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
-import { Contact, PrivacyPolicy } from './PrivacyPolicyAndContact';
+import { Contact, PrivacyPolicy } from '../help/PrivacyPolicyAndContact';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
 import { useIsMobileScreen } from '../shared/hooks';
 
@@ -151,16 +151,18 @@ export const HelpPage = () => {
         title="Norgeskart"
         titleLink="/"
         logoLink="https://kartverket.no"
+        gap={4}
+        showMenuButton={false}
         content={
           <Link
             fontSize={{ base: 'sm', md: 'md' }}
             onClick={() => navigate(-1)}
           >
-            {t('helpPage.header.link')}
+           Tilbake
           </Link>
         }
       />
-      <Box minH="100vh" bg="green.50" p={10}>
+      <Box minH="100vh" bg="green.50" p={{ base: 2, md: 8, lg: 10}}>
         <Heading size={{ base: '3xl', md: '4xl', lg: '5xl' }}>
           {t('helpPage.title')}
         </Heading>
