@@ -158,7 +158,7 @@ export const HelpPage = () => {
             fontSize={{ base: 'sm', md: 'md' }}
             onClick={() => navigate(-1)}
           >
-           Tilbake
+           {t('helpPage.header.link')}
           </Link>
         }
       />
