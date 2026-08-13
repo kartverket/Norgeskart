@@ -20,10 +20,10 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { Contact, PrivacyPolicy } from '../help/PrivacyPolicyAndContact';
-import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { useIsMobileScreen } from '../shared/hooks';
+import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
 
 type TipsContentProps = {
   content: ContentBlock[];
@@ -123,7 +123,6 @@ export const HelpPage = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobileScreen();
 
-
   useEffect(() => {
     let cancelled = false;
     const lang = (i18n.language || 'nb').split('-')[0];
@@ -158,120 +157,138 @@ export const HelpPage = () => {
             fontSize={{ base: 'sm', md: 'md' }}
             onClick={() => navigate(-1)}
           >
-           {t('helpPage.header.link')}
+            {t('helpPage.header.link')}
           </Link>
         }
       />
-      <Box minH="100vh" bg="green.50" px={{  base: 4, md: 8 }} py={{ base: 2, md: 8}}>
+      <Box
+        minH="100vh"
+        bg="green.50"
+        px={{ base: 4, md: 8 }}
+        py={{ base: 2, md: 8 }}
+      >
         <Box maxW="1120px" mx="auto">
-        <Heading size={{ base: '3xl', md: '5xl' }}>
-          {t('helpPage.title')}
-        </Heading>
-        <Box {...boxStyles}>
-          <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
-            {t('tipsandtricks.heading')}
+          <Heading size={{ base: '3xl', md: '5xl' }}>
+            {t('helpPage.title')}
           </Heading>
-          <Text mt={1} fontSize={{ base: 'sm', md: 'md'}}>{t('tipsandtricks.description')}</Text>
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4} mt={4}>
-            {categories.map((category) => {
-              const items = tipsData.filter(
-                (tip) => tip.category === category.id,
-              );
-
-              if (!items.length) return null;
-
-              return (
-                <Card key={category.id} borderRadius={10} boxShadow="lg">
-                  <CardBody>
-                    <Flex align="center" gap={2}>
-                      <Icon icon={category.icon} />
-                      <CardTitle>{category.title}</CardTitle>
-                    </Flex>
-
-                    <Accordion mt={2} collapsible>
-                      {items.map((tip) => (
-                        <AccordionItem key={tip.title} value={tip.title}>
-                          <AccordionItemTrigger>
-                            {tip.title}
-                          </AccordionItemTrigger>
-
-                          <AccordionItemContent>
-                            <TipsAndTricksContent content={tip.content} />
-                          </AccordionItemContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </CardBody>
-                </Card>
-              );
-            })}
-          </SimpleGrid>
-        </Box>
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
-          <Box {...boxStyles}>
-            <PrivacyPolicy />
-          </Box>
           <Box {...boxStyles}>
             <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
-              {t('helpPage.termsOfUse.heading')}
+              {t('tipsandtricks.heading')}
             </Heading>
-            <Text mt={2} fontSize={{ base: 'sm', md: 'md'}}>{t('helpPage.termsOfUse.text')}</Text>
+            <Text mt={1} fontSize={{ base: 'sm', md: 'md' }}>
+              {t('tipsandtricks.description')}
+            </Text>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4} mt={4}>
+              {categories.map((category) => {
+                const items = tipsData.filter(
+                  (tip) => tip.category === category.id,
+                );
+
+                if (!items.length) return null;
+
+                return (
+                  <Card key={category.id} borderRadius={10} boxShadow="lg">
+                    <CardBody>
+                      <Flex align="center" gap={2}>
+                        <Icon icon={category.icon} />
+                        <CardTitle>{category.title}</CardTitle>
+                      </Flex>
+
+                      <Accordion mt={2} collapsible>
+                        {items.map((tip) => (
+                          <AccordionItem key={tip.title} value={tip.title}>
+                            <AccordionItemTrigger>
+                              {tip.title}
+                            </AccordionItemTrigger>
+
+                            <AccordionItemContent>
+                              <TipsAndTricksContent content={tip.content} />
+                            </AccordionItemContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                    </CardBody>
+                  </Card>
+                );
+              })}
+            </SimpleGrid>
+          </Box>
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
+            <Box {...boxStyles}>
+              <PrivacyPolicy />
+            </Box>
+            <Box {...boxStyles}>
+              <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+                {t('helpPage.termsOfUse.heading')}
+              </Heading>
+              <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
+                {t('helpPage.termsOfUse.text')}
+              </Text>
+              <Link
+                mt={2}
+                colorPalette="green"
+                href="https://www.kartverket.no/api-og-data/vilkar-for-bruk"
+                external
+                target="_blank"
+                variant="underline"
+              >
+                kartverket.no
+              </Link>
+            </Box>
+          </SimpleGrid>
+          <Box {...boxStyles}>
+            <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+              {t('about.heading')}
+            </Heading>
+            <Text fontSize={{ base: 'sm', md: 'md' }}>
+              {' '}
+              {t('about.textone')}
+            </Text>
+            <Text fontSize={{ base: 'sm', md: 'md' }}>
+              {t('about.texttwo')}{' '}
+            </Text>
+            <Text fontSize={{ base: 'sm', md: 'md' }}>
+              {t('about.textthree')}
+            </Text>
+            <Text marginTop="4" textStyle="xs" color="fg.muted">
+              {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
+              {new Date(__BUILD_DATE__).toLocaleDateString()}
+            </Text>
+          </Box>
+
+          <Box {...boxStyles}>
+            <Contact />
+          </Box>
+
+          <Box {...boxStyles}>
+            <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+              {t('privacyAndContact.status.heading')}
+            </Heading>
+            <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
+              {t('privacyAndContact.status.infoText')}
+            </Text>
             <Link
-              mt={2}
               colorPalette="green"
-              href="https://www.kartverket.no/api-og-data/vilkar-for-bruk"
-              external
+              href="https://status.kartverket.no/"
+              external={true}
               target="_blank"
               variant="underline"
+              mt={2}
+              textStyle="md"
             >
-              kartverket.no
+              status.kartverket.no
             </Link>
           </Box>
-        </SimpleGrid>
-        <Box {...boxStyles}>
-          <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
-            {t('about.heading')}
-          </Heading>
-          <Text fontSize={{ base: 'sm', md: 'md'}}> {t('about.textone')}</Text>
-          <Text fontSize={{ base: 'sm', md: 'md'}}>{t('about.texttwo')} </Text>
-          <Text fontSize={{ base: 'sm', md: 'md'}}>{t('about.textthree')}</Text>
-          <Text marginTop="4" textStyle="xs" color="fg.muted">
-            {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
-            {new Date(__BUILD_DATE__).toLocaleDateString()}
-          </Text>
-        </Box>
 
-        <Box {...boxStyles}>
-          <Contact />
+          {isMobile && (
+            <Box {...boxStyles}>
+              <Heading mb={2} size="2xl" fontWeight="bold">
+                {t('languageSelector.chooseLanguage')}
+              </Heading>
+              <LanguageSwitcher />
+            </Box>
+          )}
         </Box>
-
-        <Box {...boxStyles}>
-          <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
-            {t('privacyAndContact.status.heading')}
-          </Heading>
-          <Text mt={2} fontSize={{ base: 'sm', md: 'md'}}>
-            {t('privacyAndContact.status.infoText')}
-          </Text>
-          <Link
-            colorPalette="green"
-            href="https://status.kartverket.no/"
-            external={true}
-            target="_blank"
-            variant="underline"
-            mt={2}
-            textStyle="md"
-          >
-            status.kartverket.no
-          </Link>
-        </Box>
-
-        {isMobile && (
-          <Box {...boxStyles}>
-          <Heading mb={2} size="2xl" fontWeight="bold">{t('languageSelector.chooseLanguage')}</Heading>
-          <LanguageSwitcher />
-        </Box>
-        )}    
-        </Box>        
       </Box>
     </>
   );

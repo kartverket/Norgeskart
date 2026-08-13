@@ -25,7 +25,7 @@ export const Contact = () => {
       <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
         {t('privacyAndContact.contactUs')}
       </Heading>
-      <Text mt={2}  fontSize={{ base: 'sm', md: 'md'}}>
+      <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
         {t('privacyAndContact.dialogContent')}
       </Text>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4} mt={2}>
@@ -35,7 +35,7 @@ export const Contact = () => {
               <Icon icon="rate_review" />
               <CardTitle>{t('helpPage.feedback.title')}</CardTitle>
             </HStack>
-            <Text mt={2}  fontSize={{ base: 'sm', md: 'md'}}>
+            <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
               {t('helpPage.feedback.text')}
             </Text>
             <Link
@@ -55,7 +55,7 @@ export const Contact = () => {
               <Icon icon="mail" />
               <CardTitle>{t('helpPage.email.title')}</CardTitle>
             </HStack>
-            <Text mt={2}  fontSize={{ base: 'sm', md: 'md'}}>
+            <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
               {t('helpPage.email.text')}
             </Text>
             <Link
@@ -124,7 +124,7 @@ export const PrivacyPolicy = () => {
       <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
         {t('privacyAndContact.privacy')}
       </Heading>
-      <Text  fontSize={{ base: 'sm', md: 'md'}}>
+      <Text fontSize={{ base: 'sm', md: 'md' }}>
         {t('privacyAndContact.infoText')}
         <Link
           colorPalette="green"
@@ -137,7 +137,7 @@ export const PrivacyPolicy = () => {
           {t('privacyAndContact.privacyPolicy')}
         </Link>
       </Text>
-      <Text  fontSize={{ base: 'sm', md: 'md'}}>
+      <Text fontSize={{ base: 'sm', md: 'md' }}>
         {t('privacyAndContact.cookieConsent.currentStatus')}{' '}
         {t(
           consentStatusKey[consentStatus] ??

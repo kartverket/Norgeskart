@@ -140,7 +140,7 @@ const MapToolCardsBody = () => {
       </MapToolCard>
     );
   }
-  
+
   if (currentMapTool === 'settings') {
     return (
       <MapToolCard label={t('info.settings.text')} onClose={onClose}>
