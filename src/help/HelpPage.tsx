@@ -162,7 +162,8 @@ export const HelpPage = () => {
           </Link>
         }
       />
-      <Box minH="100vh" bg="green.50" p={{ base: 2, md: 8, lg: 10}}>
+      <Box minH="100vh" bg="green.50" px={{  base: 4, md: 8 }} py={{ base: 2, md: 8}}>
+        <Box maxW="1120px" mx="auto">
         <Heading size={{ base: '3xl', md: '5xl' }}>
           {t('helpPage.title')}
         </Heading>
@@ -270,7 +271,7 @@ export const HelpPage = () => {
           <LanguageSwitcher />
         </Box>
         )}    
-        
+        </Box>        
       </Box>
     </>
   );
