@@ -163,14 +163,14 @@ export const HelpPage = () => {
         }
       />
       <Box minH="100vh" bg="green.50" p={{ base: 2, md: 8, lg: 10}}>
-        <Heading size={{ base: '3xl', md: '4xl', lg: '5xl' }}>
+        <Heading size={{ base: '3xl', md: '5xl' }}>
           {t('helpPage.title')}
         </Heading>
         <Box {...boxStyles}>
           <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
             {t('tipsandtricks.heading')}
           </Heading>
-          <Text mt={1}>{t('tipsandtricks.description')}</Text>
+          <Text mt={1} fontSize={{ base: 'sm', md: 'md'}}>{t('tipsandtricks.description')}</Text>
           <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4} mt={4}>
             {categories.map((category) => {
               const items = tipsData.filter(
@@ -214,7 +214,7 @@ export const HelpPage = () => {
             <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
               {t('helpPage.termsOfUse.heading')}
             </Heading>
-            <Text mt={2}>{t('helpPage.termsOfUse.text')}</Text>
+            <Text mt={2} fontSize={{ base: 'sm', md: 'md'}}>{t('helpPage.termsOfUse.text')}</Text>
             <Link
               mt={2}
               colorPalette="green"
@@ -231,9 +231,9 @@ export const HelpPage = () => {
           <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
             {t('about.heading')}
           </Heading>
-          <Text> {t('about.textone')}</Text>
-          <Text textStyle="md">{t('about.texttwo')} </Text>
-          <Text>{t('about.textthree')}</Text>
+          <Text fontSize={{ base: 'sm', md: 'md'}}> {t('about.textone')}</Text>
+          <Text fontSize={{ base: 'sm', md: 'md'}}>{t('about.texttwo')} </Text>
+          <Text fontSize={{ base: 'sm', md: 'md'}}>{t('about.textthree')}</Text>
           <Text marginTop="4" textStyle="xs" color="fg.muted">
             {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
             {new Date(__BUILD_DATE__).toLocaleDateString()}
@@ -248,7 +248,7 @@ export const HelpPage = () => {
           <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
             {t('privacyAndContact.status.heading')}
           </Heading>
-          <Text mt={2} textStyle="md">
+          <Text mt={2} fontSize={{ base: 'sm', md: 'md'}}>
             {t('privacyAndContact.status.infoText')}
           </Text>
           <Link
