@@ -70,7 +70,8 @@
         "primary": "Hovedfarge",
         "secondary": "Sekundær"
       },
-      "lineType": "Linjetype"
+      "lineType": "Linjetype",
+      "editInstruction": "Velg et element du vil redigere eller flytte"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",

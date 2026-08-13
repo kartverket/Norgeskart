@@ -1,10 +1,12 @@
-import { Flex, HStack, VStack } from '@kvib/react';
+import { Flex, HStack, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   clearInteractions,
   drawEnabledEffect,
   drawTypeEffect,
+  selectedFeatureAtom,
   snapEffect,
 } from '../../settings/draw/atoms.ts';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
@@ -14,8 +16,10 @@ import { DrawToolSelector } from '../DrawToolSelector.tsx';
 import {
   distanceUnitAtomEffect,
   drawStyleEffect,
+  editPointIconEffect,
   editPrimaryColorEffect,
   editSecondaryColorEffect,
+  editTextEffect,
   lineWidthEffect,
 } from '../effects.ts';
 import { LineStyleControl } from '../LineStyleControl.tsx';
@@ -24,6 +28,7 @@ import { MeasurementControls } from '../MeasurementControls.tsx';
 import { PointStyleSelector } from '../PointStyleSelector.tsx';
 import { TextStyleControl } from '../TextStyleControl.tsx';
 import { useDrawControlsKeyboardEffects } from './drawControlsKeyboardEffects.ts';
+import { getFeatureType } from './drawUtils.ts';
 import { EditControls } from './EditControls.tsx';
 import { DrawType, useDrawSettings } from './hooks/drawSettings.ts';
 
@@ -38,7 +43,9 @@ const MEASUREMENT_TYPES: DrawType[] = [
 
 export const DrawControls = () => {
   const { drawType } = useDrawSettings();
+  const [selectedFeature] = useAtom(selectedFeatureAtom);
   const isMobile = useIsMobileScreen();
+  const { t } = useTranslation();
   useAtom(drawEnabledEffect);
   useAtom(drawTypeEffect);
   useAtom(distanceUnitAtomEffect);
@@ -47,6 +54,8 @@ export const DrawControls = () => {
   useAtom(editPrimaryColorEffect);
   useAtom(editSecondaryColorEffect);
   useAtom(lineWidthEffect);
+  useAtom(editTextEffect);
+  useAtom(editPointIconEffect);
 
   useDrawControlsKeyboardEffects();
   useEffect(() => {
@@ -55,8 +64,16 @@ export const DrawControls = () => {
     };
   }, []);
 
+  const selectedFeatureType = selectedFeature
+    ? getFeatureType(selectedFeature)
+    : null;
+
+  const currentType = drawType === 'Move' ? selectedFeatureType : drawType;
+
   const showMeasurementControls =
-    drawType != null && MEASUREMENT_TYPES.includes(drawType);
+    drawType !== 'Move' &&
+    currentType != null &&
+    MEASUREMENT_TYPES.includes(currentType);
 
   return (
     <VStack
@@ -67,11 +84,18 @@ export const DrawControls = () => {
     >
       {!isMobile && <DrawToolSelector />}
 
-      {drawType === 'Text' && <TextStyleControl />}
+      {drawType === 'Move' && !selectedFeature && (
+        <Text fontSize="md" mt={4}>
+          {t('draw.controls.editInstruction')}
+        </Text>
+      )}
+
+      {currentType === 'Text' && <TextStyleControl />}
 
       <HStack width="100%" align={'space-between'}>
-        <ColorControls />
-        {drawType === 'Point' && <PointStyleSelector />}
+        {currentType && <ColorControls />}
+
+        {currentType === 'Point' && <PointStyleSelector />}
         {isMobile && drawType === 'LineString' && <LineStyleControl />}
       </HStack>
       <Flex

@@ -23,16 +23,27 @@ import {
   primaryColorAtom,
   recentColorsAtom,
   secondaryColorAtom,
+  selectedFeatureAtom,
 } from '../settings/draw/atoms';
 import { useIsMobileScreen } from '../shared/hooks';
+import { getFeatureType } from './drawControls/drawUtils';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 
 export const ColorControls = () => {
   const [primaryColor, setPrimaryColor] = useAtom(primaryColorAtom);
   const [secondaryColor, setSecondaryColor] = useAtom(secondaryColorAtom);
-  const { primaryLabel, secondaryLabel } = useColorLabels();
+  const [selectedFeature] = useAtom(selectedFeatureAtom);
+  const { drawType } = useDrawSettings();
   const { t } = useTranslation();
   const isMobile = useIsMobileScreen();
+
+  const selectedFeatureType = selectedFeature
+    ? getFeatureType(selectedFeature)
+    : null;
+
+  const currentType = drawType === 'Move' ? selectedFeatureType : drawType;
+
+  const { primaryLabel, secondaryLabel } = useColorLabels(currentType);
 
   return (
     <VStack
@@ -179,8 +190,7 @@ const addRecentColor = (list: string[], color: string) => {
   return updated.slice(0, 16);
 };
 
-const useColorLabels = () => {
-  const { drawType } = useDrawSettings();
+const useColorLabels = (drawType: string | null) => {
   const { t } = useTranslation();
   const p = 'draw.controls.';
 

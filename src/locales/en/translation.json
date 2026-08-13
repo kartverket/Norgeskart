@@ -70,7 +70,8 @@
         "primary": "Primary",
         "secondary": "Secondary"
       },
-      "lineType": "Line type"
+      "lineType": "Line type",
+      "editInstruction": "Select an element to edit or move"
     },
     "deleteSelection": "Remove selected",
     "end": "Done",
