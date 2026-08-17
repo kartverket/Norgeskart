@@ -689,6 +689,19 @@
     },
     "phone": {
       "title": "Telefon"
+    },
+    "notFound": {
+      "heading": "Finner du ikke det du leter etter?",
+      "description": "Kanskje et søk i noen av våre andre tjenester kan hjelpe deg å finne det du leter etter.",
+      "propertyRegisterHeading": "Eiendomsregisteret",
+      "propertyRegisterDescription": "Finn informasjon om eiendom. Du kan søke på vegnavn, adresser eller gårds- og bruksnummer.",
+      "propertyRegisterButton": "Gå til Eiendomsregisteret",
+      "norgeibilderDescription": "På norgeibilder.no får du oversikt over ortofoto(målestokkriktige flybilder) som samarbeidspartene i Norge i digitalt tilbyr.",
+      "norgeibilderButton": "Gå til Norgeibilder.no",
+      "hoydedataDescription": "Her får du oversikt og tilgang til høydedata som Kartverket tilbyr på internett.",
+      "hoydedataButton": "Gå til høydedata.no",
+      "rettikartetDescription": "Her kan du melde fra om feil og mangler i kartdata og stedsnavn.",
+      "rettikartetButton": "Gå til rettikartet.no"
     }
   }
 }
