@@ -4,7 +4,6 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   Box,
-  Button,
   Card,
   CardBody,
   CardTitle,
@@ -298,35 +297,65 @@ export const HelpPage = () => {
           )}
 
           <Box {...boxStyles}>
-            <Heading size={{base: '2xl', md: '3xl'}} fontWeight="bold">
-             {t('helpPage.notFound.heading')}
+            <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+              {t('helpPage.notFound.heading')}
             </Heading>
-            <Text mt={2} fontSize={{ base: 'sm', md: 'md'}}>{t('helpPage.notFound.description')}</Text>
-              <Stack gap={5} mt={4}>
-                <Box>
-            <Heading>
-              {t('helpPage.notFound.propertyRegisterHeading')}
-            </Heading>
-            <Text fontSize={{ base: 'sm', md: 'md'}}>{t('helpPage.notFound.propertyRegisterDescription')}</Text>
-            <Link mt={4} target="_blank" external href="https://eiendomsregisteret.kartverket.no/">{t('helpPage.notFound.propertyRegisterButton')}</Link>
-            </Box>
-            <Box>
-            <Heading>Norge i bilder</Heading>
-            <Text>{t('helpPage.notFound.norgeibilderDescription')}</Text>
-            <Link mt={4} target="_blank" external href="http://www.norgeibilder.no/">{t('helpPage.notFound.norgeibilderButton')}</Link>
-            </Box>
-            <Box>
-            <Heading>
-              Høydedata.no
-            </Heading>
-            <Text>{t('helpPage.notFound.hoydedataDescription')}</Text>
-            <Link mt={4} target="_blank" external href="https://hoydedata.no/">{t('helpPage.notFound.hoydedataButton')}</Link>
-            </Box>
-            <Box>
-            <Heading>Rett i kartet</Heading>
-            <Text>{t('helpPage.notFound.rettikartetDescription')}</Text>
-            <Link target="_blank" external href="https://rettikartet.no/" mt={4}>{t('helpPage.notFound.rettikartetButton')}</Link>
-            </Box>
+            <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
+              {t('helpPage.notFound.description')}
+            </Text>
+            <Stack gap={5} mt={4}>
+              <Box>
+                <Heading>
+                  {t('helpPage.notFound.propertyRegisterHeading')}
+                </Heading>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  {t('helpPage.notFound.propertyRegisterDescription')}
+                </Text>
+                <Link
+                  mt={4}
+                  target="_blank"
+                  external
+                  href="https://eiendomsregisteret.kartverket.no/"
+                >
+                  {t('helpPage.notFound.propertyRegisterButton')}
+                </Link>
+              </Box>
+              <Box>
+                <Heading>Norge i bilder</Heading>
+                <Text>{t('helpPage.notFound.norgeibilderDescription')}</Text>
+                <Link
+                  mt={4}
+                  target="_blank"
+                  external
+                  href="http://www.norgeibilder.no/"
+                >
+                  {t('helpPage.notFound.norgeibilderButton')}
+                </Link>
+              </Box>
+              <Box>
+                <Heading>Høydedata.no</Heading>
+                <Text>{t('helpPage.notFound.hoydedataDescription')}</Text>
+                <Link
+                  mt={4}
+                  target="_blank"
+                  external
+                  href="https://hoydedata.no/"
+                >
+                  {t('helpPage.notFound.hoydedataButton')}
+                </Link>
+              </Box>
+              <Box>
+                <Heading>Rett i kartet</Heading>
+                <Text>{t('helpPage.notFound.rettikartetDescription')}</Text>
+                <Link
+                  target="_blank"
+                  external
+                  href="https://rettikartet.no/"
+                  mt={4}
+                >
+                  {t('helpPage.notFound.rettikartetButton')}
+                </Link>
+              </Box>
             </Stack>
           </Box>
         </Box>
