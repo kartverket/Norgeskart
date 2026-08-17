@@ -322,60 +322,60 @@
     ]
   },
   {
-  "category": "propertyInfo",
-  "title": "Where can I find property information?",
-  "content": [
-    {
-      "type": "text",
-      "text": "Under thematic maps, you can find property-related themes that can be added to the map. Clicking on the map will open an information box. Click «Property information» for details about the property. If you want more details, you can click «View more» to be taken directly to the Property Register."
-    }
-  ]
-},
-{
-  "category": "propertyInfo",
-  "title": "What do the different boundary colours mean?",
-  "content": [
-    {
-      "type": "list",
-      "items": [
-        "Light green = Accurate measurements (S<= 10 cm)",
-        "Dark green = Moderately accurate and transformed measurements (S>10 and S<=30 cm)",
-        "Dark purple = Less accurate measurements and boundaries (S>30 and S)",
-        "Light purple = Less accurate boundaries (S>=200 and S)",
-        "Orange = Low-accuracy boundaries (S>=500 cm, except «freehand drawing»)",
-        "Red = Sketch boundaries with no stated accuracy (S>=500 and «freehand drawing», or no accuracy stated)"
-      ]
-    }
-  ]
-},
-{
-  "category": "propertyInfo",
-  "title": "Can I report an error concerning my property?",
-  "content": [
-    {
-      "type": "text",
-      "text": "If you believe that a property boundary is shown incorrectly on the map, you must contact the local cadastral authority. This means the municipality where the property is located. Kartverket does not have the authority to make changes to property boundaries."
-    }
-  ]
-},
-{
-  "category": "propertyInfo",
-  "title": "What does cadastral register mean?",
-  "content": [
-    {
-      "type": "text",
-      "text": "The cadastral register is the official register of properties in Norway. It contains public information about boundaries, buildings, addresses and ownership."
-    }
-  ]
-},
-{
-  "category": "propertyInfo",
-  "title": "What does land parcel mean?",
-  "content": [
-    {
-      "type": "text",
-      "text": "A land parcel is a contiguous area defined by parcel boundaries. In the cadastral register (property register), a single cadastral unit/property can consist of one or more land parcels. If parts of the same property are separated from each other, they are registered as separate land parcels."
-    }
-  ]
-}
+    "category": "propertyInfo",
+    "title": "Where can I find property information?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Under thematic maps, you can find property-related themes that can be added to the map. Clicking on the map will open an information box. Click «Property information» for details about the property. If you want more details, you can click «View more» to be taken directly to the Property Register."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "What do the different boundary colours mean?",
+    "content": [
+      {
+        "type": "list",
+        "items": [
+          "Light green = Accurate measurements (S<= 10 cm)",
+          "Dark green = Moderately accurate and transformed measurements (S>10 and S<=30 cm)",
+          "Dark purple = Less accurate measurements and boundaries (S>30 and S)",
+          "Light purple = Less accurate boundaries (S>=200 and S)",
+          "Orange = Low-accuracy boundaries (S>=500 cm, except «freehand drawing»)",
+          "Red = Sketch boundaries with no stated accuracy (S>=500 and «freehand drawing», or no accuracy stated)"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Can I report an error concerning my property?",
+    "content": [
+      {
+        "type": "text",
+        "text": "If you believe that a property boundary is shown incorrectly on the map, you must contact the local cadastral authority. This means the municipality where the property is located. Kartverket does not have the authority to make changes to property boundaries."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "What does cadastral register mean?",
+    "content": [
+      {
+        "type": "text",
+        "text": "The cadastral register is the official register of properties in Norway. It contains public information about boundaries, buildings, addresses and ownership."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "What does land parcel mean?",
+    "content": [
+      {
+        "type": "text",
+        "text": "A land parcel is a contiguous area defined by parcel boundaries. In the cadastral register (property register), a single cadastral unit/property can consist of one or more land parcels. If parts of the same property are separated from each other, they are registered as separate land parcels."
+      }
+    ]
+  }
 ]

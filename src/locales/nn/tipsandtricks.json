@@ -289,60 +289,60 @@
     ]
   },
   {
-  "category": "propertyInfo",
-  "title": "Kvar finn eg eigedomsinformasjon?",
-  "content": [
-    {
-      "type": "text",
-      "text": "Under temakart finn du eigedomsrelaterte tema som kan leggjast til kartet. Ved å klikke i kartet kjem det opp ei infoboks. Trykk på «Eigedomsinformasjon» for detaljar om eigedomen. Dersom du ønskjer fleire detaljar, kan du klikke på «Vis meir» for å bli send direkte til Eigedomsregisteret."
-    }
-  ]
-},
-{
-  "category": "propertyInfo",
-  "title": "Kva betyr dei ulike fargane på grensene?",
-  "content": [
-    {
-      "type": "list",
-      "items": [
-        "Lys grøn = Nøyaktige målingar (S<= 10 cm)",
-        "Mørk grøn = Middels nøyaktige og transformerte målingar (S>10 og S<=30 cm)",
-        "Mørk lilla = Mindre nøyaktige målingar og grenser (S>30 og S)",
-        "Lys lilla = Mindre nøyaktige grenser (S>=200 og S)",
-        "Oransje = Lite nøyaktige grenser (S>=500 cm, unntatt «frihandsteikning»)",
-        "Raud = Skisserte grenser og ingen oppgitt nøyaktigheit (S>=500 og «frihandsteikning», eller ingen nøyaktigheit er oppgitt)"
-      ]
-    }
-  ]
-},
-{
-  "category": "propertyInfo",
-  "title": "Kan eg melde frå om feil ved eigedomen min?",
-  "content": [
-    {
-      "type": "text",
-      "text": "Dersom du meiner at ei eigedomsgrense er vist feil i kartet, må dette takast opp med den lokale matrikkelstyresmakta. Det vil seie kommunen eigedomen ligg i. Kartverket har ikkje myndigheit til å gjere endringar i eigedomsgrenser."
-    }
-  ]
-},
-{
-  "category": "propertyInfo",
-  "title": "Kva betyr matrikkel?",
-  "content": [
-    {
-      "type": "text",
-      "text": "Matrikkelen er det offisielle registeret over norske eigedomar. Her finn du offentlege opplysningar om grenser, bygningar, adresser og eigarforhold."
-    }
-  ]
-},
-{
-  "category": "propertyInfo",
-  "title": "Kva betyr teig?",
-  "content": [
-    {
-      "type": "text",
-      "text": "Ein teig er eit samanhengande areal som er avgrensa av teiggrense. I matrikkelen (eigedomsregisteret) kan éi matrikkeleining/eigedom bestå av éin eller fleire teigar. Dersom delar av den same eigedomen ligg skilde frå kvarandre, blir desse registrerte som eigne teigar."
-    }
-  ]
-}
+    "category": "propertyInfo",
+    "title": "Kvar finn eg eigedomsinformasjon?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Under temakart finn du eigedomsrelaterte tema som kan leggjast til kartet. Ved å klikke i kartet kjem det opp ei infoboks. Trykk på «Eigedomsinformasjon» for detaljar om eigedomen. Dersom du ønskjer fleire detaljar, kan du klikke på «Vis meir» for å bli send direkte til Eigedomsregisteret."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Kva betyr dei ulike fargane på grensene?",
+    "content": [
+      {
+        "type": "list",
+        "items": [
+          "Lys grøn = Nøyaktige målingar (S<= 10 cm)",
+          "Mørk grøn = Middels nøyaktige og transformerte målingar (S>10 og S<=30 cm)",
+          "Mørk lilla = Mindre nøyaktige målingar og grenser (S>30 og S)",
+          "Lys lilla = Mindre nøyaktige grenser (S>=200 og S)",
+          "Oransje = Lite nøyaktige grenser (S>=500 cm, unntatt «frihandsteikning»)",
+          "Raud = Skisserte grenser og ingen oppgitt nøyaktigheit (S>=500 og «frihandsteikning», eller ingen nøyaktigheit er oppgitt)"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Kan eg melde frå om feil ved eigedomen min?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Dersom du meiner at ei eigedomsgrense er vist feil i kartet, må dette takast opp med den lokale matrikkelstyresmakta. Det vil seie kommunen eigedomen ligg i. Kartverket har ikkje myndigheit til å gjere endringar i eigedomsgrenser."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Kva betyr matrikkel?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Matrikkelen er det offisielle registeret over norske eigedomar. Her finn du offentlege opplysningar om grenser, bygningar, adresser og eigarforhold."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Kva betyr teig?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Ein teig er eit samanhengande areal som er avgrensa av teiggrense. I matrikkelen (eigedomsregisteret) kan éi matrikkeleining/eigedom bestå av éin eller fleire teigar. Dersom delar av den same eigedomen ligg skilde frå kvarandre, blir desse registrerte som eigne teigar."
+      }
+    ]
+  }
 ]

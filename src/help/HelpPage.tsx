@@ -37,14 +37,20 @@ const categories: {
   icon: IconName;
 }[] = [
   {
-    id: 'drawing',
-    title: 'Tegning og måling',
-    icon: 'edit',
+    id: 'propertyInfo',
+    title: 'Eiendomsinformasjon',
+    icon: 'house',
   },
+
   {
     id: 'map',
     title: 'Kart og visning',
     icon: 'map',
+  },
+  {
+    id: 'drawing',
+    title: 'Tegning og måling',
+    icon: 'edit',
   },
   {
     id: 'search',
@@ -56,11 +62,6 @@ const categories: {
     title: 'Dele og eksport',
     icon: 'share',
   },
-  {
-    id: 'propertyInfo',
-    title: 'Eiendomsinformasjon',
-    icon: "house",
-  }
 ];
 
 const TipsAndTricksContent = ({ content }: TipsContentProps) => {

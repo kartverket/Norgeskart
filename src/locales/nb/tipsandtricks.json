@@ -254,7 +254,7 @@
     "content": [
       {
         "type": "text",
-        "text": ""
+        "text": "Oppdateringsfrekvensen avhenger av valgt bakgrunnskart, eller hvilke temakart som er aktivert. Standardkartet oppdateres ukentlig, mens temalagene oppdateres med ulike intervaller."
       }
     ]
   },
@@ -363,7 +363,7 @@
         "text": "Matrikkelen er det offisielle registeret over norske eiendommer. Her finner du offentlige opplysninger om grenser, bygninger, adresser og eierforhold."
       }
     ]
-  }, 
+  },
   {
     "category": "propertyInfo",
     "title": "Hva betyr teig?",
