@@ -29,7 +29,7 @@ type TipsContentProps = {
   content: ContentBlock[];
 };
 
-type IconName = 'edit' | 'map' | 'search' | 'share';
+type IconName = 'edit' | 'map' | 'search' | 'share' | 'house';
 
 const categories: {
   id: string;
@@ -56,6 +56,11 @@ const categories: {
     title: 'Dele og eksport',
     icon: 'share',
   },
+  {
+    id: 'propertyInfo',
+    title: 'Eiendomsinformasjon',
+    icon: "house",
+  }
 ];
 
 const TipsAndTricksContent = ({ content }: TipsContentProps) => {
