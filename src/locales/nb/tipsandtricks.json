@@ -1,28 +1,16 @@
 [
   {
-    "title": "Kan jeg måle avstand med knekkpunkt?",
+    "category": "drawing",
+    "title": "Hvordan måler jeg i kartet?",
     "content": [
       {
         "type": "text",
-        "text": "Ja. Du kan måle avstand med flere knekkpunkter i kartet."
-      },
-      {
-        "type": "list",
-        "items": [
-          "Velg «Tegne og måle» i menyen.",
-          "Velg linje og trykk på «Vis mål».",
-          "Klikk i kartet der du ønsker å starte målingen.",
-          "Klikk videre på punktene der du ønsker knekkpunkt.",
-          "Avslutt målingen med dobbeltklikk."
-        ]
-      },
-      {
-        "type": "text",
-        "text": "Lengden vises i kartet der linjen avsluttes."
+        "text": "Klikk på linjalen i menyen nede til høyre. Velg om du vil måle en linje eller en flate. Klikk en gang for å lage et knekkpunkt. Klikk to ganger for å avslutte"
       }
     ]
   },
   {
+    "category": "drawing",
     "title": "Kan jeg slette enkeltobjekter når jeg tegner?",
     "content": [
       {
@@ -32,20 +20,59 @@
       {
         "type": "list",
         "items": [
-          "Klikk på musepeker-knappen øverst til venstre i tegneverktøyet.",
+          "Klikk på musepeker-knappen øverst til høyre i tegneverktøyet.",
           "Klikk på objektet du ønsker å slette.",
-          "Når objektet blir stiplet er det valgt.",
+          "Når objektet blir stiplet eller får sort omriss er det valgt.",
           "Klikk på søppelkasse-ikonet for å slette objektet."
         ]
       }
     ]
   },
   {
+    "category": "drawing",
+    "title": "Hvordan finner jeg høydeprofil?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Høydeprofil finner du under «Lag kart» i hovedmenyen."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Velg ««Lag kart».",
+          "Klikk et startpunkt i kartet.",
+          "Klikk der du ønsker å avslutte målingen."
+        ]
+      }
+    ]
+  },
+  {
+    "category": "drawing",
+    "title": "Lagring av tegning",
+    "content": [
+      {
+        "type": "text",
+        "text": "Når du lagrer en tegning, lagres det i 2 år på Kartverkets servere. Alle med lenken kan se tegningen. For å slette tegninger kontakt post@kartverket.no"
+      }
+    ]
+  },
+  {
+    "category": "drawing",
+    "title": "Hvordan redigerer jeg tegningen min?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Trykk på musepeker-knappen inne i tegnefunksjonen. For å redigere trykker du på det objektet du ønsker å endre. Når objektet er valgt kan du endre farge, størrelse eller endre form ved å dra i objektet."
+      }
+    ]
+  },
+  {
+    "category": "search",
     "title": "Hvilke søkekriterier støttes i søkefeltet?",
     "content": [
       {
         "type": "text",
-        "text": "I tillegg til stedsnavn og adresser kan du søke på flere kombinasjoner av kommune, gårdsnummer og bruksnummer."
+        "text": "I tillegg til stedsnavn, veier og adresser kan du søke på flere kombinasjoner av kommune, gårdsnummer og bruksnummer."
       },
       {
         "type": "list",
@@ -75,6 +102,7 @@
     ]
   },
   {
+    "category": "search",
     "title": "Hvordan søker jeg på koordinater?",
     "content": [
       {
@@ -115,6 +143,17 @@
     ]
   },
   {
+    "category": "search",
+    "title": "Jeg får opp mange like stedsnavn, men finner ikke frem til riktig sted",
+    "content": [
+      {
+        "type": "text",
+        "text": "Skriv inn stedsnavnet du søker etter. Underveis i søket oppdateres kartet med markører. Her kan du zoome inn til aktuelt sted. Dersom du ved hvilken kommune stedet ligger i, kan du avgrense søket ved å legge til et komma (,) etterfulgt av kommunenavn."
+      }
+    ]
+  },
+  {
+    "category": "sharing",
     "title": "Hvordan deler jeg kartutsnitt?",
     "content": [
       {
@@ -128,6 +167,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Hvordan deler jeg kart med tegninger?",
     "content": [
       {
@@ -145,6 +185,7 @@
     ]
   },
   {
+    "category": "sharing",
     "title": "Kan jeg skrive ut i andre formater enn A4?",
     "content": [
       {
@@ -158,65 +199,47 @@
     ]
   },
   {
-    "title": "Hva er vilkårene for bruk?",
+    "category": "map",
+    "title": "Hvordan endrer jeg bakgrunnskart?",
     "content": [
       {
         "type": "text",
-        "text": "Kartverkets vilkår for bruk finner du på kartverket.no."
+        "text": "Klikk på kartsymbolet nederst i høyre hjørne. Her kan du velge mellom ulike bakgrunnskart."
       }
     ]
   },
   {
+    "category": "map",
+    "title": "Kan jeg finne min posisjon?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Ja, det kan du. Klikk på posisjonssymbolet i sidemenyen nederst i høyre hjørne. Du sendes da til din posisjon."
+      }
+    ]
+  },
+  {
+    "category": "map",
     "title": "Finnes det tegnforklaring for kartlagene?",
     "content": [
       {
         "type": "text",
-        "text": "Detaljert skjermkartografi for standard bakgrunnskart finnes på "
-      },
-      {
-        "type": "link",
-        "text": "Geonorge",
-        "href": "https://register.geonorge.no/tegneregler/spesifikasjon-for-skjermkartografi"
-      },
-      {
-        "type": "text",
-        "text": "Når temakart er aktivert kan du vise tegnforklaring ved å trykke på «Tegnforklaring» nederst i høyre hjørne."
-      },
-      {
-        "type": "text",
-        "text": "På mobil aktiverer du tegnforklaringen ved å trykke på info-ikonet i sidemenyen."
+        "text": "En god interaktiv tegnforklaring mangler dessverre for bakgrunnskartene. Vi vil jobbe for at dette blir tilgjengelig i fremtiden. Når temakart er aktivert kan du vise tegnforklaring ved å trykke på «tegnforklaring» nederst i høyre hjørne. På mobil aktiverer du tegnforklaringen ved å trykke på info-ikonet i sidemenyen."
       }
     ]
   },
   {
+    "category": "map",
     "title": "Hvor ofte oppdateres kartet?",
     "content": [
       {
         "type": "text",
-        "text": "Oppdateringsfrekvensen avhenger av kartlaget. Standardkartet oppdateres ukentlig, mens temalagene oppdateres med ulike intervaller."
+        "text": "Oppdateringsfrekvensen avhenger av valgt bakgrunnskart, eller hvilke temakart som er aktivert. Standardkartet oppdateres ukentlig, mens temalagene oppdateres med ulike intervaller."
       }
     ]
   },
   {
-    "title": "Hvor finner jeg eiendomsinformasjon?",
-    "content": [
-      {
-        "type": "text",
-        "text": "I Norgeskart kan du se eiendomsgrenser og grunnleggende eiendomsinformasjon."
-      },
-      {
-        "type": "list",
-        "items": [
-          "Klikk på en eiendom i kartet.",
-          "En resultatboks vises øverst til høyre.",
-          "Velg «Eiendomsinformasjon» for detaljer som kommunenummer, gårdsnummer og bruksnummer.",
-          "Velg «Vis på kartet» for å markere eiendomsgrensen.",
-          "Klikk «Vis mer» for mer informasjon i Eiendomsregisteret."
-        ]
-      }
-    ]
-  },
-  {
+    "category": "map",
     "title": "Hvordan aktiverer jeg fullskjermsmodus?",
     "content": [
       {
@@ -226,37 +249,108 @@
     ]
   },
   {
-    "title": "Hvordan finner jeg høydeprofil?",
-    "content": [
-      {
-        "type": "text",
-        "text": "Høydeprofil finner du under «Lag kart» i hovedmenyen."
-      },
-      {
-        "type": "list",
-        "items": [
-          "Velg ««Lag kart».",
-          "Klikk et startpunkt i kartet.",
-          "Klikk der du ønsker å avslutte målingen."
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Hvorfor kan jeg ikke skrive ut flyfoto?",
-    "content": [
-      {
-        "type": "text",
-        "text": "Det er foreløpig ikke mulig å skrive ut flyfoto eller ortofoto. Det arbeides med en løsning for dette i fremtiden."
-      }
-    ]
-  },
-  {
+    "category": "map",
     "title": "Skjul menyen med tastatur",
     "content": [
       {
         "type": "text",
         "text": "Du kan skjule og vise menyen ved å trykke på «U»-tasten på tastaturet."
+      }
+    ]
+  },
+  {
+    "category": "map",
+    "title": "Kan jeg endre målestokk?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Bruker du pc eller tablet kan du velge ønsket målestokk langs den grønne linjen nederst på siden. Valgt målestokk tilpasses nærmeste tilgjengelige zoomnivå i kartet. Faktisk målestokk kan derfor avvike noe."
+      }
+    ]
+  },
+  {
+    "category": "map",
+    "title": "Kan jeg slå av og på ulike kartlag?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Selve bakgrunnskartet er satt sammen av bildefliser, og er derfor statisk. Du kan legge til temadata ved å velge fra «temakart» i menyen."
+      }
+    ]
+  },
+  {
+    "category": "map",
+    "title": "Er det mulig å se på gamle flyfoto?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Dette er ikke mulig i Norgeskart. Kartverkets løsning"
+      },
+      {
+        "type": "link",
+        "text": "Norge i Bilder",
+        "href": "http://www.norgeibilder.no/"
+      },
+      {
+        "type": "text",
+        "text": "tilbyr denne muligheten. Her har du også muligheten til å sammenligne ulike flybilder med en sveipefunksjon."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Hvor finner jeg eiendomsinformasjon?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Under temakart finner du eiendomsrelaterte tema som kan legges til kartet. Ved å klikke i kartet kommer det opp en infoboks. Trykk på «Eiendomsinformasjon» for detaljer om eiendommen. Ønsker du flere detaljer kan du klikke på «vis mer» for å sendes direkte til Eiendomsregisteret."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Hva betyr de ulike fargene på grensene?",
+    "content": [
+      {
+        "type": "list",
+        "items": [
+          "Lys grønn = Nøyaktige målinger (S<= 10cm)",
+          "Mørk grønn = Middels nøyaktige og transformerte målinger (S>10 og S<=30 cm)",
+          "Mørk lilla = Mindre nøyaktige målinger og grenser (S>30 og S)",
+          "Lys lilla = Mindre nøyaktige grenser (S>=200 og S)",
+          "Orange = Lite nøyaktige grenser (S>= 500 cm unntatt «frihåndstegning»)",
+          "Rød = Skisserte grenser og ingen nøyaktighet (S>=500 og «frihåndstegning», eller ingen nøyaktighet oppgitt)"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Kan jeg melde i fra om feil vedrørende min eiendom?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. Kartverket har ikke myndighet til å gjøre endringer på eiendomsgrenser."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Hva betyr matrikkel?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Matrikkelen er det offisielle registeret over norske eiendommer. Her finner du offentlige opplysninger om grenser, bygninger, adresser og eierforhold."
+      }
+    ]
+  },
+  {
+    "category": "propertyInfo",
+    "title": "Hva betyr teig?",
+    "content": [
+      {
+        "type": "text",
+        "text": "En teig er et sammenhengende areal som avgrenses av teiggrense. I matrikkelen (eiendomsregisteret) kan én matrikkelenhet/eiendom bestå av én eller flere teiger. Dersom deler av samme eiendom ligger adskilt fra hverandre, registreres disse som egne teiger."
       }
     ]
   }

@@ -31,10 +31,6 @@
     "clear": "Fjern teikninga",
     "close": "Lukk",
     "confrimClear": "No blir alt som er teikna, fjerna. Er du sikker?",
-    "privacyNotice": {
-      "title": "Lagring av teikning",
-      "message": "Når du lagrar ei teikning, vert ho lagra i 2 år på Kartverkets tenarar. Alle med lenkja kan sjå teikninga. For å slette teikningar, kontakt post@kartverket.no."
-    },
     "controls": {
       "colorBackground": "Bakgrunn",
       "colorFill": "Fyll",
@@ -358,7 +354,7 @@
   },
   "privacyAndContact": {
     "contactUs": "Kontakt oss",
-    "dialogContent": "Me tek gjerne imot ris og ros på Norgeskart.no. Bruk skjemaet under, eller kontakt oss på e-post eller telefon.",
+    "dialogContent": "Me tek gjerne imot ris og ros på Norgeskart.no. Bruk skjemaet, eller kontakt oss på e-post eller telefon.",
     "infoText": "Les korleis me tek vare på personopplysningar i Kartverket si",
     "privacyPolicy": "Personvernerklæring",
     "sendEmail": "Send e-post",
@@ -443,7 +439,15 @@
   "tipsandtricks": {
     "heading": "Tips og triks",
     "headingClosed": "Vis tips og triks",
-    "headingOpen": "Lukk"
+    "headingOpen": "Lukk",
+    "description": "Vanlege spørsmål og nyttige tips",
+    "categories": {
+      "propertyInfo": "Eigedomsinformasjon",
+      "map": "Kart og vising",
+      "drawing": "Teikning og måling",
+      "search": "Søk",
+      "sharing": "Deling og eksport"
+    }
   },
   "toolbar": {
     "reportError": {
@@ -673,5 +677,39 @@
     "label": "Måleverktøy",
     "length": "Lengd",
     "area": "Areal"
+  },
+  "helpPage": {
+    "header": {
+      "link": "Tilbake"
+    },
+    "title": "Kva treng du hjelp med?",
+    "termsOfUse": {
+      "heading": "Vilkår for bruk",
+      "text": "Karterket's sine brukervilkår finn du på"
+    },
+    "feedback": {
+      "title": "Tilbakemeldingsskjema",
+      "text": "Meld frå om feil eller føreslå forbetringar"
+    },
+    "email": {
+      "title": "E-post",
+      "text": "Kontakt oss på e-post, så svarar vi så fort vi kan."
+    },
+    "phone": {
+      "title": "Telefon"
+    },
+    "notFound": {
+      "heading": "Finn du ikkje det du leitar etter?",
+      "description": "Kanskje eit søk i nokre av dei andre tenestene våre kan hjelpe deg med å finne det du leitar etter.",
+      "propertyRegisterHeading": "Eiendomsregisteret",
+      "propertyRegisterDescription": "Finn informasjon om eigedom. Du kan søkje på vegnamn, adresser eller gards- og bruksnummer.",
+      "propertyRegisterButton": "Gå til Eiendomsregisteret",
+      "norgeibilderDescription": "På norgeibilder.no får du oversikt over ortofoto(målestokkriktige flyfoto) som samarbeidspartnarene i samarbeidet tilbyr.",
+      "norgeibilderButton": "Gå til Norgeibilder.no",
+      "hoydedataDescription": "Her får du oversikt over og tilgang til høydedata som Kartverket tilbyr på internett.",
+      "hoydedataButton": "Gå til høydedata.no",
+      "rettikartetDescription": "Her kan du melde fråo m feil og manglar i kartdata og stadnamn.",
+      "rettikartetButton": "Gå til rettikartet.no"
+    }
   }
 }
