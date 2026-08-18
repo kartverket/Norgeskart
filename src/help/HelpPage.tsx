@@ -39,28 +39,28 @@ const categories: {
 }[] = [
   {
     id: 'propertyInfo',
-    title: 'Eiendomsinformasjon',
+    title: 'tipsandtricks.categories.propertyInfo',
     icon: 'house',
   },
 
   {
     id: 'map',
-    title: 'Kart og visning',
+    title: 'tipsandtricks.categories.map',
     icon: 'map',
   },
   {
     id: 'drawing',
-    title: 'Tegning og måling',
+    title: 'tipsandtricks.categories.drawing',
     icon: 'edit',
   },
   {
     id: 'search',
-    title: 'Søk',
+    title: 'tipsandtricks.categories.search',
     icon: 'search',
   },
   {
     id: 'sharing',
-    title: 'Dele og eksport',
+    title: 'tipsandtricks.categories.sharing',
     icon: 'share',
   },
 ];
@@ -198,7 +198,10 @@ export const HelpPage = () => {
                     <CardBody>
                       <Flex align="center" gap={2}>
                         <Icon icon={category.icon} />
-                        <CardTitle>{category.title}</CardTitle>
+                        <CardTitle>
+                          {' '}
+                          {t(`tipsandtricks.categories.${category.id}`)}
+                        </CardTitle>
                       </Flex>
 
                       <Accordion mt={2} collapsible>

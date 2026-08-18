@@ -434,7 +434,14 @@
     "heading": "Tips and tricks",
     "headingClosed": "Show tips and tricks",
     "headingOpen": "Close tips and tricks",
-    "description": "Common questions and useful tips"
+    "description": "Common questions and useful tips",
+    "categories": {
+      "propertyInfo": "Property information",
+      "map": "Map and viewing",
+      "drawing": "Drawing and measuring",
+      "search": "Search",
+      "sharing": "Sharing and export"
+    }
   },
   "toolbar": {
     "reportError": {

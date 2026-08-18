@@ -439,7 +439,14 @@
     "heading": "Tips og triks",
     "headingClosed": "Vis tips og triks",
     "headingOpen": "Lukk",
-    "description": "Vanlige spørsmål og nyttige tips"
+    "description": "Vanlige spørsmål og nyttige tips",
+    "categories": {
+      "propertyInfo": "Eiendomsinformasjon",
+      "map": "Kart og visning",
+      "drawing": "Tegning og måling",
+      "search": "Søk",
+      "sharing": "Dele og eksport"
+    }
   },
   "toolbar": {
     "reportError": {
