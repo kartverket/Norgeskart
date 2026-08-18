@@ -6,7 +6,7 @@ const env = getEnv();
 const TopoCacheProvider: LayerProvider = {
   capabilitiesUrl:
     env.layerProviderParameters.topoCache.baseUrl +
-    '/wmts/1.0.0/WMTSCapabilities.xml',
+    '/service?SERVICE=WMTS&REQUEST=GetCapabilities',
 };
 
 export const topoCacheBackgroundLayers: BackgroundLayer[] = [

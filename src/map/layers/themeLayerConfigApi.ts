@@ -7,7 +7,6 @@ import { placeNamesConfig } from './config/themeLayers/placeNames';
 import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
 import { sjoConfig } from './config/themeLayers/sjo';
 import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
-import { topoQgisConfig } from './config/themeLayers/topoQgis';
 import { ThemeLayerName } from './themeWMS';
 
 export interface FieldConfig {
@@ -101,7 +100,6 @@ const getThemeLayerConfig = () => {
     placeNamesConfig,
     fastmerkerLayerConfig,
     dekningConfig,
-    topoQgisConfig,
   ];
 
   for (const config of configs) {
