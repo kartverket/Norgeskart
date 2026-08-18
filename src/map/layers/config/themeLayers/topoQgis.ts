@@ -23,6 +23,8 @@ const mapUrl = (name: string) => {
     return `${QGIS_BASES[22]}/qgis/QLR/${name}`;
   if (num === 30 && QGIS_BASES.length > 23)
     return `${QGIS_BASES[23]}/qgis/QLR/${name}`;
+  if (num === 4 && QGIS_BASES.length > 25)
+    return `${QGIS_BASES[25]}/qgis/QLR/${name}`;
   const idx = Math.min(Math.ceil(num / 2) - 1, QGIS_BASES.length - 1);
   return `${QGIS_BASES[idx]}/qgis/QLR/${name}`;
 };
