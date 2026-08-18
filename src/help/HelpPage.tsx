@@ -71,7 +71,7 @@ const TipsAndTricksContent = ({ content }: TipsContentProps) => {
       {content.map((block, i) => {
         if (block.type === 'text') {
           return (
-            <Text textStyle="md" key={i} mb="2">
+            <Text fontSize={{ base: 'sm', md: 'md' }} key={i} mb="2">
               {block.text}
             </Text>
           );
@@ -81,7 +81,7 @@ const TipsAndTricksContent = ({ content }: TipsContentProps) => {
           return (
             <List key={i} listStyleType="disc" mb="2" ml="4">
               {block.items.map((item, j) => (
-                <ListItem key={j} textStyle="md">
+                <ListItem key={j} fontSize={{ base: 'sm', md: 'md' }}>
                   {item}
                 </ListItem>
               ))}
@@ -91,7 +91,7 @@ const TipsAndTricksContent = ({ content }: TipsContentProps) => {
 
         if (block.type === 'link') {
           return (
-            <Text key={i} mb="2">
+            <Text fontSize={{ base: 'sm', md: 'md' }} key={i} mb="2">
               <Link
                 colorPalette="green"
                 href={block.href}
@@ -199,7 +199,6 @@ export const HelpPage = () => {
                       <Flex align="center" gap={2}>
                         <Icon icon={category.icon} />
                         <CardTitle>
-                          {' '}
                           {t(`tipsandtricks.categories.${category.id}`)}
                         </CardTitle>
                       </Flex>
@@ -207,7 +206,9 @@ export const HelpPage = () => {
                       <Accordion mt={2} collapsible>
                         {items.map((tip) => (
                           <AccordionItem key={tip.title} value={tip.title}>
-                            <AccordionItemTrigger>
+                            <AccordionItemTrigger
+                              fontSize={{ base: 'sm', md: 'md' }}
+                            >
                               {tip.title}
                             </AccordionItemTrigger>
 
@@ -325,7 +326,9 @@ export const HelpPage = () => {
               </Box>
               <Box>
                 <Heading>Norge i bilder</Heading>
-                <Text>{t('helpPage.notFound.norgeibilderDescription')}</Text>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  {t('helpPage.notFound.norgeibilderDescription')}
+                </Text>
                 <Link
                   mt={4}
                   target="_blank"
@@ -337,7 +340,9 @@ export const HelpPage = () => {
               </Box>
               <Box>
                 <Heading>Høydedata.no</Heading>
-                <Text>{t('helpPage.notFound.hoydedataDescription')}</Text>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  {t('helpPage.notFound.hoydedataDescription')}
+                </Text>
                 <Link
                   mt={4}
                   target="_blank"
@@ -349,7 +354,9 @@ export const HelpPage = () => {
               </Box>
               <Box>
                 <Heading>Rett i kartet</Heading>
-                <Text>{t('helpPage.notFound.rettikartetDescription')}</Text>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  {t('helpPage.notFound.rettikartetDescription')}
+                </Text>
                 <Link
                   target="_blank"
                   external
