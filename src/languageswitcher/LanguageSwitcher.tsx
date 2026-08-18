@@ -1,4 +1,5 @@
 import {
+  Box,
   IconButton,
   SelectContent,
   SelectItem,
@@ -56,34 +57,38 @@ export const LanguageSwitcher = ({
   });
 
   return (
-    <SelectRoot
-      collection={languageOptionCollection}
-      value={[currentLanguage]}
-      positioning={
-        variant === 'text'
-          ? undefined
-          : {
-              sameWidth: false,
-            }
-      }
-      width={variant === 'text' ? 'auto' : 'fit-content'}
-    >
-      {variant === 'text' ? <TextTrigger /> : <IconTrigger />}
-      <SelectContent
-        style={{ zIndex: 9999 }}
-        width={variant === 'text' ? 'auto' : 'fit-content'}
-      >
-        {languageOptions.map((lang) => (
-          <SelectItem
-            key={lang.value}
-            item={lang.value}
-            onClick={() => i18n.changeLanguage(lang.value)}
+    <>
+      <Box position="relative">
+        <SelectRoot
+          collection={languageOptionCollection}
+          value={[currentLanguage]}
+          positioning={
+            variant === 'text'
+              ? undefined
+              : {
+                  sameWidth: false,
+                }
+          }
+          width={variant === 'text' ? 'auto' : 'fit-content'}
+        >
+          {variant === 'text' ? <TextTrigger /> : <IconTrigger />}
+          <SelectContent
+            style={{ zIndex: 9999 }}
+            width={variant === 'text' ? 'auto' : 'fit-content'}
           >
-            {lang.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </SelectRoot>
+            {languageOptions.map((lang) => (
+              <SelectItem
+                key={lang.value}
+                item={lang.value}
+                onClick={() => i18n.changeLanguage(lang.value)}
+              >
+                {lang.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </SelectRoot>
+      </Box>
+    </>
   );
 };
 

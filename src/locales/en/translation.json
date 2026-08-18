@@ -29,10 +29,6 @@
   "draw": {
     "begin": "Draw on map",
     "clear": "Clear drawing",
-    "privacyNotice": {
-      "title": "Drawing storage",
-      "message": "When you save a drawing, it is stored for 2 years on Kartverket's servers. Anyone with the link can view the drawing. To delete drawings, contact post@kartverket.no."
-    },
     "close": "Close",
     "confrimClear": "Now everything that has been drawn will be removed. Are you sure?",
     "controls": {
@@ -352,7 +348,7 @@
   },
   "privacyAndContact": {
     "contactUs": "Contact us",
-    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Use the form linked below, or feel free to contact us by email or phone.",
+    "dialogContent": "We welcome both praise and criticism on Norgeskart.no. Use the form, or feel free to contact us by email or phone.",
     "infoText": "Read how we protect personal data in the Norwegian Mapping Authority's",
     "privacyPolicy": "Privacy policy ",
     "sendEmail": "Send e-mail",
@@ -437,7 +433,15 @@
   "tipsandtricks": {
     "heading": "Tips and tricks",
     "headingClosed": "Show tips and tricks",
-    "headingOpen": "Close tips and tricks"
+    "headingOpen": "Close tips and tricks",
+    "description": "Common questions and useful tips",
+    "categories": {
+      "propertyInfo": "Property information",
+      "map": "Map and viewing",
+      "drawing": "Drawing and measuring",
+      "search": "Search",
+      "sharing": "Sharing and export"
+    }
   },
   "toolbar": {
     "reportError": {
@@ -667,5 +671,39 @@
     "label": "Measuring tool",
     "length": "Length",
     "area": "Area"
+  },
+  "helpPage": {
+    "header": {
+      "link": "Back to map"
+    },
+    "title": "How can we help you?",
+    "termsOfUse": {
+      "heading": "Terms of Use",
+      "text": "Kartverket's Terms of Use can be found at"
+    },
+    "feedback": {
+      "title": "Feedback form",
+      "text": "Report a bug or suggest improvements"
+    },
+    "email": {
+      "title": "Email",
+      "text": "Contact us by email, and we will respond as soon as possible."
+    },
+    "phone": {
+      "title": "Phone"
+    },
+    "notFound": {
+      "heading": "Can't find what you're looking for?",
+      "description": "Perhaps a search in some of our other services can help you find what you're looking for.",
+      "propertyRegisterHeading": "Property Register",
+      "propertyRegisterDescription": "You can search by street name, address, or cadastral number.",
+      "propertyRegisterButton": "Go to the Property Register",
+      "norgeibilderDescription": "On norgeibilder.no, you can find an overview of orthophotos(scale-accurate aerial photographs) offered by the partners in the collaboration.",
+      "norgeibilderButton": "Go to Norgeibilder.no",
+      "hoydedataDescription": "Here you can find an overview of and access to elevation data provided by Kartverket online",
+      "hoydedataButton": "Go to hoydedata.no",
+      "rettikartetDescription": "Here you can report errors and omissions in map data and place names.",
+      "rettikartetButton": "Go to rettikartet.no"
+    }
   }
 }
