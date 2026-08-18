@@ -141,16 +141,6 @@
     ]
   },
   {
-    "category": "search",
-    "title": "Kvar finn eg eigedomsinformasjon?",
-    "content": [
-      {
-        "type": "text",
-        "text": "På Norgeskart kan du sjå eigedomsgrenser og grunnleggjande eigedomsinformasjon. Ved å klikke på ei eigedom i kartet får du opp ei resultatboks øvst til høgre. Her har du fleire skuffer med informasjon. Under Eigedomsinformasjon finn du kommunenummer, kommune, gardsnummer, bruksnummer, festenummer og seksjonsnummer. Knappen «Vis på kartet» let deg sjå eigedomsgrensa i kartet. Ønskjer du meir informasjon, klikkar du på «Vis meir» – då blir du sendt vidare til Eigedomsregisteret."
-      }
-    ]
-  },
-  {
     "category": "sharing",
     "title": "Korleis deler eg kartutsnitt?",
     "content": [

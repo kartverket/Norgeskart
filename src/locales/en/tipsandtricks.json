@@ -154,26 +154,6 @@
     ]
   },
   {
-    "category": "search",
-    "title": "Where can I find property information?",
-    "content": [
-      {
-        "type": "text",
-        "text": "In Norgeskart you can view property boundaries and basic property information."
-      },
-      {
-        "type": "list",
-        "items": [
-          "Click on a property in the map.",
-          "A result panel will appear in the upper-right corner.",
-          "Select “Property information” to view municipality number, farm number and usage number.",
-          "Click “Show on map” to highlight the property boundary.",
-          "Click “Show more” to open additional details in the Property Register."
-        ]
-      }
-    ]
-  },
-  {
     "category": "sharing",
     "title": "How do I share a map view?",
     "content": [

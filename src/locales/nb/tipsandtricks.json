@@ -153,26 +153,6 @@
     ]
   },
   {
-    "category": "search",
-    "title": "Hvor finner jeg eiendomsinformasjon?",
-    "content": [
-      {
-        "type": "text",
-        "text": "I Norgeskart kan du se eiendomsgrenser og grunnleggende eiendomsinformasjon."
-      },
-      {
-        "type": "list",
-        "items": [
-          "Klikk på en eiendom i kartet.",
-          "En resultatboks vises øverst til høyre.",
-          "Velg «Eiendomsinformasjon» for detaljer som kommunenummer, gårdsnummer og bruksnummer.",
-          "Velg «Vis på kartet» for å markere eiendomsgrensen.",
-          "Klikk «Vis mer» for mer informasjon i Eiendomsregisteret."
-        ]
-      }
-    ]
-  },
-  {
     "category": "sharing",
     "title": "Hvordan deler jeg kartutsnitt?",
     "content": [
@@ -350,7 +330,7 @@
     "content": [
       {
         "type": "text",
-        "text": "Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. NAVN har ikke myndighet til å gjøre endringer på eiendomsgrenser."
+        "text": "Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. Kartverket har ikke myndighet til å gjøre endringer på eiendomsgrenser."
       }
     ]
   },
