@@ -177,20 +177,14 @@ const buildBackgroundPrintLayer = (
     };
   }
 
-  // topo_test is served from tnt-mapproxy, not the legacy cache.kartverket.no
-  // WMTS used by every other layer below — route it separately. Its real WMTS
-  // layer name on that backend is 'topo' (see topoCache.ts's wmtsLayerName).
-  // NOTE: matrixSet/requestEncoding are assumed to match the legacy cache's
-  // 'utm33n' grid, mirroring the pattern below — not yet verified against
-  // tnt-mapproxy's actual WMTS capabilities.
-  if (backgroundLayer === 'topo_test') {
+  if (backgroundLayer === 'norgeskart_standard') {
     const ENV = getEnv();
     return {
       baseURL: ENV.layerProviderParameters.topoCache.baseUrl,
       customParams: { TRANSPARENT: 'true' },
       style: 'default',
       imageFormat: 'image/png',
-      layer: 'topo',
+      layer: 'norgeskart_standard',
       opacity: 1,
       type: 'WMTS',
       dimensions: null,

@@ -12,8 +12,8 @@ const TopoCacheProvider: LayerProvider = {
 export const topoCacheBackgroundLayers: BackgroundLayer[] = [
   {
     type: 'WMTS',
-    layerName: 'topo_test',
-    wmtsLayerName: 'topo',
+    layerName: 'norgeskart_standard',
+    wmtsLayerName: 'norgeskart_standard',
     provider: TopoCacheProvider,
     legendUrl:
       env.layerProviderParameters.topoCache.baseUrl +
