@@ -3,7 +3,7 @@ import { allConfiguredBackgroundLayers } from '../layers/config/backgroundLayers
 import { ProjectionIdentifier } from '../projections/types';
 
 const backgroundLayerOrder = new Map<BackgroundLayerName, number>([
-  ['topo_test', 1],
+  ['norgeskart_standard', 1],
   ['topograatone', 2],
   ['toporaster', 3],
   ['sjokartraster', 4],
