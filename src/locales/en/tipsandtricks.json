@@ -203,6 +203,25 @@
     ]
   },
   {
+    "category": "sharing",
+    "title": "Where can I create an emergency poster?",
+    "content": [
+      {
+        "type": "text",
+        "text": "The emergency poster has been removed from Norgeskart. We recommend using the Norwegian Air Ambulance Foundation's service to create and update your emergency poster."
+      },
+      {
+        "type": "link",
+        "text": "Create an emergency poster with the Norwegian Air Ambulance Foundation",
+        "href": "https://norskluftambulanse.no/nodplakat/"
+      },
+      {
+        "type": "text",
+        "text": "Here you can easily create an emergency poster with the location's coordinates and other important information that can help the emergency services find their way to the location."
+      }
+    ]
+  },
+  {
     "category": "map",
     "title": "How do I change the basemap?",
     "content": [
