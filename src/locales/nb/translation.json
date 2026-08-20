@@ -518,9 +518,9 @@
       }
     },
     "emergencyPoster": {
-      "section1": "Nødplakaten er fjernet fra Norgeskart. Vi anbefaler at du bruker Norsk Luftambulanse sin tjeneste for å lage eller oppdatere nødplakaten din",
+      "section1": "Nødplakaten er fjernet fra Norgeskart. Vi anbefaler at du bruker Norsk Luftambulanse sin tjeneste for å lage eller oppdatere nødplakaten din.",
       "link": "Lag nødplakat hos Norsk Luftambulanse",
-      "section2": "Her kan du enkelt lage en nødplakat med stedets koordinater og annen viktig informasjon som kan hjelpe nødetatene å finne frem"
+      "section2": "Her kan du enkelt lage en nødplakat med stedets koordinater og annen viktig informasjon som kan hjelpe nødetatene å finne frem."
     },
     "elevationProfile": {
       "heading": "Tegn en linje for å lage en høydeprofil",

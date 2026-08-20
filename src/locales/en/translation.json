@@ -513,9 +513,9 @@
       }
     },
     "emergencyPoster": {
-      "section1": "The emergency poster has been removed from Norgeskart. We recommend using the Norwegian Air Ambulance Foundation's service to create or update your emergency poster",
+      "section1": "The emergency poster has been removed from Norgeskart. We recommend using the Norwegian Air Ambulance Foundation's service to create or update your emergency poster.",
       "link": "Create an emergency poster with the Norwegian Air Ambulance Foundation",
-      "section2": "Here you can easily create an emergency poster with the location's coordinates and other important information that can help the emergency services find their way"
+      "section2": "Here you can easily create an emergency poster with the location's coordinates and other important information that can help the emergency services find their way."
     },
     "elevationProfile": {
       "heading": "Draw a line to create a elevation profile",
