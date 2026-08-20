@@ -518,40 +518,9 @@
       }
     },
     "emergencyPoster": {
-      "disclaimer": {
-        "heading": "Brukarens ansvar",
-        "sections": {
-          "section1": "Nødplakaten er utvikla i samarbeid med Hovudredningssentralane og nødetatane. Kartverket er ansvarleg for datagrunnlaget, dvs. stadnamn og kart – samt teknologien bak.",
-          "section2": "Brukaren har ansvar for å kontrollere at det er korrekt hytte eller stad som blir vist på plakaten.",
-          "section3": "Kartverket tek ikkje ansvar for moglege feil som skuldast brukaren, datagrunnlaget eller teknologien."
-        },
-        "accept": "Eg skjønar og godtek",
-        "reject": "Avbryt"
-      },
-      "inputform": {
-        "heading": "Klikk i kartet for å velje staden nødplakaten skal vere for",
-        "fields": {
-          "title": {
-            "label": "Plakattittel"
-          },
-          "place": {
-            "label": "Vel næraste stadnamn"
-          },
-          "road": {
-            "label": "Vel næraste adresse"
-          },
-          "isInfoCorrect": {
-            "label": "Stemmer informasjonen over?"
-          }
-        },
-        "errors": {
-          "couldNotCreatePosterUrl": "Kunne ikkje lage nødplakat"
-        },
-        "error": "Kunne ikkje hente data for plakaten. Prøv ein annan stad"
-      },
-      "buttons": {
-        "makePoster": "Lag plakat"
-      }
+      "section1": "Nødplakaten er fjerna frå Norgeskart. Vi tilrår at du bruker Norsk Luftambulanse si teneste for å lage eller oppdatere nødplakaten din",
+      "link": "Lag nødplakat hos Norsk Luftambulanse",
+      "section2": "Her kan du enkelt lage ein nødplakat med koordinatane til staden og annan viktig informasjon som kan hjelpe naudetatane med å finne fram"
     },
     "elevationProfile": {
       "heading": "Teikn ei linje for å lage ein høgdeprofil",
