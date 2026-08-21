@@ -171,11 +171,21 @@
     ]
   },
   {
-    "title": "Kva er vilkåra for bruk?",
+    "category": "sharing",
+    "title": "Kvar kan eg lage nødplakat?",
     "content": [
       {
         "type": "text",
-        "text": "Alle Kartverket sine bruksvilkår finn du på kartverket.no."
+        "text": "Nødplakaten er fjerna frå Norgeskart. Vi tilrår at du bruker tenesta til Norsk Luftambulanse for å lage og oppdatere nødplakaten din."
+      },
+      {
+        "type": "link",
+        "text": "Lag nødplakat hos Norsk Luftambulanse",
+        "href": "https://norskluftambulanse.no/nodplakat/"
+      },
+      {
+        "type": "text",
+        "text": "Her kan du enkelt lage ein nødplakat med koordinatane til staden og annan viktig informasjon som kan hjelpe nødetatane med å finne fram."
       }
     ]
   },

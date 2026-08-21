@@ -199,6 +199,25 @@
     ]
   },
   {
+    "category": "sharing",
+    "title": "Hvor kan jeg lage nødplakat?",
+    "content": [
+      {
+        "type": "text",
+        "text": "Nødplakaten er fjernet fra Norgeskart. Vi anbefaler at du bruker Norsk Luftambulanse sin tjeneste for å lage og oppdatere nødplakaten din."
+      },
+      {
+        "type": "link",
+        "text": "Lag nødplakat hos Norsk Luftambulanse",
+        "href": "https://norskluftambulanse.no/nodplakat/"
+      },
+      {
+        "type": "text",
+        "text": "Her kan du enkelt lage en nødplakat med stedets koordinater og annen viktig informasjon som kan hjelpe nødetatene med å finne frem."
+      }
+    ]
+  },
+  {
     "category": "map",
     "title": "Hvordan endrer jeg bakgrunnskart?",
     "content": [
@@ -297,6 +316,7 @@
       }
     ]
   },
+
   {
     "category": "propertyInfo",
     "title": "Hvor finner jeg eiendomsinformasjon?",
