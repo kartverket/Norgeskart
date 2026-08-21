@@ -463,10 +463,6 @@
     "legend": {
       "tooltip": "Show map legend",
       "label": "Map legend"
-    },
-    "oldnorgeskartbutton": {
-      "tooltip": "Use old Norgeskart.no",
-      "content": "arkiv.norgeskart.no"
     }
   },
   "cookieDialog": {
