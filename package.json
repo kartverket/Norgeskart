@@ -30,7 +30,7 @@
     "i18next-browser-languagedetector": "^8.2.1",
     "jotai": "^2.20.2",
     "jotai-effect": "^2.4.1",
-    "maplibre-gl": "^6.3.0",
+    "maplibre-gl": "^6.4.1",
     "ol": "^10.10.0",
     "posthog-js": "^1.418.6",
     "proj4": "^2.21.0",
