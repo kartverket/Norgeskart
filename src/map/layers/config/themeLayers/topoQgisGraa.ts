@@ -33,6 +33,7 @@ const LAYER_POD: Record<string, string> = {
   lag27_sykehus_m_akuttmottak: '23',
   lag28_adm_grensepunkt: '24',
   lag29_hoydetall: '25',
+  lag30_stedsnavn_vegnummer_og_adresse: '26',
 };
 
 // Independent of topoQgis's clusterDomain — graa only exists in dev so far,
@@ -237,6 +238,16 @@ export const topoQgisGraaConfig: ThemeLayerConfig = {
       groupid: 99,
       parentId: 'topoQgisGraa',
       name: { nb: 'Høydetall', nn: 'Høgdetallar', en: 'Elevation numbers' },
+    },
+    {
+      id: 'topoQgisGraa_lag30_stedsnavn_vegnummer_og_adresse',
+      groupid: 99,
+      parentId: 'topoQgisGraa',
+      name: {
+        nb: 'Stedsnavn, vegnummer og adresse',
+        nn: 'Stadnamn, vegnummer og adresse',
+        en: 'Place names, road numbers and addresses',
+      },
     },
   ],
   layers: [
@@ -527,6 +538,20 @@ export const topoQgisGraaConfig: ThemeLayerConfig = {
       name: { nb: 'Høydetall', nn: 'Høgdetallar', en: 'Elevation numbers' },
       wmsUrl: mapUrl('lag29_hoydetall'),
       layers: 'lag29_hoydetall',
+      singleImage: true,
+      useLegendGraphic: true,
+    },
+    {
+      id: 'topoQgisGraa_lag30_stedsnavn_vegnummer_og_adresse',
+      categoryId: 'topoQgisGraa_lag30_stedsnavn_vegnummer_og_adresse',
+      groupid: 99,
+      name: {
+        nb: 'Stedsnavn, vegnummer og adresse',
+        nn: 'Stadnamn, vegnummer og adresse',
+        en: 'Place names, road numbers and addresses',
+      },
+      wmsUrl: mapUrl('lag30_stedsnavn_vegnummer_og_adresse'),
+      layers: 'lag30_stedsnavn_vegnummer_og_adresse',
       singleImage: true,
       useLegendGraphic: true,
     },
