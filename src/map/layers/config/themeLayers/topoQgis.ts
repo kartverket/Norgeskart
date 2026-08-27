@@ -1,31 +1,47 @@
 import { getEnv } from '../../../../env';
 import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
-const QGIS_BASES = getEnv().layerProviderParameters.topoQgis.baseUrls;
-
-const mapUrl = (name: string) => {
-  const num = parseInt(name.match(/^lag(\d+)/)?.[1] ?? '0');
-  if (name === 'lag08_sjodybde_linje' && QGIS_BASES.length > 24)
-    return `${QGIS_BASES[24]}/qgis/QLR/${name}`;
-  if (num === 8 && QGIS_BASES.length > 16)
-    return `${QGIS_BASES[16]}/qgis/QLR/${name}`;
-  if (num === 2 && QGIS_BASES.length > 17)
-    return `${QGIS_BASES[17]}/qgis/QLR/${name}`;
-  if (num === 20 && QGIS_BASES.length > 18)
-    return `${QGIS_BASES[18]}/qgis/QLR/${name}`;
-  if (num === 26 && QGIS_BASES.length > 19)
-    return `${QGIS_BASES[19]}/qgis/QLR/${name}`;
-  if (num === 18 && QGIS_BASES.length > 20)
-    return `${QGIS_BASES[20]}/qgis/QLR/${name}`;
-  if (num === 22 && QGIS_BASES.length > 21)
-    return `${QGIS_BASES[21]}/qgis/QLR/${name}`;
-  if (num === 24 && QGIS_BASES.length > 22)
-    return `${QGIS_BASES[22]}/qgis/QLR/${name}`;
-  if (num === 30 && QGIS_BASES.length > 23)
-    return `${QGIS_BASES[23]}/qgis/QLR/${name}`;
-  const idx = Math.min(Math.ceil(num / 2) - 1, QGIS_BASES.length - 1);
-  return `${QGIS_BASES[idx]}/qgis/QLR/${name}`;
+// Explicit layer -> pod-suffix mapping, replacing the old index-math formula
+const LAYER_POD: Record<string, string> = {
+  lag01_hav: '01',
+  lag02_dybdelag_gebco: '01b',
+  lag03_dybdelag_sjo: '02',
+  lag04_Europa: '02b',
+  lag05_hoydelag: '03',
+  lag06_arealdekke: '03',
+  lag07_elveflate: '04',
+  lag08_sjodybde_punkt: '04b',
+  lag08_sjodybde_linje: '04c',
+  lag09_relieff_sol: '05',
+  lag10_hoydekurve: '05',
+  lag11_relieff_skygge_blaagraa: '06',
+  lag12_innsjoflate: '06',
+  lag13_grense_adm_maritim_fare_naturvern: '07',
+  lag14_vannkontur_elvbekk: '07',
+  lag15_fkb_bygnanlegg_flate: '08',
+  lag16_fkb_samferdselflate_terreng: '08',
+  lag17_samferdsel_anlegg: '09',
+  lag18_samferdsel_tunnel: '09b',
+  lag19_samferdsel_batrute: '10',
+  lag20_samferdsel_terreng: '10b',
+  lag21_bygning_anlegg: '11',
+  lag22_samferdsel_bru: '11b',
+  lag23_bygning_bygningslinje: '12',
+  lag24_lufthavn: '12b',
+  lag25_kraftlinje_taubane: '13',
+  lag26_hoydepunkt: '13b',
+  lag27_sykehus_m_akuttmottak: '14',
+  lag28_adm_grensepunkt: '14',
+  lag29_hoydetall: '15',
+  lag30_stedsnavn_vegnummer_og_adresse: '15b',
+  lag31_Svalbard: '16',
+  lag32_Jan_Mayen: '16',
 };
+
+const CLUSTER_DOMAIN = getEnv().layerProviderParameters.topoQgis.clusterDomain;
+
+const mapUrl = (name: string) =>
+  `https://qlr${LAYER_POD[name]}-qgis.${CLUSTER_DOMAIN}/qgis/QLR/${name}`;
 
 export const topoQgisConfig: ThemeLayerConfig = {
   categories: [

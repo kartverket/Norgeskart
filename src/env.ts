@@ -19,7 +19,7 @@ type layerProviderParameters = {
     baseUrl: string;
   };
   topoQgis: {
-    baseUrls: string[];
+    clusterDomain: string;
   };
   topoCache: {
     baseUrl: string;
@@ -64,37 +64,7 @@ const LOCAL_ENV: Env = {
       baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
     },
     topoQgis: {
-      // baseUrls: ['http://localhost:8082'],
-      baseUrls: [
-        'https://qlr01-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr02-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr03-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr05-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr06-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr07-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr08-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr14-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr16-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr01b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15b-qgis.atkv3-prod.kartverket-intern.cloud',
-        // lag08_sjodybde's own QLR file was split in two — punkt (skjer/grunne/
-        // dybdepunkt) stays on qlr04b (index 16 above), linje/flate
-        // (dybdekurve/mudretomradegrense/mudretomrade) moved to this new pod.
-        'https://qlr04c-qgis.atkv3-prod.kartverket-intern.cloud',
-      ],
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
     },
     topoCache: {
       // baseUrl: 'http://localhost:8085',
@@ -132,36 +102,7 @@ const DEV_ENV: Env = {
       baseUrl: 'https://tnt-mapserver.atkv3-dev.kartverket-intern.cloud',
     },
     topoQgis: {
-      baseUrls: [
-        'https://qlr01-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr02-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr03-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr04-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr05-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr06-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr07-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr08-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr09-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr10-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr11-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr12-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr13-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr14-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr15-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr16-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr04b-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr01b-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr10b-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr13b-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr09b-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr11b-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr12b-qgis.atkv3-dev.kartverket-intern.cloud',
-        'https://qlr15b-qgis.atkv3-dev.kartverket-intern.cloud',
-        // lag08_sjodybde's own QLR file was split in two — punkt (skjer/grunne/
-        // dybdepunkt) stays on qlr04b (index 16 above), linje/flate
-        // (dybdekurve/mudretomradegrense/mudretomrade) moved to this new pod.
-        'https://qlr04c-qgis.atkv3-dev.kartverket-intern.cloud',
-      ],
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
     },
     topoCache: {
       baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket.cloud',
@@ -198,36 +139,7 @@ const PROD_ENV: Env = {
       baseUrl: 'https://tnt-mapserver.atkv3-prod.kartverket-intern.cloud',
     },
     topoQgis: {
-      baseUrls: [
-        'https://qlr01-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr02-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr03-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr05-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr06-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr07-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr08-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr14-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr16-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr01b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15b-qgis.atkv3-prod.kartverket-intern.cloud',
-        // lag08_sjodybde's own QLR file was split in two — punkt (skjer/grunne/
-        // dybdepunkt) stays on qlr04b (index 16 above), linje/flate
-        // (dybdekurve/mudretomradegrense/mudretomrade) moved to this new pod.
-        'https://qlr04c-qgis.atkv3-prod.kartverket-intern.cloud',
-      ],
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
     },
     topoCache: {
       baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket.cloud',

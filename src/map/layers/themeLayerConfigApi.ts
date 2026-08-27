@@ -9,6 +9,7 @@ import { sjoConfig } from './config/themeLayers/sjo';
 import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
 import { topoMapserverConfig } from './config/themeLayers/topoMapserver';
 import { topoQgisConfig } from './config/themeLayers/topoQgis';
+import { topoQgisGraaConfig } from './config/themeLayers/topoQgisGraa';
 import { ThemeLayerName } from './themeWMS';
 
 export interface FieldConfig {
@@ -104,6 +105,7 @@ const getThemeLayerConfig = () => {
     dekningConfig,
     topoMapserverConfig,
     topoQgisConfig,
+    topoQgisGraaConfig,
   ];
 
   for (const config of configs) {
