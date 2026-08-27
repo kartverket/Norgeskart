@@ -110,7 +110,6 @@ const DrawTypeButton = ({
           // Bytter tool -> åpne panelet (hvis det var skjult)
           setCollapsed(false);
 
-          
           if (drawType === 'Move') {
             clearInteractions();
           }
