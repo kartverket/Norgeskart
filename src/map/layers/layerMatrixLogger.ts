@@ -12,7 +12,7 @@
  */
 
 export type LayerStatus = 'ok' | 'error' | 'loading';
-export type Provider = 'Mapserver' | 'QGIS' | 'other';
+export type Provider = 'QGIS' | 'other';
 
 interface LayerInfo {
   name: string;
@@ -103,7 +103,7 @@ function printMatrix(): void {
   };
 
   console.group(
-    '%c[LayerMatrix] Mapserver vs QGIS — status by zoom level',
+    '%c[LayerMatrix] Layer status by zoom level',
     'color: #0a6; font-weight: bold',
   );
   console.table(rows);

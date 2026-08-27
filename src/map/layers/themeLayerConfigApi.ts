@@ -7,7 +7,6 @@ import { placeNamesConfig } from './config/themeLayers/placeNames';
 import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
 import { sjoConfig } from './config/themeLayers/sjo';
 import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
-import { topoMapserverConfig } from './config/themeLayers/topoMapserver';
 import { topoQgisConfig } from './config/themeLayers/topoQgis';
 import { topoQgisGraaConfig } from './config/themeLayers/topoQgisGraa';
 import { ThemeLayerName } from './themeWMS';
@@ -103,7 +102,6 @@ const getThemeLayerConfig = () => {
     placeNamesConfig,
     fastmerkerLayerConfig,
     dekningConfig,
-    topoMapserverConfig,
     topoQgisConfig,
     topoQgisGraaConfig,
   ];
