@@ -1,5 +1,11 @@
 import MapLibreLayer from '@geoblocks/ol-maplibre-layer/lib/MapLibreLayer';
 import { getDefaultStore } from 'jotai';
+import { setWorkerUrl } from 'maplibre-gl';
+// `?worker&url` (not plain `?url`) routes the file through Vite's worker
+// bundling pipeline, which inlines the worker's own `maplibre-gl-shared.mjs`
+// import into one self-contained chunk. Plain `?url` would copy the worker
+// file verbatim, leaving that sibling import unresolved -> 404 at runtime.
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { WMTSCapabilities } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
@@ -13,6 +19,13 @@ import {
   WMSBackgroundLayer,
   WMTSBackgroundLayer,
 } from './types';
+
+// MapLibre GL v6 is ESM-only and locates its vector-tile-parsing worker via
+// `import.meta.url` at runtime, which bundlers can't rewrite — every
+// bundler-based app needs this one-time call before any `maplibregl.Map` is
+// constructed (here, transitively, by `MapLibreLayer` below).
+// https://maplibre.org/maplibre-gl-js/docs/guides/v5-to-v6-migration-guide/
+setWorkerUrl(maplibreWorkerUrl);
 
 export const getWMTSLayer = async (
   layerConfig: WMTSBackgroundLayer,

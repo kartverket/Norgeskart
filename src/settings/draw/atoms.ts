@@ -2,9 +2,10 @@ import { MaterialSymbol } from '@kvib/react';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import { atomWithStorage } from 'jotai/utils';
-import { Map } from 'ol';
+import { Feature, Map } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
+import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify';
 import Select from 'ol/interaction/Select';
@@ -118,6 +119,8 @@ export const drawEnabledAtom = atom<boolean>((get) => {
   const currentMapTool = get(mapToolAtom);
   return currentMapTool === 'draw';
 });
+
+export const selectedFeatureAtom = atom<Feature<Geometry> | null>(null);
 
 export const drawEnabledEffect = atomEffect((get, set) => {
   const drawEnabled = get(drawEnabledAtom);

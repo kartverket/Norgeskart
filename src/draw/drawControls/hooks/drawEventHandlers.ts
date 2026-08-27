@@ -8,7 +8,12 @@ import { SelectEvent } from 'ol/interaction/Select';
 import { TranslateEvent } from 'ol/interaction/Translate';
 import { Circle, RegularShape, Stroke, Style } from 'ol/style';
 import { mapAtom } from '../../../map/atoms';
-import { showMeasurementsAtom } from '../../../settings/draw/atoms';
+import {
+  primaryColorAtom,
+  secondaryColorAtom,
+  selectedFeatureAtom,
+  showMeasurementsAtom,
+} from '../../../settings/draw/atoms';
 import { getFeatureIcon } from '../../utils/featureUtils';
 import {
   addInteractiveMeasurementOverlayToFeature,
@@ -143,12 +148,17 @@ const removeSelectedOutlineToStyle = (
 ) => {
   const newStroke = style.getStroke();
   const image = style.getImage();
+  const text = style.getText();
   if (image) {
     if (image instanceof Circle || image instanceof RegularShape) {
       const newImage = image.clone();
       newImage.setStroke(null);
       style.setImage(newImage);
     }
+  }
+
+  if (text) {
+    text.setBackgroundStroke(null);
   }
   newStroke?.setLineDash(originalLineDash);
   style.setStroke(newStroke);
@@ -161,10 +171,89 @@ const handleSelection = (e: BaseEvent | Event) => {
   }
 };
 
+const updateSelectedFeatureColors = (
+  feature: Feature<Geometry>,
+  store: ReturnType<typeof getDefaultStore>,
+) => {
+  const style = feature.getStyle();
+
+  if (!(style instanceof Style)) {
+    return;
+  }
+
+  const textStyle = style.getText();
+
+  if (textStyle) {
+    const primaryColor = textStyle.getFill()?.getColor();
+    const secondaryColor = textStyle.getBackgroundFill()?.getColor();
+
+    if (primaryColor) {
+      store.set(primaryColorAtom, primaryColor as string);
+    }
+
+    if (secondaryColor) {
+      store.set(secondaryColorAtom, secondaryColor as string);
+    }
+
+    return;
+  }
+
+  const primaryColor = style.getStroke()?.getColor();
+  const secondaryColor = style.getFill()?.getColor();
+
+  if (primaryColor) {
+    store.set(primaryColorAtom, primaryColor as string);
+  }
+
+  if (secondaryColor) {
+    store.set(secondaryColorAtom, secondaryColor as string);
+  }
+};
 const handleSelected = (selected: Feature<Geometry>[]) => {
+  const store = getDefaultStore();
+
+  const selectedFeature = selected.length > 0 ? selected[0] : null;
+  store.set(selectedFeatureAtom, selectedFeature);
+
+  if (selectedFeature) {
+    updateSelectedFeatureColors(selectedFeature, store);
+
+    if (selectedFeature.getGeometry()?.getType() === 'Point') {
+      const icon = getFeatureOverlayIconProperties(selectedFeature);
+
+      if (icon) {
+        store.set(primaryColorAtom, icon.color);
+      }
+    }
+  }
+
   selected.forEach((f) => {
     const style = f.getStyle();
+
+    const isText = style instanceof Style && style.getText();
+
+    if (isText) {
+      f.set('stylePreSelect', style);
+
+      const newStyle = style.clone();
+      const text = newStyle.getText();
+
+      if (text) {
+        text.setBackgroundStroke(
+          new Stroke({
+            color: 'black',
+            width: 2,
+          }),
+        );
+      }
+
+      f.setStyle(newStyle);
+
+      return;
+    }
+
     const geometry = f.getGeometry();
+
     if (geometry && geometry.getType() === 'Point') {
       const icon = getFeatureIcon(f);
       f.set('iconPreSelect', icon);
@@ -192,6 +281,9 @@ const handleSelected = (selected: Feature<Geometry>[]) => {
 };
 
 const handleDeselected = (deselected: Feature<Geometry>[]) => {
+  const store = getDefaultStore();
+  store.set(selectedFeatureAtom, null);
+
   handleUpdateStyle(deselected);
 };
 

@@ -1,19 +1,15 @@
-import { useSetAtom } from 'jotai';
-import { useState } from 'react';
-import { isPrintDialogOpenAtom } from '../atoms';
-import { ClickWrapper } from './ClickWrapper';
-import { Disclaimer } from './Disclaimer';
+import { Link, Stack, Text } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
 
 export const EmergencyPosterSection = () => {
-  const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
-  const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
-  if (!disclaimerAccepted) {
-    return (
-      <Disclaimer
-        onAccept={() => setDisclaimerAccepted(true)}
-        onReject={() => setIsPrintDialogOpen(false)}
-      />
-    );
-  }
-  return <ClickWrapper />;
+  const { t } = useTranslation();
+  return (
+    <Stack gap={4}>
+      <Text>{t('printdialog.emergencyPoster.section1')}</Text>
+      <Link href="https://norskluftambulanse.no/nodplakat/" target="_blank">
+        {t('printdialog.emergencyPoster.link')}
+      </Link>
+      <Text>{t('printdialog.emergencyPoster.section2')}</Text>
+    </Stack>
+  );
 };
