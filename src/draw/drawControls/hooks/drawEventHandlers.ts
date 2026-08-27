@@ -397,6 +397,14 @@ const handleFeatureSelectDone = (f: Feature) => {
     const originalLineDash = stylePreSelect?.getStroke()?.getLineDash() ?? [];
     removeSelectedOutlineToStyle(featureStyle, originalLineDash);
   }
+
+  const featureId = f.getId();
+  if (featureId) {
+    const map = getDefaultStore().get(mapAtom);
+    const overlay = map.getOverlayById(`${ICON_OVERLAY_PREFIX}${featureId}`);
+
+    overlay?.getElement()?.style.setProperty('border', 'none');
+  }
 };
 
 export {
