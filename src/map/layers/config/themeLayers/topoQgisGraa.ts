@@ -35,7 +35,8 @@ const LAYER_POD: Record<string, string> = {
   lag29_hoydetall: '25',
 };
 
-const CLUSTER_DOMAIN = getEnv().layerProviderParameters.topoQgis.clusterDomain;
+// Independent of topoQgis's clusterDomain — graa only exists in dev so far,
+const CLUSTER_DOMAIN = getEnv().layerProviderParameters.topoQgisGraa.clusterDomain;
 
 const mapUrl = (name: string) =>
   `https://graa${LAYER_POD[name]}-qgis.${CLUSTER_DOMAIN}/qgis/QLR/${name}`;

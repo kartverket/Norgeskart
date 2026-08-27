@@ -21,6 +21,12 @@ type layerProviderParameters = {
   topoQgis: {
     clusterDomain: string;
   };
+  // Independent of topoQgis — graa only exists in the dev cluster so far
+  // (no prod deployment yet), so this stays pinned to dev in every env
+  // block below, not derived from whichever env is active like farge's is.
+  topoQgisGraa: {
+    clusterDomain: string;
+  };
   topoCache: {
     baseUrl: string;
   };
@@ -66,6 +72,9 @@ const LOCAL_ENV: Env = {
     topoQgis: {
       clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
     },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
+    },
     topoCache: {
       // baseUrl: 'http://localhost:8085',
       baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket-intern.cloud',
@@ -104,6 +113,9 @@ const DEV_ENV: Env = {
     topoQgis: {
       clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
     },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
+    },
     topoCache: {
       baseUrl: 'https://tnt-mapproxy.atkv3-dev.kartverket.cloud',
     },
@@ -140,6 +152,9 @@ const PROD_ENV: Env = {
     },
     topoQgis: {
       clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
+    },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
     },
     topoCache: {
       baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket.cloud',
