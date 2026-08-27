@@ -4,6 +4,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { drawPanelCollapsedAtom } from '../map/overlay/atoms';
 import {
+  clearInteractions,
   drawTypeAtom,
   primaryColorAtom,
   secondaryColorAtom,
@@ -108,6 +109,10 @@ const DrawTypeButton = ({
 
           // Bytter tool -> åpne panelet (hvis det var skjult)
           setCollapsed(false);
+
+          if (drawType === 'Move') {
+            clearInteractions();
+          }
 
           if (type === 'Text') {
             setPrimaryColor('#000000');
