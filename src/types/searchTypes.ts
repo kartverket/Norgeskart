@@ -145,6 +145,16 @@ export type PlaceNamePointApiResponse = {
   navn: PlaceNamePoint[];
 };
 
+export type PolarPlaceName = {
+  id: string;
+  title: string;
+  area: string;
+  geometry: {
+    coordinates: [number, number, number];
+    type: string;
+  }
+}
+
 export type EmergencyPosterResponse = {
   matrikkelnr: string;
   kommune: string;
@@ -199,7 +209,7 @@ export type SearchResultBase = {
 };
 
 export type SearchResultType =
-  'Property' | 'Road' | 'Place' | 'Address' | 'Coordinate';
+  'Property' | 'Road' | 'Place' | 'Address' | 'Coordinate' | 'PolarPlace';
 
 export type SearchResult = SearchResultBase &
   (
@@ -222,6 +232,10 @@ export type SearchResult = SearchResultBase &
     | {
         type: 'Coordinate';
         coordinate: ParsedCoordinate;
+      }
+    | {
+        type: 'PolarPlace';
+        polarPlace: PolarPlaceName;
       }
   );
 
@@ -274,5 +288,15 @@ export function coordinateToSearchResult(
     lat: coordinate.lat,
     lon: coordinate.lon,
     coordinate,
+  };
+}
+
+export function polarPlaceNameToSearchResult(polarPlace: PolarPlaceName): SearchResult {
+  return {
+    type: 'PolarPlace',
+    name: polarPlace.title,
+    lat: polarPlace.geometry.coordinates[1],
+    lon: polarPlace.geometry.coordinates[0],
+    polarPlace,
   };
 }

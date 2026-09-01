@@ -8,6 +8,7 @@ import {
   EmergencyPosterResponse,
   PlaceNameApiResponse,
   PlaceNamePointApiResponse,
+  PolarPlaceName,
   Property,
   Road,
 } from '../types/searchTypes.ts';
@@ -411,5 +412,22 @@ export const getPlaceNamesByCoordinates = async (
       searchType: 'placeNamesByCoordinates',
     });
     throw error;
+  }
+};
+
+export const getPolarPlaceNames = async (
+  query: string,
+): Promise<PolarPlaceName[]> => {
+  const url = `https://api.npolar.no/placename?name=${encodeURIComponent(query)}`;
+  let httpStatus;
+
+  try {
+    const res = await fetch(url);
+    httpStatus = res.status;
+    if (!res.ok) throw new Error(`Polar API failed: ${res.status}`);
+    return res.json();
+  } catch (error) {
+    trackApiError(error, { query, url, searchType: 'polarPlaceNames' });
+    return [];
   }
 };
