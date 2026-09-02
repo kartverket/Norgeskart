@@ -20,7 +20,7 @@ import {
   coordinateToSearchResult,
   Metadata,
   Place,
-  PolarPlaceName,
+  polarPlaceNameToPlace,
   Property,
   Road,
   SearchResult,
@@ -111,7 +111,6 @@ const searchQueryEffect = atomEffect((get, set) => {
     set(propertyResultsAtom, []);
     set(placeNameMetedataAtom, null);
     set(coordinateResultsAtom, null);
-    set(polarPlaceNameResultsAtom, []);
   };
 
   if (searchQuery === '') {
@@ -170,18 +169,30 @@ const searchQueryEffect = atomEffect((get, set) => {
       } else {
         set(addressResultsAtom, []);
       }
-      if (placeResult.navn) {
-        set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
-        set(placeNameMetedataAtom, placeResult.metadata);
-      }
+      if (placeResult.navn || polarResult?.length > 0) {
+  const allPlaces = [
+    ...placeResult.navn.map(Place.fromPlaceName),
+    ...polarResult.map(polarPlaceNameToPlace),
+  ];
+  
+  const query = searchQuery.toLowerCase().trim().split(',')[0].trim();
+  allPlaces.sort((a, b) => {
+    const aStarts = a.name.toLowerCase().startsWith(query);
+    const bStarts = b.name.toLowerCase().startsWith(query);
+    if (aStarts !== bStarts) {
+      return aStarts ? -1 : 1;
+    }
+    return 0;
+  });
+  
+  set(placeNameResultsAtom, allPlaces);
+  set(placeNameMetedataAtom, placeResult.metadata);
+}
       if (roadsResult) {
         set(roadResultsAtom, roadsResult);
       }
       if (propertiesResult) {
         set(propertyResultsAtom, propertiesResult);
-      }
-      if (polarResult) {
-        set(polarPlaceNameResultsAtom, polarResult);
       }
       set(searchPendingAtom, false);
     })
@@ -217,7 +228,6 @@ export const placeNameMetedataAtom = atom<Metadata | null>(null);
 export const roadResultsAtom = atom<Road[]>([]);
 export const propertyResultsAtom = atom<Property[]>([]);
 export const coordinateResultsAtom = atom<ParsedCoordinate | null>(null);
-export const polarPlaceNameResultsAtom = atom<PolarPlaceName[]>([]);
 export const placesNearbyAtom = atom<Place[]>([]); // For use in the infobox. Populated by coordinate search rather than text search.
 
 export const allSearchResultsAtom = atom((get) => {
@@ -225,7 +235,6 @@ export const allSearchResultsAtom = atom((get) => {
   const placeNames = get(placeNameResultsAtom);
   const roads = get(roadResultsAtom);
   const properties = get(propertyResultsAtom);
-  const polarPlaces = get(polarPlaceNameResultsAtom);
 
   return searchResultsMapper(placeNames, roads, addresses, properties);
 });
@@ -270,7 +279,6 @@ export const useResetSearchResults = () => {
   const setRoadResults = useSetAtom(roadResultsAtom);
   const setPropertyResults = useSetAtom(propertyResultsAtom);
   const setPlaceNameMetadata = useSetAtom(placeNameMetedataAtom);
-  const setPolarPlaceNameResults = useSetAtom(polarPlaceNameResultsAtom);
   const setSearchQuery = useSetAtom(searchQueryAtom);
 
   return () => {
@@ -279,7 +287,6 @@ export const useResetSearchResults = () => {
     setRoadResults([]);
     setPropertyResults([]);
     setPlaceNameMetadata(null);
-    setPolarPlaceNameResults([]);
     setSearchQuery('');
   };
 };

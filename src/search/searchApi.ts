@@ -418,16 +418,17 @@ export const getPlaceNamesByCoordinates = async (
 export const getPolarPlaceNames = async (
   query: string,
 ): Promise<PolarPlaceName[]> => {
-  const url = `https://api.npolar.no/placename?name=${encodeURIComponent(query)}`;
+  const url = `https://api.npolar.no/placename?q=${encodeURIComponent(query)}&limit=10`;
   let httpStatus;
 
   try {
     const res = await fetch(url);
     httpStatus = res.status;
     if (!res.ok) throw new Error(`Polar API failed: ${res.status}`);
-    return res.json();
+    const data = await res.json();
+    return data.feed?.entries || [];
   } catch (error) {
-    trackApiError(error, { query, url, searchType: 'polarPlaceNames' });
+    trackApiError(error, { query, url, httpStatus, searchType: 'polarPlaceNames' });
     return [];
   }
 };
