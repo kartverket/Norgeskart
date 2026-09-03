@@ -144,23 +144,18 @@ export type PlaceNamePointApiResponse = {
   metadata: Metadata;
   navn: PlaceNamePoint[];
 };
+
 export type PolarPlaceName = {
   id: string;
-  name: {
-    '@value': string;
-  };
-  latitude: number;
-  longitude: number;
-   terrain?: {
-    nn?: string;
-    en?: string;
-  };
-  area?: string;
-  geometry?: {
-    coordinates: [number, number, number];
+  title: string;
+  area: string;
+  terrain: string;
+  geometry: {
     type: string;
+    coordinates: [number, number, number];
   };
 };
+
 export type EmergencyPosterResponse = {
   matrikkelnr: string;
   kommune: string;
@@ -292,22 +287,18 @@ export function coordinateToSearchResult(
     coordinate,
   };
 }
+
 export function polarPlaceNameToPlace(polarPlace: PolarPlaceName): Place {
-   const terrain = polarPlace.terrain?.nn || 'other';
+  const terrain = polarPlace.terrain || 'other';
   const terrainCapitalized = terrain.charAt(0).toUpperCase() + terrain.slice(1);
-   const placeType = polarPlace.area 
+
+  const placeType = polarPlace.area
     ? `${terrainCapitalized} i ${polarPlace.area}`
     : terrainCapitalized;
-  return new Place(
-    [],
-    [],
-      placeType,
-    0,
-    polarPlace.name['@value'], 
-    {
-      koordsys: 'EPSG:4326',
-      øst: polarPlace.longitude,  
-      nord: polarPlace.latitude,       
-    },
-  );
+
+  return new Place([], [], placeType, 0, polarPlace.title, {
+    koordsys: 'EPSG:4326',
+    øst: polarPlace.geometry.coordinates[0],
+    nord: polarPlace.geometry.coordinates[1],
+  });
 }

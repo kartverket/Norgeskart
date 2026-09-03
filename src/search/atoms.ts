@@ -30,9 +30,9 @@ import {
   getAddresses,
   getPlaceNames,
   getPlaceNamesByLocation,
+  getPolarPlaceNames,
   getProperties,
   getRoads,
-  getPolarPlaceNames,
 } from './searchApi';
 
 type CoordinateWithProjection = {
@@ -147,7 +147,13 @@ const searchQueryEffect = atomEffect((get, set) => {
         return;
       }
 
-      const [addresResult, placeResult, roadsResult, propertiesResult, polarResult] = r;
+      const [
+        addresResult,
+        placeResult,
+        roadsResult,
+        propertiesResult,
+        polarResult,
+      ] = r;
       if (addresResult?.adresser) {
         if (addresResult.adresser.length === 1) {
           const onlyAddress = addresResult.adresser[0];
@@ -170,24 +176,24 @@ const searchQueryEffect = atomEffect((get, set) => {
         set(addressResultsAtom, []);
       }
       if (placeResult.navn || polarResult?.length > 0) {
-  const allPlaces = [
-    ...placeResult.navn.map(Place.fromPlaceName),
-    ...polarResult.map(polarPlaceNameToPlace),
-  ];
-  
-  const query = searchQuery.toLowerCase().trim().split(',')[0].trim();
-  allPlaces.sort((a, b) => {
-    const aStarts = a.name.toLowerCase().startsWith(query);
-    const bStarts = b.name.toLowerCase().startsWith(query);
-    if (aStarts !== bStarts) {
-      return aStarts ? -1 : 1;
-    }
-    return 0;
-  });
-  
-  set(placeNameResultsAtom, allPlaces);
-  set(placeNameMetedataAtom, placeResult.metadata);
-}
+        const allPlaces = [
+          ...placeResult.navn.map(Place.fromPlaceName),
+          ...polarResult.map(polarPlaceNameToPlace),
+        ];
+
+        const query = searchQuery.toLowerCase().trim().split(',')[0].trim();
+        allPlaces.sort((a, b) => {
+          const aStarts = a.name.toLowerCase().startsWith(query);
+          const bStarts = b.name.toLowerCase().startsWith(query);
+          if (aStarts !== bStarts) {
+            return aStarts ? -1 : 1;
+          }
+          return 0;
+        });
+
+        set(placeNameResultsAtom, allPlaces);
+        set(placeNameMetedataAtom, placeResult.metadata);
+      }
       if (roadsResult) {
         set(roadResultsAtom, roadsResult);
       }

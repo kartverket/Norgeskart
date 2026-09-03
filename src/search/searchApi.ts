@@ -418,7 +418,7 @@ export const getPlaceNamesByCoordinates = async (
 export const getPolarPlaceNames = async (
   query: string,
 ): Promise<PolarPlaceName[]> => {
-  const url = `https://api.npolar.no/placename?q=${encodeURIComponent(query)}&limit=10`;
+  const url = `https://next.api.npolar.no/placename/?q=${encodeURIComponent(query)}`;
   let httpStatus;
 
   try {
@@ -426,9 +426,14 @@ export const getPolarPlaceNames = async (
     httpStatus = res.status;
     if (!res.ok) throw new Error(`Polar API failed: ${res.status}`);
     const data = await res.json();
-    return data.feed?.entries || [];
+    return data.items || [];
   } catch (error) {
-    trackApiError(error, { query, url, httpStatus, searchType: 'polarPlaceNames' });
+    trackApiError(error, {
+      query,
+      url,
+      httpStatus,
+      searchType: 'polarPlaceNames',
+    });
     return [];
   }
 };
