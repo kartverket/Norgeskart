@@ -20,7 +20,7 @@ import {
   coordinateToSearchResult,
   Metadata,
   Place,
-  polarPlaceNameToPlace,
+  PolarPlaceName,
   Property,
   Road,
   SearchResult,
@@ -110,6 +110,7 @@ const searchQueryEffect = atomEffect((get, set) => {
     set(roadResultsAtom, []);
     set(propertyResultsAtom, []);
     set(placeNameMetedataAtom, null);
+    set(polarPlaceNameResultsAtom, []);
     set(coordinateResultsAtom, null);
   };
 
@@ -175,24 +176,13 @@ const searchQueryEffect = atomEffect((get, set) => {
       } else {
         set(addressResultsAtom, []);
       }
-      if (placeResult.navn || polarResult?.length > 0) {
-        const allPlaces = [
-          ...placeResult.navn.map(Place.fromPlaceName),
-          ...polarResult.map(polarPlaceNameToPlace),
-        ];
-
-        const query = searchQuery.toLowerCase().trim().split(',')[0].trim();
-        allPlaces.sort((a, b) => {
-          const aStarts = a.name.toLowerCase().startsWith(query);
-          const bStarts = b.name.toLowerCase().startsWith(query);
-          if (aStarts !== bStarts) {
-            return aStarts ? -1 : 1;
-          }
-          return 0;
-        });
-
-        set(placeNameResultsAtom, allPlaces);
+      if (placeResult.navn) {
+        set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
         set(placeNameMetedataAtom, placeResult.metadata);
+      }
+
+      if (polarResult?.length > 0) {
+        set(polarPlaceNameResultsAtom, polarResult);
       }
       if (roadsResult) {
         set(roadResultsAtom, roadsResult);
@@ -231,6 +221,7 @@ const placeNamePageEffet = atomEffect((get, set) => {
 export const addressResultsAtom = atom<Address[]>([]);
 export const placeNameResultsAtom = atom<Place[]>([]);
 export const placeNameMetedataAtom = atom<Metadata | null>(null);
+export const polarPlaceNameResultsAtom = atom<PolarPlaceName[]>([]);
 export const roadResultsAtom = atom<Road[]>([]);
 export const propertyResultsAtom = atom<Property[]>([]);
 export const coordinateResultsAtom = atom<ParsedCoordinate | null>(null);
@@ -286,6 +277,7 @@ export const useResetSearchResults = () => {
   const setPropertyResults = useSetAtom(propertyResultsAtom);
   const setPlaceNameMetadata = useSetAtom(placeNameMetedataAtom);
   const setSearchQuery = useSetAtom(searchQueryAtom);
+  const setPolarPlaceNameResults = useSetAtom(polarPlaceNameResultsAtom);
 
   return () => {
     setAddressResults([]);
@@ -293,6 +285,7 @@ export const useResetSearchResults = () => {
     setRoadResults([]);
     setPropertyResults([]);
     setPlaceNameMetadata(null);
+    setPolarPlaceNameResults([]);
     setSearchQuery('');
   };
 };

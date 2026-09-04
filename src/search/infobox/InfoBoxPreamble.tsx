@@ -48,6 +48,13 @@ const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
           {`${t('infoBox.address')} ${t('infoBox.in')} ${result.address.kommunenavn} ${t('infoBox.municipality').toLowerCase()}`}
         </Text>
       );
+
+      case 'PolarPlace':
+  return (
+    <Text>
+      {`${t('search.placeName')} ${result.polarPlace.area}`}
+    </Text>
+  );
   }
 };
 const InfoBoxElevationContent = ({ result }: { result: SearchResult }) => {

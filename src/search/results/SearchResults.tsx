@@ -16,10 +16,12 @@ import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
 import { CoordinateResults } from './CoorResult.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
+import { PolarPlacesResult } from './PolarPlacesResult.tsx';
 import { PropertiesResults } from './PropertiesResults.tsx';
 import { RoadsResults } from './RoadsResults.tsx';
 
-type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
+type AccordionTab =
+  'places' | 'roads' | 'properties' | 'addresses' | 'polarPlaces';
 
 interface SearchResultsProps {
   hoveredResult: SearchResult | null;
@@ -39,6 +41,7 @@ export const SearchResults = ({
     'roads',
     'properties',
     'addresses',
+    'polarPlaces',
   ]);
   const coord = useAtomValue(coordinateResultsAtom);
   const coordResult: SearchResult | null = useMemo(() => {
@@ -158,6 +161,12 @@ export const SearchResults = ({
                 handleHover={handleHover}
                 setHoveredResult={setHoveredResult}
                 onTabClick={() => handleAccordionTabClick('properties')}
+              />
+              <PolarPlacesResult
+                handleSearchClick={handleSearchClick}
+                handleHover={handleHover}
+                setHoveredResult={setHoveredResult}
+                onTabClick={() => handleAccordionTabClick('polarPlaces')}
               />
             </>
           )}

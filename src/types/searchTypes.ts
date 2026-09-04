@@ -210,7 +210,7 @@ export type SearchResultBase = {
 };
 
 export type SearchResultType =
-  'Property' | 'Road' | 'Place' | 'Address' | 'Coordinate';
+  'Property' | 'Road' | 'Place' | 'Address' | 'Coordinate' | 'PolarPlace';
 
 export type SearchResult = SearchResultBase &
   (
@@ -233,6 +233,10 @@ export type SearchResult = SearchResultBase &
     | {
         type: 'Coordinate';
         coordinate: ParsedCoordinate;
+      }
+    | {
+        type: 'PolarPlace';
+        polarPlace: PolarPlaceName;
       }
   );
 
@@ -288,17 +292,14 @@ export function coordinateToSearchResult(
   };
 }
 
-export function polarPlaceNameToPlace(polarPlace: PolarPlaceName): Place {
-  const terrain = polarPlace.terrain || 'other';
-  const terrainCapitalized = terrain.charAt(0).toUpperCase() + terrain.slice(1);
-
-  const placeType = polarPlace.area
-    ? `${terrainCapitalized} i ${polarPlace.area}`
-    : terrainCapitalized;
-
-  return new Place([], [], placeType, 0, polarPlace.title, {
-    koordsys: 'EPSG:4326',
-    øst: polarPlace.geometry.coordinates[0],
-    nord: polarPlace.geometry.coordinates[1],
-  });
+export function polarPlaceToSearchResult(
+  polarPlace: PolarPlaceName,
+): SearchResult {
+  return {
+    type: 'PolarPlace',
+    name: polarPlace.title,
+    lat: polarPlace.geometry.coordinates[1],
+    lon: polarPlace.geometry.coordinates[0],
+    polarPlace,
+  };
 }
