@@ -401,7 +401,8 @@
     "noResults": "No results found",
     "coordinateSwapWarning": "These coordinates do not appear to be in Norway. They may have been pasted in the wrong order (lon/lat instead of lat/lon).",
     "coordinateSwapButton": "Swap order",
-    "maxLength": "Max 100 characters"
+    "maxLength": "Max 100 characters",
+    "polarPlaceNames": "Polar place names"
   },
   "shared": {
     "actions": {

@@ -406,7 +406,8 @@
     "noResults": "Ingen treff",
     "coordinateSwapWarning": "Koordinatane ser ikkje ut til å vere i Noreg. Dei kan ha vore limt inn i feil rekkefølgje (lon/lat i staden for lat/lon).",
     "coordinateSwapButton": "Byt rekkefølgje",
-    "maxLength": "Maks 100 teikn"
+    "maxLength": "Maks 100 teikn",
+    "polarPlaceNames": "Polare stadnamn"
   },
   "shared": {
     "actions": {

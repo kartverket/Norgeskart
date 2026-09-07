@@ -51,7 +51,7 @@ const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
 
     case 'PolarPlace':
       return (
-        <Text>{`${t('search.placeName')} ${result.polarPlace.area}`}</Text>
+        <Text>{`${t('search.placeName')} ${t('infoBox.in')} ${result.polarPlace.area}`}</Text>
       );
   }
 };
