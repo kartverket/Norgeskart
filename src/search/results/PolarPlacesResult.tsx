@@ -43,7 +43,7 @@ export const PolarPlacesResult = ({
   return (
     <AccordionItem value="polarPlaces">
       <AccordionItemTrigger onClick={onTabClick}>
-        {t('search.polarPlaceNames')}
+        {t('search.polarPlaceNames')} ({polarPlaceCount})
       </AccordionItemTrigger>
 
       <AccordionItemContent>
