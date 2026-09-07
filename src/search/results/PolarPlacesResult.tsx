@@ -9,6 +9,7 @@ import {
   PaginationPrevTrigger,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { POLAR_PLACES_PER_PAGE } from '../../search/searchApi';
 import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import { SearchResult } from '../../types/searchTypes';
@@ -35,13 +36,14 @@ export const PolarPlacesResult = ({
   const polarPlaces = useAtomValue(polarPlaceNameResultsAtom);
   const polarPlaceCount = useAtomValue(polarPlaceCountAtom);
   const [polarPlacePage, setPolarPlacePage] = useAtom(polarPlacePageAtom);
+  const { t } = useTranslation();
 
   if (polarPlaces.length === 0) return null;
 
   return (
     <AccordionItem value="polarPlaces">
       <AccordionItemTrigger onClick={onTabClick}>
-        Polare stedsnavn
+        {t('search.polarPlaceNames')}
       </AccordionItemTrigger>
 
       <AccordionItemContent>
