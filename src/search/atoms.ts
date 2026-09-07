@@ -113,7 +113,7 @@ const searchQueryEffect = atomEffect((get, set) => {
     set(propertyResultsAtom, []);
     set(placeNameMetedataAtom, null);
     set(polarPlaceNameResultsAtom, []);
-    set(polarPlaceCountAtom,0);
+    set(polarPlaceCountAtom, 0);
     set(polarPlacePageAtom, 1);
     set(coordinateResultsAtom, null);
   };
@@ -193,7 +193,7 @@ const searchQueryEffect = atomEffect((get, set) => {
         set(polarPlaceCountAtom, 0);
       }
 
-      set(polarPlacePageAtom, 1)
+      set(polarPlacePageAtom, 1);
 
       if (roadsResult) {
         set(roadResultsAtom, roadsResult);

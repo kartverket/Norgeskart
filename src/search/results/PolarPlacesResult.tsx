@@ -9,11 +9,15 @@ import {
   PaginationPrevTrigger,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { SearchResult } from '../../types/searchTypes';
-import { polarPlaceCountAtom, polarPlaceNameResultsAtom, polarPlacePageAtom } from '../atoms';
-import { SearchResultLine } from './SearchResultLine';
 import { POLAR_PLACES_PER_PAGE } from '../../search/searchApi';
-
+import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
+import { SearchResult } from '../../types/searchTypes';
+import {
+  polarPlaceCountAtom,
+  polarPlaceNameResultsAtom,
+  polarPlacePageAtom,
+} from '../atoms';
+import { SearchResultLine } from './SearchResultLine';
 
 interface PolarPlacesResultProps {
   handleSearchClick: (res: SearchResult) => void;
@@ -30,14 +34,14 @@ export const PolarPlacesResult = ({
 }: PolarPlacesResultProps) => {
   const polarPlaces = useAtomValue(polarPlaceNameResultsAtom);
   const polarPlaceCount = useAtomValue(polarPlaceCountAtom);
-  const [polarPlacePage, setPolarPlacePage] = useAtom(polarPlacePageAtom)
+  const [polarPlacePage, setPolarPlacePage] = useAtom(polarPlacePageAtom);
 
   if (polarPlaces.length === 0) return null;
-  
+
   return (
     <AccordionItem value="polarPlaces">
       <AccordionItemTrigger onClick={onTabClick}>
-        Polare stedsnavn 
+        Polare stedsnavn
       </AccordionItemTrigger>
 
       <AccordionItemContent>
@@ -65,12 +69,12 @@ export const PolarPlacesResult = ({
                 })
               }
               onMouseLeave={() => setHoveredResult(null)}
-              locationType={`${polarPlace.terrain} i ${polarPlace.area}`}
+              locationType={`${capitalizeFirstLetter(polarPlace.terrain)} i ${polarPlace.area}`}
             />
           ))}
         </List>
 
-         {polarPlaceCount > POLAR_PLACES_PER_PAGE && (
+        {polarPlaceCount > POLAR_PLACES_PER_PAGE && (
           <Pagination
             siblingCount={1}
             size="sm"
