@@ -156,6 +156,11 @@ export type PolarPlaceName = {
   };
 };
 
+export type PolarPlaceNameApiResponse = {
+  items: PolarPlaceName[];
+  count: number;
+};
+
 export type EmergencyPosterResponse = {
   matrikkelnr: string;
   kommune: string;

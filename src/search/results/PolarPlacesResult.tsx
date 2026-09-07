@@ -3,11 +3,17 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   List,
+  Pagination,
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPrevTrigger,
 } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { SearchResult } from '../../types/searchTypes';
-import { polarPlaceNameResultsAtom } from '../atoms';
+import { polarPlaceCountAtom, polarPlaceNameResultsAtom, polarPlacePageAtom } from '../atoms';
 import { SearchResultLine } from './SearchResultLine';
+import { POLAR_PLACES_PER_PAGE } from '../../search/searchApi';
+
 
 interface PolarPlacesResultProps {
   handleSearchClick: (res: SearchResult) => void;
@@ -23,10 +29,15 @@ export const PolarPlacesResult = ({
   onTabClick,
 }: PolarPlacesResultProps) => {
   const polarPlaces = useAtomValue(polarPlaceNameResultsAtom);
+  const polarPlaceCount = useAtomValue(polarPlaceCountAtom);
+  const [polarPlacePage, setPolarPlacePage] = useAtom(polarPlacePageAtom)
+
+  if (polarPlaces.length === 0) return null;
+  
   return (
     <AccordionItem value="polarPlaces">
       <AccordionItemTrigger onClick={onTabClick}>
-        Stedsnavn (Norske polarområder)
+        Polare stedsnavn 
       </AccordionItemTrigger>
 
       <AccordionItemContent>
@@ -58,6 +69,23 @@ export const PolarPlacesResult = ({
             />
           ))}
         </List>
+
+         {polarPlaceCount > POLAR_PLACES_PER_PAGE && (
+          <Pagination
+            siblingCount={1}
+            size="sm"
+            count={polarPlaceCount}
+            page={polarPlacePage}
+            pageSize={POLAR_PLACES_PER_PAGE}
+            onPageChange={(event: { page: number }) =>
+              setPolarPlacePage(event.page)
+            }
+          >
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </Pagination>
+        )}
       </AccordionItemContent>
     </AccordionItem>
   );

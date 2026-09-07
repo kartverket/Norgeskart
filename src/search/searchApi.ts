@@ -8,7 +8,7 @@ import {
   EmergencyPosterResponse,
   PlaceNameApiResponse,
   PlaceNamePointApiResponse,
-  PolarPlaceName,
+  PolarPlaceNameApiResponse,
   Property,
   Road,
 } from '../types/searchTypes.ts';
@@ -415,25 +415,37 @@ export const getPlaceNamesByCoordinates = async (
   }
 };
 
+ export const POLAR_PLACES_PER_PAGE = 10;
+
 export const getPolarPlaceNames = async (
   query: string,
-): Promise<PolarPlaceName[]> => {
-  const url = `https://next.api.npolar.no/placename/?q=${encodeURIComponent(query)}`;
-  let httpStatus;
+  page = 1,
+): Promise<PolarPlaceNameApiResponse> => {
+  const url = new URL('https://next.api.npolar.no/placename/');
+  url.searchParams.set('q', query);
+  url.searchParams.set('take', POLAR_PLACES_PER_PAGE.toString());
+  url.searchParams.set('skip', ((page - 1) * POLAR_PLACES_PER_PAGE).toString());
+  url.searchParams.set('count', 'true');
+
+  let httpStatus: number | undefined;
 
   try {
     const res = await fetch(url);
     httpStatus = res.status;
-    if (!res.ok) throw new Error(`Polar API failed: ${res.status}`);
-    const data = await res.json();
-    return data.items || [];
+
+    if (!res.ok) {
+      throw new Error(`Polar API failed: ${res.status}`);
+    }
+
+    return await res.json();
   } catch (error) {
     trackApiError(error, {
       query,
-      url,
+      url: url.toString(),
       httpStatus,
       searchType: 'polarPlaceNames',
     });
-    return [];
+
+    return { items: [], count: 0 };
   }
 };

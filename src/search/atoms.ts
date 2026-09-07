@@ -48,6 +48,8 @@ const initialSearchQuery = getUrlParameter('sok') || '';
 export const searchQueryAtom = atom<string>(initialSearchQuery);
 export const searchPendingAtom = atom<boolean>(false);
 export const placeNamePageAtom = atom<number>(1);
+export const polarPlacePageAtom = atom<number>(1);
+export const polarPlaceCountAtom = atom<number>(0);
 export const displaySearchResultsAtom = atom<boolean>(true);
 
 let latestSearchRequestId = 0;
@@ -111,6 +113,8 @@ const searchQueryEffect = atomEffect((get, set) => {
     set(propertyResultsAtom, []);
     set(placeNameMetedataAtom, null);
     set(polarPlaceNameResultsAtom, []);
+    set(polarPlaceCountAtom,0);
+    set(polarPlacePageAtom, 1);
     set(coordinateResultsAtom, null);
   };
 
@@ -139,7 +143,7 @@ const searchQueryEffect = atomEffect((get, set) => {
       getPlaceNames(searchQuery, 1),
       getRoads(searchQuery),
       getProperties(searchQuery),
-      getPolarPlaceNames(searchQuery),
+      getPolarPlaceNames(searchQuery, 1),
     ]);
   };
   fetchData()
@@ -181,9 +185,16 @@ const searchQueryEffect = atomEffect((get, set) => {
         set(placeNameMetedataAtom, placeResult.metadata);
       }
 
-      if (polarResult?.length > 0) {
-        set(polarPlaceNameResultsAtom, polarResult);
+      if (polarResult?.items) {
+        set(polarPlaceNameResultsAtom, polarResult.items);
+        set(polarPlaceCountAtom, polarResult.count);
+      } else {
+        set(polarPlaceNameResultsAtom, []);
+        set(polarPlaceCountAtom, 0);
       }
+
+      set(polarPlacePageAtom, 1)
+
       if (roadsResult) {
         set(roadResultsAtom, roadsResult);
       }
@@ -215,6 +226,24 @@ const placeNamePageEffet = atomEffect((get, set) => {
       set(placeNameResultsAtom, placeResult.navn.map(Place.fromPlaceName));
       set(placeNameMetedataAtom, placeResult.metadata);
     }
+  });
+});
+
+export const polarPlacePageEffect = atomEffect((get, set) => {
+  const page = get(polarPlacePageAtom);
+
+  if (page === 1) {
+    return;
+  }
+
+  const searchQuery = get(searchQueryAtom);
+  if (searchQuery === '') {
+    return;
+  }
+
+  getPolarPlaceNames(searchQuery, page).then((polarResult) => {
+    set(polarPlaceNameResultsAtom, polarResult.items);
+    set(polarPlaceCountAtom, polarResult.count);
   });
 });
 
@@ -278,6 +307,8 @@ export const useResetSearchResults = () => {
   const setPlaceNameMetadata = useSetAtom(placeNameMetedataAtom);
   const setSearchQuery = useSetAtom(searchQueryAtom);
   const setPolarPlaceNameResults = useSetAtom(polarPlaceNameResultsAtom);
+  const setPolarPlaceCount = useSetAtom(polarPlaceCountAtom);
+  const setPolarPlacePage = useSetAtom(polarPlacePageAtom);
 
   return () => {
     setAddressResults([]);
@@ -286,6 +317,8 @@ export const useResetSearchResults = () => {
     setPropertyResults([]);
     setPlaceNameMetadata(null);
     setPolarPlaceNameResults([]);
+    setPolarPlaceCount(0);
+    setPolarPlacePage(1);
     setSearchQuery('');
   };
 };
@@ -295,4 +328,5 @@ export const useSearchEffects = () => {
   useAtom(searchQueryEffect);
   useAtom(placeNamePageEffet);
   useAtom(selectedResultEffect);
+  useAtom(polarPlacePageEffect);
 };
