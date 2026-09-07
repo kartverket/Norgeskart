@@ -185,22 +185,17 @@ const searchQueryEffect = atomEffect((get, set) => {
         set(placeNameMetedataAtom, placeResult.metadata);
       }
 
-      if (polarResult?.items) {
-        set(polarPlaceNameResultsAtom, polarResult.items);
-        set(polarPlaceCountAtom, polarResult.count);
-      } else {
-        set(polarPlaceNameResultsAtom, []);
-        set(polarPlaceCountAtom, 0);
-      }
-
-      set(polarPlacePageAtom, 1);
-
       if (roadsResult) {
         set(roadResultsAtom, roadsResult);
       }
       if (propertiesResult) {
         set(propertyResultsAtom, propertiesResult);
       }
+
+      set(polarPlaceNameResultsAtom, polarResult.items);
+      set(polarPlaceCountAtom, polarResult.count);
+      set(polarPlacePageAtom, 1);
+
       set(searchPendingAtom, false);
     })
     .finally(() => {
@@ -231,10 +226,6 @@ const placeNamePageEffet = atomEffect((get, set) => {
 
 export const polarPlacePageEffect = atomEffect((get, set) => {
   const page = get(polarPlacePageAtom);
-
-  if (page === 1) {
-    return;
-  }
 
   const searchQuery = get(searchQueryAtom);
   if (searchQuery === '') {
