@@ -122,10 +122,14 @@ jobs:
       - name: Update deployment
         env:
           COMMIT_MESSAGE: Update norgeskart5 image to ${{ needs.build.outputs.docker_tag }}
+        # env/atkv3-prod/norgeskart-test/norgeskart5-test-version (test.norgeskart.no)
+        # is deliberately NOT written here anymore — it's now a manually-pinned
+        # validation slot (e.g. for testing a branch before it merges to main)
+        # instead of auto-tracking every main push. Update it by hand when needed.
+        # echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-test/norgeskart5-test-version
         run: |
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
           echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-version
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-test/norgeskart5-test-version
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push

@@ -1,7 +1,9 @@
 import { Box } from '@kvib/react';
 import { PostHogErrorBoundary } from '@posthog/react';
 import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { Debug } from './debug/Debug.tsx';
+import { HelpPage } from './help/HelpPage.tsx';
 import './i18n';
 import { Layout } from './Layout.tsx';
 import { useMapSettings } from './map/mapHooks.ts';
@@ -33,7 +35,10 @@ export const App = () => {
       <RettIKartetDialog />
       <MapLegendDrawer />
       <Debug />
-      <Layout />
+      <Routes>
+        <Route path="/" element={<Layout />} />
+        <Route path="/hjelp" element={<HelpPage />} />
+      </Routes>
     </PostHogErrorBoundary>
   );
 };

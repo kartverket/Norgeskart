@@ -1,0 +1,375 @@
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
+  Box,
+  Card,
+  CardBody,
+  CardTitle,
+  Flex,
+  Header,
+  Heading,
+  Icon,
+  Link,
+  List,
+  ListItem,
+  SimpleGrid,
+  Stack,
+  Text,
+} from '@kvib/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { Contact, PrivacyPolicy } from '../help/PrivacyPolicyAndContact';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
+import { useIsMobileScreen } from '../shared/hooks';
+import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
+
+type TipsContentProps = {
+  content: ContentBlock[];
+};
+
+type IconName = 'edit' | 'map' | 'search' | 'share' | 'house';
+
+const categories: {
+  id: string;
+  title: string;
+  icon: IconName;
+}[] = [
+  {
+    id: 'propertyInfo',
+    title: 'tipsandtricks.categories.propertyInfo',
+    icon: 'house',
+  },
+
+  {
+    id: 'map',
+    title: 'tipsandtricks.categories.map',
+    icon: 'map',
+  },
+  {
+    id: 'drawing',
+    title: 'tipsandtricks.categories.drawing',
+    icon: 'edit',
+  },
+  {
+    id: 'search',
+    title: 'tipsandtricks.categories.search',
+    icon: 'search',
+  },
+  {
+    id: 'sharing',
+    title: 'tipsandtricks.categories.sharing',
+    icon: 'share',
+  },
+];
+
+const TipsAndTricksContent = ({ content }: TipsContentProps) => {
+  return (
+    <>
+      {content.map((block, i) => {
+        if (block.type === 'text') {
+          return (
+            <Text fontSize={{ base: 'sm', md: 'md' }} key={i} mb="2">
+              {block.text}
+            </Text>
+          );
+        }
+
+        if (block.type === 'list') {
+          return (
+            <List key={i} listStyleType="disc" mb="2" ml="4">
+              {block.items.map((item, j) => (
+                <ListItem key={j} fontSize={{ base: 'sm', md: 'md' }}>
+                  {item}
+                </ListItem>
+              ))}
+            </List>
+          );
+        }
+
+        if (block.type === 'link') {
+          return (
+            <Text fontSize={{ base: 'sm', md: 'md' }} key={i} mb="2">
+              <Link
+                colorPalette="green"
+                href={block.href}
+                size="md"
+                variant="underline"
+                external
+              >
+                {block.text}
+              </Link>
+            </Text>
+          );
+        }
+        return null;
+      })}
+    </>
+  );
+};
+
+const boxStyles = {
+  bg: 'white',
+  boxShadow: 'md',
+  borderRadius: 'lg',
+  mt: 4,
+  p: 5,
+};
+
+const loaders: Record<string, () => Promise<{ default: unknown }>> = {
+  nb: () => import('../locales/nb/tipsandtricks.json'),
+  nn: () => import('../locales/nn/tipsandtricks.json'),
+  en: () => import('../locales/en/tipsandtricks.json'),
+};
+
+export const HelpPage = () => {
+  const { i18n, t } = useTranslation();
+  const [tipsData, setTipsData] = useState<Tip[]>([]);
+  const navigate = useNavigate();
+  const isMobile = useIsMobileScreen();
+
+  useEffect(() => {
+    let cancelled = false;
+    const lang = (i18n.language || 'nb').split('-')[0];
+    const load = loaders[lang] || loaders.nb;
+
+    load()
+      .then((m) => {
+        if (cancelled) return;
+        const data = unwrapJsonModule<Tip[]>(m);
+        setTipsData(data);
+      })
+      .catch((err) => {
+        console.error('Feil ved lasting av tips:', err);
+        if (!cancelled) setTipsData([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [i18n.language]);
+
+  return (
+    <>
+      <Header
+        title="Norgeskart"
+        titleLink="/"
+        logoLink="https://kartverket.no"
+        gap={4}
+        showMenuButton={false}
+        content={
+          <Link
+            fontSize={{ base: 'sm', md: 'md' }}
+            onClick={() => navigate(-1)}
+          >
+            {t('helpPage.header.link')}
+          </Link>
+        }
+      />
+      <Box
+        minH="100vh"
+        bg="green.50"
+        px={{ base: 4, md: 8 }}
+        py={{ base: 2, md: 8 }}
+      >
+        <Box maxW="1120px" mx="auto">
+          <Heading size={{ base: '3xl', md: '5xl' }}>
+            {t('helpPage.title')}
+          </Heading>
+          <Box {...boxStyles}>
+            <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+              {t('tipsandtricks.heading')}
+            </Heading>
+            <Text mt={1} fontSize={{ base: 'sm', md: 'md' }}>
+              {t('tipsandtricks.description')}
+            </Text>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 2 }} gap={4} mt={4}>
+              {categories.map((category) => {
+                const items = tipsData.filter(
+                  (tip) => tip.category === category.id,
+                );
+
+                if (!items.length) return null;
+
+                return (
+                  <Card key={category.id} borderRadius={10} boxShadow="lg">
+                    <CardBody>
+                      <Flex align="center" gap={2}>
+                        <Icon icon={category.icon} />
+                        <CardTitle>
+                          {t(`tipsandtricks.categories.${category.id}`)}
+                        </CardTitle>
+                      </Flex>
+
+                      <Accordion mt={2} collapsible>
+                        {items.map((tip) => (
+                          <AccordionItem key={tip.title} value={tip.title}>
+                            <AccordionItemTrigger
+                              fontSize={{ base: 'sm', md: 'md' }}
+                            >
+                              {tip.title}
+                            </AccordionItemTrigger>
+
+                            <AccordionItemContent>
+                              <TipsAndTricksContent content={tip.content} />
+                            </AccordionItemContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                    </CardBody>
+                  </Card>
+                );
+              })}
+            </SimpleGrid>
+          </Box>
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={2}>
+            <Box {...boxStyles}>
+              <PrivacyPolicy />
+            </Box>
+            <Box {...boxStyles}>
+              <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+                {t('helpPage.termsOfUse.heading')}
+              </Heading>
+              <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
+                {t('helpPage.termsOfUse.text')}
+              </Text>
+              <Link
+                mt={2}
+                colorPalette="green"
+                href="https://www.kartverket.no/api-og-data/vilkar-for-bruk"
+                external
+                target="_blank"
+                variant="underline"
+              >
+                kartverket.no
+              </Link>
+            </Box>
+          </SimpleGrid>
+          <Box {...boxStyles}>
+            <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+              {t('about.heading')}
+            </Heading>
+            <Text fontSize={{ base: 'sm', md: 'md' }}>
+              {' '}
+              {t('about.textone')}
+            </Text>
+            <Text fontSize={{ base: 'sm', md: 'md' }}>
+              {t('about.texttwo')}{' '}
+            </Text>
+            <Text fontSize={{ base: 'sm', md: 'md' }}>
+              {t('about.textthree')}
+            </Text>
+            <Text marginTop="4" textStyle="xs" color="fg.muted">
+              {t('about.version')}: {__COMMIT_HASH__} | {t('about.buildDate')}:{' '}
+              {new Date(__BUILD_DATE__).toLocaleDateString()}
+            </Text>
+          </Box>
+
+          <Box {...boxStyles}>
+            <Contact />
+          </Box>
+
+          <Box {...boxStyles}>
+            <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+              {t('privacyAndContact.status.heading')}
+            </Heading>
+            <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
+              {t('privacyAndContact.status.infoText')}
+            </Text>
+            <Link
+              colorPalette="green"
+              href="https://status.kartverket.no/"
+              external={true}
+              target="_blank"
+              variant="underline"
+              mt={2}
+              textStyle="md"
+            >
+              status.kartverket.no
+            </Link>
+          </Box>
+
+          {isMobile && (
+            <Box {...boxStyles}>
+              <Heading mb={2} size="2xl" fontWeight="bold">
+                {t('languageSelector.chooseLanguage')}
+              </Heading>
+              <LanguageSwitcher />
+            </Box>
+          )}
+
+          <Box {...boxStyles}>
+            <Heading size={{ base: '2xl', md: '3xl' }} fontWeight="bold">
+              {t('helpPage.notFound.heading')}
+            </Heading>
+            <Text mt={2} fontSize={{ base: 'sm', md: 'md' }}>
+              {t('helpPage.notFound.description')}
+            </Text>
+            <Stack gap={5} mt={4}>
+              <Box>
+                <Heading>
+                  {t('helpPage.notFound.propertyRegisterHeading')}
+                </Heading>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  {t('helpPage.notFound.propertyRegisterDescription')}
+                </Text>
+                <Link
+                  mt={4}
+                  target="_blank"
+                  external
+                  href="https://eiendomsregisteret.kartverket.no/"
+                >
+                  {t('helpPage.notFound.propertyRegisterButton')}
+                </Link>
+              </Box>
+              <Box>
+                <Heading>Norge i bilder</Heading>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  {t('helpPage.notFound.norgeibilderDescription')}
+                </Text>
+                <Link
+                  mt={4}
+                  target="_blank"
+                  external
+                  href="http://www.norgeibilder.no/"
+                >
+                  {t('helpPage.notFound.norgeibilderButton')}
+                </Link>
+              </Box>
+              <Box>
+                <Heading>Høydedata.no</Heading>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  {t('helpPage.notFound.hoydedataDescription')}
+                </Text>
+                <Link
+                  mt={4}
+                  target="_blank"
+                  external
+                  href="https://hoydedata.no/"
+                >
+                  {t('helpPage.notFound.hoydedataButton')}
+                </Link>
+              </Box>
+              <Box>
+                <Heading>Rett i kartet</Heading>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  {t('helpPage.notFound.rettikartetDescription')}
+                </Text>
+                <Link
+                  target="_blank"
+                  external
+                  href="https://rettikartet.no/"
+                  mt={4}
+                >
+                  {t('helpPage.notFound.rettikartetButton')}
+                </Link>
+              </Box>
+            </Stack>
+          </Box>
+        </Box>
+      </Box>
+    </>
+  );
+};
