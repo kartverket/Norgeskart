@@ -19,4 +19,10 @@ export const topoCacheBackgroundLayers: BackgroundLayer[] = [
       env.layerProviderParameters.topoCache.baseUrl +
       '/legend/topo-{scale}.png',
   },
+  {
+    type: 'WMTS',
+    layerName: 'norgeskart_gray',
+    wmtsLayerName: 'norgeskart_gray',
+    provider: TopoCacheProvider,
+  },
 ];

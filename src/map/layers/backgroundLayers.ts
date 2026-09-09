@@ -2,10 +2,10 @@ export type WMSLayerName = 'oceanicelectronic' | 'sjokartraster';
 export type VectorTileLayerName = 'nautical-background';
 export type EmptyLayerName = 'empty';
 export type WMTSLayerName =
-  | 'topograatone'
   | 'toporaster'
   | 'topoProd'
   | 'norgeskart_standard'
+  | 'norgeskart_gray'
   | 'Nibcache_web_mercator_v2'
   | 'Nibcache_UTM32_EUREF89_v2'
   | 'Nibcache_UTM33_EUREF89_v2'
@@ -21,7 +21,7 @@ export const mapLegacyBackgroundLayerId = (
 ): BackgroundLayerName | null => {
   const legacyIdMap: Record<string, BackgroundLayerName> = {
     '1001': 'norgeskart_standard',
-    '1003': 'topograatone',
+    '1003': 'norgeskart_gray',
     '1004': 'toporaster',
     '1002': 'Nibcache_UTM33_EUREF89_v2',
     '1009': 'oceanicelectronic',
