@@ -88,10 +88,18 @@ export const getWMTSLayer = async (
   }
 };
 
-export const getVectorTileLayer = (layerConfig: VectorTileBackgroundLayer) => {
+export const getVectorTileLayer = async (
+  layerConfig: VectorTileBackgroundLayer,
+) => {
+  // resolveStyle builds the style from a fetch + reconcile against the tile
+  // server; without it MapLibre loads styleUrl itself.
+  const style = layerConfig.resolveStyle
+    ? await layerConfig.resolveStyle()
+    : layerConfig.styleUrl;
+
   const layer = new MapLibreLayer({
     mapLibreOptions: {
-      style: layerConfig.styleUrl,
+      style,
     },
     properties: {
       id: `bg.${layerConfig.layerName}`,
@@ -161,7 +169,7 @@ export const getLayerFromConfig = async (
     return await getWMTSLayer(layerConfig, projection);
   }
   if (layerConfig.type === 'VectorTile') {
-    return getVectorTileLayer(layerConfig);
+    return await getVectorTileLayer(layerConfig);
   }
   if (layerConfig.type === 'WMS') {
     return getWMSLayer(layerConfig);

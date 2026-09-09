@@ -6,6 +6,7 @@ import {
   WMSLayerName,
   WMTSLayerName,
 } from '../../backgroundLayers';
+import { MapLibreStyleObject } from './topoVectorStyle';
 
 export type LayerType = 'WMTS' | 'WMS' | 'VectorTile' | 'Empty';
 
@@ -32,6 +33,9 @@ export type VectorTileBackgroundLayer = BackgroundLayerBase & {
   type: 'VectorTile';
   layerName: VectorTileLayerName;
   styleUrl: string;
+  // When set, the MapLibre style is built at load time (fetch + reconcile
+  // against the tile server) instead of handing MapLibre the styleUrl directly.
+  resolveStyle?: () => Promise<MapLibreStyleObject>;
 };
 
 export type WMSBackgroundLayer = BackgroundLayerBase & {
