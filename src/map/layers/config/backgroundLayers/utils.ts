@@ -62,7 +62,7 @@ export const getWMTSLayer = async (
 
     if (!layerOptions) {
       throw new Error(
-        `Layer ${layerConfig.layerName} not found in capabilities`,
+        `Layer ${layerConfig.wmtsLayerName ?? layerConfig.layerName} not found in capabilities`,
       );
     }
 

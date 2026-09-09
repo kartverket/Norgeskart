@@ -88,8 +88,7 @@ const LOCAL_ENV: Env = {
       ],
     },
     topoCache: {
-      // baseUrl: 'http://localhost:8085',
-      baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket-intern.cloud',
+      baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
     },
   },
   envName: 'local',
@@ -150,7 +149,7 @@ const DEV_ENV: Env = {
       ],
     },
     topoCache: {
-      baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket.cloud',
+      baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
     },
   },
   envName: 'dev',
@@ -211,7 +210,7 @@ const PROD_ENV: Env = {
       ],
     },
     topoCache: {
-      baseUrl: 'https://tnt-mapproxy.atkv3-prod.kartverket.cloud',
+      baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
     },
   },
   envName: 'prod',

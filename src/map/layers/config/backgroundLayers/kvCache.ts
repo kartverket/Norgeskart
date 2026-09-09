@@ -10,6 +10,5 @@ const KvCacheProvider: LayerProvider = {
 };
 
 export const KvCacheBackgroundLayers: BackgroundLayer[] = [
-  { type: 'WMTS', layerName: 'topograatone', provider: KvCacheProvider },
   { type: 'WMTS', layerName: 'toporaster', provider: KvCacheProvider },
 ];

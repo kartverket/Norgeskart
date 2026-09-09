@@ -6,17 +6,23 @@ const env = getEnv();
 const TopoCacheProvider: LayerProvider = {
   capabilitiesUrl:
     env.layerProviderParameters.topoCache.baseUrl +
-    '/wmts/1.0.0/WMTSCapabilities.xml',
+    '/service?SERVICE=WMTS&REQUEST=GetCapabilities',
 };
 
 export const topoCacheBackgroundLayers: BackgroundLayer[] = [
   {
     type: 'WMTS',
     layerName: 'norgeskart_standard',
-    wmtsLayerName: 'topo',
+    wmtsLayerName: 'norgeskart_standard',
     provider: TopoCacheProvider,
     legendUrl:
       env.layerProviderParameters.topoCache.baseUrl +
       '/legend/topo-{scale}.png',
+  },
+  {
+    type: 'WMTS',
+    layerName: 'norgeskart_gray',
+    wmtsLayerName: 'norgeskart_gray',
+    provider: TopoCacheProvider,
   },
 ];

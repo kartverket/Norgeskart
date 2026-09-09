@@ -184,7 +184,7 @@ const buildBackgroundPrintLayer = (
       customParams: { TRANSPARENT: 'true' },
       style: 'default',
       imageFormat: 'image/png',
-      layer: 'topo',
+      layer: 'norgeskart_standard',
       opacity: 1,
       type: 'WMTS',
       dimensions: null,

@@ -22,8 +22,8 @@ import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
 
 export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
-export const DEFAULT_ZOOM_LEVEL = 3;
-export const DEFAULT_CENTER = [396722, 7197860]; // Center in EPSG:25833
+export const DEFAULT_ZOOM_LEVEL = 4;
+export const DEFAULT_CENTER = [356102, 7126098]; // Center in EPSG:25833
 export const DEFAULT_ROTATION = 0;
 
 export const currentProjectionAtom = atom<ProjectionIdentifier>(
