@@ -16,7 +16,10 @@ type layerProviderParameters = {
     baseUrl: string;
   };
   topoQgis: {
-    baseUrls: string[];
+    clusterDomain: string;
+  };
+  topoQgisGraa: {
+    clusterDomain: string;
   };
   topoCache: {
     baseUrl: string;
@@ -57,35 +60,10 @@ const LOCAL_ENV: Env = {
       baseUrl: 'https://geodata.npolar.no',
     },
     topoQgis: {
-      // baseUrls: ['http://localhost:8082'],
-      baseUrls: [
-        'https://qlr01-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr02-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr03-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr05-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr06-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr07-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr08-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr14-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr16-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr01b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04c-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr02b-qgis.atkv3-prod.kartverket-intern.cloud',
-      ],
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
+    },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
     },
     topoCache: {
       baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
@@ -119,34 +97,10 @@ const DEV_ENV: Env = {
       baseUrl: 'https://geodata.npolar.no',
     },
     topoQgis: {
-      baseUrls: [
-        'https://qlr01-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr02-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr03-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr05-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr06-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr07-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr08-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr14-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr16-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr01b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04c-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr02b-qgis.atkv3-prod.kartverket-intern.cloud',
-      ],
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
+    },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
     },
     topoCache: {
       baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
@@ -180,34 +134,10 @@ const PROD_ENV: Env = {
       baseUrl: 'https://geodata.npolar.no',
     },
     topoQgis: {
-      baseUrls: [
-        'https://qlr01-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr02-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr03-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr05-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr06-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr07-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr08-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr14-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr16-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr01b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr10b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr13b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr09b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr11b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr12b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr15b-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr04c-qgis.atkv3-prod.kartverket-intern.cloud',
-        'https://qlr02b-qgis.atkv3-prod.kartverket-intern.cloud',
-      ],
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
+    },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
     },
     topoCache: {
       baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
