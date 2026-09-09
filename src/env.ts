@@ -66,7 +66,7 @@ const LOCAL_ENV: Env = {
       clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
     },
     topoQgisGraa: {
-      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
     },
     topoCache: {
       // baseUrl: 'http://localhost:8085',
