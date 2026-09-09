@@ -1,6 +1,6 @@
-import { Image } from '@kvib/react';
+import { Image, VStack } from '@kvib/react';
 import {
-  getEffectiveLegendImageUrl,
+  getEffectiveLegendImageUrls,
   ThemeLayerConfig,
   ThemeLayerDefinition,
 } from '../layers/themeLayerConfigApi';
@@ -17,12 +17,18 @@ export const ImageLegend = ({
     return null;
   }
 
-  const imageUrl = getEffectiveLegendImageUrl(
+  const imageUrls = getEffectiveLegendImageUrls(
     config,
     layer.id as ThemeLayerName,
   );
-  if (!imageUrl) {
+  if (!imageUrls || imageUrls.length === 0) {
     return null;
   }
-  return <Image src={imageUrl} />;
+  return (
+    <VStack align="flex-start" gap={1}>
+      {imageUrls.map((url) => (
+        <Image key={url} src={url} />
+      ))}
+    </VStack>
+  );
 };
