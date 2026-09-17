@@ -1,4 +1,6 @@
 import type { MapOptions } from 'maplibre-gl';
+import { getWidth, getHeight } from 'ol/extent';
+import { get as getOlProjection } from 'ol/proj';
 import { getEnv } from '../../../../env';
 
 // Resolved MapLibre style object (the non-URL half of MapOptions['style']).
@@ -14,6 +16,34 @@ export type MapLibreStyleObject = Exclude<
 
 const RASTER_FORMATS = ['png', 'webp', 'jpg', 'jpeg'];
 const STATIC_STYLE_PATH = '/styles/topo-vector.json';
+
+// MapLibre always reads zoom via the global Web Mercator pyramid, but OL's
+// EPSG:25833 view uses Kartverket's national-grid pyramid (see euref89.ts),
+// whose zoom 0 already frames Norway rather than the globe. Passed straight
+// through, OL zoom under-zooms MapLibre by ~1.8 levels, dropping minzoom-
+// gated layers like sideroads. ref_lat=62 matches qlr_to_maplibre.py's
+// --ref-lat, which the vendored style's minzoom/maxzoom were built against.
+const WEB_MERCATOR_ZOOM0_RESOLUTION = 156543.03392804097;
+const STYLE_REF_LAT_DEG = 62;
+
+let cachedZoomOffset: number | undefined;
+
+export const resolveTopoVectorZoomOffset = (): number => {
+  if (cachedZoomOffset !== undefined) return cachedZoomOffset;
+  const extent = getOlProjection('EPSG:25833')?.getExtent();
+  const gridZoom0Resolution = extent
+    ? Math.max(getWidth(extent), getHeight(extent)) / 256
+    : WEB_MERCATOR_ZOOM0_RESOLUTION;
+  const refLatRad = (STYLE_REF_LAT_DEG * Math.PI) / 180;
+  cachedZoomOffset = Math.log2(
+    (WEB_MERCATOR_ZOOM0_RESOLUTION * Math.cos(refLatRad)) /
+      gridZoom0Resolution,
+  );
+  return cachedZoomOffset;
+};
+
+export const translateTopoVectorZoom = (olZoom: number): number =>
+  olZoom + resolveTopoVectorZoomOffset();
 
 interface MartinCatalog {
   tiles?: Record<string, unknown>;

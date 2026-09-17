@@ -1,4 +1,7 @@
-import { resolveTopoVectorStyle } from './topoVectorStyle';
+import {
+  resolveTopoVectorStyle,
+  translateTopoVectorZoom,
+} from './topoVectorStyle';
 import { VectorTileBackgroundLayer } from './types';
 
 export const topoVectorBackgroundLayers: VectorTileBackgroundLayer[] = [
@@ -8,5 +11,6 @@ export const topoVectorBackgroundLayers: VectorTileBackgroundLayer[] = [
     requiredProjection: 'EPSG:25833',
     styleUrl: window.location.origin + '/styles/topo-vector.json',
     resolveStyle: resolveTopoVectorStyle,
+    translateZoom: translateTopoVectorZoom,
   },
 ];

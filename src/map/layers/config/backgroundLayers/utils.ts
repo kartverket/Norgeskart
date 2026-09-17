@@ -104,6 +104,7 @@ export const getVectorTileLayer = async (
     properties: {
       id: `bg.${layerConfig.layerName}`,
       isVectorTile: true,
+      translateZoom: layerConfig.translateZoom,
     },
   });
 

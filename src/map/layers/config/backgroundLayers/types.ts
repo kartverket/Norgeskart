@@ -36,6 +36,9 @@ export type VectorTileBackgroundLayer = BackgroundLayerBase & {
   // When set, the MapLibre style is built at load time (fetch + reconcile
   // against the tile server) instead of handing MapLibre the styleUrl directly.
   resolveStyle?: () => Promise<MapLibreStyleObject>;
+  // Converts OL zoom to MapLibre-equivalent zoom for non-3857 projections,
+  // whose zoom pyramid differs from MapLibre's. See topoVectorStyle.ts.
+  translateZoom?: (olZoom: number) => number;
 };
 
 export type WMSBackgroundLayer = BackgroundLayerBase & {
