@@ -9,12 +9,17 @@ import {
 import { currentProjectionAtom, mapAtom } from '../../../atoms';
 import { ProjectionIdentifier } from '../../../projections/types';
 import { preNauticalProjectionAtom } from '../../atoms';
-import { BackgroundLayerName, WMTSLayerName } from '../../backgroundLayers';
+import {
+  BackgroundLayerName,
+  isVectorTileLayer,
+  WMTSLayerName,
+} from '../../backgroundLayers';
 import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
 import { npolarBackgroundLayers } from './npolar';
 import { topoCacheBackgroundLayers } from './topoCache';
+import { topoVectorBackgroundLayers } from './topoVector';
 import { EmptyBackgroundLayer } from './types';
 import {
   clearBackgroundLayer,
@@ -35,6 +40,7 @@ export const allConfiguredBackgroundLayers = [
   ...npolarBackgroundLayers,
   ...nauticalBackgroundLayers,
   ...topoCacheBackgroundLayers,
+  ...topoVectorBackgroundLayers,
 ];
 
 const getDefaultBackgroundLayer = (): BackgroundLayerName => {
@@ -89,7 +95,7 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
           layer = await getWMTSLayer(layerConfig, targetProjection);
           break;
         case 'VectorTile':
-          layer = getVectorTileLayer(layerConfig);
+          layer = await getVectorTileLayer(layerConfig);
           break;
         case 'WMS':
           layer = getWMSLayer(layerConfig);
@@ -106,7 +112,7 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
           layerConfig.requiredProjection !== currentProjection
         ) {
           set(currentProjectionAtom, layerConfig.requiredProjection);
-          if (layerConfig.layerName === 'nautical-background') {
+          if (isVectorTileLayer(layerConfig.layerName)) {
             store.set(
               preNauticalProjectionAtom,
               currentProjection as ProjectionIdentifier,
@@ -114,7 +120,7 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
           }
         } else if (
           preNauticalProjection &&
-          layerConfig.layerName !== 'nautical-background'
+          !isVectorTileLayer(layerConfig.layerName)
         ) {
           set(currentProjectionAtom, preNauticalProjection);
           store.set(preNauticalProjectionAtom, null);

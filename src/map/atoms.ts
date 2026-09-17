@@ -87,12 +87,12 @@ export const getBackgroundLayerImageName = (
       return 'empty';
     case 'nautical-background':
       return 'sjokartraster'; // Use nautical chart image for nautical background for now
+    case 'topo-vector':
+      return 'norgeskart_standard'; // TODO: dedicated thumbnail; reuse the topo raster one for now
     case 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833':
       return 'svalbard';
     case 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833':
       return 'jan_mayen';
-    case 'empty':
-      return 'empty';
     default:
       return layerName;
   }
