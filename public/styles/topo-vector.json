@@ -4188,7 +4188,7 @@
       "source": "n2000_arealdekke_flate",
       "source-layer": "arealdekke_flate",
       "paint": {
-        "fill-color": "rgba(190,178,151,0.28)"
+        "fill-pattern": "spr_b9cec8ad16"
       },
       "filter": [
         "==",
@@ -4277,7 +4277,7 @@
       "source": "n1000_arealdekke_flate",
       "source-layer": "arealdekke_flate",
       "paint": {
-        "fill-color": "rgba(190,207,80,0.28)"
+        "fill-pattern": "spr_253c0aafcf"
       },
       "filter": [
         "==",
@@ -4366,7 +4366,7 @@
       "source": "n500_arealdekke_flate",
       "source-layer": "arealdekke_flate",
       "paint": {
-        "fill-color": "rgba(164,113,88,0.28)"
+        "fill-pattern": "spr_118194c368"
       },
       "filter": [
         "==",
@@ -4568,7 +4568,7 @@
       "source": "n250_arealdekke_flate",
       "source-layer": "arealdekke_flate",
       "paint": {
-        "fill-color": "rgba(255,158,23,0.28)"
+        "fill-pattern": "spr_42a0394723"
       },
       "filter": [
         "==",
@@ -4836,7 +4836,7 @@
       "source": "n100_arealdekke_flate",
       "source-layer": "arealdekke_flate",
       "paint": {
-        "fill-color": "rgba(183,72,75,0.28)"
+        "fill-pattern": "spr_2dc321222e"
       },
       "filter": [
         "==",
@@ -5260,7 +5260,7 @@
       "source": "n50_arealdekke_flate",
       "source-layer": "arealdekke_flate",
       "paint": {
-        "fill-color": "rgba(145,82,45,0.28)"
+        "fill-pattern": "spr_99bd671866"
       },
       "filter": [
         "==",
@@ -5411,7 +5411,7 @@
       "source": "fkb_ar5_tvsm_flate",
       "source-layer": "ar5_tvsm_flate",
       "paint": {
-        "fill-color": "rgba(133,182,111,0.28)"
+        "fill-pattern": "spr_4957e7606c"
       },
       "filter": [
         "==",
@@ -6530,6 +6530,43 @@
       }
     },
     {
+      "id": "lag10_3_N250_Høyde_senterlinje_6_1",
+      "type": "symbol",
+      "source": "N250_Høyde_senterlinje",
+      "source-layer": "N250_Høyde_senterlinje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_1fec7fd2a3",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 5.0
+      },
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "objtype"
+          ],
+          "Forsenkningskurve"
+        ],
+        [
+          "==",
+          [
+            "get",
+            "medium"
+          ],
+          "T"
+        ]
+      ],
+      "minzoom": 10,
+      "maxzoom": 12,
+      "metadata": {
+        "qlr:source": "lag10_hoydekurve.qlr · n250_L_Forsenkningskurve_terreng"
+      }
+    },
+    {
       "id": "lag10_2_N100_Høyde_senterlinje_0_0",
       "type": "line",
       "source": "N100_Høyde_senterlinje",
@@ -6872,6 +6909,43 @@
       "layout": {
         "line-cap": "round",
         "line-join": "round"
+      },
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "objtype"
+          ],
+          "Forsenkningskurve"
+        ],
+        [
+          "==",
+          [
+            "get",
+            "medium"
+          ],
+          "T"
+        ]
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag10_hoydekurve.qlr · n50_L_Forsenkningskurve_terreng"
+      }
+    },
+    {
+      "id": "lag10_1_N50_Høyde_senterlinje_5_1",
+      "type": "symbol",
+      "source": "N50_Høyde_senterlinje",
+      "source-layer": "N50_Høyde_senterlinje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_6b78a2bc0e",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 5.0
       },
       "filter": [
         "all",
@@ -26495,6 +26569,37 @@
       }
     },
     {
+      "id": "lag21_2_bygnanlegg_linje_0_1",
+      "type": "symbol",
+      "source": "n50_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_c4efd657e5",
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          2.0,
+          0.0
+        ],
+        "symbol-placement": "line",
+        "symbol-spacing": 10.0,
+        "icon-rotation-alignment": "map"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "Rørgate"
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag21_bygning_anlegg.qlr · Rørgate"
+      }
+    },
+    {
       "id": "lag21_2_bygnanlegg_linje_1_0",
       "type": "line",
       "source": "n50_bygnanlegg_linje",
@@ -26657,6 +26762,60 @@
       }
     },
     {
+      "id": "lag21_2_bygnanlegg_linje_6_1",
+      "type": "symbol",
+      "source": "n50_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_cb1a673fa0",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 11.3,
+        "icon-rotation-alignment": "map"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "Skytebaneinnretning"
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag21_bygning_anlegg.qlr · Skytebaneinnretning"
+      }
+    },
+    {
+      "id": "lag21_2_bygnanlegg_linje_6_2",
+      "type": "symbol",
+      "source": "n50_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_77fb1bd58d",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 11.3,
+        "icon-rotation-alignment": "map"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "Skytebaneinnretning"
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag21_bygning_anlegg.qlr · Skytebaneinnretning"
+      }
+    },
+    {
       "id": "lag21_2_bygnanlegg_linje_7_0",
       "type": "line",
       "source": "n50_bygnanlegg_linje",
@@ -26725,6 +26884,33 @@
       "layout": {
         "line-cap": "butt",
         "line-join": "round"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "Reingjerde"
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag21_bygning_anlegg.qlr · Reingjerde"
+      }
+    },
+    {
+      "id": "lag21_2_bygnanlegg_linje_8_1",
+      "type": "symbol",
+      "source": "n50_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_fbd824297d",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 40.0,
+        "icon-rotation-alignment": "map"
       },
       "filter": [
         "==",
@@ -27777,6 +27963,32 @@
       "layout": {
         "line-cap": "butt",
         "line-join": "round"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "Vegbom"
+      ],
+      "minzoom": 16,
+      "metadata": {
+        "qlr:source": "lag21_bygning_anlegg.qlr · Vegbom"
+      }
+    },
+    {
+      "id": "lag21_0_bygnanlegg_linje_4_1",
+      "type": "symbol",
+      "source": "fkb_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_352b6e48ff",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 11.3,
+        "icon-rotation-alignment": "map"
       },
       "filter": [
         "==",
@@ -41792,6 +42004,32 @@
       }
     },
     {
+      "id": "lag25_6_bygnanlegg_linje_0_1",
+      "type": "symbol",
+      "source": "n1000_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_2dc2c437bb",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 50.0
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "LuftledningLH"
+      ],
+      "minzoom": 8,
+      "maxzoom": 10,
+      "metadata": {
+        "qlr:source": "lag25_kraftlinje_taubane.qlr · bygnanlegg_linje"
+      }
+    },
+    {
       "id": "lag25_5_bygnanlegg_linje_0_0",
       "type": "line",
       "source": "n500_bygnanlegg_linje",
@@ -41803,6 +42041,32 @@
       "layout": {
         "line-cap": "butt",
         "line-join": "bevel"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "LuftledningLH"
+      ],
+      "minzoom": 9,
+      "maxzoom": 11,
+      "metadata": {
+        "qlr:source": "lag25_kraftlinje_taubane.qlr · bygnanlegg_linje"
+      }
+    },
+    {
+      "id": "lag25_5_bygnanlegg_linje_0_1",
+      "type": "symbol",
+      "source": "n500_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_2dc2c437bb",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 50.0
       },
       "filter": [
         "==",
@@ -41846,6 +42110,32 @@
       }
     },
     {
+      "id": "lag25_4_bygnanlegg_linje_0_1",
+      "type": "symbol",
+      "source": "n250_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_2dc2c437bb",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 50.0
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "LuftledningLH"
+      ],
+      "minzoom": 10,
+      "maxzoom": 12,
+      "metadata": {
+        "qlr:source": "lag25_kraftlinje_taubane.qlr · bygnanlegg_linje"
+      }
+    },
+    {
       "id": "lag25_3_bygnanlegg_linje_0_0",
       "type": "line",
       "source": "n100_bygnanlegg_linje",
@@ -41857,6 +42147,32 @@
       "layout": {
         "line-cap": "square",
         "line-join": "bevel"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "LuftledningLH"
+      ],
+      "minzoom": 11,
+      "maxzoom": 13,
+      "metadata": {
+        "qlr:source": "lag25_kraftlinje_taubane.qlr · bygnanlegg_linje"
+      }
+    },
+    {
+      "id": "lag25_3_bygnanlegg_linje_0_1",
+      "type": "symbol",
+      "source": "n100_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_2dc2c437bb",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 50.0
       },
       "filter": [
         "==",
@@ -41911,6 +42227,43 @@
       }
     },
     {
+      "id": "lag25_2_bygnanlegg_linje_0_1",
+      "type": "symbol",
+      "source": "n50_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_2dc2c437bb",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 50.0
+      },
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "objtype"
+          ],
+          "LuftledningLH"
+        ],
+        [
+          "==",
+          [
+            "get",
+            "fler_linjer"
+          ],
+          "1"
+        ]
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag25_kraftlinje_taubane.qlr · n50_L_kraftledning_enkel_linje"
+      }
+    },
+    {
       "id": "lag25_2_bygnanlegg_linje_1_0",
       "type": "line",
       "source": "n50_bygnanlegg_linje",
@@ -41922,6 +42275,44 @@
       "layout": {
         "line-cap": "square",
         "line-join": "bevel"
+      },
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "objtype"
+          ],
+          "LuftledningLH"
+        ],
+        [
+          "==",
+          [
+            "get",
+            "fler_linjer"
+          ],
+          "2"
+        ]
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag25_kraftlinje_taubane.qlr · n50_L_kraftledning_flere_linjer"
+      }
+    },
+    {
+      "id": "lag25_2_bygnanlegg_linje_1_1",
+      "type": "symbol",
+      "source": "n50_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_a1016ff668",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 50.0,
+        "icon-rotation-alignment": "map"
       },
       "filter": [
         "all",
@@ -42003,6 +42394,33 @@
       }
     },
     {
+      "id": "lag25_2_bygnanlegg_linje_3_1",
+      "type": "symbol",
+      "source": "n50_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_ebe3f746ec",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 15.0,
+        "icon-rotation-alignment": "map"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "Taubane"
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag25_kraftlinje_taubane.qlr · Taubane"
+      }
+    },
+    {
       "id": "lag25_2_bygnanlegg_linje_4_0",
       "type": "line",
       "source": "n50_bygnanlegg_linje",
@@ -42014,6 +42432,33 @@
       "layout": {
         "line-cap": "butt",
         "line-join": "round"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "objtype"
+        ],
+        "Skitrekk"
+      ],
+      "minzoom": 12,
+      "maxzoom": 15,
+      "metadata": {
+        "qlr:source": "lag25_kraftlinje_taubane.qlr · Skitrekk"
+      }
+    },
+    {
+      "id": "lag25_2_bygnanlegg_linje_4_1",
+      "type": "symbol",
+      "source": "n50_bygnanlegg_linje",
+      "source-layer": "bygnanlegg_linje",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_406ebcfb55",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 15.0,
+        "icon-rotation-alignment": "map"
       },
       "filter": [
         "==",
@@ -44161,6 +44606,32 @@
     },
     {
       "id": "lag31_8_s250_teknisksituasjon_l_0_0",
+      "type": "symbol",
+      "source": "s250_teknisksituasjon_l",
+      "source-layer": "s250_teknisksituasjon_l",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_2dc2c437bb",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 50.0
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "OBJTYPE"
+        ],
+        "LuftledningHSP"
+      ],
+      "minzoom": 8,
+      "maxzoom": 11,
+      "metadata": {
+        "qlr:source": "lag31_Svalbard.qlr · s250_L_kraftlinje"
+      }
+    },
+    {
+      "id": "lag31_8_s250_teknisksituasjon_l_0_1",
       "type": "line",
       "source": "s250_teknisksituasjon_l",
       "source-layer": "s250_teknisksituasjon_l",
@@ -44225,6 +44696,33 @@
       "layout": {
         "line-cap": "square",
         "line-join": "bevel"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "OBJTYPE"
+        ],
+        "Taubane"
+      ],
+      "minzoom": 8,
+      "maxzoom": 11,
+      "metadata": {
+        "qlr:source": "lag31_Svalbard.qlr · s250_L_taubane"
+      }
+    },
+    {
+      "id": "lag31_8_s250_teknisksituasjon_l_2_1",
+      "type": "symbol",
+      "source": "s250_teknisksituasjon_l",
+      "source-layer": "s250_teknisksituasjon_l",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_91aac79545",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 15.0,
+        "icon-rotation-alignment": "map"
       },
       "filter": [
         "==",
@@ -44402,6 +44900,31 @@
       }
     },
     {
+      "id": "lag31_7_s100_teknisksituasjon_l_0_1",
+      "type": "symbol",
+      "source": "s100_teknisksituasjon_l",
+      "source-layer": "s100_teknisksituasjon_l",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_e9eb0a9030",
+        "symbol-placement": "line",
+        "icon-rotation-alignment": "map",
+        "symbol-spacing": 50.0
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "OBJTYPE"
+        ],
+        "LuftledningHSP"
+      ],
+      "minzoom": 10,
+      "metadata": {
+        "qlr:source": "lag31_Svalbard.qlr · s100_L_kraftlinje"
+      }
+    },
+    {
       "id": "lag31_7_s100_teknisksituasjon_l_1_0",
       "type": "line",
       "source": "s100_teknisksituasjon_l",
@@ -44439,6 +44962,32 @@
       "layout": {
         "line-cap": "square",
         "line-join": "bevel"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "OBJTYPE"
+        ],
+        "Taubane"
+      ],
+      "minzoom": 10,
+      "metadata": {
+        "qlr:source": "lag31_Svalbard.qlr · s100_L_taubane"
+      }
+    },
+    {
+      "id": "lag31_7_s100_teknisksituasjon_l_2_1",
+      "type": "symbol",
+      "source": "s100_teknisksituasjon_l",
+      "source-layer": "s100_teknisksituasjon_l",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_91aac79545",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 15.0,
+        "icon-rotation-alignment": "map"
       },
       "filter": [
         "==",
@@ -44543,6 +45092,32 @@
       "layout": {
         "line-cap": "square",
         "line-join": "bevel"
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "OBJTYPE"
+        ],
+        "Rørgate"
+      ],
+      "minzoom": 10,
+      "metadata": {
+        "qlr:source": "lag31_Svalbard.qlr · s100_L_rorgate"
+      }
+    },
+    {
+      "id": "lag31_7_s100_teknisksituasjon_l_6_1",
+      "type": "symbol",
+      "source": "s100_teknisksituasjon_l",
+      "source-layer": "s100_teknisksituasjon_l",
+      "paint": {},
+      "layout": {
+        "icon-image": "spr_c4efd657e5",
+        "icon-allow-overlap": true,
+        "symbol-placement": "line",
+        "symbol-spacing": 10.0,
+        "icon-rotation-alignment": "map"
       },
       "filter": [
         "==",
