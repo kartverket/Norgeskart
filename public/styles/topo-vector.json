@@ -36954,7 +36954,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_6dbb3950b9",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -1.5
+        ]
       },
       "filter": [
         "==",
@@ -36978,7 +36982,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_5681decbd0",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -1.5
+        ]
       },
       "filter": [
         "==",
@@ -37363,7 +37371,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_c7272e3c78",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -1.5
+        ]
       },
       "filter": [
         "==",
@@ -37387,7 +37399,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_8e129623d2",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -2.3
+        ]
       },
       "filter": [
         "==",
@@ -38141,7 +38157,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_c7272e3c78",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -1.5
+        ]
       },
       "filter": [
         "==",
@@ -38165,7 +38185,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_8e129623d2",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -2.3
+        ]
       },
       "filter": [
         "==",
@@ -39372,7 +39396,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_c7272e3c78",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -1.5
+        ]
       },
       "filter": [
         "==",
@@ -40446,7 +40474,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_504714f488",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -1.5
+        ]
       },
       "filter": [
         "all",
@@ -40521,7 +40553,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_935296f75a",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -2.3
+        ]
       },
       "filter": [
         "all",
@@ -40596,7 +40632,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_9c5aa4a281",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -3.0
+        ]
       },
       "filter": [
         "all",
@@ -41611,7 +41651,11 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_d802a0b686",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          -1.5
+        ]
       },
       "filter": [
         "==",
@@ -42751,8 +42795,8 @@
         ],
         "Landareal"
       ],
-      "minzoom": 1,
-      "maxzoom": 11,
+      "minzoom": 0,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_land_f"
       }
@@ -42774,8 +42818,8 @@
         ],
         "Landareal"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_land_f"
       }
@@ -42796,7 +42840,7 @@
         ],
         "Landareal"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_land_f"
       }
@@ -42829,8 +42873,8 @@
           "10"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_morener_f"
       }
@@ -42863,7 +42907,7 @@
           "10"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_morener_f"
       }
@@ -42896,8 +42940,8 @@
           "31"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_elvesletter_f"
       }
@@ -42930,7 +42974,7 @@
           "31"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_elvesletter_f"
       }
@@ -42952,8 +42996,8 @@
         ],
         "SnøIsbre"
       ],
-      "minzoom": 1,
-      "maxzoom": 11,
+      "minzoom": 0,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_isbreer_f"
       }
@@ -42975,8 +43019,8 @@
         ],
         "SnøIsbre"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_isbreer_f"
       }
@@ -42997,7 +43041,7 @@
         ],
         "SnøIsbre"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_isbreer_f"
       }
@@ -43023,7 +43067,7 @@
         ],
         "SnøIsbreKant"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_isbreer_l"
       }
@@ -43044,8 +43088,8 @@
         ],
         "Rullebane"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_F_rullebane"
       }
@@ -43066,8 +43110,8 @@
         ],
         "TettBebyggelse"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_F_tettbebyggelse"
       }
@@ -43089,7 +43133,7 @@
         ],
         "KaiBrygge"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_F_kai_brygge"
       }
@@ -43110,7 +43154,7 @@
         ],
         "Park"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_F_park"
       }
@@ -43131,7 +43175,7 @@
         ],
         "SportIdrettPlass"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_F_sport_idrett_plass"
       }
@@ -43152,7 +43196,7 @@
         ],
         "Rullebane"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_F_rullebane"
       }
@@ -43173,7 +43217,7 @@
         ],
         "TettBebyggelse"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_F_tettbebyggelse"
       }
@@ -43200,8 +43244,8 @@
         ],
         "I"
       ],
-      "minzoom": 8,
-      "maxzoom": 11,
+      "minzoom": 6,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_L_hoydekurve_bre"
       }
@@ -43227,8 +43271,8 @@
           "MEDIUM"
         ]
       ],
-      "minzoom": 8,
-      "maxzoom": 11,
+      "minzoom": 6,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_L_hoydekurve_terreng"
       }
@@ -43255,8 +43299,8 @@
         ],
         "I"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_hoydekurve_bre"
       }
@@ -43282,8 +43326,8 @@
           "MEDIUM"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_hoydekurve_terreng"
       }
@@ -43321,7 +43365,7 @@
           "I"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_hoydekurve_bre"
       }
@@ -43357,7 +43401,7 @@
           ]
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_hoydekurve_terreng"
       }
@@ -43370,8 +43414,8 @@
       "paint": {
         "fill-color": "rgba(224,255,255,1.0)"
       },
-      "minzoom": 1,
-      "maxzoom": 11,
+      "minzoom": 0,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_vann_f"
       }
@@ -43398,8 +43442,8 @@
           ]
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_vann_f"
       }
@@ -43420,7 +43464,7 @@
         ],
         "Innsjø"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_F_innsjo"
       }
@@ -43441,7 +43485,7 @@
         ],
         "TørrInnsjø"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_F_torr_innsjo"
       }
@@ -43462,7 +43506,7 @@
         ],
         "ElvBekk"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_F_elv_bekk"
       }
@@ -43488,8 +43532,8 @@
         ],
         "ElvBekk"
       ],
-      "minzoom": 1,
-      "maxzoom": 11,
+      "minzoom": 0,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_L_vannkontur"
       }
@@ -43515,8 +43559,8 @@
         ],
         "ElvBekk"
       ],
-      "minzoom": 1,
-      "maxzoom": 11,
+      "minzoom": 0,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_L_elv_bekk"
       }
@@ -43548,8 +43592,8 @@
           ]
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_vannkontur"
       }
@@ -43601,8 +43645,8 @@
           false
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_liten_bekk"
       }
@@ -43639,8 +43683,8 @@
           "2"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_bekk"
       }
@@ -43677,8 +43721,8 @@
           "3"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_liten_elv"
       }
@@ -43730,8 +43774,8 @@
           false
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_middels_elv"
       }
@@ -43757,7 +43801,7 @@
         ],
         "Kystkontur"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_land_l"
       }
@@ -43789,7 +43833,7 @@
           ]
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_vannkontur"
       }
@@ -43818,7 +43862,7 @@
         ],
         "TørrInnsjøkant"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_vannkontur_torr_innsjo"
       }
@@ -43870,7 +43914,7 @@
           false
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_liten_bekk"
       }
@@ -43907,7 +43951,7 @@
           "2"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_bekk"
       }
@@ -43944,7 +43988,7 @@
           "3"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_liten_elv"
       }
@@ -43996,7 +44040,7 @@
           false
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_elv"
       }
@@ -44009,9 +44053,13 @@
       "paint": {},
       "layout": {
         "icon-image": "spr_95f5dd2331",
-        "icon-allow-overlap": true
+        "icon-allow-overlap": true,
+        "icon-offset": [
+          0.0,
+          0.0
+        ]
       },
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_fosser_p"
       }
@@ -44037,7 +44085,7 @@
         ],
         "Bruddlinje"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_bruddlinjer_l"
       }
@@ -44071,8 +44119,8 @@
           "325"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_pingoer_p"
       }
@@ -44106,7 +44154,7 @@
           "325"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_pingoer_p"
       }
@@ -44132,8 +44180,8 @@
         ],
         "LuftledningHSP"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_kraftlinje"
       }
@@ -44159,8 +44207,8 @@
         ],
         "Gondolbane"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_gondolbane"
       }
@@ -44186,8 +44234,8 @@
         ],
         "Taubane"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_taubane"
       }
@@ -44213,8 +44261,8 @@
         ],
         "BeskrivendeHjelpelinjeAnlegg"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_beskrivende_hjelpelinje_anlegg"
       }
@@ -44240,8 +44288,8 @@
         ],
         "Kulturminne"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_kulturminne"
       }
@@ -44267,8 +44315,8 @@
         ],
         "Veg"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_veg_Lag2"
       }
@@ -44294,8 +44342,8 @@
         ],
         "Veg"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_veg_Lag1"
       }
@@ -44321,8 +44369,8 @@
         ],
         "Rullebanegrense"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_L_rullebanegrense"
       }
@@ -44348,7 +44396,7 @@
         ],
         "LuftledningHSP"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_kraftlinje"
       }
@@ -44374,7 +44422,7 @@
         ],
         "Gondolbane"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_gondolbane"
       }
@@ -44400,7 +44448,7 @@
         ],
         "Taubane"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_taubane"
       }
@@ -44426,7 +44474,7 @@
         ],
         "KaiBryggeKant"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_kai_brygge"
       }
@@ -44452,7 +44500,7 @@
         ],
         "BeskrivendeHjelpelinjeAnlegg"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_beskrivende_hjelpelinje_anlegg"
       }
@@ -44478,7 +44526,7 @@
         ],
         "Kulturminne"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_kulturminne"
       }
@@ -44504,7 +44552,7 @@
         ],
         "Rørgate"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_rorgate"
       }
@@ -44530,7 +44578,7 @@
         ],
         "Veg"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_veg_Lag2"
       }
@@ -44556,7 +44604,7 @@
         ],
         "NP_VegrestKjørespor"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_kjorespor_Lag2"
       }
@@ -44582,7 +44630,7 @@
         ],
         "Veg"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_veg_Lag1"
       }
@@ -44612,7 +44660,7 @@
         ],
         "NP_VegrestKjørespor"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_kjorespor_Lag1"
       }
@@ -44639,7 +44687,7 @@
         ],
         "NP_VegrestKjørespor"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_kjorespor_Lag1"
       }
@@ -44668,7 +44716,7 @@
         ],
         "Sti"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_sti"
       }
@@ -44694,7 +44742,7 @@
         ],
         "Rullebanegrense"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_L_rullebanegrense"
       }
@@ -44717,8 +44765,8 @@
         ],
         "Lufthavn"
       ],
-      "minzoom": 7,
-      "maxzoom": 11,
+      "minzoom": 5,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_P_lufthavn"
       }
@@ -44741,8 +44789,8 @@
         ],
         "TettBebyggelse"
       ],
-      "minzoom": 7,
-      "maxzoom": 11,
+      "minzoom": 5,
+      "maxzoom": 9,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_P_tettbebyggelse_2000k-250k"
       }
@@ -44765,8 +44813,8 @@
         ],
         "TettBebyggelse"
       ],
-      "minzoom": 4,
-      "maxzoom": 8,
+      "minzoom": 3,
+      "maxzoom": 6,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s1000_P_tettbebyggelse_10000k-2000k"
       }
@@ -44800,8 +44848,8 @@
           "719"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_sykehus"
       }
@@ -44824,7 +44872,7 @@
         ],
         "Lufthavn"
       ],
-      "minzoom": 10,
+      "minzoom": 8,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_lufthavn"
       }
@@ -44847,8 +44895,8 @@
         ],
         "BerggrunnSymbol"
       ],
-      "minzoom": 10,
-      "maxzoom": 13,
+      "minzoom": 8,
+      "maxzoom": 12,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_gruve"
       }
@@ -44871,8 +44919,8 @@
         ],
         "Kulturminne"
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_kulturminne"
       }
@@ -44895,8 +44943,8 @@
         ],
         "MastTele"
       ],
-      "minzoom": 10,
-      "maxzoom": 13,
+      "minzoom": 8,
+      "maxzoom": 12,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_mast"
       }
@@ -44930,8 +44978,8 @@
           "619"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_skole"
       }
@@ -44965,8 +45013,8 @@
           "662"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_samfunnshus"
       }
@@ -45000,8 +45048,8 @@
           "0"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_annen_bygning"
       }
@@ -45024,7 +45072,7 @@
         ],
         "Tank"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_tank"
       }
@@ -45058,7 +45106,7 @@
           "719"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_sykehus"
       }
@@ -45092,7 +45140,7 @@
           "49"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_heliport_100k"
       }
@@ -45126,8 +45174,8 @@
           "49"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12,
+      "minzoom": 10,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_heliport_500k-100k"
       }
@@ -45150,7 +45198,7 @@
         ],
         "BerggrunnSymbol"
       ],
-      "minzoom": 12,
+      "minzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_gruve"
       }
@@ -45173,7 +45221,7 @@
         ],
         "Kulturminne"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_kulturminne"
       }
@@ -45196,7 +45244,7 @@
         ],
         "MastTele"
       ],
-      "minzoom": 12,
+      "minzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_mast"
       }
@@ -45230,7 +45278,7 @@
           "411"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_flyterminal"
       }
@@ -45264,7 +45312,7 @@
           "619"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_skole"
       }
@@ -45298,7 +45346,7 @@
           "662"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_samfunnshus"
       }
@@ -45332,7 +45380,7 @@
           "0"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_annen_bygning"
       }
@@ -45366,8 +45414,8 @@
           "I"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_hoydepunkt_bre"
       }
@@ -45400,8 +45448,8 @@
           ]
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12,
+      "minzoom": 8,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s250_P_hoydepunkt_terreng"
       }
@@ -45435,7 +45483,7 @@
           "I"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_hoydepunkt_bre"
       }
@@ -45468,7 +45516,7 @@
           ]
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_hoydepunkt_terreng"
       }
@@ -45501,7 +45549,7 @@
           ]
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag31_Svalbard.qlr · s100_P_terrengpunkt_terreng"
       }
@@ -45523,8 +45571,8 @@
         ],
         "Landareal"
       ],
-      "minzoom": 1,
-      "maxzoom": 9,
+      "minzoom": 0,
+      "maxzoom": 8,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_land_f"
       }
@@ -45545,7 +45593,7 @@
         ],
         "Landareal"
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_land_f"
       }
@@ -45578,7 +45626,7 @@
           10
         ]
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_morener_f"
       }
@@ -45600,8 +45648,8 @@
         ],
         "SnøIsbre"
       ],
-      "minzoom": 1,
-      "maxzoom": 9,
+      "minzoom": 0,
+      "maxzoom": 8,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_isbreer_f"
       }
@@ -45622,7 +45670,7 @@
         ],
         "SnøIsbre"
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_isbreer_f"
       }
@@ -45648,7 +45696,7 @@
         ],
         "SnøIsbreKant"
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_isbreer_l"
       }
@@ -45722,7 +45770,7 @@
           ]
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_hoydekurve_bre_tellekurve_100k"
       }
@@ -45759,7 +45807,7 @@
           "I"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_hoydekurve_bre_100k"
       }
@@ -45815,8 +45863,8 @@
           ]
         ]
       ],
-      "minzoom": 8,
-      "maxzoom": 12,
+      "minzoom": 7,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_hoydekurve_bre_tellekurve_1000k-100k"
       }
@@ -45886,8 +45934,8 @@
           ]
         ]
       ],
-      "minzoom": 8,
-      "maxzoom": 12,
+      "minzoom": 7,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_hoydekurve_bre_1000k-100k"
       }
@@ -45960,7 +46008,7 @@
           ]
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_hoydekurve_terreng_tellekurve_100k"
       }
@@ -45996,7 +46044,7 @@
           ]
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_hoydekurve_terreng_100k"
       }
@@ -46051,8 +46099,8 @@
           ]
         ]
       ],
-      "minzoom": 8,
-      "maxzoom": 12,
+      "minzoom": 7,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_hoydekurve_terreng_tellekurve_1000k-100k"
       }
@@ -46121,8 +46169,8 @@
           ]
         ]
       ],
-      "minzoom": 8,
-      "maxzoom": 12,
+      "minzoom": 7,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_hoydekurve_terreng_1000k-100k"
       }
@@ -46144,8 +46192,8 @@
         ],
         "Innsjø"
       ],
-      "minzoom": 1,
-      "maxzoom": 9,
+      "minzoom": 0,
+      "maxzoom": 8,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_F_innsjo"
       }
@@ -46156,8 +46204,7 @@
       "source": "j1000_vann_f",
       "source-layer": "j1000_vann_f",
       "paint": {
-        "fill-color": "rgba(224,255,255,1.0)",
-        "fill-outline-color": "rgba(25,178,255,1.0)"
+        "fill-color": "rgba(224,255,255,1.0)"
       },
       "filter": [
         "==",
@@ -46167,8 +46214,35 @@
         ],
         "TørrInnsjø"
       ],
-      "minzoom": 1,
-      "maxzoom": 9,
+      "minzoom": 0,
+      "maxzoom": 8,
+      "metadata": {
+        "qlr:source": "lag32_Jan_Mayen.qlr · j1000_F_torr_innsjo"
+      }
+    },
+    {
+      "id": "lag32_12_j1000_vann_f_1_1",
+      "type": "line",
+      "source": "j1000_vann_f",
+      "source-layer": "j1000_vann_f",
+      "paint": {
+        "line-color": "rgba(25,178,255,1.0)",
+        "line-width": 0.8,
+        "line-dasharray": [
+          1,
+          2
+        ]
+      },
+      "filter": [
+        "==",
+        [
+          "get",
+          "OBJTYPE"
+        ],
+        "TørrInnsjø"
+      ],
+      "minzoom": 0,
+      "maxzoom": 8,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_F_torr_innsjo"
       }
@@ -46189,7 +46263,7 @@
         ],
         "Innsjø"
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_F_innsjo"
       }
@@ -46210,7 +46284,7 @@
         ],
         "TørrInnsjø"
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_F_torr_innsjo"
       }
@@ -46236,7 +46310,7 @@
         ],
         "Kystkontur"
       ],
-      "minzoom": 1,
+      "minzoom": 0,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_land_l"
       }
@@ -46273,7 +46347,7 @@
           "2"
         ]
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_bekk"
       }
@@ -46310,7 +46384,7 @@
           "3"
         ]
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_liten_elv"
       }
@@ -46347,7 +46421,7 @@
           "4"
         ]
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_elv"
       }
@@ -46373,7 +46447,7 @@
         ],
         "Innsjøkant"
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_vannkontur"
       }
@@ -46402,7 +46476,7 @@
         ],
         "TørrInnsjøkant"
       ],
-      "minzoom": 8,
+      "minzoom": 7,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_vannkontur_torr_innsjo"
       }
@@ -46423,7 +46497,7 @@
         ],
         "Rullebane"
       ],
-      "minzoom": 10,
+      "minzoom": 9,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_teknisksituasjon_f"
       }
@@ -46450,7 +46524,7 @@
         "Veg"
       ],
       "minzoom": 6,
-      "maxzoom": 11,
+      "maxzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_L_veg_Lag2"
       }
@@ -46477,7 +46551,7 @@
         "Veg"
       ],
       "minzoom": 6,
-      "maxzoom": 11,
+      "maxzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_L_veg_Lag1"
       }
@@ -46503,7 +46577,7 @@
         ],
         "Veg"
       ],
-      "minzoom": 10,
+      "minzoom": 9,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_veg_Lag2"
       }
@@ -46529,7 +46603,7 @@
         ],
         "Veg"
       ],
-      "minzoom": 10,
+      "minzoom": 9,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_veg_Lag1"
       }
@@ -46555,7 +46629,7 @@
         ],
         "Rullebanegrense"
       ],
-      "minzoom": 10,
+      "minzoom": 9,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_L_rullebanegrense"
       }
@@ -46578,7 +46652,7 @@
         ],
         "MastTele"
       ],
-      "minzoom": 12,
+      "minzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_P_mast"
       }
@@ -46601,7 +46675,7 @@
         ],
         "Tank"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_P_tank"
       }
@@ -46624,7 +46698,7 @@
         ],
         "AnnenBygning"
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_P_annen_bygning"
       }
@@ -46694,7 +46768,7 @@
         "Tettbebyggelse"
       ],
       "minzoom": 6,
-      "maxzoom": 12,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_P_tettbebyggelse"
       }
@@ -46729,7 +46803,7 @@
         ]
       ],
       "minzoom": 6,
-      "maxzoom": 12,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_P_hoydepunkt_bre"
       }
@@ -46763,7 +46837,7 @@
         ]
       ],
       "minzoom": 6,
-      "maxzoom": 12,
+      "maxzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j1000_P_hoydepunkt_terreng"
       }
@@ -46797,7 +46871,7 @@
           "I"
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_P_hoydepunkt_bre_100k"
       }
@@ -46830,7 +46904,7 @@
           ]
         ]
       ],
-      "minzoom": 11,
+      "minzoom": 10,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_P_hoydepunkt_terreng_100k"
       }
@@ -46863,7 +46937,7 @@
           ]
         ]
       ],
-      "minzoom": 12,
+      "minzoom": 11,
       "metadata": {
         "qlr:source": "lag32_Jan_Mayen.qlr · j50_P_terrengpunkt_terreng"
       }
@@ -79416,8 +79490,8 @@
         ],
         "I"
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 8,
+      "maxzoom": 11
     },
     {
       "id": "lag31_3_s250_hoydepunkt_p_label_1",
@@ -79450,8 +79524,8 @@
           "MEDIUM"
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 8,
+      "maxzoom": 11
     },
     {
       "id": "lag31_2_s100_hxydepunkt_p_label_0",
@@ -79485,7 +79559,7 @@
         ],
         "I"
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_2_s100_hxydepunkt_p_label_1",
@@ -79518,7 +79592,7 @@
           "MEDIUM"
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_0",
@@ -79563,7 +79637,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_1",
@@ -79608,8 +79682,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_2",
@@ -79654,8 +79728,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_3",
@@ -79700,8 +79774,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_4",
@@ -79746,8 +79820,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_5",
@@ -79792,7 +79866,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_6",
@@ -79837,8 +79911,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_7",
@@ -79883,8 +79957,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_8",
@@ -79929,8 +80003,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_9",
@@ -79975,8 +80049,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_10",
@@ -80021,7 +80095,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_11",
@@ -80066,8 +80140,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_12",
@@ -80112,8 +80186,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_13",
@@ -80158,8 +80232,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_14",
@@ -80204,7 +80278,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_15",
@@ -80249,8 +80323,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_16",
@@ -80295,7 +80369,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_17",
@@ -80340,7 +80414,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_18",
@@ -80385,8 +80459,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_19",
@@ -80431,8 +80505,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_20",
@@ -80477,8 +80551,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_21",
@@ -80523,8 +80597,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_22",
@@ -80569,7 +80643,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_23",
@@ -80614,8 +80688,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_24",
@@ -80660,8 +80734,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_25",
@@ -80706,8 +80780,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_26",
@@ -80752,7 +80826,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_27",
@@ -80797,8 +80871,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_28",
@@ -80843,7 +80917,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_29",
@@ -80888,7 +80962,7 @@
           50
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_30",
@@ -80933,7 +81007,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_31",
@@ -80978,8 +81052,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_32",
@@ -81024,8 +81098,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_33",
@@ -81070,8 +81144,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_35",
@@ -81116,7 +81190,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_36",
@@ -81161,8 +81235,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_37",
@@ -81207,8 +81281,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_38",
@@ -81253,8 +81327,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_39",
@@ -81299,7 +81373,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_40",
@@ -81344,8 +81418,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_41",
@@ -81390,7 +81464,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_42",
@@ -81435,7 +81509,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_43",
@@ -81480,8 +81554,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_45",
@@ -81526,8 +81600,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_47",
@@ -81572,7 +81646,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_48",
@@ -81617,8 +81691,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_49",
@@ -81663,8 +81737,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_50",
@@ -81709,8 +81783,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_51",
@@ -81755,7 +81829,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_52",
@@ -81800,8 +81874,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_53",
@@ -81846,7 +81920,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_54",
@@ -81891,7 +81965,7 @@
           50
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_55",
@@ -81936,7 +82010,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_56",
@@ -81981,8 +82055,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_58",
@@ -82027,8 +82101,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_60",
@@ -82073,7 +82147,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_61",
@@ -82118,8 +82192,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_1_S100_Stedsnavn_l_label_62",
@@ -82164,7 +82238,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_0",
@@ -82211,8 +82285,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_1",
@@ -82259,8 +82333,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_2",
@@ -82307,8 +82381,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_3",
@@ -82355,8 +82429,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_4",
@@ -82414,7 +82488,7 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_5",
@@ -82472,8 +82546,8 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_6",
@@ -82531,8 +82605,8 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_7",
@@ -82589,8 +82663,8 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_8",
@@ -82647,8 +82721,8 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_9",
@@ -82706,7 +82780,7 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_10",
@@ -82764,8 +82838,8 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_11",
@@ -82823,8 +82897,8 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_12",
@@ -82882,8 +82956,8 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_13",
@@ -82941,8 +83015,8 @@
           "Spitsbergen"
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_14",
@@ -82988,7 +83062,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_15",
@@ -83034,8 +83108,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_16",
@@ -83081,8 +83155,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_17",
@@ -83128,8 +83202,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_19",
@@ -83175,7 +83249,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_20",
@@ -83221,8 +83295,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_22",
@@ -83268,8 +83342,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_23",
@@ -83315,7 +83389,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_25",
@@ -83361,7 +83435,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_26",
@@ -83407,7 +83481,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_27",
@@ -83453,8 +83527,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_28",
@@ -83500,8 +83574,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_29",
@@ -83547,8 +83621,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_31",
@@ -83594,7 +83668,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_32",
@@ -83640,8 +83714,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_34",
@@ -83687,8 +83761,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_35",
@@ -83734,7 +83808,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_37",
@@ -83780,7 +83854,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_38",
@@ -83826,7 +83900,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_39",
@@ -83872,8 +83946,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_40",
@@ -83919,8 +83993,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_43",
@@ -83967,7 +84041,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_44",
@@ -84014,8 +84088,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_45",
@@ -84062,7 +84136,7 @@
           100
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_46",
@@ -84109,7 +84183,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_48",
@@ -84156,7 +84230,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_49",
@@ -84232,7 +84306,7 @@
           ]
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_50",
@@ -84308,8 +84382,8 @@
           ]
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_51",
@@ -84385,8 +84459,8 @@
           ]
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_52",
@@ -84462,8 +84536,8 @@
           ]
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_53",
@@ -84539,8 +84613,8 @@
           ]
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_54",
@@ -84613,7 +84687,7 @@
           ]
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_55",
@@ -84686,8 +84760,8 @@
           ]
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_56",
@@ -84760,8 +84834,8 @@
           ]
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_57",
@@ -84834,8 +84908,8 @@
           ]
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_59",
@@ -84881,7 +84955,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_60",
@@ -84927,8 +85001,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_61",
@@ -84974,8 +85048,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_62",
@@ -85021,8 +85095,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_63",
@@ -85068,7 +85142,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_64",
@@ -85114,8 +85188,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_65",
@@ -85161,7 +85235,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_66",
@@ -85207,7 +85281,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_70",
@@ -85253,7 +85327,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_71",
@@ -85299,8 +85373,8 @@
           100
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_72",
@@ -85346,8 +85420,8 @@
           100
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_73",
@@ -85393,8 +85467,8 @@
           100
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_74",
@@ -85440,7 +85514,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_75",
@@ -85486,8 +85560,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_76",
@@ -85533,8 +85607,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_77",
@@ -85580,8 +85654,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_79",
@@ -85627,7 +85701,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_80",
@@ -85673,8 +85747,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_81",
@@ -85720,8 +85794,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_82",
@@ -85767,8 +85841,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_83",
@@ -85814,7 +85888,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_84",
@@ -85860,8 +85934,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_85",
@@ -85907,7 +85981,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_86",
@@ -85953,7 +86027,7 @@
           2000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_87",
@@ -85999,8 +86073,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_88",
@@ -86046,8 +86120,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_89",
@@ -86093,8 +86167,8 @@
           2000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_91",
@@ -86140,7 +86214,7 @@
           1000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_92",
@@ -86186,8 +86260,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_94",
@@ -86233,8 +86307,8 @@
           1000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_95",
@@ -86280,7 +86354,7 @@
           250
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_96",
@@ -86326,8 +86400,8 @@
           250
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_97",
@@ -86373,7 +86447,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_98",
@@ -86419,7 +86493,7 @@
           100
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag31_0_S100_Stedsnavn_p_label_99",
@@ -86465,7 +86539,7 @@
           50
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_3_j1000_hxydepunkt_p_label_0",
@@ -86502,7 +86576,7 @@
         "I"
       ],
       "minzoom": 6,
-      "maxzoom": 12
+      "maxzoom": 11
     },
     {
       "id": "lag32_3_j1000_hxydepunkt_p_label_1",
@@ -86538,7 +86612,7 @@
         ]
       ],
       "minzoom": 6,
-      "maxzoom": 12
+      "maxzoom": 11
     },
     {
       "id": "lag32_2_j50_hoydepunkt_p_label_0",
@@ -86574,7 +86648,7 @@
         ],
         "I"
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag32_2_j50_hoydepunkt_p_label_1",
@@ -86609,7 +86683,7 @@
           "MEDIUM"
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_0",
@@ -86654,7 +86728,7 @@
           100000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_1",
@@ -86699,7 +86773,7 @@
           100000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_2",
@@ -86744,8 +86818,8 @@
           500000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_3",
@@ -86790,8 +86864,8 @@
           500000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_4",
@@ -86836,8 +86910,8 @@
           500000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_5",
@@ -86882,7 +86956,7 @@
           500000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_6",
@@ -86927,7 +87001,7 @@
           100000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_7",
@@ -86972,8 +87046,8 @@
           250000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_8",
@@ -87018,8 +87092,8 @@
           250000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_9",
@@ -87064,7 +87138,7 @@
           250000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_10",
@@ -87109,8 +87183,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_11",
@@ -87155,7 +87229,7 @@
           100000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_12",
@@ -87200,8 +87274,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_13",
@@ -87246,7 +87320,7 @@
           100000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_14",
@@ -87291,8 +87365,8 @@
           50000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_15",
@@ -87337,7 +87411,7 @@
           50000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_16",
@@ -87382,8 +87456,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_17",
@@ -87428,7 +87502,7 @@
           100000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_18",
@@ -87473,8 +87547,8 @@
           50000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_19",
@@ -87519,7 +87593,7 @@
           50000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_20",
@@ -87564,7 +87638,7 @@
           100000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_21",
@@ -87609,7 +87683,7 @@
           50000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_22",
@@ -87654,7 +87728,7 @@
           100000
         ]
       ],
-      "minzoom": 11
+      "minzoom": 10
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_23",
@@ -87699,8 +87773,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_24",
@@ -87745,7 +87819,7 @@
           100000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_25",
@@ -87790,8 +87864,8 @@
           50000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_26",
@@ -87836,7 +87910,7 @@
           50000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_27",
@@ -87881,8 +87955,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_28",
@@ -87927,7 +88001,7 @@
           100000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_29",
@@ -87972,8 +88046,8 @@
           50000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_1_J0_Stedsnavn_l_label_30",
@@ -88018,7 +88092,7 @@
           50000
         ]
       ],
-      "minzoom": 12
+      "minzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_0",
@@ -88064,8 +88138,8 @@
           2000000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 11
+      "minzoom": 9,
+      "maxzoom": 10
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_1",
@@ -88111,8 +88185,8 @@
           2000000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 11
+      "minzoom": 9,
+      "maxzoom": 10
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_2",
@@ -88158,8 +88232,8 @@
           2000000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 11
+      "minzoom": 9,
+      "maxzoom": 10
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_3",
@@ -88205,8 +88279,8 @@
           2000000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_4",
@@ -88252,8 +88326,8 @@
           1000000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 11
+      "minzoom": 9,
+      "maxzoom": 10
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_5",
@@ -88299,8 +88373,8 @@
           1000000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 11
+      "minzoom": 9,
+      "maxzoom": 10
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_6",
@@ -88347,8 +88421,8 @@
           1000000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_7",
@@ -88394,8 +88468,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 11
+      "minzoom": 9,
+      "maxzoom": 10
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_8",
@@ -88441,8 +88515,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_9",
@@ -88488,8 +88562,8 @@
           500000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_10",
@@ -88535,8 +88609,8 @@
           500000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_11",
@@ -88582,8 +88656,8 @@
           250000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_12",
@@ -88629,8 +88703,8 @@
           250000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_13",
@@ -88676,8 +88750,8 @@
           100000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_14",
@@ -88723,8 +88797,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_15",
@@ -88770,8 +88844,8 @@
           100000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_16",
@@ -88817,8 +88891,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_17",
@@ -88864,8 +88938,8 @@
           50000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_19",
@@ -88911,8 +88985,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_20",
@@ -88958,8 +89032,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_21",
@@ -89005,8 +89079,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_22",
@@ -89053,8 +89127,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_23",
@@ -89101,8 +89175,8 @@
           100000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_24",
@@ -89149,8 +89223,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_25",
@@ -89196,8 +89270,8 @@
           250000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_26",
@@ -89243,8 +89317,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_27",
@@ -89290,8 +89364,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_28",
@@ -89337,8 +89411,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_29",
@@ -89384,8 +89458,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_30",
@@ -89431,8 +89505,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_31",
@@ -89478,8 +89552,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_32",
@@ -89525,8 +89599,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_33",
@@ -89573,8 +89647,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_34",
@@ -89621,8 +89695,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_35",
@@ -89668,8 +89742,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 11
+      "minzoom": 9,
+      "maxzoom": 10
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_36",
@@ -89715,8 +89789,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_37",
@@ -89762,8 +89836,8 @@
           500000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_38",
@@ -89810,8 +89884,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_39",
@@ -89858,8 +89932,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_40",
@@ -89906,8 +89980,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_41",
@@ -89954,8 +90028,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_42",
@@ -90002,8 +90076,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_43",
@@ -90050,8 +90124,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_44",
@@ -90097,8 +90171,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_45",
@@ -90144,8 +90218,8 @@
           500000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 13
+      "minzoom": 10,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_47",
@@ -90191,8 +90265,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_48",
@@ -90238,8 +90312,8 @@
           100000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_49",
@@ -90285,8 +90359,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_50",
@@ -90332,8 +90406,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_51",
@@ -90379,8 +90453,8 @@
           100000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_52",
@@ -90426,8 +90500,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 11
+      "minzoom": 9,
+      "maxzoom": 10
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_53",
@@ -90473,8 +90547,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_54",
@@ -90520,8 +90594,8 @@
           500000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_55",
@@ -90567,8 +90641,8 @@
           500000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_56",
@@ -90614,8 +90688,8 @@
           250000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_57",
@@ -90661,8 +90735,8 @@
           250000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_58",
@@ -90708,8 +90782,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_59",
@@ -90755,8 +90829,8 @@
           100000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_60",
@@ -90802,8 +90876,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_61",
@@ -90849,8 +90923,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_62",
@@ -90896,8 +90970,8 @@
           500000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_63",
@@ -90943,8 +91017,8 @@
           500000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_64",
@@ -90990,8 +91064,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_65",
@@ -91037,8 +91111,8 @@
           100000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_66",
@@ -91084,8 +91158,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_67",
@@ -91131,8 +91205,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_68",
@@ -91178,8 +91252,8 @@
           1000000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_69",
@@ -91225,8 +91299,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_70",
@@ -91272,8 +91346,8 @@
           250000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_71",
@@ -91319,8 +91393,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_72",
@@ -91366,8 +91440,8 @@
           250000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_73",
@@ -91413,8 +91487,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_74",
@@ -91460,8 +91534,8 @@
           250000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_75",
@@ -91507,8 +91581,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_76",
@@ -91554,8 +91628,8 @@
           250000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_77",
@@ -91601,8 +91675,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_78",
@@ -91649,8 +91723,8 @@
           500000
         ]
       ],
-      "minzoom": 10,
-      "maxzoom": 12
+      "minzoom": 9,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_79",
@@ -91696,8 +91770,8 @@
           50000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_80",
@@ -91743,8 +91817,8 @@
           100000
         ]
       ],
-      "minzoom": 11,
-      "maxzoom": 12
+      "minzoom": 10,
+      "maxzoom": 11
     },
     {
       "id": "lag32_0_J0_Stedsnavn_p_label_81",
@@ -91790,8 +91864,8 @@
           50000
         ]
       ],
-      "minzoom": 12,
-      "maxzoom": 13
+      "minzoom": 11,
+      "maxzoom": 12
     }
   ],
   "sprite": "sprite",
