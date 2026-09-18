@@ -115,6 +115,15 @@ const getMartinUrl = (): string => {
   return baseUrl.replace(/\/+$/, '');
 };
 
+const getKartclientUrl = (): string => {
+  const override = new URLSearchParams(window.location.search).get(
+    'topoVectorKartclient',
+  );
+  const baseUrl =
+    override || getEnv().layerProviderParameters.topoVectorKartclient.baseUrl;
+  return baseUrl.replace(/\/+$/, '');
+};
+
 const buildStyle = async (): Promise<MapLibreStyleObject> => {
   const martinUrl = getMartinUrl();
 
@@ -122,11 +131,19 @@ const buildStyle = async (): Promise<MapLibreStyleObject> => {
     window.location.origin + STATIC_STYLE_PATH,
   )) as ReconcilableStyle;
 
-  // The extracted style has no symbol layers yet (labels/markers are a separate
-  // piece in tnt-martin), so its openmaptiles `glyphs` URL is only ever a CSP
-  // violation waiting to happen. Drop it until labels arrive with a self-hosted
-  // glyph source.
-  delete style.glyphs;
+  // Sprite and glyphs are self-hosted on tnt-kartclient (scripts/bake-glyphs.sh
+  // bakes the QLRs' own fonts, from the same Debian packages tnt-qgis
+  // installs — not a public font CDN), same origin as the vector tiles
+  // themselves, fetched cross-origin exactly like martinUrl above. tnt-martin
+  // emits bare relative paths since the style is handed to MapLibre as an
+  // object, not loaded by URL.
+  const kartclientUrl = getKartclientUrl();
+  if (style.sprite) {
+    style.sprite = `${kartclientUrl}/sprite`;
+  }
+  if (style.glyphs) {
+    style.glyphs = `${kartclientUrl}/glyphs/{fontstack}/{range}.pbf`;
+  }
 
   const catalog = (await getJSON(`${martinUrl}/catalog`)) as MartinCatalog;
   const served = new Set(Object.keys(catalog.tiles ?? {}));
