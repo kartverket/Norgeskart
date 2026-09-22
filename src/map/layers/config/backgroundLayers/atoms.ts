@@ -1,8 +1,8 @@
 import { MapLibreLayer } from '@geoblocks/ol-maplibre-layer';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
-import posthog from 'posthog-js';
 import TileLayer from 'ol/layer/Tile';
+import posthog from 'posthog-js';
 import {
   getUrlParameter,
   setUrlParameter,
