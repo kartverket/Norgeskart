@@ -490,6 +490,10 @@
     },
     "item": {
       "fallbackMessage": "has no legend"
+    },
+    "image": {
+      "enlarge": "Enlarge legend for {{layer}}",
+      "enlargedAlt": "Legend for {{layer}}"
     }
   },
   "printdialog": {
