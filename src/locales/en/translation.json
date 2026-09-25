@@ -539,6 +539,10 @@
       "ufullstendig": "Incomplete",
       "ikkeKartlagt": "Not mapped",
       "ikkeRelevant": "Not relevant"
+    },
+    "image": {
+      "enlarge": "Enlarge legend for {{layer}}",
+      "enlargedAlt": "Legend for {{layer}}"
     }
   },
   "printdialog": {

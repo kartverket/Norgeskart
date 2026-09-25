@@ -544,6 +544,10 @@
       "ufullstendig": "Ufullstendig",
       "ikkeKartlagt": "Ikkje kartlagt",
       "ikkeRelevant": "Ikkje relevant"
+    },
+    "image": {
+      "enlarge": "Forstørr symbolforklaringa for {{layer}}",
+      "enlargedAlt": "Symbolforklaring for {{layer}}"
     }
   },
   "printdialog": {
