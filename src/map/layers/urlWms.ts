@@ -113,11 +113,8 @@ export const hasUrlLayersAtom = atom(
     get(urlWmsLayersAtom).length > 0 || get(urlGeoJsonLayersAtom).length > 0,
 );
 
-// ─── Visible scale range ─────────────────────────────────────────────────────
-// WMS servers only draw a layer between its Min/MaxScaleDenominator (e.g. NVE's
-// "Dam" only below 1:75 000), so an added layer can look broken when the map is
-// zoomed out. These helpers compare the map against that range using the WMS
-// definition of scale (0.28 mm pixels), not the 96 DPI scale shown in the toolbar.
+// Servers only draw between Min/MaxScaleDenominator (NVE "Dam": below 1:75 000).
+// Compared in WMS scale (0.28 mm pixels), not the toolbar's 96 DPI scale.
 
 const WMS_PIXEL_SIZE_M = 0.00028;
 

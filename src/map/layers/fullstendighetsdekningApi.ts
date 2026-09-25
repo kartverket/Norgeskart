@@ -6,10 +6,7 @@ export const FULLSTENDIGHETSDEKNING_BASE_URL =
 const CATEGORY_ID = 'fullstendighetsdekning';
 const GROUP_ID = 19;
 
-/**
- * Derive a human-readable display name from a geojson filename.
- * e.g. "dekning_aktsomhetskart_jord_flomskred.geojson" → "Aktsomhetskart jord flomskred"
- */
+/** "dekning_aktsomhetskart_jord_flomskred.geojson" → "Aktsomhetskart jord flomskred" */
 function filenameToDisplayName(filename: string): string {
   const name = decodeURIComponent(filename)
     .replace(/^dekning_/, '')
@@ -18,10 +15,7 @@ function filenameToDisplayName(filename: string): string {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-/**
- * Derive a stable layer ID from a geojson filename.
- * e.g. "dekning_adresse.geojson" → "fd_adresse"
- */
+/** Stable id: "dekning_adresse.geojson" → "fd_adresse" */
 function filenameToLayerId(filename: string): string {
   const name = decodeURIComponent(filename)
     .replace(/^dekning_/, '')
@@ -33,9 +27,7 @@ function filenameToLayerId(filename: string): string {
   return `fd_${name}`;
 }
 
-/**
- * Parse geojson filenames from an Apache-style directory listing HTML page.
- */
+/** .geojson hrefs from an Apache directory listing. */
 function parseDirectoryListing(html: string): string[] {
   const regex = /href="([^"]*\.geojson)"/gi;
   const filenames: string[] = [];
@@ -50,12 +42,7 @@ function parseDirectoryListing(html: string): string[] {
   return [...new Set(filenames)];
 }
 
-/**
- * Fetch the Geonorge DOK fullstendighetsdekningskart directory listing and
- * return dynamically generated layer definitions for every .geojson file found.
- *
- * This means newly published datasets appear automatically without code changes.
- */
+/** One layer per file in Geonorge's listing, so new datasets need no code change. */
 export async function fetchFullstendighetsdekningLayers(): Promise<
   ThemeLayerDefinition[]
 > {

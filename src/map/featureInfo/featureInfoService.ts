@@ -316,9 +316,8 @@ const parseHtmlFeatureInfo = (html: string): FeatureInfoFeature[] => {
   ];
 };
 
-// Servers answer an unsupported INFO_FORMAT with HTTP 200 and an OGC exception
-// report (NVE/ArcGIS: "Parameter 'InfoFormat' contains unacceptable value").
-// That is "this format failed", not a feature to show.
+// Unsupported INFO_FORMAT → HTTP 200 + OGC exception report (NVE/ArcGIS): a
+// failed format, not a feature.
 export const isServiceException = (text: string) =>
   /<(\w+:)?ServiceException(Report)?[\s>]/.test(text.slice(0, 2000));
 

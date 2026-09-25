@@ -1,9 +1,6 @@
-// Builds src/settings/map/themes/geonorgeWmsLayers.json: the Geonorge kartkatalog
-// records Norgeskart can actually display. Run with `npm run geonorge-wms`.
-//
-// Kartkatalog protocol metadata is unreliable as a filter, so every candidate is
-// verified live instead: valid WMS GetCapabilities, EPSG:25833 support, and a host
-// allowed by the Caddyfile CSP (connect-src for capabilities, img-src for tiles).
+// `npm run geonorge-wms` → geonorgeWmsLayers.json: kartkatalog records Norgeskart
+// can display. Protocol metadata is unreliable, so each entry is verified live:
+// Caddyfile CSP host, WMS capabilities with EPSG:25833, and a rendered GetMap.
 import { XMLParser } from 'fast-xml-parser';
 import fs from 'fs';
 import path from 'path';
@@ -15,11 +12,10 @@ const REQUIRED_CRS = 'EPSG:25833';
 const CONCURRENCY = 16;
 // Some capabilities are huge (wms.nib-mosaikk is ~16 MB) and 20 s wasn't enough.
 const TIMEOUT_MS = 60000;
-// Unnamed root layer: request all named children, but only up to this many.
-const MAX_CHILD_LAYERS = 20;
+// Whole unnamed-root service: cap LAYERS by length (ArcGIS names are numbers).
+const MAX_LAYERS_PARAM_LENGTH = 1000;
 
-// Nasjonal temainndeling, as used on geonorge.no/kartdata/datasett-i-geonorge/.
-// Kartkatalog's `Theme` value → stable category id.
+// Kartkatalog Theme (nasjonal temainndeling, as on geonorge.no/kartdata/datasett-i-geonorge/) → id.
 const THEME_TO_CATEGORY = {
   'Basis geodata': 'basisGeodata',
   Befolkning: 'befolkning',
@@ -53,8 +49,7 @@ const xml = new XMLParser({
   isArray: (name) => ['Layer', 'CRS', 'SRS'].includes(name),
 });
 
-// Some servers (kart.dirmin.no) answer Node's default "node" User-Agent with a
-// 404 but serve anything else, so identify the script explicitly.
+// kart.dirmin.no 404s Node's default "node" User-Agent.
 const USER_AGENT = 'norgeskart-geonorge-wms-generator';
 
 const fetchWithTimeout = async (url) => {
@@ -116,17 +111,29 @@ const fetchCatalog = async () => {
   }
 };
 
-// A record's WMS link lives in one of three places depending on record type.
+// ArcGIS ".../rest/services/X/MapServer" also serves ".../services/X/MapServer/WMSServer"
+// (Geologi Svalbard is only catalogued as WMTS).
+const ARCGIS_REST = /^(https?:\/\/[^?]*?)\/rest\/services\/(.+?\/MapServer)/i;
+const arcgisWmsUrl = (url) => {
+  const m = ARCGIS_REST.exec(url ?? '');
+  return m ? `${m[1]}/services/${m[2]}/WMSServer` : null;
+};
+const DERIVABLE_PROTOCOLS = new Set(['W3C:REST', 'OGC:WMTS']);
+
+// WMS links: GetCapabilitiesUrl, ServiceDistributionUrlForDataset or DatasetServices
+// ("uuid|title||type|org||protocol|url|…", often a dataset's only link).
 const wmsUrlsForRecord = (r) => {
   const urls = [];
-  if (r.DistributionProtocol === 'OGC:WMS') {
-    urls.push(r.GetCapabilitiesUrl || r.DistributionUrl);
+  const ownUrl = r.GetCapabilitiesUrl || r.DistributionUrl;
+  if (r.DistributionProtocol === 'OGC:WMS') urls.push(ownUrl);
+  if (DERIVABLE_PROTOCOLS.has(r.DistributionProtocol)) {
+    urls.push(arcgisWmsUrl(ownUrl));
   }
   urls.push(r.ServiceDistributionUrlForDataset);
-  // "uuid|title||type|org||protocol|url|..." — only datasets rely on this alone.
   for (const s of r.DatasetServices ?? []) {
     const f = s.split('|');
     if (f[6] === 'OGC:WMS') urls.push(f[7]);
+    if (DERIVABLE_PROTOCOLS.has(f[6])) urls.push(arcgisWmsUrl(f[7]));
   }
   return [...new Set(urls.filter(Boolean).map(normalizeWmsUrl))].filter(
     Boolean,
@@ -147,9 +154,8 @@ const usefulTitle = (t) => {
     : title;
 };
 
-// GetFeatureInfo formats Norgeskart's featureInfoService can parse, best first.
-// Servers answer anything else with an exception (NVE rejects application/json
-// but offers application/geo+json), so pick from what the service advertises.
+// Parseable GetFeatureInfo formats, best first; pick one the service offers (NVE
+// rejects application/json but has application/geo+json).
 const INFO_FORMAT_PREFERENCE = [
   'application/json',
   'application/geo+json',
@@ -172,8 +178,7 @@ const parseCapabilities = (text) => {
   if (!root) return null;
   const layers = [];
   const crs = new Set();
-  // Scale limits (WMS 1.3 Min/MaxScaleDenominator) inherit from the parent.
-  // Returns the range in which the layer actually draws something.
+  // Returns where the layer draws; Min/MaxScaleDenominator inherit from the parent.
   const walk = (layer, inherited) => {
     for (const c of [...(layer.CRS ?? []), ...(layer.SRS ?? [])]) {
       String(c)
@@ -184,9 +189,8 @@ const parseCapabilities = (text) => {
       min: Number(layer.MinScaleDenominator ?? inherited.min),
       max: Number(layer.MaxScaleDenominator ?? inherited.max),
     };
-    // A group only draws its children: its range is theirs, clipped by any
-    // explicit limit on the group (MarinGrenseWMS4 has none, all children stop
-    // at 1:150 000). A leaf keeps its own, inherited range.
+    // A group draws only its children: their range, clipped by its own limits
+    // (MarinGrenseWMS4 is unlimited but every child stops at 1:150 000).
     const childResults = (layer.Layer ?? []).map((child) => walk(child, own));
     const childRanges = childResults;
     const range =
@@ -214,12 +218,13 @@ const parseCapabilities = (text) => {
     return { ...range, queryable };
   };
   walk(root, { min: 0, max: Infinity });
-  // Topmost named layers: ArcGIS and some GeoServer groups nest unnamed folders.
-  let level = root.Layer ?? [];
-  while (level.length > 0 && !level.some((l) => l.Name)) {
-    level = level.flatMap((l) => l.Layer ?? []);
-  }
-  const children = level.filter((l) => l.Name).map((l) => String(l.Name));
+  // Topmost named layer per branch: a level can mix unnamed ArcGIS folders with
+  // named layers (Svalbard geology).
+  const topmostNamed = (layer) =>
+    layer.Name
+      ? [String(layer.Name)]
+      : (layer.Layer ?? []).flatMap(topmostNamed);
+  const children = (root.Layer ?? []).flatMap(topmostNamed);
   return {
     serviceTitle: usefulTitle(caps.Service?.Title) || usefulTitle(root.Title),
     infoFormat: pickInfoFormat(caps.Capability),
@@ -230,8 +235,7 @@ const parseCapabilities = (text) => {
   };
 };
 
-// Retried: a single slow response otherwise silently drops every layer of a
-// service from the list, making regenerated output flap between runs.
+// Retried: one slow response would drop a whole service and make output flap.
 const CAPABILITIES_ATTEMPTS = 3;
 const fetchCapabilities = async (url) => {
   const capUrl = new URL(url);
@@ -255,19 +259,16 @@ const normalizeTitle = (t) =>
 // GeoServer virtual services list "layer" where kartkatalog says "workspace:layer".
 const stripWorkspace = (name) => name.slice(name.indexOf(':') + 1);
 
-// Topmost named layer(s), i.e. the whole service — what createUrlWmsLayer would
-// pick without an explicit layer, except all top-level layers instead of the first.
+// The whole service: root name, or all topmost named layers.
 const wholeServiceLayer = (caps) => {
   if (caps.rootName) return caps.rootName;
-  if (caps.children.length > 0 && caps.children.length <= MAX_CHILD_LAYERS) {
-    return caps.children.join(',');
-  }
+  const joined = caps.children.join(',');
+  if (joined && joined.length <= MAX_LAYERS_PARAM_LENGTH) return joined;
   return null;
 };
 
-// Returns { layer, match } where match is how the layer was found: 'name'
-// (servicelayer metadata), 'title'/'partial' (dataset title ↔ layer), or 'whole'.
-// Kartkatalog records no layer name for datasets, so titles are all we have.
+// → { layer, match: 'name' | 'title' | 'partial' | 'whole' }. Datasets carry no
+// layer name in kartkatalog, so they are matched by title.
 const resolveLayer = (record, caps, serviceLayerName) => {
   if (record.Type === 'servicelayer') {
     if (!serviceLayerName) return null;
@@ -281,8 +282,7 @@ const resolveLayer = (record, caps, serviceLayerName) => {
   if (record.Type === 'service') {
     const layer = wholeServiceLayer(caps);
     if (layer) return { layer, match: 'whole' };
-    // Too many top-level layers to request at once: fall through to the
-    // title match below, like a dataset.
+    // Too many layers for one request (nib-mosaikk): match by title instead.
   }
   const title = normalizeTitle(record.Title);
   // Layer names count too: "Landsnettpunkt", "Svenske_finske_stasjoner".
@@ -292,10 +292,8 @@ const resolveLayer = (record, caps, serviceLayerName) => {
       normalizeTitle(stripWorkspace(l.name)) === title,
   );
   if (exact) return { layer: exact.name, match: 'title' };
-  // "Sårbare naturtyper i Sunnhordland – Svampskog" ↔ layer "Svampskog": take the
-  // longest layer title contained in the dataset title (or vice versa), if unique.
-  // The root is excluded: its title is often just the owner ("Kartverket"), which
-  // would sneak the whole service back in under a dataset's title.
+  // Longest unique containment ("… Sunnhordland – Svampskog" ↔ "Svampskog"). Root
+  // excluded: titled like the owner ("Kartverket"), it would match everything.
   const partial = caps.layers
     .filter((l) => !l.isRoot)
     .map((l) => ({ ...l, norm: normalizeTitle(l.title) }))
@@ -313,9 +311,8 @@ const resolveLayer = (record, caps, serviceLayerName) => {
   return layer ? { layer, match: 'whole' } : null;
 };
 
-// "Sårbare marine biotoper – modellert utbredelse Svampskog" + "… Svampspikelbunn"
-// → "Sårbare marine biotoper – modellert utbredelse". Used to name a service that
-// has neither a catalog record nor a <Title> of its own.
+// Names a service with no catalog record or <Title>: "Sårbare marine biotoper –
+// modellert utbredelse Svampskog" + "… Svampspikelbunn" → the shared prefix.
 const MIN_COMMON_TITLE_LENGTH = 8;
 const commonTitlePrefix = (titles) => {
   // A single title has itself as "common prefix" — that's the subset name again.
@@ -332,9 +329,7 @@ const commonTitlePrefix = (titles) => {
   return prefix.length >= MIN_COMMON_TITLE_LENGTH ? prefix : null;
 };
 
-// Visible scale range of the requested layer(s), or {} when unlimited. Lets the
-// app tell users to zoom in instead of showing an empty map (NVE "Dam" draws only
-// below 1:75 000).
+// Visible scale range, or {} if unlimited; the app shows a zoom hint outside it.
 const scaleRange = (caps, layerParam) => {
   const requested = new Set(layerParam.split(','));
   const hits = caps.layers.filter((l) => requested.has(l.name));
@@ -347,10 +342,8 @@ const scaleRange = (caps, layerParam) => {
   };
 };
 
-// Layers that only draw zoomed in (NVE "Dam", below 1:75 000) look broken to
-// most users. If the service also has an overview variant of the same layer
-// ("Dam_N250"), that is the better default; the detailed one is kept as its own
-// entry.
+// Zoomed-in-only layers (NVE "Dam" < 1:75 000) look broken: default to an
+// overview twin ("Dam_N250") and keep the detailed one as its own entry.
 const OVERVIEW_MAX_SCALE = 1_000_000;
 const findOverviewVariant = (caps, layerName) => {
   const layer = caps.layers.find((l) => l.name === layerName);
@@ -370,8 +363,7 @@ const findOverviewVariant = (caps, layerName) => {
   return best ?? null;
 };
 
-// WMS layer titles/abstracts are mostly technical ("Dam_N250"); the catalog
-// abstract says what the data is. Keep its first sentence, capped for the list.
+// First sentence of the catalog abstract; WMS titles are technical ("Dam_N250").
 const SUMMARY_MAX_LENGTH = 180;
 const summarize = (text) => {
   const clean = String(text ?? '')
@@ -383,11 +375,51 @@ const summarize = (text) => {
   return `${sentence.slice(0, SUMMARY_MAX_LENGTH).replace(/\s+\S*$/, '')}…`;
 };
 
-// Servers reject GetFeatureInfo on layers their capabilities mark
-// queryable="0" (Kartverket's raster/background maps); don't send it at all.
+// queryable="0" layers (raster/background maps) reject GetFeatureInfo.
 const isQueryable = (caps, layerParam) => {
   const requested = new Set(layerParam.split(','));
   return caps.layers.some((l) => requested.has(l.name) && l.queryable);
+};
+
+// Capabilities list layers servers can't draw (GEBCO 400, Mattilsynet 500), so
+// each entry must return an image for a GetMap within its visible scale.
+const RENDER_CENTER = [300000, 7000000];
+const RENDER_SIZE_PX = 256;
+const WMS_PIXEL_SIZE_M = 0.00028;
+const renderCheckUrl = (entry) => {
+  const scale = entry.maxScale
+    ? entry.maxScale / 2
+    : entry.minScale
+      ? entry.minScale * 2
+      : 2_000_000;
+  const half = (scale * WMS_PIXEL_SIZE_M * RENDER_SIZE_PX) / 2;
+  const [x, y] = RENDER_CENTER;
+  const url = new URL(entry.url);
+  Object.entries({
+    SERVICE: 'WMS',
+    REQUEST: 'GetMap',
+    VERSION: '1.3.0',
+    LAYERS: entry.layer,
+    STYLES: '',
+    CRS: REQUIRED_CRS,
+    BBOX: [x - half, y - half, x + half, y + half].join(','),
+    WIDTH: RENDER_SIZE_PX,
+    HEIGHT: RENDER_SIZE_PX,
+    FORMAT: 'image/png',
+    TRANSPARENT: 'true',
+  }).forEach(([k, v]) => url.searchParams.set(k, String(v)));
+  return url;
+};
+const rendersImage = async (entry) => {
+  for (let attempt = 1; attempt <= CAPABILITIES_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetchWithTimeout(renderCheckUrl(entry));
+      if (res.headers.get('content-type')?.startsWith('image/')) return true;
+    } catch {
+      // retried
+    }
+  }
+  return false;
 };
 
 const main = async () => {
@@ -434,9 +466,8 @@ const main = async () => {
     serviceLayers.map((c, i) => [c.record.Uuid, layerNames[i]]),
   );
 
-  // A dataset that falls back to the whole service is only an honest entry when
-  // it is the service's sole dataset; otherwise it's one subset among several
-  // (e.g. "Fastmerker - Høydefastmerker" on the shared fastmerker2 service).
+  // Whole-service fallback is only honest for a service's sole dataset; else it
+  // shows e.g. all of fastmerker2 as "Fastmerker - Høydefastmerker".
   const datasetsByUrl = new Map();
   for (const { record, urls } of candidates) {
     if (!(record.Type in DATASET_TYPES)) continue;
@@ -444,8 +475,7 @@ const main = async () => {
     if (url)
       datasetsByUrl.set(url, [...(datasetsByUrl.get(url) ?? []), record]);
   }
-  // Every service a dataset links to — one dataset often spans many services
-  // (HI publishes one per substance), so the first URL alone misses most.
+  // All services per dataset: HI spans one WMS per substance.
   const datasetsByAnyUrl = new Map();
   for (const { record, urls } of candidates) {
     if (!(record.Type in DATASET_TYPES)) continue;
@@ -456,10 +486,8 @@ const main = async () => {
   const datasetTitles = (url) =>
     (datasetsByUrl.get(url) ?? []).map((r) => r.Title.trim());
 
-  // Geonorge's category pages (geonorge.no/kartdata/datasett-i-geonorge/) filter
-  // on the *dataset* theme. Service and servicelayer themes are set separately
-  // and are often off (HI's "Dieldrin i marine sedimenter" layer says Geologi,
-  // its dataset says Natur), so services take the theme of their datasets.
+  // Geonorge's category pages use the dataset theme; service themes are often off
+  // (HI "Dieldrin" layer: Geologi, its dataset: Natur), so services inherit it.
   const categoryFor = (record, url) => {
     const datasets =
       record.Type in DATASET_TYPES ? [] : (datasetsByAnyUrl.get(url) ?? []);
@@ -532,8 +560,7 @@ const main = async () => {
     }
   }
 
-  // Keep the dropped datasets' data reachable: if no catalog service record
-  // already covers the whole service, add one titled by the service itself.
+  // Keep dropped datasets' data reachable via a whole-service entry if none exists.
   for (const [url, dropped] of droppedByUrl) {
     const caps = capsByUrl.get(url);
     const layer = wholeServiceLayer(caps);
@@ -557,9 +584,16 @@ const main = async () => {
   }
   console.log('Layer resolution:', stats);
 
-  // One header per WMS in the UI, so users see which layers belong together.
-  // Title: the catalog's service record ("Vannkraft WMS") reads better than the
-  // server's own <Title> ("Vannkraft1").
+  console.log(`Render-testing ${byKey.size} entries…`);
+  const entriesToTest = [...byKey.entries()];
+  const renders = await pool(entriesToTest, ([, entry]) => rendersImage(entry));
+  entriesToTest.forEach(([key, entry], i) => {
+    if (renders[i]) return;
+    byKey.delete(key);
+    console.log(`  dropped (no image): ${entry.title} — ${entry.url}`);
+  });
+
+  // UI group headers. Catalog service title ("Vannkraft WMS") beats <Title> ("Vannkraft1").
   const serviceRecords = new Map();
   for (const { record, urls } of candidates) {
     if (record.Type !== 'service') continue;
@@ -571,8 +605,7 @@ const main = async () => {
   for (const [url, entries] of Object.entries(entriesByUrl)) {
     const record = serviceRecords.get(url);
     const { organization } = entries[0];
-    // HI publishes one WMS per layer without a catalog service record; there the
-    // layer's own title ("… Dieldrin-nivåer WMS") is the service's name.
+    // HI: one WMS per layer, no service record → the layer title names it.
     const soleTitle =
       new Set(entries.map((e) => e.title)).size === 1
         ? entries[0].title.replace(/\s*[-–]?\s*WMS$/i, '')
@@ -587,7 +620,7 @@ const main = async () => {
       organization: record?.Organization ?? organization,
       summary: summarize(record?.Abstract),
       detailsUrl: record?.ShowDetailsUrl ?? null,
-      // null: no GetFeatureInfo at all, so clicking the map shouldn't query it.
+      // null: no GetFeatureInfo; the app won't query it.
       infoFormat: capsByUrl.get(url).infoFormat,
     };
   }

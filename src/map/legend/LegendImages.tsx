@@ -11,19 +11,14 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-// GeoServer renders the default legend at ~20px; ask for 3x DPI + labels so the
-// enlarged view is sharp and readable instead of a tiny upscaled icon. Other
-// servers (ArcGIS, MapServer) ignore the vendor parameter.
+// GeoServer vendor option: 3x DPI + labels for a sharp enlarged legend; ArcGIS
+// and MapServer ignore it.
 const ENLARGED_LEGEND_OPTIONS = '&LEGEND_OPTIONS=dpi:270;forceLabels:on';
-// Servers that ignore the DPI hint return the same small image; scale those up
-// on screen so "enlarge" does the same thing for every legend.
+// Those return the same small image, so scale it up on screen instead.
 const SMALL_LEGEND_WIDTH = 300;
 const SMALL_LEGEND_SCALE = 2.5;
 
-/**
- * GetLegendGraphic images that open enlarged on click. Shared by theme layers
- * and URL/Geonorge WMS layers so every image legend behaves the same.
- */
+/** Click-to-enlarge legend images, shared by theme and URL/Geonorge WMS layers. */
 export const LegendImages = ({
   urls,
   layerName,
@@ -33,8 +28,7 @@ export const LegendImages = ({
 }) => {
   const { t } = useTranslation();
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
-  // Some services have no legend for a layer and answer with an error; drop
-  // those instead of showing a broken image button.
+  // Layers without a legend answer with an error: hide them, not a broken image.
   const [failedUrls, setFailedUrls] = useState<Set<string>>(new Set());
   const [enlargedWidth, setEnlargedWidth] = useState<number | undefined>();
 

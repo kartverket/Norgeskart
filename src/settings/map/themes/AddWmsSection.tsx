@@ -24,8 +24,6 @@ import {
 } from '../../../map/layers/urlWms';
 import { GeonorgeWmsSearch } from './GeonorgeWmsSearch';
 
-// ─── Layer list ──────────────────────────────────────────────────────────────
-
 const WmsLayerList = () => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
@@ -103,7 +101,6 @@ const WmsLayerList = () => {
             borderColor="gray.200"
             p={2}
           >
-            {/* Title row */}
             <Flex align="center" gap={1} mb={2}>
               <Tooltip content={t('map.settings.layers.theme.addWms.moveUp')}>
                 <IconButton
@@ -211,7 +208,6 @@ const WmsLayerList = () => {
               </Flex>
             )}
 
-            {/* Opacity row */}
             <Flex align="center" gap={2}>
               <Text fontSize="xs" color="gray.500" whiteSpace="nowrap">
                 {t('map.settings.layers.theme.addWms.opacity')}

@@ -199,8 +199,7 @@ export const getEffectiveLegendImageUrls = (
   return getLegendGraphicUrls(getEffectiveWmsUrl(config, layer), layer.layers);
 };
 
-// GetLegendGraphic is single-layer — a comma-separated LAYER value is read as
-// one (non-existent) layer name by GeoServer — so one URL per layer.
+// GetLegendGraphic takes one layer; GeoServer reads "a,b" as one unknown name.
 export const getLegendGraphicUrls = (wmsUrl: string, layers: string) =>
   layers
     .split(',')

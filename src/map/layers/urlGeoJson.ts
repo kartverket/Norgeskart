@@ -7,10 +7,6 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 
-// ---------------------------------------------------------------------------
-// Default style: semi-transparent blue fill + 2px stroke
-// ---------------------------------------------------------------------------
-
 const DEFAULT_FILL_COLOR = 'rgba(51, 153, 204, 0.2)';
 const DEFAULT_STROKE_COLOR = '#3399cc';
 const DEFAULT_STROKE_WIDTH = 2;
@@ -32,10 +28,6 @@ const defaultStyle = new Style({
   }),
 });
 
-// ---------------------------------------------------------------------------
-// simplestyle-spec v1.1 helpers
-// ---------------------------------------------------------------------------
-
 const SIMPLESTYLE_KEYS = new Set([
   'fill',
   'fill-opacity',
@@ -47,7 +39,6 @@ const SIMPLESTYLE_KEYS = new Set([
   'marker-symbol',
 ]);
 
-/** Convert a hex colour + alpha value into an `rgba(…)` string. */
 const hexToRgba = (hex: string, alpha: number): string => {
   const clean = hex.replace('#', '');
   const full =
@@ -73,13 +64,7 @@ const markerSizeToRadius = (size: unknown): number => {
   return 6; // medium (default)
 };
 
-/**
- * Per-feature style function implementing simplestyle-spec v1.1.
- * Falls back to the default blue style when no simplestyle properties are found.
- *
- * Supported properties: fill, fill-opacity, stroke, stroke-opacity, stroke-width,
- * marker-color, marker-size. marker-symbol is not yet supported.
- */
+/** simplestyle-spec v1.1 per feature (marker-symbol unsupported); default style otherwise. */
 export const simplestyleToOlStyle = (
   feature: FeatureLike,
 
@@ -139,18 +124,8 @@ export const simplestyleToOlStyle = (
   });
 };
 
-// ---------------------------------------------------------------------------
-// Layer factory
-// ---------------------------------------------------------------------------
-
-// ---------------------------------------------------------------------------
-// dekningsstatus styling
-//
-// GeoJSON files whose URL filename starts with 'dekning_' come from Geonorge's
-// fullstendighetsdekningskart pipeline. They are recognised automatically and
-// styled by their 'dekningsstatus' property using the official colour scheme.
-// ---------------------------------------------------------------------------
-
+// dekning_*.geojson files are Geonorge fullstendighetsdekningskart output,
+// coloured by their dekningsstatus property.
 import { DEKNINGSSTATUS_COLORS } from './dekningsstatusColors';
 
 export const dekningsstatusToOlStyle = (feature: FeatureLike): Style => {
@@ -164,7 +139,6 @@ export const dekningsstatusToOlStyle = (feature: FeatureLike): Style => {
   });
 };
 
-/** Returns true when a URL points to a Geonorge dekning GeoJSON file. */
 const isDekningUrl = (url: string): boolean => {
   const filename =
     url
@@ -174,9 +148,6 @@ const isDekningUrl = (url: string): boolean => {
   return filename.toLowerCase().startsWith('dekning_');
 };
 
-// ---------------------------------------------------------------------------
-
-/** Derive a human-readable title from a GeoJSON URL. */
 const titleFromUrl = (url: string, index: number): string => {
   try {
     const pathname = new URL(url).pathname;
@@ -188,27 +159,14 @@ const titleFromUrl = (url: string, index: number): string => {
         .trim();
     }
   } catch {
-    // URL parsing failed — fall through to default
+    // invalid URL: numbered fallback
   }
   return `GeoJSON ${index + 1}`;
 };
 
 /**
- * Create an OpenLayers VectorLayer that loads GeoJSON from a URL.
- *
- * The layer is assigned id `theme.urlGeojson.<index>` so it is automatically
- * picked up by `getVisibleVectorLayers()` / `getVectorFeaturesAtPixel()` in
- * featureInfoService.ts — GetFeatureInfo on click works without any extra code.
- *
- * Style selection (highest priority first):
- * 1. URL filename starts with `dekning_` → styled by `dekningsstatus` property
- *    using the official Geonorge fullstendighetsdekningskart colour scheme.
- * 2. Features contain simplestyle-spec v1.1 properties → per-feature styling.
- * 3. Neither → default semi-transparent blue style.
- *
- * The loader reads the GeoJSON file's `crs` member (if present) to determine
- * `dataProjection`, falling back to EPSG:4326. This handles both standard
- * GeoJSON (EPSG:4326) and Kartverket files in EPSG:25833.
+ * id `theme.urlGeojson.<n>` makes featureInfoService pick the layer up for click info.
+ * Style: dekning_* → dekningsstatus, else simplestyle-spec, else default.
  */
 export const createUrlGeoJsonLayer = async (
   geojsonUrl: string,
@@ -224,11 +182,11 @@ export const createUrlGeoJsonLayer = async (
     [k: string]: unknown;
   };
 
-  // Detect dataProjection from the GeoJSON crs member (GeoJSON 1.0 / Kartverket convention)
+  // GeoJSON 1.0 `crs` member: Kartverket files are EPSG:25833, not RFC 7946's 4326.
   const crsName = geojsonData?.crs?.properties?.name;
   let dataProjection = 'EPSG:4326'; // RFC 7946 default
   if (crsName) {
-    // Normalise "urn:ogc:def:crs:EPSG::25833" or plain "EPSG:25833" → "EPSG:25833"
+    // "urn:ogc:def:crs:EPSG::25833" | "EPSG:25833" → "EPSG:25833"
     const match = /EPSG[::]+(\d+)/.exec(crsName);
     if (match) dataProjection = `EPSG:${match[1]}`;
   }
@@ -271,10 +229,7 @@ export const createUrlGeoJsonLayer = async (
   });
 };
 
-// ---------------------------------------------------------------------------
-// Atom — tracks layers created from URL params in the current session
-// ---------------------------------------------------------------------------
-
+// Layers created from URL params this session.
 export const urlGeoJsonLayersAtom = atom<
   VectorLayer<VectorSource<Feature<Geometry>>>[]
 >([]);
