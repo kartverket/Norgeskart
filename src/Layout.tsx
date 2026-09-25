@@ -13,7 +13,6 @@ import { BackgroundLayerPopover } from './map/backgroundLayer/BackgroundLayerPop
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
 import { MapComponent } from './map/MapComponent';
 import { MapControlButtons } from './map/MapControlButtons';
-import { ActiveLayersPanel } from './map/overlay/ActiveLayersPanel';
 import { mapToolAtom, showSearchComponentAtom } from './map/overlay/atoms';
 import { Compass } from './map/overlay/Compass';
 import { LinkLogo } from './map/overlay/LinkLogo';
@@ -203,22 +202,6 @@ export const Layout = () => {
               </ErrorBoundary>
             </Box>
           </VStack>
-        </GridItem>
-
-        <GridItem
-          justifySelf="start"
-          alignContent="end"
-          gridRow={{ base: 4, md: '3 / span 3' }}
-          gridColumn={{ base: '1 / span 6', md: '3 / span 4' }}
-          mb={{ base: 3, md: 2 }}
-          ml={{ base: 2, md: 3 }}
-          display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
-          zIndex={1}
-          pointerEvents={'none'}
-        >
-          <ErrorBoundary fallback={undefined} name={'ActiveLayersPanel'}>
-            <ActiveLayersPanel />
-          </ErrorBoundary>
         </GridItem>
 
         {!isMobile && (
