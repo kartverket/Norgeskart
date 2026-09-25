@@ -89,6 +89,20 @@ export const createUrlWmsLayer = async (
   });
 };
 
+// URL WMS layers occupy z-indices in the range [8, 9) so they sit above
+// background layers (max 6) but below theme/GeoJSON layers (10).
+const WMS_ZINDEX_BASE = 8;
+const WMS_ZINDEX_STEP = 0.1;
+
+export const assignZIndices = (layers: TileLayer[]) => {
+  layers.forEach((layer, i) => {
+    // Index 0 = top of list = highest z-index (rendered on top)
+    layer.setZIndex(
+      WMS_ZINDEX_BASE + (layers.length - 1 - i) * WMS_ZINDEX_STEP,
+    );
+  });
+};
+
 export const urlWmsLayersAtom = atom<TileLayer[]>([]);
 
 export const hasUrlLayersAtom = atom(

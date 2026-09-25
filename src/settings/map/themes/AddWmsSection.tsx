@@ -1,14 +1,9 @@
 import {
   Box,
-  Button,
   Flex,
-  Heading,
   IconButton,
-  Input,
   Link,
-  Separator,
   Slider,
-  Spinner,
   Text,
   Tooltip,
   VStack,
@@ -18,25 +13,8 @@ import type TileLayer from 'ol/layer/Tile';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../../map/atoms';
-import {
-  createUrlWmsLayer,
-  urlWmsLayersAtom,
-} from '../../../map/layers/urlWms';
+import { assignZIndices, urlWmsLayersAtom } from '../../../map/layers/urlWms';
 import { GeonorgeWmsSearch } from './GeonorgeWmsSearch';
-
-// URL WMS layers occupy z-indices in the range [8, 9) so they sit above
-// background layers (max 6) but below theme/GeoJSON layers (10).
-const WMS_ZINDEX_BASE = 8;
-const WMS_ZINDEX_STEP = 0.1;
-
-const assignZIndices = (layers: TileLayer[]) => {
-  layers.forEach((layer, i) => {
-    // Index 0 = top of list = highest z-index (rendered on top)
-    layer.setZIndex(
-      WMS_ZINDEX_BASE + (layers.length - 1 - i) * WMS_ZINDEX_STEP,
-    );
-  });
-};
 
 // ─── Layer list ──────────────────────────────────────────────────────────────
 
@@ -88,8 +66,7 @@ const WmsLayerList = () => {
         const title = layer.get('layerTitle') as string;
         const opacity = opacities[id] ?? layer.getOpacity();
         const detailsUrl = layer.get('geonorgeDetailsUrl') as
-          | string
-          | undefined;
+          string | undefined;
         const isFirst = index === 0;
         const isLast = index === urlWmsLayers.length - 1;
 
@@ -202,98 +179,9 @@ const WmsLayerList = () => {
   );
 };
 
-// ─── Manual URL input ────────────────────────────────────────────────────────
-
-export const AddWmsSection = () => {
-  const { t } = useTranslation();
-  const [url, setUrl] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const map = useAtomValue(mapAtom);
-  const setUrlWmsLayers = useSetAtom(urlWmsLayersAtom);
-  const urlWmsLayers = useAtomValue(urlWmsLayersAtom);
-
-  const handleAdd = async () => {
-    const trimmed = url.trim();
-    if (!trimmed) return;
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const mapProjection = map.getView().getProjection().getCode();
-      const index = urlWmsLayers.length;
-      const layer = await createUrlWmsLayer(
-        trimmed,
-        undefined,
-        mapProjection,
-        index,
-      );
-      if (!layer) {
-        setError(t('map.settings.layers.theme.addWms.error'));
-        return;
-      }
-      map.addLayer(layer);
-      setUrlWmsLayers((prev) => {
-        const next = [...prev, layer];
-        assignZIndices(next);
-        return next;
-      });
-      setUrl('');
-    } catch {
-      setError(t('map.settings.layers.theme.addWms.error'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <Box>
-      <GeonorgeWmsSearch />
-
-      <Box marginTop={4}>
-        <Separator marginBottom={3} />
-        <Heading size={{ base: 'xs', md: 'sm' }} marginBottom={2}>
-          {t('map.settings.layers.theme.addWms.heading')}
-        </Heading>
-
-        <Flex gap={2} align="flex-start">
-          <Input
-            size="sm"
-            placeholder={t('map.settings.layers.theme.addWms.placeholder')}
-            value={url}
-            onChange={(e) => {
-              setUrl(e.target.value);
-              setError(null);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') void handleAdd();
-            }}
-            disabled={loading}
-            flex={1}
-          />
-          <Button
-            size="sm"
-            onClick={() => void handleAdd()}
-            disabled={!url.trim() || loading}
-            colorPalette="blue"
-          >
-            {loading ? (
-              <Spinner size="xs" />
-            ) : (
-              t('map.settings.layers.theme.addWms.addButton')
-            )}
-          </Button>
-        </Flex>
-
-        {error && (
-          <Text fontSize="xs" color="red.500" marginTop={1}>
-            {error}
-          </Text>
-        )}
-
-        <WmsLayerList />
-      </Box>
-    </Box>
-  );
-};
+export const AddWmsSection = () => (
+  <Box>
+    <GeonorgeWmsSearch />
+    <WmsLayerList />
+  </Box>
+);

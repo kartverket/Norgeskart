@@ -1,16 +1,7 @@
-import { atom, getDefaultStore } from 'jotai';
-import { fetchFullstendighetsdekningLayers } from './fullstendighetsdekningApi';
-// TODO: Re-enable other theme configs after merge from main
-// import { borderConfig } from './config/themeLayers/borders';
-// import { dekningConfig } from './config/themeLayers/dekning';
-// import { fastmerkerLayerConfig } from './config/themeLayers/fastmerker';
-// import { historicalMapsConfig } from './config/themeLayers/historicalMaps';
-// import { outdoorRecreationLayerConfig } from './config/themeLayers/outdoorRecreation';
-// import { placeNamesConfig } from './config/themeLayers/placeNames';
-// import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
-// import { sjoConfig } from './config/themeLayers/sjo';
-// import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
-import { fullstendighetsdekningConfig } from './config/themeLayers/fullstendighetsdekning';
+import { atom } from 'jotai';
+import { outdoorRecreationLayerConfig } from './config/themeLayers/outdoorRecreation';
+import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
+import { sjoConfig } from './config/themeLayers/sjo';
 import { ThemeLayerName } from './themeWMS';
 
 export interface FieldConfig {
@@ -95,17 +86,9 @@ const getThemeLayerConfig = () => {
     layers: [],
   };
   const configs: ThemeLayerConfig[] = [
-    // TODO: Re-enable other theme configs after merge from main
-    // propertyInfoConfig,
-    // outdoorRecreationLayerConfig,
-    // sjoConfig,
-    // borderConfig,
-    // historicalMapsConfig,
-    // tilgjengelighetConfig,
-    // placeNamesConfig,
-    // fastmerkerLayerConfig,
-    // dekningConfig,
-    fullstendighetsdekningConfig,
+    propertyInfoConfig,
+    outdoorRecreationLayerConfig,
+    sjoConfig,
   ];
 
   for (const config of configs) {
@@ -115,22 +98,9 @@ const getThemeLayerConfig = () => {
 
   return mergedConfig;
 };
-export let themeLayerConfig = getThemeLayerConfig();
+export const themeLayerConfig = getThemeLayerConfig();
 
 export const themeLayerConfigAtom = atom(themeLayerConfig);
-
-export async function initDynamicThemeLayers(): Promise<void> {
-  try {
-    const layers = await fetchFullstendighetsdekningLayers();
-    themeLayerConfig = {
-      ...themeLayerConfig,
-      layers: [...themeLayerConfig.layers, ...layers],
-    };
-    getDefaultStore().set(themeLayerConfigAtom, themeLayerConfig);
-  } catch (error) {
-    console.error('Failed to initialize dynamic theme layers:', error);
-  }
-}
 
 export const getThemeLayerById = (
   config: ThemeLayerConfig,
