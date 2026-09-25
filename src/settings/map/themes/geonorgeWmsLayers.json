@@ -2,16 +2,6 @@
   "generated": "2026-09-25",
   "layers": [
     {
-      "id": "666e4559-60bf-4a1d-9e72-c43502a9a58b",
-      "title": "Administrative enheter WMS",
-      "organization": "Kartverket",
-      "category": "annet",
-      "url": "https://wms.geonorge.no/skwms1/wms.adm_enheter2",
-      "layer": "adm_enheter_V2_WMS",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/666e4559-60bf-4a1d-9e72-c43502a9a58b",
-      "type": "service"
-    },
-    {
       "id": "4beb4c8f-7963-49e5-acbb-8a52fef05424",
       "title": "Arealreserver i kommuneplan WMS - SSB",
       "organization": "Statistisk sentralbyrå",
@@ -32,34 +22,14 @@
       "type": "service"
     },
     {
-      "id": "ba8247d4-cf5c-4cf6-8ede-8ada6f2d13bd",
-      "title": "bomtraal_arter",
-      "organization": "Havforskningsinstituttet",
+      "id": "efd21e7a-2aaa-4d43-87e5-41f84483aa86",
+      "title": "Biotoper i Barentshavet",
+      "organization": "Norges geologiske undersøkelse",
       "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "bomtraal_arter",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ba8247d4-cf5c-4cf6-8ede-8ada6f2d13bd",
-      "type": "servicelayer"
-    },
-    {
-      "id": "32cd0153-1936-4b57-8a7c-cbd49f173e19",
-      "title": "bomtraal_biomasse",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "bomtraal_biomasse",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/32cd0153-1936-4b57-8a7c-cbd49f173e19",
-      "type": "servicelayer"
-    },
-    {
-      "id": "43baf96e-aebf-4306-9fc8-a5c12ae5e51e",
-      "title": "bomtraal_individer",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "bomtraal_individer",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/43baf96e-aebf-4306-9fc8-a5c12ae5e51e",
-      "type": "servicelayer"
+      "url": "https://geo.ngu.no/mapserver/NOR_RUS_BarentsSeaWMS/",
+      "layer": "NOR_RUS_BarentsSeaWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/efd21e7a-2aaa-4d43-87e5-41f84483aa86",
+      "type": "dataset"
     },
     {
       "id": "bf5abc2c-73fa-4bb4-8e68-a4b4582c211d",
@@ -70,106 +40,6 @@
       "layer": "Naturtyper_etter_NiN_1_20000,Punktobservasjoner_marine_grunnkart,biomasse_prediksjon_stortare_2-20m,estimert_biomasse_prediksjon_stortare_2-20m_alt,saarbare_naturtyper_blotbunnssvampskog_sunnhordland,saarbare_naturtyper_fastbunnssvampskog_sunnhordland,saarbare_naturtyper_sjofjaer_sunnhordland",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bf5abc2c-73fa-4bb4-8e68-a4b4582c211d",
       "type": "service"
-    },
-    {
-      "id": "84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a",
-      "title": "FKB WMS",
-      "organization": "Kartverket",
-      "category": "annet",
-      "url": "https://wms.geonorge.no/skwms1/wms.fkb",
-      "layer": "fkb",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a",
-      "type": "service"
-    },
-    {
-      "id": "875d0c64-d5ef-46ea-8c03-1d54009e5f2b",
-      "title": "Fritidsbyggområder WMS",
-      "organization": "Statistisk sentralbyrå",
-      "category": "annet",
-      "url": "https://kart.ssb.no/api/mapserver/v1/wms/fritidsbyggomraader",
-      "layer": "sammenhengende_fritidsbyggomrader_2025,layer-975a88",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/875d0c64-d5ef-46ea-8c03-1d54009e5f2b",
-      "type": "service"
-    },
-    {
-      "id": "0d43e3eb-bf79-41b7-b108-2ead4b6a13f7",
-      "title": "grabb_arter",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "grabb_arter",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0d43e3eb-bf79-41b7-b108-2ead4b6a13f7",
-      "type": "servicelayer"
-    },
-    {
-      "id": "ea2452a7-6cd9-40fe-92de-5839747b0eb6",
-      "title": "grabb_biomasse",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "grabb_biomasse",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ea2452a7-6cd9-40fe-92de-5839747b0eb6",
-      "type": "servicelayer"
-    },
-    {
-      "id": "077c6000-b17d-4c71-98cd-125ee21e89ec",
-      "title": "grabb_individer",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "grabb_individer",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/077c6000-b17d-4c71-98cd-125ee21e89ec",
-      "type": "servicelayer"
-    },
-    {
-      "id": "ab0c07ed-a2eb-4fec-8a64-b1c8d33fa69f",
-      "title": "hornkorall_isidella_lofotensis",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "hornkorall_isidella_lofotensis",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ab0c07ed-a2eb-4fec-8a64-b1c8d33fa69f",
-      "type": "servicelayer"
-    },
-    {
-      "id": "e8f875e9-e78c-484d-a54d-879f92cd63b7",
-      "title": "hornkorall_paragorgia_arborea",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "hornkorall_paragorgia_arborea",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e8f875e9-e78c-484d-a54d-879f92cd63b7",
-      "type": "servicelayer"
-    },
-    {
-      "id": "fc2780ad-ccbc-4a13-85fd-f4800798be15",
-      "title": "hornkorall_paramuricea_placomus",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "hornkorall_paramuricea_placomus",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fc2780ad-ccbc-4a13-85fd-f4800798be15",
-      "type": "servicelayer"
-    },
-    {
-      "id": "ecc2ec19-ab28-42a3-b670-282adbd8e77f",
-      "title": "hornkorall_primnoa_resedaeformis",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "hornkorall_primnoa_resedaeformis",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ecc2ec19-ab28-42a3-b670-282adbd8e77f",
-      "type": "servicelayer"
-    },
-    {
-      "id": "87eeff67-a9a6-4c22-bd20-2182b6b6566d",
-      "title": "hornkorall_radicipes",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "hornkorall_radicipes",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/87eeff67-a9a6-4c22-bd20-2182b6b6566d",
-      "type": "servicelayer"
     },
     {
       "id": "015d9957-b136-4d02-9e81-104b9feca51d",
@@ -192,64 +62,24 @@
       "type": "dataset"
     },
     {
-      "id": "bf6d3270-0930-4a23-8809-a883f6442472",
-      "title": "Kart over grå arealer WMS (Testversjon 1)",
-      "organization": "Norsk institutt for bioøkonomi",
+      "id": "7d220e23-5835-4f83-ba96-1156c154e566",
+      "title": "Landformer",
+      "organization": "Norges geologiske undersøkelse",
       "category": "annet",
-      "url": "https://wms.nibio.no/cgi-bin/graastruktur",
-      "layer": "Grå arealer",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bf6d3270-0930-4a23-8809-a883f6442472",
+      "url": "https://geo.ngu.no/mapserver/LandformerWMS",
+      "layer": "Landformer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/7d220e23-5835-4f83-ba96-1156c154e566",
+      "type": "dataset"
+    },
+    {
+      "id": "09ab54ec-ef54-410a-b163-f13622802629",
+      "title": "Landformer WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "annet",
+      "url": "https://geo.ngu.no/mapserver/LandformerWMS",
+      "layer": "LandformerWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/09ab54ec-ef54-410a-b163-f13622802629",
       "type": "service"
-    },
-    {
-      "id": "8c131d78-9f79-4b6f-b1b3-a446f56b660e",
-      "title": "korallobservasjoner_video",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "korallobservasjoner_video",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8c131d78-9f79-4b6f-b1b3-a446f56b660e",
-      "type": "servicelayer"
-    },
-    {
-      "id": "92c9e97d-cccf-4d81-a6a0-5333e1f391c8",
-      "title": "korallrev_identifiserte_omraader",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "korallrev_identifiserte_omraader",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/92c9e97d-cccf-4d81-a6a0-5333e1f391c8",
-      "type": "servicelayer"
-    },
-    {
-      "id": "ccb0ab26-cfda-4ae6-b6ac-f5868b940ec2",
-      "title": "korallrev_modellerte_omraader",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi:korallrev_modellerte_omraader/ows",
-      "layer": "mareano_biologi:korallrev_modellerte_omraader",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ccb0ab26-cfda-4ae6-b6ac-f5868b940ec2",
-      "type": "servicelayer"
-    },
-    {
-      "id": "a68e8893-84e0-4257-8bb1-84389c7152a6",
-      "title": "korallrev_observert_rev",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "korallrev_observert_rev",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a68e8893-84e0-4257-8bb1-84389c7152a6",
-      "type": "servicelayer"
-    },
-    {
-      "id": "9c7bc224-47aa-457f-9335-7187666ef12c",
-      "title": "korallrev_vernede_omraader",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "korallrev_vernede_omraader",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9c7bc224-47aa-457f-9335-7187666ef12c",
-      "type": "servicelayer"
     },
     {
       "id": "305852ff-5686-4454-ab11-b3ef55a9f5c7",
@@ -262,93 +92,13 @@
       "type": "servicelayer"
     },
     {
-      "id": "f50de411-461a-4280-b668-844da525c32c",
-      "title": "mareanovideo_fil",
-      "organization": "Havforskningsinstituttet",
+      "id": "c113173a-361e-4609-aaec-7f574d72cc28",
+      "title": "Marine linjer og prøver WMS",
+      "organization": "Norges geologiske undersøkelse",
       "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "mareanovideo_fil",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f50de411-461a-4280-b668-844da525c32c",
-      "type": "servicelayer"
-    },
-    {
-      "id": "71f45d2a-28c3-42da-bc2c-45b1b4aedcba",
-      "title": "mareanovideo_test",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "mareanovideo_test",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/71f45d2a-28c3-42da-bc2c-45b1b4aedcba",
-      "type": "servicelayer"
-    },
-    {
-      "id": "9f69a045-c0af-489e-a0c4-81e68f8eeb6e",
-      "title": "Mattilsynet - Drikkevann fra brønner",
-      "organization": "Mattilsynet",
-      "category": "annet",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Drikkevann_Bronn",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9f69a045-c0af-489e-a0c4-81e68f8eeb6e",
-      "type": "servicelayer"
-    },
-    {
-      "id": "8d32de61-990f-4ff3-bc26-b409babd57ca",
-      "title": "Mattilsynet - Fjørfehold",
-      "organization": "Mattilsynet",
-      "category": "annet",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Dyrehold_Fjoerfehold",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8d32de61-990f-4ff3-bc26-b409babd57ca",
-      "type": "servicelayer"
-    },
-    {
-      "id": "79a58632-69d8-4dd0-9133-0529802429f8",
-      "title": "Mattilsynet - Grunnvann",
-      "organization": "Mattilsynet",
-      "category": "annet",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Grunnvann",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/79a58632-69d8-4dd0-9133-0529802429f8",
-      "type": "servicelayer"
-    },
-    {
-      "id": "dc6749f5-635a-4e80-bd99-e3cfa10b51a2",
-      "title": "Mattilsynet - Innsjøer for drikkevann (10.04.2018)",
-      "organization": "Mattilsynet",
-      "category": "annet",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Innsjoer_Drikkevann_201804010",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dc6749f5-635a-4e80-bd99-e3cfa10b51a2",
-      "type": "servicelayer"
-    },
-    {
-      "id": "714be535-3972-4313-957a-ce6fc2aa4005",
-      "title": "Mattilsynet - Uttak av vann til drikkevannsformål (10.04.2018)",
-      "organization": "Mattilsynet",
-      "category": "annet",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Vann_Drikkevannsformaal_20180410",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/714be535-3972-4313-957a-ce6fc2aa4005",
-      "type": "servicelayer"
-    },
-    {
-      "id": "3d85b3cf-fd64-476d-aa50-6634f4aa758f",
-      "title": "Mattilsynet - Varsomhetsområder for innsjøer",
-      "organization": "Mattilsynet",
-      "category": "annet",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Varsomhetsomraader_Innsjoer",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3d85b3cf-fd64-476d-aa50-6634f4aa758f",
-      "type": "servicelayer"
-    },
-    {
-      "id": "c4fef2ca-c7f6-4236-8a16-e38547e0230c",
-      "title": "Motorferdsel Svalbard WMS",
-      "organization": "Miljødirektoratet",
-      "category": "annet",
-      "url": "https://kart2.miljodirektoratet.no/arcgis/services/svalbard/motorferdsel_svalbard/MapServer/WMSServer",
-      "layer": "motorferdsel_tilreisende,motorferdsel_fastboende,ferdselsare_tilreisende,ferdselsare_fastboende,fartsrestriksjoner",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c4fef2ca-c7f6-4236-8a16-e38547e0230c",
+      "url": "https://geo.ngu.no/mapserver/MarinLinjerProverWMS2",
+      "layer": "MarinLinjerProverWMS2",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c113173a-361e-4609-aaec-7f574d72cc28",
       "type": "service"
     },
     {
@@ -372,16 +122,6 @@
       "type": "service"
     },
     {
-      "id": "1790a2c6-f000-452e-b84d-393bc0eab166",
-      "title": "Observerte saarbare marine bunndyr (VME) fra Mareano",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "saarbare_marine_bunndyr_observert",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/1790a2c6-f000-452e-b84d-393bc0eab166",
-      "type": "servicelayer"
-    },
-    {
       "id": "49cffffd-c770-4729-a4e7-7b149dac04bc",
       "title": "Offentlige grøntområder",
       "organization": "Statistisk sentralbyrå",
@@ -392,134 +132,14 @@
       "type": "dataset"
     },
     {
-      "id": "bec89da5-18fe-4b05-a7f5-2714a180488d",
-      "title": "Politisoner og -distrikter WMS",
-      "organization": "Politi og lensmannsetaten",
+      "id": "1f7a84e2-4d3b-492c-bb51-f40c4aa3c079",
+      "title": "RadonUranAktsomhet WMS",
+      "organization": "Norges geologiske undersøkelse",
       "category": "annet",
-      "url": "https://wms.geonorge.no/skwms1/wms.politisonerdistrikter",
-      "layer": "politisonerdistrikter_WMS",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bec89da5-18fe-4b05-a7f5-2714a180488d",
+      "url": "https://geo.ngu.no/mapserver/RadonUranAktsomhetWMS",
+      "layer": "RadonUranAktsomhetWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/1f7a84e2-4d3b-492c-bb51-f40c4aa3c079",
       "type": "service"
-    },
-    {
-      "id": "32cb6fd4-21ff-420d-b6b3-0898af402af5",
-      "title": "polygon_blotbunnskorallskog",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "polygon_blotbunnskorallskog",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/32cb6fd4-21ff-420d-b6b3-0898af402af5",
-      "type": "servicelayer"
-    },
-    {
-      "id": "d6fc62c4-bbc6-4b20-94e2-ce7afa424df7",
-      "title": "polygon_blotbunnssvampsamfunn",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "polygon_blotbunnssvampsamfunn",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d6fc62c4-bbc6-4b20-94e2-ce7afa424df7",
-      "type": "servicelayer"
-    },
-    {
-      "id": "f39a4f0a-b7e7-40a2-b01a-c47eb577a15d",
-      "title": "polygon_dypvannsjofjaer",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "polygon_dypvannsjofjaer",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f39a4f0a-b7e7-40a2-b01a-c47eb577a15d",
-      "type": "servicelayer"
-    },
-    {
-      "id": "db0ed573-1332-4611-ba4a-dc5120804e4c",
-      "title": "polygon_glassvampbestander",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "polygon_glassvampbestander",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/db0ed573-1332-4611-ba4a-dc5120804e4c",
-      "type": "servicelayer"
-    },
-    {
-      "id": "74faafe7-d8a7-4e95-9572-107ddd5b4381",
-      "title": "polygon_hardbunnskorallskog",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "polygon_hardbunnskorallskog",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/74faafe7-d8a7-4e95-9572-107ddd5b4381",
-      "type": "servicelayer"
-    },
-    {
-      "id": "0b97a543-205c-426e-a3aa-f88c019c5a5b",
-      "title": "polygon_hardbunnssvampsamfunn",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "polygon_hardbunnssvampsamfunn",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0b97a543-205c-426e-a3aa-f88c019c5a5b",
-      "type": "servicelayer"
-    },
-    {
-      "id": "827eba16-7513-4516-881a-3dbcae682061",
-      "title": "polygon_sjofjaerbunn",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "polygon_sjofjaerbunn",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/827eba16-7513-4516-881a-3dbcae682061",
-      "type": "servicelayer"
-    },
-    {
-      "id": "c395e02b-e9e4-430e-bc5d-e721b74a339c",
-      "title": "produksjons_data",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "produksjons_data",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c395e02b-e9e4-430e-bc5d-e721b74a339c",
-      "type": "servicelayer"
-    },
-    {
-      "id": "b328e680-c832-45ae-bf75-048862277a69",
-      "title": "produksjonsdata_bomtraal_wC",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "produksjonsdata_bomtraal_wC",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b328e680-c832-45ae-bf75-048862277a69",
-      "type": "servicelayer"
-    },
-    {
-      "id": "bf819bb6-4500-44fb-abd8-abbe9b44aee5",
-      "title": "produksjonsdata_bomtraal_xC",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "produksjonsdata_bomtraal_xC",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bf819bb6-4500-44fb-abd8-abbe9b44aee5",
-      "type": "servicelayer"
-    },
-    {
-      "id": "46fbb731-1416-4b12-b135-ee56392fae3b",
-      "title": "produksjonsdata_grabb_wC",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "produksjonsdata_grabb_wC",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/46fbb731-1416-4b12-b135-ee56392fae3b",
-      "type": "servicelayer"
-    },
-    {
-      "id": "12799ecd-0866-4ebc-bf4a-e748c3ded266",
-      "title": "produksjonsdata_grabb_xC",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "produksjonsdata_grabb_xC",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/12799ecd-0866-4ebc-bf4a-e748c3ded266",
-      "type": "servicelayer"
     },
     {
       "id": "251682b0-804b-4975-8962-cae0a5e17426",
@@ -532,16 +152,6 @@
       "type": "dataset"
     },
     {
-      "id": "240ba1dd-cf54-45b2-8598-aeec9b20ee25",
-      "title": "Sentrumssoner WMS",
-      "organization": "Statistisk sentralbyrå",
-      "category": "annet",
-      "url": "https://kart.ssb.no/api/mapserver/v1/wms/sentrumssoner",
-      "layer": "sentrumsanalyseruter_2025,sentrumssoner_2025,handels_servicesoner_2025",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/240ba1dd-cf54-45b2-8598-aeec9b20ee25",
-      "type": "service"
-    },
-    {
       "id": "3ac0e477-4c3a-42c8-acb2-34db94a7b44e",
       "title": "Skogbruksplan - Hogstklasser og aldersklasser",
       "organization": "Landbruksdirektoratet",
@@ -550,166 +160,6 @@
       "layer": "skogbruksplan",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3ac0e477-4c3a-42c8-acb2-34db94a7b44e",
       "type": "service"
-    },
-    {
-      "id": "fa1313a5-fadc-424f-a22e-8c991cd6bb30",
-      "title": "slede_arter",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "slede_arter",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fa1313a5-fadc-424f-a22e-8c991cd6bb30",
-      "type": "servicelayer"
-    },
-    {
-      "id": "b533c9c4-c637-4e1e-a43a-848a9b2a9de7",
-      "title": "slede_biomasse",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "slede_biomasse",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b533c9c4-c637-4e1e-a43a-848a9b2a9de7",
-      "type": "servicelayer"
-    },
-    {
-      "id": "5274f9f5-6d52-4292-82a4-1006664da98b",
-      "title": "slede_individer",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "slede_individer",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5274f9f5-6d52-4292-82a4-1006664da98b",
-      "type": "servicelayer"
-    },
-    {
-      "id": "31f494c7-9763-4401-8134-0497ed56a06e",
-      "title": "Tettbebyggelser WMS",
-      "organization": "Miljødirektoratet",
-      "category": "annet",
-      "url": "https://kart2.miljodirektoratet.no/arcgis/services/tettbebyggelse/MapServer/WMSServer",
-      "layer": "tettbebyggelse_farge,tettbebyggelse",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/31f494c7-9763-4401-8134-0497ed56a06e",
-      "type": "service"
-    },
-    {
-      "id": "fea4e637-9954-474a-a131-a480d38fab37",
-      "title": "verdi_fisk_filter_tid_grid3575",
-      "organization": "Miljødirektoratet",
-      "category": "annet",
-      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
-      "layer": "verdi_fisk_filter_tid_grid3575",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fea4e637-9954-474a-a131-a480d38fab37",
-      "type": "servicelayer"
-    },
-    {
-      "id": "69e3ab78-42bd-4348-9305-e41cc55a492d",
-      "title": "verdi_naturtyper_filter_tid_grid3575",
-      "organization": "Miljødirektoratet",
-      "category": "annet",
-      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
-      "layer": "verdi_naturtyper_filter_tid_grid3575",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/69e3ab78-42bd-4348-9305-e41cc55a492d",
-      "type": "servicelayer"
-    },
-    {
-      "id": "0ce753ac-b99a-4e0b-896a-6ebef3018841",
-      "title": "verdi_sjofugl_filter_tid_grid3575",
-      "organization": "Miljødirektoratet",
-      "category": "annet",
-      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
-      "layer": "verdi_sjofugl_filter_tid_grid3575",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0ce753ac-b99a-4e0b-896a-6ebef3018841",
-      "type": "servicelayer"
-    },
-    {
-      "id": "cb64caa8-454c-4160-8ba1-b1600f132c5e",
-      "title": "verdi_sjopattedyr_filter_tid_grid3575",
-      "organization": "Miljødirektoratet",
-      "category": "annet",
-      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
-      "layer": "verdi_sjopattedyr_filter_tid_grid3575",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cb64caa8-454c-4160-8ba1-b1600f132c5e",
-      "type": "servicelayer"
-    },
-    {
-      "id": "bf2fa794-9a55-45c9-a471-51837bfae73f",
-      "title": "vme_coldwater_sponge",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "vme_coldwater_sponge",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bf2fa794-9a55-45c9-a471-51837bfae73f",
-      "type": "servicelayer"
-    },
-    {
-      "id": "97ed31d0-9df9-43c8-80dd-b1b09c3c2821",
-      "title": "vme_hardbottom_coralgarden",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "vme_hardbottom_coralgarden",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/97ed31d0-9df9-43c8-80dd-b1b09c3c2821",
-      "type": "servicelayer"
-    },
-    {
-      "id": "099cf3d2-e152-4c43-ae2c-c5049a3df154",
-      "title": "vme_hardbottom_spongegarden",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "vme_hardbottom_spongegarden",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/099cf3d2-e152-4c43-ae2c-c5049a3df154",
-      "type": "servicelayer"
-    },
-    {
-      "id": "9f92a8ae-2a6d-49f6-bb0f-c0325d7012d9",
-      "title": "vme_nephtheidae_medow",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "vme_nephtheidae_medow",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9f92a8ae-2a6d-49f6-bb0f-c0325d7012d9",
-      "type": "servicelayer"
-    },
-    {
-      "id": "3d08e955-b625-421f-9c6b-8c14665a31d1",
-      "title": "vme_seapen_fields",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "vme_seapen_fields",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3d08e955-b625-421f-9c6b-8c14665a31d1",
-      "type": "servicelayer"
-    },
-    {
-      "id": "f4d95cfa-8d5e-4f06-a3bf-ab5885a0aad9",
-      "title": "vme_softbottom_coralgarden",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "vme_softbottom_coralgarden",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f4d95cfa-8d5e-4f06-a3bf-ab5885a0aad9",
-      "type": "servicelayer"
-    },
-    {
-      "id": "77af0e73-b24d-47a4-85a6-62ca834fd819",
-      "title": "vme_softbottom_spongegarden",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "vme_softbottom_spongegarden",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/77af0e73-b24d-47a4-85a6-62ca834fd819",
-      "type": "servicelayer"
-    },
-    {
-      "id": "d5063fce-58c1-4150-b320-05eac2a729af",
-      "title": "vme_umbellula_fields",
-      "organization": "Havforskningsinstituttet",
-      "category": "annet",
-      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
-      "layer": "vme_umbellula_fields",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d5063fce-58c1-4150-b320-05eac2a729af",
-      "type": "servicelayer"
     },
     {
       "id": "4659c672-5a0b-4a5f-bcb6-a887106a993e",
@@ -762,13 +212,13 @@
       "type": "dataset"
     },
     {
-      "id": "50263c33-74bc-4ea8-b44e-a0c470e57904",
-      "title": "Administrative områder vanndirektivet WMS",
-      "organization": "Miljødirektoratet",
+      "id": "666e4559-60bf-4a1d-9e72-c43502a9a58b",
+      "title": "Administrative enheter WMS",
+      "organization": "Kartverket",
       "category": "basisGeodata",
-      "url": "https://kart3.miljodirektoratet.no/arcgis/services/vanndir_adm_omrader/MapServer/WMSServer",
-      "layer": "vannregionmyndighet_navn,vannomraade_navn,vannregion_navn,klimasoner,oekoregion_marin,oekoregion_elv_innsjoe,vannregionmyndighet,vannomraade,vannregion",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/50263c33-74bc-4ea8-b44e-a0c470e57904",
+      "url": "https://wms.geonorge.no/skwms1/wms.adm_enheter2",
+      "layer": "adm_enheter_V2_WMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/666e4559-60bf-4a1d-9e72-c43502a9a58b",
       "type": "service"
     },
     {
@@ -999,6 +449,16 @@
       "url": "https://wms.geonorge.no/skwms1/wms.fkb_dataalder",
       "layer": "fkb_dataalder",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/21ce8246-42fd-46ad-809e-c01cbf7d1086",
+      "type": "service"
+    },
+    {
+      "id": "84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a",
+      "title": "FKB WMS",
+      "organization": "Kartverket",
+      "category": "basisGeodata",
+      "url": "https://wms.geonorge.no/skwms1/wms.fkb",
+      "layer": "fkb",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a",
       "type": "service"
     },
     {
@@ -1322,16 +782,6 @@
       "type": "service"
     },
     {
-      "id": "77785340-1208-4fe8-9afd-00b83c6f5e93",
-      "title": "Norge i bilder WMS-Prosjekt",
-      "organization": "Norge i bilder",
-      "category": "basisGeodata",
-      "url": "https://wms.geonorge.no/skwms1/wms.nib-prosjekter",
-      "layer": "Ortofototype",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/77785340-1208-4fe8-9afd-00b83c6f5e93",
-      "type": "service"
-    },
-    {
       "id": "d24a0bf9-1398-4bc4-a4ba-63896b0a599c",
       "title": "Norges grunnkart graatone WMS",
       "organization": "Kartverket",
@@ -1532,16 +982,6 @@
       "type": "dataset"
     },
     {
-      "id": "fef17a36-bd9a-4262-af34-8943cd712157",
-      "title": "Statistiske enheter grunnkretser WMS",
-      "organization": "Kartverket",
-      "category": "basisGeodata",
-      "url": "https://wms.geonorge.no/skwms1/wms.grunnkretser",
-      "layer": "grunnkretser_WMS",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fef17a36-bd9a-4262-af34-8943cd712157",
-      "type": "service"
-    },
-    {
       "id": "30caed2f-454e-44be-b5cc-26bb5c0110ca",
       "title": "Stedsnavn",
       "organization": "Kartverket",
@@ -1562,14 +1002,14 @@
       "type": "dataset"
     },
     {
-      "id": "8c233f06-2327-46ed-b330-c57c86e70d79",
-      "title": "Terrengmodell WMS",
+      "id": "c0e22b3b-4db2-42a0-aaae-55eb0d308045",
+      "title": "Stedsnavn i sjø",
       "organization": "Kartverket",
       "category": "basisGeodata",
-      "url": "https://wms.geonorge.no/skwms1/wms.terrengmodell",
-      "layer": "terrengmodell",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8c233f06-2327-46ed-b330-c57c86e70d79",
-      "type": "service"
+      "url": "https://wms.geonorge.no/skwms1/wms.ssr2",
+      "layer": "sjo",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c0e22b3b-4db2-42a0-aaae-55eb0d308045",
+      "type": "servicelayer"
     },
     {
       "id": "18178955-5eb5-4ab7-895f-3354ba727479",
@@ -1632,6 +1072,16 @@
       "type": "service"
     },
     {
+      "id": "e45aea66-5d98-4703-8026-692c782eb5b0",
+      "title": "Traktorveg og Skogsbilveg WMS",
+      "organization": "Kartverket",
+      "category": "basisGeodata",
+      "url": "https://wms.geonorge.no/skwms1/wms.traktorveg_skogsbilveger",
+      "layer": "traktorveg_skogsbilveger_wfs",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e45aea66-5d98-4703-8026-692c782eb5b0",
+      "type": "service"
+    },
+    {
       "id": "af3409eb-fd28-4480-8da0-0292aaad723e",
       "title": "UTM-rutenett WMS",
       "organization": "Kartverket",
@@ -1672,6 +1122,16 @@
       "type": "dataset"
     },
     {
+      "id": "875d0c64-d5ef-46ea-8c03-1d54009e5f2b",
+      "title": "Fritidsbyggområder WMS",
+      "organization": "Statistisk sentralbyrå",
+      "category": "befolkning",
+      "url": "https://kart.ssb.no/api/mapserver/v1/wms/fritidsbyggomraader",
+      "layer": "sammenhengende_fritidsbyggomrader_2025,layer-975a88",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/875d0c64-d5ef-46ea-8c03-1d54009e5f2b",
+      "type": "service"
+    },
+    {
       "id": "b4b96e46-d69c-4159-b1e8-60945bda2ed5",
       "title": "Indigenous peoples of the Arctic counties",
       "organization": "Kartverket",
@@ -1692,6 +1152,16 @@
       "type": "dataset"
     },
     {
+      "id": "bec89da5-18fe-4b05-a7f5-2714a180488d",
+      "title": "Politisoner og -distrikter WMS",
+      "organization": "Politi og lensmannsetaten",
+      "category": "befolkning",
+      "url": "https://wms.geonorge.no/skwms1/wms.politisonerdistrikter",
+      "layer": "politisonerdistrikter_WMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bec89da5-18fe-4b05-a7f5-2714a180488d",
+      "type": "service"
+    },
+    {
       "id": "b7b6a84e-de26-4c26-a6fb-81140c517b5b",
       "title": "Sentrumssoner",
       "organization": "Statistisk sentralbyrå",
@@ -1700,6 +1170,16 @@
       "layer": "sentrumssoner_2025",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b7b6a84e-de26-4c26-a6fb-81140c517b5b",
       "type": "dataset"
+    },
+    {
+      "id": "240ba1dd-cf54-45b2-8598-aeec9b20ee25",
+      "title": "Sentrumssoner WMS",
+      "organization": "Statistisk sentralbyrå",
+      "category": "befolkning",
+      "url": "https://kart.ssb.no/api/mapserver/v1/wms/sentrumssoner",
+      "layer": "sentrumsanalyseruter_2025,sentrumssoner_2025,handels_servicesoner_2025",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/240ba1dd-cf54-45b2-8598-aeec9b20ee25",
+      "type": "service"
     },
     {
       "id": "a965a979-c12a-4b26-90a0-f09de47dbecd",
@@ -1720,6 +1200,16 @@
       "layer": "Grunnkretser",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/51d279f8-e2be-4f5e-9f72-1a53f7535ec1",
       "type": "dataset"
+    },
+    {
+      "id": "fef17a36-bd9a-4262-af34-8943cd712157",
+      "title": "Statistiske enheter grunnkretser WMS",
+      "organization": "Kartverket",
+      "category": "befolkning",
+      "url": "https://wms.geonorge.no/skwms1/wms.grunnkretser",
+      "layer": "grunnkretser_WMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fef17a36-bd9a-4262-af34-8943cd712157",
+      "type": "service"
     },
     {
       "id": "173f4a15-dead-4f82-b92e-f37396b72cea",
@@ -1942,6 +1432,16 @@
       "type": "service"
     },
     {
+      "id": "77785340-1208-4fe8-9afd-00b83c6f5e93",
+      "title": "Norge i bilder WMS-Prosjekt",
+      "organization": "Norge i bilder",
+      "category": "flyfoto",
+      "url": "https://wms.geonorge.no/skwms1/wms.nib-prosjekter",
+      "layer": "Ortofototype",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/77785340-1208-4fe8-9afd-00b83c6f5e93",
+      "type": "service"
+    },
+    {
       "id": "38a52b73-2ffb-47cc-9ecd-147ee18f62be",
       "title": "Satellittdata - Sentinel-2 - Skyfri mosaikk WMS",
       "organization": "Kartverket",
@@ -1982,6 +1482,16 @@
       "type": "service"
     },
     {
+      "id": "f81a2152-7f1a-44f4-9814-37d05211cb6a",
+      "title": "Mikroplast i marine sedimenter",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "forurensning",
+      "url": "https://geo.ngu.no/mapserver/MarinGeokjemiWMS/",
+      "layer": "Mikroplast",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f81a2152-7f1a-44f4-9814-37d05211cb6a",
+      "type": "dataset"
+    },
+    {
       "id": "bbaaee09-41f3-4a63-a98b-5f46083a62c1",
       "title": "Miljøtilstand i vann",
       "organization": "Miljødirektoratet",
@@ -1990,136 +1500,6 @@
       "layer": "grunnvannsovervaking,forsuringsovervaking,elveovervaking,referanseelver,miljogifter_innsjoer,miljogifter_kystomrader,okosystemovervaking_innsjoer,okosystemovervaking_ferskvann,okosystemovervaking_kystvann,stasjon_pol,stasjon_pkt",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bbaaee09-41f3-4a63-a98b-5f46083a62c1",
       "type": "dataset"
-    },
-    {
-      "id": "32a6c9dd-999d-47ca-8fd2-9edeacd4fb22",
-      "title": "Organiske miljøgifter i marine sedimenter - 4-Nonylfenol-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/nonylfenol4/ows",
-      "layer": "nonylfenol4",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/32a6c9dd-999d-47ca-8fd2-9edeacd4fb22",
-      "type": "service"
-    },
-    {
-      "id": "4bdc8251-c3be-46a7-b86a-f433f6794f65",
-      "title": "Organiske miljøgifter i marine sedimenter - Antracen-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/antracen/ows",
-      "layer": "antracen",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4bdc8251-c3be-46a7-b86a-f433f6794f65",
-      "type": "servicelayer"
-    },
-    {
-      "id": "7ca5dac1-37fc-4153-9ad7-b53ab13498c7",
-      "title": "Organiske miljøgifter i marine sedimenter - Fenantren-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/fenantren/ows",
-      "layer": "fenantren",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/7ca5dac1-37fc-4153-9ad7-b53ab13498c7",
-      "type": "servicelayer"
-    },
-    {
-      "id": "4caa84e8-628d-4916-806e-55218d2943ff",
-      "title": "Organiske miljøgifter i marine sedimenter - HCB-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/hcb/ows",
-      "layer": "hcb",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4caa84e8-628d-4916-806e-55218d2943ff",
-      "type": "service"
-    },
-    {
-      "id": "65e4fff2-149f-4513-8919-f00b52e33a69",
-      "title": "Organiske miljøgifter i marine sedimenter - HCH-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/hch/ows",
-      "layer": "hch",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/65e4fff2-149f-4513-8919-f00b52e33a69",
-      "type": "service"
-    },
-    {
-      "id": "b06e24a1-b8b5-4257-8573-a75e2f3f223d",
-      "title": "Organiske miljøgifter i marine sedimenter - Naftalen-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/naftalen/ows",
-      "layer": "naftalen",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b06e24a1-b8b5-4257-8573-a75e2f3f223d",
-      "type": "servicelayer"
-    },
-    {
-      "id": "cd1c79d7-3714-456f-808d-69ce419357b1",
-      "title": "Organiske miljøgifter i marine sedimenter - NPD-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/npd/ows",
-      "layer": "npd",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cd1c79d7-3714-456f-808d-69ce419357b1",
-      "type": "servicelayer"
-    },
-    {
-      "id": "7f9c2b13-7957-4e71-b6d4-a31bac122c78",
-      "title": "Organiske miljøgifter i marine sedimenter - PAH16-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/pah16/ows",
-      "layer": "pah16",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/7f9c2b13-7957-4e71-b6d4-a31bac122c78",
-      "type": "servicelayer"
-    },
-    {
-      "id": "ee674b14-cc1c-4d37-853c-05d009526cda",
-      "title": "Organiske miljøgifter i marine sedimenter - Perylen-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/perylen/ows",
-      "layer": "perylen",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ee674b14-cc1c-4d37-853c-05d009526cda",
-      "type": "servicelayer"
-    },
-    {
-      "id": "b24a48d0-2346-4237-ae1e-ffe6dc88261f",
-      "title": "Organiske miljøgifter i marine sedimenter - Pyren-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/pyren/ows",
-      "layer": "pyren",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b24a48d0-2346-4237-ae1e-ffe6dc88261f",
-      "type": "servicelayer"
-    },
-    {
-      "id": "dc3ea8d9-2ac1-458d-a75b-df64dc1433ab",
-      "title": "Organiske miljøgifter i marine sedimenter - Sum DDT-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/ddt/ows",
-      "layer": "ddt",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dc3ea8d9-2ac1-458d-a75b-df64dc1433ab",
-      "type": "servicelayer"
-    },
-    {
-      "id": "e6e8ffe3-8345-4c2c-8ac7-99624ffdf086",
-      "title": "Organiske miljøgifter i marine sedimenter - Sum PAH-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/pah/ows",
-      "layer": "pah",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e6e8ffe3-8345-4c2c-8ac7-99624ffdf086",
-      "type": "servicelayer"
-    },
-    {
-      "id": "07ba2870-bfc8-4971-ac0a-3f02772d72a5",
-      "title": "Organiske miljøgifter i marine sedimenter - THC-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "forurensning",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/thc/ows",
-      "layer": "thc",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/07ba2870-bfc8-4971-ac0a-3f02772d72a5",
-      "type": "servicelayer"
     },
     {
       "id": "6aa73fa2-2752-4dfd-b3f0-19fe15928288",
@@ -2222,6 +1602,16 @@
       "type": "dataset"
     },
     {
+      "id": "31f494c7-9763-4401-8134-0497ed56a06e",
+      "title": "Tettbebyggelser WMS",
+      "organization": "Miljødirektoratet",
+      "category": "forurensning",
+      "url": "https://kart2.miljodirektoratet.no/arcgis/services/tettbebyggelse/MapServer/WMSServer",
+      "layer": "tettbebyggelse_farge,tettbebyggelse",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/31f494c7-9763-4401-8134-0497ed56a06e",
+      "type": "service"
+    },
+    {
       "id": "8f42b9c5-eaf2-4e6d-997f-5558cc4a5632",
       "title": "Utslipp fra landbasert industri",
       "organization": "Miljødirektoratet",
@@ -2292,13 +1682,1163 @@
       "type": "dataset"
     },
     {
-      "id": "cac32b2d-9971-4648-bce3-980bf01301b6",
-      "title": "Organiske miljøgifter i marine sedimenter - Dieldrin-nivåer WMS",
-      "organization": "Havforskningsinstituttet",
+      "id": "424ae763-1a82-4c2a-aaa7-e90ed5dc30ec",
+      "title": "Aktsomhetskart for gamle gruver WMS",
+      "organization": "Direktoratet for mineralforvaltning",
       "category": "geologi",
-      "url": "https://kart.hi.no/mareano/mareano_kjemi/dieldrin/ows",
-      "layer": "dieldrin",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cac32b2d-9971-4648-bce3-980bf01301b6",
+      "url": "https://kart.dirmin.no/dirmin/services/GruvesikringsregisterBeta/MapServer/WmsServer",
+      "layer": "Aktsomhetskart",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/424ae763-1a82-4c2a-aaa7-e90ed5dc30ec",
+      "type": "service"
+    },
+    {
+      "id": "0e81842e-33cc-40a0-aa1a-05d43307b17e",
+      "title": "Ankringsforhold",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Ankringsforhold",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0e81842e-33cc-40a0-aa1a-05d43307b17e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "af992d03-3861-47b9-b3e9-f0b985055a07",
+      "title": "Ankringsforhold",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Ankringsforhold_group",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/af992d03-3861-47b9-b3e9-f0b985055a07",
+      "type": "dataset"
+    },
+    {
+      "id": "51243d4e-e86e-474b-baf8-b7ccfb59fe8e",
+      "title": "Berggrunn WMS3",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/BerggrunnWMS3",
+      "layer": "BerggrunnWMS3",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/51243d4e-e86e-474b-baf8-b7ccfb59fe8e",
+      "type": "service"
+    },
+    {
+      "id": "3e4b3bb0-dcb1-4fa4-a458-9734f789a333",
+      "title": "BerggrunnOkologiWMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/BerggrunnOkologiWMS",
+      "layer": "BerggrunnOkologiWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3e4b3bb0-dcb1-4fa4-a458-9734f789a333",
+      "type": "service"
+    },
+    {
+      "id": "b3c319bd-910d-4663-8ce8-23a246afe879",
+      "title": "Bergrettigheter",
+      "organization": "Direktoratet for mineralforvaltning",
+      "category": "geologi",
+      "url": "https://kart.dirmin.no/dirmin/services/Bergrettigheter/MapServer/WmsServer",
+      "layer": "Bergrettigheter",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b3c319bd-910d-4663-8ce8-23a246afe879",
+      "type": "dataset"
+    },
+    {
+      "id": "94d8c42b-7f3c-4d13-a918-d4b4dcb9be41",
+      "title": "Bioklastiske sedimenter",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Bioklastisk",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/94d8c42b-7f3c-4d13-a918-d4b4dcb9be41",
+      "type": "servicelayer"
+    },
+    {
+      "id": "e614a67e-ffde-4369-8b56-6ecbd5f1d2bf",
+      "title": "Bright spots (Ov)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Brightspots_Ov",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e614a67e-ffde-4369-8b56-6ecbd5f1d2bf",
+      "type": "servicelayer"
+    },
+    {
+      "id": "9a0b62db-7537-4371-aeca-e3c4090902ac",
+      "title": "Bright spots (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Brightspots_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9a0b62db-7537-4371-aeca-e3c4090902ac",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b2abb0a6-b02a-439f-b39d-2b999ea13ff6",
+      "title": "BSR",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "BSR",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b2abb0a6-b02a-439f-b39d-2b999ea13ff6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "638f1fb4-54f0-43cf-a911-bfeea753d1a1",
+      "title": "Bunnfellingsområder",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS/",
+      "layer": "Bunnfellingsomrader",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/638f1fb4-54f0-43cf-a911-bfeea753d1a1",
+      "type": "servicelayer"
+    },
+    {
+      "id": "901afb33-8897-40fb-80a5-f4e4e799ae68",
+      "title": "Bunnfellingsområder",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS/",
+      "layer": "Bunnfellingsomader_group",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/901afb33-8897-40fb-80a5-f4e4e799ae68",
+      "type": "dataset"
+    },
+    {
+      "id": "c97a86ec-fc63-4e81-8195-2173ad48f82b",
+      "title": "Bunnreflektivitet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Bunnreflektivitet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c97a86ec-fc63-4e81-8195-2173ad48f82b",
+      "type": "servicelayer"
+    },
+    {
+      "id": "42576a01-08c0-4d05-a33f-5f6143857b56",
+      "title": "Bunnsedimenter - kornstørrelse",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Det_kart_korn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/42576a01-08c0-4d05-a33f-5f6143857b56",
+      "type": "series"
+    },
+    {
+      "id": "8baa6e54-774e-4789-9e64-1c50f32098f4",
+      "title": "Bunnsedimenter (dannelse), detaljert",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Sedimentdannelse_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8baa6e54-774e-4789-9e64-1c50f32098f4",
+      "type": "dataset"
+    },
+    {
+      "id": "79b687ac-7eba-4432-97e2-04dcbc98ccd6",
+      "title": "Bunnsedimenter (dannelse), oversikt",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Sedimentdannelse_Ov",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/79b687ac-7eba-4432-97e2-04dcbc98ccd6",
+      "type": "dataset"
+    },
+    {
+      "id": "c7ee3b10-9383-49ef-a46c-087ddb1735bb",
+      "title": "Bunnsedimenter (dannelse), regionalt",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Sedimentdannelse_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c7ee3b10-9383-49ef-a46c-087ddb1735bb",
+      "type": "dataset"
+    },
+    {
+      "id": "b80fe964-f1b0-4b56-a2f4-b2ecebd545a5",
+      "title": "Bunnsedimenter (kornstørrelse) detaljert",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Kornstorrelse_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b80fe964-f1b0-4b56-a2f4-b2ecebd545a5",
+      "type": "servicelayer"
+    },
+    {
+      "id": "30faadea-ac50-440d-b87d-209ac0f647a6",
+      "title": "Bunnsedimenter (kornstørrelse), detaljert",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Kornstorrelse_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/30faadea-ac50-440d-b87d-209ac0f647a6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "79f0f17d-9f62-456d-b1a9-2a8c754c51c4",
+      "title": "Bunnsedimenter (kornstørrelse), detaljert",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Kornstorrelse_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/79f0f17d-9f62-456d-b1a9-2a8c754c51c4",
+      "type": "dataset"
+    },
+    {
+      "id": "39c357fc-8c56-49e0-a6ba-3e434d62a585",
+      "title": "Bunnsedimenter (kornstørrelse), oversikt",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Kornstorrelse_Ov",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/39c357fc-8c56-49e0-a6ba-3e434d62a585",
+      "type": "dataset"
+    },
+    {
+      "id": "c6738716-1954-4f88-aa5f-1be7eef36b25",
+      "title": "Bunnsedimenter (kornstørrelse), regionalt",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Kornstorrelse_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c6738716-1954-4f88-aa5f-1be7eef36b25",
+      "type": "dataset"
+    },
+    {
+      "id": "a3c81ed6-b8f3-4f5e-84a6-b8c86d8e53ad",
+      "title": "BunnsedimenterDannelse_detaljert",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Sedimentdannelse_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a3c81ed6-b8f3-4f5e-84a6-b8c86d8e53ad",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b38603fc-816b-4275-93c7-cfac41fa86c4",
+      "title": "Bunnstrømmer",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Bunnstrommer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b38603fc-816b-4275-93c7-cfac41fa86c4",
+      "type": "servicelayer"
+    },
+    {
+      "id": "d8992738-c6d2-413f-b89a-06d57d99b904",
+      "title": "Bunntyper fra sjømåling",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Bunntype",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d8992738-c6d2-413f-b89a-06d57d99b904",
+      "type": "servicelayer"
+    },
+    {
+      "id": "d28b1ef6-1603-4998-89d6-ba62f1c05e13",
+      "title": "Datadekning_dannelse_detaljert",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Det_kart_dann",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d28b1ef6-1603-4998-89d6-ba62f1c05e13",
+      "type": "servicelayer"
+    },
+    {
+      "id": "5826358b-5b2c-4fba-80d1-160b6bb30981",
+      "title": "Datadekning_kornstørrelse_detaljert",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Det_kart_korn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5826358b-5b2c-4fba-80d1-160b6bb30981",
+      "type": "servicelayer"
+    },
+    {
+      "id": "461a4025-90c6-4156-bccf-56c07ddb6795",
+      "title": "Detaljerte skreddata i kystsonen",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Skred_det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/461a4025-90c6-4156-bccf-56c07ddb6795",
+      "type": "servicelayer"
+    },
+    {
+      "id": "3382458e-43a3-4804-8852-bb3dce0d64a6",
+      "title": "Diapirer (gruppelag)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Diapirer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3382458e-43a3-4804-8852-bb3dce0d64a6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "5eda9781-7d03-4ae1-940d-f9a704b5062e",
+      "title": "Diapirer i dyphavet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "DiapirDypvann",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5eda9781-7d03-4ae1-940d-f9a704b5062e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "276e9e5a-5171-4b25-bf3b-f6f6a989fe28",
+      "title": "Diapirer på eller nær sjøbunnen (Det)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "DiapirPaSjobunn_det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/276e9e5a-5171-4b25-bf3b-f6f6a989fe28",
+      "type": "servicelayer"
+    },
+    {
+      "id": "dfdee37c-cf02-4cc0-a3a0-9c5feca88dc4",
+      "title": "Diapirer på eller nær sjøbunnen (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "DiapirPaSjobunn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dfdee37c-cf02-4cc0-a3a0-9c5feca88dc4",
+      "type": "servicelayer"
+    },
+    {
+      "id": "c32d17ee-ee27-4ed0-86be-7e1bfd3eb465",
+      "title": "Diapirer under sjøbunn",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "DiapirUnderSjobunn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c32d17ee-ee27-4ed0-86be-7e1bfd3eb465",
+      "type": "servicelayer"
+    },
+    {
+      "id": "5bd656e5-7a5f-4099-a9e6-61b584681422",
+      "title": "Dybdeforhold",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Dybdeforhold",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5bd656e5-7a5f-4099-a9e6-61b584681422",
+      "type": "servicelayer"
+    },
+    {
+      "id": "e33bbf16-7146-4c18-a3c5-4c7361826aa6",
+      "title": "Dybdekoter10m",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Dybdekoter10m",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e33bbf16-7146-4c18-a3c5-4c7361826aa6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "a033bf5b-2799-40a7-9e73-52e96030e210",
+      "title": "Gass blanking",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Gassblanking",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a033bf5b-2799-40a7-9e73-52e96030e210",
+      "type": "servicelayer"
+    },
+    {
+      "id": "09433b67-cc68-4f3a-bdcb-79fb02a63559",
+      "title": "Gass og vann utsiving",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GassVannUtsiving",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/09433b67-cc68-4f3a-bdcb-79fb02a63559",
+      "type": "servicelayer"
+    },
+    {
+      "id": "0947f0ef-8c0e-472f-8652-b4e5108a213b",
+      "title": "Gassoppkommer",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGassoppkommerWMS",
+      "layer": "Gassoppkommer_styrke",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0947f0ef-8c0e-472f-8652-b4e5108a213b",
+      "type": "dataset"
+    },
+    {
+      "id": "4b418a1a-7e5c-40be-9395-3b07d1524791",
+      "title": "Geofarer grense (gruppelag)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GeofarerGrense",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4b418a1a-7e5c-40be-9395-3b07d1524791",
+      "type": "servicelayer"
+    },
+    {
+      "id": "a918bb49-e555-44c5-9db8-7bc5a9381720",
+      "title": "Geofarer grense på sjøbunnen (Det)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GeofarerGrense_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a918bb49-e555-44c5-9db8-7bc5a9381720",
+      "type": "servicelayer"
+    },
+    {
+      "id": "726ceb3d-526b-461f-83c6-f5f1808d7a0d",
+      "title": "Geofarer grense på sjøbunnen (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GeofarerGrense_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/726ceb3d-526b-461f-83c6-f5f1808d7a0d",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b99e2586-aff4-4568-b4f3-07f0e8ebd6eb",
+      "title": "Geofarer grense under sjøbunnen (Det)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GeofarerGrenseBegravd_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b99e2586-aff4-4568-b4f3-07f0e8ebd6eb",
+      "type": "servicelayer"
+    },
+    {
+      "id": "90b1ba67-2e5c-4326-96ce-185693b37bc4",
+      "title": "Geofarer grense under sjøbunnen (Ov)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GeofarerGrenseBegravd_Ov",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/90b1ba67-2e5c-4326-96ce-185693b37bc4",
+      "type": "servicelayer"
+    },
+    {
+      "id": "3b2596a9-777e-41a2-831d-787501d7488c",
+      "title": "Geofarer grense under sjøbunnen (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GeofarerGrenseBegravd_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3b2596a9-777e-41a2-831d-787501d7488c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "52a55a3c-bcd2-44d7-ac21-2f4550161937",
+      "title": "Geologisk arv",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/GeologiskarvWMS2",
+      "layer": "GeologiskarvWMS2",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/52a55a3c-bcd2-44d7-ac21-2f4550161937",
+      "type": "dataset"
+    },
+    {
+      "id": "841b8055-5e7b-495d-ba47-5c35519ffec6",
+      "title": "Gravbarhet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Gravbarhet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/841b8055-5e7b-495d-ba47-5c35519ffec6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "6f383993-592d-4c1f-bcaf-e4c905af6ddb",
+      "title": "Gravbarhet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Gravbarhet_group",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/6f383993-592d-4c1f-bcaf-e4c905af6ddb",
+      "type": "dataset"
+    },
+    {
+      "id": "b376a2c8-5874-4fa2-90ce-1032feb49619",
+      "title": "Grunn gass i berggrunn",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GrunngassiBerggrunn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b376a2c8-5874-4fa2-90ce-1032feb49619",
+      "type": "servicelayer"
+    },
+    {
+      "id": "5f7659ef-2bfc-4a42-94d5-255ff93f698e",
+      "title": "Grunn gass i sedimenter",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GrunngassiSedimentene",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5f7659ef-2bfc-4a42-94d5-255ff93f698e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "3ac23a63-1037-4347-99a7-e6aaa2895cc9",
+      "title": "Grunn gass, oversikt",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "GrunnGass",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3ac23a63-1037-4347-99a7-e6aaa2895cc9",
+      "type": "dataset"
+    },
+    {
+      "id": "4a0f9676-7cd0-4555-a8f3-763bb769d5d4",
+      "title": "Grunnvann (Granada) WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/GranadaWMS5",
+      "layer": "GranadaWMS5",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4a0f9676-7cd0-4555-a8f3-763bb769d5d4",
+      "type": "service"
+    },
+    {
+      "id": "82cd33ef-52dd-4c83-b2d6-e55a0941b33b",
+      "title": "Grunnvannsborehull",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/GranadaWMS5",
+      "layer": "Grunnvannsborehull",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/82cd33ef-52dd-4c83-b2d6-e55a0941b33b",
+      "type": "dataset"
+    },
+    {
+      "id": "a26e57bc-15bd-46db-8504-6c6ed1e7c501",
+      "title": "Grus og pukk",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/GrusPukkWMS5",
+      "layer": "GrusPukkWMS5",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a26e57bc-15bd-46db-8504-6c6ed1e7c501",
+      "type": "dataset"
+    },
+    {
+      "id": "3b8ba7da-1126-43b2-9232-d9e3a7dc788e",
+      "title": "Havområder",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Havomrader",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3b8ba7da-1126-43b2-9232-d9e3a7dc788e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "3fffd512-b3b9-452e-939d-9a27343cbc8c",
+      "title": "Havs navn",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Navn_hav",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3fffd512-b3b9-452e-939d-9a27343cbc8c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "fedbe7c2-d4d8-4f49-a79b-c90f847dbbf6",
+      "title": "Helning",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Helning",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fedbe7c2-d4d8-4f49-a79b-c90f847dbbf6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "d154dbe1-cbf8-49ea-aca8-1961d1fea3d8",
+      "title": "Helning over 30 grader",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Helning_over_30",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d154dbe1-cbf8-49ea-aca8-1961d1fea3d8",
+      "type": "servicelayer"
+    },
+    {
+      "id": "d38ef748-2ef9-4d3b-81b8-038d4f9dc059",
+      "title": "Holocen mektighet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "HolocenMektighet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d38ef748-2ef9-4d3b-81b8-038d4f9dc059",
+      "type": "servicelayer"
+    },
+    {
+      "id": "2bad294a-c21b-4244-8ac8-b8fca95521e4",
+      "title": "Industrimineraler WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/IndustrimineralerWMS3",
+      "layer": "IndustrimineralerWMS3",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/2bad294a-c21b-4244-8ac8-b8fca95521e4",
+      "type": "service"
+    },
+    {
+      "id": "f5aeef1c-a080-40a9-b509-5e8a2f846928",
+      "title": "Kalkinnhold i berggrunn",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/BerggrunnOkologiWMS",
+      "layer": "Kalkinnhold_N250",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f5aeef1c-a080-40a9-b509-5e8a2f846928",
+      "type": "dataset"
+    },
+    {
+      "id": "62978174-e699-4402-bbee-0f0abfdf5144",
+      "title": "Kornstørrelse_oversikt",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Kornstorrelse_Ov",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/62978174-e699-4402-bbee-0f0abfdf5144",
+      "type": "servicelayer"
+    },
+    {
+      "id": "a3a3fba1-9d41-4ee2-af26-c0115feffbc4",
+      "title": "Kornstørrelse_regional",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Kornstorrelse_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a3a3fba1-9d41-4ee2-af26-c0115feffbc4",
+      "type": "servicelayer"
+    },
+    {
+      "id": "077939b2-9616-49d7-8591-467044b2cded",
+      "title": "Kvartærmektighet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "KvartaerMektighet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/077939b2-9616-49d7-8591-467044b2cded",
+      "type": "servicelayer"
+    },
+    {
+      "id": "1898863f-2a40-45b4-a4cb-b9b49021ab42",
+      "title": "Leirvulkan",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Leirvulkan",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/1898863f-2a40-45b4-a4cb-b9b49021ab42",
+      "type": "servicelayer"
+    },
+    {
+      "id": "eb2c53b3-f853-472b-a420-1bbdb5f783c2",
+      "title": "Løsmassemektighet Oslofjord",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "LosmasseMektighet_Oslo",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/eb2c53b3-f853-472b-a420-1bbdb5f783c2",
+      "type": "servicelayer"
+    },
+    {
+      "id": "08aab9a2-6cbd-494f-a2ba-3d3bd546a5d8",
+      "title": "Løsmasser WMS 3",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/LosmasserWMS3",
+      "layer": "LosmasserWMS3",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/08aab9a2-6cbd-494f-a2ba-3d3bd546a5d8",
+      "type": "service"
+    },
+    {
+      "id": "cf8ccec7-9505-4d84-94a9-eac9c69971d3",
+      "title": "Marin grense",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGrenseWMS4",
+      "layer": "Marin_grense",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cf8ccec7-9505-4d84-94a9-eac9c69971d3",
+      "type": "dataset"
+    },
+    {
+      "id": "c7268952-52ea-45fd-8dce-16e7b4e29d8d",
+      "title": "Marin grense WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGrenseWMS4",
+      "layer": "MarinGrenseWMS4",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c7268952-52ea-45fd-8dce-16e7b4e29d8d",
+      "type": "service"
+    },
+    {
+      "id": "79fe1ffa-6615-4507-b3ad-04a97e720d94",
+      "title": "Marin sannsynlige korallrev WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinSannsynligeKorallrevWMS",
+      "layer": "MarinSannsynligeKorallrevWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/79fe1ffa-6615-4507-b3ad-04a97e720d94",
+      "type": "service"
+    },
+    {
+      "id": "25554d65-3471-4bb1-8903-7495f3aeabbb",
+      "title": "Marine bunnsedimenter WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "MarinBunnsedimenterWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/25554d65-3471-4bb1-8903-7495f3aeabbb",
+      "type": "service"
+    },
+    {
+      "id": "804f144e-230c-4b28-bf52-174ab637312c",
+      "title": "Marine gassoppkommer WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGassoppkommerWMS",
+      "layer": "MarinGassoppkommerWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/804f144e-230c-4b28-bf52-174ab637312c",
+      "type": "service"
+    },
+    {
+      "id": "cedb4894-8662-4819-b202-7b0ce31a4366",
+      "title": "Marine geofarer WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "MarinGeofarerWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cedb4894-8662-4819-b202-7b0ce31a4366",
+      "type": "service"
+    },
+    {
+      "id": "b9905340-3194-4dbe-8dd3-2ac5435d15af",
+      "title": "Marine grunnkart - datadekning",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "MG_Datadekning",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b9905340-3194-4dbe-8dd3-2ac5435d15af",
+      "type": "servicelayer"
+    },
+    {
+      "id": "5f219fd8-abee-4947-9983-8a764ac89fab",
+      "title": "Marine grunnkart WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "MarineGrunnkartWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5f219fd8-abee-4947-9983-8a764ac89fab",
+      "type": "service"
+    },
+    {
+      "id": "83aa05eb-aa2f-42e0-8775-daa474883120",
+      "title": "Marine naturtyper WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinNaturtyperWMS2",
+      "layer": "MarinNaturtyperWMS2",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/83aa05eb-aa2f-42e0-8775-daa474883120",
+      "type": "service"
+    },
+    {
+      "id": "ef9cedd5-2982-4b44-a15f-82ae3305bc65",
+      "title": "Marine sedimentasjonsmiljø",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Sedimentasjonsmiljo",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ef9cedd5-2982-4b44-a15f-82ae3305bc65",
+      "type": "series"
+    },
+    {
+      "id": "b395af79-5852-4b46-814c-24f4b7c605a2",
+      "title": "Marine sedimentasjonsmiljø, detaljert",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Sedimentasjonsmiljo_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b395af79-5852-4b46-814c-24f4b7c605a2",
+      "type": "dataset"
+    },
+    {
+      "id": "7ddb1b9d-08f5-41d0-9d73-48a98d961a2e",
+      "title": "Marine sedimentasjonsmiljø, regional",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Sedimentasjonsmiljo_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/7ddb1b9d-08f5-41d0-9d73-48a98d961a2e",
+      "type": "dataset"
+    },
+    {
+      "id": "a436fcd5-ccd3-4e79-a16f-ae85d0217e94",
+      "title": "Marine sedimentasjonsmiljø, regionalt",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Sedimentasjonsmiljo_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a436fcd5-ccd3-4e79-a16f-ae85d0217e94",
+      "type": "servicelayer"
+    },
+    {
+      "id": "service:https://geo.ngu.no/mapserver/MarinLinjerProverWMS2/",
+      "title": "MarinLinjerProverWMS2",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinLinjerProverWMS2/",
+      "layer": "MarinLinjerProverWMS2",
+      "detailsUrl": null,
+      "type": "service"
+    },
+    {
+      "id": "d20ed245-2ad5-4a3f-a39c-28dcd5549c41",
+      "title": "Metaller WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MetallerWMS2",
+      "layer": "MetallerWMS2",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d20ed245-2ad5-4a3f-a39c-28dcd5549c41",
+      "type": "service"
+    },
+    {
+      "id": "5a887d78-07ef-44c6-8941-cb8017c6328c",
+      "title": "Mineralressurser: industrimineral, naturstein og metaller",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/NatursteinWMS3",
+      "layer": "NatursteinWMS3",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5a887d78-07ef-44c6-8941-cb8017c6328c",
+      "type": "dataset"
+    },
+    {
+      "id": "04c24266-ef07-4649-9865-85ab51108999",
+      "title": "Mineraluttak WMS",
+      "organization": "Direktoratet for mineralforvaltning",
+      "category": "geologi",
+      "url": "https://kart.dirmin.no/dirmin/services/UttaksregisterDMF/MapServer/WmsServer",
+      "layer": "Uttaksregister",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/04c24266-ef07-4649-9865-85ab51108999",
+      "type": "service"
+    },
+    {
+      "id": "641a81c2-9354-473b-b8f0-2b1e2ab3930a",
+      "title": "Mulighet for marin leire",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGrenseWMS4",
+      "layer": "Mulig_marin_leire",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/641a81c2-9354-473b-b8f0-2b1e2ab3930a",
+      "type": "dataset"
+    },
+    {
+      "id": "de56cd9f-10d1-4c5b-bf23-f3b0e73264cf",
+      "title": "NADAG WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/geoserver/nadag/ows",
+      "layer": "nadag",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/de56cd9f-10d1-4c5b-bf23-f3b0e73264cf",
+      "type": "service"
+    },
+    {
+      "id": "27752104-f05e-4d0d-bc54-d6ff57a8c6f4",
+      "title": "Pockmarksområde (Det)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Pockmarksomr_det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/27752104-f05e-4d0d-bc54-d6ff57a8c6f4",
+      "type": "servicelayer"
+    },
+    {
+      "id": "33b05c99-2fdd-4ab4-b414-e5207db8dc18",
+      "title": "Pockmarksområde (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Pockmarksomr_reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/33b05c99-2fdd-4ab4-b414-e5207db8dc18",
+      "type": "servicelayer"
+    },
+    {
+      "id": "dc0605f3-2301-4abe-a91f-6da42464c281",
+      "title": "Radon aktsomhet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/RadonWMS2",
+      "layer": "Radon_aktsomhet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dc0605f3-2301-4abe-a91f-6da42464c281",
+      "type": "dataset"
+    },
+    {
+      "id": "e43d4fd2-cfad-4feb-ac35-b020be19eb98",
+      "title": "Radon WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/RadonWMS2",
+      "layer": "RadonWMS2",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e43d4fd2-cfad-4feb-ac35-b020be19eb98",
+      "type": "service"
+    },
+    {
+      "id": "157ba4ee-0316-4ce0-9655-a8e90a220e6e",
+      "title": "Relativ bunnhardhet 500m",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Bunnreflektivitet500",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/157ba4ee-0316-4ce0-9655-a8e90a220e6e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "25888046-ee2c-480e-85f3-0ba45a9fc3ec",
+      "title": "Relativ bunnhardhet 50m",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Bunnreflektivitet50",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/25888046-ee2c-480e-85f3-0ba45a9fc3ec",
+      "type": "servicelayer"
+    },
+    {
+      "id": "0c2af0d4-c954-4dce-a012-0365f539e6d4",
+      "title": "Relativ bunnhardhet, åpne data",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS/",
+      "layer": "Bunnreflektivitet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0c2af0d4-c954-4dce-a012-0365f539e6d4",
+      "type": "dataset"
+    },
+    {
+      "id": "17465cab-681d-4545-9a3b-fe28ea8e220f",
+      "title": "Sannsylige forekomster av korallrev - omriss",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinSannsynligeKorallrevWMS",
+      "layer": "Omriss",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/17465cab-681d-4545-9a3b-fe28ea8e220f",
+      "type": "dataset"
+    },
+    {
+      "id": "72773d9f-a804-4023-aca7-bbff7ffda2f0",
+      "title": "Sannsynlige forekomster av korallrev - pålitelighet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinSannsynligeKorallrevWMS",
+      "layer": "Palitelighet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/72773d9f-a804-4023-aca7-bbff7ffda2f0",
+      "type": "dataset"
+    },
+    {
+      "id": "65025434-33c7-4b44-99e7-34dc3d33750c",
+      "title": "Sedimentdannelse",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Sedimentdannelse",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/65025434-33c7-4b44-99e7-34dc3d33750c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "0ab8e4f8-7957-4f13-be26-998c5762b7fa",
+      "title": "Sedimentmektighet",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinBunnsedimenterWMS",
+      "layer": "Sedimentmektighet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0ab8e4f8-7957-4f13-be26-998c5762b7fa",
+      "type": "servicelayer"
+    },
+    {
+      "id": "68405bc4-326b-417a-9730-eec44c77689f",
+      "title": "Sedimentobservasjoner - bilder",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofotoWMS/",
+      "layer": "MarinGeofotoWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/68405bc4-326b-417a-9730-eec44c77689f",
+      "type": "dataset"
+    },
+    {
+      "id": "a8390c01-62a7-4582-9b77-f42c51656107",
+      "title": "Seismiske linjer, 2D",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinLinjerProverWMS2/",
+      "layer": "Seismikk",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a8390c01-62a7-4582-9b77-f42c51656107",
+      "type": "dataset"
+    },
+    {
+      "id": "23a63bf5-f87c-4672-ad07-0cf61db42af6",
+      "title": "Skjellsand - observasjoner",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinNaturtyperWMS2",
+      "layer": "Skjellsand_observasjon",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/23a63bf5-f87c-4672-ad07-0cf61db42af6",
+      "type": "dataset"
+    },
+    {
+      "id": "e4b36821-bd63-4b0b-93c1-0fc4eebfa41e",
+      "title": "Skjellsand - områder",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinNaturtyperWMS2",
+      "layer": "Skjellsand",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e4b36821-bd63-4b0b-93c1-0fc4eebfa41e",
+      "type": "dataset"
+    },
+    {
+      "id": "79346800-bdcc-44ec-a887-2bbb8454908e",
+      "title": "Skred navn",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Rasnavn_NO",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/79346800-bdcc-44ec-a887-2bbb8454908e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "a7ac47ef-465f-4451-9224-198543cf728c",
+      "title": "Skredgrense på sjøbunnen (Det)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Rasgrense_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a7ac47ef-465f-4451-9224-198543cf728c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "da67f09b-8426-4a69-b27b-cac5f9c425a0",
+      "title": "Skredgrense på sjøbunnen (Ov)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Rasgrense_Ov",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/da67f09b-8426-4a69-b27b-cac5f9c425a0",
+      "type": "servicelayer"
+    },
+    {
+      "id": "8acf8eb9-d54b-4820-a599-b8d6b5849162",
+      "title": "Skredgrense på sjøbunnen (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Rasgrense_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8acf8eb9-d54b-4820-a599-b8d6b5849162",
+      "type": "servicelayer"
+    },
+    {
+      "id": "d14b109e-1eb1-4835-95bc-687e1c66745d",
+      "title": "Skredgrense under sjøbunnen (Det)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "RasgrenseBegravd_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d14b109e-1eb1-4835-95bc-687e1c66745d",
+      "type": "servicelayer"
+    },
+    {
+      "id": "3cd8e14f-743d-4197-a207-ab46fd0c1a87",
+      "title": "Skredgrense under sjøbunnen (Ov)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "RasgrenseBegravd_Ov",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3cd8e14f-743d-4197-a207-ab46fd0c1a87",
+      "type": "servicelayer"
+    },
+    {
+      "id": "c0a69c97-1f92-41df-8e5b-b94d9c8f7f31",
+      "title": "Skredgrense under sjøbunnen (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "RasgrenseBegravd_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c0a69c97-1f92-41df-8e5b-b94d9c8f7f31",
+      "type": "servicelayer"
+    },
+    {
+      "id": "88ad7639-885f-4415-aded-c261f59c0071",
+      "title": "Undersjøiske fjell",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "SM_GROUP",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/88ad7639-885f-4415-aded-c261f59c0071",
+      "type": "dataset"
+    },
+    {
+      "id": "db367783-4c85-4bfb-b9eb-94d85526b752",
+      "title": "Undersjøiske skred (Det)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "UndersjoiskRas_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/db367783-4c85-4bfb-b9eb-94d85526b752",
+      "type": "servicelayer"
+    },
+    {
+      "id": "5b12b1a7-ea3a-43b4-b36d-36c072e6b69e",
+      "title": "Undersjøiske skred (gruppelag)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "UndersoiskRas",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5b12b1a7-ea3a-43b4-b36d-36c072e6b69e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b17cd970-8194-495a-bca8-564f84e90bfb",
+      "title": "Undersjøiske skred (Ov)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Undersjoiskras_Ov",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b17cd970-8194-495a-bca8-564f84e90bfb",
+      "type": "servicelayer"
+    },
+    {
+      "id": "3427e11d-e956-41d6-afa3-9926598c173e",
+      "title": "Undersjøiske skred (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "UndersjoiskRas_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3427e11d-e956-41d6-afa3-9926598c173e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "fc2af495-b301-480e-a635-df27a1da83e3",
+      "title": "Undersjøiske skred, begravd (Det)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "UndersjoiskRasBegravd_Det",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fc2af495-b301-480e-a635-df27a1da83e3",
+      "type": "servicelayer"
+    },
+    {
+      "id": "99d6fec7-7aa1-45c0-9dc1-d0a22d14b51c",
+      "title": "Undersjøiske skred, begravd (Ov)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "UndersjoiskRasBegravd",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/99d6fec7-7aa1-45c0-9dc1-d0a22d14b51c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "7b443f28-1a4b-424d-92cc-4c4480f61c27",
+      "title": "Undersjøiske skred, begravd (Reg)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "UndersjoiskRasBegravd_Reg",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/7b443f28-1a4b-424d-92cc-4c4480f61c27",
+      "type": "servicelayer"
+    },
+    {
+      "id": "622b0adc-c777-44d6-8d66-9080d533269a",
+      "title": "Utblåsningskrater begravd",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "geologi",
+      "url": "https://geo.ngu.no/mapserver/MarinGeofarerWMS",
+      "layer": "Utblasningskrater_begravd",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/622b0adc-c777-44d6-8d66-9080d533269a",
       "type": "servicelayer"
     },
     {
@@ -2412,6 +2952,16 @@
       "type": "service"
     },
     {
+      "id": "8c233f06-2327-46ed-b330-c57c86e70d79",
+      "title": "Terrengmodell WMS",
+      "organization": "Kartverket",
+      "category": "hoydedata",
+      "url": "https://wms.geonorge.no/skwms1/wms.terrengmodell",
+      "layer": "terrengmodell",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8c233f06-2327-46ed-b330-c57c86e70d79",
+      "type": "service"
+    },
+    {
       "id": "4ca8af5e-ffc7-4636-847d-4eca92c4a3b0",
       "title": "Akvakultur - lokaliteter",
       "organization": "Fiskeridirektoratet",
@@ -2442,16 +2992,6 @@
       "type": "dataset"
     },
     {
-      "id": "f2231766-e5f2-4076-b7f8-b45a02bf7221",
-      "title": "Artsutbredelse WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "kystOgFiskeri",
-      "url": "https://kart.hi.no/data/utbredelseskart/wms/ows",
-      "layer": "artsutbredelse",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f2231766-e5f2-4076-b7f8-b45a02bf7221",
-      "type": "service"
-    },
-    {
       "id": "cb789970-652f-42e3-a2f7-077a7074ef2a",
       "title": "Bergede fiskeredskaper i Spøkelsesfiske-prosjektet",
       "organization": "Havforskningsinstituttet",
@@ -2462,16 +3002,6 @@
       "type": "dataset"
     },
     {
-      "id": "024c2c5c-f64e-4065-9cfa-274281e192a8",
-      "title": "Bergnebb WMS",
-      "organization": "Havforskningsinstituttet",
-      "category": "kystOgFiskeri",
-      "url": "https://kart.hi.no/data/utbredelseskart/bergnebb/ows",
-      "layer": "bergnebb",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/024c2c5c-f64e-4065-9cfa-274281e192a8",
-      "type": "servicelayer"
-    },
-    {
       "id": "acf16629-f89e-4eb8-9e29-b95b70c0dff4",
       "title": "Bløtbunnskorallskog WMS",
       "organization": "Havforskningsinstituttet",
@@ -2479,6 +3009,36 @@
       "url": "https://kart.hi.no/mareano/mareano_biologi/polygon_blotbunnskorallskog/ows",
       "layer": "polygon_blotbunnskorallskog",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/acf16629-f89e-4eb8-9e29-b95b70c0dff4",
+      "type": "servicelayer"
+    },
+    {
+      "id": "ba8247d4-cf5c-4cf6-8ede-8ada6f2d13bd",
+      "title": "bomtraal_arter",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "bomtraal_arter",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ba8247d4-cf5c-4cf6-8ede-8ada6f2d13bd",
+      "type": "servicelayer"
+    },
+    {
+      "id": "32cd0153-1936-4b57-8a7c-cbd49f173e19",
+      "title": "bomtraal_biomasse",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "bomtraal_biomasse",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/32cd0153-1936-4b57-8a7c-cbd49f173e19",
+      "type": "servicelayer"
+    },
+    {
+      "id": "43baf96e-aebf-4306-9fc8-a5c12ae5e51e",
+      "title": "bomtraal_individer",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "bomtraal_individer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/43baf96e-aebf-4306-9fc8-a5c12ae5e51e",
       "type": "servicelayer"
     },
     {
@@ -2572,6 +3132,36 @@
       "type": "dataset"
     },
     {
+      "id": "0d43e3eb-bf79-41b7-b108-2ead4b6a13f7",
+      "title": "grabb_arter",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "grabb_arter",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0d43e3eb-bf79-41b7-b108-2ead4b6a13f7",
+      "type": "servicelayer"
+    },
+    {
+      "id": "ea2452a7-6cd9-40fe-92de-5839747b0eb6",
+      "title": "grabb_biomasse",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "grabb_biomasse",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ea2452a7-6cd9-40fe-92de-5839747b0eb6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "077c6000-b17d-4c71-98cd-125ee21e89ec",
+      "title": "grabb_individer",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "grabb_individer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/077c6000-b17d-4c71-98cd-125ee21e89ec",
+      "type": "servicelayer"
+    },
+    {
       "id": "a6fa3f8d-464d-46ee-a107-8be52337c86b",
       "title": "Hardbunnskorallskog WMS",
       "organization": "Havforskningsinstituttet",
@@ -2590,6 +3180,56 @@
       "layer": "havnedata",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e46767e4-c6d9-49a6-93e8-716da0922fd7",
       "type": "dataset"
+    },
+    {
+      "id": "ab0c07ed-a2eb-4fec-8a64-b1c8d33fa69f",
+      "title": "hornkorall_isidella_lofotensis",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "hornkorall_isidella_lofotensis",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ab0c07ed-a2eb-4fec-8a64-b1c8d33fa69f",
+      "type": "servicelayer"
+    },
+    {
+      "id": "e8f875e9-e78c-484d-a54d-879f92cd63b7",
+      "title": "hornkorall_paragorgia_arborea",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "hornkorall_paragorgia_arborea",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e8f875e9-e78c-484d-a54d-879f92cd63b7",
+      "type": "servicelayer"
+    },
+    {
+      "id": "fc2780ad-ccbc-4a13-85fd-f4800798be15",
+      "title": "hornkorall_paramuricea_placomus",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "hornkorall_paramuricea_placomus",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fc2780ad-ccbc-4a13-85fd-f4800798be15",
+      "type": "servicelayer"
+    },
+    {
+      "id": "ecc2ec19-ab28-42a3-b670-282adbd8e77f",
+      "title": "hornkorall_primnoa_resedaeformis",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "hornkorall_primnoa_resedaeformis",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ecc2ec19-ab28-42a3-b670-282adbd8e77f",
+      "type": "servicelayer"
+    },
+    {
+      "id": "87eeff67-a9a6-4c22-bd20-2182b6b6566d",
+      "title": "hornkorall_radicipes",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "hornkorall_radicipes",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/87eeff67-a9a6-4c22-bd20-2182b6b6566d",
+      "type": "servicelayer"
     },
     {
       "id": "8271b254-3e73-4469-929a-f42863a82f5b",
@@ -2662,6 +3302,16 @@
       "type": "servicelayer"
     },
     {
+      "id": "8c131d78-9f79-4b6f-b1b3-a446f56b660e",
+      "title": "korallobservasjoner_video",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "korallobservasjoner_video",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8c131d78-9f79-4b6f-b1b3-a446f56b660e",
+      "type": "servicelayer"
+    },
+    {
       "id": "31edb985-138e-46a7-a910-a0c1cd9baf4c",
       "title": "Korallrev",
       "organization": "Havforskningsinstituttet",
@@ -2670,6 +3320,46 @@
       "layer": "korallrev_observert_rev",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/31edb985-138e-46a7-a910-a0c1cd9baf4c",
       "type": "dataset"
+    },
+    {
+      "id": "92c9e97d-cccf-4d81-a6a0-5333e1f391c8",
+      "title": "korallrev_identifiserte_omraader",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "korallrev_identifiserte_omraader",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/92c9e97d-cccf-4d81-a6a0-5333e1f391c8",
+      "type": "servicelayer"
+    },
+    {
+      "id": "ccb0ab26-cfda-4ae6-b6ac-f5868b940ec2",
+      "title": "korallrev_modellerte_omraader",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi:korallrev_modellerte_omraader/ows",
+      "layer": "mareano_biologi:korallrev_modellerte_omraader",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ccb0ab26-cfda-4ae6-b6ac-f5868b940ec2",
+      "type": "servicelayer"
+    },
+    {
+      "id": "a68e8893-84e0-4257-8bb1-84389c7152a6",
+      "title": "korallrev_observert_rev",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "korallrev_observert_rev",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a68e8893-84e0-4257-8bb1-84389c7152a6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "9c7bc224-47aa-457f-9335-7187666ef12c",
+      "title": "korallrev_vernede_omraader",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "korallrev_vernede_omraader",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9c7bc224-47aa-457f-9335-7187666ef12c",
+      "type": "servicelayer"
     },
     {
       "id": "38c6bb33-cc58-43cc-8431-16c00c8b4025",
@@ -2762,6 +3452,26 @@
       "type": "dataset"
     },
     {
+      "id": "f50de411-461a-4280-b668-844da525c32c",
+      "title": "mareanovideo_fil",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "mareanovideo_fil",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f50de411-461a-4280-b668-844da525c32c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "71f45d2a-28c3-42da-bc2c-45b1b4aedcba",
+      "title": "mareanovideo_test",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "mareanovideo_test",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/71f45d2a-28c3-42da-bc2c-45b1b4aedcba",
+      "type": "servicelayer"
+    },
+    {
       "id": "cadd7b67-892b-44cb-8d9c-9cdf92d6d92b",
       "title": "Menneskelig påvirkning - Marint søppel per videotransekt",
       "organization": "Havforskningsinstituttet",
@@ -2812,6 +3522,16 @@
       "type": "dataset"
     },
     {
+      "id": "1790a2c6-f000-452e-b84d-393bc0eab166",
+      "title": "Observerte saarbare marine bunndyr (VME) fra Mareano",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "saarbare_marine_bunndyr_observert",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/1790a2c6-f000-452e-b84d-393bc0eab166",
+      "type": "servicelayer"
+    },
+    {
       "id": "1cdf2c9d-f9b5-4a66-8563-62c7600db245",
       "title": "Områder med farlige bølger langs Norskekysten",
       "organization": "Kartverket",
@@ -2839,6 +3559,126 @@
       "url": "https://kart.hi.no/data/oseanografi/Overflatestrom_Atlanterhavet/ows",
       "layer": "Overflatestrom_Atlanterhavet",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b1980b24-70fa-420e-972a-7aa070a72240",
+      "type": "servicelayer"
+    },
+    {
+      "id": "32cb6fd4-21ff-420d-b6b3-0898af402af5",
+      "title": "polygon_blotbunnskorallskog",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "polygon_blotbunnskorallskog",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/32cb6fd4-21ff-420d-b6b3-0898af402af5",
+      "type": "servicelayer"
+    },
+    {
+      "id": "d6fc62c4-bbc6-4b20-94e2-ce7afa424df7",
+      "title": "polygon_blotbunnssvampsamfunn",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "polygon_blotbunnssvampsamfunn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d6fc62c4-bbc6-4b20-94e2-ce7afa424df7",
+      "type": "servicelayer"
+    },
+    {
+      "id": "f39a4f0a-b7e7-40a2-b01a-c47eb577a15d",
+      "title": "polygon_dypvannsjofjaer",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "polygon_dypvannsjofjaer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f39a4f0a-b7e7-40a2-b01a-c47eb577a15d",
+      "type": "servicelayer"
+    },
+    {
+      "id": "db0ed573-1332-4611-ba4a-dc5120804e4c",
+      "title": "polygon_glassvampbestander",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "polygon_glassvampbestander",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/db0ed573-1332-4611-ba4a-dc5120804e4c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "74faafe7-d8a7-4e95-9572-107ddd5b4381",
+      "title": "polygon_hardbunnskorallskog",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "polygon_hardbunnskorallskog",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/74faafe7-d8a7-4e95-9572-107ddd5b4381",
+      "type": "servicelayer"
+    },
+    {
+      "id": "0b97a543-205c-426e-a3aa-f88c019c5a5b",
+      "title": "polygon_hardbunnssvampsamfunn",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "polygon_hardbunnssvampsamfunn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0b97a543-205c-426e-a3aa-f88c019c5a5b",
+      "type": "servicelayer"
+    },
+    {
+      "id": "827eba16-7513-4516-881a-3dbcae682061",
+      "title": "polygon_sjofjaerbunn",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "polygon_sjofjaerbunn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/827eba16-7513-4516-881a-3dbcae682061",
+      "type": "servicelayer"
+    },
+    {
+      "id": "c395e02b-e9e4-430e-bc5d-e721b74a339c",
+      "title": "produksjons_data",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "produksjons_data",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c395e02b-e9e4-430e-bc5d-e721b74a339c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b328e680-c832-45ae-bf75-048862277a69",
+      "title": "produksjonsdata_bomtraal_wC",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "produksjonsdata_bomtraal_wC",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b328e680-c832-45ae-bf75-048862277a69",
+      "type": "servicelayer"
+    },
+    {
+      "id": "bf819bb6-4500-44fb-abd8-abbe9b44aee5",
+      "title": "produksjonsdata_bomtraal_xC",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "produksjonsdata_bomtraal_xC",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bf819bb6-4500-44fb-abd8-abbe9b44aee5",
+      "type": "servicelayer"
+    },
+    {
+      "id": "46fbb731-1416-4b12-b135-ee56392fae3b",
+      "title": "produksjonsdata_grabb_wC",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "produksjonsdata_grabb_wC",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/46fbb731-1416-4b12-b135-ee56392fae3b",
+      "type": "servicelayer"
+    },
+    {
+      "id": "12799ecd-0866-4ebc-bf4a-e748c3ded266",
+      "title": "produksjonsdata_grabb_xC",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "produksjonsdata_grabb_xC",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/12799ecd-0866-4ebc-bf4a-e748c3ded266",
       "type": "servicelayer"
     },
     {
@@ -2892,13 +3732,33 @@
       "type": "dataset"
     },
     {
-      "id": "c0e22b3b-4db2-42a0-aaae-55eb0d308045",
-      "title": "Stedsnavn i sjø",
-      "organization": "Kartverket",
+      "id": "fa1313a5-fadc-424f-a22e-8c991cd6bb30",
+      "title": "slede_arter",
+      "organization": "Havforskningsinstituttet",
       "category": "kystOgFiskeri",
-      "url": "https://wms.geonorge.no/skwms1/wms.ssr2",
-      "layer": "sjo",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c0e22b3b-4db2-42a0-aaae-55eb0d308045",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "slede_arter",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fa1313a5-fadc-424f-a22e-8c991cd6bb30",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b533c9c4-c637-4e1e-a43a-848a9b2a9de7",
+      "title": "slede_biomasse",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "slede_biomasse",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b533c9c4-c637-4e1e-a43a-848a9b2a9de7",
+      "type": "servicelayer"
+    },
+    {
+      "id": "5274f9f5-6d52-4292-82a4-1006664da98b",
+      "title": "slede_individer",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "slede_individer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5274f9f5-6d52-4292-82a4-1006664da98b",
       "type": "servicelayer"
     },
     {
@@ -2972,13 +3832,83 @@
       "type": "servicelayer"
     },
     {
-      "id": "678ea5dc-8d91-4b7f-9a30-0fb4b2764ae8",
-      "title": "verdi_max_fisk_grid3575_filter",
-      "organization": "Miljødirektoratet",
+      "id": "bf2fa794-9a55-45c9-a471-51837bfae73f",
+      "title": "vme_coldwater_sponge",
+      "organization": "Havforskningsinstituttet",
       "category": "kystOgFiskeri",
-      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
-      "layer": "verdi_max_fisk_grid3575_filter",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/678ea5dc-8d91-4b7f-9a30-0fb4b2764ae8",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "vme_coldwater_sponge",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bf2fa794-9a55-45c9-a471-51837bfae73f",
+      "type": "servicelayer"
+    },
+    {
+      "id": "97ed31d0-9df9-43c8-80dd-b1b09c3c2821",
+      "title": "vme_hardbottom_coralgarden",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "vme_hardbottom_coralgarden",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/97ed31d0-9df9-43c8-80dd-b1b09c3c2821",
+      "type": "servicelayer"
+    },
+    {
+      "id": "099cf3d2-e152-4c43-ae2c-c5049a3df154",
+      "title": "vme_hardbottom_spongegarden",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "vme_hardbottom_spongegarden",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/099cf3d2-e152-4c43-ae2c-c5049a3df154",
+      "type": "servicelayer"
+    },
+    {
+      "id": "9f92a8ae-2a6d-49f6-bb0f-c0325d7012d9",
+      "title": "vme_nephtheidae_medow",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "vme_nephtheidae_medow",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9f92a8ae-2a6d-49f6-bb0f-c0325d7012d9",
+      "type": "servicelayer"
+    },
+    {
+      "id": "3d08e955-b625-421f-9c6b-8c14665a31d1",
+      "title": "vme_seapen_fields",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "vme_seapen_fields",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3d08e955-b625-421f-9c6b-8c14665a31d1",
+      "type": "servicelayer"
+    },
+    {
+      "id": "f4d95cfa-8d5e-4f06-a3bf-ab5885a0aad9",
+      "title": "vme_softbottom_coralgarden",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "vme_softbottom_coralgarden",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f4d95cfa-8d5e-4f06-a3bf-ab5885a0aad9",
+      "type": "servicelayer"
+    },
+    {
+      "id": "77af0e73-b24d-47a4-85a6-62ca834fd819",
+      "title": "vme_softbottom_spongegarden",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "vme_softbottom_spongegarden",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/77af0e73-b24d-47a4-85a6-62ca834fd819",
+      "type": "servicelayer"
+    },
+    {
+      "id": "d5063fce-58c1-4150-b320-05eac2a729af",
+      "title": "vme_umbellula_fields",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_biologi/ows",
+      "layer": "vme_umbellula_fields",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d5063fce-58c1-4150-b320-05eac2a729af",
       "type": "servicelayer"
     },
     {
@@ -3239,26 +4169,6 @@
       "url": "https://wms.nibio.no/cgi-bin/markfuktighetskart",
       "layer": "markfuktighetskart",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c61837f5-eb84-4864-b2cb-31422620286a",
-      "type": "service"
-    },
-    {
-      "id": "a6e8b77f-6ed3-4901-bad7-466fc127ae59",
-      "title": "Mattilsynet - Bigårdsplasser",
-      "organization": "Mattilsynet",
-      "category": "landbruk",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Bigaardsplasser",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a6e8b77f-6ed3-4901-bad7-466fc127ae59",
-      "type": "servicelayer"
-    },
-    {
-      "id": "cf630753-508a-4e7a-99da-ae1111090248",
-      "title": "Mattilsynets WMS",
-      "organization": "Mattilsynet",
-      "category": "landbruk",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Vannverk_Inntakspunkter,Mattilsynet_Dyrehold_Produksjonsdyr,Mattilsynet_Dyrehold_Fjoerfehold,Mattilsynet_Bigaardsplasser,Mattilsynet_Innsjoer_Drikkevann_201804010,Mattilsynet_Drikkevann_Bronn,Mattilsynet_Vann_Drikkevannsformaal_20180410,Mattilsynet_Varsomhetsomraader_Innsjoer,Mattilsynet_Grunnvann,Mattilsynet_Innsjo_Drikkevann",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cf630753-508a-4e7a-99da-ae1111090248",
       "type": "service"
     },
     {
@@ -3592,16 +4502,6 @@
       "type": "service"
     },
     {
-      "id": "e45aea66-5d98-4703-8026-692c782eb5b0",
-      "title": "Traktorveg og Skogsbilveg WMS",
-      "organization": "Kartverket",
-      "category": "landbruk",
-      "url": "https://wms.geonorge.no/skwms1/wms.traktorveg_skogsbilveger",
-      "layer": "traktorveg_skogsbilveger_wfs",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e45aea66-5d98-4703-8026-692c782eb5b0",
-      "type": "service"
-    },
-    {
       "id": "6a4a485a-1dc4-4d20-8d9a-53271797168a",
       "title": "Vegetasjon - WMS",
       "organization": "Norsk institutt for bioøkonomi",
@@ -3630,6 +4530,46 @@
       "layer": "VERNSKOG2",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/6b58021d-9c91-425a-9c67-7e424f007c1b",
       "type": "service"
+    },
+    {
+      "id": "19f5d1b3-1007-48e5-b762-183ce51b457b",
+      "title": "Landskap - WMS",
+      "organization": "Norsk institutt for bioøkonomi",
+      "category": "landskap",
+      "url": "https://wms.nibio.no/cgi-bin/landskap",
+      "layer": "LANDSKAP",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/19f5d1b3-1007-48e5-b762-183ce51b457b",
+      "type": "service"
+    },
+    {
+      "id": "50263c33-74bc-4ea8-b44e-a0c470e57904",
+      "title": "Administrative områder vanndirektivet WMS",
+      "organization": "Miljødirektoratet",
+      "category": "natur",
+      "url": "https://kart3.miljodirektoratet.no/arcgis/services/vanndir_adm_omrader/MapServer/WMSServer",
+      "layer": "vannregionmyndighet_navn,vannomraade_navn,vannregion_navn,klimasoner,oekoregion_marin,oekoregion_elv_innsjoe,vannregionmyndighet,vannomraade,vannregion",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/50263c33-74bc-4ea8-b44e-a0c470e57904",
+      "type": "service"
+    },
+    {
+      "id": "143315cd-e00a-4e24-ac73-5298026836c5",
+      "title": "Akkumulasjonsrater for OK - Nordsjøen/Skagerrak",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OrganiskKarbon_akkumulasjonsrate",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/143315cd-e00a-4e24-ac73-5298026836c5",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b8911543-3ecc-4fe3-9b97-3844e0e767b6",
+      "title": "Akkumulasjonsrater for OK - Stavanger kommune",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OKAR_Stavanger",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b8911543-3ecc-4fe3-9b97-3844e0e767b6",
+      "type": "servicelayer"
     },
     {
       "id": "a1e6a980-7e56-4922-90c0-e131d9e8f897",
@@ -3682,6 +4622,16 @@
       "type": "service"
     },
     {
+      "id": "f2231766-e5f2-4076-b7f8-b45a02bf7221",
+      "title": "Artsutbredelse WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/data/utbredelseskart/wms/ows",
+      "layer": "artsutbredelse",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f2231766-e5f2-4076-b7f8-b45a02bf7221",
+      "type": "service"
+    },
+    {
       "id": "e9755acf-108f-4cc8-93b0-9140bb664961",
       "title": "Bentisk sekundærproduksjon (produksjonsdata) bomtrål",
       "organization": "Havforskningsinstituttet",
@@ -3690,6 +4640,16 @@
       "layer": "produksjonsdata_bomtraal_wC",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e9755acf-108f-4cc8-93b0-9140bb664961",
       "type": "dataset"
+    },
+    {
+      "id": "024c2c5c-f64e-4065-9cfa-274281e192a8",
+      "title": "Bergnebb WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/data/utbredelseskart/bergnebb/ows",
+      "layer": "bergnebb",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/024c2c5c-f64e-4065-9cfa-274281e192a8",
+      "type": "servicelayer"
     },
     {
       "id": "40558d42-4636-46e1-8132-4c136777a341",
@@ -3782,6 +4742,16 @@
       "type": "dataset"
     },
     {
+      "id": "f3615fcd-383b-4cd7-b166-0426e1be03d6",
+      "title": "Gjel",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/MarinTerrengWMS2",
+      "layer": "Gjel",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f3615fcd-383b-4cd7-b166-0426e1be03d6",
+      "type": "servicelayer"
+    },
+    {
       "id": "94bc96ae-cb2c-43f4-91d5-951534120fcc",
       "title": "Hornkoraller - Isidella lofotensis",
       "organization": "Havforskningsinstituttet",
@@ -3852,6 +4822,26 @@
       "type": "servicelayer"
     },
     {
+      "id": "1345be25-8191-4817-b858-7af267b543f6",
+      "title": "Karbonlager av labilt OK - Stavanger kommune",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "Karbonlager_LOK_Stavanger",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/1345be25-8191-4817-b858-7af267b543f6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "e062b588-9f7a-42dd-8ea4-8d361e7bebdb",
+      "title": "Karbonlager av OK - Stavanger kommune",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "Karbonlager_OK_Stavanger",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e062b588-9f7a-42dd-8ea4-8d361e7bebdb",
+      "type": "servicelayer"
+    },
+    {
       "id": "c5f09d79-1546-495c-8b36-91efd4008bd7",
       "title": "Kart over grå arealer",
       "organization": "Miljødirektoratet",
@@ -3862,6 +4852,16 @@
       "type": "dataset"
     },
     {
+      "id": "bf6d3270-0930-4a23-8809-a883f6442472",
+      "title": "Kart over grå arealer WMS (Testversjon 1)",
+      "organization": "Norsk institutt for bioøkonomi",
+      "category": "natur",
+      "url": "https://wms.nibio.no/cgi-bin/graastruktur",
+      "layer": "Grå arealer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bf6d3270-0930-4a23-8809-a883f6442472",
+      "type": "service"
+    },
+    {
       "id": "66f76d73-8cc2-4161-bd06-ec1315feec70",
       "title": "Kartleggingsenheter NiN",
       "organization": "Miljødirektoratet",
@@ -3870,6 +4870,16 @@
       "layer": "Naturomrader_20K,Naturomrader_5K",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/66f76d73-8cc2-4161-bd06-ec1315feec70",
       "type": "dataset"
+    },
+    {
+      "id": "c7317b82-b74a-47ba-9aa8-142a023b0c3b",
+      "title": "Konsentrasjoner av OK - Nordsjøen/Skagerrak",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OrganiskKarbon_konsentrasjon",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c7317b82-b74a-47ba-9aa8-142a023b0c3b",
+      "type": "servicelayer"
     },
     {
       "id": "7ce68b6a-64a8-4cf3-9ca0-0f773483ba92",
@@ -3892,16 +4902,6 @@
       "type": "dataset"
     },
     {
-      "id": "19f5d1b3-1007-48e5-b762-183ce51b457b",
-      "title": "Landskap - WMS",
-      "organization": "Norsk institutt for bioøkonomi",
-      "category": "natur",
-      "url": "https://wms.nibio.no/cgi-bin/landskap",
-      "layer": "LANDSKAP",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/19f5d1b3-1007-48e5-b762-183ce51b457b",
-      "type": "service"
-    },
-    {
       "id": "1f9e17d4-bf56-4bf4-a2a8-7d17a0873761",
       "title": "Mareano bunnprøvestasjoner",
       "organization": "Havforskningsinstituttet",
@@ -3922,6 +4922,16 @@
       "type": "dataset"
     },
     {
+      "id": "0008ba93-e528-456d-9687-c405b3ad6da8",
+      "title": "Marin geokjemi WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/MarinGeokjemiWMS/",
+      "layer": "MarinGeokjemiWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0008ba93-e528-456d-9687-c405b3ad6da8",
+      "type": "service"
+    },
+    {
       "id": "7433f715-3300-4615-a14b-7ca7fbbf70ef",
       "title": "marin_vp_ikke_oppstart",
       "organization": "Miljødirektoratet",
@@ -3932,6 +4942,46 @@
       "type": "servicelayer"
     },
     {
+      "id": "213ca4ab-7811-44fc-959a-bb7f83bdab55",
+      "title": "Marine biotoper i Sør-Troms",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/MarineGrunnkartWMS",
+      "layer": "Biotoper_Astafjord",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/213ca4ab-7811-44fc-959a-bb7f83bdab55",
+      "type": "dataset"
+    },
+    {
+      "id": "5e8d9286-4d94-4e95-8546-2ef4b891c007",
+      "title": "Marine landformer",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/MarinTerrengWMS2",
+      "layer": "MarinTerrengWMS2",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5e8d9286-4d94-4e95-8546-2ef4b891c007",
+      "type": "dataset"
+    },
+    {
+      "id": "9db56b4f-474a-4e79-bd87-a2f0e4e4728e",
+      "title": "Marine landskap",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/MarinLandskapWMS",
+      "layer": "MarineLandskap",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9db56b4f-474a-4e79-bd87-a2f0e4e4728e",
+      "type": "dataset"
+    },
+    {
+      "id": "af0f6a79-846c-4b24-bfd6-2d06dc103f71",
+      "title": "Marine landskap WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/MarinLandskapWMS",
+      "layer": "MarinLandskapWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/af0f6a79-846c-4b24-bfd6-2d06dc103f71",
+      "type": "service"
+    },
+    {
       "id": "e4f40b02-7a32-4163-87af-d4121de48e6d",
       "title": "Marine naturtyper (HB19)",
       "organization": "Miljødirektoratet",
@@ -3940,26 +4990,6 @@
       "layer": "naturtype_marin_hb19_korall,naturtype_marin_hb19_skjellsand,naturtype_marin_hb19_alegras,naturtype_marin_hb19_blotbunn,naturtype_marin_hb19_litoral,naturtype_marin_hb19_poller_og_dyp,naturtype_marin_hb19_oksygen,naturtype_marin_hb19_tidevann,naturtype_marin_hb19_tare,naturtyper_marine_hb19_alle",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e4f40b02-7a32-4163-87af-d4121de48e6d",
       "type": "dataset"
-    },
-    {
-      "id": "50f62bbe-b216-4e38-bd75-1a54744c1a53",
-      "title": "Mattilsynet - Innsjø drikkevannforekomster",
-      "organization": "Mattilsynet",
-      "category": "natur",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Innsjo_Drikkevann",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/50f62bbe-b216-4e38-bd75-1a54744c1a53",
-      "type": "servicelayer"
-    },
-    {
-      "id": "96ce1a31-17d7-41ac-b6d6-11288fa1030f",
-      "title": "Mattilsynet - Vannverk inntakspunkter",
-      "organization": "Mattilsynet",
-      "category": "natur",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Vannverk_Inntakspunkter",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/96ce1a31-17d7-41ac-b6d6-11288fa1030f",
-      "type": "servicelayer"
     },
     {
       "id": "607b7b4e-3d52-4978-9db6-82b976aa7fc5",
@@ -3980,6 +5010,16 @@
       "layer": "svo_miljoverdier_isbiota,svo_miljoverdier_korallrev,svo_miljoverdier_polygon_EPSG3575,svo_miljoverdier_sjofugl,svo_omraader_forslag2021",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/245163ce-1f9b-4165-8c25-fcd0c2db1826",
       "type": "dataset"
+    },
+    {
+      "id": "75aa2244-999c-43fe-9eff-fdc2ac8f183a",
+      "title": "Modellert Havbunnsgeologi WMS",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "ModellertHavbunnsgeologiWMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/75aa2244-999c-43fe-9eff-fdc2ac8f183a",
+      "type": "service"
     },
     {
       "id": "99f8ef88-7208-406b-bd8a-3f614a5acfe8",
@@ -4152,6 +5192,66 @@
       "type": "dataset"
     },
     {
+      "id": "ce6c0411-d752-4558-be87-20daf872a9d5",
+      "title": "Organisk karbon - dekningskart i kystsonen",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OK_Datadekning",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ce6c0411-d752-4558-be87-20daf872a9d5",
+      "type": "servicelayer"
+    },
+    {
+      "id": "56ed4aed-bad1-4ecf-a95d-f327d1955dcf",
+      "title": "Organisk karbon (OK) - akkumulasjonsrater (gruppelag)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OrganiskKarbon_akkumulasjonsrate_GROUP",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/56ed4aed-bad1-4ecf-a95d-f327d1955dcf",
+      "type": "servicelayer"
+    },
+    {
+      "id": "fa8fd4e7-df13-4237-b2ca-3f523ae22e08",
+      "title": "Organisk karbon (OK) - karbonlager (gruppelag)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OK_karbonlager_GROUP",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fa8fd4e7-df13-4237-b2ca-3f523ae22e08",
+      "type": "servicelayer"
+    },
+    {
+      "id": "2cc0240c-0fdf-4b7e-9241-4d54007ebdbf",
+      "title": "Organisk karbon (OK) - konsentrasjoner (gruppelag)",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OrganiskKarbon_konsentrasjon_GROUP",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/2cc0240c-0fdf-4b7e-9241-4d54007ebdbf",
+      "type": "servicelayer"
+    },
+    {
+      "id": "32a6c9dd-999d-47ca-8fd2-9edeacd4fb22",
+      "title": "Organiske miljøgifter i marine sedimenter - 4-Nonylfenol-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/nonylfenol4/ows",
+      "layer": "nonylfenol4",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/32a6c9dd-999d-47ca-8fd2-9edeacd4fb22",
+      "type": "service"
+    },
+    {
+      "id": "4bdc8251-c3be-46a7-b86a-f433f6794f65",
+      "title": "Organiske miljøgifter i marine sedimenter - Antracen-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/antracen/ows",
+      "layer": "antracen",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4bdc8251-c3be-46a7-b86a-f433f6794f65",
+      "type": "servicelayer"
+    },
+    {
       "id": "c2cad43f-0fb7-4104-9548-c391b54233a3",
       "title": "Organiske miljøgifter i marine sedimenter - BDE-209-nivåer WMS",
       "organization": "Havforskningsinstituttet",
@@ -4172,6 +5272,76 @@
       "type": "servicelayer"
     },
     {
+      "id": "cac32b2d-9971-4648-bce3-980bf01301b6",
+      "title": "Organiske miljøgifter i marine sedimenter - Dieldrin-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/dieldrin/ows",
+      "layer": "dieldrin",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cac32b2d-9971-4648-bce3-980bf01301b6",
+      "type": "servicelayer"
+    },
+    {
+      "id": "7ca5dac1-37fc-4153-9ad7-b53ab13498c7",
+      "title": "Organiske miljøgifter i marine sedimenter - Fenantren-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/fenantren/ows",
+      "layer": "fenantren",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/7ca5dac1-37fc-4153-9ad7-b53ab13498c7",
+      "type": "servicelayer"
+    },
+    {
+      "id": "4caa84e8-628d-4916-806e-55218d2943ff",
+      "title": "Organiske miljøgifter i marine sedimenter - HCB-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/hcb/ows",
+      "layer": "hcb",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4caa84e8-628d-4916-806e-55218d2943ff",
+      "type": "service"
+    },
+    {
+      "id": "65e4fff2-149f-4513-8919-f00b52e33a69",
+      "title": "Organiske miljøgifter i marine sedimenter - HCH-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/hch/ows",
+      "layer": "hch",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/65e4fff2-149f-4513-8919-f00b52e33a69",
+      "type": "service"
+    },
+    {
+      "id": "b06e24a1-b8b5-4257-8573-a75e2f3f223d",
+      "title": "Organiske miljøgifter i marine sedimenter - Naftalen-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/naftalen/ows",
+      "layer": "naftalen",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b06e24a1-b8b5-4257-8573-a75e2f3f223d",
+      "type": "servicelayer"
+    },
+    {
+      "id": "cd1c79d7-3714-456f-808d-69ce419357b1",
+      "title": "Organiske miljøgifter i marine sedimenter - NPD-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/npd/ows",
+      "layer": "npd",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cd1c79d7-3714-456f-808d-69ce419357b1",
+      "type": "servicelayer"
+    },
+    {
+      "id": "7f9c2b13-7957-4e71-b6d4-a31bac122c78",
+      "title": "Organiske miljøgifter i marine sedimenter - PAH16-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/pah16/ows",
+      "layer": "pah16",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/7f9c2b13-7957-4e71-b6d4-a31bac122c78",
+      "type": "servicelayer"
+    },
+    {
       "id": "20db0026-dd56-4634-84d4-b0b8dae6965d",
       "title": "Organiske miljøgifter i marine sedimenter - PCB7-nivåer WMS",
       "organization": "Havforskningsinstituttet",
@@ -4179,6 +5349,26 @@
       "url": "https://kart.hi.no/mareano/mareano_kjemi/pcb7/ows",
       "layer": "pcb7",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/20db0026-dd56-4634-84d4-b0b8dae6965d",
+      "type": "servicelayer"
+    },
+    {
+      "id": "ee674b14-cc1c-4d37-853c-05d009526cda",
+      "title": "Organiske miljøgifter i marine sedimenter - Perylen-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/perylen/ows",
+      "layer": "perylen",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ee674b14-cc1c-4d37-853c-05d009526cda",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b24a48d0-2346-4237-ae1e-ffe6dc88261f",
+      "title": "Organiske miljøgifter i marine sedimenter - Pyren-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/pyren/ows",
+      "layer": "pyren",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b24a48d0-2346-4237-ae1e-ffe6dc88261f",
       "type": "servicelayer"
     },
     {
@@ -4192,6 +5382,26 @@
       "type": "servicelayer"
     },
     {
+      "id": "dc3ea8d9-2ac1-458d-a75b-df64dc1433ab",
+      "title": "Organiske miljøgifter i marine sedimenter - Sum DDT-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/ddt/ows",
+      "layer": "ddt",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dc3ea8d9-2ac1-458d-a75b-df64dc1433ab",
+      "type": "servicelayer"
+    },
+    {
+      "id": "e6e8ffe3-8345-4c2c-8ac7-99624ffdf086",
+      "title": "Organiske miljøgifter i marine sedimenter - Sum PAH-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/pah/ows",
+      "layer": "pah",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e6e8ffe3-8345-4c2c-8ac7-99624ffdf086",
+      "type": "servicelayer"
+    },
+    {
       "id": "e2b7f786-68a9-42dc-b2b7-e50bbabb41d5",
       "title": "Organiske miljøgifter i marine sedimenter - Sum PBDE-nivåer WMS",
       "organization": "Havforskningsinstituttet",
@@ -4199,6 +5409,16 @@
       "url": "https://kart.hi.no/mareano/mareano_kjemi/pbde/ows",
       "layer": "pbde",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e2b7f786-68a9-42dc-b2b7-e50bbabb41d5",
+      "type": "servicelayer"
+    },
+    {
+      "id": "07ba2870-bfc8-4971-ac0a-3f02772d72a5",
+      "title": "Organiske miljøgifter i marine sedimenter - THC-nivåer WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "natur",
+      "url": "https://kart.hi.no/mareano/mareano_kjemi/thc/ows",
+      "layer": "thc",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/07ba2870-bfc8-4971-ac0a-3f02772d72a5",
       "type": "servicelayer"
     },
     {
@@ -4262,6 +5482,26 @@
       "type": "dataset"
     },
     {
+      "id": "ed58723a-f402-4b80-85de-6939786cf84b",
+      "title": "Sedimentasjonsrater - Nordsjøen/Skagerrak",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "Sedimentasjonsrate",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ed58723a-f402-4b80-85de-6939786cf84b",
+      "type": "servicelayer"
+    },
+    {
+      "id": "a7cb6545-b8ae-411b-b4e8-4808863dfa74",
+      "title": "Sedimentasjonsrater i havbunnsedimenter i Nordsjøen og Skagerrak",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "Sedimentasjonsrate_GROUP",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a7cb6545-b8ae-411b-b4e8-4808863dfa74",
+      "type": "dataset"
+    },
+    {
       "id": "bc063468-9454-4ff6-b948-451b68eaade1",
       "title": "Skogsmark - NiN",
       "organization": "Miljødirektoratet",
@@ -4280,6 +5520,36 @@
       "layer": "svo_grense,svo_grense_alle,svo_omrade,svo_omrade_alle",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/1bf63cd3-3cde-4f81-b4f6-535677da1079",
       "type": "dataset"
+    },
+    {
+      "id": "566ef725-3020-4146-b8c3-a9bac2817b7c",
+      "title": "Usikkerhet i akkumulasjonsrater for OK - Nordsjøen/Skagerrak",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OrganiskKarbon_akkumulasjonsrate_usikkerhet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/566ef725-3020-4146-b8c3-a9bac2817b7c",
+      "type": "servicelayer"
+    },
+    {
+      "id": "b5a29e0e-db1d-46de-8482-0c02bc7888a4",
+      "title": "Usikkerhet i konsentrasjoner av OK - Nordsjøen/Skagerrak",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "OrganiskKarbon_konsentrasjon_usikkerhet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b5a29e0e-db1d-46de-8482-0c02bc7888a4",
+      "type": "servicelayer"
+    },
+    {
+      "id": "f0b6ed9b-0b2c-4878-9d48-7b177f61a24e",
+      "title": "Usikkerhet i sedimentasjonsrater - Nordsjøen/Skagerrak",
+      "organization": "Norges geologiske undersøkelse",
+      "category": "natur",
+      "url": "https://geo.ngu.no/mapserver/ModellertHavbunnsgeologiWMS/",
+      "layer": "Sedimentasjonsrate_usikkerhet",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f0b6ed9b-0b2c-4878-9d48-7b177f61a24e",
+      "type": "servicelayer"
     },
     {
       "id": "b203e422-5270-4efc-93a5-2073725c43ef",
@@ -4322,6 +5592,26 @@
       "type": "dataset"
     },
     {
+      "id": "fea4e637-9954-474a-a131-a480d38fab37",
+      "title": "verdi_fisk_filter_tid_grid3575",
+      "organization": "Miljødirektoratet",
+      "category": "natur",
+      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
+      "layer": "verdi_fisk_filter_tid_grid3575",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fea4e637-9954-474a-a131-a480d38fab37",
+      "type": "servicelayer"
+    },
+    {
+      "id": "678ea5dc-8d91-4b7f-9a30-0fb4b2764ae8",
+      "title": "verdi_max_fisk_grid3575_filter",
+      "organization": "Miljødirektoratet",
+      "category": "natur",
+      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
+      "layer": "verdi_max_fisk_grid3575_filter",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/678ea5dc-8d91-4b7f-9a30-0fb4b2764ae8",
+      "type": "servicelayer"
+    },
+    {
       "id": "86d050f4-b74a-4580-960b-8813a33fbeea",
       "title": "verdi_max_naturtyper_grid3575_filter",
       "organization": "Miljødirektoratet",
@@ -4349,6 +5639,36 @@
       "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
       "layer": "verdi_max_sjopattedyr_grid3575_filter",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5ee930cb-0c7f-42cc-9d66-5a120fd3e3c1",
+      "type": "servicelayer"
+    },
+    {
+      "id": "69e3ab78-42bd-4348-9305-e41cc55a492d",
+      "title": "verdi_naturtyper_filter_tid_grid3575",
+      "organization": "Miljødirektoratet",
+      "category": "natur",
+      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
+      "layer": "verdi_naturtyper_filter_tid_grid3575",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/69e3ab78-42bd-4348-9305-e41cc55a492d",
+      "type": "servicelayer"
+    },
+    {
+      "id": "0ce753ac-b99a-4e0b-896a-6ebef3018841",
+      "title": "verdi_sjofugl_filter_tid_grid3575",
+      "organization": "Miljødirektoratet",
+      "category": "natur",
+      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
+      "layer": "verdi_sjofugl_filter_tid_grid3575",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0ce753ac-b99a-4e0b-896a-6ebef3018841",
+      "type": "servicelayer"
+    },
+    {
+      "id": "cb64caa8-454c-4160-8ba1-b1600f132c5e",
+      "title": "verdi_sjopattedyr_filter_tid_grid3575",
+      "organization": "Miljødirektoratet",
+      "category": "natur",
+      "url": "https://kart.miljodirektoratet.no/geoserver/miljoverdi_hav/wms",
+      "layer": "verdi_sjopattedyr_filter_tid_grid3575",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cb64caa8-454c-4160-8ba1-b1600f132c5e",
       "type": "servicelayer"
     },
     {
@@ -4450,6 +5770,16 @@
       "layer": "fartsrestriksjoner",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e6c0454b-42d5-48c3-82ad-25206788749c",
       "type": "dataset"
+    },
+    {
+      "id": "c4fef2ca-c7f6-4236-8a16-e38547e0230c",
+      "title": "Motorferdsel Svalbard WMS",
+      "organization": "Miljødirektoratet",
+      "category": "samferdsel",
+      "url": "https://kart2.miljodirektoratet.no/arcgis/services/svalbard/motorferdsel_svalbard/MapServer/WMSServer",
+      "layer": "motorferdsel_tilreisende,motorferdsel_fastboende,ferdselsare_tilreisende,ferdselsare_fastboende,fartsrestriksjoner",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c4fef2ca-c7f6-4236-8a16-e38547e0230c",
+      "type": "service"
     },
     {
       "id": "07e6b8af-84a7-43cb-9d91-887885a7342f",
@@ -4619,6 +5949,106 @@
       "url": "https://kart.nve.no/enterprise/services/SkredKvikkleire2/MapServer/WMSServer",
       "layer": "KvikkleireKartlagtOmrade,KvikkleireRisiko,KvikkleireFaregrad",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f8007522-2b73-4702-bb97-50c720e5c3f8",
+      "type": "service"
+    },
+    {
+      "id": "a6e8b77f-6ed3-4901-bad7-466fc127ae59",
+      "title": "Mattilsynet - Bigårdsplasser",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Bigaardsplasser",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a6e8b77f-6ed3-4901-bad7-466fc127ae59",
+      "type": "servicelayer"
+    },
+    {
+      "id": "9f69a045-c0af-489e-a0c4-81e68f8eeb6e",
+      "title": "Mattilsynet - Drikkevann fra brønner",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Drikkevann_Bronn",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9f69a045-c0af-489e-a0c4-81e68f8eeb6e",
+      "type": "servicelayer"
+    },
+    {
+      "id": "8d32de61-990f-4ff3-bc26-b409babd57ca",
+      "title": "Mattilsynet - Fjørfehold",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Dyrehold_Fjoerfehold",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8d32de61-990f-4ff3-bc26-b409babd57ca",
+      "type": "servicelayer"
+    },
+    {
+      "id": "79a58632-69d8-4dd0-9133-0529802429f8",
+      "title": "Mattilsynet - Grunnvann",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Grunnvann",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/79a58632-69d8-4dd0-9133-0529802429f8",
+      "type": "servicelayer"
+    },
+    {
+      "id": "50f62bbe-b216-4e38-bd75-1a54744c1a53",
+      "title": "Mattilsynet - Innsjø drikkevannforekomster",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Innsjo_Drikkevann",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/50f62bbe-b216-4e38-bd75-1a54744c1a53",
+      "type": "servicelayer"
+    },
+    {
+      "id": "dc6749f5-635a-4e80-bd99-e3cfa10b51a2",
+      "title": "Mattilsynet - Innsjøer for drikkevann (10.04.2018)",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Innsjoer_Drikkevann_201804010",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dc6749f5-635a-4e80-bd99-e3cfa10b51a2",
+      "type": "servicelayer"
+    },
+    {
+      "id": "714be535-3972-4313-957a-ce6fc2aa4005",
+      "title": "Mattilsynet - Uttak av vann til drikkevannsformål (10.04.2018)",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Vann_Drikkevannsformaal_20180410",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/714be535-3972-4313-957a-ce6fc2aa4005",
+      "type": "servicelayer"
+    },
+    {
+      "id": "96ce1a31-17d7-41ac-b6d6-11288fa1030f",
+      "title": "Mattilsynet - Vannverk inntakspunkter",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Vannverk_Inntakspunkter",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/96ce1a31-17d7-41ac-b6d6-11288fa1030f",
+      "type": "servicelayer"
+    },
+    {
+      "id": "3d85b3cf-fd64-476d-aa50-6634f4aa758f",
+      "title": "Mattilsynet - Varsomhetsområder for innsjøer",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Varsomhetsomraader_Innsjoer",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3d85b3cf-fd64-476d-aa50-6634f4aa758f",
+      "type": "servicelayer"
+    },
+    {
+      "id": "cf630753-508a-4e7a-99da-ae1111090248",
+      "title": "Mattilsynets WMS",
+      "organization": "Mattilsynet",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Vannverk_Inntakspunkter,Mattilsynet_Dyrehold_Produksjonsdyr,Mattilsynet_Dyrehold_Fjoerfehold,Mattilsynet_Bigaardsplasser,Mattilsynet_Innsjoer_Drikkevann_201804010,Mattilsynet_Drikkevann_Bronn,Mattilsynet_Vann_Drikkevannsformaal_20180410,Mattilsynet_Varsomhetsomraader_Innsjoer,Mattilsynet_Grunnvann,Mattilsynet_Innsjo_Drikkevann",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cf630753-508a-4e7a-99da-ae1111090248",
       "type": "service"
     },
     {

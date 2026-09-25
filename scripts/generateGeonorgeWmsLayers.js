@@ -51,8 +51,15 @@ const xml = new XMLParser({
   isArray: (name) => ['Layer', 'CRS', 'SRS'].includes(name),
 });
 
+// Some servers (kart.dirmin.no) answer Node's default "node" User-Agent with a
+// 404 but serve anything else, so identify the script explicitly.
+const USER_AGENT = 'norgeskart-geonorge-wms-generator';
+
 const fetchWithTimeout = async (url) => {
-  const res = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
+  const res = await fetch(url, {
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+    headers: { 'User-Agent': USER_AGENT },
+  });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res;
 };
@@ -325,17 +332,38 @@ const main = async () => {
   // A dataset that falls back to the whole service is only an honest entry when
   // it is the service's sole dataset; otherwise it's one subset among several
   // (e.g. "Fastmerker - Høydefastmerker" on the shared fastmerker2 service).
-  const datasetTitlesByUrl = new Map();
+  const datasetsByUrl = new Map();
   for (const { record, urls } of candidates) {
     if (!(record.Type in DATASET_TYPES)) continue;
     const url = urls.find((u) => capsByUrl.has(u));
-    if (url) {
-      datasetTitlesByUrl.set(url, [
-        ...(datasetTitlesByUrl.get(url) ?? []),
-        record.Title.trim(),
-      ]);
+    if (url)
+      datasetsByUrl.set(url, [...(datasetsByUrl.get(url) ?? []), record]);
+  }
+  // Every service a dataset links to — one dataset often spans many services
+  // (HI publishes one per substance), so the first URL alone misses most.
+  const datasetsByAnyUrl = new Map();
+  for (const { record, urls } of candidates) {
+    if (!(record.Type in DATASET_TYPES)) continue;
+    for (const url of urls.filter((u) => capsByUrl.has(u))) {
+      datasetsByAnyUrl.set(url, [...(datasetsByAnyUrl.get(url) ?? []), record]);
     }
   }
+  const datasetTitles = (url) =>
+    (datasetsByUrl.get(url) ?? []).map((r) => r.Title.trim());
+
+  // Geonorge's category pages (geonorge.no/kartdata/datasett-i-geonorge/) filter
+  // on the *dataset* theme. Service and servicelayer themes are set separately
+  // and are often off (HI's "Dieldrin i marine sedimenter" layer says Geologi,
+  // its dataset says Natur), so services take the theme of their datasets.
+  const categoryFor = (record, url) => {
+    const datasets =
+      record.Type in DATASET_TYPES ? [] : (datasetsByAnyUrl.get(url) ?? []);
+    const themes = datasets.length > 0 ? datasets : [record];
+    const [theme] = Object.entries(
+      Object.groupBy(themes, (r) => r.Theme ?? ''),
+    ).sort((a, b) => b[1].length - a[1].length)[0];
+    return THEME_TO_CATEGORY[theme] ?? FALLBACK_CATEGORY;
+  };
 
   const byKey = new Map();
   const stats = {};
@@ -362,7 +390,7 @@ const main = async () => {
     if (
       resolved.match === 'whole' &&
       record.Type in DATASET_TYPES &&
-      datasetTitlesByUrl.get(url).length > 1
+      datasetTitles(url).length > 1
     ) {
       stats.droppedSharedWhole = (stats.droppedSharedWhole ?? 0) + 1;
       droppedByUrl.set(url, [...(droppedByUrl.get(url) ?? []), record]);
@@ -373,7 +401,7 @@ const main = async () => {
       id: record.Uuid,
       title: record.Title.trim(),
       organization: record.Organization ?? '',
-      category: THEME_TO_CATEGORY[record.Theme] ?? FALLBACK_CATEGORY,
+      category: categoryFor(record, url),
       url,
       layer: resolved.layer,
       detailsUrl: record.ShowDetailsUrl ?? null,
@@ -386,18 +414,14 @@ const main = async () => {
   for (const [url, dropped] of droppedByUrl) {
     const caps = capsByUrl.get(url);
     const layer = wholeServiceLayer(caps);
-    const title =
-      caps.serviceTitle || commonTitlePrefix(datasetTitlesByUrl.get(url));
+    const title = caps.serviceTitle || commonTitlePrefix(datasetTitles(url));
     if (!layer || byKey.has(`${url}|${layer}`) || !title) continue;
-    const themes = Object.entries(
-      Object.groupBy(dropped, (r) => r.Theme ?? ''),
-    ).sort((a, b) => b[1].length - a[1].length);
     stats.syntheticWhole = (stats.syntheticWhole ?? 0) + 1;
     add({
       id: `service:${url}`,
       title,
       organization: dropped[0].Organization ?? '',
-      category: THEME_TO_CATEGORY[themes[0][0]] ?? FALLBACK_CATEGORY,
+      category: categoryFor({ Type: 'service' }, url),
       url,
       layer,
       detailsUrl: null,
