@@ -304,26 +304,42 @@
             }
           },
           "geonorgeSearch": {
-            "heading": "Søk i Geonorge etter WMS",
-            "placeholder": "Søk etter karttjeneste...",
-            "searchButton": "Søk",
+            "heading": "Kartlag fra Geonorge",
+            "placeholder": "Filtrer på navn eller eier...",
             "addButton": "Legg til i kartet",
             "added": "Lagt til",
-            "noResults": "Ingen WMS-tjenester funnet.",
-            "searchError": "Søket feilet. Prøv igjen.",
+            "noResults": "Ingen kartlag funnet.",
             "addError": "Kunne ikke laste WMS-tjenesten.",
-            "noUrl": "Ingen WMS-URL tilgjengelig"
+            "allCategories": "Alle kategorier",
+            "tooManyResults": "Viser {{shown}} av {{total}} treff. Snevre inn søket.",
+            "categories": {
+              "basisGeodata": "Basis geodata",
+              "befolkning": "Befolkning",
+              "eiendom": "Eiendom",
+              "energi": "Energi",
+              "flyfoto": "Flyfoto",
+              "forurensning": "Forurensning",
+              "friluftsliv": "Friluftsliv",
+              "geologi": "Geologi",
+              "hoydedata": "Høydedata",
+              "kulturminner": "Kulturminner",
+              "kystOgFiskeri": "Kyst og fiskeri",
+              "landbruk": "Landbruk",
+              "landskap": "Landskap",
+              "natur": "Natur",
+              "plan": "Plan",
+              "samferdsel": "Samferdsel",
+              "samfunnssikkerhet": "Samfunnssikkerhet og beredskap",
+              "varOgKlima": "Vær og klima",
+              "annet": "Annet"
+            }
           },
           "addWms": {
-            "heading": "Legg til WMS manuelt",
-            "placeholder": "WMS-URL",
-            "addButton": "Legg til",
             "removeButton": "Fjern lag",
             "moveUp": "Flytt opp",
             "moveDown": "Flytt ned",
             "opacity": "Gjennomsiktighet",
-            "geonorgeLink": "Åpne i Geonorge",
-            "error": "Kunne ikke laste WMS-laget. Sjekk at URL-en er korrekt."
+            "geonorgeLink": "Åpne i Geonorge"
           }
         }
       }

@@ -299,26 +299,42 @@
             }
           },
           "geonorgeSearch": {
-            "heading": "Search Geonorge for WMS",
-            "placeholder": "Search for map service...",
-            "searchButton": "Search",
+            "heading": "Map layers from Geonorge",
+            "placeholder": "Filter by name or owner...",
             "addButton": "Add to map",
             "added": "Added",
-            "noResults": "No WMS services found.",
-            "searchError": "Search failed. Please try again.",
+            "noResults": "No map layers found.",
             "addError": "Could not load the WMS service.",
-            "noUrl": "No WMS URL available"
+            "allCategories": "All categories",
+            "tooManyResults": "Showing {{shown}} of {{total}} results. Narrow your search.",
+            "categories": {
+              "basisGeodata": "Base geodata",
+              "befolkning": "Population",
+              "eiendom": "Property",
+              "energi": "Energy",
+              "flyfoto": "Aerial imagery",
+              "forurensning": "Pollution",
+              "friluftsliv": "Outdoor recreation",
+              "geologi": "Geology",
+              "hoydedata": "Elevation data",
+              "kulturminner": "Cultural heritage",
+              "kystOgFiskeri": "Coast and fisheries",
+              "landbruk": "Agriculture",
+              "landskap": "Landscape",
+              "natur": "Nature",
+              "plan": "Planning",
+              "samferdsel": "Transport",
+              "samfunnssikkerhet": "Public safety and emergency preparedness",
+              "varOgKlima": "Weather and climate",
+              "annet": "Other"
+            }
           },
           "addWms": {
-            "heading": "Add WMS manually",
-            "placeholder": "WMS URL",
-            "addButton": "Add",
             "removeButton": "Remove layer",
             "moveUp": "Move up",
             "moveDown": "Move down",
             "opacity": "Opacity",
-            "geonorgeLink": "Open in Geonorge",
-            "error": "Could not load the WMS layer. Check that the URL is correct."
+            "geonorgeLink": "Open in Geonorge"
           }
         }
       }
