@@ -12,24 +12,28 @@ import {
   distanceUnitAtom,
   drawTypeAtom,
   lineWidthAtom,
+  pointIconAtom,
   primaryColorAtom,
   secondaryColorAtom,
   showMeasurementsAtom,
+  textFontSizeAtom,
+  textInputAtom,
 } from '../settings/draw/atoms';
 import { enableFeatureMeasurementOverlay } from './drawControls/drawUtils';
 import {
+  addIconOverlayToPointFeature,
   ICON_OVERLAY_PREFIX,
   INTERACTIVE_OVERLAY_PREFIX,
   MEASUREMNT_OVERLAY_PREFIX,
 } from './drawControls/hooks/drawSettings';
+import { getFeatureIcon } from './utils/featureUtils';
 
 const getDrawInteraction = (map: Map) => {
   const drawInteraction = map
     .getInteractions()
     .getArray()
     .filter((interaction) => interaction instanceof Draw)[0] as
-    | Draw
-    | undefined;
+    Draw | undefined;
   return drawInteraction;
 };
 
@@ -38,8 +42,7 @@ const getSelectInteraction = (map: Map) => {
     .getInteractions()
     .getArray()
     .filter((interaction) => interaction instanceof Select)[0] as
-    | Select
-    | undefined;
+    Select | undefined;
   return selectInteraction;
 };
 
@@ -56,6 +59,17 @@ export const editPrimaryColorEffect = atomEffect((get) => {
     selectInteraction.getFeatures().forEach((feature) => {
       const featureStyle = feature.getStyle() as Style | undefined;
 
+      if (!featureStyle) {
+        return;
+      }
+
+      const textStyle = featureStyle.getText();
+      if (textStyle) {
+        textStyle.getFill()?.setColor(primaryColor);
+        feature.setStyle(featureStyle);
+        return;
+      }
+
       if (feature.getGeometry()?.getType() === 'Point') {
         const id = feature.getId();
         const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
@@ -71,9 +85,7 @@ export const editPrimaryColorEffect = atomEffect((get) => {
         }
         return;
       }
-      if (!featureStyle) {
-        return;
-      }
+
       const currentStroke = featureStyle.getStroke();
       if (currentStroke) {
         currentStroke.setColor(primaryColor);
@@ -105,6 +117,15 @@ export const editSecondaryColorEffect = atomEffect((get) => {
       if (!featureStyle) {
         return;
       }
+
+      const textStyle = featureStyle.getText();
+
+      if (textStyle) {
+        textStyle.getBackgroundFill()?.setColor(secondaryColor);
+        feature.setStyle(featureStyle);
+        return;
+      }
+
       const currentFill = featureStyle.getFill();
       if (currentFill) {
         currentFill.setColor(secondaryColor);
@@ -114,7 +135,36 @@ export const editSecondaryColorEffect = atomEffect((get) => {
     });
   }
 });
+export const editTextEffect = atomEffect((get) => {
+  const text = get(textInputAtom);
+  const fontSize = get(textFontSizeAtom);
 
+  const map = get(mapAtom);
+  const selectInteraction = getSelectInteraction(map);
+
+  if (!selectInteraction) {
+    return;
+  }
+
+  selectInteraction.getFeatures().forEach((feature) => {
+    const style = feature.getStyle() as Style | undefined;
+
+    if (!style) {
+      return;
+    }
+
+    const textStyle = style.getText();
+
+    if (!textStyle) {
+      return;
+    }
+
+    textStyle.setText(text);
+    textStyle.setFont(`${fontSize}px Mulish`);
+
+    feature.setStyle(style);
+  });
+});
 export const lineWidthEffect = atomEffect((get) => {
   const lineWidth = get(lineWidthAtom);
   const map = get(mapAtom);
@@ -122,6 +172,18 @@ export const lineWidthEffect = atomEffect((get) => {
   if (selectInteraction) {
     selectInteraction.getFeatures().forEach((feature) => {
       const featuretype = feature.getGeometry()?.getType();
+
+      const style = feature.getStyle() as Style;
+
+      if (featuretype === 'LineString' || featuretype === 'Polygon') {
+        const stroke = style.getStroke();
+
+        if (stroke) {
+          stroke.setWidth(lineWidth);
+          feature.setStyle(style);
+        }
+      }
+
       if (featuretype === 'Point') {
         const id = feature.getId();
         const prefixedId = `${ICON_OVERLAY_PREFIX}${id}`;
@@ -139,6 +201,41 @@ export const lineWidthEffect = atomEffect((get) => {
       }
     });
   }
+});
+export const editPointIconEffect = atomEffect((get) => {
+  const pointIcon = get(pointIconAtom);
+  const lineWidth = get(lineWidthAtom);
+  const map = get(mapAtom);
+
+  const selectInteraction = getSelectInteraction(map);
+
+  if (!selectInteraction) {
+    return;
+  }
+
+  selectInteraction.getFeatures().forEach((feature) => {
+    if (feature.getGeometry()?.getType() !== 'Point') {
+      return;
+    }
+
+    const currentIcon = getFeatureIcon(feature);
+
+    if (!currentIcon) {
+      return;
+    }
+
+    const icon = {
+      icon: pointIcon,
+      color: currentIcon.color,
+      size: lineWidth,
+    };
+
+    feature.setProperties({
+      overlayIcon: icon,
+    });
+
+    addIconOverlayToPointFeature(feature, icon);
+  });
 });
 
 export const drawStyleEffect = atomEffect((get) => {

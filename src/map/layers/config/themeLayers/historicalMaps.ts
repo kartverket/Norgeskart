@@ -27,6 +27,7 @@ export const historicalMapsConfig: ThemeLayerConfig = {
       queryable: true,
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.n5raster2',
       noLegend: true,
+      singleImage: true,
     },
     {
       id: 'amtMap',

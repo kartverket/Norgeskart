@@ -10,8 +10,7 @@ export const getSelectInteraction = () => {
     .getInteractions()
     .getArray()
     .filter((interaction) => interaction instanceof Select)[0] as
-    | Select
-    | undefined;
+    Select | undefined;
 };
 export const getTranslateInteraction = () => {
   const map = getDefaultStore().get(mapAtom);
@@ -19,8 +18,7 @@ export const getTranslateInteraction = () => {
     .getInteractions()
     .getArray()
     .filter((interaction) => interaction instanceof Translate)[0] as
-    | Translate
-    | undefined;
+    Translate | undefined;
 };
 
 export const getDrawInteraction = () => {
@@ -29,6 +27,5 @@ export const getDrawInteraction = () => {
     .getInteractions()
     .getArray()
     .filter((interaction) => interaction instanceof Draw)[0] as
-    | Draw
-    | undefined;
+    Draw | undefined;
 };

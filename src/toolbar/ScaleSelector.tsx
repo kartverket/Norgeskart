@@ -7,6 +7,7 @@ import {
   SelectValueText,
   Tooltip,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { availableScales, scaleAtom } from '../map/atoms';
@@ -14,6 +15,7 @@ import { availableScales, scaleAtom } from '../map/atoms';
 export const ScaleSelector = () => {
   const [scale, setScale] = useAtom(scaleAtom);
   const { t } = useTranslation();
+  const ph = usePostHog();
 
   const scaleCollection = [...availableScales].map((s) => ({
     value: String(s),
@@ -33,7 +35,9 @@ export const ScaleSelector = () => {
       value={[]}
       onValueChange={(details) => {
         if (details.value.length > 0) {
-          setScale(Number(details.value[0]));
+          const newScale = Number(details.value[0]);
+          ph.capture('scale_changed', { scale: newScale });
+          setScale(newScale);
         }
       }}
     >

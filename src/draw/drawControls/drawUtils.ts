@@ -200,7 +200,14 @@ const enableFeatureMeasurementOverlay = (feature: Feature<Geometry>) => {
 
     feature.set('measurementText', measurementText);
 
-    const overlayPosition = getGeometryPositionForOverlay(geometry);
+    let overlayPosition;
+
+    if (geometry instanceof LineString) {
+      overlayPosition = geometry.getCoordinateAt(0.5);
+    } else {
+      overlayPosition = getGeometryPositionForOverlay(geometry);
+    }
+
     if (!overlayPosition) {
       return;
     }
@@ -296,10 +303,34 @@ const removeFeaturelessInteractiveMeasurementOverlay = () => {
   }
 };
 
+const getFeatureType = (feature: Feature<Geometry>) => {
+  const style = feature.getStyle();
+
+  if (style instanceof Style && style.getText()) {
+    return 'Text';
+  }
+
+  const geometryType = feature.getGeometry()?.getType();
+
+  switch (geometryType) {
+    case 'Point':
+      return 'Point';
+    case 'LineString':
+      return 'LineString';
+    case 'Polygon':
+      return 'Polygon';
+    case 'Circle':
+      return 'Circle';
+    default:
+      return null;
+  }
+};
+
 export {
   addInteractiveMeasurementOverlayToFeature,
   clearStaticOverlaysForFeature,
   enableFeatureMeasurementOverlay,
+  getFeatureType,
   getGeometryPositionForOverlay,
   getMeasurementText,
   removeFeaturelessInteractiveMeasurementOverlay,

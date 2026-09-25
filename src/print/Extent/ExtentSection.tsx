@@ -4,6 +4,9 @@ import {
   Button,
   createListCollection,
   HStack,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Radio,
   RadioGroup,
   SelectContent,
@@ -20,7 +23,7 @@ import { usePostHog } from '@posthog/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { mapAtom } from '../../map/atoms';
+import { mapAtom, scaleAtom } from '../../map/atoms';
 
 import { isVectorTileLayer } from '../../map/layers/backgroundLayers';
 import { backgroundLayerAtom } from '../../map/layers/config/backgroundLayers/atoms';
@@ -64,6 +67,7 @@ export const ExtentSection = () => {
   const setIsPrintDialogOpen = useSetAtom(isPrintDialogOpenAtom);
   const setPrintBoxLayout = useSetAtom(printBoxLayoutAtom);
   const layout = useAtomValue(printBoxLayoutAtom);
+  const screenScale = useAtomValue(scaleAtom);
   const ph = usePostHog();
 
   const [format, setFormat] = useState('A4');
@@ -72,6 +76,13 @@ export const ExtentSection = () => {
 
   const formatOptions = getFormatOptions(layouts);
   const selectedLayout = getSelectedLayout(layouts, format, orientation);
+
+  const printScale =
+    selectedLayout?.width && selectedLayout.width > 0 && screenScale
+      ? Math.round(
+          screenScale * (layout.widthPx / selectedLayout.width) * (72 / 96),
+        )
+      : undefined;
 
   useEffect(() => {
     if (!selectedLayout) return;
@@ -173,6 +184,29 @@ export const ExtentSection = () => {
           </Stack>
         </RadioGroup>
       </Box>
+      {printScale && (
+        <HStack>
+          <Text fontSize="sm" fontWeight="bold">
+            {t('printExtent.scale')}: 1 : {printScale.toLocaleString('no-NO')}
+          </Text>
+
+          <Popover>
+            <PopoverTrigger>
+              <Button size="sm" variant="ghost" leftIcon="info">
+                {t('shared.moreInfo')}
+              </Button>
+            </PopoverTrigger>
+
+            <PopoverContent p={4}>
+              <Text>
+                {t('printExtent.scaleNote', {
+                  screenScale: screenScale?.toLocaleString('no-NO'),
+                })}
+              </Text>
+            </PopoverContent>
+          </Popover>
+        </HStack>
+      )}
       <Text mt={4}>{t('printExtent.description')}</Text>
       <HStack mt={4}>
         {loading && <Spinner />}

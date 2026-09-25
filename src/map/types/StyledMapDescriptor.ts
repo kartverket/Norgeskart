@@ -40,10 +40,7 @@ export interface Rule {
 
 // Symbolizer union
 export type Symbolizer =
-  | PointSymbolizer
-  | LineSymbolizer
-  | PolygonSymbolizer
-  | TextSymbolizer;
+  PointSymbolizer | LineSymbolizer | PolygonSymbolizer | TextSymbolizer;
 
 // Specific symbolizers
 export interface PointSymbolizer {

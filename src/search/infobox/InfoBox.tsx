@@ -33,7 +33,7 @@ export const InfoBox = () => {
     setClickedCoordinate(null);
   }, [setSelectedResult, setClickedCoordinate]);
 
-  if (selectedResult === null || isPrintDialogOpen) {
+  if (selectedResult === null) {
     return null;
   }
 
@@ -46,10 +46,12 @@ export const InfoBox = () => {
       m="1"
       borderRadius={'16px'}
       bg="white"
+      boxShadow="lg"
       pointerEvents={'auto'}
       overflowY={'hidden'}
       maxHeight="52vh"
       width="100%"
+      display={isPrintDialogOpen ? 'none' : 'flex'}
       maxWidth={isMinimized ? '190px' : '355px'}
     >
       <Flex justifyContent={'flex-end'} alignItems="center" gap={1}>

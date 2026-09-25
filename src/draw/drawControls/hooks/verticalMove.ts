@@ -15,8 +15,7 @@ export const useVerticalMove = () => {
       return 0;
     }
     const drawnFeatures = drawLayer.getSource()?.getFeatures() as
-      | Feature<Geometry>[]
-      | undefined;
+      Feature<Geometry>[] | undefined;
     if (!drawnFeatures) {
       return 0;
     }
@@ -37,8 +36,7 @@ export const useVerticalMove = () => {
       return 0;
     }
     const drawnFeatures = drawLayer.getSource()?.getFeatures() as
-      | Feature<Geometry>[]
-      | undefined;
+      Feature<Geometry>[] | undefined;
     if (!drawnFeatures) {
       return 0;
     }
@@ -82,8 +80,7 @@ export const useVerticalMove = () => {
     const selectedFeatures = selectedInteraction.getFeatures().getArray();
 
     const drawnFeatures = drawLayer.getSource()?.getFeatures() as
-      | Feature<Geometry>[]
-      | undefined;
+      Feature<Geometry>[] | undefined;
     if (!drawnFeatures) {
       return;
     }
@@ -124,8 +121,7 @@ export const getHighestZIndex = () => {
     return 0;
   }
   const drawnFeatures = drawLayer.getSource()?.getFeatures() as
-    | Feature<Geometry>[]
-    | undefined;
+    Feature<Geometry>[] | undefined;
   if (!drawnFeatures) {
     return 0;
   }

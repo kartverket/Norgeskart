@@ -1,9 +1,11 @@
 import { MaterialSymbol } from '@kvib/react';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
-import { Map } from 'ol';
+import { atomWithStorage } from 'jotai/utils';
+import { Feature, Map } from 'ol';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import BaseEvent from 'ol/events/Event';
+import { Geometry } from 'ol/geom';
 import Draw, { DrawEvent } from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify';
 import Select from 'ol/interaction/Select';
@@ -59,6 +61,8 @@ export type LineStyle = 'solid' | 'dashed';
 
 export const primaryColorAtom = atom<string>(DEFAULT_PRIMARY_COLOR);
 export const secondaryColorAtom = atom<string>(DEFAULT_SECONDARY_COLOR);
+export const recentColorsAtom = atomWithStorage<string[]>('recent-colors', []);
+
 export const lineWidthAtom = atom<LineWidth>(2);
 export const lineStyleAtom = atom<LineStyle>('solid');
 
@@ -116,6 +120,8 @@ export const drawEnabledAtom = atom<boolean>((get) => {
   return currentMapTool === 'draw';
 });
 
+export const selectedFeatureAtom = atom<Feature<Geometry> | null>(null);
+
 export const drawEnabledEffect = atomEffect((get, set) => {
   const drawEnabled = get(drawEnabledAtom);
   const store = getDefaultStore();
@@ -126,7 +132,7 @@ export const drawEnabledEffect = atomEffect((get, set) => {
   const translateInteraction = getTranslateInteraction();
 
   if (drawEnabled) {
-    set(drawTypeAtom, 'Move');
+    set(drawTypeAtom, 'LineString');
   } else {
     if (drawInteraction) {
       map.removeInteraction(drawInteraction);
@@ -146,12 +152,14 @@ const addSelectMoveInteractionToMap = (drawLayer: VectorLayer, map: Map) => {
   const selectInteraction = new Select({
     layers: [drawLayer],
     style: null,
+    hitTolerance: 12,
   });
   selectInteraction.addEventListener('select', handleSelect);
   map.addInteraction(selectInteraction);
 
   const translateInteraction = new Translate({
     features: selectInteraction.getFeatures(),
+    hitTolerance: 12,
   });
 
   translateInteraction.addEventListener('translatestart', handleModifyStart);
@@ -333,6 +341,7 @@ const drawEnd = (event: BaseEvent | Event) => {
   const zIndex = getHighestZIndex() + 1;
   const featureId = uuidv4();
   eventFeature.setId(featureId);
+
   if (drawType === 'Point') {
     const icon = store.get(pointIconAtom);
     if (icon) {

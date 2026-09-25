@@ -30,29 +30,28 @@
     "begin": "Tegn på kartet",
     "clear": "Fjern tegning",
     "close": "Lukk",
-    "confrimClear": "Er du sikker?",
-    "privacyNotice": {
-      "title": "Lagring av tegning",
-      "message": "Når du lagrer en tegning, lagres det i 2 år på Kartverkets servere. Alle med lenken kan se tegningen. For å slette tegninger kontakt post@kartverket.no."
-    },
+    "confrimClear": "Nå fjernes alt som er tegnet. Er du sikker?",
     "controls": {
       "colorBackground": "Bakgrunn",
       "colorFill": "Fyll",
       "colorPoint": "Punkt",
       "colorStroke": "Omriss",
       "colorText": "Tekst",
+      "recentColors": "Nylige farger",
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål i kartet",
       "tool": {
-        "tooltip": {
+        "label": {
           "circle": "Sirkel",
-          "edit": "Rediger og flytt",
-          "linestring": "Linjesegmenter",
+          "edit": "Rediger",
+          "linestring": "Linje",
+          "point": "Punkt",
+          "polygon": "Flate",
+          "text": "Tekst"
+        },
+        "tooltip": {
           "movedown": "Flytt ned",
           "moveup": "Flytt opp",
-          "point": "Punkter",
-          "polygon": "Flate",
-          "text": "Tekst",
           "undo": "Angre",
           "redo": "Gjør om",
           "deleteselected": "Slett valgte"
@@ -67,13 +66,16 @@
         "primary": "Hovedfarge",
         "secondary": "Sekundær"
       },
-      "lineType": "Linjetype"
+      "lineType": "Linjetype",
+      "editInstruction": "Velg et element du vil redigere eller flytte"
     },
     "deleteSelection": "Fjern valgte",
     "end": "Ferdig",
-    "save": "Lagre",
+    "save": "Lagre tegning",
     "size": {
-      "label": "Elementstørrelse"
+      "label": "Linjetykkelse",
+      "pointLabel": "Punktstørrelse",
+      "textLabel": "Tekststørrelse"
     },
     "tabHeading": "Velg tegnetype",
     "textInputLabel": "Skriv inn tekst",
@@ -155,7 +157,7 @@
             "category": {
               "label": "Velg kartkategori"
             },
-            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne Rett i kartet i nytt vindu. Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. Kartverket har ikke myndighet til å gjøre endringer på eiendomsgrenser.",
+            "description": "Meld om feil i kart på rettikartet.no. Velg fra kategoriene under for å åpne et nytt vindu. Hvis du mener en eiendomsgrense vises feil i kartet, må dette tas opp med lokal matrikkelmyndighet. Det vil si kommunen eiendommen er i. Kartverket har ikke myndighet til å gjøre endringer på eiendomsgrenser.",
             "link": {
               "label": "Åpne rettikartet.no i en ny fane"
             },
@@ -363,7 +365,7 @@
   },
   "mapLayers": {
     "close": "Lukk kartlaginstillinger",
-    "label": "Kartlag",
+    "label": "Temakart",
     "open": "Åpne kartlaginnstillinger"
   },
   "placeInfo": {
@@ -374,8 +376,8 @@
     "moreInfo": "Mer info"
   },
   "privacyAndContact": {
-    "contactUs": "Kontakt",
-    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Bruk skjemaet under eller kontakt oss gjerne på e-post eller telefon",
+    "contactUs": "Kontakt oss",
+    "dialogContent": "Vi tar gjerne imot ris og ros på Norgeskart.no. Bruk skjemaet eller kontakt oss gjerne på e-post eller telefon",
     "infoText": "Les hvordan vi tar vare på personopplysninger i Kartverkets",
     "privacyPolicy": "Personvernerklæring ",
     "sendEmail": "Send e-post",
@@ -427,7 +429,8 @@
     "tabHeading": "Søk",
     "noResults": "Ingen treff",
     "coordinateSwapWarning": "Koordinatene ser ikke ut til å være i Norge. De kan ha blitt limt inn i feil rekkefølge (lon/lat i stedet for lat/lon).",
-    "coordinateSwapButton": "Bytt rekkefølge"
+    "coordinateSwapButton": "Bytt rekkefølge",
+    "maxLength": "Maks 100 tegn"
   },
   "shared": {
     "actions": {
@@ -453,12 +456,21 @@
         "linestring": "Linjer",
         "polygon": "Flater"
       }
-    }
+    },
+    "moreInfo": "Mer info"
   },
   "tipsandtricks": {
     "heading": "Tips og triks",
     "headingClosed": "Vis tips og triks",
-    "headingOpen": "Lukk"
+    "headingOpen": "Lukk",
+    "description": "Vanlige spørsmål og nyttige tips",
+    "categories": {
+      "propertyInfo": "Eiendomsinformasjon",
+      "map": "Kart og visning",
+      "drawing": "Tegning og måling",
+      "search": "Søk",
+      "sharing": "Dele og eksport"
+    }
   },
   "toolbar": {
     "reportError": {
@@ -480,10 +492,6 @@
     "legend": {
       "tooltip": "Vis symbolforklaring",
       "label": "Tegnforklaring"
-    },
-    "oldnorgeskartbutton": {
-      "tooltip": "Bruk gamle Norgeskart.no",
-      "content": "arkiv.norgeskart.no"
     }
   },
   "cookieDialog": {
@@ -539,40 +547,9 @@
       }
     },
     "emergencyPoster": {
-      "disclaimer": {
-        "heading": "Brukerens ansvar",
-        "sections": {
-          "section1": "Nødplakaten er utviklet i samarbeid med Hovedredningsentralene og nødetatene. Kartverket er ansvarlig for datagrunnlaget, dvs. stedsnavn og kart - samt teknologien bak.",
-          "section2": "Det er brukerens ansvar å kontrollere at det er korrekt hytte eller sted som vises på plakaten.",
-          "section3": "Kartverket tar ikke ansvar for mulige feil som skyldes brukeren, datagrunnlaget eller teknologien."
-        },
-        "accept": "Jeg forstår og godtar",
-        "reject": "Avbryt"
-      },
-      "inputform": {
-        "heading": "Klikk i kartet for å velge stedet nødplakaten skal være for",
-        "fields": {
-          "title": {
-            "label": "Plakattittel"
-          },
-          "place": {
-            "label": "Velg nærmeste stedsnavn"
-          },
-          "road": {
-            "label": "Velg nærmeste addresse"
-          },
-          "isInfoCorrect": {
-            "label": "Stemmer informasjonen over?"
-          }
-        },
-        "errors": {
-          "couldNotCreatePosterUrl": "Kunne ikke lage nødplakat"
-        },
-        "error": "Kunne ikke hente data for plakaten. Prøv et annet sted"
-      },
-      "buttons": {
-        "makePoster": "Lag plakat"
-      }
+      "section1": "Nødplakaten er fjernet fra Norgeskart. Vi anbefaler at du bruker Norsk Luftambulanse sin tjeneste for å lage eller oppdatere nødplakaten din.",
+      "link": "Lag nødplakat hos Norsk Luftambulanse",
+      "section2": "Her kan du enkelt lage en nødplakat med stedets koordinater og annen viktig informasjon som kan hjelpe nødetatene å finne frem."
     },
     "elevationProfile": {
       "heading": "Tegn en linje for å lage en høydeprofil",
@@ -657,6 +634,8 @@
       "success": "Nedlasting fullført",
       "error": "Klarte ikke å hente kartet"
     },
+    "scale": "Utskriftsmålestokk",
+    "scaleNote": "Skjermens målestokk er 1 : {{screenScale}}. Avviket skyldes at papir (72 pt/tomme) og skjerm (96 px/tomme) bruker ulike referanseverdier for pikselstørrelse.",
     "vectorTileFallbackWarning": "Nautisk bakgrunnskart støttes ikke av utskriftstjenesten og erstattes med sjøkart oppdatert EFS i utskriften.",
     "projectionWarning": "Utskriften vil alltid være i UTM-sone 33 (EPSG:25833), uavhengig av valgt kartprojeksjon."
   },
@@ -689,6 +668,45 @@
       "dragdrop": {
         "label": "Dra og slipp, eller velg en fil"
       }
+    }
+  },
+  "measure": {
+    "label": "Måleverktøy",
+    "length": "Lengde",
+    "area": "Areal"
+  },
+  "helpPage": {
+    "header": {
+      "link": "Tilbake"
+    },
+    "title": "Hva trenger du hjelp med?",
+    "termsOfUse": {
+      "heading": "Vilkår for bruk",
+      "text": "Kartverket's vilkår for bruk kan du finne på"
+    },
+    "feedback": {
+      "title": "Tilbakemeldingsskjema",
+      "text": "Rapporter feil eller foreslå forbedringer"
+    },
+    "email": {
+      "title": "E-post",
+      "text": "Kontakt oss på e-post, så svarer vi så fort vi kan."
+    },
+    "phone": {
+      "title": "Telefon"
+    },
+    "notFound": {
+      "heading": "Finner du ikke det du leter etter?",
+      "description": "Kanskje et søk i noen av våre andre tjenester kan hjelpe deg å finne det du leter etter.",
+      "propertyRegisterHeading": "Eiendomsregisteret",
+      "propertyRegisterDescription": "Finn informasjon om eiendom. Du kan søke på vegnavn, adresser eller gårds- og bruksnummer.",
+      "propertyRegisterButton": "Gå til Eiendomsregisteret",
+      "norgeibilderDescription": "På norgeibilder.no får du oversikt over ortofoto(målestokkriktige flybilder) som samarbeidspartene i Norge i digitalt tilbyr.",
+      "norgeibilderButton": "Gå til Norgeibilder.no",
+      "hoydedataDescription": "Her får du oversikt og tilgang til høydedata som Kartverket tilbyr på internett.",
+      "hoydedataButton": "Gå til høydedata.no",
+      "rettikartetDescription": "Her kan du melde fra om feil og mangler i kartdata og stedsnavn.",
+      "rettikartetButton": "Gå til rettikartet.no"
     }
   }
 }

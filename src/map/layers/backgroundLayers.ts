@@ -14,10 +14,7 @@ export type WMTSLayerName =
   | 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833';
 
 export type BackgroundLayerName =
-  | WMTSLayerName
-  | WMSLayerName
-  | VectorTileLayerName
-  | EmptyLayerName;
+  WMTSLayerName | WMSLayerName | VectorTileLayerName | EmptyLayerName;
 
 export const mapLegacyBackgroundLayerId = (
   layerId: string,

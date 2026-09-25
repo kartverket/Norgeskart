@@ -20,11 +20,7 @@ import {
 import { getSamleDistance } from './utils';
 
 export type ProfileJobStatus =
-  | 'notStarted'
-  | 'running'
-  | 'succeeded'
-  | 'failed'
-  | 'cancelled';
+  'notStarted' | 'running' | 'succeeded' | 'failed' | 'cancelled';
 
 export const profileLineAtom = atom<LineString | null>(null);
 export const clearProfileFilesAtom = atom<(() => void) | null>(null);

@@ -36,7 +36,7 @@ import {
   readFeaturesFromGeoJsonString,
   readFeaturesFromGMLString,
   readFeaturesFromGPXString,
-} from './utls';
+} from './utils';
 
 export const ImportDialog = () => {
   const [isOpen, setIsOpen] = useAtom(isImportDialogOpenAtom);

@@ -1,7 +1,7 @@
 import { Box, Heading, VStack } from '@kvib/react';
 import { Feature } from 'ol';
 import { useTranslation } from 'react-i18next';
-import { countFeatureTypes } from './utls';
+import { countFeatureTypes } from './utils';
 
 export const ImportContentDetails = ({
   features,

@@ -20,7 +20,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
         en: 'Select cadastral data',
       },
       parentId: 'propertyInfo',
-      wmsUrl: 'https://testapi.norgeskart.no/v1/matrikkel/wms',
+      wmsUrl: 'https://api.norgeskart.no/v1/matrikkel/wms',
     },
   ],
   layers: [

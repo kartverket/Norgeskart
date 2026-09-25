@@ -12,6 +12,7 @@ import { mapAtom } from '../../../map/atoms';
 import {
   drawEnabledAtom,
   drawTypeAtom,
+  selectedFeatureAtom,
   showMeasurementsAtom,
 } from '../../../settings/draw/atoms';
 import { useDrawActionsState } from '../../../settings/draw/drawActions/drawActionsHooks';
@@ -26,7 +27,7 @@ import {
   getCircleRadiusFromProperties,
   getOverlayIconFromProperties,
   getStyleFromProperties,
-} from '../../dialogs/import/utls';
+} from '../../dialogs/import/utils';
 import { getFeatureIcon } from '../../utils/featureUtils';
 import { isDrawIconFilled } from '../drawUtils';
 import { getDrawInteraction, getSelectInteraction } from './mapInterations';
@@ -52,12 +53,7 @@ export type PointIcon = {
 };
 
 export type DrawType =
-  | 'Point'
-  | 'Polygon'
-  | 'LineString'
-  | 'Circle'
-  | 'Move'
-  | 'Text';
+  'Point' | 'Polygon' | 'LineString' | 'Circle' | 'Move' | 'Text';
 
 const useDrawSettings = () => {
   const map = useAtomValue(mapAtom);
@@ -69,8 +65,7 @@ const useDrawSettings = () => {
   const mapProjection = map.getView().getProjection().getCode();
   const getDrawnFeatures = () => {
     return getDrawLayer()?.getSource()?.getFeatures() as
-      | Feature<Geometry>[]
-      | undefined;
+      Feature<Geometry>[] | undefined;
   };
 
   const getDrawType = () => {
@@ -374,6 +369,10 @@ export const addIconOverlayToPointFeature = (
   elm.textContent = icon.icon;
   if (isDrawIconFilled(icon.icon)) {
     elm.style.fontVariationSettings = '"FILL" 1, "wght" 300, "GRAD" 0';
+  }
+
+  if (feature === getDefaultStore().get(selectedFeatureAtom)) {
+    elm.style.border = '2px solid black';
   }
   const overlayId = `${ICON_OVERLAY_PREFIX}${featureId}`;
   const existingOverlay = map.getOverlayById(overlayId);

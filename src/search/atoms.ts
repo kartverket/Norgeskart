@@ -69,11 +69,15 @@ const searchCoordinatesEffect = atomEffect((get, set) => {
       coords.projection as ProjectionIdentifier,
     );
   };
-  fetchData().then((placeResult) => {
-    if (placeResult.navn) {
-      set(placesNearbyAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
-    }
-  });
+  fetchData()
+    .then((placeResult) => {
+      if (placeResult.navn) {
+        set(placesNearbyAtom, placeResult.navn.map(Place.fromPlaceNamePoint));
+      }
+    })
+    .catch(() => {
+      // error already tracked by trackApiError inside getPlaceNamesByLocation
+    });
 });
 
 const performAddressSearch = async (
@@ -111,11 +115,11 @@ const searchQueryEffect = atomEffect((get, set) => {
     clearResults();
     return;
   }
-  const currentProjection = store
+  const currentProjection = (store
     .get(mapAtom)
     .getView()
     .getProjection()
-    .getCode() as ProjectionIdentifier;
+    .getCode() ?? DEFAULT_PROJECTION) as ProjectionIdentifier;
   const parsedCoordinate = parseCoordinateInput(searchQuery, currentProjection);
 
   set(coordinateResultsAtom, parsedCoordinate);

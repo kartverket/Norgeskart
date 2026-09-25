@@ -28,7 +28,11 @@ export const RoadsResults = ({
   onTabClick,
 }: RoadsResultsProps) => {
   const { t } = useTranslation();
-  const roads = useAtomValue(roadResultsAtom);
+  const roads = useAtomValue(roadResultsAtom).filter(
+    (road) =>
+      Number.isFinite(Number(road.LATITUDE)) &&
+      Number.isFinite(Number(road.LONGITUDE)),
+  );
 
   const [openRoads, setOpenRoads] = useState<string[]>([]);
 
@@ -43,12 +47,14 @@ export const RoadsResults = ({
   const handleHouseNumberClick = async (
     roadName: string,
     houseNumber: string,
+    municipality: string,
   ) => {
     try {
-      const query = `${roadName} ${houseNumber}`;
+      const query = `${roadName} ${houseNumber} ${municipality}`;
       const response = await getAddresses(query);
 
       const address = response.adresser?.[0];
+
       if (!address) return;
 
       handleSearchClick({
@@ -78,6 +84,7 @@ export const RoadsResults = ({
             <Box key={`road-${i}`}>
               <SearchResultLine
                 heading={road.NAVN}
+                locationType={road.KOMMUNENAVN}
                 showButton={true}
                 onButtonClick={() => toggleRoad(road.ID)}
                 onClick={() =>
@@ -110,7 +117,11 @@ export const RoadsResults = ({
                       key={`houseNumber-${i}`}
                       mb={2}
                       onClick={() =>
-                        handleHouseNumberClick(road.NAVN, houseNumber)
+                        handleHouseNumberClick(
+                          road.NAVN,
+                          houseNumber,
+                          road.KOMMUNENAVN,
+                        )
                       }
                     >
                       {t('search.houseNumber')}
