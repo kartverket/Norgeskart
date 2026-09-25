@@ -15,28 +15,21 @@ import VectorLayer from 'ol/layer/Vector';
 import { TileWMS } from 'ol/source';
 import type VectorSource from 'ol/source/Vector';
 import { useTranslation } from 'react-i18next';
+import { getLegendGraphicUrls } from '../layers/themeLayerConfigApi';
 import { urlGeoJsonLayersAtom } from '../layers/urlGeoJson';
 import { urlWmsLayersAtom } from '../layers/urlWms';
 import { DekningsstatusLegend } from './DekningsstatusLegend';
+import { LegendImages } from './LegendImages';
 
 const WmsLegendItem = ({ layer }: { layer: TileLayer }) => {
   const title = (layer.get('layerTitle') as string | undefined) ?? '';
   const source = layer.getSource() as TileWMS | null;
   const baseUrl = source?.getUrls()?.[0];
   const params = source?.getParams() as { LAYERS?: string } | undefined;
-  const legendUrl =
+  const legendUrls =
     baseUrl && params?.LAYERS
-      ? (() => {
-          const u = new URL(baseUrl);
-          u.searchParams.set('SERVICE', 'WMS');
-          u.searchParams.set('REQUEST', 'GetLegendGraphic');
-          u.searchParams.set('VERSION', '1.3.0');
-          u.searchParams.set('SLD_VERSION', '1.1.0');
-          u.searchParams.set('FORMAT', 'image/png');
-          u.searchParams.set('LAYER', params.LAYERS!);
-          return u.toString();
-        })()
-      : null;
+      ? getLegendGraphicUrls(baseUrl, params.LAYERS)
+      : [];
 
   return (
     <AccordionItem value={layer.get('id') as string}>
@@ -44,12 +37,8 @@ const WmsLegendItem = ({ layer }: { layer: TileLayer }) => {
         <Heading size="sm">{title}</Heading>
       </AccordionItemTrigger>
       <AccordionItemContent>
-        {legendUrl ? (
-          <img
-            src={legendUrl}
-            alt={`Legend for ${title}`}
-            style={{ maxWidth: '100%' }}
-          />
+        {legendUrls.length > 0 ? (
+          <LegendImages urls={legendUrls} layerName={title} />
         ) : (
           <Text fontSize="sm">–</Text>
         )}

@@ -196,20 +196,26 @@ export const getEffectiveLegendImageUrls = (
   if (!layer || !layer.useLegendGraphic || !layer.layers) {
     return undefined;
   }
-  const wmsUrl = getEffectiveWmsUrl(config, layer);
-  // GetLegendGraphic is single-layer — a comma-separated LAYER value is read as
-  // one (non-existent) layer name by GeoServer
-  return layer.layers
+  return getLegendGraphicUrls(getEffectiveWmsUrl(config, layer), layer.layers);
+};
+
+// GetLegendGraphic is single-layer — a comma-separated LAYER value is read as
+// one (non-existent) layer name by GeoServer — so one URL per layer.
+export const getLegendGraphicUrls = (wmsUrl: string, layers: string) =>
+  layers
     .split(',')
     .map((name) => name.trim())
     .filter(Boolean)
-    .map(
-      (name) =>
-        wmsUrl +
-        '?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image/png&LAYER=' +
-        name,
-    );
-};
+    .map((name) => {
+      const url = new URL(wmsUrl);
+      url.searchParams.set('SERVICE', 'WMS');
+      url.searchParams.set('REQUEST', 'GetLegendGraphic');
+      url.searchParams.set('VERSION', '1.3.0');
+      url.searchParams.set('SLD_VERSION', '1.1.0');
+      url.searchParams.set('FORMAT', 'image/png');
+      url.searchParams.set('LAYER', name);
+      return url.toString();
+    });
 
 export const getMainCategories = (
   config: ThemeLayerConfig,
