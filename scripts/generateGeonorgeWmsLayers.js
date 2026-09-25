@@ -13,7 +13,8 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const OUT = path.join(ROOT, 'src/settings/map/themes/geonorgeWmsLayers.json');
 const REQUIRED_CRS = 'EPSG:25833';
 const CONCURRENCY = 16;
-const TIMEOUT_MS = 20000;
+// Some capabilities are huge (wms.nib-mosaikk is ~16 MB) and 20 s wasn't enough.
+const TIMEOUT_MS = 60000;
 // Unnamed root layer: request all named children, but only up to this many.
 const MAX_CHILD_LAYERS = 20;
 
@@ -42,6 +43,7 @@ const THEME_TO_CATEGORY = {
 const FALLBACK_CATEGORY = 'annet';
 // Dataset titles beat service titles when several records share one WMS layer.
 const TYPE_PRIORITY = { dataset: 0, series: 1, servicelayer: 2, service: 3 };
+const DATASET_TYPES = { dataset: true, series: true };
 
 const xml = new XMLParser({
   ignoreAttributes: true,
@@ -128,10 +130,18 @@ const fetchServiceLayerName = async (uuid) => {
   return (await res.json())?.DistributionDetails?.Name || null;
 };
 
+// Empty (GeoServer's <Title/>) or generic ("WMS") titles don't name anything.
+const usefulTitle = (t) => {
+  const title = String(t ?? '').trim();
+  return /^(wms|ows|wms service|geoserver web map service)?$/i.test(title)
+    ? ''
+    : title;
+};
+
 const parseCapabilities = (text) => {
   const doc = xml.parse(text);
-  const root = (doc.WMS_Capabilities ?? doc.WMT_MS_Capabilities)?.Capability
-    ?.Layer?.[0];
+  const caps = doc.WMS_Capabilities ?? doc.WMT_MS_Capabilities;
+  const root = caps?.Capability?.Layer?.[0];
   if (!root) return null;
   const layers = [];
   const crs = new Set();
@@ -142,7 +152,11 @@ const parseCapabilities = (text) => {
         .forEach((v) => crs.add(v));
     }
     if (layer.Name) {
-      layers.push({ name: String(layer.Name), title: String(layer.Title) });
+      layers.push({
+        name: String(layer.Name),
+        title: String(layer.Title ?? ''),
+        isRoot: layer === root,
+      });
     }
     (layer.Layer ?? []).forEach(walk);
   };
@@ -154,6 +168,7 @@ const parseCapabilities = (text) => {
   }
   const children = level.filter((l) => l.Name).map((l) => String(l.Name));
   return {
+    serviceTitle: usefulTitle(caps.Service?.Title) || usefulTitle(root.Title),
     rootName: root.Name ? String(root.Name) : null,
     children,
     layers,
@@ -161,11 +176,20 @@ const parseCapabilities = (text) => {
   };
 };
 
+// Retried: a single slow response otherwise silently drops every layer of a
+// service from the list, making regenerated output flap between runs.
+const CAPABILITIES_ATTEMPTS = 3;
 const fetchCapabilities = async (url) => {
   const capUrl = new URL(url);
   capUrl.searchParams.set('SERVICE', 'WMS');
   capUrl.searchParams.set('REQUEST', 'GetCapabilities');
-  return parseCapabilities(await (await fetchWithTimeout(capUrl)).text());
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return parseCapabilities(await (await fetchWithTimeout(capUrl)).text());
+    } catch (e) {
+      if (attempt >= CAPABILITIES_ATTEMPTS) throw e;
+    }
+  }
 };
 
 const normalizeTitle = (t) =>
@@ -177,8 +201,19 @@ const normalizeTitle = (t) =>
 // GeoServer virtual services list "layer" where kartkatalog says "workspace:layer".
 const stripWorkspace = (name) => name.slice(name.indexOf(':') + 1);
 
-// Mirrors what createUrlWmsLayer would pick, but prefers a layer titled like the
-// dataset and requests all topmost named layers instead of just the first one.
+// Topmost named layer(s), i.e. the whole service — what createUrlWmsLayer would
+// pick without an explicit layer, except all top-level layers instead of the first.
+const wholeServiceLayer = (caps) => {
+  if (caps.rootName) return caps.rootName;
+  if (caps.children.length > 0 && caps.children.length <= MAX_CHILD_LAYERS) {
+    return caps.children.join(',');
+  }
+  return null;
+};
+
+// Returns { layer, match } where match is how the layer was found: 'name'
+// (servicelayer metadata), 'title'/'partial' (dataset title ↔ layer), or 'whole'.
+// Kartkatalog records no layer name for datasets, so titles are all we have.
 const resolveLayer = (record, caps, serviceLayerName) => {
   if (record.Type === 'servicelayer') {
     if (!serviceLayerName) return null;
@@ -187,14 +222,28 @@ const resolveLayer = (record, caps, serviceLayerName) => {
         l.name === serviceLayerName ||
         stripWorkspace(l.name) === stripWorkspace(serviceLayerName),
     );
-    return match?.name ?? null;
+    return match ? { layer: match.name, match: 'name' } : null;
+  }
+  if (record.Type === 'service') {
+    const layer = wholeServiceLayer(caps);
+    if (layer) return { layer, match: 'whole' };
+    // Too many top-level layers to request at once: fall through to the
+    // title match below, like a dataset.
   }
   const title = normalizeTitle(record.Title);
-  const exact = caps.layers.find((l) => normalizeTitle(l.title) === title);
-  if (exact) return exact.name;
+  // Layer names count too: "Landsnettpunkt", "Svenske_finske_stasjoner".
+  const exact = caps.layers.find(
+    (l) =>
+      normalizeTitle(l.title) === title ||
+      normalizeTitle(stripWorkspace(l.name)) === title,
+  );
+  if (exact) return { layer: exact.name, match: 'title' };
   // "Sårbare naturtyper i Sunnhordland – Svampskog" ↔ layer "Svampskog": take the
   // longest layer title contained in the dataset title (or vice versa), if unique.
+  // The root is excluded: its title is often just the owner ("Kartverket"), which
+  // would sneak the whole service back in under a dataset's title.
   const partial = caps.layers
+    .filter((l) => !l.isRoot)
     .map((l) => ({ ...l, norm: normalizeTitle(l.title) }))
     .filter(
       (l) =>
@@ -203,13 +252,30 @@ const resolveLayer = (record, caps, serviceLayerName) => {
     )
     .sort((a, b) => b.norm.length - a.norm.length);
   if (partial.length > 0 && partial[0].norm !== partial[1]?.norm) {
-    return partial[0].name;
+    return { layer: partial[0].name, match: 'partial' };
   }
-  if (caps.rootName) return caps.rootName;
-  if (caps.children.length > 0 && caps.children.length <= MAX_CHILD_LAYERS) {
-    return caps.children.join(',');
+  if (record.Type === 'service') return null;
+  const layer = wholeServiceLayer(caps);
+  return layer ? { layer, match: 'whole' } : null;
+};
+
+// "Sårbare marine biotoper – modellert utbredelse Svampskog" + "… Svampspikelbunn"
+// → "Sårbare marine biotoper – modellert utbredelse". Used to name a service that
+// has neither a catalog record nor a <Title> of its own.
+const MIN_COMMON_TITLE_LENGTH = 8;
+const commonTitlePrefix = (titles) => {
+  // A single title has itself as "common prefix" — that's the subset name again.
+  if (titles.length < 2) return null;
+  let prefix = titles[0];
+  for (const t of titles.slice(1)) {
+    while (!t.startsWith(prefix)) prefix = prefix.slice(0, -1);
   }
-  return null;
+  // Cut back to a word boundary and drop dangling separators.
+  prefix = /\s/.test(titles[0]?.[prefix.length] ?? ' ')
+    ? prefix
+    : prefix.replace(/\S*$/, '');
+  prefix = prefix.replace(/[\s\-–—:,(]+$/u, '').trim();
+  return prefix.length >= MIN_COMMON_TITLE_LENGTH ? prefix : null;
 };
 
 const main = async () => {
@@ -256,27 +322,26 @@ const main = async () => {
     serviceLayers.map((c, i) => [c.record.Uuid, layerNames[i]]),
   );
 
-  const byKey = new Map();
+  // A dataset that falls back to the whole service is only an honest entry when
+  // it is the service's sole dataset; otherwise it's one subset among several
+  // (e.g. "Fastmerker - Høydefastmerker" on the shared fastmerker2 service).
+  const datasetTitlesByUrl = new Map();
   for (const { record, urls } of candidates) {
+    if (!(record.Type in DATASET_TYPES)) continue;
     const url = urls.find((u) => capsByUrl.has(u));
-    if (!url) continue;
-    const layer = resolveLayer(
-      record,
-      capsByUrl.get(url),
-      layerNameByUuid.get(record.Uuid),
-    );
-    if (!layer) continue;
-    const entry = {
-      id: record.Uuid,
-      title: record.Title.trim(),
-      organization: record.Organization ?? '',
-      category: THEME_TO_CATEGORY[record.Theme] ?? FALLBACK_CATEGORY,
-      url,
-      layer,
-      detailsUrl: record.ShowDetailsUrl ?? null,
-      type: record.Type,
-    };
-    const key = `${url}|${layer}`;
+    if (url) {
+      datasetTitlesByUrl.set(url, [
+        ...(datasetTitlesByUrl.get(url) ?? []),
+        record.Title.trim(),
+      ]);
+    }
+  }
+
+  const byKey = new Map();
+  const stats = {};
+  const droppedByUrl = new Map();
+  const add = (entry) => {
+    const key = `${entry.url}|${entry.layer}`;
     const existing = byKey.get(key);
     if (
       !existing ||
@@ -284,7 +349,62 @@ const main = async () => {
     ) {
       byKey.set(key, entry);
     }
+  };
+  for (const { record, urls } of candidates) {
+    const url = urls.find((u) => capsByUrl.has(u));
+    if (!url) continue;
+    const resolved = resolveLayer(
+      record,
+      capsByUrl.get(url),
+      layerNameByUuid.get(record.Uuid),
+    );
+    if (!resolved) continue;
+    if (
+      resolved.match === 'whole' &&
+      record.Type in DATASET_TYPES &&
+      datasetTitlesByUrl.get(url).length > 1
+    ) {
+      stats.droppedSharedWhole = (stats.droppedSharedWhole ?? 0) + 1;
+      droppedByUrl.set(url, [...(droppedByUrl.get(url) ?? []), record]);
+      continue;
+    }
+    stats[resolved.match] = (stats[resolved.match] ?? 0) + 1;
+    add({
+      id: record.Uuid,
+      title: record.Title.trim(),
+      organization: record.Organization ?? '',
+      category: THEME_TO_CATEGORY[record.Theme] ?? FALLBACK_CATEGORY,
+      url,
+      layer: resolved.layer,
+      detailsUrl: record.ShowDetailsUrl ?? null,
+      type: record.Type,
+    });
   }
+
+  // Keep the dropped datasets' data reachable: if no catalog service record
+  // already covers the whole service, add one titled by the service itself.
+  for (const [url, dropped] of droppedByUrl) {
+    const caps = capsByUrl.get(url);
+    const layer = wholeServiceLayer(caps);
+    const title =
+      caps.serviceTitle || commonTitlePrefix(datasetTitlesByUrl.get(url));
+    if (!layer || byKey.has(`${url}|${layer}`) || !title) continue;
+    const themes = Object.entries(
+      Object.groupBy(dropped, (r) => r.Theme ?? ''),
+    ).sort((a, b) => b[1].length - a[1].length);
+    stats.syntheticWhole = (stats.syntheticWhole ?? 0) + 1;
+    add({
+      id: `service:${url}`,
+      title,
+      organization: dropped[0].Organization ?? '',
+      category: THEME_TO_CATEGORY[themes[0][0]] ?? FALLBACK_CATEGORY,
+      url,
+      layer,
+      detailsUrl: null,
+      type: 'service',
+    });
+  }
+  console.log('Layer resolution:', stats);
 
   const layers = [...byKey.values()].sort(
     (a, b) =>
