@@ -305,7 +305,6 @@
           },
           "geonorgeSearch": {
             "heading": "Kartlag fra Geonorge",
-            "placeholder": "Filtrer på navn eller eier...",
             "addButton": "Legg til i kartet",
             "added": "Lagt til",
             "noResults": "Ingen kartlag funnet.",
@@ -332,7 +331,9 @@
               "samfunnssikkerhet": "Samfunnssikkerhet og beredskap",
               "varOgKlima": "Vær og klima",
               "annet": "Annet"
-            }
+            },
+            "categoryLabel": "Kategori",
+            "filterLabel": "Søk etter navn eller eier"
           },
           "addWms": {
             "removeButton": "Fjern lag",
@@ -527,9 +528,6 @@
   "featureInfo": {
     "title": "Objektinformasjon",
     "loading": "Henter informasjon..."
-  },
-  "activeLayers": {
-    "title": "Lag lagt til fra URL"
   },
   "legend": {
     "heading": {

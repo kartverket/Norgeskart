@@ -1,7 +1,13 @@
 import { atom } from 'jotai';
+import { borderConfig } from './config/themeLayers/borders';
+import { dekningConfig } from './config/themeLayers/dekning';
+import { fastmerkerLayerConfig } from './config/themeLayers/fastmerker';
+import { historicalMapsConfig } from './config/themeLayers/historicalMaps';
 import { outdoorRecreationLayerConfig } from './config/themeLayers/outdoorRecreation';
+import { placeNamesConfig } from './config/themeLayers/placeNames';
 import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
 import { sjoConfig } from './config/themeLayers/sjo';
+import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
 import { ThemeLayerName } from './themeWMS';
 
 export interface FieldConfig {
@@ -89,6 +95,12 @@ const getThemeLayerConfig = () => {
     propertyInfoConfig,
     outdoorRecreationLayerConfig,
     sjoConfig,
+    borderConfig,
+    historicalMapsConfig,
+    tilgjengelighetConfig,
+    placeNamesConfig,
+    fastmerkerLayerConfig,
+    dekningConfig,
   ];
 
   for (const config of configs) {

@@ -72,6 +72,26 @@
       "type": "service"
     },
     {
+      "id": "84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a",
+      "title": "FKB WMS",
+      "organization": "Kartverket",
+      "category": "annet",
+      "url": "https://wms.geonorge.no/skwms1/wms.fkb",
+      "layer": "fkb",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/84178e68-f40d-4bb4-b9f6-9bfdee2bcc7a",
+      "type": "service"
+    },
+    {
+      "id": "875d0c64-d5ef-46ea-8c03-1d54009e5f2b",
+      "title": "Fritidsbyggområder WMS",
+      "organization": "Statistisk sentralbyrå",
+      "category": "annet",
+      "url": "https://kart.ssb.no/api/mapserver/v1/wms/fritidsbyggomraader",
+      "layer": "sammenhengende_fritidsbyggomrader_2025,layer-975a88",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/875d0c64-d5ef-46ea-8c03-1d54009e5f2b",
+      "type": "service"
+    },
+    {
       "id": "0d43e3eb-bf79-41b7-b108-2ead4b6a13f7",
       "title": "grabb_arter",
       "organization": "Havforskningsinstituttet",
@@ -167,7 +187,7 @@
       "organization": "Norsk institutt for bioøkonomi",
       "category": "annet",
       "url": "https://wms.nibio.no/cgi-bin/jordressurser",
-      "layer": "jordressursklasser",
+      "layer": "jordressurser",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3690c283-a1f2-4e95-8cd4-2d6115eb28f7",
       "type": "dataset"
     },
@@ -177,7 +197,7 @@
       "organization": "Norsk institutt for bioøkonomi",
       "category": "annet",
       "url": "https://wms.nibio.no/cgi-bin/graastruktur",
-      "layer": "graa_arealer",
+      "layer": "Grå arealer",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bf6d3270-0930-4a23-8809-a883f6442472",
       "type": "service"
     },
@@ -322,6 +342,16 @@
       "type": "servicelayer"
     },
     {
+      "id": "c4fef2ca-c7f6-4236-8a16-e38547e0230c",
+      "title": "Motorferdsel Svalbard WMS",
+      "organization": "Miljødirektoratet",
+      "category": "annet",
+      "url": "https://kart2.miljodirektoratet.no/arcgis/services/svalbard/motorferdsel_svalbard/MapServer/WMSServer",
+      "layer": "motorferdsel_tilreisende,motorferdsel_fastboende,ferdselsare_tilreisende,ferdselsare_fastboende,fartsrestriksjoner",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c4fef2ca-c7f6-4236-8a16-e38547e0230c",
+      "type": "service"
+    },
+    {
       "id": "0f99cadb-f388-4ee9-9266-1c769247fa3e",
       "title": "Naturtiltak",
       "organization": "Miljødirektoratet",
@@ -330,6 +360,16 @@
       "layer": "naturtiltak_omraade_lokalt_regionalt",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0f99cadb-f388-4ee9-9266-1c769247fa3e",
       "type": "dataset"
+    },
+    {
+      "id": "912b3116-565f-4a0c-9f32-6d875c9c7ce7",
+      "title": "Naturtiltak WMS",
+      "organization": "Miljødirektoratet",
+      "category": "annet",
+      "url": "https://kart3.miljodirektoratet.no/arcgis/services/naturtiltak/naturtiltak/MapServer/WMSServer",
+      "layer": "naturtiltak_omraade_aarets,naturtiltak_omraade_alle,naturtiltak_omraade_lokalt_regionalt,naturtiltak_linje_aarets,naturtiltak_linje_alle,naturtiltak_linje_lokalt_regionalt,naturtiltak_punkt_aarets,naturtiltak_punkt",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/912b3116-565f-4a0c-9f32-6d875c9c7ce7",
+      "type": "service"
     },
     {
       "id": "1790a2c6-f000-452e-b84d-393bc0eab166",
@@ -350,6 +390,16 @@
       "layer": "layer-1b553d",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/49cffffd-c770-4729-a4e7-7b149dac04bc",
       "type": "dataset"
+    },
+    {
+      "id": "bec89da5-18fe-4b05-a7f5-2714a180488d",
+      "title": "Politisoner og -distrikter WMS",
+      "organization": "Politi og lensmannsetaten",
+      "category": "annet",
+      "url": "https://wms.geonorge.no/skwms1/wms.politisonerdistrikter",
+      "layer": "politisonerdistrikter_WMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bec89da5-18fe-4b05-a7f5-2714a180488d",
+      "type": "service"
     },
     {
       "id": "32cb6fd4-21ff-420d-b6b3-0898af402af5",
@@ -482,12 +532,22 @@
       "type": "dataset"
     },
     {
+      "id": "240ba1dd-cf54-45b2-8598-aeec9b20ee25",
+      "title": "Sentrumssoner WMS",
+      "organization": "Statistisk sentralbyrå",
+      "category": "annet",
+      "url": "https://kart.ssb.no/api/mapserver/v1/wms/sentrumssoner",
+      "layer": "sentrumsanalyseruter_2025,sentrumssoner_2025,handels_servicesoner_2025",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/240ba1dd-cf54-45b2-8598-aeec9b20ee25",
+      "type": "service"
+    },
+    {
       "id": "3ac0e477-4c3a-42c8-acb2-34db94a7b44e",
       "title": "Skogbruksplan - Hogstklasser og aldersklasser",
       "organization": "Landbruksdirektoratet",
       "category": "annet",
       "url": "https://wms.nibio.no/cgi-bin/skogbruksplan",
-      "layer": "hogstklasser",
+      "layer": "skogbruksplan",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3ac0e477-4c3a-42c8-acb2-34db94a7b44e",
       "type": "service"
     },
@@ -520,6 +580,16 @@
       "layer": "slede_individer",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5274f9f5-6d52-4292-82a4-1006664da98b",
       "type": "servicelayer"
+    },
+    {
+      "id": "31f494c7-9763-4401-8134-0497ed56a06e",
+      "title": "Tettbebyggelser WMS",
+      "organization": "Miljødirektoratet",
+      "category": "annet",
+      "url": "https://kart2.miljodirektoratet.no/arcgis/services/tettbebyggelse/MapServer/WMSServer",
+      "layer": "tettbebyggelse_farge,tettbebyggelse",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/31f494c7-9763-4401-8134-0497ed56a06e",
+      "type": "service"
     },
     {
       "id": "fea4e637-9954-474a-a131-a480d38fab37",
@@ -692,6 +762,16 @@
       "type": "dataset"
     },
     {
+      "id": "50263c33-74bc-4ea8-b44e-a0c470e57904",
+      "title": "Administrative områder vanndirektivet WMS",
+      "organization": "Miljødirektoratet",
+      "category": "basisGeodata",
+      "url": "https://kart3.miljodirektoratet.no/arcgis/services/vanndir_adm_omrader/MapServer/WMSServer",
+      "layer": "vannregionmyndighet_navn,vannomraade_navn,vannregion_navn,klimasoner,oekoregion_marin,oekoregion_elv_innsjoe,vannregionmyndighet,vannomraade,vannregion",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/50263c33-74bc-4ea8-b44e-a0c470e57904",
+      "type": "service"
+    },
+    {
       "id": "e0ada454-7a5e-4b2f-840e-42ddfec21f79",
       "title": "Arbeidsgiveravgiftsoner",
       "organization": "Skatteetaten",
@@ -786,8 +866,8 @@
       "title": "Digitale ortofoto",
       "organization": "Kartverket",
       "category": "basisGeodata",
-      "url": "https://wms.geonorge.no/skwms1/wms.nib-prosjekter",
-      "layer": "Ortofototype",
+      "url": "https://wms.geonorge.no/skwms1/wms.nib",
+      "layer": "ortofoto",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d5b180dd-0cef-4c4a-9174-ba5af69c3551",
       "type": "dataset"
     },
@@ -812,14 +892,14 @@
       "type": "dataset"
     },
     {
-      "id": "39e022aa-c352-4351-b172-b980b03c578c",
-      "title": "Dybdedata - terrengmodeller 25 meters grid",
+      "id": "010c3fc4-3551-47aa-b10a-e01735bd1c0f",
+      "title": "Dybdedata skyggerelieff grå WMS",
       "organization": "Kartverket",
       "category": "basisGeodata",
       "url": "https://wms.geonorge.no/skwms1/wms.havbunnraster3",
       "layer": "sjo_skyggerelieff",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/39e022aa-c352-4351-b172-b980b03c578c",
-      "type": "dataset"
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/010c3fc4-3551-47aa-b10a-e01735bd1c0f",
+      "type": "service"
     },
     {
       "id": "9285f93e-d6d7-498c-a289-35700d795fc1",
@@ -842,16 +922,6 @@
       "type": "servicelayer"
     },
     {
-      "id": "43838cda-fa62-11e6-bc64-92361f002671",
-      "title": "Fastmerker - Høydefastmerker",
-      "organization": "Kartverket",
-      "category": "basisGeodata",
-      "url": "https://wms.geonorge.no/skwms1/wms.fastmerker2",
-      "layer": "fastmerker2_wms",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/43838cda-fa62-11e6-bc64-92361f002671",
-      "type": "dataset"
-    },
-    {
       "id": "dc37b5b6-fa60-11e6-bc64-92361f002671",
       "title": "Fastmerker - Trekantpunkter",
       "organization": "Kartverket",
@@ -860,6 +930,16 @@
       "layer": "Trekantpunkt",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dc37b5b6-fa60-11e6-bc64-92361f002671",
       "type": "dataset"
+    },
+    {
+      "id": "8c2c434b-07f7-4ebc-9bc6-9c15cdd75c4c",
+      "title": "Fastmerker & Basestajoner WMS",
+      "organization": "Kartverket",
+      "category": "basisGeodata",
+      "url": "https://wms.geonorge.no/skwms1/wms.fastmerker2",
+      "layer": "fastmerker2_wms",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8c2c434b-07f7-4ebc-9bc6-9c15cdd75c4c",
+      "type": "service"
     },
     {
       "id": "ea4a00b3-c791-4257-a499-f76d747202df",
@@ -897,7 +977,7 @@
       "organization": "Kartverket",
       "category": "basisGeodata",
       "url": "https://wms.geonorge.no/skwms1/wms.fjellskygge",
-      "layer": "fjellskygge",
+      "layer": "fjellskygge_wms",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/57bcf66a-1333-498f-a1f1-13f27a9cee1f",
       "type": "service"
     },
@@ -1032,16 +1112,6 @@
       "type": "dataset"
     },
     {
-      "id": "4920b452-75cc-45f2-964c-3378204c3517",
-      "title": "FKB-Veg",
-      "organization": "Kartverket",
-      "category": "basisGeodata",
-      "url": "https://wms.geonorge.no/skwms1/wms.fkb",
-      "layer": "fkb",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4920b452-75cc-45f2-964c-3378204c3517",
-      "type": "dataset"
-    },
-    {
       "id": "25549b7e-53e2-4493-bb9f-2a708fd5d9bb",
       "title": "GEBCO skyggerelief WMS",
       "organization": "Kartverket",
@@ -1057,7 +1127,7 @@
       "organization": "Kartverket",
       "category": "basisGeodata",
       "url": "https://wms.geonorge.no/skwms1/wms.gebco_skyggerelieff2",
-      "layer": "gebco",
+      "layer": "gebco_skyggerelieff2",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/92e8f0ec-b627-41aa-ab66-0217657554ed",
       "type": "service"
     },
@@ -1097,7 +1167,7 @@
       "organization": "Kartverket",
       "category": "basisGeodata",
       "url": "https://wms.geonorge.no/skwms1/wms.inspire_ad",
-      "layer": "AD.Address",
+      "layer": "inspire_ad",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d6aebd82-dc35-4181-a825-beee78e62d8d",
       "type": "service"
     },
@@ -1107,7 +1177,7 @@
       "organization": "Kartverket",
       "category": "basisGeodata",
       "url": "https://wms.geonorge.no/skwms1/wms.inspire_au",
-      "layer": "AU.AdministrativeUnit",
+      "layer": "inspire_administravtive_units",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/01fbc6cb-0ccf-400d-a56d-77f39e75d5d7",
       "type": "service"
     },
@@ -1117,7 +1187,7 @@
       "organization": "Kartverket",
       "category": "basisGeodata",
       "url": "https://wms.geonorge.no/skwms1/wms.inspire_bu",
-      "layer": "BU.Building",
+      "layer": "inspire_bu",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/56d76f1c-0bee-4775-b2f4-4af06322449c",
       "type": "service"
     },
@@ -1137,7 +1207,7 @@
       "organization": "Kartverket",
       "category": "basisGeodata",
       "url": "https://wms.geonorge.no/skwms1/wms.inspire_gn",
-      "layer": "GN.GeographicalNames",
+      "layer": "inspire_gn",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e2d3167f-0add-433b-b33c-42e169516e31",
       "type": "service"
     },
@@ -1202,16 +1272,6 @@
       "type": "dataset"
     },
     {
-      "id": "ea192681-d039-42ec-b1bc-f3ce04c189ac",
-      "title": "N50 Kartdata",
-      "organization": "Kartverket",
-      "category": "basisGeodata",
-      "url": "https://wms.geonorge.no/skwms1/wms.topo",
-      "layer": "topo",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ea192681-d039-42ec-b1bc-f3ce04c189ac",
-      "type": "dataset"
-    },
-    {
       "id": "79ea9761-1ac9-4780-a065-e4738835643e",
       "title": "N5Raster2 WMS",
       "organization": "Kartverket",
@@ -1262,13 +1322,13 @@
       "type": "service"
     },
     {
-      "id": "dcee8bf4-fdf3-4433-a91b-209c7d9b0b0f",
-      "title": "Norge i bilder WMS-Ortofoto",
+      "id": "77785340-1208-4fe8-9afd-00b83c6f5e93",
+      "title": "Norge i bilder WMS-Prosjekt",
       "organization": "Norge i bilder",
       "category": "basisGeodata",
-      "url": "https://wms.geonorge.no/skwms1/wms.nib",
-      "layer": "ortofoto",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dcee8bf4-fdf3-4433-a91b-209c7d9b0b0f",
+      "url": "https://wms.geonorge.no/skwms1/wms.nib-prosjekter",
+      "layer": "Ortofototype",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/77785340-1208-4fe8-9afd-00b83c6f5e93",
       "type": "service"
     },
     {
@@ -1472,6 +1532,16 @@
       "type": "dataset"
     },
     {
+      "id": "fef17a36-bd9a-4262-af34-8943cd712157",
+      "title": "Statistiske enheter grunnkretser WMS",
+      "organization": "Kartverket",
+      "category": "basisGeodata",
+      "url": "https://wms.geonorge.no/skwms1/wms.grunnkretser",
+      "layer": "grunnkretser_WMS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fef17a36-bd9a-4262-af34-8943cd712157",
+      "type": "service"
+    },
+    {
       "id": "30caed2f-454e-44be-b5cc-26bb5c0110ca",
       "title": "Stedsnavn",
       "organization": "Kartverket",
@@ -1490,6 +1560,16 @@
       "layer": "ssr2_wms",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e1c50348-962d-4047-8325-bdc265c853ed",
       "type": "dataset"
+    },
+    {
+      "id": "8c233f06-2327-46ed-b330-c57c86e70d79",
+      "title": "Terrengmodell WMS",
+      "organization": "Kartverket",
+      "category": "basisGeodata",
+      "url": "https://wms.geonorge.no/skwms1/wms.terrengmodell",
+      "layer": "terrengmodell",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8c233f06-2327-46ed-b330-c57c86e70d79",
+      "type": "service"
     },
     {
       "id": "18178955-5eb5-4ab7-895f-3354ba727479",
@@ -1539,6 +1619,16 @@
       "url": "https://wms.geonorge.no/skwms1/wms.topograatone",
       "layer": "topograatone",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e84c9a6d-2297-4323-9078-36ac4b8e35e4",
+      "type": "service"
+    },
+    {
+      "id": "f004268c-d4a1-4801-91cb-daa46236fab7",
+      "title": "Topografisk Norgeskart WMS",
+      "organization": "Kartverket",
+      "category": "basisGeodata",
+      "url": "https://wms.geonorge.no/skwms1/wms.topo",
+      "layer": "topo",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f004268c-d4a1-4801-91cb-daa46236fab7",
       "type": "service"
     },
     {
@@ -1627,7 +1717,7 @@
       "organization": "Kartverket",
       "category": "befolkning",
       "url": "https://wms.geonorge.no/skwms1/wms.grunnkretser",
-      "layer": "grunnkretser_WMS",
+      "layer": "Grunnkretser",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/51d279f8-e2be-4f5e-9f72-1a53f7535ec1",
       "type": "dataset"
     },
@@ -1712,14 +1802,14 @@
       "type": "service"
     },
     {
-      "id": "e77e6fdc-591d-4b1b-91b2-bd9d13fb33b7",
-      "title": "Matrikkelen, Norges offisielle eiendomsregister",
+      "id": "30dda4c6-2cba-4378-b2e7-26f644df9d99",
+      "title": "Matrikkelkart WMS",
       "organization": "Kartverket",
       "category": "eiendom",
       "url": "https://wms.geonorge.no/skwms1/wms.matrikkelkart",
       "layer": "matrikkelkart",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e77e6fdc-591d-4b1b-91b2-bd9d13fb33b7",
-      "type": "dataset"
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/30dda4c6-2cba-4378-b2e7-26f644df9d99",
+      "type": "service"
     },
     {
       "id": "368d797a-f865-44ff-b1b5-7a2c9fc6eca0",
@@ -1782,16 +1872,6 @@
       "type": "dataset"
     },
     {
-      "id": "4ab8c70a-215a-4e1a-847b-b3c044526d5e",
-      "title": "Kraftlinjer",
-      "organization": "Norges vassdrags- og energidirektorat",
-      "category": "energi",
-      "url": "https://kart.nve.no/enterprise/services/Nettanlegg4/MapServer/WMSServer",
-      "layer": "NUK_omraade,Omradekonsesjonaerer,Transformatorstasjoner,Master_og_stolper29882,Sjokabler,Distribusjonsnett,Regionalnett_luftledning46171,Transmisjonsnett_luftledning43179",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4ab8c70a-215a-4e1a-847b-b3c044526d5e",
-      "type": "dataset"
-    },
-    {
       "id": "5d13cd67-dc03-458d-8715-548bafbeb2c1",
       "title": "Magasin",
       "organization": "Norges vassdrags- og energidirektorat",
@@ -1802,14 +1882,14 @@
       "type": "dataset"
     },
     {
-      "id": "fa5e17ee-ed0c-4786-bb5f-25619b7ac3fb",
-      "title": "Måleserie",
+      "id": "ac9533a0-03e7-4127-8e96-109a20ab6b9c",
+      "title": "Nettanlegg WMS",
       "organization": "Norges vassdrags- og energidirektorat",
       "category": "energi",
-      "url": "https://kart.nve.no/enterprise/services/HydrologiskeData3/MapServer/WMSServer",
-      "layer": "Malest_totalnedb,Malest_lokalnedb,Arsavrenning_mm_aar,Malestasjoner",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fa5e17ee-ed0c-4786-bb5f-25619b7ac3fb",
-      "type": "dataset"
+      "url": "https://kart.nve.no/enterprise/services/Nettanlegg4/MapServer/WMSServer",
+      "layer": "NUK_omraade,Omradekonsesjonaerer,Transformatorstasjoner,Master_og_stolper29882,Sjokabler,Distribusjonsnett,Regionalnett_luftledning46171,Transmisjonsnett_luftledning43179",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ac9533a0-03e7-4127-8e96-109a20ab6b9c",
+      "type": "service"
     },
     {
       "id": "e6ba655e-0230-4a5a-a2d0-1d2af972fb80",
@@ -1837,19 +1917,9 @@
       "organization": "Norges vassdrags- og energidirektorat",
       "category": "energi",
       "url": "https://kart.nve.no/enterprise/services/Vannkraft1/MapServer/WMSServer",
-      "layer": "Ikke_utbygd_vannkraftverk",
+      "layer": "Ikke_utbygd_magasin,Ikke_utbygd_vannvei,Ikke_utbygd_dam,Ikke_utbygd_inntakspunkt,Ikke_utbygd_vannkraftverk,Delfelt,Magasin,Dam,Vannvei,Utlopspunkt,Inntakspunkt,Dam_N250,Vannkraftverk",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/2dcecff9-70b6-4f14-b934-af377bff88d9",
       "type": "service"
-    },
-    {
-      "id": "f587a15a-c72a-4b21-aae9-4132df1bdd27",
-      "title": "Vannkraft, Utbygd og ikke utbygd",
-      "organization": "Norges vassdrags- og energidirektorat",
-      "category": "energi",
-      "url": "https://kart.nve.no/enterprise/services/Vannkraft1/MapServer/WMSServer",
-      "layer": "Ikke_utbygd_magasin,Ikke_utbygd_vannvei,Ikke_utbygd_dam,Ikke_utbygd_inntakspunkt,Ikke_utbygd_vannkraftverk,Delfelt,Magasin,Dam,Vannvei,Utlopspunkt,Inntakspunkt,Dam_N250,Vannkraftverk",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f587a15a-c72a-4b21-aae9-4132df1bdd27",
-      "type": "dataset"
     },
     {
       "id": "ac249604-cd82-490c-83cc-9cd24fe18088",
@@ -1909,16 +1979,6 @@
       "url": "https://kart.miljodirektoratet.no/arcgis/services/grunnforurensning2/MapServer/WMSServer",
       "layer": "forurenset_omrade_tilstand,forurenset_omrade_tilstand_pkt,forurenset_omrade,forurenset_omrade_pkt",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9f51ffea-549b-48a7-9d6e-19cf7c84cc40",
-      "type": "service"
-    },
-    {
-      "id": "c4a34358-dab5-4398-a195-52e20652d44f",
-      "title": "Industri WMS",
-      "organization": "Miljødirektoratet",
-      "category": "forurensning",
-      "url": "https://kart3.miljodirektoratet.no/arcgis/services/industri/MapServer/WMSServer",
-      "layer": "industri_landbasert_overvaaking",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c4a34358-dab5-4398-a195-52e20652d44f",
       "type": "service"
     },
     {
@@ -2302,16 +2362,6 @@
       "type": "service"
     },
     {
-      "id": "dddbb667-1303-4ac5-8640-7ec04c0e3918",
-      "title": "DTM 10 Terrengmodell (UTM33)",
-      "organization": "Kartverket",
-      "category": "hoydedata",
-      "url": "https://wms.geonorge.no/skwms1/wms.terrengmodell",
-      "layer": "terrengmodell",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/dddbb667-1303-4ac5-8640-7ec04c0e3918",
-      "type": "dataset"
-    },
-    {
       "id": "f297e948-8a34-4e6c-9740-54b3a657f8d5",
       "title": "Høydedata - laser",
       "organization": "Kartverket",
@@ -2366,7 +2416,7 @@
       "title": "Akvakultur - lokaliteter",
       "organization": "Fiskeridirektoratet",
       "category": "kystOgFiskeri",
-      "url": "https://gis.fiskeridir.no/server/services/fiskeridirWMS_akva/MapServer/WMSServer",
+      "url": "https://gis.fiskeridir.no/server/services/fiskeridirWMS/MapServer/WMSServer",
       "layer": "akvakultur_lokaliteter",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4ca8af5e-ffc7-4636-847d-4eca92c4a3b0",
       "type": "dataset"
@@ -2390,6 +2440,16 @@
       "layer": "korallobservasjoner_video",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/851bfa1c-c48a-42a2-83c6-11a4662b6d1d",
       "type": "dataset"
+    },
+    {
+      "id": "f2231766-e5f2-4076-b7f8-b45a02bf7221",
+      "title": "Artsutbredelse WMS",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/data/utbredelseskart/wms/ows",
+      "layer": "artsutbredelse",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f2231766-e5f2-4076-b7f8-b45a02bf7221",
+      "type": "service"
     },
     {
       "id": "cb789970-652f-42e3-a2f7-077a7074ef2a",
@@ -2469,6 +2529,36 @@
       "url": "https://wms.geonorge.no/skwms1/wms.dumpefelt_sjo",
       "layer": "dumpefelt_sjo_wms",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d1b5217b-871d-4591-9597-a76f5a5668fc",
+      "type": "dataset"
+    },
+    {
+      "id": "32c6c382-df87-4eef-9073-5f195c9344b0",
+      "title": "Fiskeriaktivitet - fiskefartøy",
+      "organization": "Fiskeridirektoratet",
+      "category": "kystOgFiskeri",
+      "url": "https://gis.fiskeridir.no/server/services/fiskeridirWMS_fiskeriaktivitet/MapServer/WMSServer",
+      "layer": "fiskeriaktivitet_annet_fra_2011,fiskeriaktivitet_teiner_fra_2011,fiskeriaktivitet_flytetraal_fra_2011,fiskeriaktivitet_garn_fra_2011,fiskeriaktivitet_notredskap_fra_2011,fiskeriaktivitet_line_krok_fra_2011,fiskeriaktivitet_snurrevad_fra_2011,fiskeriaktivitet_bunntraal_fra_2011,fiskeriaktivitet_alle_redskap_fra_2011",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/32c6c382-df87-4eef-9073-5f195c9344b0",
+      "type": "dataset"
+    },
+    {
+      "id": "e247c30c-4099-42ce-b080-2e8690f2861b",
+      "title": "Fiskeridirektoratets WMS",
+      "organization": "Fiskeridirektoratet",
+      "category": "kystOgFiskeri",
+      "url": "https://gis.fiskeridir.no/server/services/fiskeridirWMS/MapServer/WMSServer",
+      "layer": "fiskeridirektoratets_kontor",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e247c30c-4099-42ce-b080-2e8690f2861b",
+      "type": "service"
+    },
+    {
+      "id": "74365043-9f95-42c9-a87b-801c5c93b5e7",
+      "title": "Fjordlinjer - Kysttorskregulering",
+      "organization": "Fiskeridirektoratet",
+      "category": "kystOgFiskeri",
+      "url": "https://gis.fiskeridir.no/server/services/fiskeridirWMS/MapServer/WMSServer",
+      "layer": "fjordlinjer_kysttorskregulering",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/74365043-9f95-42c9-a87b-801c5c93b5e7",
       "type": "dataset"
     },
     {
@@ -2702,6 +2792,16 @@
       "type": "dataset"
     },
     {
+      "id": "b12d041d-03d4-4562-b333-bc9d7c9bd123",
+      "title": "Nasjonale laksefjorder",
+      "organization": "Fiskeridirektoratet",
+      "category": "kystOgFiskeri",
+      "url": "https://gis.fiskeridir.no/server/services/fiskeridirWMS/MapServer/WMSServer",
+      "layer": "nasjonale_laksefjorder",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b12d041d-03d4-4562-b333-bc9d7c9bd123",
+      "type": "dataset"
+    },
+    {
       "id": "dc60e9f1-049c-44f7-9e9a-3cde9abddcef",
       "title": "Naturtyper – Svamphage, predikert",
       "organization": "Havforskningsinstituttet",
@@ -2822,6 +2922,16 @@
       "type": "servicelayer"
     },
     {
+      "id": "service:https://kart.hi.no/mareano/mareano_sb/wms",
+      "title": "Sårbare marine biotoper – modellert utbredelse",
+      "organization": "Havforskningsinstituttet",
+      "category": "kystOgFiskeri",
+      "url": "https://kart.hi.no/mareano/mareano_sb/wms",
+      "layer": "Biotoper_Observerte_Forekomster_for_Modellering,sb_sjofjaer_median_predikert_tetthet_per_100m2,sb_sjofjaer_median_predikert_usikkerhet_per_100m2,sb_stylasterid_hage_median_predikert_tetthet_per100m2,sb_stylasterid_hage_median_predikert_usikkerhet_per100m2,sb_svampskog_median_predikert_tetthet_per100m2,sb_svampskog_median_predikert_usikkerhet_per100m2,sb_svampspikelbunn_ostur_median_predikert_tetthet_per100m2,sb_svampspikelbunn_ostur_median_predikert_usikkerhet_per100m2,sb_umbellula_bestander_median_predikert_tetthet_per_100m2,sb_umbellula_bestander_median_predikert_usikkerhet_per_100m2",
+      "detailsUrl": null,
+      "type": "service"
+    },
+    {
       "id": "4ff25cac-55f1-47ee-bb9f-bf48915bd60b",
       "title": "Sårbare marine biotoper – modellert utbredelse Hardbunnskorallskog",
       "organization": "Havforskningsinstituttet",
@@ -2832,21 +2942,11 @@
       "type": "dataset"
     },
     {
-      "id": "e49753ea-b4ce-4317-910a-aa226002872f",
-      "title": "Sårbare marine biotoper – modellert utbredelse Svampspikelbunn",
-      "organization": "Havforskningsinstituttet",
-      "category": "kystOgFiskeri",
-      "url": "https://kart.hi.no/mareano/mareano_sb/wms",
-      "layer": "Biotoper_Observerte_Forekomster_for_Modellering,sb_sjofjaer_median_predikert_tetthet_per_100m2,sb_sjofjaer_median_predikert_usikkerhet_per_100m2,sb_stylasterid_hage_median_predikert_tetthet_per100m2,sb_stylasterid_hage_median_predikert_usikkerhet_per100m2,sb_svampskog_median_predikert_tetthet_per100m2,sb_svampskog_median_predikert_usikkerhet_per100m2,sb_svampspikelbunn_ostur_median_predikert_tetthet_per100m2,sb_svampspikelbunn_ostur_median_predikert_usikkerhet_per100m2,sb_umbellula_bestander_median_predikert_tetthet_per_100m2,sb_umbellula_bestander_median_predikert_usikkerhet_per_100m2",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e49753ea-b4ce-4317-910a-aa226002872f",
-      "type": "dataset"
-    },
-    {
       "id": "4d0bd656-640b-4592-be35-e7435aa313dc",
       "title": "Tare - høstefelt",
       "organization": "Fiskeridirektoratet",
       "category": "kystOgFiskeri",
-      "url": "https://gis.fiskeridir.no/server/services/fiskeridirWMS_fiskeri/MapServer/WMSServer",
+      "url": "https://gis.fiskeridir.no/server/services/fiskeridirWMS/MapServer/WMSServer",
       "layer": "tare_høstefelt",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/4d0bd656-640b-4592-be35-e7435aa313dc",
       "type": "dataset"
@@ -2892,14 +2992,14 @@
       "type": "dataset"
     },
     {
-      "id": "8fcf0b83-c86c-4b0c-97c5-952f1f9704f8",
-      "title": "Beitebruk",
-      "organization": "Norsk institutt for bioøkonomi",
-      "category": "landbruk",
-      "url": "https://wms.nibio.no/cgi-bin/beite",
-      "layer": "BEITE",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8fcf0b83-c86c-4b0c-97c5-952f1f9704f8",
-      "type": "series"
+      "id": "5c34a9e4-f5d2-4ad5-9cf5-7450437908f0",
+      "title": "Vrak og hefter i sjøkart (WMS)",
+      "organization": "Kartverket",
+      "category": "kystOgFiskeri",
+      "url": "https://wms.geonorge.no/skwms1/wms.vrak_hefter",
+      "layer": "vrak_og_hefter_wms",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5c34a9e4-f5d2-4ad5-9cf5-7450437908f0",
+      "type": "service"
     },
     {
       "id": "dffe4dfe-8fc7-408c-ac6d-a744c0512f05",
@@ -2992,6 +3092,16 @@
       "type": "dataset"
     },
     {
+      "id": "a236c695-cf01-430c-a23d-42ed36dc4e33",
+      "title": "Beitebruk - WMS",
+      "organization": "Norsk institutt for bioøkonomi",
+      "category": "landbruk",
+      "url": "https://wms.nibio.no/cgi-bin/beite",
+      "layer": "BEITE",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a236c695-cf01-430c-a23d-42ed36dc4e33",
+      "type": "service"
+    },
+    {
       "id": "ee64e4fb-70b2-485f-9d98-cec0b7d41deb",
       "title": "Digitalt markslagskart (DMK) - Historisk datasett",
       "organization": "Norsk institutt for bioøkonomi",
@@ -3020,6 +3130,16 @@
       "layer": "dyrkbar_jord",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/8252baea-5bad-428b-8f18-fe236fa4ced6",
       "type": "dataset"
+    },
+    {
+      "id": "9c2d96ec-b701-4532-a075-d4fcfddfe8d7",
+      "title": "Dyrkbar jord - WMS",
+      "organization": "Geovekst",
+      "category": "landbruk",
+      "url": "https://wms.nibio.no/cgi-bin/dyrkbarjord_2",
+      "layer": "Dyrkbarjord_2",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9c2d96ec-b701-4532-a075-d4fcfddfe8d7",
+      "type": "service"
     },
     {
       "id": "8bcea090-8cf0-4ff8-bbd2-4d5a9a596845",
@@ -3052,12 +3172,22 @@
       "type": "dataset"
     },
     {
+      "id": "3a2160b5-2da2-4715-9851-6b1f9f6e054d",
+      "title": "Harmonisert jordsmonn – WMS",
+      "organization": "Norsk institutt for bioøkonomi",
+      "category": "landbruk",
+      "url": "https://wms.nibio.no/cgi-bin/jordsmonn_harmonisert",
+      "layer": "JORDSMONN_HARMONISERT",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/3a2160b5-2da2-4715-9851-6b1f9f6e054d",
+      "type": "service"
+    },
+    {
       "id": "98eda42b-c771-46fa-b1ea-bd875840fe60",
       "title": "Helling jordbruksareal - WMS",
       "organization": "Norsk institutt for bioøkonomi",
       "category": "landbruk",
       "url": "https://wms.nibio.no/cgi-bin/helling",
-      "layer": "helling",
+      "layer": "HELLING",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/98eda42b-c771-46fa-b1ea-bd875840fe60",
       "type": "service"
     },
@@ -3077,7 +3207,7 @@
       "organization": "Norsk institutt for bioøkonomi",
       "category": "landbruk",
       "url": "https://wms.nibio.no/cgi-bin/jordsmonn_harmonisert",
-      "layer": "JORDSMONN_HARMONISERT",
+      "layer": "Status_jordsmonnkartlegging",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0b960bb3-d9af-499e-a204-72833a4bcaaa",
       "type": "dataset"
     },
@@ -3107,7 +3237,7 @@
       "organization": "Norsk institutt for bioøkonomi",
       "category": "landbruk",
       "url": "https://wms.nibio.no/cgi-bin/markfuktighetskart",
-      "layer": "markfuktighetsklasser",
+      "layer": "markfuktighetskart",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c61837f5-eb84-4864-b2cb-31422620286a",
       "type": "service"
     },
@@ -3120,6 +3250,16 @@
       "layer": "Mattilsynet_Bigaardsplasser",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a6e8b77f-6ed3-4901-bad7-466fc127ae59",
       "type": "servicelayer"
+    },
+    {
+      "id": "cf630753-508a-4e7a-99da-ae1111090248",
+      "title": "Mattilsynets WMS",
+      "organization": "Mattilsynet",
+      "category": "landbruk",
+      "url": "https://kart.mattilsynet.no/wmscache/service",
+      "layer": "Mattilsynet_Vannverk_Inntakspunkter,Mattilsynet_Dyrehold_Produksjonsdyr,Mattilsynet_Dyrehold_Fjoerfehold,Mattilsynet_Bigaardsplasser,Mattilsynet_Innsjoer_Drikkevann_201804010,Mattilsynet_Drikkevann_Bronn,Mattilsynet_Vann_Drikkevannsformaal_20180410,Mattilsynet_Varsomhetsomraader_Innsjoer,Mattilsynet_Grunnvann,Mattilsynet_Innsjo_Drikkevann",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/cf630753-508a-4e7a-99da-ae1111090248",
+      "type": "service"
     },
     {
       "id": "91522fca-ecf2-48f6-a223-a53fa436e0f8",
@@ -3272,16 +3412,6 @@
       "type": "dataset"
     },
     {
-      "id": "00828ff6-b1e4-4916-9d65-50199e293c1e",
-      "title": "Reindrift - Siidaområde",
-      "organization": "Landbruksdirektoratet",
-      "category": "landbruk",
-      "url": "https://reindrift.nibio.no/cgi-bin/reindrift",
-      "layer": "REINDRIFT",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/00828ff6-b1e4-4916-9d65-50199e293c1e",
-      "type": "dataset"
-    },
-    {
       "id": "524a5dfb-be65-4a8f-a25d-f753917eb12a",
       "title": "Reindrift - Siidaområde - WMS",
       "organization": "Landbruksdirektoratet",
@@ -3310,6 +3440,16 @@
       "layer": "Trekklei",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/95b0d396-a6fe-462b-8753-120efd0b60f3",
       "type": "dataset"
+    },
+    {
+      "id": "ff879537-4031-4e80-bff0-87d0e0638a7f",
+      "title": "Reindrift - WMS",
+      "organization": "Landbruksdirektoratet",
+      "category": "landbruk",
+      "url": "https://reindrift.nibio.no/cgi-bin/reindrift",
+      "layer": "REINDRIFT",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ff879537-4031-4e80-bff0-87d0e0638a7f",
+      "type": "service"
     },
     {
       "id": "e9049a30-a333-44cc-9ef0-c3d5d9e5bba5",
@@ -3362,16 +3502,6 @@
       "type": "servicelayer"
     },
     {
-      "id": "ee232937-578e-4e4b-b35c-c50c0473fc25",
-      "title": "SAT-SKOG",
-      "organization": "Norsk institutt for bioøkonomi",
-      "category": "landbruk",
-      "url": "https://wms.nibio.no/cgi-bin/satskog",
-      "layer": "SATSKOG",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/ee232937-578e-4e4b-b35c-c50c0473fc25",
-      "type": "series"
-    },
-    {
       "id": "90c5ffb6-2e0d-4df8-84e7-49d2e0c69f5a",
       "title": "SAT-SKOG - Alder",
       "organization": "Norsk institutt for bioøkonomi",
@@ -3422,14 +3552,24 @@
       "type": "dataset"
     },
     {
-      "id": "27206b9e-4830-4f71-810d-d04c0dc32b59",
-      "title": "SR16 - Skogressurskart 16x16 meter - Vektor",
+      "id": "b35ec9f6-5eca-42ab-a8bd-bf56703ff4ea",
+      "title": "SAT-SKOG - WMS",
+      "organization": "Norsk institutt for bioøkonomi",
+      "category": "landbruk",
+      "url": "https://wms.nibio.no/cgi-bin/satskog",
+      "layer": "SATSKOG",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/b35ec9f6-5eca-42ab-a8bd-bf56703ff4ea",
+      "type": "service"
+    },
+    {
+      "id": "11f141f2-d91b-47e6-9b98-f5e7a6e7aa15",
+      "title": "SR16 - Skogressurskart 16x16 meter - WMS",
       "organization": "Norsk institutt for bioøkonomi",
       "category": "landbruk",
       "url": "https://wms.nibio.no/cgi-bin/sr16",
       "layer": "skogressurs_sr16",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/27206b9e-4830-4f71-810d-d04c0dc32b59",
-      "type": "dataset"
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/11f141f2-d91b-47e6-9b98-f5e7a6e7aa15",
+      "type": "service"
     },
     {
       "id": "bd94b863-4222-43a4-9ae4-9d947cde2dcf",
@@ -3462,14 +3602,14 @@
       "type": "service"
     },
     {
-      "id": "44a9aa68-bd02-4d1e-8ad3-462b21b64e6f",
-      "title": "Vegetasjon - Beite for storfe - Egnethet",
+      "id": "6a4a485a-1dc4-4d20-8d9a-53271797168a",
+      "title": "Vegetasjon - WMS",
       "organization": "Norsk institutt for bioøkonomi",
       "category": "landbruk",
       "url": "https://wms.nibio.no/cgi-bin/vegetasjon",
       "layer": "VEGETASJON",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/44a9aa68-bd02-4d1e-8ad3-462b21b64e6f",
-      "type": "dataset"
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/6a4a485a-1dc4-4d20-8d9a-53271797168a",
+      "type": "service"
     },
     {
       "id": "7f854c3d-4c65-4581-ab94-087a76564ee2",
@@ -3482,24 +3622,24 @@
       "type": "dataset"
     },
     {
-      "id": "0d0decb1-3745-498d-8d3f-2947c5cd9020",
-      "title": "Landskap - Underregion",
-      "organization": "Norsk institutt for bioøkonomi",
-      "category": "landskap",
-      "url": "https://wms.nibio.no/cgi-bin/landskap",
-      "layer": "LANDSKAP",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/0d0decb1-3745-498d-8d3f-2947c5cd9020",
-      "type": "dataset"
+      "id": "6b58021d-9c91-425a-9c67-7e424f007c1b",
+      "title": "Vernskog - WMS",
+      "organization": "Landbruksdirektoratet",
+      "category": "landbruk",
+      "url": "https://wms.nibio.no/cgi-bin/vernskog2",
+      "layer": "VERNSKOG2",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/6b58021d-9c91-425a-9c67-7e424f007c1b",
+      "type": "service"
     },
     {
-      "id": "2d02bb1b-9759-4a19-8cf8-ee41566c089c",
-      "title": "Anadrome laksefisk - Utløpspunkt",
+      "id": "a1e6a980-7e56-4922-90c0-e131d9e8f897",
+      "title": "Anadrome laksefisk WMS",
       "organization": "Miljødirektoratet",
       "category": "natur",
       "url": "https://kart.miljodirektoratet.no/arcgis/services/anadrome_laksefisk/MapServer/WMSServer",
       "layer": "anadrome_strekninger_omr,anadrome_forvaltningsregioner,anadrome_bestander_sjoroye,anadrome_bestander_sjoorret,anadrome_bestander_laks,anadrome_strekninger_lin,anadrome_utlopspunkt,anadrome_vandringshinder_sjoroye,anadrome_vandringshinder_sjoorret,anadrome_vandringshinder_laks",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/2d02bb1b-9759-4a19-8cf8-ee41566c089c",
-      "type": "dataset"
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a1e6a980-7e56-4922-90c0-e131d9e8f897",
+      "type": "service"
     },
     {
       "id": "f532544f-67f7-4bbd-9385-1446a520ad23",
@@ -3532,14 +3672,14 @@
       "type": "dataset"
     },
     {
-      "id": "d2810d22-6974-4897-94fd-bdfe0af1cfbe",
-      "title": "Artskart - funn av arter",
+      "id": "010e6d6b-5ba7-4d1c-9b2e-e5dc6133fc79",
+      "title": "Artskart fremmede arter WMS",
       "organization": "Artsdatabanken",
       "category": "natur",
       "url": "https://kart.artsdatabanken.no/WMS/artskartfa.aspx",
       "layer": "Artskart",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d2810d22-6974-4897-94fd-bdfe0af1cfbe",
-      "type": "dataset"
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/010e6d6b-5ba7-4d1c-9b2e-e5dc6133fc79",
+      "type": "service"
     },
     {
       "id": "e9755acf-108f-4cc8-93b0-9140bb664961",
@@ -3562,13 +3702,33 @@
       "type": "dataset"
     },
     {
+      "id": "31e7887a-5c45-4086-a9e9-203412ca72c4",
+      "title": "Biogeografiske regioner WMS",
+      "organization": "Miljødirektoratet",
+      "category": "natur",
+      "url": "https://kart.miljodirektoratet.no/geoserver/biogeografiske_regioner/wms",
+      "layer": "biogeografiske_regioner_grense,biogeografiske_regioner_omrade",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/31e7887a-5c45-4086-a9e9-203412ca72c4",
+      "type": "service"
+    },
+    {
       "id": "66f09e22-23a4-43c6-a0df-426d2b317890",
       "title": "Bioklimatiske soner og -seksjoner WMS",
       "organization": "Artsdatabanken",
       "category": "natur",
       "url": "https://kart.artsdatabanken.no/WMS/lkm.aspx?https%3A%2F%2Fkart.artsdatabanken.no%2Fwms%2Flkm.aspx%3FVERSION=1.3.0&TRANSPARENT=true&LAYERS=seksjoner2017",
-      "layer": "soner2017",
+      "layer": "LKM",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/66f09e22-23a4-43c6-a0df-426d2b317890",
+      "type": "service"
+    },
+    {
+      "id": "d847521e-cca5-4934-a2cf-0cf134757f09",
+      "title": "Elvenett Elvis WMS",
+      "organization": "Norges vassdrags- og energidirektorat",
+      "category": "natur",
+      "url": "https://kart.nve.no/enterprise/services/Elvenett1/MapServer/WMSServer",
+      "layer": "elvenett,hovedelv,oversikt",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/d847521e-cca5-4934-a2cf-0cf134757f09",
       "type": "service"
     },
     {
@@ -3602,6 +3762,16 @@
       "type": "dataset"
     },
     {
+      "id": "7c0198f4-b579-45c7-b4e2-a5d6350318af",
+      "title": "Fjordkatalogen WMS",
+      "organization": "Miljødirektoratet",
+      "category": "natur",
+      "url": "https://kart.miljodirektoratet.no/geoserver/fjordkatalogen/wms",
+      "layer": "fjordkatalogen_grenser,fjordkatalogen_omrade",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/7c0198f4-b579-45c7-b4e2-a5d6350318af",
+      "type": "service"
+    },
+    {
       "id": "800b3274-7c07-41d8-956b-313d253ea564",
       "title": "Forvaltningsområder for rovdyr",
       "organization": "Miljødirektoratet",
@@ -3632,6 +3802,16 @@
       "type": "dataset"
     },
     {
+      "id": "e5e2e820-adea-456a-821d-5de3d38d2fbe",
+      "title": "Hydrologiske data WMS",
+      "organization": "Norges vassdrags- og energidirektorat",
+      "category": "natur",
+      "url": "https://kart.nve.no/enterprise/services/HydrologiskeData3/MapServer/WMSServer",
+      "layer": "Malest_totalnedb,Malest_lokalnedb,Arsavrenning_mm_aar,Malestasjoner",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e5e2e820-adea-456a-821d-5de3d38d2fbe",
+      "type": "service"
+    },
+    {
       "id": "277bda73-b924-4a0e-b299-ea5441de2d3b",
       "title": "Inngrepsfri natur i Norge",
       "organization": "Miljødirektoratet",
@@ -3652,14 +3832,14 @@
       "type": "dataset"
     },
     {
-      "id": "823b8639-9a49-41bf-8571-3608435eb149",
-      "title": "Innsjødatabase",
+      "id": "a7cbda94-e62e-471e-8f47-cca1c6228535",
+      "title": "Innsjødatabase WMS",
       "organization": "Norges vassdrags- og energidirektorat",
       "category": "natur",
       "url": "https://kart.nve.no/enterprise/services/Innsjodatabase2/MapServer/WMSServer",
       "layer": "KommunefordeltInnsjo,Innsjodatabase,Dybdekart",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/823b8639-9a49-41bf-8571-3608435eb149",
-      "type": "dataset"
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a7cbda94-e62e-471e-8f47-cca1c6228535",
+      "type": "service"
     },
     {
       "id": "6a5f5d70-e865-4a7c-8358-f1e725598bd9",
@@ -3677,7 +3857,7 @@
       "organization": "Miljødirektoratet",
       "category": "natur",
       "url": "https://wms.nibio.no/cgi-bin/graastruktur",
-      "layer": "Grå arealer",
+      "layer": "graa_arealer",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c5f09d79-1546-495c-8b36-91efd4008bd7",
       "type": "dataset"
     },
@@ -3710,6 +3890,16 @@
       "layer": "kulturlandskap_verdifulle",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a6368bed-4896-41d3-92aa-cc2b4261adc3",
       "type": "dataset"
+    },
+    {
+      "id": "19f5d1b3-1007-48e5-b762-183ce51b457b",
+      "title": "Landskap - WMS",
+      "organization": "Norsk institutt for bioøkonomi",
+      "category": "natur",
+      "url": "https://wms.nibio.no/cgi-bin/landskap",
+      "layer": "LANDSKAP",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/19f5d1b3-1007-48e5-b762-183ce51b457b",
+      "type": "service"
     },
     {
       "id": "1f9e17d4-bf56-4bf4-a2a8-7d17a0873761",
@@ -3902,14 +4092,24 @@
       "type": "dataset"
     },
     {
-      "id": "5857ec0a-8d2c-4cd8-baa2-0dc54ae213b4",
-      "title": "Naturvernområder",
+      "id": "fa6a495d-05a1-4c0d-ba67-45a1d47fca92",
+      "title": "Naturvernområder WMS",
       "organization": "Miljødirektoratet",
       "category": "natur",
       "url": "https://kart.miljodirektoratet.no/arcgis/services/vern/mapserver/WMSServer",
       "layer": "foreslatt_naturvern_grense,foreslatt_naturvern_omrade,naturvern_grense,naturvern_teiggrensepunkt,naturvern_klasser_omrade,naturvern_omrade",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/5857ec0a-8d2c-4cd8-baa2-0dc54ae213b4",
-      "type": "dataset"
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/fa6a495d-05a1-4c0d-ba67-45a1d47fca92",
+      "type": "service"
+    },
+    {
+      "id": "269ed5de-d561-4420-a996-61d294da93df",
+      "title": "Nedbørfelt WMS",
+      "organization": "Norges vassdrags- og energidirektorat",
+      "category": "natur",
+      "url": "https://kart.nve.no/enterprise/services/Nedborfelt2/MapServer/WMSServer",
+      "layer": "Hele_Hierarkiet,Hovedfelt_Nedborfelt_til_hav,Sidenedborfelt,REGINE_enhet,Vassdragsomrade",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/269ed5de-d561-4420-a996-61d294da93df",
+      "type": "service"
     },
     {
       "id": "e43e9a94-f1db-4629-8de5-908f0aaf7087",
@@ -3949,16 +4149,6 @@
       "url": "https://kart.hi.no/data/oseanografi/wms",
       "layer": "Norkyst_gjennomsnittlig_stromstyrke_og_retning_100m",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/bc3c3c2f-4de8-4d2d-9bed-a2052d998400",
-      "type": "dataset"
-    },
-    {
-      "id": "43547797-c920-4157-8406-06f5150abb09",
-      "title": "Norkyst Gjennomsnittlig sjøtemperatur",
-      "organization": "Havforskningsinstituttet",
-      "category": "natur",
-      "url": "https://kart.hi.no/data/oseanografi/wms",
-      "layer": "Saltholdighet i vannmassene,Temperatur i vannmassene,Norkyst_gjennomsnittlig_stromstyrke_og_retning_000m,Norkyst_gjennomsnittlig_stromstyrke_og_retning_005m,Norkyst_gjennomsnittlig_stromstyrke_og_retning_015m,Norkyst_gjennomsnittlig_stromstyrke_og_retning_030m,Norkyst_gjennomsnittlig_stromstyrke_og_retning_050m,Norkyst_gjennomsnittlig_stromstyrke_og_retning_100m,Norkyst_gjennomsnittlig_stromstyrke_og_retning_150m,Norkyst_gjennomsnittlig_stromstyrke_og_retning_200m,Norkyst_gjennomsnittlig_stromstyrke_og_retning_250m,Overflatestrom_Atlanterhavet,Overflatestrom_Barentshavet,Strandingskart_plast_UTM33,norkyst800_gjennomsnittlig_temperatur_ved_havbunn",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/43547797-c920-4157-8406-06f5150abb09",
       "type": "dataset"
     },
     {
@@ -4122,16 +4312,6 @@
       "type": "dataset"
     },
     {
-      "id": "6705ade7-5785-4611-9110-17bcb21d2ff9",
-      "title": "Vannområder",
-      "organization": "Miljødirektoratet",
-      "category": "natur",
-      "url": "https://kart3.miljodirektoratet.no/arcgis/services/vanndir_adm_omrader/MapServer/WMSServer",
-      "layer": "vannregionmyndighet_navn,vannomraade_navn,vannregion_navn,klimasoner,oekoregion_marin,oekoregion_elv_innsjoe,vannregionmyndighet,vannomraade,vannregion",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/6705ade7-5785-4611-9110-17bcb21d2ff9",
-      "type": "dataset"
-    },
-    {
       "id": "6488264e-4ade-4430-bb27-96f0824e0eb8",
       "title": "Vannregioner",
       "organization": "Miljødirektoratet",
@@ -4139,16 +4319,6 @@
       "url": "https://kart3.miljodirektoratet.no/arcgis/services/vanndir_adm_omrader/MapServer/WMSServer",
       "layer": "vannregion",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/6488264e-4ade-4430-bb27-96f0824e0eb8",
-      "type": "dataset"
-    },
-    {
-      "id": "390afc10-ea03-46b0-821e-fad606a99a7f",
-      "title": "Vassdragsområde",
-      "organization": "Norges vassdrags- og energidirektorat",
-      "category": "natur",
-      "url": "https://kart.nve.no/enterprise/services/Nedborfelt2/MapServer/WMSServer",
-      "layer": "Hele_Hierarkiet,Hovedfelt_Nedborfelt_til_hav,Sidenedborfelt,REGINE_enhet,Vassdragsomrade",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/390afc10-ea03-46b0-821e-fad606a99a7f",
       "type": "dataset"
     },
     {
@@ -4257,7 +4427,7 @@
       "organization": "Kartverket",
       "category": "samferdsel",
       "url": "https://wms.geonorge.no/skwms1/wms.inspire_tn_ro",
-      "layer": "TN.RoadTransportNetwork.RoadLink",
+      "layer": "inspire_tn_ro",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/83d8b91d-1491-4aec-b4c8-a9450a86b95d",
       "type": "service"
     },
@@ -4279,16 +4449,6 @@
       "url": "https://kart2.miljodirektoratet.no/arcgis/services/svalbard/motorferdsel_svalbard/MapServer/WMSServer",
       "layer": "fartsrestriksjoner",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/e6c0454b-42d5-48c3-82ad-25206788749c",
-      "type": "dataset"
-    },
-    {
-      "id": "9444edb5-9541-4fc1-89ce-76fa6eae77ef",
-      "title": "Motorferdsel Svalbard - regler fastboende og tilreisende",
-      "organization": "Miljødirektoratet",
-      "category": "samferdsel",
-      "url": "https://kart2.miljodirektoratet.no/arcgis/services/svalbard/motorferdsel_svalbard/MapServer/WMSServer",
-      "layer": "motorferdsel_tilreisende,motorferdsel_fastboende,ferdselsare_tilreisende,ferdselsare_fastboende,fartsrestriksjoner",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/9444edb5-9541-4fc1-89ce-76fa6eae77ef",
       "type": "dataset"
     },
     {
@@ -4342,16 +4502,6 @@
       "type": "dataset"
     },
     {
-      "id": "c4436a5f-1e22-461a-8209-786f7052acb5",
-      "title": "Brannalarmsentraler",
-      "organization": "Direktoratet for samfunnssikkerhet og beredskap",
-      "category": "samfunnssikkerhet",
-      "url": "https://ogc.dsb.no/wms.ashx",
-      "layer": "MS",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/c4436a5f-1e22-461a-8209-786f7052acb5",
-      "type": "dataset"
-    },
-    {
       "id": "0ccce81d-a72e-46ca-8bd9-57b362376485",
       "title": "Brannstasjoner",
       "organization": "Direktoratet for samfunnssikkerhet og beredskap",
@@ -4372,14 +4522,14 @@
       "type": "dataset"
     },
     {
-      "id": "2303ad8a-eee1-446e-824f-13a46004a8f2",
-      "title": "Drikkevann - inntakspunkter",
-      "organization": "Mattilsynet",
+      "id": "21be7540-adba-42d9-9f3c-583365491eea",
+      "title": "DSBs WMS-tjenester",
+      "organization": "Direktoratet for samfunnssikkerhet og beredskap",
       "category": "samfunnssikkerhet",
-      "url": "https://kart.mattilsynet.no/wmscache/service",
-      "layer": "Mattilsynet_Vannverk_Inntakspunkter,Mattilsynet_Dyrehold_Produksjonsdyr,Mattilsynet_Dyrehold_Fjoerfehold,Mattilsynet_Bigaardsplasser,Mattilsynet_Innsjoer_Drikkevann_201804010,Mattilsynet_Drikkevann_Bronn,Mattilsynet_Vann_Drikkevannsformaal_20180410,Mattilsynet_Varsomhetsomraader_Innsjoer,Mattilsynet_Grunnvann,Mattilsynet_Innsjo_Drikkevann",
-      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/2303ad8a-eee1-446e-824f-13a46004a8f2",
-      "type": "dataset"
+      "url": "https://ogc.dsb.no/wms.ashx",
+      "layer": "MS",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/21be7540-adba-42d9-9f3c-583365491eea",
+      "type": "service"
     },
     {
       "id": "d4a61153-3a21-4593-900c-1587b5b1c42d",
@@ -4460,6 +4610,16 @@
       "layer": "KvikkleireKartlagtOmrade",
       "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/a29b905c-6aaa-4283-ae2c-d167624c08a8",
       "type": "dataset"
+    },
+    {
+      "id": "f8007522-2b73-4702-bb97-50c720e5c3f8",
+      "title": "Kvikkleire WMS",
+      "organization": "Norges vassdrags- og energidirektorat",
+      "category": "samfunnssikkerhet",
+      "url": "https://kart.nve.no/enterprise/services/SkredKvikkleire2/MapServer/WMSServer",
+      "layer": "KvikkleireKartlagtOmrade,KvikkleireRisiko,KvikkleireFaregrad",
+      "detailsUrl": "https://kartkatalog.geonorge.no/metadata/uuid/f8007522-2b73-4702-bb97-50c720e5c3f8",
+      "type": "service"
     },
     {
       "id": "073b334a-5778-46b4-906d-d28427821ecd",

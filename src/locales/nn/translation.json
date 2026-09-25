@@ -305,7 +305,6 @@
           },
           "geonorgeSearch": {
             "heading": "Kartlag frå Geonorge",
-            "placeholder": "Filtrer på namn eller eigar...",
             "addButton": "Legg til i kartet",
             "added": "Lagt til",
             "noResults": "Ingen kartlag funne.",
@@ -332,7 +331,9 @@
               "samfunnssikkerhet": "Samfunnstryggleik og beredskap",
               "varOgKlima": "Vêr og klima",
               "annet": "Anna"
-            }
+            },
+            "categoryLabel": "Kategori",
+            "filterLabel": "Søk etter namn eller eigar"
           },
           "addWms": {
             "removeButton": "Fjern lag",
@@ -527,9 +528,6 @@
   "featureInfo": {
     "title": "Objektinformasjon",
     "loading": "Hentar informasjon..."
-  },
-  "activeLayers": {
-    "title": "Lag lagt til frå URL"
   },
   "legend": {
     "heading": {

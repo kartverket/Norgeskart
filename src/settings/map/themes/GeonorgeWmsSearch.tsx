@@ -1,6 +1,8 @@
 import {
   Box,
   createListCollection,
+  FieldLabel,
+  FieldRoot,
   Flex,
   Heading,
   IconButton,
@@ -8,6 +10,7 @@ import {
   InputGroup,
   SelectContent,
   SelectItem,
+  SelectLabel,
   SelectRoot,
   SelectTrigger,
   SelectValueText,
@@ -157,7 +160,9 @@ export const GeonorgeWmsSearch = () => {
         {t('map.settings.layers.theme.geonorgeSearch.heading')}
       </Heading>
 
-      <VStack align="stretch" gap={2}>
+      {/* Labels, not placeholders, carry the field purpose (design.kartverket.no
+          Search/skjemakomponenter); role="search" makes it a landmark. */}
+      <VStack align="stretch" gap={2} role="search">
         <SelectRoot
           size="sm"
           collection={categoryCollection}
@@ -167,6 +172,9 @@ export const GeonorgeWmsSearch = () => {
           }}
           disabled={!layers}
         >
+          <SelectLabel fontSize="xs">
+            {t('map.settings.layers.theme.geonorgeSearch.categoryLabel')}
+          </SelectLabel>
           <SelectTrigger>
             <SelectValueText />
           </SelectTrigger>
@@ -179,39 +187,44 @@ export const GeonorgeWmsSearch = () => {
           </SelectContent>
         </SelectRoot>
 
-        <InputGroup endElement={!layers ? <Spinner size="xs" /> : undefined}>
-          <Input
-            size="sm"
-            placeholder={t(
-              'map.settings.layers.theme.geonorgeSearch.placeholder',
-            )}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            disabled={!layers}
-          />
-        </InputGroup>
+        <FieldRoot disabled={!layers}>
+          <FieldLabel fontSize="xs">
+            {t('map.settings.layers.theme.geonorgeSearch.filterLabel')}
+          </FieldLabel>
+          <InputGroup endElement={!layers ? <Spinner size="xs" /> : undefined}>
+            <Input
+              size="sm"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </InputGroup>
+        </FieldRoot>
       </VStack>
 
-      {isFiltering && layers && results.length === 0 && (
-        <Text fontSize="xs" color="gray.500" marginTop={2}>
-          {t('map.settings.layers.theme.geonorgeSearch.noResults')}
-        </Text>
-      )}
+      {/* Filtering is live, so result/error messages must be announced. */}
+      <Box aria-live="polite">
+        {isFiltering && layers && results.length === 0 && (
+          <Text fontSize="xs" color="gray.500" marginTop={2}>
+            {t('map.settings.layers.theme.geonorgeSearch.noResults')}
+          </Text>
+        )}
 
-      {results.length > MAX_VISIBLE_RESULTS && (
-        <Text fontSize="xs" color="gray.500" marginTop={2}>
-          {t('map.settings.layers.theme.geonorgeSearch.tooManyResults', {
-            shown: MAX_VISIBLE_RESULTS,
-            total: results.length,
-          })}
-        </Text>
-      )}
+        {results.length > MAX_VISIBLE_RESULTS && (
+          <Text fontSize="xs" color="gray.500" marginTop={2}>
+            {t('map.settings.layers.theme.geonorgeSearch.tooManyResults', {
+              shown: MAX_VISIBLE_RESULTS,
+              total: results.length,
+            })}
+          </Text>
+        )}
 
-      {addError && (
-        <Text fontSize="xs" color="red.500" marginTop={2}>
-          {addError}
-        </Text>
-      )}
+        {addError && (
+          <Text fontSize="xs" color="red.500" marginTop={2}>
+            {addError}
+          </Text>
+        )}
+      </Box>
 
       {results.length > 0 && (
         <VStack

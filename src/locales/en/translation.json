@@ -300,7 +300,6 @@
           },
           "geonorgeSearch": {
             "heading": "Map layers from Geonorge",
-            "placeholder": "Filter by name or owner...",
             "addButton": "Add to map",
             "added": "Added",
             "noResults": "No map layers found.",
@@ -327,7 +326,9 @@
               "samfunnssikkerhet": "Public safety and emergency preparedness",
               "varOgKlima": "Weather and climate",
               "annet": "Other"
-            }
+            },
+            "categoryLabel": "Category",
+            "filterLabel": "Search by name or owner"
           },
           "addWms": {
             "removeButton": "Remove layer",
@@ -522,9 +523,6 @@
   "featureInfo": {
     "title": "Object information",
     "loading": "Loading information..."
-  },
-  "activeLayers": {
-    "title": "Layers added from URL"
   },
   "legend": {
     "heading": {
