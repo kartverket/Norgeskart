@@ -15,6 +15,7 @@
     "preview": "vite preview",
     "aword": "node scripts/addWord.js",
     "rword": "node scripts/removeWord.js",
+    "geonorge-wms": "node scripts/generateGeonorgeWmsLayers.js",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },
