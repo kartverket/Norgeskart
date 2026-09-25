@@ -333,14 +333,22 @@
               "annet": "Anna"
             },
             "categoryLabel": "Kategori",
-            "filterLabel": "Søk etter namn eller eigar"
+            "filterLabel": "Søk etter namn eller eigar",
+            "addService": "Legg til heile tenesta",
+            "detailedTitle": "{{title}} (detaljert)",
+            "detailedNote": "Blir først vist nærare enn 1:{{scale}}"
           },
           "addWms": {
             "removeButton": "Fjern lag",
             "moveUp": "Flytt opp",
             "moveDown": "Flytt ned",
             "opacity": "Gjennomsiktigheit",
-            "geonorgeLink": "Opne i Geonorge"
+            "geonorgeLink": "Opne i Geonorge",
+            "zoomInHint": "Blir først vist når du zoomar inn forbi 1:{{scale}}.",
+            "zoomInButton": "Zoom inn",
+            "zoomOutHint": "Blir berre vist når du zoomar ut forbi 1:{{scale}}.",
+            "zoomOutButton": "Zoom ut",
+            "fromService": "Frå {{service}}"
           }
         }
       }

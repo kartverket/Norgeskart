@@ -328,14 +328,22 @@
               "annet": "Other"
             },
             "categoryLabel": "Category",
-            "filterLabel": "Search by name or owner"
+            "filterLabel": "Search by name or owner",
+            "addService": "Add the whole service",
+            "detailedTitle": "{{title}} (detailed)",
+            "detailedNote": "Only shown closer than 1:{{scale}}"
           },
           "addWms": {
             "removeButton": "Remove layer",
             "moveUp": "Move up",
             "moveDown": "Move down",
             "opacity": "Opacity",
-            "geonorgeLink": "Open in Geonorge"
+            "geonorgeLink": "Open in Geonorge",
+            "zoomInHint": "Only shown when zoomed in past 1:{{scale}}.",
+            "zoomInButton": "Zoom in",
+            "zoomOutHint": "Only shown when zoomed out past 1:{{scale}}.",
+            "zoomOutButton": "Zoom out",
+            "fromService": "From {{service}}"
           }
         }
       }

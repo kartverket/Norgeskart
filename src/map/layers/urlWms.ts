@@ -1,7 +1,10 @@
 import { atom } from 'jotai';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import TileLayer from 'ol/layer/Tile';
+import type Map from 'ol/Map';
+import { getPointResolution } from 'ol/proj';
 import { TileWMS } from 'ol/source';
+import { useEffect, useState } from 'react';
 import { urlGeoJsonLayersAtom } from './urlGeoJson';
 
 const WMS_PROTOCOL_PARAMS = ['request', 'service', 'version'];
@@ -109,3 +112,47 @@ export const hasUrlLayersAtom = atom(
   (get) =>
     get(urlWmsLayersAtom).length > 0 || get(urlGeoJsonLayersAtom).length > 0,
 );
+
+// ─── Visible scale range ─────────────────────────────────────────────────────
+// WMS servers only draw a layer between its Min/MaxScaleDenominator (e.g. NVE's
+// "Dam" only below 1:75 000), so an added layer can look broken when the map is
+// zoomed out. These helpers compare the map against that range using the WMS
+// definition of scale (0.28 mm pixels), not the 96 DPI scale shown in the toolbar.
+
+const WMS_PIXEL_SIZE_M = 0.00028;
+
+export type WmsScaleRange = { minScale?: number; maxScale?: number };
+
+const metersPerProjectionUnit = (map: Map) => {
+  const view = map.getView();
+  const center = view.getCenter();
+  return center ? getPointResolution(view.getProjection(), 1, center) : 1;
+};
+
+export const getWmsScale = (map: Map) =>
+  ((map.getView().getResolution() ?? 0) * metersPerProjectionUnit(map)) /
+  WMS_PIXEL_SIZE_M;
+
+export const resolutionForWmsScale = (map: Map, scale: number) =>
+  (scale * WMS_PIXEL_SIZE_M) / metersPerProjectionUnit(map);
+
+/** 'zoomIn' / 'zoomOut' when the layer draws nothing at this scale. */
+export const scaleRangeStatus = (
+  scale: number,
+  { minScale, maxScale }: WmsScaleRange,
+): 'visible' | 'zoomIn' | 'zoomOut' => {
+  if (maxScale !== undefined && scale >= maxScale) return 'zoomIn';
+  if (minScale !== undefined && scale < minScale) return 'zoomOut';
+  return 'visible';
+};
+
+/** Current WMS scale of the map, updated after every pan/zoom. */
+export const useWmsScale = (map: Map) => {
+  const [scale, setScale] = useState(() => getWmsScale(map));
+  useEffect(() => {
+    const update = () => setScale(getWmsScale(map));
+    map.on('moveend', update);
+    return () => map.un('moveend', update);
+  }, [map]);
+  return scale;
+};

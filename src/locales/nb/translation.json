@@ -333,14 +333,22 @@
               "annet": "Annet"
             },
             "categoryLabel": "Kategori",
-            "filterLabel": "Søk etter navn eller eier"
+            "filterLabel": "Søk etter navn eller eier",
+            "addService": "Legg til hele tjenesten",
+            "detailedTitle": "{{title}} (detaljert)",
+            "detailedNote": "Vises først nærmere enn 1:{{scale}}"
           },
           "addWms": {
             "removeButton": "Fjern lag",
             "moveUp": "Flytt opp",
             "moveDown": "Flytt ned",
             "opacity": "Gjennomsiktighet",
-            "geonorgeLink": "Åpne i Geonorge"
+            "geonorgeLink": "Åpne i Geonorge",
+            "zoomInHint": "Vises først når du zoomer inn forbi 1:{{scale}}.",
+            "zoomInButton": "Zoom inn",
+            "zoomOutHint": "Vises bare når du zoomer ut forbi 1:{{scale}}.",
+            "zoomOutButton": "Zoom ut",
+            "fromService": "Fra {{service}}"
           }
         }
       }

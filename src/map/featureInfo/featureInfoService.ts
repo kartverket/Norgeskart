@@ -316,6 +316,12 @@ const parseHtmlFeatureInfo = (html: string): FeatureInfoFeature[] => {
   ];
 };
 
+// Servers answer an unsupported INFO_FORMAT with HTTP 200 and an OGC exception
+// report (NVE/ArcGIS: "Parameter 'InfoFormat' contains unacceptable value").
+// That is "this format failed", not a feature to show.
+export const isServiceException = (text: string) =>
+  /<(\w+:)?ServiceException(Report)?[\s>]/.test(text.slice(0, 2000));
+
 export const parseFeatureInfo = (
   data: string | object,
   contentType: string,
@@ -368,7 +374,13 @@ export const fetchLayerFeatureInfo = async (
 
   const formatsToTry: InfoFormat[] = preferredFormat
     ? [preferredFormat]
-    : ['application/json', 'application/vnd.ogc.gml', 'text/xml', 'text/plain'];
+    : [
+        'application/json',
+        'application/geo+json',
+        'application/vnd.ogc.gml',
+        'text/xml',
+        'text/plain',
+      ];
 
   for (const format of formatsToTry) {
     const url = buildFeatureInfoUrl(layer, coordinate, map, format);
@@ -393,6 +405,9 @@ export const fetchLayerFeatureInfo = async (
       const contentType = response.headers.get('content-type') || format;
       const isJson = contentType.includes('json');
       const data = isJson ? await response.json() : await response.text();
+      if (typeof data === 'string' && isServiceException(data)) {
+        continue;
+      }
 
       const features = parseFeatureInfo(data, contentType);
 

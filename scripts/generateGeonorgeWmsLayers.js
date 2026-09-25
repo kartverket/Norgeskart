@@ -46,7 +46,9 @@ const TYPE_PRIORITY = { dataset: 0, series: 1, servicelayer: 2, service: 3 };
 const DATASET_TYPES = { dataset: true, series: true };
 
 const xml = new XMLParser({
-  ignoreAttributes: true,
+  // Only Layer@queryable matters; other attributes would turn text nodes like
+  // <Title xml:lang="…"> into objects.
+  ignoreAttributes: (name) => name !== 'queryable',
   removeNSPrefix: true,
   isArray: (name) => ['Layer', 'CRS', 'SRS'].includes(name),
 });
@@ -145,6 +147,24 @@ const usefulTitle = (t) => {
     : title;
 };
 
+// GetFeatureInfo formats Norgeskart's featureInfoService can parse, best first.
+// Servers answer anything else with an exception (NVE rejects application/json
+// but offers application/geo+json), so pick from what the service advertises.
+const INFO_FORMAT_PREFERENCE = [
+  'application/json',
+  'application/geo+json',
+  'application/vnd.ogc.gml',
+  'text/xml',
+  'text/plain',
+  'text/html',
+];
+const pickInfoFormat = (capability) => {
+  const gfi = capability?.Request?.GetFeatureInfo;
+  if (!gfi) return null;
+  const offered = new Set([gfi.Format ?? []].flat().map(String));
+  return INFO_FORMAT_PREFERENCE.find((f) => offered.has(f)) ?? null;
+};
+
 const parseCapabilities = (text) => {
   const doc = xml.parse(text);
   const caps = doc.WMS_Capabilities ?? doc.WMT_MS_Capabilities;
@@ -152,22 +172,48 @@ const parseCapabilities = (text) => {
   if (!root) return null;
   const layers = [];
   const crs = new Set();
-  const walk = (layer) => {
+  // Scale limits (WMS 1.3 Min/MaxScaleDenominator) inherit from the parent.
+  // Returns the range in which the layer actually draws something.
+  const walk = (layer, inherited) => {
     for (const c of [...(layer.CRS ?? []), ...(layer.SRS ?? [])]) {
       String(c)
         .split(/\s+/)
         .forEach((v) => crs.add(v));
     }
+    const own = {
+      min: Number(layer.MinScaleDenominator ?? inherited.min),
+      max: Number(layer.MaxScaleDenominator ?? inherited.max),
+    };
+    // A group only draws its children: its range is theirs, clipped by any
+    // explicit limit on the group (MarinGrenseWMS4 has none, all children stop
+    // at 1:150 000). A leaf keeps its own, inherited range.
+    const childResults = (layer.Layer ?? []).map((child) => walk(child, own));
+    const childRanges = childResults;
+    const range =
+      childRanges.length === 0
+        ? own
+        : {
+            min: Math.max(own.min, Math.min(...childRanges.map((r) => r.min))),
+            max: Math.min(own.max, Math.max(...childRanges.map((r) => r.max))),
+          };
+    // Queryable if it or anything below it is: a group answers for its children.
+    const queryable =
+      layer['@_queryable'] === '1' ||
+      layer['@_queryable'] === 1 ||
+      childResults.some((r) => r.queryable);
     if (layer.Name) {
       layers.push({
         name: String(layer.Name),
         title: String(layer.Title ?? ''),
         isRoot: layer === root,
+        minScale: range.min,
+        maxScale: range.max,
+        queryable,
       });
     }
-    (layer.Layer ?? []).forEach(walk);
+    return { ...range, queryable };
   };
-  walk(root);
+  walk(root, { min: 0, max: Infinity });
   // Topmost named layers: ArcGIS and some GeoServer groups nest unnamed folders.
   let level = root.Layer ?? [];
   while (level.length > 0 && !level.some((l) => l.Name)) {
@@ -176,6 +222,7 @@ const parseCapabilities = (text) => {
   const children = level.filter((l) => l.Name).map((l) => String(l.Name));
   return {
     serviceTitle: usefulTitle(caps.Service?.Title) || usefulTitle(root.Title),
+    infoFormat: pickInfoFormat(caps.Capability),
     rootName: root.Name ? String(root.Name) : null,
     children,
     layers,
@@ -283,6 +330,64 @@ const commonTitlePrefix = (titles) => {
     : prefix.replace(/\S*$/, '');
   prefix = prefix.replace(/[\s\-–—:,(]+$/u, '').trim();
   return prefix.length >= MIN_COMMON_TITLE_LENGTH ? prefix : null;
+};
+
+// Visible scale range of the requested layer(s), or {} when unlimited. Lets the
+// app tell users to zoom in instead of showing an empty map (NVE "Dam" draws only
+// below 1:75 000).
+const scaleRange = (caps, layerParam) => {
+  const requested = new Set(layerParam.split(','));
+  const hits = caps.layers.filter((l) => requested.has(l.name));
+  if (hits.length === 0) return {};
+  const min = Math.min(...hits.map((l) => l.minScale));
+  const max = Math.max(...hits.map((l) => l.maxScale));
+  return {
+    ...(min > 0 ? { minScale: Math.round(min) } : {}),
+    ...(Number.isFinite(max) ? { maxScale: Math.round(max) } : {}),
+  };
+};
+
+// Layers that only draw zoomed in (NVE "Dam", below 1:75 000) look broken to
+// most users. If the service also has an overview variant of the same layer
+// ("Dam_N250"), that is the better default; the detailed one is kept as its own
+// entry.
+const OVERVIEW_MAX_SCALE = 1_000_000;
+const findOverviewVariant = (caps, layerName) => {
+  const layer = caps.layers.find((l) => l.name === layerName);
+  if (!layer || !(layer.maxScale < OVERVIEW_MAX_SCALE)) return null;
+  const base = stripWorkspace(layer.name).toLowerCase();
+  const title = normalizeTitle(layer.title);
+  const [best] = caps.layers
+    .filter(
+      (l) =>
+        l !== layer &&
+        // Must actually show at overview scales, not just be named "_oversikt".
+        l.maxScale >= OVERVIEW_MAX_SCALE &&
+        (stripWorkspace(l.name).toLowerCase().startsWith(`${base}_`) ||
+          normalizeTitle(l.title).startsWith(`${title} `)),
+    )
+    .sort((a, b) => b.maxScale - a.maxScale || a.name.length - b.name.length);
+  return best ?? null;
+};
+
+// WMS layer titles/abstracts are mostly technical ("Dam_N250"); the catalog
+// abstract says what the data is. Keep its first sentence, capped for the list.
+const SUMMARY_MAX_LENGTH = 180;
+const summarize = (text) => {
+  const clean = String(text ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!clean) return null;
+  const [sentence] = clean.split(/(?<=[.!?])\s/);
+  if (sentence.length <= SUMMARY_MAX_LENGTH) return sentence;
+  return `${sentence.slice(0, SUMMARY_MAX_LENGTH).replace(/\s+\S*$/, '')}…`;
+};
+
+// Servers reject GetFeatureInfo on layers their capabilities mark
+// queryable="0" (Kartverket's raster/background maps); don't send it at all.
+const isQueryable = (caps, layerParam) => {
+  const requested = new Set(layerParam.split(','));
+  return caps.layers.some((l) => requested.has(l.name) && l.queryable);
 };
 
 const main = async () => {
@@ -397,16 +502,34 @@ const main = async () => {
       continue;
     }
     stats[resolved.match] = (stats[resolved.match] ?? 0) + 1;
-    add({
+    const caps = capsByUrl.get(url);
+    const entry = {
       id: record.Uuid,
       title: record.Title.trim(),
       organization: record.Organization ?? '',
       category: categoryFor(record, url),
       url,
       layer: resolved.layer,
+      ...scaleRange(caps, resolved.layer),
+      summary: summarize(record.Abstract),
       detailsUrl: record.ShowDetailsUrl ?? null,
       type: record.Type,
-    });
+      ...(isQueryable(caps, resolved.layer) ? {} : { queryable: false }),
+      ...(resolved.match === 'whole' ? { whole: true } : {}),
+    };
+    const overview =
+      resolved.match !== 'whole' && findOverviewVariant(caps, resolved.layer);
+    if (overview) {
+      stats.overviewDefault = (stats.overviewDefault ?? 0) + 1;
+      add({
+        ...entry,
+        layer: overview.name,
+        ...scaleRange(caps, overview.name),
+      });
+      add({ ...entry, id: `${record.Uuid}:detailed`, variant: 'detailed' });
+    } else {
+      add(entry);
+    }
   }
 
   // Keep the dropped datasets' data reachable: if no catalog service record
@@ -424,11 +547,50 @@ const main = async () => {
       category: categoryFor({ Type: 'service' }, url),
       url,
       layer,
+      ...scaleRange(caps, layer),
+      summary: null,
       detailsUrl: null,
       type: 'service',
+      ...(isQueryable(caps, layer) ? {} : { queryable: false }),
+      whole: true,
     });
   }
   console.log('Layer resolution:', stats);
+
+  // One header per WMS in the UI, so users see which layers belong together.
+  // Title: the catalog's service record ("Vannkraft WMS") reads better than the
+  // server's own <Title> ("Vannkraft1").
+  const serviceRecords = new Map();
+  for (const { record, urls } of candidates) {
+    if (record.Type !== 'service') continue;
+    const url = urls.find((u) => capsByUrl.has(u));
+    if (url && !serviceRecords.has(url)) serviceRecords.set(url, record);
+  }
+  const entriesByUrl = Object.groupBy(byKey.values(), (e) => e.url);
+  const services = {};
+  for (const [url, entries] of Object.entries(entriesByUrl)) {
+    const record = serviceRecords.get(url);
+    const { organization } = entries[0];
+    // HI publishes one WMS per layer without a catalog service record; there the
+    // layer's own title ("… Dieldrin-nivåer WMS") is the service's name.
+    const soleTitle =
+      new Set(entries.map((e) => e.title)).size === 1
+        ? entries[0].title.replace(/\s*[-–]?\s*WMS$/i, '')
+        : null;
+    services[url] = {
+      title:
+        record?.Title.trim() ||
+        capsByUrl.get(url).serviceTitle ||
+        commonTitlePrefix(datasetTitles(url)) ||
+        soleTitle ||
+        new URL(url).hostname,
+      organization: record?.Organization ?? organization,
+      summary: summarize(record?.Abstract),
+      detailsUrl: record?.ShowDetailsUrl ?? null,
+      // null: no GetFeatureInfo at all, so clicking the map shouldn't query it.
+      infoFormat: capsByUrl.get(url).infoFormat,
+    };
+  }
 
   const layers = [...byKey.values()].sort(
     (a, b) =>
@@ -438,7 +600,7 @@ const main = async () => {
   fs.writeFileSync(
     OUT,
     JSON.stringify(
-      { generated: new Date().toISOString().slice(0, 10), layers },
+      { generated: new Date().toISOString().slice(0, 10), services, layers },
       null,
       2,
     ) + '\n',

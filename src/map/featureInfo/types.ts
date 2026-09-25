@@ -26,6 +26,7 @@ export interface FeatureInfoResult {
 
 export type InfoFormat =
   | 'application/json'
+  | 'application/geo+json'
   | 'application/vnd.ogc.gml'
   | 'application/vnd.ogc.gml/3.1.1'
   | 'text/xml'
