@@ -8,6 +8,7 @@ import {
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
+import { DesktopLayout } from './layout/DesktopLayout';
 import { displayCompassOverlayAtom } from './map/atoms';
 import { BackgroundLayerPopover } from './map/backgroundLayer/BackgroundLayerPopover';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
@@ -51,6 +52,10 @@ export const Layout = () => {
   const hideLogo = selectedResult !== null || isPrintDialogOpen;
   const showDesktopLogo = !isMobile && !hideLogo;
   const showMobileLogo = isMobile && !hideLogo && !isToolOpen;
+
+  if (isLargeScreen) {
+    return <DesktopLayout />;
+  }
 
   return (
     <ErrorBoundary fallback={undefined}>
