@@ -371,9 +371,9 @@
     "holdingNr": "Holding nr.",
     "leaseNr": "Lease nr.",
     "markProperty": {
-      "label": "Show on map"
+      "label": "Show property boundaries"
     },
-    "moreInformation": "Show more",
+    "moreInformation": "View property / land register",
     "multipleAddressesText": "The property has several addresses",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",

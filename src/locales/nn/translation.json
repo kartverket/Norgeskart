@@ -376,9 +376,9 @@
     "holdingNr": "Gardsnr.",
     "leaseNr": "Festenr.",
     "markProperty": {
-      "label": "Vis på kartet"
+      "label": "Vis eigedomsgrenser"
     },
-    "moreInformation": "Vis meir informasjon",
+    "moreInformation": "Sjå eigedom / grunnbok",
     "multipleAddressesText": "Eigedomen har fleire adresser",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",
