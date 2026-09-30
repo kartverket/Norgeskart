@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Icon,
-  MaterialSymbol,
-  Text,
-  VStack,
-} from '@kvib/react';
+import { Box, Button, Icon, MaterialSymbol, Text, VStack } from '@kvib/react';
 
 interface NavigationButtonProps {
   icon: MaterialSymbol;
@@ -15,8 +8,7 @@ interface NavigationButtonProps {
   active?: boolean;
 }
 
-const buttonWidth = (isMinimized: boolean) =>
-  isMinimized ? '44px' : '84px';
+const buttonWidth = (isMinimized: boolean) => (isMinimized ? '44px' : '84px');
 
 export const NavigationButton = ({
   icon,
