@@ -1,8 +1,7 @@
-import { Heading, Stack, Text } from '@kvib/react';
+import { Text } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
-import { Chart as ChartJS } from 'chart.js';
 import { getDefaultStore, useAtom } from 'jotai';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   profileEffect,
@@ -14,14 +13,13 @@ import {
   addDrawInteractionToMap,
   removeDrawInteractionFromMap,
 } from './drawUtils';
-import { ElevationProfileChart } from './ElevationProfileChart';
+/* import { ElevationProfileChart } from './ElevationProfileChart';
 import { ElevationProfileFileUpload } from './ElevationProfileFileUpload';
-import { ElevationProfileFooter } from './ElevationProfileFooter';
+import { ElevationProfileFooter } from './ElevationProfileFooter'; */
 
 export const ElevationProfileSection = () => {
   useAtom(profileEffect);
   const { t } = useTranslation();
-  const chartRef = useRef<ChartJS<'line'> | null>(null);
   const ph = usePostHog();
   useEffect(() => {
     addDrawInteractionToMap(() => {
@@ -36,12 +34,15 @@ export const ElevationProfileSection = () => {
     };
   }, [ph]);
   return (
+    <Text>{t('printdialog.elevationProfile.unavailable')}</Text>
+
+    /* 
     <Stack>
       <Heading size={'md'}>{t('printdialog.elevationProfile.heading')}</Heading>
       <Text>{t('printdialog.elevationProfile.infotext')}</Text>
       <ElevationProfileFileUpload />
       <ElevationProfileChart chartRef={chartRef} />
       <ElevationProfileFooter chartRef={chartRef} />
-    </Stack>
+    </Stack> */
   );
 };

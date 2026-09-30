@@ -516,6 +516,7 @@
     "elevationProfile": {
       "heading": "Draw a line to create a elevation profile",
       "infotext": "Start creating a elevation profile by uploading a .GPX file or by clicking the map to place the first point and double click to finish.",
+      "unavailable": "The elevation profile is unfortunately unavailable right now. We are working on it.",
       "jobError": "Failed to load elevation profile data.",
       "jobRunning": "Creating profile",
       "buttons": {
