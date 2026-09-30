@@ -3,11 +3,9 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   Box,
-  Flex,
+  Button,
+  Grid,
   Link,
-  Stack,
-  Switch,
-  SwitchLabel,
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
@@ -141,7 +139,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     };
   }, [showGeometry, property]);
 
-  const handleSwitchChange = async (checked: boolean) => {
+  const handleSwitchChange = (checked: boolean) => {
     setShowGeometry(checked);
   };
 
@@ -169,10 +167,10 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
 
   return (
     <AccordionItem value="propertyInfo">
-      <AccordionItemTrigger pl={0}>
+      <AccordionItemTrigger pl={0} fontStyle="italic">
         {t('infoBox.propertyInfo')}
       </AccordionItemTrigger>
-      <AccordionItemContent>
+      <AccordionItemContent px={0}>
         <Box>
           {addresses.length > 0 && (
             <Box mb={3}>
@@ -186,44 +184,50 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
               ))}
             </Box>
           )}
-          <Stack gap={0}>
-            {hasMultipleAddresses && (
-              <Text mb={4} fontSize="sm">
-                {t('propertyInfo.multipleAddressesText')}
-              </Text>
-            )}
-            <Flex justify="space-between" align="center" mb={2}>
-              <Switch
-                checked={showGeometry}
-                onCheckedChange={(e) => {
-                  handleSwitchChange(e.checked);
-                }}
-              >
-                <SwitchLabel>
-                  {t('propertyInfo.markProperty.label')}
-                </SwitchLabel>
-              </Switch>
-              <Link
-                href={propertyRegisterUrl}
-                target="_blank"
-                fontSize="sm"
-                external
-              >
-                {t('propertyInfo.moreInformation')}
-              </Link>
-            </Flex>
+          {hasMultipleAddresses && (
+            <Text mb={4} fontSize="sm">
+              {t('propertyInfo.multipleAddressesText')}
+            </Text>
+          )}
+          <Link
+            href={propertyRegisterUrl}
+            target="_blank"
+            color="green.600"
+            fontSize="sm"
+            textDecoration="underline"
+            external
+            display="inline-block"
+            mb={3}
+          >
+            {t('propertyInfo.moreInformation')}
+          </Link>
+          <Box mb={4}>
+            <Button
+              variant="outline"
+              colorPalette="green"
+              size="sm"
+              leftIcon={
+                showGeometry ? 'check_box' : 'check_box_outline_blank'
+              }
+              onClick={() => handleSwitchChange(!showGeometry)}
+            >
+              {t('propertyInfo.markProperty.label')}
+            </Button>
+          </Box>
+          <Grid templateColumns="repeat(2, minmax(0, 1fr))" gap={3}>
             {rows.map(([label, value], index) => (
-              <Flex
+              <Box
                 key={label}
-                justify="space-between"
-                bg={index % 2 === 0 ? 'gray.50' : 'white'}
+                bg={index === 2 || index === 3 ? 'green.50' : 'transparent'}
                 p={2}
               >
-                <Text fontSize="sm">{label}</Text>
-                <Text fontSize="sm">{value}</Text>
-              </Flex>
+                <Text fontSize="sm" color="gray.600">
+                  {label}
+                </Text>
+                <Text fontWeight="semibold">{value}</Text>
+              </Box>
             ))}
-          </Stack>
+          </Grid>
         </Box>
       </AccordionItemContent>
     </AccordionItem>

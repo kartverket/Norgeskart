@@ -1,14 +1,20 @@
 import { Box, Grid, GridItem } from '@kvib/react';
+import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { MapComponent } from '../map/MapComponent';
+import { BackgroundLayerPopover } from '../map/backgroundLayer/BackgroundLayerPopover';
+import { mapToolAtom } from '../map/overlay/atoms';
 import { SearchComponent } from '../search/SearchComponent';
+import { selectedResultAtom } from '../search/atoms';
 import { SidePanel } from '../sidePanel/SidePanel';
 import { SideNavigation } from './SideNavigation';
 import { Toolbar } from '../toolbar/Toolbar';
 
 export const DesktopLayout = () => {
   const [isMinimized, setIsMinimized] = useState(false);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const currentMapTool = useAtomValue(mapToolAtom);
+  const selectedResult = useAtomValue(selectedResultAtom);
+  const isPanelOpen = currentMapTool !== null || selectedResult !== null;
   const navigationWidth = isMinimized ? '50px' : '94px';
 
   return (
@@ -24,7 +30,6 @@ export const DesktopLayout = () => {
         <SideNavigation
           isMinimized={isMinimized}
           onToggleMinimized={() => setIsMinimized(!isMinimized)}
-          onOpenPanel={() => setIsPanelOpen(true)}
         />
       </GridItem>
 
@@ -36,6 +41,15 @@ export const DesktopLayout = () => {
         minHeight={0}
       >
         <MapComponent />
+
+        <Box
+          position="absolute"
+          left="10px"
+          bottom="6px"
+          zIndex={1}
+        >
+          <BackgroundLayerPopover />
+        </Box>
 
         {isPanelOpen && (
           <Box
@@ -53,9 +67,11 @@ export const DesktopLayout = () => {
         <Box
           position="absolute"
           top={0}
+          bottom={4}
           right={0}
           width="100%"
           maxWidth="400px"
+          overflow="hidden"
           zIndex={1}
         >
           <SearchComponent />

@@ -23,7 +23,7 @@ import { isPrintDialogOpenAtom } from './print/atoms';
 import { PrintDialog } from './print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from './search/atoms';
 import { useMapClickSearch } from './search/hooks';
-import { InfoBox } from './search/infobox/InfoBox';
+import { MobileInfoBox } from './search/infobox/MobileInfoBox';
 import { SearchComponent } from './search/SearchComponent';
 import { ErrorBoundary } from './shared/ErrorBoundary';
 import { useIsMobileScreen } from './shared/hooks';
@@ -141,7 +141,7 @@ export const Layout = () => {
           )}
           <Flex justifyContent={'flex-end'}>
             <ErrorBoundary fallback={undefined} name={'InfoBox'}>
-              <InfoBox />
+              <MobileInfoBox />
             </ErrorBoundary>
             <ErrorBoundary fallback={undefined} name={'PrintDialog'}>
               {isPrintDialogOpen && <PrintDialog />}

@@ -1,25 +1,83 @@
-import { Box, Image, Link, Separator, VStack } from '@kvib/react';
+import { Box, Image, Link, Separator, toaster, VStack } from '@kvib/react';
+import { useAtom, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { mapToolAtom } from '../map/overlay/atoms';
+import { measureTypeAtom } from '../measure/atoms';
 import { NavigationButton } from './NavigationButton';
 
 interface SideNavigationProps {
   isMinimized: boolean;
   onToggleMinimized: () => void;
-  onOpenPanel: () => void;
 }
 
 export const SideNavigation = ({
   isMinimized,
   onToggleMinimized,
-  onOpenPanel,
 }: SideNavigationProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
+  const setMeasureType = useSetAtom(measureTypeAtom);
+  const handleShareMap = () => {
+    setMapTool(null);
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      toaster.create({
+        title: t('search.actions.shareMap.success'),
+        duration: 2000,
+      });
+    });
+  };
+
+  const handleMeasure = () => {
+    if (currentMapTool === 'measure') {
+      setMapTool(null);
+      setMeasureType(null);
+      return;
+    }
+
+    setMapTool('measure');
+    setMeasureType('length');
+  };
+
   const navigationItems = [
-    { icon: 'layers' as const, label: 'Kartdetaljer', onClick: onOpenPanel },
-    { icon: 'edit' as const, label: t('Tegne') },
-    { icon: 'share' as const, label: t('controller.sharemap.text') },
+    {
+      icon: 'layers' as const,
+      label: 'Kartdetaljer',
+      active: currentMapTool === 'layers',
+      onClick: () => {
+        setMapTool(currentMapTool === 'layers' ? null : 'layers');
+      },
+    },
+    {
+      icon: 'edit' as const,
+      label: t('Tegne'),
+      active: currentMapTool === 'draw',
+      onClick: () => {
+        setMapTool(currentMapTool === 'draw' ? null : 'draw');
+      },
+    },
+    {
+      icon: 'straighten' as const,
+      label: 'Måle',
+      active: currentMapTool === 'measure',
+      onClick: handleMeasure,
+    },
+    {
+      icon: 'share' as const,
+      label: t('controller.sharemap.text'),
+      onClick: handleShareMap,
+    },
     { icon: 'build' as const, label: 'Verktøy' },
-    { icon: 'help' as const, label: t('controller.help.mobiletext') },
+    {
+      icon: 'help' as const,
+      label: t('controller.help.mobiletext'),
+      onClick: () => {
+        setMapTool(null);
+        navigate('/hjelp');
+      },
+      
+    },
   ];
 
   return (
