@@ -6,14 +6,9 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  SwitchControl,
-  SwitchHiddenInput,
-  SwitchLabel,
-  SwitchRoot,
   Tooltip,
   VStack,
 } from '@kvib/react';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   AvailableProjections,
@@ -62,14 +57,10 @@ export interface ProjectionSelectorProps {
 
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
-  const [displayAllProjections, setDisplayAllProjections] =
-    useState<boolean>(false);
 
   const projectionsToDisplay = props.isToolbar
     ? AvailableProjections
-    : displayAllProjections
-      ? allProjections
-      : basicProjections;
+    : allProjections;
 
   const projectionCollection = projectionsToDisplay.map((projection) => {
     const label = t(
@@ -128,19 +119,6 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
 
         <ProjectionPopover isToolbar={props.isToolbar == true} />
       </HStack>
-      {!props.isToolbar && (
-        <SwitchRoot
-          pl={3}
-          checked={displayAllProjections}
-          onCheckedChange={(e) => setDisplayAllProjections(e.checked)}
-        >
-          <SwitchLabel>
-            {t('map.settings.layers.projection.showAllProjections')}
-          </SwitchLabel>
-          <SwitchHiddenInput />
-          <SwitchControl />
-        </SwitchRoot>
-      )}
     </VStack>
   );
 };

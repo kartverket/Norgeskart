@@ -18,7 +18,6 @@ import { getPropertyGeometry } from '../../api/nkApiClient';
 import { getPropertyGeometryLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
 import { mapLayers } from '../../map/layers';
-import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import {
   getUrlParameter,
   removeUrlParameter,
@@ -30,6 +29,15 @@ import {
   getPropetyInfoByCoordinates,
 } from '../searchApi';
 import { getContainingExtent } from './utils';
+
+const formatPropertyText = (value: string) =>
+  value
+    .toLocaleLowerCase('nb-NO')
+    .replace(
+      /(^|[\s,/-])([a-zæøå])/g,
+      (_, separator: string, letter: string) =>
+        `${separator}${letter.toLocaleUpperCase('nb-NO')}`,
+    );
 
 export interface PropertyInfoProps {
   lon: number;
@@ -156,7 +164,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
 
   const rows = [
     [t('propertyInfo.municipalityNr'), property.KOMMUNENR],
-    [t('infoBox.municipality'), capitalizeFirstLetter(property.KOMMUNENAVN)],
+    [t('infoBox.municipality'), formatPropertyText(property.KOMMUNENAVN)],
     [t('propertyInfo.holdingNr'), property.GARDSNR],
     [t('propertyInfo.subholdingNr'), property.BRUKSNR],
     [t('propertyInfo.leaseNr'), property.FESTENR],
@@ -167,19 +175,19 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
 
   return (
     <AccordionItem value="propertyInfo">
-      <AccordionItemTrigger pl={0} fontStyle="italic">
+      <AccordionItemTrigger pl={0}>
         {t('infoBox.propertyInfo')}
       </AccordionItemTrigger>
       <AccordionItemContent px={0}>
         <Box>
           {addresses.length > 0 && (
             <Box mb={3}>
-              <Text fontSize="sm" fontWeight="semibold">
+              <Text fontSize="sm" fontStyle="italic" fontWeight="semibold">
                 {t('propertyInfo.address')}
               </Text>
               {addresses.map((addr, i) => (
                 <Text key={i} fontSize="sm">
-                  {addr}
+                  {formatPropertyText(addr)}
                 </Text>
               ))}
             </Box>
@@ -204,8 +212,15 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
           <Box mb={4}>
             <Button
               variant="outline"
-              colorPalette="green"
               size="sm"
+              fontSize="sm"
+              color="green.700"
+              backgroundColor="green.50"
+              borderColor="green.200"
+              borderRadius="sm"
+              fontWeight="semibold"
+              px={2}
+              py={1}
               leftIcon={
                 showGeometry ? 'check_box' : 'check_box_outline_blank'
               }
@@ -214,7 +229,11 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
               {t('propertyInfo.markProperty.label')}
             </Button>
           </Box>
-          <Grid templateColumns="repeat(2, minmax(0, 1fr))" gap={3}>
+          <Grid
+            templateColumns="repeat(2, minmax(0, 1fr))"
+            rowGap={1}
+            columnGap={0}
+          >
             {rows.map(([label, value], index) => (
               <Box
                 key={label}
@@ -224,7 +243,9 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
                 <Text fontSize="sm" color="gray.600">
                   {label}
                 </Text>
-                <Text fontWeight="semibold">{value}</Text>
+                <Text fontSize="sm" fontWeight="semibold">
+                  {value}
+                </Text>
               </Box>
             ))}
           </Grid>
