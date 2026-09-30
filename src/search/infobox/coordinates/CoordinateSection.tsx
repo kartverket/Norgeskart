@@ -1,4 +1,12 @@
-import { Button, HStack, Stack, Text, toaster, Tooltip } from '@kvib/react';
+import {
+  Box,
+  Button,
+  HStack,
+  Stack,
+  Text,
+  toaster,
+  Tooltip,
+} from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { transform } from 'ol/proj';
 import { useState } from 'react';
@@ -81,12 +89,14 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
         />
       </HStack>
 
-      <CoordinateText
-        x={x}
-        y={y}
-        useDMS={showsDMS}
-        isGeographicProjection={isGeographic}
-      />
+      <Box mt={2}>
+        <CoordinateText
+          x={x}
+          y={y}
+          useDMS={showsDMS}
+          isGeographicProjection={isGeographic}
+        />
+      </Box>
       <HStack>
         <Tooltip
           content={t('infoBox.coordinateSection.copy.toast.title')}
@@ -95,10 +105,11 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
         >
           <Button
             onClick={onCopyClick}
-            leftIcon={'content_copy'}
             w={'fit-content'}
-            variant="secondary"
-            size="xs"
+            variant="outline"
+            colorPalette="green"
+            size="sm"
+            fontSize="sm"
           >
             {showsDMS
               ? t('infoBox.coordinateSection.copy.label_geo')

@@ -20,11 +20,13 @@ import { InfoBoxPreamble } from './InfoBoxPreamble';
 interface InfoBoxContentProps {
 	showMinimizeButton?: boolean;
 	showReportButton?: boolean;
+	showCloseButton?: boolean;
 }
 
 export const InfoBoxContent = ({
 	showMinimizeButton = false,
 	showReportButton = true,
+	showCloseButton = true,
 }: InfoBoxContentProps) => {
 	const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
 	const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
@@ -61,14 +63,16 @@ export const InfoBoxContent = ({
 						{isMinimized ? t('infoBox.showContent') : t('infoBox.hideContent')}
 					</Button>
 				)}
-				<IconButton
-					onClick={onClose}
-					icon="close"
-					colorPalette="red"
-					size="sm"
-					variant="ghost"
-					alignSelf="flex-end"
-				/>
+				{showCloseButton && (
+					<IconButton
+						onClick={onClose}
+						icon="close"
+						colorPalette="red"
+						size="sm"
+						variant="ghost"
+						alignSelf="flex-end"
+					/>
+				)}
 			</Flex>
 			{showHeading && (
 				<Heading fontWeight="bold" size="lg">
@@ -83,7 +87,12 @@ export const InfoBoxContent = ({
 				overflowX="auto"
 				display={isMinimized ? 'none' : 'block'}
 			>
-				<AccordionRoot collapsible multiple defaultValue={[]}>
+				<AccordionRoot
+					key={`${selectedResult.type}-${selectedResult.lon}-${selectedResult.lat}`}
+					collapsible
+					multiple
+					defaultValue={['propertyInfo']}
+				>
 					<InfoboxAccordionContent />
 				</AccordionRoot>
 			</Box>

@@ -3,6 +3,7 @@ import { useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { MapComponent } from '../map/MapComponent';
 import { BackgroundLayerPopover } from '../map/backgroundLayer/BackgroundLayerPopover';
+import { MapControlButtons } from '../map/MapControlButtons';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { SearchComponent } from '../search/SearchComponent';
 import { selectedResultAtom } from '../search/atoms';
@@ -51,6 +52,15 @@ export const DesktopLayout = () => {
           <BackgroundLayerPopover />
         </Box>
 
+        <Box
+          position="absolute"
+          right="10px"
+          bottom="6px"
+          zIndex={1}
+        >
+          <MapControlButtons />
+        </Box>
+
         {isPanelOpen && (
           <Box
             position="absolute"
@@ -67,7 +77,7 @@ export const DesktopLayout = () => {
         <Box
           position="absolute"
           top={0}
-          bottom={4}
+          bottom="150px"
           right={0}
           width="100%"
           maxWidth="400px"

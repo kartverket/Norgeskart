@@ -69,7 +69,6 @@ export const InfoboxAccordionContent = () => {
                 key={place.placeNumber}
                 mb={2}
                 p={2}
-                borderBottom="1px solid #E2E8F0"
               >
                 <PlaceInfo place={place} />
               </Box>
