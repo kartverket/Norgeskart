@@ -1,22 +1,21 @@
-import {
-  Box,
-  Image,
-  Link,
-  Separator,
-  VStack,
-} from '@kvib/react';
+import { Box, Image, Link, Separator, VStack } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 import { NavigationButton } from './NavigationButton';
 
 interface SideNavigationProps {
-    isMinimized: boolean;
-    onToggleMinimized: () => void;
+  isMinimized: boolean;
+  onToggleMinimized: () => void;
+  onOpenPanel: () => void;
 }
 
-export const SideNavigation = ({ isMinimized, onToggleMinimized }: SideNavigationProps) => {
+export const SideNavigation = ({
+  isMinimized,
+  onToggleMinimized,
+  onOpenPanel,
+}: SideNavigationProps) => {
   const { t } = useTranslation();
   const navigationItems = [
-    { icon: 'layers' as const, label: 'Kartdetaljer' },
+    { icon: 'layers' as const, label: 'Kartdetaljer', onClick: onOpenPanel },
     { icon: 'edit' as const, label: t('Tegne') },
     { icon: 'share' as const, label: t('controller.sharemap.text') },
     { icon: 'build' as const, label: 'Verktøy' },
@@ -39,7 +38,7 @@ export const SideNavigation = ({ isMinimized, onToggleMinimized }: SideNavigatio
           />
         </Link>
 
-        <Box my={3}>
+        <Box mt={isMinimized ? 0 : 2}>
           <NavigationButton
             icon={isMinimized ? 'chevron_right' : 'chevron_left'}
             label="Minimer"
@@ -47,7 +46,7 @@ export const SideNavigation = ({ isMinimized, onToggleMinimized }: SideNavigatio
             onClick={onToggleMinimized}
           />
         </Box>
-        <Separator width="100%" my={4} />
+        <Separator width="100%" my={isMinimized ? 1 : 4} />
         <VStack width="100%" gap={isMinimized ? 4 : 12}>
           {navigationItems.map((item) => (
             <NavigationButton

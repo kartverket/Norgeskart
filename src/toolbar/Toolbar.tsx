@@ -79,7 +79,7 @@ export const Toolbar = () => {
     <Flex
       width="100%"
       height={10}
-      bg="#156630"
+      bg="green.600"
       w={'100%'}
       p={2}
       zIndex={10}
@@ -113,13 +113,13 @@ export const Toolbar = () => {
         <ProjectionSettings />
       </Flex>
       <Flex justify="center" alignItems="center" gap={4} color="white">
-        <Tooltip content={t('toolbar.coordinates.tooltip')}>
+        {/* <Tooltip content={t('toolbar.coordinates.tooltip')}>
           <Text fontSize="sm">
             {mousePositionCoords
               ? formatCoords(mousePositionCoords, crsCode, t)
               : ''}
           </Text>
-        </Tooltip>
+        </Tooltip> */}
         <ScaleSelector />
       </Flex>
       <Flex justify="flex-end" alignItems="center" h={'100%'} flex={1}>
