@@ -521,7 +521,6 @@
     "elevationProfile": {
       "heading": "Tegn en linje for å lage en høydeprofil",
       "infotext": "Opprett en høydeprofil ved å laste opp en .GPX fil eller ved å klikke i kartet for å plassere det første punktet og dobbelklikk for å avslutte.",
-      "unavailable": "Høydeprofil er dessverre ikke tilgjengelig akkurat nå. Vi jobber med saken.",
       "jobError": "Kunne ikke lage høydeprofil",
       "jobRunning": "Lager profil",
       "buttons": {
