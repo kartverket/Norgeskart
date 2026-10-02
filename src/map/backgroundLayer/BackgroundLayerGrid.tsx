@@ -19,21 +19,27 @@ const LayerCard = ({
     onClick={onClick}
     variant="ghost"
     colorPalette="green"
-    borderWidth={isActive ? 2 : 0}
-    borderColor={isActive ? 'green.500' : 'transparent'}
-    borderRadius="lg"
-    display="flex"
-    alignItems="center"
-    width="135px"
-    justifyContent="center"
-    maxHeight="100px"
-    padding={10}
+    borderWidth="2px"
+    borderColor={isActive ? 'green.600' : 'transparent'}
+    backgroundColor={isActive ? 'green.50' : 'transparent'}
+    _hover={{ backgroundColor: 'green.50' }}
+    borderRadius="md"
+    width="72px"
+    height="64px"
+    padding={1}
+    aria-label={label}
   >
-    <VStack>
-      <Box width="46px" height="46px" borderRadius="md" overflow="hidden">
-        <Image src={thumbnailUrl} alt={label} width="100%" objectFit="cover" />
+    <VStack gap={1} width="100%">
+      <Box width="56px" height="34px" borderRadius="sm" overflow="hidden">
+        <Image
+          src={thumbnailUrl}
+          alt={label}
+          width="100%"
+          height="100%"
+          objectFit="cover"
+        />
       </Box>
-      <Text fontSize="xs" textAlign="center" lineHeight="short">
+      <Text fontSize="xs" textAlign="center" lineHeight="short" truncate>
         {label}
       </Text>
     </VStack>
@@ -45,13 +51,15 @@ export const BackgroundLayerGrid = ({
   currentLayer,
   setLayer,
   width,
+  columns = 2,
 }: {
   layers: { value: BackgroundLayerName; label: string }[];
   currentLayer: BackgroundLayerName;
   setLayer: (layer: BackgroundLayerName) => void;
   width?: string;
+  columns?: number;
 }) => (
-  <SimpleGrid columns={2} justifyItems="center" gap={0} w={width}>
+  <SimpleGrid columns={columns} justifyItems="center" gap={0} w={width}>
     {layers.map((layer) => (
       <LayerCard
         key={layer.value}

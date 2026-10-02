@@ -1,9 +1,15 @@
-import { Box, Image, Link, Separator, toaster, VStack } from '@kvib/react';
-import { useAtom, useSetAtom } from 'jotai';
+import {
+  Box,
+  Image,
+  Link,
+  Separator,
+  toaster,
+  VStack,
+} from '@kvib/react';
+import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { mapToolAtom } from '../map/overlay/atoms';
-import { measureTypeAtom } from '../measure/atoms';
 import { NavigationButton } from './NavigationButton';
 
 interface SideNavigationProps {
@@ -18,7 +24,6 @@ export const SideNavigation = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
-  const setMeasureType = useSetAtom(measureTypeAtom);
   const handleShareMap = () => {
     setMapTool(null);
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -27,17 +32,6 @@ export const SideNavigation = ({
         duration: 2000,
       });
     });
-  };
-
-  const handleMeasure = () => {
-    if (currentMapTool === 'measure') {
-      setMapTool(null);
-      setMeasureType(null);
-      return;
-    }
-
-    setMapTool('measure');
-    setMeasureType('length');
   };
 
   const navigationItems = [
@@ -58,17 +52,19 @@ export const SideNavigation = ({
       },
     },
     {
-      icon: 'straighten' as const,
-      label: 'Måle',
-      active: currentMapTool === 'measure',
-      onClick: handleMeasure,
+      icon: 'build' as const,
+      label: 'Verktøy',
+      active: currentMapTool === 'tools',
+      onClick: () => {
+        setMapTool(currentMapTool === 'tools' ? null : 'tools');
+      },
     },
     {
       icon: 'share' as const,
       label: t('controller.sharemap.text'),
       onClick: handleShareMap,
     },
-    { icon: 'build' as const, label: 'Verktøy' },
+    
     {
       icon: 'help' as const,
       label: t('controller.help.mobiletext'),
