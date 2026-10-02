@@ -2,10 +2,12 @@ import { Box } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { DrawControls } from '../draw/drawControls/DrawControls';
 import { mapToolAtom } from '../map/overlay/atoms';
-import { MeasurePopoverContent } from '../measure/MeasurePopoverContent';
 import { selectedResultAtom } from '../search/atoms';
 import { InfoBoxContent } from '../search/infobox/InfoBoxContent';
 import { MapThemes } from '../settings/map/themes/MapThemes';
+import { MeasurePanel } from './MeasurePanel';
+import { PrintPanel } from './PrintPanel';
+import { ToolsPanel } from './ToolsPanel';
 
 export const SidePanel = () => {
   const currentMapTool = useAtomValue(mapToolAtom);
@@ -22,9 +24,11 @@ export const SidePanel = () => {
       p={4}
       overflowY="auto"
     >
+      {currentMapTool === 'tools' && <ToolsPanel />}
       {currentMapTool === 'layers' && <MapThemes />}
       {currentMapTool === 'draw' && <DrawControls />}
-      {currentMapTool === 'measure' && <MeasurePopoverContent />}
+      {currentMapTool === 'measure' && <MeasurePanel />}
+      {currentMapTool === 'print' && <PrintPanel />}
       {currentMapTool === null && selectedResult !== null && (
         <InfoBoxContent showReportButton={false} />
       )}

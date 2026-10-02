@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Image,
-  PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverRoot,
@@ -31,13 +30,13 @@ export const BackgroundLayerPopover = () => {
       onOpenChange={(e) => {
         setOpen(e.open);
       }}
-      positioning={{ placement: 'top', offset: { mainAxis: 2 } }}
+      positioning={{ placement: 'right-end', offset: { mainAxis: 2 } }}
     >
       <PopoverTrigger asChild>
         <Button
           pointerEvents="auto"
-          width="56px"
-          height="54px"
+          width="72px"
+          height="64px"
           borderRadius="10px"
           overflow="hidden"
           cursor="pointer"
@@ -78,9 +77,8 @@ export const BackgroundLayerPopover = () => {
           </Box>
         </Button>
       </PopoverTrigger>
-      <PopoverContent width="350px" p={0} borderRadius="2xl" boxShadow="lg">
-        <PopoverArrow />
-        <PopoverBody p={0} maxHeight="420px" overflowY="auto">
+      <PopoverContent width="auto" p={0} borderRadius="2xl" boxShadow="lg">
+        <PopoverBody p={0} width="max-content">
           <Box p={1}>
             <BackgroundLayerGrid
               layers={backgroundLayers.map((layerName) => ({
@@ -90,6 +88,7 @@ export const BackgroundLayerPopover = () => {
                 ),
               }))}
               currentLayer={backgroundLayer}
+              columns={backgroundLayers.length}
               setLayer={(layerName) => {
                 setBackgroundLayer(layerName);
                 setOpen(false);
