@@ -1,14 +1,15 @@
 import { Box } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { DrawControls } from '../draw/drawControls/DrawControls';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { MeasurePopoverContent } from '../measure/MeasurePopoverContent';
+import { ExtentSection } from '../print/Extent/ExtentSection';
 import { selectedResultAtom } from '../search/atoms';
 import { InfoBoxContent } from '../search/infobox/InfoBoxContent';
 import { MapThemes } from '../settings/map/themes/MapThemes';
 
 export const SidePanel = () => {
-  const currentMapTool = useAtomValue(mapToolAtom);
+  const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
   const selectedResult = useAtomValue(selectedResultAtom);
 
   return (
@@ -25,6 +26,9 @@ export const SidePanel = () => {
       {currentMapTool === 'layers' && <MapThemes />}
       {currentMapTool === 'draw' && <DrawControls />}
       {currentMapTool === 'measure' && <MeasurePopoverContent />}
+      {currentMapTool === 'extent' && (
+        <ExtentSection onCancel={() => setMapTool(null)} />
+      )}
       {currentMapTool === null && selectedResult !== null && (
         <InfoBoxContent showReportButton={false} />
       )}

@@ -73,8 +73,20 @@ export const SideNavigation = ({
       onClick: handleMeasure,
     },
     {
-      icon: 'build' as const,
-      label: 'Verktøy',
+      icon: 'crop' as const,
+      label: 'Utsnitt',
+      active: currentMapTool === 'extent',
+      onClick: () => {
+        setMapTool(currentMapTool === 'extent' ? null : 'extent');
+      },
+    },
+    {
+      icon: 'map' as const,
+      label: 'Turkart',
+    },
+    {
+      icon: 'show_chart' as const,
+      label: 'Høydeprofil',
     },
     {
       icon: 'share' as const,
