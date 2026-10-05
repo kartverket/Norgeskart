@@ -4,15 +4,20 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   Alert,
+  Button,
   Flex,
   Heading,
   Text,
   VStack,
 } from '@kvib/react';
-import { getDefaultStore } from 'jotai';
+import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
+import {
+  displayMapLegendAtom,
+  displayMapLegendControlAtom,
+} from '../../../map/atoms';
 import {
   getDirectLayersForCategory,
   getMainCategories,
@@ -31,6 +36,8 @@ export const MapThemes = () => {
   const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
     useThemeLayers();
   const { t, i18n } = useTranslation();
+  const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
+  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
 
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= WARNING_THRESHOLD;
@@ -150,6 +157,17 @@ export const MapThemes = () => {
 
   return (
     <VStack gap={0} align="stretch">
+      {displayMapLegendControl && (
+        <Button
+          width="100%"
+          mb={3}
+          variant="ghost"
+          justifyContent="flex-start"
+          onClick={() => setDisplayMapLegend(true)}
+        >
+          {t('toolbar.legend.tooltip')}
+        </Button>
+      )}
       {showLimitWarning && (
         <Alert status="info" marginTop={2}>
           <Text fontSize="sm">

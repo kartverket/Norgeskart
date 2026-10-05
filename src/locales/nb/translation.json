@@ -466,7 +466,7 @@
       "north": "N"
     },
     "legend": {
-      "tooltip": "Vis symbolforklaring",
+      "tooltip": "Vis tegnforklaring",
       "label": "Tegnforklaring"
     }
   },
