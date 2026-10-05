@@ -83,6 +83,10 @@ export const SideNavigation = ({
     {
       icon: 'map' as const,
       label: 'Turkart',
+      active: currentMapTool === 'hiking',
+      onClick: () => {
+        setMapTool(currentMapTool === 'hiking' ? null : 'hiking');
+      },
     },
     {
       icon: 'show_chart' as const,
