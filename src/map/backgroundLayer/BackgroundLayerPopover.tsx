@@ -13,24 +13,42 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom, getBackgroundLayerImageName } from '../atoms';
 import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
+import type { BackgroundLayerName } from '../layers/backgroundLayers';
 import { BackgroundLayerGrid } from './BackgroundLayerGrid';
 import { getAvailableBackgroundLayers } from './utils';
 
 export const BackgroundLayerPopover = () => {
   const [open, setOpen] = useState(false);
+  const [showAllLayers, setShowAllLayers] = useState(false);
   const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
   const currentProjection = useAtomValue(currentProjectionAtom);
   const { t } = useTranslation();
 
   const backgroundLayers = getAvailableBackgroundLayers(currentProjection);
+  const flyfotoLayer = backgroundLayers.find((layer) =>
+    layer.startsWith('Nibcache_'),
+  );
+  const preferredLayers: BackgroundLayerName[] = [
+    'topo',
+    ...(flyfotoLayer ? [flyfotoLayer] : []),
+    'toporaster',
+    'topograatone',
+  ];
+  const orderedLayers = [
+    ...preferredLayers.filter((layer) => backgroundLayers.includes(layer)),
+    ...backgroundLayers.filter((layer) => !preferredLayers.includes(layer)),
+  ];
+  const visibleLayers = orderedLayers.slice(0, 4);
+  const hasMoreLayers = orderedLayers.length > visibleLayers.length;
 
   return (
     <PopoverRoot
       open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
+        if (!e.open) setShowAllLayers(false);
       }}
-      positioning={{ placement: 'right-end', offset: { mainAxis: 2 } }}
+      positioning={{ placement: 'right-start', offset: { mainAxis: 2 } }}
     >
       <PopoverTrigger asChild>
         <Button
@@ -77,18 +95,26 @@ export const BackgroundLayerPopover = () => {
           </Box>
         </Button>
       </PopoverTrigger>
-      <PopoverContent width="auto" p={0} borderRadius="2xl" boxShadow="lg">
+      <PopoverContent width="auto" borderRadius="2xl" boxShadow="lg">
         <PopoverBody p={0} width="max-content">
-          <Box p={1}>
+          <Box>
             <BackgroundLayerGrid
-              layers={backgroundLayers.map((layerName) => ({
-                value: layerName,
-                label: t(
-                  `map.settings.layers.mapNames.backgroundMaps.${layerName}`,
-                ),
-              }))}
+              layers={(showAllLayers ? orderedLayers : visibleLayers).map(
+                (layerName) => ({
+                  value: layerName,
+                  label: t(
+                    `map.settings.layers.mapNames.backgroundMaps.${layerName}`,
+                  ),
+                }),
+              )}
               currentLayer={backgroundLayer}
-              columns={backgroundLayers.length}
+              columns={
+                showAllLayers
+                  ? orderedLayers.length
+                  : visibleLayers.length + (hasMoreLayers ? 1 : 0)
+              }
+              showMoreButton={!showAllLayers && hasMoreLayers}
+              onMoreClick={() => setShowAllLayers(true)}
               setLayer={(layerName) => {
                 setBackgroundLayer(layerName);
                 setOpen(false);

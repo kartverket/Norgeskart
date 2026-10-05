@@ -20,7 +20,7 @@ export const NavigationButton = ({
   return (
     <Button
       variant="ghost"
-      color="white"
+      colorPalette="green"
       width="fit-content"
       display="inline-flex"
       alignSelf="center"
@@ -31,8 +31,8 @@ export const NavigationButton = ({
       aria-label={label}
     >
       <Box
-        backgroundColor={active ? 'green.700' : 'transparent'}
-        _hover={{ backgroundColor: 'green.700' }}
+        backgroundColor={active ? '#D0ECD6' : 'transparent'}
+        _hover={{ backgroundColor: '#D0ECD6' }}
         borderRadius="md"
         width={buttonWidth(isMinimized)}
         px={3}

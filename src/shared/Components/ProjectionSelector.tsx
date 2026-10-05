@@ -16,41 +16,39 @@ import {
 } from '../../map/projections/types';
 import { ProjectionPopover } from './ProjectionPopover';
 
-const basicProjections: ProjectionIdentifier[] = [
-  'EPSG:4258', // wgs84
-  'EPSG:3857', // webmercator
-  'EPSG:25832', // utm32n
-  'EPSG:25833', // utm33n
-  'EPSG:25835', // utm35n
-];
-
 const allProjections: ProjectionIdentifier[] = [
-  ...basicProjections,
-  'EPSG:25836', // utm36n
-  'EPSG:4230', // ed50 geografisk
-  'EPSG:23031', // ed50 utm31n
-  'EPSG:23032', // ed50 utm32n
-  'EPSG:23033', // ed50 utm33n
-  'EPSG:23034', // ed50 utm34n
-  'EPSG:23035', // ed50 utm35n
-  'EPSG:23036', // ed50 utm36n
-  'EPSG:27391', // NGO 1948 / Gauss-Kruger sone 1
-  'EPSG:27392', // NGO 1948 / Gauss-Kruger sone 2
-  'EPSG:27393', // NGO 1948 / Gauss-Kruger sone 3
-  'EPSG:27394', // NGO 1948 / Gauss-Kruger sone 4
-  'EPSG:27395', // NGO 1948 / Gauss-Kruger sone 5
-  'EPSG:27396', // NGO 1948 / Gauss-Kruger sone 6
-  'EPSG:27397', // NGO 1948 / Gauss-Kruger sone 7
-  'EPSG:27398', // NGO 1948 / Gauss-Kruger sone 8
+  'EPSG:4258',
+  'EPSG:4326',
+  'EPSG:3857',
+  'EPSG:4230',
+  'EPSG:25832',
+  'EPSG:25833',
+  'EPSG:25834',
+  'EPSG:25835',
+  'EPSG:25836',
+  'EPSG:23031',
+  'EPSG:23032',
+  'EPSG:23033',
+  'EPSG:23034',
+  'EPSG:23035',
+  'EPSG:23036',
+  'EPSG:27391',
+  'EPSG:27392',
+  'EPSG:27393',
+  'EPSG:27394',
+  'EPSG:27395',
+  'EPSG:27396',
+  'EPSG:27397',
+  'EPSG:27398',
 ];
 
 export interface ProjectionSelectorProps {
   onProjectionChange: (projection: ProjectionIdentifier) => void;
   value?: ProjectionIdentifier;
   label?: string;
-  textColor: 'white' | 'black';
+  textColor: 'white' | 'black' | 'green.700';
   hideBorders?: boolean;
-  isToolbar?: boolean;
+  showAllProjections?: boolean;
   disabled?: boolean;
   disabledReason?: string;
 }
@@ -58,9 +56,9 @@ export interface ProjectionSelectorProps {
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
 
-  const projectionsToDisplay = props.isToolbar
-    ? AvailableProjections
-    : allProjections;
+  const projectionsToDisplay = props.showAllProjections
+    ? allProjections
+    : AvailableProjections;
 
   const projectionCollection = projectionsToDisplay.map((projection) => {
     const label = t(
@@ -74,9 +72,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
 
   return (
     <VStack
-      borderLeft={props.isToolbar == true ? 'solid white 1px' : undefined}
-      borderRight={props.isToolbar == true ? 'solid white 1px' : undefined}
-      pr={props.isToolbar == true ? 2 : undefined}
+      border="none"
     >
       <HStack alignItems={'baseline'} gap={1} w="200px">
         <SelectRoot
@@ -84,10 +80,17 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
           collection={createListCollection({ items: projectionCollection })}
           value={props.value ? [props.value] : []}
           disabled={props.disabled}
+          onValueChange={(details) => {
+            if (details.value.length > 0) {
+              props.onProjectionChange(details.value[0] as ProjectionIdentifier);
+            }
+          }}
         >
           <SelectTrigger
-            className={props.isToolbar ? 'toolbar-select' : ''}
+            className="map-control-select-trigger"
             border={'none'}
+            borderWidth={0}
+            outline="none"
             id={props.hideBorders ? 'crs-select-trigger' : ''}
           >
             {props.label ? (
@@ -107,9 +110,6 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
               <SelectItem
                 key={item.value}
                 item={item.value}
-                onClick={() => {
-                  props.onProjectionChange(item.value as ProjectionIdentifier);
-                }}
               >
                 {item.label}
               </SelectItem>
@@ -117,7 +117,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
           </SelectContent>
         </SelectRoot>
 
-        <ProjectionPopover isToolbar={props.isToolbar == true} />
+        <ProjectionPopover />
       </HStack>
     </VStack>
   );

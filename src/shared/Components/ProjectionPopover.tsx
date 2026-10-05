@@ -12,18 +12,13 @@ import {
 } from '@kvib/react';
 import { useTranslation } from 'react-i18next';
 
-type ProjectionPopoverProps = {
-  isToolbar?: boolean;
-};
-
-export const ProjectionPopover = (props: ProjectionPopoverProps) => {
+export const ProjectionPopover = () => {
   const { t } = useTranslation();
-  const iconColor = props.isToolbar ? 'white' : 'black';
 
   return (
     <PopoverRoot>
       <PopoverTrigger>
-        <Icon size={20} icon={'info'} color={iconColor} />
+        <Icon size={20} icon={'info'} color="green.700" />
       </PopoverTrigger>
 
       <PopoverContent>

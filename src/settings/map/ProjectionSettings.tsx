@@ -15,9 +15,8 @@ export const ProjectionSettings = () => {
     <ProjectionSelector
       onProjectionChange={setCurrentProjection}
       value={currentProjection}
-      textColor="white"
+      textColor="green.700"
       hideBorders
-      isToolbar
       label={t('toolbar.crs.tooltip')}
       disabled={isNauticalActive}
       disabledReason={

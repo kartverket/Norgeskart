@@ -86,6 +86,7 @@ export const CoordinateInfo = ({ lat, lon, inputCRS }: CoordinateInfoProps) => {
           onProjectionChange={setSelectedProjection}
           label={t('infoBox.coordinateSection.differentCrs')}
           textColor="black"
+          showAllProjections
         />
       </HStack>
 

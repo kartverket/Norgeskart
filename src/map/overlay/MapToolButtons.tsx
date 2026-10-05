@@ -12,7 +12,7 @@ import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { helpDialogOpenAtom } from '../../help/atoms';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { activeThemeLayersAtom } from '../layers/atoms';
@@ -26,7 +26,7 @@ export const MapToolButtons = () => {
   const isPrintDialogOpenDisabled = useAtomValue(isPrintDialogOpenAtom);
   const [menuVisible, setMenuVisible] = useState(true);
   const ph = usePostHog();
-  const navigate = useNavigate();
+  const setHelpDialogOpen = useSetAtom(helpDialogOpenAtom);
 
   const handleShareMapClick = () => {
     ph.capture('share_map_clicked');
@@ -153,7 +153,7 @@ export const MapToolButtons = () => {
         />
       )}
       <MapButton
-        onClick={() => navigate('/hjelp')}
+        onClick={() => setHelpDialogOpen(true)}
         icon={'help'}
         label={t('controller.help.mobiletext')}
         active={currentMapTool === 'info'}

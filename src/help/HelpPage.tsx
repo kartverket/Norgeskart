@@ -7,8 +7,10 @@ import {
   Card,
   CardBody,
   CardTitle,
+  Dialog,
+  DialogCloseTrigger,
+  DialogContent,
   Flex,
-  Header,
   Heading,
   Icon,
   Link,
@@ -18,10 +20,11 @@ import {
   Stack,
   Text,
 } from '@kvib/react';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { Contact, PrivacyPolicy } from '../help/PrivacyPolicyAndContact';
+import { helpDialogOpenAtom } from './atoms';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { useIsMobileScreen } from '../shared/hooks';
 import { ContentBlock, Tip, unwrapJsonModule } from '../types/tips';
@@ -127,7 +130,7 @@ const loaders: Record<string, () => Promise<{ default: unknown }>> = {
 export const HelpPage = () => {
   const { i18n, t } = useTranslation();
   const [tipsData, setTipsData] = useState<Tip[]>([]);
-  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useAtom(helpDialogOpenAtom);
   const isMobile = useIsMobileScreen();
 
   useEffect(() => {
@@ -152,27 +155,29 @@ export const HelpPage = () => {
   }, [i18n.language]);
 
   return (
-    <>
-      <Header
-        title="Norgeskart"
-        titleLink="/"
-        logoLink="https://kartverket.no"
-        gap={4}
-        showMenuButton={false}
-        content={
-          <Link
-            fontSize={{ base: 'sm', md: 'md' }}
-            onClick={() => navigate(-1)}
-          >
-            {t('helpPage.header.link')}
-          </Link>
-        }
-      />
+    <Dialog
+      open={isOpen}
+      onOpenChange={(event) => setIsOpen(event.open)}
+    >
+      <DialogContent
+        position="fixed"
+        width="100%"
+        maxWidth="none"
+        height="100dvh"
+        maxHeight="none"
+        bg="green.50"
+        margin={0}
+        padding={0}
+        zIndex={1400}
+        overflowY="auto"
+      >
+        <DialogCloseTrigger />
       <Box
         minH="100vh"
         bg="green.50"
         px={{ base: 4, md: 8 }}
-        py={{ base: 2, md: 8 }}
+        pt={{ base: 2, md: 8 }}
+        pb={{ base: 8, md: 12 }}
       >
         <Box maxW="1120px" mx="auto">
           <Heading size={{ base: '3xl', md: '5xl' }}>
@@ -370,6 +375,7 @@ export const HelpPage = () => {
           </Box>
         </Box>
       </Box>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
