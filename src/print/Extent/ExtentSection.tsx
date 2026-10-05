@@ -33,6 +33,10 @@ import { getExtentFromMap, printBoxLayoutAtom } from './atoms';
 import { generateMapPdf } from './generateMapPdf';
 import { PrintLayout, usePrintCapabilities } from './usePrintCapabilities';
 
+interface ExtentSectionProps {
+  onCancel?: () => void;
+}
+
 const getFormatOptions = (layouts: PrintLayout[]) => {
   return Array.from(new Set(layouts.map((l) => (l.name.match(/A\d/) || [])[0])))
     .filter(Boolean)
@@ -59,7 +63,7 @@ const LAYOUT_SCALE: Record<string, number> = {
   '4_A3_landscape': 0.9,
 };
 
-export const ExtentSection = () => {
+export const ExtentSection = ({ onCancel }: ExtentSectionProps) => {
   const { t } = useTranslation();
   const layouts: PrintLayout[] = usePrintCapabilities();
   const map = useAtomValue(mapAtom);
@@ -213,7 +217,11 @@ export const ExtentSection = () => {
         <Button onClick={handlePrint}>{t('printExtent.button.print')}</Button>
         <Button
           onClick={() => {
-            setIsPrintDialogOpen(false);
+            if (onCancel) {
+              onCancel();
+            } else {
+              setIsPrintDialogOpen(false);
+            }
           }}
           variant="outline"
         >
