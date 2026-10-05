@@ -1,18 +1,25 @@
-import { Box } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
+import { Box, Flex, IconButton } from '@kvib/react';
+import { useAtom, useSetAtom } from 'jotai';
 import { DrawControls } from '../draw/drawControls/DrawControls';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { MeasurePopoverContent } from '../measure/MeasurePopoverContent';
 import { ExtentSection } from '../print/Extent/ExtentSection';
 import { ElevationProfileSection } from '../print/ElevationProfile/ElevationProfileSection';
 import { HikingMapSection } from '../print/HikingMap/HikingMapSection';
-import { selectedResultAtom } from '../search/atoms';
+import { searchCoordinatesAtom, selectedResultAtom } from '../search/atoms';
 import { InfoBoxContent } from '../search/infobox/InfoBoxContent';
 import { MapThemes } from '../settings/map/themes/MapThemes';
 
 export const SidePanel = () => {
   const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
-  const selectedResult = useAtomValue(selectedResultAtom);
+  const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
+  const setSearchCoordinates = useSetAtom(searchCoordinatesAtom);
+
+  const handleClose = () => {
+    setMapTool(null);
+    setSelectedResult(null);
+    setSearchCoordinates(null);
+  };
 
   return (
     <Box
@@ -25,6 +32,18 @@ export const SidePanel = () => {
       p={4}
       overflowY="auto"
     >
+      {(currentMapTool !== null || selectedResult !== null) && (
+        <Flex justifyContent="flex-end" mb={2}>
+          <IconButton
+            onClick={handleClose}
+            icon="close"
+            colorPalette="red"
+            size="sm"
+            variant="ghost"
+            aria-label="Lukk sidepanel"
+          />
+        </Flex>
+      )}
       {currentMapTool === 'layers' && <MapThemes />}
       {currentMapTool === 'draw' && <DrawControls />}
       {currentMapTool === 'measure' && <MeasurePopoverContent />}
@@ -36,7 +55,7 @@ export const SidePanel = () => {
       )}
       {currentMapTool === 'elevationProfile' && <ElevationProfileSection />}
       {currentMapTool === null && selectedResult !== null && (
-        <InfoBoxContent showReportButton={false} />
+        <InfoBoxContent showReportButton={false} showCloseButton={false} />
       )}
     </Box>
   );
