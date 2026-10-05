@@ -1,18 +1,40 @@
-import { Box, Grid, GridItem } from '@kvib/react';
-import { useAtomValue } from 'jotai';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  IconButton,
+  SwitchControl,
+  SwitchHiddenInput,
+  SwitchRoot,
+  Tooltip,
+} from '@kvib/react';
+import { useAtom, useAtomValue } from 'jotai';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MapComponent } from '../map/MapComponent';
 import { BackgroundLayerPopover } from '../map/backgroundLayer/BackgroundLayerPopover';
 import { MapControlButtons } from '../map/MapControlButtons';
+import {
+  displayCompassOverlayAtom,
+  useMagneticNorthAtom,
+} from '../map/atoms';
+import { Compass } from '../map/overlay/Compass';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { SearchComponent } from '../search/SearchComponent';
 import { selectedResultAtom } from '../search/atoms';
 import { SidePanel } from '../sidePanel/SidePanel';
 import { SideNavigation } from './SideNavigation';
-import { Toolbar } from '../toolbar/Toolbar';
+import { ScaleSelector } from '../toolbar/ScaleSelector';
+import { ProjectionSettings } from '../settings/map/ProjectionSettings';
 
 export const DesktopLayout = () => {
+  const { t } = useTranslation();
   const [isMinimized, setIsMinimized] = useState(false);
+  const [displayCompassOverlay, setDisplayCompassOverlay] = useAtom(
+    displayCompassOverlayAtom,
+  );
+  const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
   const currentMapTool = useAtomValue(mapToolAtom);
   const selectedResult = useAtomValue(selectedResultAtom);
   const isPanelOpen = currentMapTool !== null || selectedResult !== null;
@@ -23,11 +45,11 @@ export const DesktopLayout = () => {
       height="100dvh"
       width="100%"
       gridTemplateColumns={`${navigationWidth} minmax(0, 1fr)`}
-      gridTemplateRows="minmax(0, 1fr) 40px"
+      gridTemplateRows="minmax(0, 1fr)"
       overflow="hidden"
       bg="gray.200"
     >
-      <GridItem gridRow="span 2">
+      <GridItem gridRow="span 1">
         <SideNavigation
           isMinimized={isMinimized}
           onToggleMinimized={() => setIsMinimized(!isMinimized)}
@@ -42,10 +64,11 @@ export const DesktopLayout = () => {
         minHeight={0}
       >
         <MapComponent />
+        {displayCompassOverlay && <Compass />}
 
         <Box
           position="absolute"
-          left="10px"
+          left={isPanelOpen ? '374px' : '10px'}
           bottom="6px"
           zIndex={1}
         >
@@ -59,6 +82,51 @@ export const DesktopLayout = () => {
           zIndex={1}
         >
           <MapControlButtons />
+        </Box>
+
+        <Box
+          position="absolute"
+          left="50%"
+          bottom="6px"
+          transform="translateX(-50%)"
+          zIndex={1}
+          pointerEvents="auto"
+          bg="#FFFF"
+          borderRadius="xl"
+          shadow="lg"
+          px={1}
+          py={1}
+        >
+          <Flex alignItems="center" justifyContent="center" gap={2}>
+            <Tooltip content={t('map.settings.compass.enabled')}>
+              <IconButton
+                icon="explore"
+                variant="ghost"
+                colorPalette="green"
+                size="xs"
+                aria-label={t('map.settings.compass.enabled')}
+                onClick={() =>
+                  setDisplayCompassOverlay(!displayCompassOverlay)
+                }
+              />
+            </Tooltip>
+            <Tooltip content={t('map.settings.compass.magneticNorth')}>
+              <Box>
+                <SwitchRoot
+                  checked={useMagneticNorth}
+                  size="xs"
+                  colorPalette="green"
+                  onCheckedChange={(e) => setUseMagneticNorth(e.checked)}
+                  disabled={!displayCompassOverlay}
+                >
+                  <SwitchHiddenInput />
+                  <SwitchControl />
+                </SwitchRoot>
+              </Box>
+            </Tooltip>
+            <ProjectionSettings />
+            <ScaleSelector />
+          </Flex>
         </Box>
 
         {isPanelOpen && (
@@ -88,9 +156,6 @@ export const DesktopLayout = () => {
         </Box>
       </GridItem>
 
-      <GridItem gridColumn={2} gridRow={2}>
-        <Toolbar />
-      </GridItem>
     </Grid>
   );
 };

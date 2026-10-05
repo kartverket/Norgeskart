@@ -27,7 +27,6 @@ import { MobileInfoBox } from './search/infobox/MobileInfoBox';
 import { SearchComponent } from './search/SearchComponent';
 import { ErrorBoundary } from './shared/ErrorBoundary';
 import { useIsMobileScreen } from './shared/hooks';
-import { Toolbar } from './toolbar/Toolbar';
 
 export type MapTool =
   'layers' | 'draw' | 'info' | 'settings' | 'measure' | null;
@@ -209,21 +208,6 @@ export const Layout = () => {
           </VStack>
         </GridItem>
 
-        {!isMobile && (
-          <GridItem
-            h="40px"
-            alignContent="end"
-            gridRow={6}
-            gridColumn={'1 / -1'}
-            justifyContent={'end'}
-            zIndex={1}
-            pointerEvents={'none'}
-          >
-            <ErrorBoundary fallback={undefined} name={'Toolbar'}>
-              <Toolbar />
-            </ErrorBoundary>
-          </GridItem>
-        )}
       </Grid>
       {isMobile && currentMapTool === 'draw' && (
         <ErrorBoundary fallback={undefined} name={'BottomDrawToolSelector'}>

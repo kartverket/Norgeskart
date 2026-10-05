@@ -1,8 +1,15 @@
 /* --- Scale & Mouse Position --- */
+.map-control-select-trigger {
+  button {
+    border: none;
+    outline: none;
+  }
+}
+
 .ol-scale-line {
   position: absolute;
   left: 50%;
-  bottom: 6px;
+  bottom: 58px;
   right: auto;
   transform: translateX(-50%);
 }

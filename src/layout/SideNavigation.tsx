@@ -7,9 +7,12 @@ import {
   VStack,
 } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
+import { helpDialogOpenAtom } from '../help/atoms';
 import { mapToolAtom } from '../map/overlay/atoms';
+import { measureTypeAtom } from '../measure/atoms';
 import { NavigationButton } from './NavigationButton';
 
 interface SideNavigationProps {
@@ -22,8 +25,9 @@ export const SideNavigation = ({
   onToggleMinimized,
 }: SideNavigationProps) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const setHelpDialogOpen = useSetAtom(helpDialogOpenAtom);
   const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
+  const [, setMeasureType] = useAtom(measureTypeAtom);
   const handleShareMap = () => {
     setMapTool(null);
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -32,6 +36,17 @@ export const SideNavigation = ({
         duration: 2000,
       });
     });
+  };
+
+  const handleMeasure = () => {
+    if (currentMapTool === 'measure') {
+      setMapTool(null);
+      setMeasureType(null);
+      return;
+    }
+
+    setMapTool('measure');
+    setMeasureType('length');
   };
 
   const navigationItems = [
@@ -52,6 +67,12 @@ export const SideNavigation = ({
       },
     },
     {
+      icon: 'straighten' as const,
+      label: 'Måle',
+      active: currentMapTool === 'measure',
+      onClick: handleMeasure,
+    },
+    {
       icon: 'build' as const,
       label: 'Verktøy',
     },
@@ -66,14 +87,14 @@ export const SideNavigation = ({
       label: t('controller.help.mobiletext'),
       onClick: () => {
         setMapTool(null);
-        navigate('/hjelp');
+        setHelpDialogOpen(true);
       },
       
     },
   ];
 
   return (
-    <Box height="100%" bg="green.600">
+    <Box height="100%" bg="white" display="flex" flexDirection="column">
       <VStack gap={2} alignItems="center" pt={3}>
         <Link
           href="https://www.kartverket.no"
@@ -107,6 +128,13 @@ export const SideNavigation = ({
           ))}
         </VStack>
       </VStack>
+      <Box mt="auto" mb={3} alignSelf="center">
+        <LanguageSwitcher
+          variant="text"
+          compact
+          isMinimized={isMinimized}
+        />
+      </Box>
     </Box>
   );
 };
