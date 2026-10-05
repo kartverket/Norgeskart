@@ -36,6 +36,7 @@ export type MapTool =
   'measure' |
   'extent' |
   'hiking' |
+  'elevationProfile' |
   null;
 
 export const Layout = () => {

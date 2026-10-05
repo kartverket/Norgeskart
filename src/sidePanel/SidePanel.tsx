@@ -4,6 +4,7 @@ import { DrawControls } from '../draw/drawControls/DrawControls';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { MeasurePopoverContent } from '../measure/MeasurePopoverContent';
 import { ExtentSection } from '../print/Extent/ExtentSection';
+import { ElevationProfileSection } from '../print/ElevationProfile/ElevationProfileSection';
 import { HikingMapSection } from '../print/HikingMap/HikingMapSection';
 import { selectedResultAtom } from '../search/atoms';
 import { InfoBoxContent } from '../search/infobox/InfoBoxContent';
@@ -33,6 +34,7 @@ export const SidePanel = () => {
       {currentMapTool === 'hiking' && (
         <HikingMapSection onCancel={() => setMapTool(null)} />
       )}
+      {currentMapTool === 'elevationProfile' && <ElevationProfileSection />}
       {currentMapTool === null && selectedResult !== null && (
         <InfoBoxContent showReportButton={false} />
       )}
