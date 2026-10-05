@@ -1,18 +1,15 @@
 import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { CSSProperties } from 'react';
 // import { MeasurePopover } from '../measure/MeasurePopover';
 import { useIsMobileScreen } from '../shared/hooks';
-import { displayMapLegendAtom, displayMapLegendControlAtom } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
 // import { MapOrientationControl } from './MapOrientationControl';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
-  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
-  const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
   const { zoomIn, zoomOut } = useMapSettings();
   // const { setMapFullScreen, zoomIn, zoomOut } = useMapSettings();
@@ -41,19 +38,6 @@ export const MapControlButtons = () => {
       py={1}
       shadow="lg"
     >
-      {displayMapLegendControl && (
-        <ControlButton
-          id="map_legend"
-          label={t('map.controls.symbols.label')}
-          icon={'info'}
-          onClick={() => {
-            setDisplayMapLegend((prev) => !prev);
-          }}
-          displayTooltip
-          variant="primary"
-        />
-      )}
-
       <ControlButton
         id="zoom_in"
         icon="add"

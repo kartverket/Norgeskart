@@ -470,7 +470,7 @@
       "north": "N"
     },
     "legend": {
-      "tooltip": "Vis symbolforklaring",
+      "tooltip": "Vis teiknforklaring",
       "label": "Teknforklaring"
     }
   },
