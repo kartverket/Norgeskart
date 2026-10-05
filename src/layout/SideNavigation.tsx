@@ -54,10 +54,6 @@ export const SideNavigation = ({
     {
       icon: 'build' as const,
       label: 'Verktøy',
-      active: currentMapTool === 'tools',
-      onClick: () => {
-        setMapTool(currentMapTool === 'tools' ? null : 'tools');
-      },
     },
     {
       icon: 'share' as const,
