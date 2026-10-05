@@ -91,6 +91,12 @@ export const SideNavigation = ({
     {
       icon: 'show_chart' as const,
       label: 'Høydeprofil',
+      active: currentMapTool === 'elevationProfile',
+      onClick: () => {
+        setMapTool(
+          currentMapTool === 'elevationProfile' ? null : 'elevationProfile',
+        );
+      },
     },
     {
       icon: 'share' as const,
