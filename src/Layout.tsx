@@ -29,7 +29,14 @@ import { ErrorBoundary } from './shared/ErrorBoundary';
 import { useIsMobileScreen } from './shared/hooks';
 
 export type MapTool =
-  'layers' | 'draw' | 'info' | 'settings' | 'measure' | 'extent' | null;
+  'layers' |
+  'draw' |
+  'info' |
+  'settings' |
+  'measure' |
+  'extent' |
+  'hiking' |
+  null;
 
 export const Layout = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
