@@ -44,20 +44,13 @@ export const InfoboxAccordionContent = () => {
   const inputCRS = getInputCRS(selectedResult);
   return (
     <>
-      {selectedResult.type === 'Property' && !hasValidCoordinates && (
-        <Alert status="info" title={t('infoBox.noMapSection.title')} mb={2}>
-          {t('infoBox.noMapSection.description')}
-        </Alert>
+      {['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
+        <PropertyInfo
+          lon={selectedResult.lon}
+          lat={selectedResult.lat}
+          inputCRS={inputCRS}
+        />
       )}
-      {hasValidCoordinates &&
-        ['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
-          <PropertyInfo
-            lon={selectedResult.lon}
-            lat={selectedResult.lat}
-            inputCRS={inputCRS}
-          />
-        )}
-
       {selectedResult.type === 'Place' && (
         <AccordionItem value="placeInfo">
           <AccordionItemTrigger pl={0}>
@@ -86,24 +79,23 @@ export const InfoboxAccordionContent = () => {
           </AccordionItemContent>
         </AccordionItem>
       )}
-      {hasValidCoordinates && (
-        <AccordionItem value="coordinateInfo">
-          <AccordionItemTrigger pl={0}>
-            {t('infoBox.coordinateInfo')}
-          </AccordionItemTrigger>
-          <AccordionItemContent>
-            <CoordinateInfo
-              lon={selectedResult.lon}
-              lat={selectedResult.lat}
-              inputCRS={inputCRS as ProjectionIdentifier}
-            />
-          </AccordionItemContent>
-        </AccordionItem>
-      <Box mt={3}>
+      <AccordionItem value="coordinateInfo">
+        <AccordionItemTrigger pl={0}>
+          {t('infoBox.coordinateInfo')}
+        </AccordionItemTrigger>
+        <AccordionItemContent>
+          <CoordinateInfo
+            lon={selectedResult.lon}
+            lat={selectedResult.lat}
+            inputCRS={inputCRS as ProjectionIdentifier}
+          />
+        </AccordionItemContent>
+      </AccordionItem>
+     
+      <FeatureInfoSection />
+       <Box mt={3}>
         <InfoBoxElevationContent result={selectedResult} />
       </Box>
-      )}
-      <FeatureInfoSection />
     </>
   );
 };
