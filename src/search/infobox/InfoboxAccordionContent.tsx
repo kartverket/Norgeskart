@@ -16,6 +16,7 @@ import { CoordinateInfo } from './coordinates/CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
+import { InfoBoxElevationContent } from './InfoBoxPreamble';
 
 export const InfoboxAccordionContent = () => {
   const placesNearby = useAtomValue(placesNearbyAtom);
@@ -88,6 +89,9 @@ export const InfoboxAccordionContent = () => {
           />
         </AccordionItemContent>
       </AccordionItem>
+      <Box mt={3}>
+        <InfoBoxElevationContent result={selectedResult} />
+      </Box>
       <FeatureInfoSection />
     </>
   );

@@ -25,7 +25,7 @@ import { SearchComponent } from '../search/SearchComponent';
 import { selectedResultAtom } from '../search/atoms';
 import { SidePanel } from '../sidePanel/SidePanel';
 import { SideNavigation } from './SideNavigation';
-import { ScaleSelector } from '../toolbar/ScaleSelector';
+// import { ScaleSelector } from '../toolbar/ScaleSelector';
 import { ProjectionSettings } from '../settings/map/ProjectionSettings';
 
 export const DesktopLayout = () => {
@@ -125,7 +125,7 @@ export const DesktopLayout = () => {
               </Box>
             </Tooltip>
             <ProjectionSettings />
-            <ScaleSelector />
+            {/* <ScaleSelector /> */}
           </Flex>
         </Box>
 
