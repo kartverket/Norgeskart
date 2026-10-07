@@ -48,7 +48,6 @@ export const InfoboxAccordionContent = () => {
           inputCRS={inputCRS}
         />
       )}
-
       {selectedResult.type === 'Place' && (
         <AccordionItem value="placeInfo">
           <AccordionItemTrigger pl={0}>
@@ -89,10 +88,11 @@ export const InfoboxAccordionContent = () => {
           />
         </AccordionItemContent>
       </AccordionItem>
-      <Box mt={3}>
+     
+      <FeatureInfoSection />
+       <Box mt={3}>
         <InfoBoxElevationContent result={selectedResult} />
       </Box>
-      <FeatureInfoSection />
     </>
   );
 };

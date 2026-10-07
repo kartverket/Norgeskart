@@ -21,11 +21,6 @@ export const MapLegendDrawer = () => {
       open={isOpen}
       onOpenChange={(e) => setIsOpen(e.open)}
     >
-        <DialogBackdrop
-    background="transparent"
-    opacity={1}
-  />
-
       <DialogContent
         width="360px"
         maxW="calc(100vw - 2rem)"
