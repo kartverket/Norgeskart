@@ -50,7 +50,7 @@ const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
       );
   }
 };
-const InfoBoxElevationContent = ({ result }: { result: SearchResult }) => {
+export const InfoBoxElevationContent = ({ result }: { result: SearchResult }) => {
   const { t } = useTranslation();
   const inputCRS = getInputCRS(result);
 
@@ -70,7 +70,7 @@ const InfoBoxElevationContent = ({ result }: { result: SearchResult }) => {
   if (status === 'success' && elevationData) {
     return (
       <HStack>
-        <Text>
+        <Text fontSize="sm">
           {t('infoBox.heightEstimatedByInterpolation')}{' '}
           {numericValue.toFixed(1)} {t('infoBox.metersAboveSeaLevel')}
         </Text>
@@ -94,7 +94,6 @@ export const InfoBoxPreamble = ({ result }: InfoBoxContentProps) => {
   return (
     <Box userSelect={'text'}>
       <InfoBoxTextContent result={result} />
-      <InfoBoxElevationContent result={result} />{' '}
     </Box>
   );
 };

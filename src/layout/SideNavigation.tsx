@@ -140,7 +140,7 @@ export const SideNavigation = ({
           />
         </Box>
         <Separator width="100%" my={isMinimized ? 1 : 4} />
-        <VStack width="100%" gap={isMinimized ? 4 : 12}>
+        <VStack width="100%" gap={isMinimized ? 4 : 8}>
           {navigationItems.map((item) => (
             <NavigationButton
               key={item.label}
