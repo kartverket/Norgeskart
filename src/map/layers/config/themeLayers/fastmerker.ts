@@ -103,7 +103,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           alias: 'Beskrivelse',
         },
         {
-          name: 'høydeGammelNN2000_2018',
+          name: 'gammel_hoyde_nn2000',
           alias: 'Gammel høyde NN2000:2018',
           unit: 'm',
           decimals: 3,
