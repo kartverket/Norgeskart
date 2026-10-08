@@ -79,14 +79,14 @@ export const InfoBoxContent = ({
 					{selectedResult.name}
 				</Heading>
 			)}
-			<Box display={isMinimized ? 'none' : 'block'}>
-				<InfoBoxPreamble result={selectedResult} />
-			</Box>
 			<Box
-				overflowY="auto"
-				overflowX="auto"
+				overflowY={showCloseButton ? 'auto' : 'visible'}
+				overflowX={showCloseButton ? 'auto' : 'visible'}
 				display={isMinimized ? 'none' : 'block'}
 			>
+				<InfoBoxPreamble result={selectedResult} />
+			</Box>
+			<Box display={isMinimized ? 'none' : 'block'}>
 				<AccordionRoot
 					key={`${selectedResult.type}-${selectedResult.lon}-${selectedResult.lat}`}
 					collapsible

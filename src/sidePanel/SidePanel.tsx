@@ -55,7 +55,10 @@ export const SidePanel = () => {
       )}
       {currentMapTool === 'elevationProfile' && <ElevationProfileSection />}
       {currentMapTool === null && selectedResult !== null && (
-        <InfoBoxContent showReportButton={false} showCloseButton={false} />
+        <InfoBoxContent
+          showReportButton={false}
+          showCloseButton={false}
+        />
       )}
     </Box>
   );
