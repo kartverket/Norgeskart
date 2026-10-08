@@ -1,4 +1,5 @@
 import {
+  Alert,
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
@@ -37,16 +38,26 @@ export const InfoboxAccordionContent = () => {
   if (!selectedResult) {
     return null;
   }
+  const hasMapCoordinates =
+    Number.isFinite(selectedResult.lon) && Number.isFinite(selectedResult.lat);
+  const hasNoMapSection =
+    selectedResult.type === 'Property' && !hasMapCoordinates;
   const inputCRS = getInputCRS(selectedResult);
   return (
     <>
-      {['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
+      {hasNoMapSection && (
+        <Alert status="info" title={t('infoBox.noMapSection.title')} mb={2}>
+          {t('infoBox.noMapSection.description')}
+        </Alert>
+      )}
+      {!hasNoMapSection &&
+        ['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
         <PropertyInfo
           lon={selectedResult.lon}
           lat={selectedResult.lat}
           inputCRS={inputCRS}
         />
-      )}
+        )}
 
       {selectedResult.type === 'Place' && (
         <AccordionItem value="placeInfo">
@@ -77,18 +88,20 @@ export const InfoboxAccordionContent = () => {
           </AccordionItemContent>
         </AccordionItem>
       )}
-      <AccordionItem value="coordinateInfo">
-        <AccordionItemTrigger pl={0}>
-          {t('infoBox.coordinateInfo')}
-        </AccordionItemTrigger>
-        <AccordionItemContent>
-          <CoordinateInfo
-            lon={selectedResult.lon}
-            lat={selectedResult.lat}
-            inputCRS={inputCRS as ProjectionIdentifier}
-          />
-        </AccordionItemContent>
-      </AccordionItem>
+      {hasMapCoordinates && (
+        <AccordionItem value="coordinateInfo">
+          <AccordionItemTrigger pl={0}>
+            {t('infoBox.coordinateInfo')}
+          </AccordionItemTrigger>
+          <AccordionItemContent>
+            <CoordinateInfo
+              lon={selectedResult.lon}
+              lat={selectedResult.lat}
+              inputCRS={inputCRS as ProjectionIdentifier}
+            />
+          </AccordionItemContent>
+        </AccordionItem>
+      )}
       <FeatureInfoSection />
     </>
   );
