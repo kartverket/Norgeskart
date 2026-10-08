@@ -36,6 +36,8 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       groupid: 31,
       legacyId: 'seeiendom.1011',
       queryable: true,
+      // matrikkel GeoServer has no GetStyles operation; use GetLegendGraphic
+      useLegendGraphic: true,
       singleImage: true,
     },
     {
@@ -50,6 +52,7 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       groupid: 31,
       legacyId: 'seeiendom.1012',
       queryable: true,
+      useLegendGraphic: true,
       singleImage: true,
     },
     {
@@ -65,6 +68,9 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       legacyId: 'seeiendom.1013',
       queryable: true,
       styles: ',Matrikkelnummer',
+      // matrikkel GeoServer has no GetStyles operation; use GetLegendGraphic.
+      // Legend shows default styles (STYLE is not passed to GetLegendGraphic).
+      useLegendGraphic: true,
       singleImage: true,
     },
   ],
