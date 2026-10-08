@@ -28,12 +28,12 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           alias: 'Punkttype',
         },
         {
-          name: 'punktnavn',
-          alias: 'Punktnavn',
-        },
-        {
           name: 'punktnummer',
           alias: 'Punktnummer',
+        },
+        {
+          name: 'punktnavn',
+          alias: 'Punktnavn',
         },
         {
           name: 'nord',
@@ -61,13 +61,13 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           decimals: 3,
         },
         {
+          name: 'hoydereferansemodell',
+          alias: 'Høydereferansemodell',
+        },
+        {
           name: 'kvalitet_nn2000',
           alias: 'Kvalitet NN2000',
           unit: 'mm',
-        },
-        {
-          name: 'underlag',
-          alias: 'Underlag',
         },
         {
           name: 'hoyde_nn1954',
@@ -87,14 +87,26 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           decimals: 3,
         },
         {
-          name: 'høydeGammelNN2000_2018',
-          alias: 'Høyde NN2000:2018',
-          unit: 'm',
-          decimals: 3,
+          name: 'underlag',
+          alias: 'Underlag',
+        },
+        {
+          name: 'status',
+          alias: 'Status',
+        },
+        {
+          name: 'status_ar',
+          alias: 'Status år',
         },
         {
           name: 'beskrivelse',
           alias: 'Beskrivelse',
+        },
+        {
+          name: 'gammel_hoyde_nn2000',
+          alias: 'Gammel høyde NN2000:2018',
+          unit: 'm',
+          decimals: 3,
         },
       ],
     },
