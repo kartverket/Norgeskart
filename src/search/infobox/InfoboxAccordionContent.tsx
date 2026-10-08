@@ -1,8 +1,8 @@
 import {
-  Alert,
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
+  Alert,
   Box,
   useAccordionContext,
 } from '@kvib/react';
@@ -50,12 +50,12 @@ export const InfoboxAccordionContent = () => {
       )}
       {hasValidCoordinates &&
         ['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
-        <PropertyInfo
-          lon={selectedResult.lon}
-          lat={selectedResult.lat}
-          inputCRS={inputCRS}
-        />
-      )}
+          <PropertyInfo
+            lon={selectedResult.lon}
+            lat={selectedResult.lat}
+            inputCRS={inputCRS}
+          />
+        )}
 
       {selectedResult.type === 'Place' && (
         <AccordionItem value="placeInfo">
