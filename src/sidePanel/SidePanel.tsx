@@ -3,12 +3,11 @@ import { useAtom, useSetAtom } from 'jotai';
 import { DrawControls } from '../draw/drawControls/DrawControls';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { MeasurePopoverContent } from '../measure/MeasurePopoverContent';
-import { ExtentSection } from '../print/Extent/ExtentSection';
 import { ElevationProfileSection } from '../print/ElevationProfile/ElevationProfileSection';
-import { HikingMapSection } from '../print/HikingMap/HikingMapSection';
 import { searchCoordinatesAtom, selectedResultAtom } from '../search/atoms';
 import { InfoBoxContent } from '../search/infobox/InfoBoxContent';
 import { MapThemes } from '../settings/map/themes/MapThemes';
+import { PrintPanel } from './PrintPanel';
 
 export const SidePanel = () => {
   const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
@@ -47,12 +46,7 @@ export const SidePanel = () => {
       {currentMapTool === 'layers' && <MapThemes />}
       {currentMapTool === 'draw' && <DrawControls />}
       {currentMapTool === 'measure' && <MeasurePopoverContent />}
-      {currentMapTool === 'extent' && (
-        <ExtentSection onCancel={() => setMapTool(null)} />
-      )}
-      {currentMapTool === 'hiking' && (
-        <HikingMapSection onCancel={() => setMapTool(null)} />
-      )}
+      <PrintPanel />
       {currentMapTool === 'elevationProfile' && <ElevationProfileSection />}
       {currentMapTool === null && selectedResult !== null && (
         <InfoBoxContent

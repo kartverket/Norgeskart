@@ -73,19 +73,15 @@ export const SideNavigation = ({
       onClick: handleMeasure,
     },
     {
-      icon: 'crop' as const,
-      label: 'Utsnitt',
-      active: currentMapTool === 'extent',
-      onClick: () => {
-        setMapTool(currentMapTool === 'extent' ? null : 'extent');
-      },
-    },
-    {
       icon: 'map' as const,
-      label: 'Turkart',
-      active: currentMapTool === 'hiking',
+      label: 'Lag kart',
+      active: currentMapTool === 'extent' || currentMapTool === 'hiking',
       onClick: () => {
-        setMapTool(currentMapTool === 'hiking' ? null : 'hiking');
+        setMapTool(
+          currentMapTool === 'extent' || currentMapTool === 'hiking'
+            ? null
+            : 'extent',
+        );
       },
     },
     {
