@@ -38,26 +38,24 @@ export const InfoboxAccordionContent = () => {
   if (!selectedResult) {
     return null;
   }
-  const hasMapCoordinates =
+  const hasValidCoordinates =
     Number.isFinite(selectedResult.lon) && Number.isFinite(selectedResult.lat);
-  const hasNoMapSection =
-    selectedResult.type === 'Property' && !hasMapCoordinates;
   const inputCRS = getInputCRS(selectedResult);
   return (
     <>
-      {hasNoMapSection && (
+      {selectedResult.type === 'Property' && !hasValidCoordinates && (
         <Alert status="info" title={t('infoBox.noMapSection.title')} mb={2}>
           {t('infoBox.noMapSection.description')}
         </Alert>
       )}
-      {!hasNoMapSection &&
+      {hasValidCoordinates &&
         ['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
         <PropertyInfo
           lon={selectedResult.lon}
           lat={selectedResult.lat}
           inputCRS={inputCRS}
         />
-        )}
+      )}
 
       {selectedResult.type === 'Place' && (
         <AccordionItem value="placeInfo">
@@ -88,7 +86,7 @@ export const InfoboxAccordionContent = () => {
           </AccordionItemContent>
         </AccordionItem>
       )}
-      {hasMapCoordinates && (
+      {hasValidCoordinates && (
         <AccordionItem value="coordinateInfo">
           <AccordionItemTrigger pl={0}>
             {t('infoBox.coordinateInfo')}
