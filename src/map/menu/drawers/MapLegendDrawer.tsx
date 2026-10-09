@@ -1,4 +1,4 @@
-import { Dialog, DialogBackdrop, DialogContent } from '@kvib/react';
+import { Dialog, DialogContent } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { displayMapLegendAtom } from '../../atoms';

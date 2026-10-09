@@ -3,7 +3,11 @@ import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import { measureEnabledEffect, measureTypeAtom } from './atoms';
 
-export const MeasurePopoverContent = ({ panel = false }: { panel?: boolean }) => {
+export const MeasurePopoverContent = ({
+  panel = false,
+}: {
+  panel?: boolean;
+}) => {
   const [measureType, setMeasureType] = useAtom(measureTypeAtom);
   useAtom(measureEnabledEffect);
 

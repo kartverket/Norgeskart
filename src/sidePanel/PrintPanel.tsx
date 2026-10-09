@@ -1,9 +1,4 @@
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@kvib/react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { ExtentSection } from '../print/Extent/ExtentSection';
@@ -19,9 +14,7 @@ export const PrintPanel = () => {
   return (
     <Tabs
       value={currentMapTool}
-      onValueChange={(value) =>
-        setMapTool(value.value as 'extent' | 'hiking')
-      }
+      onValueChange={(value) => setMapTool(value.value as 'extent' | 'hiking')}
       lazyMount
       unmountOnExit
     >

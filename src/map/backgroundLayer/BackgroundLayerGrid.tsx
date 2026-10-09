@@ -76,10 +76,7 @@ const LayerCard = (props: LayerCardProps) => {
   }
 
   return (
-    <Tooltip
-      content={label}
-      positioning={{ placement: 'right' }}
-    >
+    <Tooltip content={label} positioning={{ placement: 'right' }}>
       <LayerCardButton {...props} />
     </Tooltip>
   );

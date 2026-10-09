@@ -1,6 +1,6 @@
 import {
-  Button,
   Box,
+  Button,
   Dialog,
   DialogBody,
   DialogCloseTrigger,
@@ -16,8 +16,8 @@ import {
   createListCollection,
   useSelectContext,
 } from '@kvib/react';
-import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NavigationButton } from '../layout/NavigationButton';
 
 type LanguageSwitcherVariant = 'text' | 'icon';
@@ -153,7 +153,11 @@ export const LanguageSwitcher = ({
           }
           width={variant === 'text' && !compact ? 'auto' : 'fit-content'}
         >
-          {variant === 'text' ? <TextTrigger compact={compact} /> : <IconTrigger />}
+          {variant === 'text' ? (
+            <TextTrigger compact={compact} />
+          ) : (
+            <IconTrigger />
+          )}
           <SelectContent
             style={{ zIndex: 9999 }}
             width={variant === 'text' ? 'auto' : 'fit-content'}

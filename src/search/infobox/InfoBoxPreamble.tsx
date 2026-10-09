@@ -50,7 +50,11 @@ const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
       );
   }
 };
-export const InfoBoxElevationContent = ({ result }: { result: SearchResult }) => {
+export const InfoBoxElevationContent = ({
+  result,
+}: {
+  result: SearchResult;
+}) => {
   const { t } = useTranslation();
   const inputCRS = getInputCRS(result);
 

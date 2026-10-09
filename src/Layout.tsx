@@ -29,15 +29,15 @@ import { ErrorBoundary } from './shared/ErrorBoundary';
 import { useIsMobileScreen } from './shared/hooks';
 
 export type MapTool =
-  'layers' |
-  'draw' |
-  'info' |
-  'settings' |
-  'measure' |
-  'extent' |
-  'hiking' |
-  'elevationProfile' |
-  null;
+  | 'layers'
+  | 'draw'
+  | 'info'
+  | 'settings'
+  | 'measure'
+  | 'extent'
+  | 'hiking'
+  | 'elevationProfile'
+  | null;
 
 export const Layout = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
@@ -215,7 +215,6 @@ export const Layout = () => {
             </Box>
           </VStack>
         </GridItem>
-
       </Grid>
       {isMobile && currentMapTool === 'draw' && (
         <ErrorBoundary fallback={undefined} name={'BottomDrawToolSelector'}>

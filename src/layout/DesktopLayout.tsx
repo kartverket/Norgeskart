@@ -13,12 +13,9 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapComponent } from '../map/MapComponent';
-import { BackgroundLayerPopover } from '../map/backgroundLayer/BackgroundLayerPopover';
 import { MapControlButtons } from '../map/MapControlButtons';
-import {
-  displayCompassOverlayAtom,
-  useMagneticNorthAtom,
-} from '../map/atoms';
+import { displayCompassOverlayAtom, useMagneticNorthAtom } from '../map/atoms';
+import { BackgroundLayerPopover } from '../map/backgroundLayer/BackgroundLayerPopover';
 import { Compass } from '../map/overlay/Compass';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { SearchComponent } from '../search/SearchComponent';
@@ -75,12 +72,7 @@ export const DesktopLayout = () => {
           <BackgroundLayerPopover />
         </Box>
 
-        <Box
-          position="absolute"
-          right="10px"
-          bottom="6px"
-          zIndex={1}
-        >
+        <Box position="absolute" right="10px" bottom="6px" zIndex={1}>
           <MapControlButtons />
         </Box>
 
@@ -105,9 +97,7 @@ export const DesktopLayout = () => {
                 colorPalette="green"
                 size="xs"
                 aria-label={t('map.settings.compass.enabled')}
-                onClick={() =>
-                  setDisplayCompassOverlay(!displayCompassOverlay)
-                }
+                onClick={() => setDisplayCompassOverlay(!displayCompassOverlay)}
               />
             </Tooltip>
             <Tooltip content={t('map.settings.compass.magneticNorth')}>
@@ -155,7 +145,6 @@ export const DesktopLayout = () => {
           <SearchComponent />
         </Box>
       </GridItem>
-
     </Grid>
   );
 };

@@ -1,16 +1,8 @@
-import {
-  Box,
-  Image,
-  Link,
-  Separator,
-  toaster,
-  VStack,
-} from '@kvib/react';
-import { useAtom } from 'jotai';
-import { useSetAtom } from 'jotai';
+import { Box, Image, Link, Separator, toaster, VStack } from '@kvib/react';
+import { useAtom, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { helpDialogOpenAtom } from '../help/atoms';
+import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { measureTypeAtom } from '../measure/atoms';
 import { NavigationButton } from './NavigationButton';
@@ -99,7 +91,7 @@ export const SideNavigation = ({
       label: t('controller.sharemap.text'),
       onClick: handleShareMap,
     },
-    
+
     {
       icon: 'help' as const,
       label: t('controller.help.mobiletext'),
@@ -107,7 +99,6 @@ export const SideNavigation = ({
         setMapTool(null);
         setHelpDialogOpen(true);
       },
-      
     },
   ];
 
@@ -147,11 +138,7 @@ export const SideNavigation = ({
         </VStack>
       </VStack>
       <Box mt="auto" mb={3} alignSelf="center">
-        <LanguageSwitcher
-          variant="text"
-          compact
-          isMinimized={isMinimized}
-        />
+        <LanguageSwitcher variant="text" compact isMinimized={isMinimized} />
       </Box>
     </Box>
   );
