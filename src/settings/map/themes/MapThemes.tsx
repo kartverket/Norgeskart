@@ -13,11 +13,11 @@ import {
 import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
 import {
   displayMapLegendAtom,
   displayMapLegendControlAtom,
 } from '../../../map/atoms';
+import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
 import {
   getDirectLayersForCategory,
   getMainCategories,

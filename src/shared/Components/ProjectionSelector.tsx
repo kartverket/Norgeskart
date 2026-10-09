@@ -71,9 +71,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   });
 
   return (
-    <VStack
-      border="none"
-    >
+    <VStack border="none">
       <HStack alignItems={'baseline'} gap={1} w="200px">
         <SelectRoot
           size="sm"
@@ -82,7 +80,9 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
           disabled={props.disabled}
           onValueChange={(details) => {
             if (details.value.length > 0) {
-              props.onProjectionChange(details.value[0] as ProjectionIdentifier);
+              props.onProjectionChange(
+                details.value[0] as ProjectionIdentifier,
+              );
             }
           }}
         >
@@ -107,10 +107,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
           </SelectTrigger>
           <SelectContent portalled={true}>
             {projectionCollection.map((item) => (
-              <SelectItem
-                key={item.value}
-                item={item.value}
-              >
+              <SelectItem key={item.value} item={item.value}>
                 {item.label}
               </SelectItem>
             ))}

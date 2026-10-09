@@ -56,10 +56,7 @@ export const ScaleSelector = () => {
       </Tooltip>
       <SelectContent portalled>
         {scaleCollection.map((item) => (
-          <SelectItem
-            key={item.value}
-            item={item.value}
-          >
+          <SelectItem key={item.value} item={item.value}>
             {item.label}
           </SelectItem>
         ))}

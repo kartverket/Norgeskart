@@ -221,9 +221,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
               fontWeight="semibold"
               px={2}
               py={1}
-              leftIcon={
-                showGeometry ? 'check_box' : 'check_box_outline_blank'
-              }
+              leftIcon={showGeometry ? 'check_box' : 'check_box_outline_blank'}
               onClick={() => handleSwitchChange(!showGeometry)}
             >
               {t('propertyInfo.markProperty.label')}

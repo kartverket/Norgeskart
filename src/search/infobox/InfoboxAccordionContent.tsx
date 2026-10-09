@@ -15,9 +15,9 @@ import { getInputCRS } from '../../shared/utils/crsUtils';
 import { placesNearbyAtom, selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './coordinates/CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
+import { InfoBoxElevationContent } from './InfoBoxPreamble';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
-import { InfoBoxElevationContent } from './InfoBoxPreamble';
 
 export const InfoboxAccordionContent = () => {
   const placesNearby = useAtomValue(placesNearbyAtom);
@@ -68,11 +68,7 @@ export const InfoboxAccordionContent = () => {
           </AccordionItemTrigger>
           <AccordionItemContent>
             {placesNearby.map((place) => (
-              <Box
-                key={place.placeNumber}
-                mb={2}
-                p={2}
-              >
+              <Box key={place.placeNumber} mb={2} p={2}>
                 <PlaceInfo place={place} />
               </Box>
             ))}
@@ -91,9 +87,9 @@ export const InfoboxAccordionContent = () => {
           />
         </AccordionItemContent>
       </AccordionItem>
-     
+
       <FeatureInfoSection />
-       <Box mt={3}>
+      <Box mt={3}>
         <InfoBoxElevationContent result={selectedResult} />
       </Box>
     </>

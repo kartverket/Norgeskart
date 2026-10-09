@@ -15,10 +15,10 @@ export const PlaceInfo = ({ place }: PlaceInfoProps) => {
         {place.name}
       </Text>
       <Text fontSize="sm" color="gray.600">
-          {t('placeInfo.locationNumber')}: {place.placeNumber}
+        {t('placeInfo.locationNumber')}: {place.placeNumber}
       </Text>
       <Text fontSize="sm" color="gray.600">
-          {t('placeInfo.nameObjectType')}: {place.placeType}
+        {t('placeInfo.nameObjectType')}: {place.placeType}
       </Text>
       <Link
         target="_blank"

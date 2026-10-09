@@ -11,8 +11,8 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom, getBackgroundLayerImageName } from '../atoms';
-import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
 import type { BackgroundLayerName } from '../layers/backgroundLayers';
+import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
 import { BackgroundLayerGrid } from './BackgroundLayerGrid';
 import { getAvailableBackgroundLayers } from './utils';
 
