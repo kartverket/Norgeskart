@@ -92,7 +92,7 @@ export const DesktopLayout = () => {
           zIndex={1}
           pointerEvents="auto"
           bg="#FFFF"
-          borderRadius="xl"
+          borderRadius="4px"
           shadow="lg"
           px={1}
           py={1}

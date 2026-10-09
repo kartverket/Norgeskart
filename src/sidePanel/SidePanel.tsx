@@ -36,7 +36,7 @@ export const SidePanel = () => {
           <IconButton
             onClick={handleClose}
             icon="close"
-            colorPalette="red"
+            colorPalette="green"
             size="sm"
             variant="ghost"
             aria-label="Lukk sidepanel"
