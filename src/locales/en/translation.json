@@ -197,6 +197,20 @@
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
             "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
             "empty": "No background"
+          },
+          "shortBackgroundMaps": {
+            "Nibcache_web_mercator_v2": "Aerial",
+            "nautical-background": "Nautical",
+            "oceanicelectronic": "Electronic chart",
+            "sjokartraster": "Chart EFS",
+            "topo": "Standard",
+            "topo_2025": "Topo 2025",
+            "topograatone": "Greyscale",
+            "topoProd": "Topo",
+            "toporaster": "Paper map",
+            "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
+            "empty": "No background"
           }
         },
         "projection": {

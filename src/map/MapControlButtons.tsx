@@ -31,7 +31,7 @@ export const MapControlButtons = () => {
   return (
     <VStack
       bg="#FFFF"
-      borderRadius="xl"
+      borderRadius="4px"
       alignItems="center"
       w={{ base: '8', md: '10' }}
       pointerEvents="auto"
@@ -99,6 +99,7 @@ const ControlIconButton = (props: ControlButtonProps) => {
       colorPalette="green"
       size="xs"
       icon={props.icon}
+      _hover={{ backgroundColor: 'green.50' }}
       aria-label={props.label}
       onClick={() => {
         props.onClick();

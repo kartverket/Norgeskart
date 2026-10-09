@@ -2,10 +2,9 @@ import {
   Box,
   Button,
   Image,
-  PopoverBody,
-  PopoverContent,
-  PopoverRoot,
-  PopoverTrigger,
+  MenuContent,
+  MenuRoot,
+  MenuTrigger,
   Text,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
@@ -19,7 +18,6 @@ import { getAvailableBackgroundLayers } from './utils';
 
 export const BackgroundLayerPopover = () => {
   const [open, setOpen] = useState(false);
-  const [showAllLayers, setShowAllLayers] = useState(false);
   const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
   const currentProjection = useAtomValue(currentProjectionAtom);
   const { t } = useTranslation();
@@ -38,24 +36,21 @@ export const BackgroundLayerPopover = () => {
     ...preferredLayers.filter((layer) => backgroundLayers.includes(layer)),
     ...backgroundLayers.filter((layer) => !preferredLayers.includes(layer)),
   ];
-  const visibleLayers = orderedLayers.slice(0, 4);
-  const hasMoreLayers = orderedLayers.length > visibleLayers.length;
-
+  const displayedLayers = [...orderedLayers].reverse();
   return (
-    <PopoverRoot
+    <MenuRoot
       open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
-        if (!e.open) setShowAllLayers(false);
       }}
-      positioning={{ placement: 'right-start', offset: { mainAxis: 2 } }}
+      positioning={{ placement: 'top-start', offset: { mainAxis: 2 } }}
     >
-      <PopoverTrigger asChild>
+      <MenuTrigger asChild>
         <Button
           pointerEvents="auto"
-          width="72px"
+          width="84px"
           height="64px"
-          borderRadius="10px"
+          borderRadius="4px"
           overflow="hidden"
           cursor="pointer"
           padding={0}
@@ -94,35 +89,42 @@ export const BackgroundLayerPopover = () => {
             </Text>
           </Box>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent width="auto" borderRadius="2xl" boxShadow="lg">
-        <PopoverBody p={0} width="max-content">
-          <Box>
-            <BackgroundLayerGrid
-              layers={(showAllLayers ? orderedLayers : visibleLayers).map(
-                (layerName) => ({
-                  value: layerName,
-                  label: t(
-                    `map.settings.layers.mapNames.backgroundMaps.${layerName}`,
-                  ),
-                }),
-              )}
-              currentLayer={backgroundLayer}
-              columns={
-                showAllLayers
-                  ? orderedLayers.length
-                  : visibleLayers.length + (hasMoreLayers ? 1 : 0)
-              }
-              showMoreButton={!showAllLayers && hasMoreLayers}
-              onMoreClick={() => setShowAllLayers(true)}
-              setLayer={(layerName) => {
-                setBackgroundLayer(layerName);
-                setOpen(false);
-              }}
-            />
-          </Box>
-        </PopoverBody>
-      </PopoverContent>
-    </PopoverRoot>
+      </MenuTrigger>
+      <MenuContent
+        portalled={false}
+        width="84px"
+        minW="0"
+        height="fit-content"
+        maxH="none"
+        overflow="visible"
+        maxW="calc(100vw - 2rem)"
+        borderRadius="4px"
+        boxShadow="lg"
+        paddingTop="0"
+        paddingBottom="0"
+      >
+        <BackgroundLayerGrid
+          layers={displayedLayers.map((layerName) => ({
+            value: layerName,
+            label: t(
+              `map.settings.layers.mapNames.backgroundMaps.${layerName}`,
+            ),
+            shortLabel: t(
+              `map.settings.layers.mapNames.shortBackgroundMaps.${
+                layerName.startsWith('Nibcache_')
+                  ? 'Nibcache_web_mercator_v2'
+                  : layerName
+              }`,
+            ),
+          }))}
+          currentLayer={backgroundLayer}
+          columns={1}
+          setLayer={(layerName) => {
+            setBackgroundLayer(layerName);
+            setOpen(false);
+          }}
+        />
+      </MenuContent>
+    </MenuRoot>
   );
 };

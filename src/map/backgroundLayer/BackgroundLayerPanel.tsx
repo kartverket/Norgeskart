@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom } from '../atoms.ts';
 import { BackgroundLayerName } from '../layers/backgroundLayers.ts';
 import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms.ts';
-import { BackgroundLayerGrid } from './BackgroundLayerGrid.tsx';
+import { BackgroundLayerGrid } from './BackgroundLayerGrid';
 import { getAvailableBackgroundLayers } from './utils';
 
 export const BackgroundLayerPanel = ({
@@ -25,7 +25,7 @@ export const BackgroundLayerPanel = ({
   };
 
   return (
-    <Box backgroundColor="#FFFF" p={2} borderRadius={10} w={'100%'}>
+    <Box backgroundColor="#FFFF" p={2} borderRadius={4} w={'100%'}>
       <BackgroundLayerGrid
         layers={sortedLayers.map((layerName) => ({
           value: layerName,

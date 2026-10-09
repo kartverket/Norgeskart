@@ -47,7 +47,7 @@ const SearchIcon = () => {
     );
   }
   if (searchQuery === '') {
-    return <Icon icon="search" size={24} weight={500} color="gray" />;
+    return <Icon icon="search" size={24} weight={500} color="black" />;
   }
 };
 
@@ -83,30 +83,55 @@ export const SearchComponent = () => {
         maxW={'450px'}
       >
         {/* TOPP: kart-flis + søkefelt */}
-        <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
+        <Box backgroundColor="transparent" p={2} borderRadius="4px">
           <Flex alignItems="center" gap={2}>
             {/* Kart-flis til venstre */}
 
             <Button
               display={{ md: 'none' }}
-              width="46px"
-              height="44px"
-              borderRadius={8}
+              width="60px"
+              height="54px"
+              borderRadius="4px"
               overflow="hidden"
               cursor="pointer"
               padding={0}
               onClick={() => {
                 setShowBackgroundSettings((s) => !s);
               }}
-              boxShadow="md"
+              aria-label={t('search.backgroundChooser.label')}
+              border="3px solid"
+              borderColor="white"
+              boxShadow="0 2px 10px rgba(0, 0, 0, 0.35)"
             >
               <Image
                 src={backgroundImageUrl}
-                alt={t('search.backgroundChooser.tooltip')}
+                alt={t(
+                  `map.settings.layers.mapNames.backgroundMaps.${activeBackgroundLayer}`,
+                )}
                 width="100%"
                 height="100%"
                 objectFit="cover"
               />
+              <Box position="absolute" inset={0} bg="rgba(0, 0, 0, 0.16)" />
+              <Box
+                position="absolute"
+                left={0}
+                right={0}
+                bottom={0}
+                px={1.5}
+                py={0.5}
+                bg="rgba(0, 0, 0, 0.68)"
+              >
+                <Text
+                  color="white"
+                  fontSize="10px"
+                  fontWeight="semibold"
+                  textAlign="center"
+                  lineHeight="short"
+                >
+                  {t('map.controls.backgroundLayer.label')}
+                </Text>
+              </Box>
             </Button>
             <Box position="relative" width="100%">
               <Search
@@ -118,6 +143,8 @@ export const SearchComponent = () => {
                 height="45px"
                 fontSize="1.1rem"
                 bg="white"
+                borderRadius="4px"
+                style={{ paddingLeft: '40px' }}
                 maxLength={100}
                 onClick={() => {
                   setDisplaySearchResults(true);
@@ -125,7 +152,7 @@ export const SearchComponent = () => {
               />
               <Box
                 position="absolute"
-                right="10px"
+                left="10px"
                 top="50%"
                 transform="translateY(-50%)"
               >
