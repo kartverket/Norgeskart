@@ -8,6 +8,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Icon,
   IconButton,
   Text,
   Tooltip,
@@ -206,6 +207,7 @@ export const MapThemes = () => {
           justifyContent="flex-start"
           onClick={() => setDisplayMapLegend(true)}
         >
+          <Icon icon="info" />
           {t('toolbar.legend.tooltip')}
         </Button>
       )}
