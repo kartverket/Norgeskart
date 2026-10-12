@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { helpDialogOpenAtom } from '../help/atoms';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
 import { mapToolAtom } from '../map/overlay/atoms';
-import { measureTypeAtom } from '../measure/atoms';
+import { MeasurePopover } from '../measure/MeasurePopover';
 import { NavigationButton } from './NavigationButton';
 
 interface SideNavigationProps {
@@ -19,7 +19,6 @@ export const SideNavigation = ({
   const { t } = useTranslation();
   const setHelpDialogOpen = useSetAtom(helpDialogOpenAtom);
   const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
-  const [, setMeasureType] = useAtom(measureTypeAtom);
   const handleShareMap = () => {
     setMapTool(null);
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -28,17 +27,6 @@ export const SideNavigation = ({
         duration: 2000,
       });
     });
-  };
-
-  const handleMeasure = () => {
-    if (currentMapTool === 'measure') {
-      setMapTool(null);
-      setMeasureType(null);
-      return;
-    }
-
-    setMapTool('measure');
-    setMeasureType('length');
   };
 
   const navigationItems = [
@@ -57,12 +45,6 @@ export const SideNavigation = ({
       onClick: () => {
         setMapTool(currentMapTool === 'draw' ? null : 'draw');
       },
-    },
-    {
-      icon: 'straighten' as const,
-      label: 'Måle',
-      active: currentMapTool === 'measure',
-      onClick: handleMeasure,
     },
     {
       icon: 'map' as const,
@@ -128,7 +110,15 @@ export const SideNavigation = ({
         </Box>
         <Separator width="100%" my={isMinimized ? 1 : 4} />
         <VStack width="100%" gap={isMinimized ? 4 : 8}>
-          {navigationItems.map((item) => (
+          {navigationItems.slice(0, 2).map((item) => (
+            <NavigationButton
+              key={item.label}
+              {...item}
+              isMinimized={isMinimized}
+            />
+          ))}
+          <MeasurePopover isMinimized={isMinimized} />
+          {navigationItems.slice(2).map((item) => (
             <NavigationButton
               key={item.label}
               {...item}

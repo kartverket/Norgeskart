@@ -34,7 +34,9 @@ export const DesktopLayout = () => {
   const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
   const currentMapTool = useAtomValue(mapToolAtom);
   const selectedResult = useAtomValue(selectedResultAtom);
-  const isPanelOpen = currentMapTool !== null || selectedResult !== null;
+  const isPanelOpen =
+    (currentMapTool !== null && currentMapTool !== 'measure') ||
+    selectedResult !== null;
   const navigationWidth = isMinimized ? '50px' : '94px';
 
   return (

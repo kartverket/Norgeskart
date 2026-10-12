@@ -2,7 +2,6 @@ import { Box, Flex, IconButton } from '@kvib/react';
 import { useAtom, useSetAtom } from 'jotai';
 import { DrawControls } from '../draw/drawControls/DrawControls';
 import { mapToolAtom } from '../map/overlay/atoms';
-import { MeasurePopoverContent } from '../measure/MeasurePopoverContent';
 import { ElevationProfileSection } from '../print/ElevationProfile/ElevationProfileSection';
 import { searchCoordinatesAtom, selectedResultAtom } from '../search/atoms';
 import { InfoBoxContent } from '../search/infobox/InfoBoxContent';
@@ -45,7 +44,6 @@ export const SidePanel = () => {
       )}
       {currentMapTool === 'layers' && <MapThemes />}
       {currentMapTool === 'draw' && <DrawControls />}
-      {currentMapTool === 'measure' && <MeasurePopoverContent />}
       <PrintPanel />
       {currentMapTool === 'elevationProfile' && <ElevationProfileSection />}
       {currentMapTool === null && selectedResult !== null && (
