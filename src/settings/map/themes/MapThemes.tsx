@@ -7,7 +7,10 @@ import {
   Button,
   Flex,
   Heading,
+  HStack,
+  IconButton,
   Text,
+  Tooltip,
   VStack,
 } from '@kvib/react';
 import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
@@ -17,6 +20,7 @@ import {
   displayMapLegendAtom,
   displayMapLegendControlAtom,
 } from '../../../map/atoms';
+import { activeThemeLayersAtom } from '../../../map/layers/atoms';
 import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
 import {
   getDirectLayersForCategory,
@@ -31,6 +35,43 @@ import {
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
 import { LayerLine, SubThemeSection } from './SubTheme';
 import { SubTheme, Theme } from './types';
+
+export const MapThemesHeader = () => {
+  const { t } = useTranslation();
+  const activeLayerCount = useAtomValue(activeThemeLayersAtom).size;
+  const setActiveThemeLayers = useSetAtom(activeThemeLayersAtom);
+
+  return (
+    <HStack gap={2}>
+      <Heading size="md">{t('mapLayers.label')}</Heading>
+      {activeLayerCount > 0 && (
+        <HStack gap={1}>
+          <Text
+            backgroundColor="#FFDD9D"
+            borderRadius="full"
+            borderWidth="2px"
+            borderColor="white"
+            px={2}
+            py={0.5}
+            fontSize="sm"
+          >
+            {activeLayerCount}
+          </Text>
+          <Tooltip content={t('map.settings.layers.theme.resetbutton.text')}>
+            <IconButton
+              variant="tertiary"
+              colorPalette="red"
+              size="sm"
+              icon="playlist_remove"
+              aria-label={t('map.settings.layers.theme.resetbutton.text')}
+              onClick={() => setActiveThemeLayers(new Set())}
+            />
+          </Tooltip>
+        </HStack>
+      )}
+    </HStack>
+  );
+};
 
 export const MapThemes = () => {
   const { activeLayerSet, addThemeLayerToMap, removeThemeLayerFromMap } =
