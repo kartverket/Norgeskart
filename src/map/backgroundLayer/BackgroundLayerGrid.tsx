@@ -76,8 +76,14 @@ const LayerCard = (props: LayerCardProps) => {
   }
 
   return (
-    <Tooltip content={label} positioning={{ placement: 'right' }}>
-      <LayerCardButton {...props} />
+    <Tooltip
+      content={label}
+      portalled={false}
+      positioning={{ placement: 'right' }}
+    >
+      <Box display="inline-flex">
+        <LayerCardButton {...props} />
+      </Box>
     </Tooltip>
   );
 };
