@@ -196,7 +196,7 @@
             "toporaster": "Paper Map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
             "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
-            "empty": "No background"
+            "empty": "No map"
           },
           "shortBackgroundMaps": {
             "Nibcache_web_mercator_v2": "Aerial",
@@ -209,8 +209,7 @@
             "topoProd": "Topo",
             "toporaster": "Paper map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
-            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
-            "empty": "No background"
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           }
         },
         "projection": {
