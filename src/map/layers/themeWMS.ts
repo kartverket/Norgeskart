@@ -1,7 +1,6 @@
 import ImageLayer from 'ol/layer/Image.js';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import VectorTileLayer from 'ol/layer/VectorTile';
 import { ImageWMS, TileWMS } from 'ol/source';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
 import type {
@@ -13,7 +12,6 @@ import {
   getEffectiveWmsUrl,
   getParentCategory,
 } from './themeLayerConfigApi';
-import { createOgcStyleThemeLayer } from './themeOgcStyle';
 
 type HistoricalMapsLayerName = 'economicMapFirstEdition' | 'amtMap';
 
@@ -113,10 +111,7 @@ type ConfigThemeLayerName =
   | 'accessibilityBuildingEntrance'
   | 'accessibilityParkingArea'
   | 'accessibilityToilet'
-  | 'accessibilitySittegruppebenk'
-  | 'ogcStyleKommunerDefault'
-  | 'ogcStyleKommunerRed'
-  | 'ogcStyleFylkerDefault';
+  | 'accessibilitySittegruppebenk';
 
 export type ThemeLayerName =
   | PropertyLayerName
@@ -142,13 +137,9 @@ export const createThemeLayerFromConfig = (
   config: ThemeLayerConfig,
   layerDef: ThemeLayerDefinition,
   projection: string,
-): TileLayer | VectorLayer | VectorTileLayer | ImageLayer<ImageWMS> | null => {
+): TileLayer | VectorLayer | ImageLayer<ImageWMS> | null => {
   if (layerDef.type === 'geojson' && layerDef.geojsonUrl) {
     return createGeoJsonThemeLayer(layerDef, projection);
-  }
-
-  if (layerDef.type === 'ogcStyle') {
-    return createOgcStyleThemeLayer(layerDef, projection);
   }
 
   if (!layerDef.layers) {

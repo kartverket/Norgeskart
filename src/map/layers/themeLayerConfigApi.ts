@@ -2,7 +2,6 @@ import { borderConfig } from './config/themeLayers/borders';
 import { dekningConfig } from './config/themeLayers/dekning';
 import { fastmerkerLayerConfig } from './config/themeLayers/fastmerker';
 import { historicalMapsConfig } from './config/themeLayers/historicalMaps';
-import { ogcApiStylesConfig } from './config/themeLayers/ogcApiStyles';
 import { outdoorRecreationLayerConfig } from './config/themeLayers/outdoorRecreation';
 import { placeNamesConfig } from './config/themeLayers/placeNames';
 import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
@@ -58,14 +57,8 @@ export interface ThemeLayerDefinition {
     nn: string;
     en: string;
   };
-  type?: 'wms' | 'geojson' | 'ogcStyle';
+  type?: 'wms' | 'geojson';
   wmsUrl?: string;
-  // type 'ogcStyle': OGC API base URL, collection id and style id (server default if unset)
-  ogcApiUrl?: string;
-  ogcCollection?: string;
-  ogcStyleId?: string;
-  // Highest zoom the API serves tiles for; OL overzooms past it (default 14)
-  ogcMaxZoom?: number;
   geojsonUrl?: string;
   sourceEpsg?: string;
   style?: ThemeLayerStyle;
@@ -106,7 +99,6 @@ const getThemeLayerConfig = () => {
     placeNamesConfig,
     fastmerkerLayerConfig,
     dekningConfig,
-    ogcApiStylesConfig,
   ];
 
   for (const config of configs) {
@@ -181,7 +173,7 @@ export const getEffectiveLegendUrl = (
   if (layer.legendUrl) {
     return layer.legendUrl;
   }
-  if (layer.type !== 'geojson' && layer.type !== 'ogcStyle') {
+  if (layer.type !== 'geojson') {
     const wmsUrl = getEffectiveWmsUrl(config, layer);
     return (
       wmsUrl +
