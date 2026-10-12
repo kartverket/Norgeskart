@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Temakart",
-      "mobiletext": "Temakart"
+      "openText": "Kartdetaljer",
+      "mobiletext": "Kartdetaljer"
     },
     "print": {
       "text": "Lag kart"
@@ -358,7 +358,7 @@
   },
   "mapLayers": {
     "close": "Lukk kartlaginstillinger",
-    "label": "Temakart",
+    "label": "Kartdetaljer",
     "open": "Åpne kartlaginnstillinger"
   },
   "placeInfo": {

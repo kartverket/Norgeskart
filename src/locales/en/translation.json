@@ -1,8 +1,8 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Layers",
-      "mobiletext": "Layers"
+      "openText": "Map details",
+      "mobiletext": "Map details"
     },
     "print": {
       "text": "Create map"
@@ -353,7 +353,7 @@
   },
   "mapLayers": {
     "close": "Close map layer settings",
-    "label": "Maplayers",
+    "label": "Map details",
     "open": "Open map layer settings"
   },
   "placeInfo": {
