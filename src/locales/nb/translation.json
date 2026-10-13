@@ -546,10 +546,10 @@
       "jobRunning": "Lager profil",
       "buttons": {
         "exportCsv": {
-          "label": "Last ned som CSV"
+          "label": "Last ned CSV"
         },
         "exportPng": {
-          "label": "Last ned som PNG"
+          "label": "Last ned PNG"
         },
         "exportJpeg": {
           "label": "Last ned som JPEG"

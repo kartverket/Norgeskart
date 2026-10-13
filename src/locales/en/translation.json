@@ -541,10 +541,10 @@
       "jobRunning": "Creating profile",
       "buttons": {
         "exportCsv": {
-          "label": "Export as CSV"
+          "label": "Download CSV"
         },
         "exportPng": {
-          "label": "Download as PNG"
+          "label": "Download PNG"
         },
         "exportJpeg": {
           "label": "Download as JPEG"
