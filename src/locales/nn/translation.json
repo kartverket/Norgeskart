@@ -8,8 +8,7 @@
       "text": "Lag kart"
     },
     "draw": {
-      "text": "Teikne og måle",
-      "mobiletext": "Verktøy"
+      "text": "Teikne"
     },
     "settings": {
       "mobiletext": "Innstillingar",
@@ -659,7 +658,7 @@
     }
   },
   "measure": {
-    "label": "Måleverktøy",
+    "label": "Måle",
     "length": "Lengd",
     "area": "Areal"
   },

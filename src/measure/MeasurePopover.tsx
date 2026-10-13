@@ -5,6 +5,7 @@ import {
   PopoverTrigger,
 } from '@kvib/react';
 import { useAtom, useSetAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { NavigationButton } from '../layout/NavigationButton';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { searchCoordinatesAtom, selectedResultAtom } from '../search/atoms';
@@ -12,6 +13,7 @@ import { measureTypeAtom } from './atoms';
 import { MeasurePopoverContent } from './MeasurePopoverContent';
 
 export const MeasurePopover = ({ isMinimized }: { isMinimized: boolean }) => {
+  const { t } = useTranslation();
   const setMeasureType = useSetAtom(measureTypeAtom);
   const setSelectedResult = useSetAtom(selectedResultAtom);
   const setSearchCoordinates = useSetAtom(searchCoordinatesAtom);
@@ -41,7 +43,7 @@ export const MeasurePopover = ({ isMinimized }: { isMinimized: boolean }) => {
         <Box display="inline-flex" width="fit-content">
           <NavigationButton
             icon="straighten"
-            label="Måle"
+            label={t('measure.label')}
             isMinimized={isMinimized}
             active={open}
             onClick={toggleMeasureTool}

@@ -8,8 +8,7 @@
       "text": "Create map"
     },
     "draw": {
-      "text": "Tools",
-      "mobiletext": "Tools"
+      "text": "Draw"
     },
     "settings": {
       "mobiletext": "Settings",
@@ -654,7 +653,7 @@
     }
   },
   "measure": {
-    "label": "Measuring tool",
+    "label": "Measure",
     "length": "Length",
     "area": "Area"
   },

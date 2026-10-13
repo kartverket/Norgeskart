@@ -122,7 +122,7 @@ export const MapToolButtons = () => {
         }}
         icon={'edit'}
         label={
-          isMobile ? t('controller.draw.mobiletext') : t('controller.draw.text')
+          t('controller.draw.text')
         }
         active={currentMapTool === 'draw'}
         disabled={isPrintDialogOpenDisabled}

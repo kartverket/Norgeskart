@@ -32,7 +32,7 @@ export const SideNavigation = ({
   const navigationItems = [
     {
       icon: 'layers' as const,
-      label: 'Kartdetaljer',
+      label: t('controller.maplayers.mobiletext'),
       active: currentMapTool === 'layers',
       onClick: () => {
         setMapTool(currentMapTool === 'layers' ? null : 'layers');
@@ -40,7 +40,7 @@ export const SideNavigation = ({
     },
     {
       icon: 'edit' as const,
-      label: t('Tegne'),
+      label: t('controller.draw.text'),
       active: currentMapTool === 'draw',
       onClick: () => {
         setMapTool(currentMapTool === 'draw' ? null : 'draw');
@@ -48,7 +48,7 @@ export const SideNavigation = ({
     },
     {
       icon: 'map' as const,
-      label: 'Lag kart',
+      label: t('controller.print.text'),
       active: currentMapTool === 'extent' || currentMapTool === 'hiking',
       onClick: () => {
         setMapTool(
