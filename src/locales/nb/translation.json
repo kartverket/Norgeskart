@@ -191,6 +191,7 @@
         },
         "mapNames": {
           "backgroundMaps": {
+            "empty": "Ingen bakgrunn",
             "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
@@ -198,9 +199,9 @@
             "nautical-background": "Nautisk bakgrunnskart",
             "oceanicelectronic": "Elektronisk sjøkart",
             "sjokartraster": "Sjøkart oppdatert EFS",
-            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Standard (gråtone)",
+            "norgeskart_standard": "Standard",
+            "norgeskart_gray": "Standard (gråtone)",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",

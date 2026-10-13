@@ -38,15 +38,36 @@ export const mapOrientationDegreesAtom = atom<number>((get) => {
 });
 
 export const displayMapLegendAtom = atom<boolean>(false);
+
+export const hasBackgroundLegendAtom = atom<boolean>((get) => {
+  const backgroundLayerName = get(backgroundLayerAtom);
+  return allConfiguredBackgroundLayers.some(
+    (config) =>
+      config.layerName === backgroundLayerName &&
+      'legendUrl' in config &&
+      !!config.legendUrl,
+  );
+});
+
+export const backgroundLegendUrlAtom = atom<string | undefined>((get) => {
+  const backgroundLayerName = get(backgroundLayerAtom);
+  const layerConfig = allConfiguredBackgroundLayers.find(
+    (config) => config.layerName === backgroundLayerName,
+  );
+  if (!layerConfig || !('legendUrl' in layerConfig)) return undefined;
+  return (layerConfig as { legendUrl?: string }).legendUrl;
+});
+
 export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
 
-  const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
+  const hasThemeLegend = Array.from(activeThemeLayers).some((layerName) => {
     const layerDef = themeLayerConfig.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;
   });
-  return !displayMapLegned && hasLegend;
+
+  return !displayMapLegned && (hasThemeLegend || get(hasBackgroundLegendAtom));
 });
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
@@ -62,14 +83,14 @@ export const getBackgroundLayerImageName = (
     case 'Nibcache_UTM33_EUREF89_v2':
     case 'Nibcache_UTM35_EUREF89_v2':
       return 'Nibcache_web_mercator_v2';
+    case 'empty':
+      return 'empty';
     case 'nautical-background':
       return 'sjokartraster'; // Use nautical chart image for nautical background for now
     case 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833':
       return 'svalbard';
     case 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833':
       return 'jan_mayen';
-    case 'empty':
-      return 'empty';
     default:
       return layerName;
   }

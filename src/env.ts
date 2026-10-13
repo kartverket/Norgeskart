@@ -15,6 +15,15 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
+  topoQgis: {
+    clusterDomain: string;
+  };
+  topoQgisGraa: {
+    clusterDomain: string;
+  };
+  topoCache: {
+    baseUrl: string;
+  };
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -50,6 +59,16 @@ const LOCAL_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    topoQgis: {
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
+    },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
+    },
+    topoCache: {
+      // baseUrl: 'http://localhost:8085',
+      baseUrl: 'https://kart.api.kartverket.no',
+    },
   },
   envName: 'local',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -78,6 +97,15 @@ const DEV_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    topoQgis: {
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
+    },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
+    },
+    topoCache: {
+      baseUrl: 'https://kart.api.kartverket.no',
+    },
   },
   envName: 'dev',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -105,6 +133,15 @@ const PROD_ENV: Env = {
     },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
+    },
+    topoQgis: {
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
+    },
+    topoQgisGraa: {
+      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
+    },
+    topoCache: {
+      baseUrl: 'https://kart.api.kartverket.no',
     },
   },
   envName: 'prod',

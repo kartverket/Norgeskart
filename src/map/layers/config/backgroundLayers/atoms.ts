@@ -15,6 +15,7 @@ import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
 import { npolarBackgroundLayers } from './npolar';
+import { topoCacheBackgroundLayers } from './topoCache';
 import { EmptyBackgroundLayer } from './types';
 import {
   clearBackgroundLayer,
@@ -34,11 +35,13 @@ export const allConfiguredBackgroundLayers = [
   ...nibBackgroundLayers,
   ...npolarBackgroundLayers,
   ...nauticalBackgroundLayers,
+  ...topoCacheBackgroundLayers,
 ];
 
 const getDefaultBackgroundLayer = (): BackgroundLayerName => {
   const layerNameFromUrl = getUrlParameter('backgroundLayer');
-  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
+  const finalLayerName = (layerNameFromUrl ||
+    'norgeskart_standard') as BackgroundLayerName;
   return finalLayerName;
 };
 
@@ -74,6 +77,12 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
       const currentProjection = map.getView().getProjection().getCode();
       const targetProjection =
         layerConfig.requiredProjection ?? currentProjection;
+
+      if (layerConfig.type === 'Empty') {
+        clearBackgroundLayer();
+        setUrlParameter('backgroundLayer', layerName);
+        return;
+      }
 
       let layer: TileLayer | MapLibreLayer | null = null;
       switch (layerConfig.type) {

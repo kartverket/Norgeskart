@@ -135,3 +135,10 @@ export const WMTS_MATRICES: Matrix[] = [
     matrixSize: [262144, 262144],
   },
 ];
+
+// Same grid as utm33n, but MapProxy's norway_25833 matrix set (kart.api.kartverket.no)
+// names its matrices '00'..'18'
+export const MAPPROXY_WMTS_MATRICES: Matrix[] = WMTS_MATRICES.map((matrix) => ({
+  ...matrix,
+  identifier: matrix.identifier.padStart(2, '0'),
+}));

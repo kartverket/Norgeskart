@@ -2,18 +2,22 @@ import { AccordionRoot, Heading, HStack, IconButton, Stack } from '@kvib/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { displayMapLegendAtom } from '../atoms';
+import { displayMapLegendAtom, hasBackgroundLegendAtom } from '../atoms';
 import { activeThemeLayersAtom } from '../layers/atoms';
+import { BackgroundLegend } from './BackgroundLegend';
 import { SingleLayerLegend } from './SingleLayerLegend';
 
 export const MapLegend = () => {
   const { t } = useTranslation();
   const activeThemeLayers = useAtomValue(activeThemeLayersAtom);
   const setShowMapLegend = useSetAtom(displayMapLegendAtom);
+  const hasBackgroundLegend = useAtomValue(hasBackgroundLegendAtom);
   const layers = Array.from(activeThemeLayers);
-  if (layers.length === 0) {
+
+  if (layers.length === 0 && !hasBackgroundLegend) {
     return null;
   }
+
   return (
     <Stack
       w={'100%'}
@@ -33,6 +37,7 @@ export const MapLegend = () => {
           onClick={() => setShowMapLegend(false)}
         />
       </HStack>
+      <BackgroundLegend />
       <AccordionRoot
         collapsible
         multiple

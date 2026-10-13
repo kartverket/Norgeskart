@@ -56,13 +56,13 @@ export const getWMTSLayer = async (
     const parser = new WMTSCapabilities();
     const capabilities = parser.read(capabilitiesText);
     const layerOptions = optionsFromCapabilities(capabilities, {
-      layer: layerConfig.layerName,
+      layer: layerConfig.wmtsLayerName ?? layerConfig.layerName,
       projection,
     });
 
     if (!layerOptions) {
       throw new Error(
-        `Layer ${layerConfig.layerName} not found in capabilities`,
+        `Layer ${layerConfig.wmtsLayerName ?? layerConfig.layerName} not found in capabilities`,
       );
     }
 

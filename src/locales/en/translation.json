@@ -186,6 +186,7 @@
         },
         "mapNames": {
           "backgroundMaps": {
+            "empty": "No background",
             "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
@@ -193,9 +194,9 @@
             "nautical-background": "Nautical Background Chart",
             "oceanicelectronic": "Electronic Nautical Chart",
             "sjokartraster": "Nautical Chart updated EFS",
-            "topo": "Standard",
             "topo_2025": "Topo 2025",
-            "topograatone": "Standard (greyscale)",
+            "norgeskart_standard": "Standard",
+            "norgeskart_gray": "Standard (greyscale)",
             "topoProd": "Topographic",
             "toporaster": "Paper Map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
