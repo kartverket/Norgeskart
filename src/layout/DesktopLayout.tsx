@@ -1,20 +1,14 @@
 import {
   Box,
-  Flex,
   Grid,
   GridItem,
-  IconButton,
-  SwitchControl,
-  SwitchHiddenInput,
-  SwitchRoot,
-  Tooltip,
 } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { BottomControls } from './BottomControls';
 import { MapComponent } from '../map/MapComponent';
 import { MapControlButtons } from '../map/MapControlButtons';
-import { displayCompassOverlayAtom, useMagneticNorthAtom } from '../map/atoms';
+import { displayCompassOverlayAtom } from '../map/atoms';
 import { BackgroundLayerPopover } from '../map/backgroundLayer/BackgroundLayerPopover';
 import { Compass } from '../map/overlay/Compass';
 import { mapToolAtom } from '../map/overlay/atoms';
@@ -23,15 +17,10 @@ import { selectedResultAtom } from '../search/atoms';
 import { SidePanel } from '../sidePanel/SidePanel';
 import { SideNavigation } from './SideNavigation';
 // import { ScaleSelector } from '../toolbar/ScaleSelector';
-import { ProjectionSettings } from '../settings/map/ProjectionSettings';
 
 export const DesktopLayout = () => {
-  const { t } = useTranslation();
   const [isMinimized, setIsMinimized] = useState(false);
-  const [displayCompassOverlay, setDisplayCompassOverlay] = useAtom(
-    displayCompassOverlayAtom,
-  );
-  const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
+  const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
   const currentMapTool = useAtomValue(mapToolAtom);
   const selectedResult = useAtomValue(selectedResultAtom);
   const isPanelOpen =
@@ -91,34 +80,7 @@ export const DesktopLayout = () => {
           px={1}
           py={1}
         >
-          <Flex alignItems="center" justifyContent="center" gap={2}>
-            <Tooltip content={t('map.settings.compass.enabled')}>
-              <IconButton
-                icon="explore"
-                variant="ghost"
-                colorPalette="green"
-                size="xs"
-                aria-label={t('map.settings.compass.enabled')}
-                onClick={() => setDisplayCompassOverlay(!displayCompassOverlay)}
-              />
-            </Tooltip>
-            <Tooltip content={t('map.settings.compass.magneticNorth')}>
-              <Box>
-                <SwitchRoot
-                  checked={useMagneticNorth}
-                  size="xs"
-                  colorPalette="green"
-                  onCheckedChange={(e) => setUseMagneticNorth(e.checked)}
-                  disabled={!displayCompassOverlay}
-                >
-                  <SwitchHiddenInput />
-                  <SwitchControl />
-                </SwitchRoot>
-              </Box>
-            </Tooltip>
-            <ProjectionSettings />
-            {/* <ScaleSelector /> */}
-          </Flex>
+          <BottomControls />
         </Box>
 
         {isPanelOpen && (
