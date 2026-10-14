@@ -11,6 +11,8 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
         en: 'Reference marks',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.fastmerker2',
+      // MapServer only offers text/html, text/plain and GML; json/text/xml raise InvalidFormat
+      infoFormat: 'application/vnd.ogc.gml',
     },
     {
       id: 'benchmarks',
@@ -56,28 +58,13 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
         },
         {
           name: 'hoyde_nn2000',
-          alias: 'Høyde NN2000',
+          alias: 'Høyde NN2000 (NN2000:2025)',
           unit: 'm',
           decimals: 3,
-        },
-        {
-          name: 'hoydereferansemodell',
-          alias: 'Høydereferansemodell',
         },
         {
           name: 'kvalitet_nn2000',
           alias: 'Kvalitet NN2000',
-          unit: 'mm',
-        },
-        {
-          name: 'hoyde_nn1954',
-          alias: 'Høyde NN1954',
-          unit: 'm',
-          decimals: 3,
-        },
-        {
-          name: 'kvalitet_nn1954',
-          alias: 'Kvalitet NN1954',
           unit: 'mm',
         },
         {
