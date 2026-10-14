@@ -1,4 +1,12 @@
-import { Box, Button, Icon, MaterialSymbol, Text, VStack } from '@kvib/react';
+import {
+  Box,
+  Button,
+  Icon,
+  MaterialSymbol,
+  Text,
+  Tooltip,
+  VStack,
+} from '@kvib/react';
 
 interface NavigationButtonProps {
   icon: MaterialSymbol;
@@ -17,7 +25,7 @@ export const NavigationButton = ({
   onClick,
   active = false,
 }: NavigationButtonProps) => {
-  return (
+  const button = (
     <Button
       variant="ghost"
       colorPalette="green"
@@ -44,5 +52,13 @@ export const NavigationButton = ({
         </VStack>
       </Box>
     </Button>
+  );
+
+  return isMinimized ? (
+    <Tooltip content={label} positioning={{ placement: 'right' }}>
+      {button}
+    </Tooltip>
+  ) : (
+    button
   );
 };

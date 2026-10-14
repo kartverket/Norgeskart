@@ -462,6 +462,7 @@
   "toolbar": {
     "reportError": {
       "label": "Error in the map?",
+      "shortLabel": "Report error",
       "tooltip": "Report errors or things missing in the map."
     },
     "scale": {

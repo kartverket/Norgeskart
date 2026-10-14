@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   IconButton,
   SwitchControl,
@@ -8,17 +7,9 @@ import {
   SwitchRoot,
   Tooltip,
 } from '@kvib/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import {
-  displayCompassOverlayAtom,
-  mapAtom,
-  useMagneticNorthAtom,
-} from '../map/atoms';
-import {
-  isRettIKartetDialogOpenAtom,
-  rettIKartetCoordinatesAtom,
-} from '../map/menu/dialogs/atoms';
+import { displayCompassOverlayAtom, useMagneticNorthAtom } from '../map/atoms';
 import { ProjectionSettings } from '../settings/map/ProjectionSettings';
 
 export const BottomControls = () => {
@@ -27,9 +18,6 @@ export const BottomControls = () => {
     displayCompassOverlayAtom,
   );
   const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
-  const map = useAtomValue(mapAtom);
-  const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
-  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
 
   return (
     <Flex alignItems="center" justifyContent="center" gap={2}>
@@ -73,21 +61,6 @@ export const BottomControls = () => {
         borderColor="gray.200"
       >
         <ProjectionSettings />
-      </Flex>
-      <Flex alignItems="center">
-        <Button
-          variant="plain"
-          size="xs"
-          onClick={() => {
-            const center = map.getView().getCenter();
-            if (center) {
-              setRettIKartetCoordinates(center);
-              setRettIKartetDialogOpen(true);
-            }
-          }}
-        >
-          {t('toolbar.reportError.label')}
-        </Button>
       </Flex>
     </Flex>
   );

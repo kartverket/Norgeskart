@@ -467,6 +467,7 @@
   "toolbar": {
     "reportError": {
       "label": "Feil i kartet?",
+      "shortLabel": "Meld feil",
       "tooltip": "Rapporter feil eller manglar i kartet."
     },
     "scale": {

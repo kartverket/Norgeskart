@@ -1,8 +1,13 @@
 import { Box, Image, Link, Separator, toaster, VStack } from '@kvib/react';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { helpDialogOpenAtom } from '../help/atoms';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
+import { mapAtom } from '../map/atoms';
+import {
+  isRettIKartetDialogOpenAtom,
+  rettIKartetCoordinatesAtom,
+} from '../map/menu/dialogs/atoms';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { MeasurePopover } from '../measure/MeasurePopover';
 import { NavigationButton } from './NavigationButton';
@@ -19,6 +24,9 @@ export const SideNavigation = ({
   const { t } = useTranslation();
   const setHelpDialogOpen = useSetAtom(helpDialogOpenAtom);
   const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
+  const map = useAtomValue(mapAtom);
+  const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
+  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
   const handleShareMap = () => {
     setMapTool(null);
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -27,6 +35,14 @@ export const SideNavigation = ({
         duration: 2000,
       });
     });
+  };
+
+  const handleReportError = () => {
+    const center = map.getView().getCenter();
+    if (center) {
+      setRettIKartetCoordinates(center);
+      setRettIKartetDialogOpen(true);
+    }
   };
 
   const navigationItems = [
@@ -73,6 +89,11 @@ export const SideNavigation = ({
       label: t('controller.sharemap.text'),
       onClick: handleShareMap,
     },
+    {
+      icon: 'feedback' as const,
+      label: t('toolbar.reportError.shortLabel'),
+      onClick: handleReportError,
+    },
 
     {
       icon: 'help' as const,
@@ -103,7 +124,7 @@ export const SideNavigation = ({
         <Box mt={isMinimized ? 0 : 2}>
           <NavigationButton
             icon={isMinimized ? 'chevron_right' : 'chevron_left'}
-            label="Minimer"
+            label={isMinimized ? 'Utvid' : 'Minimer'}
             isMinimized={isMinimized}
             onClick={onToggleMinimized}
           />
