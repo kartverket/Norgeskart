@@ -11,6 +11,8 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
         en: 'Reference marks',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.fastmerker2',
+      // MapServer only offers text/html, text/plain and GML; json/text/xml raise InvalidFormat
+      infoFormat: 'application/vnd.ogc.gml',
     },
     {
       id: 'benchmarks',
