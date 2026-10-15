@@ -10,6 +10,7 @@ import { WMTSCapabilities } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
+import { getUrlParameter } from '../../../../shared/utils/urlUtils';
 import { mapAtom } from '../../../atoms';
 import { backgroundLayerCapabilitiesCacheAtom } from './atoms';
 import { nibTileLoadFunction } from './loadFunctions';
@@ -69,10 +70,15 @@ export const getWMTSLayer = async (
     // HiDPI: keep the 1x tile grid from capabilities, fetch the 512 px twin with the same
     // tile ids instead. Without it 256 px tiles get upscaled and look blurry on 2x screens.
     // Only if the service advertises the twin, so the frontend can ship before the service.
+    // ?tileResolution=1x|2x overrides the devicePixelRatio choice (side-by-side testing).
+    const tileResolution = getUrlParameter('tileResolution');
+    const wantHidpi =
+      tileResolution === '2x' ||
+      (tileResolution !== '1x' && window.devicePixelRatio > 1);
     const hidpi = layerConfig.hidpi;
     const hidpiOptions =
       hidpi &&
-      window.devicePixelRatio > 1 &&
+      wantHidpi &&
       layerOptions.matrixSet === hidpi.matrixSet &&
       capabilities.Contents?.Layer?.some(
         (l: { Identifier: string }) => l.Identifier === hidpi.wmtsLayerName,
