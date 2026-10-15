@@ -66,12 +66,30 @@ export const getWMTSLayer = async (
       );
     }
 
+    // HiDPI: keep the 1x tile grid from capabilities, fetch the 512 px twin with the same
+    // tile ids instead. Without it 256 px tiles get upscaled and look blurry on 2x screens.
+    // Only if the service advertises the twin, so the frontend can ship before the service.
+    const hidpi = layerConfig.hidpi;
+    const hidpiOptions =
+      hidpi &&
+      window.devicePixelRatio > 1 &&
+      layerOptions.matrixSet === hidpi.matrixSet &&
+      capabilities.Contents?.Layer?.some(
+        (l: { Identifier: string }) => l.Identifier === hidpi.wmtsLayerName,
+      )
+        ? {
+            layer: hidpi.wmtsLayerName,
+            matrixSet: hidpi.hidpiMatrixSet,
+            tilePixelRatio: 2,
+          }
+        : {};
+
     const wmts = layerConfig.layerName.startsWith('Nibcache')
       ? new WMTS({
           ...layerOptions,
           tileLoadFunction: nibTileLoadFunction,
         })
-      : new WMTS({ ...layerOptions });
+      : new WMTS({ ...layerOptions, ...hidpiOptions });
 
     const layer = new TileLayer({
       source: wmts,

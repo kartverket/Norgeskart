@@ -15,6 +15,11 @@ export const topoCacheBackgroundLayers: BackgroundLayer[] = [
     layerName: 'norgeskart_standard',
     wmtsLayerName: 'norgeskart_standard',
     provider: TopoCacheProvider,
+    hidpi: {
+      wmtsLayerName: 'norgeskart_standard_2x',
+      matrixSet: 'norway_25833',
+      hidpiMatrixSet: 'norway_25833_2x',
+    },
     legendUrl:
       env.layerProviderParameters.topoCache.baseUrl +
       '/legend/topo-{scale}.png',
