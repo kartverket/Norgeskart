@@ -166,9 +166,9 @@ export const HikingMapSection = () => {
       setPrintLoading(false);
       return;
     }
-    const overlayFootprint = getOverlayFootprint(map, overlayElement);
-
+    let overlayFootprint: ReturnType<typeof getOverlayFootprint> | undefined;
     try {
+      overlayFootprint = getOverlayFootprint(map, overlayElement);
       const extent = overlayFootprint.extent;
       setStoredDownloadUrl(null);
       const res = await createHikingMap(
@@ -208,7 +208,7 @@ export const HikingMapSection = () => {
         includeLegend,
         includeSweeden,
         includeCompassInstructions,
-        extent: overlayFootprint.extent,
+        extent: overlayFootprint?.extent,
         errorMessage: (error as Error).message,
       });
       setStoredDownloadUrl(null);
