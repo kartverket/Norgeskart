@@ -72,7 +72,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
 
   return (
     <VStack border="none">
-      <HStack alignItems={'baseline'} gap={1} w="200px">
+      <HStack alignItems={'center'} gap={0} w="200px">
         <SelectRoot
           size="sm"
           collection={createListCollection({ items: projectionCollection })}
@@ -113,7 +113,6 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
             ))}
           </SelectContent>
         </SelectRoot>
-
         <ProjectionPopover />
       </HStack>
     </VStack>

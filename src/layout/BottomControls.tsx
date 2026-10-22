@@ -1,7 +1,7 @@
 import {
   Box,
+  Button,
   Flex,
-  IconButton,
   SwitchControl,
   SwitchHiddenInput,
   SwitchRoot,
@@ -28,21 +28,23 @@ export const BottomControls = () => {
         borderRight="1px solid"
         borderColor="gray.200"
       >
-        <Tooltip content={t('map.settings.compass.enabled')}>
-          <IconButton
-            icon="explore"
-            variant="ghost"
-            colorPalette="green"
-            size="xs"
-            aria-label={t('map.settings.compass.enabled')}
-            onClick={() => setDisplayCompassOverlay(!displayCompassOverlay)}
-          />
-        </Tooltip>
+        <Button
+          rightIcon="explore"
+          variant="ghost"
+          colorPalette="green"
+          size="sm"
+          backgroundColor={displayCompassOverlay ? '#D0ECD6' : 'transparent'}
+          _hover={{ backgroundColor: '#D0ECD6' }}
+          aria-pressed={displayCompassOverlay}
+          onClick={() => setDisplayCompassOverlay(!displayCompassOverlay)}
+        >
+          {t('map.settings.compass.enabled')}
+        </Button>
         <Tooltip content={t('map.settings.compass.magneticNorth')}>
-          <Box>
+          <Box display="flex" alignItems="center">
             <SwitchRoot
               checked={useMagneticNorth}
-              size="xs"
+              size="sm"
               colorPalette="green"
               onCheckedChange={(e) => setUseMagneticNorth(e.checked)}
               disabled={!displayCompassOverlay}
@@ -57,8 +59,6 @@ export const BottomControls = () => {
         alignItems="center"
         gap={1}
         pr={2}
-        borderRight="1px solid"
-        borderColor="gray.200"
       >
         <ProjectionSettings />
       </Flex>

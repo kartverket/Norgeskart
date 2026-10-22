@@ -17,8 +17,14 @@ export const ProjectionPopover = () => {
 
   return (
     <PopoverRoot>
-      <PopoverTrigger>
-        <Icon size={20} icon={'info'} color="green.700" />
+      <PopoverTrigger
+        display="flex"
+        alignItems="center"
+        height="32px"
+        p={0}
+        _hover={{ backgroundColor: 'green.50' }}
+      >
+        <Icon size={24} icon={'info'} color="green.700" />
       </PopoverTrigger>
 
       <PopoverContent>

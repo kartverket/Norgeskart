@@ -1,4 +1,4 @@
-import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
+import { Box, Button, Icon, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import { CSSProperties } from 'react';
@@ -94,18 +94,19 @@ interface ControlButtonProps {
 
 const ControlIconButton = (props: ControlButtonProps) => {
   return (
-    <IconButton
+    <Button
       variant={props.variant || 'ghost'}
       colorPalette="green"
-      size="xs"
-      icon={props.icon}
+      size="sm"
       _hover={{ backgroundColor: 'green.50' }}
       aria-label={props.label}
       onClick={() => {
         props.onClick();
       }}
       style={props.style}
-    />
+    >
+      <Icon icon={props.icon} />
+    </Button>
   );
 };
 const ControlButton = (props: ControlButtonProps) => {
