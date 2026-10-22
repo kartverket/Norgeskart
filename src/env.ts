@@ -23,7 +23,20 @@ type layerProviderParameters = {
   };
   topoCache: {
     baseUrl: string;
+    // WMTS layer names differ per MapProxy: kart.api maps the norgeskart_* aliases,
+    // the cluster-internal dev stacks only serve the legacy topo* names.
+    layers: {
+      standard: string;
+      standard2x: string;
+      gray: string;
+    };
   };
+};
+
+const KART_API_LAYERS = {
+  standard: 'norgeskart_standard',
+  standard2x: 'norgeskart_standard_2x',
+  gray: 'norgeskart_gray',
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -68,6 +81,7 @@ const LOCAL_ENV: Env = {
     topoCache: {
       // baseUrl: 'http://localhost:8085',
       baseUrl: 'https://kart.api.kartverket.no',
+      layers: KART_API_LAYERS,
     },
   },
   envName: 'local',
@@ -105,6 +119,7 @@ const DEV_ENV: Env = {
     },
     topoCache: {
       baseUrl: 'https://kart.api.kartverket.no',
+      layers: KART_API_LAYERS,
     },
   },
   envName: 'dev',
@@ -142,11 +157,25 @@ const PROD_ENV: Env = {
     },
     topoCache: {
       baseUrl: 'https://kart.api.kartverket.no',
+      layers: KART_API_LAYERS,
     },
   },
   envName: 'prod',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
   printApiUrl: 'https://api.norgeskart.no',
+};
+
+// test.norgeskart.no: prod settings, but the background comes from the rGIS-backed
+// MapProxy on atgcp1-dev (internal hostname: only reachable from Kartverket's network/VPN).
+const TEST_ENV: Env = {
+  ...PROD_ENV,
+  layerProviderParameters: {
+    ...PROD_ENV.layerProviderParameters,
+    topoCache: {
+      baseUrl: 'https://kart.atgcp1-dev.kartverket-intern.cloud',
+      layers: { standard: 'topo', standard2x: 'topo_2x', gray: 'topo_graa' },
+    },
+  },
 };
 
 const getEnvName = (): EnvName => {
@@ -169,11 +198,10 @@ const getEnv = (): Env => {
   if (previewRegex.test(domain)) {
     return DEV_ENV;
   }
-  if (
-    domain == 'test.norgeskart.no' ||
-    domain == 'norgeskart.no' ||
-    domain == 'www.norgeskart.no'
-  ) {
+  if (domain == 'test.norgeskart.no') {
+    return TEST_ENV;
+  }
+  if (domain == 'norgeskart.no' || domain == 'www.norgeskart.no') {
     return PROD_ENV;
   }
   console.error(`Unknown domain: ${domain}`);
