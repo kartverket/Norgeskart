@@ -166,13 +166,13 @@ const PROD_ENV: Env = {
 };
 
 // test.norgeskart.no: prod settings, but the background comes from the rGIS-backed
-// MapProxy on atgcp1-dev (internal hostname: only reachable from Kartverket's network/VPN).
+// MapProxy on atgcp1-dev (public host; kart.atgcp1-dev.kartverket-intern.cloud is internal-only).
 const TEST_ENV: Env = {
   ...PROD_ENV,
   layerProviderParameters: {
     ...PROD_ENV.layerProviderParameters,
     topoCache: {
-      baseUrl: 'https://kart.atgcp1-dev.kartverket-intern.cloud',
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
       layers: { standard: 'topo', standard2x: 'topo_2x', gray: 'topo_graa' },
     },
   },
