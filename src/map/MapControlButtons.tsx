@@ -19,6 +19,7 @@ export const MapControlButtons = () => {
   };
 
   /*
+  /*
   const handleFullScreenClick = () => {
     if (document.fullscreenElement) {
       setMapFullScreen(false);
@@ -66,6 +67,7 @@ export const MapControlButtons = () => {
           displayTooltip
         />
       )}
+      {/*
       {/*
       <ControlButton
         id="fullscreen"

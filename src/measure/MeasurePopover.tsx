@@ -28,6 +28,8 @@ export const MeasurePopover = ({ isMinimized }: { isMinimized: boolean }) => {
     } else {
       setSelectedResult(null);
       setSearchCoordinates(null);
+      setSelectedResult(null);
+      setSearchCoordinates(null);
       setCurrentMapTool('measure');
       setMeasureType('length');
     }
