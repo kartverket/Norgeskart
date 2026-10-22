@@ -36,8 +36,8 @@ export const MapControlButtons = () => {
       alignItems="center"
       w={{ base: '8', md: '10' }}
       pointerEvents="auto"
-      py={1}
       shadow="lg"
+      overflow="hidden"
     >
       <ControlButton
         id="zoom_in"
