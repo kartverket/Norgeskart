@@ -4,6 +4,9 @@ import { Chart as ChartJS } from 'chart.js';
 import { getDefaultStore, useAtom } from 'jotai';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ElevationProfileChart } from './ElevationProfileChart';
+import { ElevationProfileFileUpload } from './ElevationProfileFileUpload';
+import { ElevationProfileFooter } from './ElevationProfileFooter';
 import {
   profileEffect,
   profileJobStatusAtom,
@@ -14,14 +17,11 @@ import {
   addDrawInteractionToMap,
   removeDrawInteractionFromMap,
 } from './drawUtils';
-import { ElevationProfileChart } from './ElevationProfileChart';
-import { ElevationProfileFileUpload } from './ElevationProfileFileUpload';
-import { ElevationProfileFooter } from './ElevationProfileFooter';
 
 export const ElevationProfileSection = () => {
   useAtom(profileEffect);
-  const { t } = useTranslation();
   const chartRef = useRef<ChartJS<'line'> | null>(null);
+  const { t } = useTranslation();
   const ph = usePostHog();
   useEffect(() => {
     addDrawInteractionToMap(() => {
