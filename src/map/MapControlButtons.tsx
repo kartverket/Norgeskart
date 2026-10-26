@@ -1,4 +1,11 @@
-import { Box, Button, Icon, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
+import {
+  Box,
+  Button,
+  Icon,
+  MaterialSymbol,
+  Tooltip,
+  VStack,
+} from '@kvib/react';
 import { t } from 'i18next';
 import { useAtom } from 'jotai';
 import { CSSProperties } from 'react';

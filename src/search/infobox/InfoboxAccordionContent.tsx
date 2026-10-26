@@ -2,7 +2,6 @@ import {
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
-  Alert,
   Box,
   useAccordionContext,
 } from '@kvib/react';
@@ -44,13 +43,14 @@ export const InfoboxAccordionContent = () => {
   const inputCRS = getInputCRS(selectedResult);
   return (
     <>
-      {['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
-        <PropertyInfo
-          lon={selectedResult.lon}
-          lat={selectedResult.lat}
-          inputCRS={inputCRS}
-        />
-      )}
+      {hasValidCoordinates &&
+        ['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
+          <PropertyInfo
+            lon={selectedResult.lon}
+            lat={selectedResult.lat}
+            inputCRS={inputCRS}
+          />
+        )}
       {selectedResult.type === 'Place' && (
         <AccordionItem value="placeInfo">
           <AccordionItemTrigger pl={0}>
@@ -75,18 +75,20 @@ export const InfoboxAccordionContent = () => {
           </AccordionItemContent>
         </AccordionItem>
       )}
-      <AccordionItem value="coordinateInfo">
-        <AccordionItemTrigger pl={0}>
-          {t('infoBox.coordinateInfo')}
-        </AccordionItemTrigger>
-        <AccordionItemContent>
-          <CoordinateInfo
-            lon={selectedResult.lon}
-            lat={selectedResult.lat}
-            inputCRS={inputCRS as ProjectionIdentifier}
-          />
-        </AccordionItemContent>
-      </AccordionItem>
+      {hasValidCoordinates && (
+        <AccordionItem value="coordinateInfo">
+          <AccordionItemTrigger pl={0}>
+            {t('infoBox.coordinateInfo')}
+          </AccordionItemTrigger>
+          <AccordionItemContent>
+            <CoordinateInfo
+              lon={selectedResult.lon}
+              lat={selectedResult.lat}
+              inputCRS={inputCRS as ProjectionIdentifier}
+            />
+          </AccordionItemContent>
+        </AccordionItem>
+      )}
 
       <FeatureInfoSection />
       <Box mt={3}>

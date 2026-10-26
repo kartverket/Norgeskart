@@ -1,9 +1,4 @@
-import {
-  Box,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@kvib/react';
+import { Box, Popover, PopoverContent, PopoverTrigger } from '@kvib/react';
 import { useAtom, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { NavigationButton } from '../layout/NavigationButton';

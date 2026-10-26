@@ -30,8 +30,8 @@ import {
   themeLayerConfig,
 } from '../../../map/layers/themeLayerConfigApi';
 import {
-  WARNING_THRESHOLD,
   useThemeLayers,
+  WARNING_THRESHOLD,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
 import { LayerLine, SubThemeSection } from './SubTheme';

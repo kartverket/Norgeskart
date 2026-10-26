@@ -89,9 +89,11 @@ const MapToolCardsBody = () => {
     );
   }
   if (currentMapTool === 'layers') {
-    return <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
-      <MapThemes />
-    </MapToolCard>;
+    return (
+      <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
+        <MapThemes />
+      </MapToolCard>
+    );
   }
 
   if (currentMapTool === 'settings') {

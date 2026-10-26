@@ -106,7 +106,9 @@ export const BackgroundLayerPopover = () => {
         <BackgroundLayerGrid
           layers={displayedLayers.map((layerName) => ({
             value: layerName,
-            label: t(`map.settings.layers.mapNames.backgroundMaps.${layerName}`),
+            label: t(
+              `map.settings.layers.mapNames.backgroundMaps.${layerName}`,
+            ),
             shortLabel: t(
               `map.settings.layers.mapNames.shortBackgroundMaps.${
                 layerName.startsWith('Nibcache_')

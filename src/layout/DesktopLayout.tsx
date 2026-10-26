@@ -1,11 +1,6 @@
-import {
-  Box,
-  Grid,
-  GridItem,
-} from '@kvib/react';
+import { Box, Grid, GridItem } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { useState } from 'react';
-import { BottomControls } from './BottomControls';
 import { MapComponent } from '../map/MapComponent';
 import { MapControlButtons } from '../map/MapControlButtons';
 import { displayCompassOverlayAtom } from '../map/atoms';
@@ -15,6 +10,7 @@ import { mapToolAtom } from '../map/overlay/atoms';
 import { SearchComponent } from '../search/SearchComponent';
 import { selectedResultAtom } from '../search/atoms';
 import { SidePanel } from '../sidePanel/SidePanel';
+import { BottomControls } from './BottomControls';
 import { SideNavigation } from './SideNavigation';
 // import { ScaleSelector } from '../toolbar/ScaleSelector';
 

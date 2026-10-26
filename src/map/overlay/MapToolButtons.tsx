@@ -121,9 +121,7 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={'edit'}
-        label={
-          t('controller.draw.text')
-        }
+        label={t('controller.draw.text')}
         active={currentMapTool === 'draw'}
         disabled={isPrintDialogOpenDisabled}
         id="map-draw-button"

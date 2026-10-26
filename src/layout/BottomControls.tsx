@@ -55,11 +55,7 @@ export const BottomControls = () => {
           </Box>
         </Tooltip>
       </Flex>
-      <Flex
-        alignItems="center"
-        gap={1}
-        pr={2}
-      >
+      <Flex alignItems="center" gap={1} pr={2}>
         <ProjectionSettings />
       </Flex>
     </Flex>

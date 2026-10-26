@@ -6,10 +6,7 @@ import { mapToolAtom } from '../map/overlay/atoms';
 import { ElevationProfileSection } from '../print/ElevationProfile/ElevationProfileSection';
 import { searchCoordinatesAtom, selectedResultAtom } from '../search/atoms';
 import { InfoBoxContent } from '../search/infobox/InfoBoxContent';
-import {
-  MapThemes,
-  MapThemesHeader,
-} from '../settings/map/themes/MapThemes';
+import { MapThemes, MapThemesHeader } from '../settings/map/themes/MapThemes';
 import { PrintPanel } from './PrintPanel';
 
 export const SidePanel = () => {
@@ -54,9 +51,7 @@ export const SidePanel = () => {
           {currentMapTool === 'layers' ? (
             <MapThemesHeader />
           ) : (
-            sidePanelTitle && (
-              <Heading size="md">{sidePanelTitle}</Heading>
-            )
+            sidePanelTitle && <Heading size="md">{sidePanelTitle}</Heading>
           )}
           <IconButton
             marginLeft="auto"
