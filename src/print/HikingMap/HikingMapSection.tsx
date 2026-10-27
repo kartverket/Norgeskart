@@ -45,7 +45,12 @@ const xExtent1_25k = 17_800;
 const yExtent1_25k = 19_500;
 
 type HikingMapSacles = (typeof MapScaleOptions)[number];
-export const HikingMapSection = () => {
+
+interface HikingMapSectionProps {
+  onCancel?: () => void;
+}
+
+export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
   const [selectedScale, setSelectedScale] =
     useState<HikingMapSacles>('1 : 25 000');
   const [mapName, setMapName] = useState<string>('');
@@ -166,9 +171,9 @@ export const HikingMapSection = () => {
       setPrintLoading(false);
       return;
     }
-    const overlayFootprint = getOverlayFootprint(map, overlayElement);
-
+    let overlayFootprint: ReturnType<typeof getOverlayFootprint> | undefined;
     try {
+      overlayFootprint = getOverlayFootprint(map, overlayElement);
       const extent = overlayFootprint.extent;
       setStoredDownloadUrl(null);
       const res = await createHikingMap(
@@ -208,7 +213,7 @@ export const HikingMapSection = () => {
         includeLegend,
         includeSweeden,
         includeCompassInstructions,
-        extent: overlayFootprint.extent,
+        extent: overlayFootprint?.extent,
         errorMessage: (error as Error).message,
       });
       setStoredDownloadUrl(null);
@@ -351,7 +356,11 @@ export const HikingMapSection = () => {
         <Button
           variant="secondary"
           onClick={() => {
-            setIsPrintDialogOpen(false);
+            if (onCancel) {
+              onCancel();
+            } else {
+              setIsPrintDialogOpen(false);
+            }
           }}
           disabled={printLoading}
         >

@@ -116,7 +116,9 @@ export const SearchResults = ({
       maxH={'100%'}
       overflowY={'auto'}
       display={displaySearchResults ? 'flex' : 'none'}
-      maxWidth={'450px'}
+      width={{ base: 'calc(100% - 68px)', md: 'calc(100% - 16px)' }}
+      maxWidth={'none'}
+      alignSelf="center"
     >
       <Box overflowY="auto" overflowX="hidden" minHeight="0px">
         <AccordionRoot

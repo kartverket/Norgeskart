@@ -6,14 +6,9 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  SwitchControl,
-  SwitchHiddenInput,
-  SwitchLabel,
-  SwitchRoot,
   Tooltip,
   VStack,
 } from '@kvib/react';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   AvailableProjections,
@@ -21,55 +16,49 @@ import {
 } from '../../map/projections/types';
 import { ProjectionPopover } from './ProjectionPopover';
 
-const basicProjections: ProjectionIdentifier[] = [
-  'EPSG:4258', // wgs84
-  'EPSG:3857', // webmercator
-  'EPSG:25832', // utm32n
-  'EPSG:25833', // utm33n
-  'EPSG:25835', // utm35n
-];
-
 const allProjections: ProjectionIdentifier[] = [
-  ...basicProjections,
-  'EPSG:25836', // utm36n
-  'EPSG:4230', // ed50 geografisk
-  'EPSG:23031', // ed50 utm31n
-  'EPSG:23032', // ed50 utm32n
-  'EPSG:23033', // ed50 utm33n
-  'EPSG:23034', // ed50 utm34n
-  'EPSG:23035', // ed50 utm35n
-  'EPSG:23036', // ed50 utm36n
-  'EPSG:27391', // NGO 1948 / Gauss-Kruger sone 1
-  'EPSG:27392', // NGO 1948 / Gauss-Kruger sone 2
-  'EPSG:27393', // NGO 1948 / Gauss-Kruger sone 3
-  'EPSG:27394', // NGO 1948 / Gauss-Kruger sone 4
-  'EPSG:27395', // NGO 1948 / Gauss-Kruger sone 5
-  'EPSG:27396', // NGO 1948 / Gauss-Kruger sone 6
-  'EPSG:27397', // NGO 1948 / Gauss-Kruger sone 7
-  'EPSG:27398', // NGO 1948 / Gauss-Kruger sone 8
+  'EPSG:4258',
+  'EPSG:4326',
+  'EPSG:3857',
+  'EPSG:4230',
+  'EPSG:25832',
+  'EPSG:25833',
+  'EPSG:25834',
+  'EPSG:25835',
+  'EPSG:25836',
+  'EPSG:23031',
+  'EPSG:23032',
+  'EPSG:23033',
+  'EPSG:23034',
+  'EPSG:23035',
+  'EPSG:23036',
+  'EPSG:27391',
+  'EPSG:27392',
+  'EPSG:27393',
+  'EPSG:27394',
+  'EPSG:27395',
+  'EPSG:27396',
+  'EPSG:27397',
+  'EPSG:27398',
 ];
 
 export interface ProjectionSelectorProps {
   onProjectionChange: (projection: ProjectionIdentifier) => void;
   value?: ProjectionIdentifier;
   label?: string;
-  textColor: 'white' | 'black';
+  textColor: 'white' | 'black' | 'green.700';
   hideBorders?: boolean;
-  isToolbar?: boolean;
+  showAllProjections?: boolean;
   disabled?: boolean;
   disabledReason?: string;
 }
 
 export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   const { t } = useTranslation();
-  const [displayAllProjections, setDisplayAllProjections] =
-    useState<boolean>(false);
 
-  const projectionsToDisplay = props.isToolbar
-    ? AvailableProjections
-    : displayAllProjections
-      ? allProjections
-      : basicProjections;
+  const projectionsToDisplay = props.showAllProjections
+    ? allProjections
+    : AvailableProjections;
 
   const projectionCollection = projectionsToDisplay.map((projection) => {
     const label = t(
@@ -82,21 +71,26 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
   });
 
   return (
-    <VStack
-      borderLeft={props.isToolbar == true ? 'solid white 1px' : undefined}
-      borderRight={props.isToolbar == true ? 'solid white 1px' : undefined}
-      pr={props.isToolbar == true ? 2 : undefined}
-    >
-      <HStack alignItems={'baseline'} gap={1} w="200px">
+    <VStack border="none">
+      <HStack alignItems={'center'} gap={0} w="200px">
         <SelectRoot
           size="sm"
           collection={createListCollection({ items: projectionCollection })}
           value={props.value ? [props.value] : []}
           disabled={props.disabled}
+          onValueChange={(details) => {
+            if (details.value.length > 0) {
+              props.onProjectionChange(
+                details.value[0] as ProjectionIdentifier,
+              );
+            }
+          }}
         >
           <SelectTrigger
-            className={props.isToolbar ? 'toolbar-select' : ''}
+            className="map-control-select-trigger"
             border={'none'}
+            borderWidth={0}
+            outline="none"
             id={props.hideBorders ? 'crs-select-trigger' : ''}
           >
             {props.label ? (
@@ -113,34 +107,14 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
           </SelectTrigger>
           <SelectContent portalled={true}>
             {projectionCollection.map((item) => (
-              <SelectItem
-                key={item.value}
-                item={item.value}
-                onClick={() => {
-                  props.onProjectionChange(item.value as ProjectionIdentifier);
-                }}
-              >
+              <SelectItem key={item.value} item={item.value}>
                 {item.label}
               </SelectItem>
             ))}
           </SelectContent>
         </SelectRoot>
-
-        <ProjectionPopover isToolbar={props.isToolbar == true} />
+        <ProjectionPopover />
       </HStack>
-      {!props.isToolbar && (
-        <SwitchRoot
-          pl={3}
-          checked={displayAllProjections}
-          onCheckedChange={(e) => setDisplayAllProjections(e.checked)}
-        >
-          <SwitchLabel>
-            {t('map.settings.layers.projection.showAllProjections')}
-          </SwitchLabel>
-          <SwitchHiddenInput />
-          <SwitchControl />
-        </SwitchRoot>
-      )}
     </VStack>
   );
 };

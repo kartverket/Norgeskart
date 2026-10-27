@@ -1,15 +1,14 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Layers",
-      "mobiletext": "Layers"
+      "openText": "Map details",
+      "mobiletext": "Map details"
     },
     "print": {
       "text": "Create map"
     },
     "draw": {
-      "text": "Tools",
-      "mobiletext": "Tools"
+      "text": "Draw"
     },
     "settings": {
       "mobiletext": "Settings",
@@ -201,7 +200,20 @@
             "toporaster": "Paper Map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
             "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
-            "empty": "No background"
+            "empty": "No map"
+          },
+          "shortBackgroundMaps": {
+            "Nibcache_web_mercator_v2": "Aerial",
+            "nautical-background": "Nautical",
+            "oceanicelectronic": "Electronic chart",
+            "sjokartraster": "Chart EFS",
+            "topo": "Standard",
+            "topo_2025": "Topo 2025",
+            "topograatone": "Greyscale",
+            "topoProd": "Topo",
+            "toporaster": "Paper map",
+            "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           }
         },
         "projection": {
@@ -341,7 +353,7 @@
   },
   "mapLayers": {
     "close": "Close map layer settings",
-    "label": "Maplayers",
+    "label": "Map details",
     "open": "Open map layer settings"
   },
   "placeInfo": {
@@ -376,9 +388,9 @@
     "holdingNr": "Holding nr.",
     "leaseNr": "Lease nr.",
     "markProperty": {
-      "label": "Show on map"
+      "label": "Show property boundaries"
     },
-    "moreInformation": "Show more",
+    "moreInformation": "View property / land register",
     "multipleAddressesText": "The property has several addresses",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",
@@ -451,6 +463,7 @@
   "toolbar": {
     "reportError": {
       "label": "Error in the map?",
+      "shortLabel": "Report error",
       "tooltip": "Report errors or things missing in the map."
     },
     "scale": {
@@ -529,10 +542,10 @@
       "jobRunning": "Creating profile",
       "buttons": {
         "exportCsv": {
-          "label": "Export as CSV"
+          "label": "Download CSV"
         },
         "exportPng": {
-          "label": "Download as PNG"
+          "label": "Download PNG"
         },
         "exportJpeg": {
           "label": "Download as JPEG"
@@ -642,7 +655,7 @@
     }
   },
   "measure": {
-    "label": "Measuring tool",
+    "label": "Measure",
     "length": "Length",
     "area": "Area"
   },

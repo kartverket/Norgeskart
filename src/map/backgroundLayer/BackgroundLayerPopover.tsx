@@ -2,17 +2,16 @@ import {
   Box,
   Button,
   Image,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverRoot,
-  PopoverTrigger,
+  MenuContent,
+  MenuRoot,
+  MenuTrigger,
   Text,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { currentProjectionAtom, getBackgroundLayerImageName } from '../atoms';
+import type { BackgroundLayerName } from '../layers/backgroundLayers';
 import { backgroundLayerAtom } from '../layers/config/backgroundLayers/atoms';
 import { BackgroundLayerGrid } from './BackgroundLayerGrid';
 import { getAvailableBackgroundLayers } from './utils';
@@ -24,21 +23,34 @@ export const BackgroundLayerPopover = () => {
   const { t } = useTranslation();
 
   const backgroundLayers = getAvailableBackgroundLayers(currentProjection);
-
+  const flyfotoLayer = backgroundLayers.find((layer) =>
+    layer.startsWith('Nibcache_'),
+  );
+  const preferredLayers: BackgroundLayerName[] = [
+    'topo',
+    ...(flyfotoLayer ? [flyfotoLayer] : []),
+    'toporaster',
+    'topograatone',
+  ];
+  const orderedLayers = [
+    ...preferredLayers.filter((layer) => backgroundLayers.includes(layer)),
+    ...backgroundLayers.filter((layer) => !preferredLayers.includes(layer)),
+  ];
+  const displayedLayers = [...orderedLayers].reverse();
   return (
-    <PopoverRoot
+    <MenuRoot
       open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
       }}
-      positioning={{ placement: 'top', offset: { mainAxis: 2 } }}
+      positioning={{ placement: 'top-start', offset: { mainAxis: 2 } }}
     >
-      <PopoverTrigger asChild>
+      <MenuTrigger asChild>
         <Button
           pointerEvents="auto"
-          width="56px"
-          height="54px"
-          borderRadius="10px"
+          width="84px"
+          height="64px"
+          borderRadius="4px"
           overflow="hidden"
           cursor="pointer"
           padding={0}
@@ -77,27 +89,47 @@ export const BackgroundLayerPopover = () => {
             </Text>
           </Box>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent width="350px" p={0} borderRadius="2xl" boxShadow="lg">
-        <PopoverArrow />
-        <PopoverBody p={0} maxHeight="420px" overflowY="auto">
-          <Box p={1}>
-            <BackgroundLayerGrid
-              layers={backgroundLayers.map((layerName) => ({
-                value: layerName,
-                label: t(
+      </MenuTrigger>
+      <MenuContent
+        portalled={false}
+        width="84px"
+        minW="0"
+        height="fit-content"
+        maxH="none"
+        overflow="visible"
+        maxW="calc(100vw - 2rem)"
+        borderRadius="4px"
+        boxShadow="lg"
+        paddingTop="0"
+        paddingBottom="0"
+      >
+        <BackgroundLayerGrid
+          layers={displayedLayers.map((layerName) => ({
+            value: layerName,
+            label: t(
+              `map.settings.layers.mapNames.backgroundMaps.${layerName}`,
+            ),
+            shortLabel: t(
+              `map.settings.layers.mapNames.shortBackgroundMaps.${
+                layerName.startsWith('Nibcache_')
+                  ? 'Nibcache_web_mercator_v2'
+                  : layerName
+              }`,
+              {
+                defaultValue: t(
                   `map.settings.layers.mapNames.backgroundMaps.${layerName}`,
                 ),
-              }))}
-              currentLayer={backgroundLayer}
-              setLayer={(layerName) => {
-                setBackgroundLayer(layerName);
-                setOpen(false);
-              }}
-            />
-          </Box>
-        </PopoverBody>
-      </PopoverContent>
-    </PopoverRoot>
+              },
+            ),
+          }))}
+          currentLayer={backgroundLayer}
+          columns={1}
+          setLayer={(layerName) => {
+            setBackgroundLayer(layerName);
+            setOpen(false);
+          }}
+        />
+      </MenuContent>
+    </MenuRoot>
   );
 };

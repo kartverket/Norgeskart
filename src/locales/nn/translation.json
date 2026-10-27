@@ -1,22 +1,21 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Temakart",
-      "mobiletext": "Temakart"
+      "openText": "Kartdetaljar",
+      "mobiletext": "Kartdetaljar"
     },
     "print": {
       "text": "Lag kart"
     },
     "draw": {
-      "text": "Teikne og måle",
-      "mobiletext": "Verktøy"
+      "text": "Teikne"
     },
     "settings": {
       "mobiletext": "Innstillingar",
       "text": "Innstillingar"
     },
     "sharemap": {
-      "text": "Del kart",
+      "text": "Kopier URL",
       "mobiletext": "Del"
     },
     "help": {
@@ -206,7 +205,20 @@
             "toporaster": "Papirkart",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
             "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
-            "empty": "Ingen bakgrunn"
+            "empty": "Ingen kart"
+          },
+          "shortBackgroundMaps": {
+            "Nibcache_web_mercator_v2": "Flyfoto",
+            "nautical-background": "Nautisk",
+            "oceanicelectronic": "El. sjøkart",
+            "sjokartraster": "Sjøkart EFS",
+            "topo": "Standard",
+            "topo_2025": "Topo 2025",
+            "topograatone": "Gråtone",
+            "topoProd": "Topo",
+            "toporaster": "Papirkart",
+            "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           }
         },
         "projection": {
@@ -346,7 +358,7 @@
   },
   "mapLayers": {
     "close": "Lukk kartlaginnstillingar",
-    "label": "Temakart",
+    "label": "Kartdetaljar",
     "open": "Opne kartlaginnstillingar"
   },
   "placeInfo": {
@@ -381,9 +393,9 @@
     "holdingNr": "Gardsnr.",
     "leaseNr": "Festenr.",
     "markProperty": {
-      "label": "Vis på kartet"
+      "label": "Vis eigedomsgrenser"
     },
-    "moreInformation": "Vis meir informasjon",
+    "moreInformation": "Sjå eigedom / grunnbok",
     "multipleAddressesText": "Eigedomen har fleire adresser",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",
@@ -402,7 +414,7 @@
     },
     "addresses": "Adresser",
     "coordinates": "Koordinatar",
-    "houseNumber": "Husnummer",
+    "houseNumber": "Husnr",
     "placeholder": "Søk i Norgeskart",
     "placeName": "Stadnamn",
     "properties": "Eigedomar",
@@ -456,6 +468,7 @@
   "toolbar": {
     "reportError": {
       "label": "Feil i kartet?",
+      "shortLabel": "Meld feil",
       "tooltip": "Rapporter feil eller manglar i kartet."
     },
     "scale": {
@@ -471,7 +484,7 @@
       "north": "N"
     },
     "legend": {
-      "tooltip": "Vis symbolforklaring",
+      "tooltip": "Vis teiknforklaring",
       "label": "Teknforklaring"
     }
   },
@@ -495,7 +508,7 @@
   },
   "legend": {
     "heading": {
-      "title": "Symbolforklaring",
+      "title": "Teiknforklaring",
       "preamble": "Symbolforklaring for temakart "
     },
     "item": {
@@ -534,10 +547,10 @@
       "jobRunning": "Lagar profil",
       "buttons": {
         "exportCsv": {
-          "label": "Last ned som CSV"
+          "label": "Last ned CSV"
         },
         "exportPng": {
-          "label": "Last ned som PNG"
+          "label": "Last ned PNG"
         },
         "exportJpeg": {
           "label": "Last ned som JPEG"
@@ -647,7 +660,7 @@
     }
   },
   "measure": {
-    "label": "Måleverktøy",
+    "label": "Måle",
     "length": "Lengd",
     "area": "Areal"
   },
