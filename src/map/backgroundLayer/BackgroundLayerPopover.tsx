@@ -27,10 +27,10 @@ export const BackgroundLayerPopover = () => {
     layer.startsWith('Nibcache_'),
   );
   const preferredLayers: BackgroundLayerName[] = [
-    'topo',
+    'norgeskart_standard',
     ...(flyfotoLayer ? [flyfotoLayer] : []),
     'toporaster',
-    'topograatone',
+    'norgeskart_gray',
   ];
   const orderedLayers = [
     ...preferredLayers.filter((layer) => backgroundLayers.includes(layer)),
@@ -113,7 +113,11 @@ export const BackgroundLayerPopover = () => {
               `map.settings.layers.mapNames.shortBackgroundMaps.${
                 layerName.startsWith('Nibcache_')
                   ? 'Nibcache_web_mercator_v2'
-                  : layerName
+                  : layerName === 'norgeskart_standard'
+                    ? 'topo'
+                    : layerName === 'norgeskart_gray'
+                      ? 'topograatone'
+                      : layerName
               }`,
               {
                 defaultValue: t(

@@ -107,12 +107,13 @@ export const SideNavigation = ({
 
   return (
     <Box height="100%" bg="white" display="flex" flexDirection="column">
-      <VStack gap={2} alignItems="center" pt={3}>
+      <VStack gap={0} alignItems="center" pt={3}>
         <Link
           href="https://www.kartverket.no"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Kartverket"
+          marginBottom={isMinimized ? 0 : 4}
         >
           <Image
             src="/logos/KV_logo_staa_color.svg"
