@@ -98,12 +98,7 @@ export const SearchResults = ({
   if (allResults.length === 0 && coordResult == null) {
     if (searchQuery !== '') {
       return (
-        <Box
-          p={4}
-          bg="white"
-          borderRadius={'16px'}
-          pointerEvents={'none'}
-        >
+        <Box p={4} bg="white" borderRadius={'16px'} pointerEvents={'none'}>
           {t('search.noResults')}
         </Box>
       );
