@@ -101,6 +101,7 @@ export const DesktopLayout = () => {
           maxWidth="400px"
           overflow="hidden"
           zIndex={1}
+          pointerEvents="none"
         >
           <SearchComponent />
         </Box>

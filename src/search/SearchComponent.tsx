@@ -75,7 +75,7 @@ export const SearchComponent = () => {
         flexDir="column"
         alignItems="stretch"
         gap={2}
-        pointerEvents={'auto'}
+        pointerEvents={'none'}
         px={3}
         pt={3}
         maxH={'100%'}
@@ -83,7 +83,12 @@ export const SearchComponent = () => {
         maxW={'450px'}
       >
         {/* TOPP: kart-flis + søkefelt */}
-        <Box backgroundColor="transparent" p={2} borderRadius="4px">
+        <Box
+          backgroundColor="transparent"
+          p={2}
+          borderRadius="4px"
+          pointerEvents={'auto'}
+        >
           <Flex alignItems="center" gap={2}>
             {/* Kart-flis til venstre */}
 
@@ -171,7 +176,7 @@ export const SearchComponent = () => {
           setHoveredResult={setHoveredResult}
         />
         {showBackgroundSettings && (
-          <Box>
+          <Box pointerEvents={'auto'}>
             <BackgroundLayerPanel
               onSelectComplete={() => setShowBackgroundSettings(false)}
             />
