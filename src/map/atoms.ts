@@ -1,5 +1,7 @@
 import { atom, getDefaultStore } from 'jotai';
+import { View } from 'ol';
 import { defaults as defaultControls, ScaleLine } from 'ol/control';
+import { defaults as defaultInteractions } from 'ol/interaction/defaults';
 import Map from 'ol/Map';
 import { get as getProjection, transform } from 'ol/proj';
 
@@ -19,8 +21,7 @@ import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
 import { themeLayerConfig } from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
-import { addSafariPinchZoom } from './safariPinchZoom';
-import { SnapToNearestView } from './snapToNearestView';
+import { StepMouseWheelZoom } from './stepMouseWheelZoom';
 
 export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 3;
@@ -165,7 +166,7 @@ const getInitialMapView = () => {
     }
   }
 
-  return new SnapToNearestView({
+  return new View({
     center: initialCenter,
     minZoom: 3,
     maxZoom: 20,
@@ -182,9 +183,11 @@ export const mapAtom = atom<Map>(() => {
     controls: defaultControls({ zoom: false, rotate: false }).extend([
       new ScaleLine({ minWidth: 100 }),
     ]),
+    interactions: defaultInteractions({ mouseWheelZoom: false }).extend([
+      new StepMouseWheelZoom(),
+    ]),
     keyboardEventTarget: document,
   });
-  addSafariPinchZoom(map);
 
   map.addLayer(mapLayers.markerLayer.getLayer());
   map.addLayer(mapLayers.drawLayer.getLayer());
@@ -267,7 +270,7 @@ export const projectionEffect = atomEffect((get, set) => {
   newZoom = Math.round(newZoom);
 
   map.setView(
-    new SnapToNearestView({
+    new View({
       center: newCenter,
       zoom: newZoom,
       minZoom: oldView.getMinZoom(),
