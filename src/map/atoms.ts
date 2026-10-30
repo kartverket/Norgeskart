@@ -20,6 +20,7 @@ import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
 import { themeLayerConfig } from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
+import { addSafariPinchZoom } from './safariPinchZoom';
 
 export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 3;
@@ -183,6 +184,7 @@ export const mapAtom = atom<Map>(() => {
     ]),
     keyboardEventTarget: document,
   });
+  addSafariPinchZoom(map);
 
   map.addLayer(mapLayers.markerLayer.getLayer());
   map.addLayer(mapLayers.drawLayer.getLayer());
