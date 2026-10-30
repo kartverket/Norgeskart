@@ -13,8 +13,6 @@ const backgroundLayerOrder = new Map<BackgroundLayerName, number>([
   ['Nibcache_UTM32_EUREF89_v2', 8],
   ['Nibcache_UTM33_EUREF89_v2', 9],
   ['Nibcache_UTM35_EUREF89_v2', 10],
-  ['Basisdata_NP_Basiskart_Svalbard_WMTS_25833', 11],
-  ['Basisdata_NP_Basiskart_JanMayen_WMTS_25833', 12],
 ]);
 
 const sortBackgroundLayers = (
@@ -33,8 +31,10 @@ export const getAvailableBackgroundLayers = (
   allConfiguredBackgroundLayers
     .filter(
       (layer) =>
-        layer.showForProjections == null ||
-        layer.showForProjections.includes(currentProjection),
+        layer.layerName !== 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833' &&
+        layer.layerName !== 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833' &&
+        (layer.showForProjections == null ||
+          layer.showForProjections.includes(currentProjection)),
     )
     .map((layer) => layer.layerName)
     .sort(sortBackgroundLayers);
