@@ -39,8 +39,7 @@ export const addSafariPinchZoom = (map: Map) => {
     e.preventDefault();
     if (!active) return;
     active = false;
-    // Snap (constrainResolution) towards the pinch direction, not the nearest level.
-    map.getView().endInteraction(undefined, lastScale > 1 ? -1 : 1, anchor);
+    map.getView().endInteraction(undefined, 0, anchor);
   };
 
   // Should Safari also emit ctrl+wheel mid-gesture, drop it so we don't zoom twice.

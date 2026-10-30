@@ -1,5 +1,4 @@
 import { atom, getDefaultStore } from 'jotai';
-import { View } from 'ol';
 import { defaults as defaultControls, ScaleLine } from 'ol/control';
 import Map from 'ol/Map';
 import { get as getProjection, transform } from 'ol/proj';
@@ -21,6 +20,7 @@ import { themeLayerConfig } from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
 import { addSafariPinchZoom } from './safariPinchZoom';
+import { SnapToNearestView } from './snapToNearestView';
 
 export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 3;
@@ -165,7 +165,7 @@ const getInitialMapView = () => {
     }
   }
 
-  return new View({
+  return new SnapToNearestView({
     center: initialCenter,
     minZoom: 3,
     maxZoom: 20,
@@ -267,7 +267,7 @@ export const projectionEffect = atomEffect((get, set) => {
   newZoom = Math.round(newZoom);
 
   map.setView(
-    new View({
+    new SnapToNearestView({
       center: newCenter,
       zoom: newZoom,
       minZoom: oldView.getMinZoom(),
