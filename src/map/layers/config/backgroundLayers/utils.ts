@@ -76,16 +76,20 @@ export const getWMTSLayer = async (
       tileResolution === '2x' ||
       (tileResolution !== '1x' && window.devicePixelRatio > 1);
     const hidpi = layerConfig.hidpi;
+    const hidpiMatrixSet = hidpi?.matrixSets[layerOptions.matrixSet];
+    const hidpiLayer = capabilities.Contents?.Layer?.find(
+      (l: { Identifier: string }) => l.Identifier === hidpi?.wmtsLayerName,
+    ) as { TileMatrixSetLink?: { TileMatrixSet: string }[] } | undefined;
     const hidpiOptions =
       hidpi &&
       wantHidpi &&
-      layerOptions.matrixSet === hidpi.matrixSet &&
-      capabilities.Contents?.Layer?.some(
-        (l: { Identifier: string }) => l.Identifier === hidpi.wmtsLayerName,
+      hidpiMatrixSet &&
+      hidpiLayer?.TileMatrixSetLink?.some(
+        (link) => link.TileMatrixSet === hidpiMatrixSet,
       )
         ? {
             layer: hidpi.wmtsLayerName,
-            matrixSet: hidpi.hidpiMatrixSet,
+            matrixSet: hidpiMatrixSet,
             tilePixelRatio: 2,
           }
         : {};

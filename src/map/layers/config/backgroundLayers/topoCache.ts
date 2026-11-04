@@ -18,8 +18,12 @@ export const topoCacheBackgroundLayers: BackgroundLayer[] = [
     provider: TopoCacheProvider,
     hidpi: {
       wmtsLayerName: layers.standard2x,
-      matrixSet: 'norway_25833',
-      hidpiMatrixSet: 'norway_25833_2x',
+      // utm32n/utm35n twins: only atgcp1-dev so far; unadvertised ones fall back to 1x.
+      matrixSets: {
+        norway_25833: 'norway_25833_2x',
+        utm32n: 'utm32n_2x',
+        utm35n: 'utm35n_2x',
+      },
     },
     legendUrl:
       env.layerProviderParameters.topoCache.baseUrl +
