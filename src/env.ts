@@ -15,11 +15,10 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
-  topoQgis: {
-    clusterDomain: string;
-  };
-  topoQgisGraa: {
-    clusterDomain: string;
+  // rGIS WMS roots for the Topo farge/graa theme layers; empty hides both themes.
+  topoRgis: {
+    fargeUrl: string;
+    graaUrl: string;
   };
   topoCache: {
     baseUrl: string;
@@ -31,6 +30,12 @@ type layerProviderParameters = {
       gray: string;
     };
   };
+};
+
+// Internal hosts: the themes only load on the Kartverket network.
+const RGIS_DEV = {
+  fargeUrl: 'https://tnt-rgis.atgcp1-dev.kartverket-intern.cloud',
+  graaUrl: 'https://tnt-rgis-graa.atgcp1-dev.kartverket-intern.cloud',
 };
 
 const KART_API_LAYERS = {
@@ -72,12 +77,7 @@ const LOCAL_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoQgis: {
-      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
-    },
-    topoQgisGraa: {
-      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
-    },
+    topoRgis: RGIS_DEV,
     topoCache: {
       // baseUrl: 'http://localhost:8085',
       baseUrl: 'https://kart.api.kartverket.no',
@@ -111,12 +111,7 @@ const DEV_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoQgis: {
-      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
-    },
-    topoQgisGraa: {
-      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
-    },
+    topoRgis: RGIS_DEV,
     topoCache: {
       baseUrl: 'https://kart.api.kartverket.no',
       layers: KART_API_LAYERS,
@@ -149,12 +144,7 @@ const PROD_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoQgis: {
-      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
-    },
-    topoQgisGraa: {
-      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
-    },
+    topoRgis: { fargeUrl: '', graaUrl: '' },
     topoCache: {
       baseUrl: 'https://kart.api.kartverket.no',
       layers: KART_API_LAYERS,
@@ -171,6 +161,7 @@ const TEST_ENV: Env = {
   ...PROD_ENV,
   layerProviderParameters: {
     ...PROD_ENV.layerProviderParameters,
+    topoRgis: RGIS_DEV,
     topoCache: {
       baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
       layers: { standard: 'topo', standard2x: 'topo_2x', gray: 'topo_graa' },

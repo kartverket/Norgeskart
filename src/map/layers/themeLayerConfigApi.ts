@@ -1,3 +1,4 @@
+import { getEnv } from '../../env';
 import { borderConfig } from './config/themeLayers/borders';
 import { dekningConfig } from './config/themeLayers/dekning';
 import { fastmerkerLayerConfig } from './config/themeLayers/fastmerker';
@@ -102,8 +103,9 @@ const getThemeLayerConfig = () => {
     placeNamesConfig,
     fastmerkerLayerConfig,
     dekningConfig,
-    topoQgisConfig,
-    topoQgisGraaConfig,
+    ...(getEnv().layerProviderParameters.topoRgis.fargeUrl
+      ? [topoQgisConfig, topoQgisGraaConfig]
+      : []),
   ];
 
   for (const config of configs) {
