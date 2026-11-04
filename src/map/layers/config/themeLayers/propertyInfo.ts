@@ -54,6 +54,19 @@ export const propertyInfoConfig: ThemeLayerConfig = {
       queryable: true,
       useLegendGraphic: true,
       singleImage: true,
+      filter: `
+        <Filter xmlns="http://www.opengis.net/ogc">
+          <Or>
+            <PropertyIsLessThan>
+              <PropertyName>BYGNINGSTATUS</PropertyName>
+              <Literal>9</Literal>
+            </PropertyIsLessThan>
+            <PropertyIsEqualTo>
+              <PropertyName>BYGNINGSTATUS</PropertyName>
+              <Literal>13</Literal>
+            </PropertyIsEqualTo>
+          </Or>
+        </Filter>`.trim(),
     },
     {
       id: 'borders',
