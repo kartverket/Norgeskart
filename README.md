@@ -2,7 +2,6 @@
 
 Kildekode til norgeskart.no som lanseres 17. mars 2026.
 
-For endringslogg, se [wiki-siden](https://github.com/kartverket/Norgeskart/wiki/Endringslogg).
 ## Copyright
 
 The content of norgeskart.no and this repository is available under the following licenses:
