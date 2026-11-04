@@ -9,6 +9,7 @@ import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
 import { sjoConfig } from './config/themeLayers/sjo';
 import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
 import { topoQgisConfig } from './config/themeLayers/topoQgis';
+import { topoQgisForenkletConfig } from './config/themeLayers/topoQgisForenklet';
 import { topoQgisGraaConfig } from './config/themeLayers/topoQgisGraa';
 import { ThemeLayerName } from './themeWMS';
 
@@ -104,7 +105,7 @@ const getThemeLayerConfig = () => {
     fastmerkerLayerConfig,
     dekningConfig,
     ...(getEnv().layerProviderParameters.topoRgis.fargeUrl
-      ? [topoQgisConfig, topoQgisGraaConfig]
+      ? [topoQgisConfig, topoQgisGraaConfig, topoQgisForenkletConfig]
       : []),
   ];
 

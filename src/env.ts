@@ -15,10 +15,11 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
-  // rGIS WMS roots for the Topo farge/graa theme layers; empty hides both themes.
+  // rGIS WMS roots for the Topo farge/graa/forenklet theme layers; empty hides the themes.
   topoRgis: {
     fargeUrl: string;
     graaUrl: string;
+    forenkletUrl: string;
   };
   topoCache: {
     baseUrl: string;
@@ -36,6 +37,7 @@ type layerProviderParameters = {
 const RGIS_DEV = {
   fargeUrl: 'https://tnt-rgis.atgcp1-dev.kartverket-intern.cloud',
   graaUrl: 'https://tnt-rgis-graa.atgcp1-dev.kartverket-intern.cloud',
+  forenkletUrl: 'https://tnt-rgis-forenklet.atgcp1-dev.kartverket-intern.cloud',
 };
 
 const KART_API_LAYERS = {
@@ -144,7 +146,7 @@ const PROD_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoRgis: { fargeUrl: '', graaUrl: '' },
+    topoRgis: { fargeUrl: '', graaUrl: '', forenkletUrl: '' },
     topoCache: {
       baseUrl: 'https://kart.api.kartverket.no',
       layers: KART_API_LAYERS,
