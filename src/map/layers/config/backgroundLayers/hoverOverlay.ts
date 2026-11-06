@@ -1,12 +1,15 @@
 import type { StyleSpecification } from 'maplibre-gl';
 import { getEnv } from '../../../../env';
 import { createMapLibreLayer } from './createMapLibreLayer';
-import { enableTopoVectorHover, hoverSources } from './topoVectorHover';
+import { enableHover, hoverSources } from './hover';
+import { getJSON, getMartinUrl } from './topoVectorStyle';
+
+type TileJson = { minzoom?: number; maxzoom?: number };
 
 export const buildHoverStyle = (
   martinUrl: string,
   styleBaseUrl: string,
-  tileJsons: Record<string, { minzoom?: number; maxzoom?: number }>,
+  tileJsons: Record<string, TileJson>,
 ): StyleSpecification => ({
   version: 8,
   glyphs: `${styleBaseUrl}/glyphs/{fontstack}/{range}.pbf`,
@@ -21,31 +24,38 @@ export const buildHoverStyle = (
       },
     ]),
   ),
-  // No base layers: hover draws on an otherwise transparent canvas over the raster.
+  // No base layers: hover draws on an otherwise transparent canvas.
   layers: [],
 });
 
 // Unlike a background this stays on the map, so it lives outside the `bg.` id prefix.
 export const createHoverOverlay = async () => {
-  const { baseUrl, styleBaseUrl } =
-    getEnv().layerProviderParameters.topoVectorMartin;
+  const martinUrl = getMartinUrl();
+  const { styleBaseUrl } = getEnv().layerProviderParameters.topoVectorMartin;
 
-  const entries = await Promise.all(
-    hoverSources().map(async (id) => {
-      const response = await fetch(`${baseUrl}/${id}`);
-      return response.ok ? ([id, await response.json()] as const) : null;
-    }),
+  // Groups whose archive isn't published yet are skipped, so they appear once it is.
+  const catalog = (await getJSON(`${martinUrl}/catalog`)) as {
+    tiles?: Record<string, unknown>;
+  };
+  const available = hoverSources().filter((id) => id in (catalog.tiles ?? {}));
+  if (available.length === 0) return null;
+
+  const tileJsons = Object.fromEntries(
+    await Promise.all(
+      available.map(async (id) => [
+        id,
+        (await getJSON(`${martinUrl}/${id}`)) as TileJson,
+      ]),
+    ),
   );
-  const tileJsons = Object.fromEntries(entries.filter((e) => e !== null));
-  if (Object.keys(tileJsons).length === 0) return null;
 
   const layer = createMapLibreLayer(
-    { style: buildHoverStyle(baseUrl, styleBaseUrl, tileJsons) },
+    { style: buildHoverStyle(martinUrl, styleBaseUrl, tileJsons) },
     'overlay.hover',
     true,
     {},
   );
   layer.setZIndex(1); // over the background, under markers and drawings
-  enableTopoVectorHover(layer);
+  enableHover(layer);
   return layer;
 };

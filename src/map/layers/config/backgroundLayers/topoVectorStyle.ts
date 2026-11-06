@@ -39,7 +39,7 @@ type ReconcilableStyle = {
   } & Record<string, unknown>)[];
 } & Record<string, unknown>;
 
-const getJSON = async (url: string) => {
+export const getJSON = async (url: string) => {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`${response.status} ${response.statusText} — ${url}`);
@@ -73,7 +73,7 @@ export const resolveTopoVectorStyle = (): Promise<MapLibreStyleObject> => {
   return cachedStyle;
 };
 
-const getMartinUrl = (): string => {
+export const getMartinUrl = (): string => {
   // ?topoVectorMartin=… wins, for pointing local dev at a `make up` tnt-martin
   // or the prod server without a rebuild (matches tnt-martin's kartclient).
   const override = new URLSearchParams(window.location.search).get(

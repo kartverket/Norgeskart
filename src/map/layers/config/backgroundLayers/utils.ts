@@ -131,7 +131,6 @@ export const getVectorTileLayer = async (
     `bg.${layerConfig.layerName}`,
     layerConfig.requiredProjection !== 'EPSG:3857',
   );
-  layerConfig.onLayerCreated?.(layer);
 
   // TODO(ol-maplibre-layer): Remove this workaround after upgrading
   // `@geoblocks/ol-maplibre-layer` to a version that correctly exposes source
