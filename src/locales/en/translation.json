@@ -195,6 +195,7 @@
             "sjokartraster": "Nautical Chart updated EFS",
             "topo_2025": "Topo 2025",
             "norgeskart_standard": "Standard",
+            "norgeskart_forenklet": "Standard (simplified)",
             "norgeskart_gray": "Standard (greyscale)",
             "topoProd": "Topographic",
             "toporaster": "Paper Map",

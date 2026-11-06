@@ -35,4 +35,18 @@ export const topoCacheBackgroundLayers: BackgroundLayer[] = [
     wmtsLayerName: layers.gray,
     provider: TopoCacheProvider,
   },
+  // No hidpi twin yet: MapProxy only has 2x for topo_cache, so 2x screens get upscaled 256 px.
+  ...(layers.forenklet
+    ? [
+        {
+          type: 'WMTS' as const,
+          layerName: 'norgeskart_forenklet' as const,
+          wmtsLayerName: layers.forenklet,
+          provider: TopoCacheProvider,
+          legendUrl:
+            env.layerProviderParameters.topoCache.baseUrl +
+            '/legend/topo-{scale}.png',
+        },
+      ]
+    : []),
 ];

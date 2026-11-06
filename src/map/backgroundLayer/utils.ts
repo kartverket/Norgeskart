@@ -5,14 +5,15 @@ import { ProjectionIdentifier } from '../projections/types';
 const backgroundLayerOrder = new Map<BackgroundLayerName, number>([
   ['norgeskart_standard', 1],
   ['norgeskart_gray', 2],
-  ['toporaster', 3],
-  ['sjokartraster', 4],
-  ['nautical-background', 5],
-  ['oceanicelectronic', 6],
-  ['Nibcache_web_mercator_v2', 7],
-  ['Nibcache_UTM32_EUREF89_v2', 8],
-  ['Nibcache_UTM33_EUREF89_v2', 9],
-  ['Nibcache_UTM35_EUREF89_v2', 10],
+  ['norgeskart_forenklet', 3],
+  ['toporaster', 4],
+  ['sjokartraster', 5],
+  ['nautical-background', 6],
+  ['oceanicelectronic', 7],
+  ['Nibcache_web_mercator_v2', 8],
+  ['Nibcache_UTM32_EUREF89_v2', 9],
+  ['Nibcache_UTM33_EUREF89_v2', 10],
+  ['Nibcache_UTM35_EUREF89_v2', 11],
 ]);
 
 const sortBackgroundLayers = (

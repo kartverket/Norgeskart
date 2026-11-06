@@ -87,6 +87,8 @@ export const getBackgroundLayerImageName = (
       return 'Nibcache_web_mercator_v2';
     case 'empty':
       return 'empty';
+    case 'norgeskart_forenklet':
+      return 'norgeskart_standard'; // Same look at thumbnail size
     case 'nautical-background':
       return 'sjokartraster'; // Use nautical chart image for nautical background for now
     case 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833':

@@ -179,18 +179,22 @@ const buildBackgroundPrintLayer = (
 
   if (
     backgroundLayer === 'norgeskart_standard' ||
-    backgroundLayer === 'norgeskart_gray'
+    backgroundLayer === 'norgeskart_gray' ||
+    backgroundLayer === 'norgeskart_forenklet'
   ) {
     const ENV = getEnv();
+    const { layers } = ENV.layerProviderParameters.topoCache;
     return {
       baseURL: ENV.layerProviderParameters.topoCache.baseUrl + '/service',
       customParams: { TRANSPARENT: 'true' },
       style: 'default',
       imageFormat: 'image/png',
       layer:
-        backgroundLayer === 'norgeskart_standard'
-          ? ENV.layerProviderParameters.topoCache.layers.standard
-          : ENV.layerProviderParameters.topoCache.layers.gray,
+        backgroundLayer === 'norgeskart_gray'
+          ? layers.gray
+          : backgroundLayer === 'norgeskart_forenklet'
+            ? (layers.forenklet ?? layers.standard)
+            : layers.standard,
       opacity: 1,
       type: 'WMTS',
       dimensions: null,

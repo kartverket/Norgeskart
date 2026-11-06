@@ -31,6 +31,7 @@ export const BackgroundLayerPopover = () => {
     ...(flyfotoLayer ? [flyfotoLayer] : []),
     'toporaster',
     'norgeskart_gray',
+    'norgeskart_forenklet',
   ];
   const orderedLayers = [
     ...preferredLayers.filter((layer) => backgroundLayers.includes(layer)),

@@ -23,12 +23,13 @@ type layerProviderParameters = {
   };
   topoCache: {
     baseUrl: string;
-    // WMTS layer names differ per MapProxy: kart.api maps the norgeskart_* aliases,
-    // the cluster-internal dev stacks only serve the legacy topo* names.
+    // WMTS layer names differ per MapProxy: atgcp1-dev only serves the legacy topo* names.
     layers: {
       standard: string;
       standard2x: string;
       gray: string;
+      // tnt-topo-qlr forenklet_farge/ (not prod): unset hides the background.
+      forenklet?: string;
     };
   };
 };
@@ -40,11 +41,15 @@ const RGIS_DEV = {
   forenkletUrl: 'https://tnt-rgis-forenklet.atgcp1-dev.kartverket-intern.cloud',
 };
 
-const KART_API_LAYERS = {
-  standard: 'norgeskart_standard',
-  standard2x: 'norgeskart_standard_2x',
-  gray: 'norgeskart_gray',
+// rGIS-backed MapProxy on atgcp1-dev: the public host every environment's background uses.
+const KART_BASE_URL = 'https://kart.atgcp1-dev.kartverket.cloud';
+const KART_LAYERS = {
+  standard: 'topo',
+  standard2x: 'topo_2x',
+  gray: 'topo_graa',
 };
+// Everything but prod also gets the forenklet background (tnt-topo-qlr forenklet_farge/).
+const KART_LAYERS_NON_PROD = { ...KART_LAYERS, forenklet: 'topo_forenklet' };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
 type Env = {
@@ -82,8 +87,8 @@ const LOCAL_ENV: Env = {
     topoRgis: RGIS_DEV,
     topoCache: {
       // baseUrl: 'http://localhost:8085',
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      baseUrl: KART_BASE_URL,
+      layers: KART_LAYERS_NON_PROD,
     },
   },
   envName: 'local',
@@ -115,8 +120,8 @@ const DEV_ENV: Env = {
     },
     topoRgis: RGIS_DEV,
     topoCache: {
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      baseUrl: KART_BASE_URL,
+      layers: KART_LAYERS_NON_PROD,
     },
   },
   envName: 'dev',
@@ -148,8 +153,8 @@ const PROD_ENV: Env = {
     },
     topoRgis: { fargeUrl: '', graaUrl: '', forenkletUrl: '' },
     topoCache: {
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      baseUrl: KART_BASE_URL,
+      layers: KART_LAYERS,
     },
   },
   envName: 'prod',
@@ -157,16 +162,15 @@ const PROD_ENV: Env = {
   printApiUrl: 'https://api.norgeskart.no',
 };
 
-// test.norgeskart.no: prod settings, but the background comes from the rGIS-backed
-// MapProxy on atgcp1-dev (public host; kart.atgcp1-dev.kartverket-intern.cloud is internal-only).
+// test.norgeskart.no: prod settings, plus the forenklet background and the internal rGIS themes.
 const TEST_ENV: Env = {
   ...PROD_ENV,
   layerProviderParameters: {
     ...PROD_ENV.layerProviderParameters,
     topoRgis: RGIS_DEV,
     topoCache: {
-      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
-      layers: { standard: 'topo', standard2x: 'topo_2x', gray: 'topo_graa' },
+      baseUrl: KART_BASE_URL,
+      layers: KART_LAYERS_NON_PROD,
     },
   },
 };
