@@ -45,7 +45,12 @@ const xExtent1_25k = 17_800;
 const yExtent1_25k = 19_500;
 
 type HikingMapSacles = (typeof MapScaleOptions)[number];
-export const HikingMapSection = () => {
+
+interface HikingMapSectionProps {
+  onCancel?: () => void;
+}
+
+export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
   const [selectedScale, setSelectedScale] =
     useState<HikingMapSacles>('1 : 25 000');
   const [mapName, setMapName] = useState<string>('');
@@ -351,7 +356,11 @@ export const HikingMapSection = () => {
         <Button
           variant="secondary"
           onClick={() => {
-            setIsPrintDialogOpen(false);
+            if (onCancel) {
+              onCancel();
+            } else {
+              setIsPrintDialogOpen(false);
+            }
           }}
           disabled={printLoading}
         >

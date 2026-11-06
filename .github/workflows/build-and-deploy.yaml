@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      # Publishes test.norgeskart.no (see the deploy job)
+      - test-norgeskart
   workflow_dispatch:
     inputs:
       bypassValidation:
@@ -105,7 +107,9 @@ jobs:
         id: octo-sts
         with:
           scope: kartverket/tnt-apps
-          identity: norgeskart5
+          # Separate octo-sts identity per branch: norgeskart5 trusts only main,
+          # norgeskart5-test only test-norgeskart (tnt-apps .github/chainguard/).
+          identity: ${{ github.ref_name == 'test-norgeskart' && 'norgeskart5-test' || 'norgeskart5' }}
 
       - name: Checkout apps repository
         uses: actions/checkout@v7
@@ -122,14 +126,16 @@ jobs:
       - name: Update deployment
         env:
           COMMIT_MESSAGE: Update norgeskart5 image to ${{ needs.build.outputs.docker_tag }}
-        # env/atkv3-prod/norgeskart-test/norgeskart5-test-version (test.norgeskart.no)
-        # is deliberately NOT written here anymore — it's now a manually-pinned
-        # validation slot (e.g. for testing a branch before it merges to main)
-        # instead of auto-tracking every main push. Update it by hand when needed.
-        # echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-test/norgeskart5-test-version
+        # test.norgeskart.no (env/atkv3-prod/norgeskart-test/norgeskart5-test-version)
+        # tracks the test-norgeskart branch only; main pushes never touch it, and a
+        # test-norgeskart push never touches the main dev/prod versions.
         run: |
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
-          echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-version
+          if [ "${{ github.ref_name }}" = "test-norgeskart" ]; then
+            echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-test/norgeskart5-test-version
+          else
+            echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-dev/norgeskart-main/norgeskart5-version
+            echo "\"${{ needs.build.outputs.docker_tag }}"\" > env/atkv3-prod/norgeskart-main/norgeskart5-version
+          fi
           git add .
           git commit -m "$COMMIT_MESSAGE"
           git push

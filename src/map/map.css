@@ -1,9 +1,17 @@
 /* --- Scale & Mouse Position --- */
+.map-control-select-trigger {
+  button {
+    border: none;
+    outline: none;
+  }
+}
+
 .ol-scale-line {
   position: absolute;
-  left: 10px;
-  bottom: 46px;
+  left: 50%;
+  bottom: 58px;
   right: auto;
+  transform: translateX(-50%);
 }
 
 /* Mobile: center scale line above toolbar */

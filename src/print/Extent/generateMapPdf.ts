@@ -25,7 +25,7 @@ import type { Layer, Matrix, WmsLayer } from './printApi';
 import { Payload, pollPdfStatus, requestPdfGeneration } from './printApi';
 import { PrintLayout } from './usePrintCapabilities';
 import { createGeoJsonLayerWithStyles } from './utils';
-import { WMTS_MATRICES } from './wmtsMatrices';
+import { MAPPROXY_WMTS_MATRICES, WMTS_MATRICES } from './wmtsMatrices';
 
 type GenerateMapPdfProps = {
   map: Map;
@@ -177,21 +177,27 @@ const buildBackgroundPrintLayer = (
     };
   }
 
-  if (backgroundLayer === 'norgeskart_standard') {
+  if (
+    backgroundLayer === 'norgeskart_standard' ||
+    backgroundLayer === 'norgeskart_gray'
+  ) {
     const ENV = getEnv();
     return {
-      baseURL: ENV.layerProviderParameters.topoCache.baseUrl,
+      baseURL: ENV.layerProviderParameters.topoCache.baseUrl + '/service',
       customParams: { TRANSPARENT: 'true' },
       style: 'default',
       imageFormat: 'image/png',
-      layer: 'norgeskart_standard',
+      layer:
+        backgroundLayer === 'norgeskart_standard'
+          ? ENV.layerProviderParameters.topoCache.layers.standard
+          : ENV.layerProviderParameters.topoCache.layers.gray,
       opacity: 1,
       type: 'WMTS',
       dimensions: null,
       requestEncoding: 'KVP',
       dimensionParams: {},
-      matrixSet: 'utm33n',
-      matrices: WMTS_MATRICES,
+      matrixSet: 'norway_25833',
+      matrices: MAPPROXY_WMTS_MATRICES,
     };
   }
 

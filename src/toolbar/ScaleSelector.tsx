@@ -28,11 +28,11 @@ export const ScaleSelector = () => {
 
   return (
     <SelectRoot
-      className={'toolbar-select'}
+      className="map-control-select"
       width="180px"
       size="sm"
       collection={createListCollection({ items: scaleCollection })}
-      value={[]}
+      value={scale ? [String(scale)] : []}
       onValueChange={(details) => {
         if (details.value.length > 0) {
           const newScale = Number(details.value[0]);
@@ -42,17 +42,21 @@ export const ScaleSelector = () => {
       }}
     >
       <Tooltip content={tooltipText}>
-        <SelectTrigger className={'toolbar-select-trigger'}>
-          <SelectValueText color="white" placeholder={label}></SelectValueText>
+        <SelectTrigger
+          className="map-control-select-trigger"
+          border="none"
+          borderWidth={0}
+          outline="none"
+        >
+          <SelectValueText
+            color="green.700"
+            placeholder={label}
+          ></SelectValueText>
         </SelectTrigger>
       </Tooltip>
-      <SelectContent>
+      <SelectContent portalled>
         {scaleCollection.map((item) => (
-          <SelectItem
-            key={item.value}
-            item={item.value}
-            onClick={() => setScale(Number(item.value))}
-          >
+          <SelectItem key={item.value} item={item.value}>
             {item.label}
           </SelectItem>
         ))}

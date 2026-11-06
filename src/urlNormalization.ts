@@ -43,6 +43,10 @@ export const processUrlParameters = () => {
   if (layerNameFromUrl) {
     const legacyLayerName = mapLegacyBackgroundLayerId(layerNameFromUrl);
     if (legacyLayerName) {
+      if (legacyLayerName !== layerNameFromUrl && !legacyLayerParam) {
+        // e.g. ?backgroundLayer=topo from links shared before the switch
+        setUrlParameter('backgroundLayer', legacyLayerName);
+      }
       layerNameFromUrl = legacyLayerName;
     }
   }

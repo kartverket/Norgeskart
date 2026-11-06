@@ -20,6 +20,9 @@ export const mapLegacyBackgroundLayerId = (
   layerId: string,
 ): BackgroundLayerName | null => {
   const legacyIdMap: Record<string, BackgroundLayerName> = {
+    // background layer names before the switch to kart.api.kartverket.no
+    topo: 'norgeskart_standard',
+    topograatone: 'norgeskart_gray',
     '1001': 'norgeskart_standard',
     '1003': 'norgeskart_gray',
     '1004': 'toporaster',

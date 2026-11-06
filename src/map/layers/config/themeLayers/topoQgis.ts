@@ -1,54 +1,17 @@
 import { getEnv } from '../../../../env';
 import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
-// Explicit layer -> pod-suffix mapping, replacing the old index-math formula
-const LAYER_POD: Record<string, string> = {
-  lag01_hav: '01',
-  lag02_dybdelag_gebco: '01b',
-  lag03_dybdelag_sjo: '02',
-  lag04_Europa: '02b',
-  lag05_hoydelag: '03',
-  lag06_arealdekke: '03',
-  lag07_elveflate: '04',
-  lag08_sjodybde_punkt: '04b',
-  lag08_sjodybde_linje: '04c',
-  lag09_relieff_sol: '05',
-  lag10_hoydekurve: '05',
-  lag11_relieff_skygge_blaagraa: '06',
-  lag12_innsjoflate: '06',
-  lag13_grense_adm_maritim_fare_naturvern: '07',
-  lag14_vannkontur_elvbekk: '07',
-  lag15_fkb_bygnanlegg_flate: '08',
-  lag16_fkb_samferdselflate_terreng: '08',
-  lag17_samferdsel_anlegg: '09',
-  lag18_samferdsel_tunnel: '09b',
-  lag19_samferdsel_batrute: '10',
-  lag20_samferdsel_terreng: '10b',
-  lag21_bygning_anlegg: '11',
-  lag22_samferdsel_bru: '11b',
-  lag23_bygning_bygningslinje: '12',
-  lag24_lufthavn: '12b',
-  lag25_kraftlinje_taubane: '13',
-  lag26_hoydepunkt: '13b',
-  lag27_sykehus_m_akuttmottak: '14',
-  lag28_adm_grensepunkt: '14',
-  lag29_hoydetall: '15',
-  lag30_stedsnavn_vegnummer_og_adresse: '15b',
-  lag31_Svalbard: '16',
-  lag32_Jan_Mayen: '16',
-};
-
-const CLUSTER_DOMAIN = getEnv().layerProviderParameters.topoQgis.clusterDomain;
-
+// Topo (farge) projects served by rGIS, one /qgis/QLR/<layer> path per project on one host.
+// IDs keep the topoQgis prefix so saved links survive.
 const mapUrl = (name: string) =>
-  `https://qlr${LAYER_POD[name]}-qgis.${CLUSTER_DOMAIN}/qgis/QLR/${name}`;
+  `${getEnv().layerProviderParameters.topoRgis.fargeUrl}/qgis/QLR/${name}`;
 
 export const topoQgisConfig: ThemeLayerConfig = {
   categories: [
     {
       id: 'topoQgis',
       groupid: 99,
-      name: { nb: 'Topo QGIS', nn: 'Topo QGIS', en: 'Topo QGIS' },
+      name: { nb: 'Topo farge', nn: 'Topo farge', en: 'Topo farge' },
     },
     {
       id: 'topoQgis_lag01_hav',
@@ -93,24 +56,10 @@ export const topoQgisConfig: ThemeLayerConfig = {
       name: { nb: 'Elveflate', nn: 'Elveflate', en: 'River surface' },
     },
     {
-      id: 'topoQgis_lag08_sjodybde_punkt',
+      id: 'topoQgis_lag08_sjodybde',
       groupid: 99,
       parentId: 'topoQgis',
-      name: {
-        nb: 'Sjødybde – punkt',
-        nn: 'Sjødjupne – punkt',
-        en: 'Sea depth – points',
-      },
-    },
-    {
-      id: 'topoQgis_lag08_sjodybde_linje',
-      groupid: 99,
-      parentId: 'topoQgis',
-      name: {
-        nb: 'Sjødybde – linje/flate',
-        nn: 'Sjødjupne – linje/flate',
-        en: 'Sea depth – lines/polygons',
-      },
+      name: { nb: 'Sjødybde', nn: 'Sjødjupne', en: 'Sea depth' },
     },
     {
       id: 'topoQgis_lag09_relieff_sol',
@@ -381,30 +330,12 @@ export const topoQgisConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
-      id: 'topoQgis_lag08_sjodybde_punkt',
-      categoryId: 'topoQgis_lag08_sjodybde_punkt',
+      id: 'topoQgis_lag08_sjodybde',
+      categoryId: 'topoQgis_lag08_sjodybde',
       groupid: 99,
-      name: {
-        nb: 'Sjødybde – punkt',
-        nn: 'Sjødjupne – punkt',
-        en: 'Sea depth – points',
-      },
-      wmsUrl: mapUrl('lag08_sjodybde_punkt'),
-      layers: 'lag08_sjodybde_punkt',
-      singleImage: true,
-      useLegendGraphic: true,
-    },
-    {
-      id: 'topoQgis_lag08_sjodybde_linje',
-      categoryId: 'topoQgis_lag08_sjodybde_linje',
-      groupid: 99,
-      name: {
-        nb: 'Sjødybde – linje/flate',
-        nn: 'Sjødjupne – linje/flate',
-        en: 'Sea depth – lines/polygons',
-      },
-      wmsUrl: mapUrl('lag08_sjodybde_linje'),
-      layers: 'lag08_sjodybde_linje',
+      name: { nb: 'Sjødybde', nn: 'Sjødjupne', en: 'Sea depth' },
+      wmsUrl: mapUrl('lag08_sjodybde'),
+      layers: 'lag08_sjodybde',
       singleImage: true,
       useLegendGraphic: true,
     },
@@ -599,8 +530,8 @@ export const topoQgisConfig: ThemeLayerConfig = {
       categoryId: 'topoQgis_lag24_lufthavn',
       groupid: 99,
       name: { nb: 'Lufthavn', nn: 'Lufthamn', en: 'Airport' },
-      wmsUrl: mapUrl('lag24_lufthavn'),
-      layers: 'lag24_lufthavn',
+      wmsUrl: mapUrl('lag24_lufthavn_og_bygnanlegg_punkt'),
+      layers: 'lag24_lufthavn_og_bygnanlegg_punkt',
       singleImage: true,
       useLegendGraphic: true,
     },

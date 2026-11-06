@@ -1,61 +1,17 @@
 import { getEnv } from '../../../../env';
 import { ThemeLayerConfig } from '../../themeLayerConfigApi';
 
-// Grayscale ("graa") counterpart to topoQgis.ts — 25 of farge's 32 layers
-// (only what exists as a graa/*.qlr file; see tnt-topo-qlr's graa/
-// directory for which). Own dedicated pods (graa01-graa25, topo-graa
-// namespace), same WMS layer names as farge (each pod only knows about its
-// one layer locally). Keep in sync with tnt-apps' applications/
-// qgis.libsonnet defaultGraaLayers.
-const LAYER_POD: Record<string, string> = {
-  lag01_hav: '01',
-  lag02_dybdelag_gebco: '02',
-  lag03_dybdelag_sjo: '03',
-  lag04_Europa: '04',
-  lag05_hoydelag: '05',
-  lag06_arealdekke: '06',
-  lag07_elveflate: '07',
-  lag09_relieff_sol: '08',
-  lag10_hoydekurve: '09',
-  lag11_relieff_skygge_graa: '10',
-  lag12_innsjoflate: '11',
-  lag13_grense_adm_maritim_fare_naturvern: '12',
-  lag14_vannkontur_elvbekk: '13',
-  lag17_samferdsel_anlegg: '14',
-  lag18_samferdsel_tunnel: '15',
-  lag19_samferdsel_batrute: '16',
-  lag20_samferdsel_terreng: '17',
-  lag21_bygning_anlegg: '18',
-  lag22_samferdsel_bru: '19',
-  lag23_bygning_bygningslinje: '20',
-  lag25_kraftlinje_taubane: '21',
-  lag26_hoydepunkt: '22',
-  lag27_sykehus_m_akuttmottak: '23',
-  lag28_adm_grensepunkt: '24',
-  lag29_hoydetall: '25',
-  lag30_stedsnavn_vegnummer_og_adresse: '26',
-  lag08_sjodybde: '27',
-  lag15_fkb_bygnanlegg_flate: '28',
-  lag16_fkb_samferdselflate_terreng: '29',
-};
-
-// Independent of topoQgis's clusterDomain — graa only exists in dev so far,
-const CLUSTER_DOMAIN =
-  getEnv().layerProviderParameters.topoQgisGraa.clusterDomain;
-
+// Grayscale counterpart to topoQgis.ts, served by the graa rGIS. Same project names except
+// lag11, and no lag31_Svalbard (tnt-topo-qlr's graa/ has none).
 const mapUrl = (name: string) =>
-  `https://graa${LAYER_POD[name]}-qgis.${CLUSTER_DOMAIN}/qgis/QLR/${name}`;
+  `${getEnv().layerProviderParameters.topoRgis.graaUrl}/qgis/QLR/${name}`;
 
 export const topoQgisGraaConfig: ThemeLayerConfig = {
   categories: [
     {
       id: 'topoQgisGraa',
       groupid: 99,
-      name: {
-        nb: 'Topo QGIS (grå)',
-        nn: 'Topo QGIS (grå)',
-        en: 'Topo QGIS (gray)',
-      },
+      name: { nb: 'Topo graa', nn: 'Topo graa', en: 'Topo graa' },
     },
     {
       id: 'topoQgisGraa_lag01_hav',
@@ -206,6 +162,12 @@ export const topoQgisGraaConfig: ThemeLayerConfig = {
       name: { nb: 'Bygningslinje', nn: 'Bygningslinje', en: 'Building lines' },
     },
     {
+      id: 'topoQgisGraa_lag24_lufthavn',
+      groupid: 99,
+      parentId: 'topoQgisGraa',
+      name: { nb: 'Lufthavn', nn: 'Lufthamn', en: 'Airport' },
+    },
+    {
       id: 'topoQgisGraa_lag25_kraftlinje_taubane',
       groupid: 99,
       parentId: 'topoQgisGraa',
@@ -282,6 +244,12 @@ export const topoQgisGraaConfig: ThemeLayerConfig = {
         nn: 'FKB samferdselflate terreng',
         en: 'FKB transport surface terrain',
       },
+    },
+    {
+      id: 'topoQgisGraa_lag32_Jan_Mayen',
+      groupid: 99,
+      parentId: 'topoQgisGraa',
+      name: { nb: 'Jan Mayen', nn: 'Jan Mayen', en: 'Jan Mayen' },
     },
   ],
   layers: [
@@ -514,6 +482,16 @@ export const topoQgisGraaConfig: ThemeLayerConfig = {
       useLegendGraphic: true,
     },
     {
+      id: 'topoQgisGraa_lag24_lufthavn',
+      categoryId: 'topoQgisGraa_lag24_lufthavn',
+      groupid: 99,
+      name: { nb: 'Lufthavn', nn: 'Lufthamn', en: 'Airport' },
+      wmsUrl: mapUrl('lag24_lufthavn_og_bygnanlegg_punkt'),
+      layers: 'lag24_lufthavn_og_bygnanlegg_punkt',
+      singleImage: true,
+      useLegendGraphic: true,
+    },
+    {
       id: 'topoQgisGraa_lag25_kraftlinje_taubane',
       categoryId: 'topoQgisGraa_lag25_kraftlinje_taubane',
       groupid: 99,
@@ -624,6 +602,16 @@ export const topoQgisGraaConfig: ThemeLayerConfig = {
       },
       wmsUrl: mapUrl('lag16_fkb_samferdselflate_terreng'),
       layers: 'lag16_fkb_samferdselflate_terreng',
+      singleImage: true,
+      useLegendGraphic: true,
+    },
+    {
+      id: 'topoQgisGraa_lag32_Jan_Mayen',
+      categoryId: 'topoQgisGraa_lag32_Jan_Mayen',
+      groupid: 99,
+      name: { nb: 'Jan Mayen', nn: 'Jan Mayen', en: 'Jan Mayen' },
+      wmsUrl: mapUrl('lag32_Jan_Mayen'),
+      layers: 'lag32_Jan_Mayen',
       singleImage: true,
       useLegendGraphic: true,
     },

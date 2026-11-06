@@ -2,7 +2,6 @@ import {
   AccordionItem,
   AccordionItemContent,
   AccordionItemTrigger,
-  Alert,
   Box,
   useAccordionContext,
 } from '@kvib/react';
@@ -15,6 +14,7 @@ import { getInputCRS } from '../../shared/utils/crsUtils';
 import { placesNearbyAtom, selectedResultAtom } from '../atoms';
 import { CoordinateInfo } from './coordinates/CoordinateSection';
 import { FeatureInfoSection } from './FeatureInfoSection';
+import { InfoBoxElevationContent } from './InfoBoxPreamble';
 import { PlaceInfo } from './PlaceInfo';
 import { PropertyInfo } from './PropertyInfo';
 
@@ -43,11 +43,6 @@ export const InfoboxAccordionContent = () => {
   const inputCRS = getInputCRS(selectedResult);
   return (
     <>
-      {selectedResult.type === 'Property' && !hasValidCoordinates && (
-        <Alert status="info" title={t('infoBox.noMapSection.title')} mb={2}>
-          {t('infoBox.noMapSection.description')}
-        </Alert>
-      )}
       {hasValidCoordinates &&
         ['Property', 'Coordinate', 'Address'].includes(selectedResult.type) && (
           <PropertyInfo
@@ -56,7 +51,6 @@ export const InfoboxAccordionContent = () => {
             inputCRS={inputCRS}
           />
         )}
-
       {selectedResult.type === 'Place' && (
         <AccordionItem value="placeInfo">
           <AccordionItemTrigger pl={0}>
@@ -74,12 +68,7 @@ export const InfoboxAccordionContent = () => {
           </AccordionItemTrigger>
           <AccordionItemContent>
             {placesNearby.map((place) => (
-              <Box
-                key={place.placeNumber}
-                mb={2}
-                p={2}
-                borderBottom="1px solid #E2E8F0"
-              >
+              <Box key={place.placeNumber} mb={2} p={2}>
                 <PlaceInfo place={place} />
               </Box>
             ))}
@@ -100,7 +89,11 @@ export const InfoboxAccordionContent = () => {
           </AccordionItemContent>
         </AccordionItem>
       )}
+
       <FeatureInfoSection />
+      <Box mt={3}>
+        <InfoBoxElevationContent result={selectedResult} />
+      </Box>
     </>
   );
 };

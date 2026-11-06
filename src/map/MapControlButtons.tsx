@@ -1,25 +1,32 @@
-import { Box, IconButton, MaterialSymbol, Tooltip, VStack } from '@kvib/react';
+import {
+  Box,
+  Button,
+  Icon,
+  MaterialSymbol,
+  Tooltip,
+  VStack,
+} from '@kvib/react';
 import { t } from 'i18next';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { CSSProperties } from 'react';
-import { MeasurePopover } from '../measure/MeasurePopover';
+// import { MeasurePopover } from '../measure/MeasurePopover';
 import { useIsMobileScreen } from '../shared/hooks';
-import { displayMapLegendAtom, displayMapLegendControlAtom } from './atoms';
 import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
-import { MapOrientationControl } from './MapOrientationControl';
+// import { MapOrientationControl } from './MapOrientationControl';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
-  const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
-  const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const [trackPosition, setTrackPosition] = useAtom(trackPositionAtom);
-  const { setMapFullScreen, zoomIn, zoomOut } = useMapSettings();
+  const { zoomIn, zoomOut } = useMapSettings();
+  // const { setMapFullScreen, zoomIn, zoomOut } = useMapSettings();
 
   const handleMapLocationClick = () => {
     setTrackPosition((p) => !p);
   };
 
+  /*
+  /*
   const handleFullScreenClick = () => {
     if (document.fullscreenElement) {
       setMapFullScreen(false);
@@ -27,30 +34,18 @@ export const MapControlButtons = () => {
       setMapFullScreen(true);
     }
   };
+  */
 
   return (
     <VStack
       bg="#FFFF"
-      borderRadius="xl"
+      borderRadius="4px"
       alignItems="center"
       w={{ base: '8', md: '10' }}
       pointerEvents="auto"
-      py={1}
       shadow="lg"
+      overflow="hidden"
     >
-      {displayMapLegendControl && (
-        <ControlButton
-          id="map_legend"
-          label={t('map.controls.symbols.label')}
-          icon={'info'}
-          onClick={() => {
-            setDisplayMapLegend((prev) => !prev);
-          }}
-          displayTooltip
-          variant="primary"
-        />
-      )}
-
       <ControlButton
         id="zoom_in"
         icon="add"
@@ -65,7 +60,7 @@ export const MapControlButtons = () => {
         label={t('map.controls.zoomOut.label')}
         hide={isMobile}
       />
-      {!isMobile && <MeasurePopover />}
+      {/* {!isMobile && <MeasurePopover />} */}
       {navigator.geolocation && (
         <ControlButton
           id={trackPosition ? 'location_disabled' : 'location_enabled'}
@@ -79,6 +74,8 @@ export const MapControlButtons = () => {
           displayTooltip
         />
       )}
+      {/*
+      {/*
       <ControlButton
         id="fullscreen"
         icon="fullscreen"
@@ -88,6 +85,7 @@ export const MapControlButtons = () => {
         hide={isMobile}
       />
       <MapOrientationControl />
+      */}
     </VStack>
   );
 };
@@ -105,17 +103,19 @@ interface ControlButtonProps {
 
 const ControlIconButton = (props: ControlButtonProps) => {
   return (
-    <IconButton
+    <Button
       variant={props.variant || 'ghost'}
       colorPalette="green"
-      size="xs"
-      icon={props.icon}
+      size="sm"
+      _hover={{ backgroundColor: 'green.50' }}
       aria-label={props.label}
       onClick={() => {
         props.onClick();
       }}
       style={props.style}
-    />
+    >
+      <Icon icon={props.icon} />
+    </Button>
   );
 };
 const ControlButton = (props: ControlButtonProps) => {

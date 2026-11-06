@@ -15,19 +15,39 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
-  topoQgis: {
-    clusterDomain: string;
-  };
-  topoQgisGraa: {
-    clusterDomain: string;
+  // rGIS WMS roots for the Topo farge/graa/forenklet theme layers; empty hides the themes.
+  topoRgis: {
+    fargeUrl: string;
+    graaUrl: string;
+    forenkletUrl: string;
   };
   topoCache: {
     baseUrl: string;
+    // WMTS layer names differ per MapProxy: kart.api maps the norgeskart_* aliases,
+    // the cluster-internal dev stacks only serve the legacy topo* names.
+    layers: {
+      standard: string;
+      standard2x: string;
+      gray: string;
+    };
   };
   topoVectorMartin: {
     baseUrl: string;
     styleBaseUrl: string;
   };
+};
+
+// Internal hosts: the themes only load on the Kartverket network.
+const RGIS_DEV = {
+  fargeUrl: 'https://tnt-rgis.atgcp1-dev.kartverket-intern.cloud',
+  graaUrl: 'https://tnt-rgis-graa.atgcp1-dev.kartverket-intern.cloud',
+  forenkletUrl: 'https://tnt-rgis-forenklet.atgcp1-dev.kartverket-intern.cloud',
+};
+
+const KART_API_LAYERS = {
+  standard: 'norgeskart_standard',
+  standard2x: 'norgeskart_standard_2x',
+  gray: 'norgeskart_gray',
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -63,14 +83,11 @@ const LOCAL_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoQgis: {
-      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
-    },
-    topoQgisGraa: {
-      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
-    },
+    topoRgis: RGIS_DEV,
     topoCache: {
-      baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
+      // baseUrl: 'http://localhost:8085',
+      baseUrl: 'https://kart.api.kartverket.no',
+      layers: KART_API_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
@@ -104,14 +121,10 @@ const DEV_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoQgis: {
-      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
-    },
-    topoQgisGraa: {
-      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
-    },
+    topoRgis: RGIS_DEV,
     topoCache: {
-      baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
+      baseUrl: 'https://kart.api.kartverket.no',
+      layers: KART_API_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
@@ -145,14 +158,10 @@ const PROD_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoQgis: {
-      clusterDomain: 'atkv3-prod.kartverket-intern.cloud',
-    },
-    topoQgisGraa: {
-      clusterDomain: 'atkv3-dev.kartverket-intern.cloud',
-    },
+    topoRgis: { fargeUrl: '', graaUrl: '', forenkletUrl: '' },
     topoCache: {
-      baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
+      baseUrl: 'https://kart.api.kartverket.no',
+      layers: KART_API_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
@@ -162,6 +171,20 @@ const PROD_ENV: Env = {
   envName: 'prod',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
   printApiUrl: 'https://api.norgeskart.no',
+};
+
+// test.norgeskart.no: prod settings, but the background comes from the rGIS-backed
+// MapProxy on atgcp1-dev (public host; kart.atgcp1-dev.kartverket-intern.cloud is internal-only).
+const TEST_ENV: Env = {
+  ...PROD_ENV,
+  layerProviderParameters: {
+    ...PROD_ENV.layerProviderParameters,
+    topoRgis: RGIS_DEV,
+    topoCache: {
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: { standard: 'topo', standard2x: 'topo_2x', gray: 'topo_graa' },
+    },
+  },
 };
 
 const getEnvName = (): EnvName => {
@@ -184,11 +207,10 @@ const getEnv = (): Env => {
   if (previewRegex.test(domain)) {
     return DEV_ENV;
   }
-  if (
-    domain == 'test.norgeskart.no' ||
-    domain == 'norgeskart.no' ||
-    domain == 'www.norgeskart.no'
-  ) {
+  if (domain == 'test.norgeskart.no') {
+    return TEST_ENV;
+  }
+  if (domain == 'norgeskart.no' || domain == 'www.norgeskart.no') {
     return PROD_ENV;
   }
   console.error(`Unknown domain: ${domain}`);

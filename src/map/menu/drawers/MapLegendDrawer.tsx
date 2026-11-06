@@ -1,5 +1,4 @@
-import { DrawerContent } from '@chakra-ui/react';
-import { Drawer, DrawerPositioner, useBreakpointValue } from '@kvib/react';
+import { Dialog, DialogContent } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { displayMapLegendAtom, hasBackgroundLegendAtom } from '../../atoms';
@@ -10,10 +9,6 @@ export const MapLegendDrawer = () => {
   const [isOpen, setIsOpen] = useAtom(displayMapLegendAtom);
   const [activeLayers] = useAtom(activeThemeLayersAtom);
   const hasBackgroundLegend = useAtomValue(hasBackgroundLegendAtom);
-  const isSmallScreen = useBreakpointValue({
-    base: true,
-    lg: false,
-  });
 
   useEffect(() => {
     if (isOpen && activeLayers.size === 0 && !hasBackgroundLegend) {
@@ -22,20 +17,21 @@ export const MapLegendDrawer = () => {
   }, [activeLayers, hasBackgroundLegend, isOpen, setIsOpen]);
 
   return (
-    <Drawer
-      trapFocus={false}
+    <Dialog
+      placement="center"
+      size="xs"
       open={isOpen}
-      onExitComplete={() => setIsOpen(false)}
-      size={'xs'}
-      placement={isSmallScreen ? 'top' : 'end'}
-      modal={false}
-      closeOnInteractOutside={false}
+      onOpenChange={(e) => setIsOpen(e.open)}
     >
-      <DrawerPositioner pointerEvents={'none'}>
-        <DrawerContent>
-          <MapLegend />
-        </DrawerContent>
-      </DrawerPositioner>
-    </Drawer>
+      <DialogContent
+        width="360px"
+        maxW="calc(100vw - 2rem)"
+        minW={0}
+        maxH="90vh"
+        p={0}
+      >
+        <MapLegend />
+      </DialogContent>
+    </Dialog>
   );
 };

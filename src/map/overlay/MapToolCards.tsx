@@ -5,8 +5,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  Text,
-  Tooltip,
   VStack,
 } from '@kvib/react';
 
@@ -18,50 +16,7 @@ import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { MapThemes } from '../../settings/map/themes/MapThemes';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
-import { activeThemeLayersAtom } from '../layers/atoms';
 import { drawPanelCollapsedAtom, mapToolAtom } from './atoms';
-
-const MapLayersCardHeader = () => {
-  const { t } = useTranslation();
-  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
-    activeThemeLayersAtom,
-  );
-  return (
-    <HStack mb={{ base: '0', md: '2' }} h={6}>
-      <Heading fontWeight="bold" size="md">
-        {t('mapLayers.label')}
-      </Heading>
-      {activeThemeLayers.size > 0 && (
-        <HStack gap={0.5}>
-          <Text
-            backgroundColor={'#FFDD9D'}
-            borderRadius="full"
-            borderWidth={'2px'}
-            borderColor={'white'}
-            px={2}
-            py={0.5}
-            pointerEvents={'none'}
-            fontSize={'sm'}
-          >
-            {activeThemeLayers.size}
-          </Text>
-          <Tooltip content={t('map.settings.layers.theme.resetbutton.text')}>
-            <IconButton
-              variant="tertiary"
-              colorPalette={'red'}
-              size={'md'}
-              visibility={activeThemeLayers.size > 0 ? 'visible' : 'hidden'}
-              onClick={() => {
-                setActiveThemeLayers(new Set());
-              }}
-              icon={'playlist_remove'}
-            />
-          </Tooltip>
-        </HStack>
-      )}
-    </HStack>
-  );
-};
 
 const MapToolCardHeader = ({ label }: { label: string | React.ReactNode }) => {
   const isLabelString = typeof label === 'string';
@@ -135,7 +90,7 @@ const MapToolCardsBody = () => {
   }
   if (currentMapTool === 'layers') {
     return (
-      <MapToolCard label={<MapLayersCardHeader />} onClose={onClose}>
+      <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
         <MapThemes />
       </MapToolCard>
     );

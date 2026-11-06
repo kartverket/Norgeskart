@@ -1,4 +1,4 @@
-import { Button } from '@kvib/react';
+import { Button, Flex } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { Chart } from 'chart.js';
 import { useAtomValue } from 'jotai';
@@ -61,8 +61,12 @@ export const ElevationProfileExport = ({
   };
 
   return (
-    <>
+    <Flex gap={1} flexWrap="nowrap">
       <Button
+        leftIcon="download"
+        size="sm"
+        variant="solid"
+        colorPalette="green"
         onClick={() => {
           ph.capture('print_elevation_profile_export_csv');
           exportAsCSV();
@@ -71,6 +75,10 @@ export const ElevationProfileExport = ({
         {t('printdialog.elevationProfile.buttons.exportCsv.label')}
       </Button>
       <Button
+        leftIcon="download"
+        size="sm"
+        variant="solid"
+        colorPalette="green"
         onClick={() => {
           ph.capture('print_elevation_profile_export_png');
           downloadChart('png');
@@ -78,6 +86,6 @@ export const ElevationProfileExport = ({
       >
         {t('printdialog.elevationProfile.buttons.exportPng.label')}
       </Button>
-    </>
+    </Flex>
   );
 };

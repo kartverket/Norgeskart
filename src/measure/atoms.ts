@@ -26,11 +26,13 @@ export const measureEnabledEffect = atomEffect((get) => {
     });
     return;
   }
-  setTimeout(() => {
+  const timeoutId = setTimeout(() => {
     addMeasureInteractionToMap(
       type === 'length' ? 'LineString' : 'Polygon',
       layer,
       map,
     );
   });
+
+  return () => clearTimeout(timeoutId);
 });

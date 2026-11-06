@@ -1,6 +1,7 @@
 import { atom, getDefaultStore } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls, ScaleLine } from 'ol/control';
+import { defaults as defaultInteractions } from 'ol/interaction/defaults';
 import Map from 'ol/Map';
 import { get as getProjection, transform } from 'ol/proj';
 
@@ -20,6 +21,7 @@ import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
 import { themeLayerConfig } from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
+import { StepMouseWheelZoom } from './stepMouseWheelZoom';
 
 export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 4;
@@ -182,6 +184,9 @@ export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls({ zoom: false, rotate: false }).extend([
       new ScaleLine({ minWidth: 100 }),
+    ]),
+    interactions: defaultInteractions({ mouseWheelZoom: false }).extend([
+      new StepMouseWheelZoom(),
     ]),
     keyboardEventTarget: document,
   });
