@@ -1,4 +1,4 @@
-import MapLibreLayer from '@geoblocks/ol-maplibre-layer/lib/MapLibreLayer';
+import type MapLibreLayer from '@geoblocks/ol-maplibre-layer/lib/MapLibreLayer';
 import { getDefaultStore } from 'jotai';
 import { setWorkerUrl } from 'maplibre-gl';
 // `?worker&url` (not plain `?url`) routes the file through Vite's worker
@@ -13,8 +13,8 @@ import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import { getUrlParameter } from '../../../../shared/utils/urlUtils';
 import { mapAtom } from '../../../atoms';
 import { backgroundLayerCapabilitiesCacheAtom } from './atoms';
+import { createMapLibreLayer } from './createMapLibreLayer';
 import { nibTileLoadFunction } from './loadFunctions';
-import { mercatorZoomForView } from './mapLibreZoom';
 import {
   BackgroundLayer,
   VectorTileBackgroundLayer,
@@ -126,23 +126,11 @@ export const getVectorTileLayer = async (
     ? await layerConfig.resolveStyle()
     : layerConfig.styleUrl;
 
-  const layer: MapLibreLayer = new MapLibreLayer({
-    mapLibreOptions: {
-      style,
-    },
-    // OL's zoom only means Mercator zoom in EPSG:3857; elsewhere derive it from the view.
-    translateZoom:
-      layerConfig.requiredProjection === 'EPSG:3857'
-        ? undefined
-        : (zoom) => {
-            const view = layer.getMapInternal()?.getView();
-            return view ? (mercatorZoomForView(view) ?? zoom) : zoom;
-          },
-    properties: {
-      id: `bg.${layerConfig.layerName}`,
-      isVectorTile: true,
-    },
-  });
+  const layer = createMapLibreLayer(
+    { style },
+    `bg.${layerConfig.layerName}`,
+    layerConfig.requiredProjection !== 'EPSG:3857',
+  );
   layerConfig.onLayerCreated?.(layer);
 
   // TODO(ol-maplibre-layer): Remove this workaround after upgrading

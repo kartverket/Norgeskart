@@ -20,6 +20,9 @@ const COLOR_BY_TYPE = ['Naturvernområde', '#2e7d32', '#8d5a2b'];
 const LABEL_SOURCE = 'hover-label';
 const MATCH_NOTHING: FilterSpecification = ['==', ['get', 'navn'], ''];
 
+export const hoverSources = () =>
+  SCALES.map((scale) => `${scale}_${SOURCE_LAYER}`);
+
 type Band = { source: string; minzoom: number; maxzoom?: number };
 type LngLat = [number, number];
 
@@ -28,9 +31,7 @@ type LngLat = [number, number];
 export const hoverBands = (
   sources: Record<string, { minzoom?: number }>,
 ): Band[] => {
-  const present = SCALES.map((scale) => `${scale}_${SOURCE_LAYER}`).filter(
-    (source) => source in sources,
-  );
+  const present = hoverSources().filter((source) => source in sources);
   return present.map((source, i) => {
     const next = present[i + 1];
     return {
@@ -178,7 +179,12 @@ const addLayers = (ml: MapLibreMap, bands: Band[]) => {
   });
 };
 
-const attachHover = (ml: MapLibreMap, olMap: OlMap, bands: Band[]) => {
+const attachHover = (
+  ml: MapLibreMap,
+  olMap: OlMap,
+  bands: Band[],
+  isActive: () => boolean,
+) => {
   const hitLayers = bands.map(({ source }) => `hover-hit-${source}`);
   let active: { key: string; filter: FilterSpecification } | undefined;
   let cursor: LngLat = [0, 0];
@@ -253,6 +259,7 @@ const attachHover = (ml: MapLibreMap, olMap: OlMap, bands: Band[]) => {
   // Pointer events outpace rendering: only the latest position each frame matters.
   // The canvas is what the user sees, so query by pixel, not by map coordinate.
   const schedule = (event: unknown) => {
+    if (!isActive()) return clear();
     if (!(event instanceof MapBrowserEvent) || event.dragging) return;
     pending = event.pixel;
     frame ??= requestAnimationFrame(() => {
@@ -295,6 +302,6 @@ export const enableTopoVectorHover = (layer: MapLibreLayer) => {
     );
     if (bands.length === 0) return;
     addLayers(ml, bands);
-    detach = attachHover(ml, olMap, bands);
+    detach = attachHover(ml, olMap, bands, () => layer.getVisible());
   });
 };

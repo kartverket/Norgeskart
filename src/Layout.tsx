@@ -12,6 +12,7 @@ import { DesktopLayout } from './layout/DesktopLayout';
 import { displayCompassOverlayAtom } from './map/atoms';
 import { BackgroundLayerPopover } from './map/backgroundLayer/BackgroundLayerPopover';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
+import { useHoverOverlay } from './map/layers/config/backgroundLayers/useHoverOverlay';
 import { MapComponent } from './map/MapComponent';
 import { MapControlButtons } from './map/MapControlButtons';
 import { mapToolAtom, showSearchComponentAtom } from './map/overlay/atoms';
@@ -52,6 +53,7 @@ export const Layout = () => {
   const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
 
   useFeatureInfoClick();
+  useHoverOverlay();
   useSearchEffects();
   useMapClickSearch();
 

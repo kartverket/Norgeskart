@@ -1,5 +1,5 @@
 import { View } from 'ol';
-import { getPointResolution, toLonLat } from 'ol/proj';
+import { fromLonLat, getPointResolution, toLonLat } from 'ol/proj';
 
 const EARTH_CIRCUMFERENCE_M = 40075016.68557849;
 
@@ -24,4 +24,18 @@ export const mercatorZoomForView = (view: View): number | undefined => {
     getPointResolution(projection, resolution, center, 'm'),
     toLonLat(center, projection)[1],
   );
+};
+
+/**
+ * Degrees from grid north to true north at the view's center. The MapLibre canvas is
+ * always true-north-up, so outside EPSG:3857 it must turn by this to match the view.
+ */
+export const gridConvergence = (view: View): number => {
+  const center = view.getCenter();
+  if (!center) return 0;
+
+  const projection = view.getProjection();
+  const [lon, lat] = toLonLat(center, projection);
+  const [x, y] = fromLonLat([lon, lat + 0.01], projection);
+  return (Math.atan2(x - center[0], y - center[1]) * 180) / Math.PI;
 };

@@ -4,6 +4,7 @@ import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
 import { beforeAll, describe, expect, it } from 'vitest';
 import {
+  gridConvergence,
   mercatorZoom,
   mercatorZoomForView,
 } from '../../../src/map/layers/config/backgroundLayers/mapLibreZoom';
@@ -58,5 +59,29 @@ describe('mercatorZoomForView', () => {
     expect(
       mercatorZoomForView(new View({ projection: 'EPSG:3857' })),
     ).toBeUndefined();
+  });
+
+  it('has no convergence on the central meridian or in EPSG:3857', () => {
+    const utm = new View({
+      projection: 'EPSG:25833',
+      center: [500000, 6650000],
+      resolution: 10,
+    });
+    expect(gridConvergence(utm)).toBeCloseTo(0, 1);
+    const mercator = new View({
+      projection: 'EPSG:3857',
+      center: fromLonLat([5.3, 60.4]),
+      resolution: 10,
+    });
+    expect(gridConvergence(mercator)).toBeCloseTo(0, 6);
+  });
+
+  it('turns opposite ways west and east of the central meridian', () => {
+    const at = (center: number[]) =>
+      gridConvergence(
+        new View({ projection: 'EPSG:25833', center, resolution: 10 }),
+      );
+    expect(at([-32300, 6730000])).toBeGreaterThan(7);
+    expect(at([1060000, 7800000])).toBeLessThan(-10);
   });
 });
