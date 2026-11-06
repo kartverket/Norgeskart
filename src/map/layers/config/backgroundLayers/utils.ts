@@ -115,6 +115,7 @@ export const getVectorTileLayer = async (
       isVectorTile: true,
     },
   });
+  layerConfig.onLayerCreated?.(layer);
 
   // TODO(ol-maplibre-layer): Remove this workaround after upgrading
   // `@geoblocks/ol-maplibre-layer` to a version that correctly exposes source

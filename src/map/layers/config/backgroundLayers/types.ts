@@ -1,3 +1,4 @@
+import type MapLibreLayer from '@geoblocks/ol-maplibre-layer/lib/MapLibreLayer';
 import { ProjectionIdentifier } from '../../../projections/types';
 import {
   BackgroundLayerName,
@@ -36,6 +37,7 @@ export type VectorTileBackgroundLayer = BackgroundLayerBase & {
   // When set, the MapLibre style is built at load time (fetch + reconcile
   // against the tile server) instead of handing MapLibre the styleUrl directly.
   resolveStyle?: () => Promise<MapLibreStyleObject>;
+  onLayerCreated?: (layer: MapLibreLayer) => void;
 };
 
 export type WMSBackgroundLayer = BackgroundLayerBase & {
