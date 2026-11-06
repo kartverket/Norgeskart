@@ -7,9 +7,10 @@ import {
   SwitchRoot,
   Tooltip,
 } from '@kvib/react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { displayCompassOverlayAtom, useMagneticNorthAtom } from '../map/atoms';
+import { hoverAvailableAtom, hoverEnabledAtom } from '../map/overlay/atoms';
 import { ProjectionSettings } from '../settings/map/ProjectionSettings';
 
 export const BottomControls = () => {
@@ -18,6 +19,8 @@ export const BottomControls = () => {
     displayCompassOverlayAtom,
   );
   const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
+  const [hoverEnabled, setHoverEnabled] = useAtom(hoverEnabledAtom);
+  const hoverAvailable = useAtomValue(hoverAvailableAtom);
 
   return (
     <Flex alignItems="center" justifyContent="center" gap={2}>
@@ -55,6 +58,29 @@ export const BottomControls = () => {
           </Box>
         </Tooltip>
       </Flex>
+      {hoverAvailable && (
+        <Flex
+          alignItems="center"
+          pr={2}
+          borderRight="1px solid"
+          borderColor="gray.200"
+        >
+          <Tooltip content={t('map.settings.hover.description')}>
+            <Button
+              rightIcon="ads_click"
+              variant="ghost"
+              colorPalette="green"
+              size="sm"
+              backgroundColor={hoverEnabled ? '#D0ECD6' : 'transparent'}
+              _hover={{ backgroundColor: '#D0ECD6' }}
+              aria-pressed={hoverEnabled}
+              onClick={() => setHoverEnabled(!hoverEnabled)}
+            >
+              {t('map.settings.hover.enabled')}
+            </Button>
+          </Tooltip>
+        </Flex>
+      )}
       <Flex alignItems="center" gap={1} pr={2}>
         <ProjectionSettings />
       </Flex>

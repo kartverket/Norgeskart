@@ -178,6 +178,10 @@
         "enabled": "Show compass",
         "magneticNorth": "Use magnetic north"
       },
+      "hover": {
+        "description": "Shows names of protected areas, municipalities and borders when you hold the pointer over them",
+        "enabled": "Show names on hover"
+      },
       "layers": {
         "background": {
           "label": "Chose background map",

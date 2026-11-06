@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   HOVER_GROUPS,
   hoverBands,
+  isHoverPaused,
   labelPoint,
   pickFeature,
 } from '../../../src/map/layers/config/backgroundLayers/hover';
@@ -123,6 +124,19 @@ describe('describe', () => {
     expect(describe({ virkeomradenavn: 'Norge-Russland' }, 6).label).toBe(
       'Norge-Russland',
     );
+  });
+});
+
+describe('isHoverPaused', () => {
+  it('pauses for tools that work on the map', () => {
+    expect(isHoverPaused('draw')).toBe(true);
+    expect(isHoverPaused('measure')).toBe(true);
+  });
+
+  it('keeps hover for panels and when no tool is open', () => {
+    expect(isHoverPaused('layers')).toBe(false);
+    expect(isHoverPaused('settings')).toBe(false);
+    expect(isHoverPaused(null)).toBe(false);
   });
 });
 

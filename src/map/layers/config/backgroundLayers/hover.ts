@@ -33,6 +33,18 @@ type HoverGroup = {
   describe: (properties: Properties, zoom: number) => Hovered;
 };
 
+// These tools need the map to themselves: a highlight would cover what's being drawn.
+const TOOLS_THAT_PAUSE_HOVER = [
+  'draw',
+  'measure',
+  'extent',
+  'hiking',
+  'elevationProfile',
+];
+
+export const isHoverPaused = (tool: string | null) =>
+  tool !== null && TOOLS_THAT_PAUSE_HOVER.includes(tool);
+
 const LABEL_SOURCE = 'hover-label';
 const MATCH_NOTHING: FilterSpecification = ['==', ['get', 'hover-none'], 1];
 const FYLKE_MAX_ZOOM = 7;
@@ -369,6 +381,7 @@ const addLayers = (ml: MapLibreMap, bands: Map<HoverGroup, Band[]>) => {
 };
 
 const attachHover = (
+  layer: MapLibreLayer,
   ml: MapLibreMap,
   olMap: OlMap,
   bands: Map<HoverGroup, Band[]>,
@@ -472,6 +485,7 @@ const attachHover = (
   // Pointer events outpace rendering: only the latest position each frame matters.
   const schedule = (event: unknown) => {
     if (!(event instanceof MapBrowserEvent) || event.dragging) return;
+    if (!layer.getVisible()) return;
     pending = event.pixel;
     frame ??= requestAnimationFrame(() => {
       frame = undefined;
@@ -486,6 +500,10 @@ const attachHover = (
     olMap.on('pointermove', schedule),
     olMap.on('singleclick', schedule),
     olMap.on('moveend', moveLabel),
+    // Switched off with something highlighted: don't leave it behind for the next time.
+    layer.on('propertychange', (event) => {
+      if (event.key === 'visible' && !layer.getVisible()) clear();
+    }),
   ];
 
   return () => {
@@ -516,6 +534,6 @@ export const enableHover = (layer: MapLibreLayer) => {
       HOVER_GROUPS.map((group) => [group, hoverBands(group, sources)]),
     );
     addLayers(ml, bands);
-    detach = attachHover(ml, olMap, bands);
+    detach = attachHover(layer, ml, olMap, bands);
   });
 };

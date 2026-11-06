@@ -183,6 +183,10 @@
         "enabled": "Vis kompass",
         "magneticNorth": "Bruk magnetisk nord"
       },
+      "hover": {
+        "description": "Viser navn på verneområder, kommuner og grenser når du holder musepekeren over dem",
+        "enabled": "Vis navn med hover"
+      },
       "layers": {
         "background": {
           "label": "Velg bakgrunnskart",
