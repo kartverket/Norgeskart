@@ -44,10 +44,12 @@ const RGIS_DEV = {
   forenkletUrl: 'https://tnt-rgis-forenklet.atgcp1-dev.kartverket-intern.cloud',
 };
 
-const KART_API_LAYERS = {
-  standard: 'norgeskart_standard',
-  standard2x: 'norgeskart_standard_2x',
-  gray: 'norgeskart_gray',
+// kart.api.kartverket.no answers 503 since 2026-11-05.
+const KART_BASE_URL = 'https://kart.atgcp1-dev.kartverket.cloud';
+const KART_LAYERS = {
+  standard: 'topo',
+  standard2x: 'topo_2x',
+  gray: 'topo_graa',
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -85,9 +87,8 @@ const LOCAL_ENV: Env = {
     },
     topoRgis: RGIS_DEV,
     topoCache: {
-      // baseUrl: 'http://localhost:8085',
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      baseUrl: KART_BASE_URL,
+      layers: KART_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
@@ -123,8 +124,8 @@ const DEV_ENV: Env = {
     },
     topoRgis: RGIS_DEV,
     topoCache: {
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      baseUrl: KART_BASE_URL,
+      layers: KART_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
@@ -160,8 +161,8 @@ const PROD_ENV: Env = {
     },
     topoRgis: { fargeUrl: '', graaUrl: '', forenkletUrl: '' },
     topoCache: {
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      baseUrl: KART_BASE_URL,
+      layers: KART_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
