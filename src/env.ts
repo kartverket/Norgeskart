@@ -72,7 +72,7 @@ const LOCAL_ENV: Env = {
       baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
     },
     topoVectorMartin: {
-      baseUrl: 'https://tnt-martin.atkv3-prod.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
     },
   },
   envName: 'local',
@@ -112,7 +112,7 @@ const DEV_ENV: Env = {
       baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
     },
     topoVectorMartin: {
-      baseUrl: 'https://tnt-martin.atkv3-prod.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
     },
   },
   envName: 'dev',
@@ -152,7 +152,7 @@ const PROD_ENV: Env = {
       baseUrl: 'https://topo.atkv3-prod.kartverket.cloud',
     },
     topoVectorMartin: {
-      baseUrl: 'https://tnt-martin.atkv3-prod.kartverket-intern.cloud',
+      baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
     },
   },
   envName: 'prod',

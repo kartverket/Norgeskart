@@ -13,6 +13,7 @@ import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 import { mapAtom } from '../../../atoms';
 import { backgroundLayerCapabilitiesCacheAtom } from './atoms';
 import { nibTileLoadFunction } from './loadFunctions';
+import { mercatorZoomForView } from './mapLibreZoom';
 import {
   BackgroundLayer,
   VectorTileBackgroundLayer,
@@ -97,10 +98,18 @@ export const getVectorTileLayer = async (
     ? await layerConfig.resolveStyle()
     : layerConfig.styleUrl;
 
-  const layer = new MapLibreLayer({
+  const layer: MapLibreLayer = new MapLibreLayer({
     mapLibreOptions: {
       style,
     },
+    // OL's zoom only means Mercator zoom in EPSG:3857; elsewhere derive it from the view.
+    translateZoom:
+      layerConfig.requiredProjection === 'EPSG:3857'
+        ? undefined
+        : (zoom) => {
+            const view = layer.getMapInternal()?.getView();
+            return view ? (mercatorZoomForView(view) ?? zoom) : zoom;
+          },
     properties: {
       id: `bg.${layerConfig.layerName}`,
       isVectorTile: true,
