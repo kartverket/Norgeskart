@@ -26,6 +26,7 @@ type layerProviderParameters = {
   };
   topoVectorMartin: {
     baseUrl: string;
+    styleBaseUrl: string;
   };
 };
 
@@ -73,6 +74,7 @@ const LOCAL_ENV: Env = {
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
+      styleBaseUrl: 'https://tnt-kartclient.atgcp1-dev.kartverket-intern.cloud',
     },
   },
   envName: 'local',
@@ -113,6 +115,7 @@ const DEV_ENV: Env = {
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
+      styleBaseUrl: 'https://tnt-kartclient.atgcp1-dev.kartverket-intern.cloud',
     },
   },
   envName: 'dev',
@@ -153,6 +156,7 @@ const PROD_ENV: Env = {
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
+      styleBaseUrl: 'https://tnt-kartclient.atgcp1-dev.kartverket-intern.cloud',
     },
   },
   envName: 'prod',

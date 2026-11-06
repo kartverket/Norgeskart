@@ -7,13 +7,12 @@ export type MapLibreStyleObject = Exclude<
   string
 >;
 
-// The vendored style (public/styles/topo-vector.json) is the Kartverket topo
-// "farge" symbology extracted from tnt-topo-qlr by tnt-martin's
-// scripts/qlr_to_maplibre.py — one MapLibre source per tnt-data-ingestor
-// archive (n50_arealdekke_flate, roadl, …), ~950 layers over ~125 sources.
+// tnt-kartclient serves the Kartverket topo "farge" style extracted from
+// tnt-topo-qlr by tnt-martin's scripts/qlr_to_maplibre.py, with its sprites and
+// glyphs: one MapLibre source per tnt-data-ingestor archive, ~2200 layers over
+// ~180 sources. Loaded from there so Norgeskart can't drift behind the viewer.
 
 const RASTER_FORMATS = ['png', 'webp', 'jpg', 'jpeg'];
-const STATIC_STYLE_PATH = '/styles/topo-vector.json';
 
 interface MartinCatalog {
   tiles?: Record<string, unknown>;
@@ -27,8 +26,8 @@ interface MartinTileJSON {
   vector_layers?: { id: string }[];
 }
 
-// Only the parts of a source/layer the reconciliation touches. The vendored
-// file is a valid StyleSpecification; we re-narrow at the MapLibreLayer
+// Only the parts of a source/layer the reconciliation touches. The served
+// style is a valid StyleSpecification; we re-narrow at the MapLibreLayer
 // boundary where it is handed back as MapOptions['style'].
 type ReconcilableStyle = {
   sources: Record<string, Record<string, unknown>>;
@@ -87,16 +86,15 @@ const getMartinUrl = (): string => {
 
 const buildStyle = async (): Promise<MapLibreStyleObject> => {
   const martinUrl = getMartinUrl();
+  const { styleBaseUrl } = getEnv().layerProviderParameters.topoVectorMartin;
 
   const style = (await getJSON(
-    window.location.origin + STATIC_STYLE_PATH,
+    `${styleBaseUrl}/style.json`,
   )) as ReconcilableStyle;
 
-  // The extracted style has no symbol layers yet (labels/markers are a separate
-  // piece in tnt-martin), so its openmaptiles `glyphs` URL is only ever a CSP
-  // violation waiting to happen. Drop it until labels arrive with a self-hosted
-  // glyph source.
-  delete style.glyphs;
+  // The style's sprite and glyph paths are relative to the viewer serving it.
+  style.sprite = `${styleBaseUrl}/${style.sprite}`;
+  style.glyphs = `${styleBaseUrl}/${style.glyphs}`;
 
   const catalog = (await getJSON(`${martinUrl}/catalog`)) as MartinCatalog;
   const served = new Set(Object.keys(catalog.tiles ?? {}));
