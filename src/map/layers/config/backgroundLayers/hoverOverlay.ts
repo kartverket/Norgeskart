@@ -40,14 +40,18 @@ export const createHoverOverlay = async () => {
   const available = hoverSources().filter((id) => id in (catalog.tiles ?? {}));
   if (available.length === 0) return null;
 
-  const tileJsons = Object.fromEntries(
-    await Promise.all(
-      available.map(async (id) => [
-        id,
-        (await getJSON(`${martinUrl}/${id}`)) as TileJson,
-      ]),
-    ),
+  // Martin's replicas re-list the bucket on separate timers, so an archive in the
+  // catalog can still be missing on the next request. Skip it, don't lose all hover.
+  const results = await Promise.allSettled(
+    available.map(async (id) => [
+      id,
+      (await getJSON(`${martinUrl}/${id}`)) as TileJson,
+    ]),
   );
+  const tileJsons = Object.fromEntries(
+    results.flatMap((r) => (r.status === 'fulfilled' ? [r.value] : [])),
+  );
+  if (Object.keys(tileJsons).length === 0) return null;
 
   const layer = createMapLibreLayer(
     { style: buildHoverStyle(martinUrl, styleBaseUrl, tileJsons) },
