@@ -2,6 +2,7 @@ import { MapLibreLayer } from '@geoblocks/ol-maplibre-layer';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
 import TileLayer from 'ol/layer/Tile';
+import posthog from 'posthog-js';
 import {
   getUrlParameter,
   setUrlParameter,
@@ -102,7 +103,17 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
           break;
       }
 
-      if (layer) {
+      if (!layer) {
+        if (posthog.__loaded) {
+          posthog.captureException(
+            new Error('Background layer was not created'),
+            {
+              errorType: 'background_layer_load_error',
+              layerName,
+            },
+          );
+        }
+      } else {
         const preNauticalProjection = store.get(preNauticalProjectionAtom);
         clearBackgroundLayer();
         map.addLayer(layer);
@@ -135,6 +146,12 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
         `Error fetching capabilities for layer ${layerName}:`,
         error,
       );
+      if (posthog.__loaded) {
+        posthog.captureException(error, {
+          errorType: 'background_layer_load_error',
+          layerName,
+        });
+      }
     }
   };
 

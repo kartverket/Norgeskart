@@ -11,6 +11,8 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
         en: 'Reference marks',
       },
       wmsUrl: 'https://wms.geonorge.no/skwms1/wms.fastmerker2',
+      // MapServer only offers text/html, text/plain and GML; json/text/xml raise InvalidFormat
+      infoFormat: 'application/vnd.ogc.gml',
     },
     {
       id: 'benchmarks',
@@ -28,12 +30,12 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           alias: 'Punkttype',
         },
         {
-          name: 'punktnavn',
-          alias: 'Punktnavn',
-        },
-        {
           name: 'punktnummer',
           alias: 'Punktnummer',
+        },
+        {
+          name: 'punktnavn',
+          alias: 'Punktnavn',
         },
         {
           name: 'nord',
@@ -56,7 +58,7 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
         },
         {
           name: 'hoyde_nn2000',
-          alias: 'Høyde NN2000',
+          alias: 'Høyde NN2000 (NN2000:2025)',
           unit: 'm',
           decimals: 3,
         },
@@ -66,35 +68,32 @@ export const fastmerkerLayerConfig: ThemeLayerConfig = {
           unit: 'mm',
         },
         {
-          name: 'underlag',
-          alias: 'Underlag',
-        },
-        {
-          name: 'hoyde_nn1954',
-          alias: 'Høyde NN1954',
-          unit: 'm',
-          decimals: 3,
-        },
-        {
-          name: 'kvalitet_nn1954',
-          alias: 'Kvalitet NN1954',
-          unit: 'mm',
-        },
-        {
           name: 'ellipsoidisk_hoyde',
           alias: 'Ellipsoidisk høyde',
           unit: 'm',
           decimals: 3,
         },
         {
-          name: 'høydeGammelNN2000_2018',
-          alias: 'Høyde NN2000:2018',
-          unit: 'm',
-          decimals: 3,
+          name: 'underlag',
+          alias: 'Underlag',
+        },
+        {
+          name: 'status',
+          alias: 'Status',
+        },
+        {
+          name: 'status_ar',
+          alias: 'Status år',
         },
         {
           name: 'beskrivelse',
           alias: 'Beskrivelse',
+        },
+        {
+          name: 'gammel_hoyde_nn2000',
+          alias: 'Gammel høyde NN2000:2018',
+          unit: 'm',
+          decimals: 3,
         },
       ],
     },

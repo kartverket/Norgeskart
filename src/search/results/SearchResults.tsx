@@ -73,7 +73,9 @@ export const SearchResults = ({
     (res: SearchResult) => {
       const { lon, lat } = res;
       setSelectedResult(res);
-      setMapLocation([lon, lat], getInputCRS(res), 15);
+      if (Number.isFinite(lon) && Number.isFinite(lat)) {
+        setMapLocation([lon, lat], getInputCRS(res), 15);
+      }
     },
     [setSelectedResult, setMapLocation],
   );

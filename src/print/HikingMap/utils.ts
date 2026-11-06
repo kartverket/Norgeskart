@@ -12,6 +12,11 @@ export function getOverlayCornersInPixels(
   map: Map,
 ): [number, number][] {
   const viewportEl = map.getViewport();
+  if (!viewportEl) {
+    throw new Error(
+      'Cannot determine hiking map footprint without a map viewport',
+    );
+  }
   const viewportRect = viewportEl.getBoundingClientRect();
 
   // Fallback: derive rotation from computed transform matrix

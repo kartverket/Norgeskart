@@ -119,6 +119,10 @@
       "north": "North"
     },
     "coordinateSystem": "Coordinate system",
+    "noMapSection": {
+      "title": "No map section",
+      "description": "The property has no registered parcels."
+    },
     "decimalDegrees": "Decimal degrees",
     "emergencyPoster": "Make emergency poster",
     "heightEstimatedByInterpolation": "Height:",
@@ -492,6 +496,10 @@
     },
     "item": {
       "fallbackMessage": "has no legend"
+    },
+    "image": {
+      "enlarge": "Enlarge legend for {{layer}}",
+      "enlargedAlt": "Legend for {{layer}}"
     }
   },
   "printdialog": {

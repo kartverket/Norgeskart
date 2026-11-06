@@ -124,6 +124,10 @@
       "north": "Nord"
     },
     "coordinateSystem": "Koordinatsystem",
+    "noMapSection": {
+      "title": "Ingen kartutsnitt",
+      "description": "Eigedomen har ingen registrerte teigar."
+    },
     "decimalDegrees": "Desimalgrader",
     "emergencyPoster": "Lag nødplakat",
     "heightEstimatedByInterpolation": "Høgd:",
@@ -497,6 +501,10 @@
     },
     "item": {
       "fallbackMessage": "har ingen symbolforklaring."
+    },
+    "image": {
+      "enlarge": "Forstørr symbolforklaringa for {{layer}}",
+      "enlargedAlt": "Symbolforklaring for {{layer}}"
     }
   },
   "printdialog": {

@@ -189,26 +189,30 @@ export const getEffectiveLegendUrl = (
   return undefined;
 };
 
-export const getEffectiveLegendImageUrl = (
+export const getEffectiveLegendImageUrls = (
   config: ThemeLayerConfig,
   id: ThemeLayerName,
   scale?: number | null,
-) => {
+): string[] | undefined => {
   const layer = getThemeLayerById(config, id);
-  if (!layer) {
+  if (!layer || !layer.useLegendGraphic || !layer.layers) {
     return undefined;
   }
-  if (layer.useLegendGraphic) {
-    const wmsUrl = getEffectiveWmsUrl(config, layer);
-    const scaleParam = scale ? `&SCALE=${scale}` : '';
-    return (
-      wmsUrl +
-      '?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image/png&STYLE=default&LAYERTITLE=false&LAYER=' +
-      layer.layers +
-      scaleParam
+  const wmsUrl = getEffectiveWmsUrl(config, layer);
+  const scaleParam = scale ? `&SCALE=${scale}` : '';
+  // GetLegendGraphic is single-layer — a comma-separated LAYER value is read as
+  // one (non-existent) layer name by GeoServer
+  return layer.layers
+    .split(',')
+    .map((name) => name.trim())
+    .filter(Boolean)
+    .map(
+      (name) =>
+        wmsUrl +
+        '?SERVICE=WMS&REQUEST=GetLegendGraphic&VERSION=1.3.0&SLD_VERSION=1.1.0&FORMAT=image/png&STYLE=default&LAYERTITLE=false&LAYER=' +
+        name +
+        scaleParam,
     );
-  }
-  return undefined;
 };
 
 export const getMainCategories = (
