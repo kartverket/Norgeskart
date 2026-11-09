@@ -1,4 +1,4 @@
-import { Flex, IconButton, MaterialSymbol, Text } from '@kvib/react';
+import { Box, Grid, Icon, MaterialSymbol, Text } from '@kvib/react';
 import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
@@ -50,7 +50,7 @@ export const DrawToolSelector = () => {
     },
   ];
   return (
-    <Flex w="100%" justifyContent={'space-between'}>
+    <Grid templateColumns="repeat(3, 1fr)" gap={2} w="100%">
       {drawTypeButtons.map((button) => (
         <DrawTypeButton
           key={button.value}
@@ -59,7 +59,7 @@ export const DrawToolSelector = () => {
           label={button.label}
         />
       ))}
-    </Flex>
+    </Grid>
   );
 };
 
@@ -88,41 +88,58 @@ const DrawTypeButton = ({
   // const effectiveTooltip = isCurrentTool && collapsed ? 'Vis panel' : tooltip;
 
   return (
-    <Flex direction="column" align="center" gap={1}>
-      <IconButton
-        variant="ghost"
-        iconFill
-        icon={effectiveIcon}
-        backgroundColor={isCurrentTool ? '#D0ECD6' : ''}
-        size={{ base: 'xs', md: 'sm' }}
-        onClick={() => {
-          // Hvis panelet er skjult og du trykker på aktiv knapp -> åpne panelet
-          if (isCurrentTool && collapsed) {
-            setCollapsed(false);
-            return;
-          }
-
-          // Hvis du trykker på aktiv knapp mens panelet er synlig -> gjør ingenting (som før)
-          if (isCurrentTool) {
-            return;
-          }
-
-          // Bytter tool -> åpne panelet (hvis det var skjult)
+    <Box
+      as="button"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      gap={0}
+      p={1}
+      minHeight="54px"
+      border="1px solid"
+      borderColor={isCurrentTool ? 'green.500' : '#E0E0E0'}
+      borderRadius="8px"
+      backgroundColor="#FFFFFF"
+      boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+      cursor="pointer"
+      aria-label={label}
+      aria-pressed={isCurrentTool}
+      onClick={() => {
+        // Hvis panelet er skjult og du trykker på aktiv knapp -> åpne panelet
+        if (isCurrentTool && collapsed) {
           setCollapsed(false);
+          return;
+        }
 
-          if (drawType === 'Move') {
-            clearInteractions();
-          }
+        // Hvis du trykker på aktiv knapp mens panelet er synlig -> gjør ingenting (som før)
+        if (isCurrentTool) {
+          return;
+        }
 
-          if (type === 'Text') {
-            setPrimaryColor('#000000');
-            setSecondaryColor('#ffffffff');
-          }
-          ph.capture('draw_tool_selected', { tool: type });
-          setDrawType(type);
-        }}
+        // Bytter tool -> åpne panelet (hvis det var skjult)
+        setCollapsed(false);
+
+        if (drawType === 'Move') {
+          clearInteractions();
+        }
+
+        if (type === 'Text') {
+          setPrimaryColor('#000000');
+          setSecondaryColor('#ffffffff');
+        }
+        ph.capture('draw_tool_selected', { tool: type });
+        setDrawType(type);
+      }}
+    >
+      <Icon
+        icon={effectiveIcon}
+        size={24}
+        color={isCurrentTool ? 'green.500' : '#000000'}
       />
-      <Text fontSize={12}>{label}</Text>
-    </Flex>
+      <Text fontSize={12} color={isCurrentTool ? 'green.500' : '#000000'}>
+        {label}
+      </Text>
+    </Box>
   );
 };

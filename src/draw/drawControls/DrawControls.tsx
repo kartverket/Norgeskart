@@ -1,4 +1,4 @@
-import { Flex, HStack, Text, VStack } from '@kvib/react';
+import { Box, Flex, HStack, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -74,6 +74,10 @@ export const DrawControls = () => {
     drawType !== 'Move' &&
     currentType != null &&
     MEASUREMENT_TYPES.includes(currentType);
+  const showLineWidthControl =
+    currentType === 'LineString' ||
+    currentType === 'Point' ||
+    currentType === 'Polygon';
 
   return (
     <VStack
@@ -92,24 +96,62 @@ export const DrawControls = () => {
 
       {currentType === 'Text' && <TextStyleControl />}
 
-      <HStack width="100%" align={'space-between'}>
-        {currentType && <ColorControls />}
+      {currentType && (
+        <Box
+          width="100%"
+          border="1px solid"
+          borderColor="#E0E0E0"
+          borderRadius="8px"
+          backgroundColor="white"
+          boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+          padding={2}
+        >
+          <VStack width="100%" gap={0} alignItems="stretch">
+            <Box width="100%" pb={2} borderBottom="1px solid #E0E0E0">
+              <HStack width="100%" align={'space-between'}>
+                <ColorControls />
 
-        {currentType === 'Point' && <PointStyleSelector />}
-        {isMobile && drawType === 'LineString' && <LineStyleControl />}
-      </HStack>
-      <Flex
-        w="100%"
-        alignItems="flex-start"
-        flexDirection={{ base: 'row', md: 'column' }}
-        justifyContent="space-between"
-        py={1}
-      >
-        {!isMobile && drawType === 'LineString' && <LineStyleControl />}
-        <LineWidthControl />
-        {showMeasurementControls && <MeasurementControls />}
-      </Flex>
-      <EditControls drawType={drawType} />
+                {currentType === 'Point' && <PointStyleSelector />}
+                {isMobile && drawType === 'LineString' && <LineStyleControl />}
+              </HStack>
+            </Box>
+
+            {!isMobile && drawType === 'LineString' && (
+              <Box
+                width="100%"
+                py={2}
+                borderBottom="1px solid #E0E0E0"
+              >
+                <LineStyleControl />
+              </Box>
+            )}
+
+            {showLineWidthControl && (
+              <Box
+                width="100%"
+                py={2}
+                borderBottom="1px solid #E0E0E0"
+              >
+                <LineWidthControl />
+              </Box>
+            )}
+
+            {showMeasurementControls && (
+              <Box
+                width="100%"
+                py={2}
+                borderBottom="1px solid #E0E0E0"
+              >
+                <MeasurementControls />
+              </Box>
+            )}
+
+            <Box width="100%" pt={1}>
+              <EditControls drawType={drawType} />
+            </Box>
+          </VStack>
+        </Box>
+      )}
       <DrawControlFooter />
     </VStack>
   );

@@ -1,4 +1,4 @@
-import { Button, Group, Heading, VStack } from '@kvib/react';
+import { Button, Group, Heading, HStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
@@ -30,7 +30,7 @@ export const MeasurementControls = () => {
   };
 
   return (
-    <VStack align="flex-start" w="auto">
+    <HStack align="center" justifyContent="space-between" width="100%">
       <Heading size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.showMeasurements')}
       </Heading>
@@ -50,6 +50,6 @@ export const MeasurementControls = () => {
           </Button>
         ))}
       </Group>
-    </VStack>
+    </HStack>
   );
 };

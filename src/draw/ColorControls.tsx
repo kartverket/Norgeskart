@@ -12,7 +12,6 @@ import {
   Icon,
   parseColor,
   SimpleGrid,
-  Spacer,
   Text,
   VStack,
 } from '@kvib/react';
@@ -46,63 +45,59 @@ export const ColorControls = () => {
   const { primaryLabel, secondaryLabel } = useColorLabels(currentType);
 
   return (
-    <VStack
-      align="stretch"
-      w="100%"
-      mt={isMobile ? 1 : 1}
-      gap={isMobile ? 1 : 1}
-    >
+    <HStack align="center" justifyContent="space-between" w="100%">
       <Heading fontWeight="semibold" size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.color')}
       </Heading>
 
-      {isMobile ? (
-        <HStack w="100%" flexWrap="wrap" gap={2} align="stretch">
-          <Box>
-            <ColorRow
-              isMobile={true}
-              label={primaryLabel}
-              color={primaryColor}
-              onSetColor={setPrimaryColor}
-            />
-          </Box>
-
-          {secondaryLabel && (
+      <Box flex="1" display="flex" justifyContent="flex-end">
+        {isMobile ? (
+          <HStack flexWrap="wrap" gap={2} align="stretch">
             <Box>
               <ColorRow
                 isMobile={true}
-                label={secondaryLabel}
-                color={secondaryColor}
-                onSetColor={setSecondaryColor}
+                label={primaryLabel}
+                color={primaryColor}
+                onSetColor={setPrimaryColor}
               />
             </Box>
-          )}
-        </HStack>
-      ) : (
-        // Desktop: to like kolonner (som før)
-        <HStack w="100%" align="stretch" gap={2}>
-          <Box flex="1">
-            <ColorRow
-              isMobile={false}
-              label={primaryLabel}
-              color={primaryColor}
-              onSetColor={setPrimaryColor}
-            />
-          </Box>
 
-          {secondaryLabel && (
+            {secondaryLabel && (
+              <Box>
+                <ColorRow
+                  isMobile={true}
+                  label={secondaryLabel}
+                  color={secondaryColor}
+                  onSetColor={setSecondaryColor}
+                />
+              </Box>
+            )}
+          </HStack>
+        ) : (
+          <HStack align="stretch" gap={2}>
             <Box flex="1">
               <ColorRow
                 isMobile={false}
-                label={secondaryLabel}
-                color={secondaryColor}
-                onSetColor={setSecondaryColor}
+                label={primaryLabel}
+                color={primaryColor}
+                onSetColor={setPrimaryColor}
               />
             </Box>
-          )}
-        </HStack>
-      )}
-    </VStack>
+
+            {secondaryLabel && (
+              <Box flex="1">
+                <ColorRow
+                  isMobile={false}
+                  label={secondaryLabel}
+                  color={secondaryColor}
+                  onSetColor={setSecondaryColor}
+                />
+              </Box>
+            )}
+          </HStack>
+        )}
+      </Box>
+    </HStack>
   );
 };
 
@@ -131,24 +126,27 @@ const ColorRow = ({
       <ColorPickerControl>
         <ColorPickerTrigger asChild>
           <HStack
-            w={isMobile ? 'auto' : '100%'}
-            minW={isMobile ? '50px' : undefined}
-            maxW={isMobile ? '155px' : undefined}
+            w="auto"
             role="button"
             tabIndex={0}
             align="center"
-            py={isMobile ? 0.5 : 1}
-            px={isMobile ? 2 : undefined}
-            borderWidth="1px"
-            borderRadius={isMobile ? 'md' : 'lg'}
-            bg="white"
+            gap={1}
+            py={0.5}
+            px={1}
+            border="none"
+            borderRadius="md"
+            bg="transparent"
+            boxShadow="none"
             cursor="pointer"
             _hover={{ bg: 'gray.50' }}
           >
-            <ColorPickerSwatch value={color} />
-            <Text fontSize={{ base: 'xs', md: 'sm' }}>{label}</Text>
-            <Spacer />
-            <Icon
+          <ColorPickerSwatch
+            value={color}
+            boxSize="3"
+            borderRadius="full"
+          />
+          <Text fontSize={{ base: 'xs', md: 'sm' }}>{label}</Text>
+          <Icon
               color="colorPalette.500"
               grade={0}
               icon="chevron_right"

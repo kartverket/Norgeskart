@@ -1,4 +1,4 @@
-import { Button, Heading, HStack, VStack } from '@kvib/react';
+import { Button, Heading, HStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { LineStyle, lineStyleAtom } from '../settings/draw/atoms';
@@ -13,7 +13,7 @@ export const LineStyleControl = () => {
   const { t } = useTranslation();
 
   return (
-    <VStack align="stretch">
+    <HStack align="center" justifyContent="space-between" width="100%">
       <Heading size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.lineType')}
       </Heading>
@@ -31,6 +31,6 @@ export const LineStyleControl = () => {
           </Button>
         ))}
       </HStack>
-    </VStack>
+    </HStack>
   );
 };

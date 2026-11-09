@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, VStack } from '@kvib/react';
+import { Box, Heading, HStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
@@ -43,7 +43,7 @@ export const LineWidthControl = () => {
   const getPointSize = (value: number) => value * 2.2;
 
   return (
-    <VStack align="stretch" paddingY={2}>
+    <HStack align="center" justifyContent="space-between" width="100%">
       <Heading size={{ base: 'xs', md: 'sm' }}>
         {isPoint ? t('draw.size.pointLabel') : t('draw.size.label')}
       </Heading>
@@ -90,6 +90,6 @@ export const LineWidthControl = () => {
           );
         })}
       </HStack>
-    </VStack>
+    </HStack>
   );
 };
