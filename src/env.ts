@@ -15,6 +15,18 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
+  // MapProxy serving the new Norgeskart Standard background (WMTS).
+  topoCache: {
+    baseUrl: string;
+    layers: { standard: string; standard2x: string };
+  };
+};
+
+// Same rGIS-backed MapProxy as test.norgeskart.no. kart.api.kartverket.no is down
+// since 2026-11-05; switch baseUrl + norgeskart_* layer names once it serves again.
+const TOPO_CACHE = {
+  baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+  layers: { standard: 'topo', standard2x: 'topo_2x' },
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -50,6 +62,7 @@ const LOCAL_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    topoCache: TOPO_CACHE,
   },
   envName: 'local',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -78,6 +91,7 @@ const DEV_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    topoCache: TOPO_CACHE,
   },
   envName: 'dev',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -106,6 +120,7 @@ const PROD_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    topoCache: TOPO_CACHE,
   },
   envName: 'prod',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',

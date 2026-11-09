@@ -10,6 +10,7 @@ import { WMTSCapabilities } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
+import { getUrlParameter } from '../../../../shared/utils/urlUtils';
 import { mapAtom } from '../../../atoms';
 import { backgroundLayerCapabilitiesCacheAtom } from './atoms';
 import { nibTileLoadFunction } from './loadFunctions';
@@ -56,22 +57,48 @@ export const getWMTSLayer = async (
     const parser = new WMTSCapabilities();
     const capabilities = parser.read(capabilitiesText);
     const layerOptions = optionsFromCapabilities(capabilities, {
-      layer: layerConfig.layerName,
+      layer: layerConfig.wmtsLayerName ?? layerConfig.layerName,
       projection,
     });
 
     if (!layerOptions) {
       throw new Error(
-        `Layer ${layerConfig.layerName} not found in capabilities`,
+        `Layer ${layerConfig.wmtsLayerName ?? layerConfig.layerName} not found in capabilities`,
       );
     }
+
+    // HiDPI: keep the 1x tile grid from capabilities, fetch the 512 px twin with the same
+    // tile ids instead, so 2x screens don't get blurry upscaled 256 px tiles. Only if the
+    // service advertises the twin. ?tileResolution=1x|2x overrides devicePixelRatio.
+    const tileResolution = getUrlParameter('tileResolution');
+    const wantHidpi =
+      tileResolution === '2x' ||
+      (tileResolution !== '1x' && window.devicePixelRatio > 1);
+    const hidpi = layerConfig.hidpi;
+    const hidpiMatrixSet = hidpi?.matrixSets[layerOptions.matrixSet];
+    const hidpiLayer = capabilities.Contents?.Layer?.find(
+      (l: { Identifier: string }) => l.Identifier === hidpi?.wmtsLayerName,
+    ) as { TileMatrixSetLink?: { TileMatrixSet: string }[] } | undefined;
+    const hidpiOptions =
+      hidpi &&
+      wantHidpi &&
+      hidpiMatrixSet &&
+      hidpiLayer?.TileMatrixSetLink?.some(
+        (link) => link.TileMatrixSet === hidpiMatrixSet,
+      )
+        ? {
+            layer: hidpi.wmtsLayerName,
+            matrixSet: hidpiMatrixSet,
+            tilePixelRatio: 2,
+          }
+        : {};
 
     const wmts = layerConfig.layerName.startsWith('Nibcache')
       ? new WMTS({
           ...layerOptions,
           tileLoadFunction: nibTileLoadFunction,
         })
-      : new WMTS({ ...layerOptions });
+      : new WMTS({ ...layerOptions, ...hidpiOptions });
 
     const layer = new TileLayer({
       source: wmts,

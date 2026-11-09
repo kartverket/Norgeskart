@@ -15,6 +15,7 @@ import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
 import { npolarBackgroundLayers } from './npolar';
+import { topoCacheBackgroundLayers } from './topoCache';
 import { EmptyBackgroundLayer } from './types';
 import {
   clearBackgroundLayer,
@@ -34,6 +35,7 @@ export const allConfiguredBackgroundLayers = [
   ...nibBackgroundLayers,
   ...npolarBackgroundLayers,
   ...nauticalBackgroundLayers,
+  ...topoCacheBackgroundLayers,
 ];
 
 const getDefaultBackgroundLayer = (): BackgroundLayerName => {

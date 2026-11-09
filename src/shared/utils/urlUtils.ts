@@ -127,4 +127,5 @@ export type NKUrlParameter =
   | 'project' // Legacy project parameter from old norgeskart.no
   | 'sok'
   | 'showSelection'
-  | 'printTool';
+  | 'printTool'
+  | 'tileResolution'; // auto | 1x | 2x — test override for WMTS HiDPI twins

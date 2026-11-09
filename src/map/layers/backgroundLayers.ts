@@ -6,6 +6,7 @@ export type WMTSLayerName =
   | 'topograatone'
   | 'toporaster'
   | 'topoProd'
+  | 'norgeskart_standard'
   | 'Nibcache_web_mercator_v2'
   | 'Nibcache_UTM32_EUREF89_v2'
   | 'Nibcache_UTM33_EUREF89_v2'

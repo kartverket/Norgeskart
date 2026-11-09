@@ -4,17 +4,23 @@ import { ProjectionIdentifier } from '../projections/types';
 
 const backgroundLayerOrder = new Map<BackgroundLayerName, number>([
   ['topo', 1],
-  ['topograatone', 2],
-  ['toporaster', 3],
-  ['sjokartraster', 4],
-  ['nautical-background', 5],
-  ['oceanicelectronic', 6],
-  ['Nibcache_web_mercator_v2', 7],
-  ['Nibcache_UTM32_EUREF89_v2', 8],
-  ['Nibcache_UTM33_EUREF89_v2', 9],
-  ['Nibcache_UTM35_EUREF89_v2', 10],
-  ['Basisdata_NP_Basiskart_Svalbard_WMTS_25833', 11],
-  ['Basisdata_NP_Basiskart_JanMayen_WMTS_25833', 12],
+  ['norgeskart_standard', 2],
+  ['topograatone', 3],
+  ['toporaster', 4],
+  ['sjokartraster', 5],
+  ['nautical-background', 6],
+  ['oceanicelectronic', 7],
+  ['Nibcache_web_mercator_v2', 8],
+  ['Nibcache_UTM32_EUREF89_v2', 9],
+  ['Nibcache_UTM33_EUREF89_v2', 10],
+  ['Nibcache_UTM35_EUREF89_v2', 11],
+  ['Basisdata_NP_Basiskart_Svalbard_WMTS_25833', 12],
+  ['Basisdata_NP_Basiskart_JanMayen_WMTS_25833', 13],
+]);
+
+// Shown with a "New" badge in the background layer picker.
+export const newBackgroundLayers: ReadonlySet<BackgroundLayerName> = new Set([
+  'norgeskart_standard',
 ]);
 
 const sortBackgroundLayers = (

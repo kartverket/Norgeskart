@@ -194,6 +194,7 @@
             "oceanicelectronic": "Electronic Nautical Chart",
             "sjokartraster": "Nautical Chart updated EFS",
             "topo": "Standard",
+            "norgeskart_standard": "Standard",
             "topo_2025": "Topo 2025",
             "topograatone": "Standard (greyscale)",
             "topoProd": "Topographic",
@@ -334,7 +335,8 @@
         "label": "Map legend"
       },
       "backgroundLayer": {
-        "label": "Map"
+        "label": "Map",
+        "new": "New"
       }
     }
   },

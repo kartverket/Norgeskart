@@ -199,6 +199,7 @@
             "oceanicelectronic": "Elektronisk sjøkart",
             "sjokartraster": "Sjøkart oppdatert EFS",
             "topo": "Standard",
+            "norgeskart_standard": "Standard",
             "topo_2025": "Topo 2025",
             "topograatone": "Standard (gråtone)",
             "topoProd": "Topografisk",
@@ -339,7 +340,8 @@
         "label": "Teiknforklaring"
       },
       "backgroundLayer": {
-        "label": "Kart"
+        "label": "Kart",
+        "new": "Ny"
       }
     }
   },
