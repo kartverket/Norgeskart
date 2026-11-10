@@ -112,10 +112,15 @@ export const DrawControls = () => {
               <HStack width="100%" align={'space-between'}>
                 <ColorControls />
 
-                {currentType === 'Point' && <PointStyleSelector />}
                 {isMobile && drawType === 'LineString' && <LineStyleControl />}
               </HStack>
             </Box>
+
+            {currentType === 'Point' && (
+              <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
+                <PointStyleSelector />
+              </Box>
+            )}
 
             {!isMobile && drawType === 'LineString' && (
               <Box

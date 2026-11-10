@@ -9,13 +9,11 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-  VStack,
 } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { pointIconAtom, primaryColorAtom } from '../settings/draw/atoms';
-import { useIsMobileScreen } from '../shared/hooks';
 import { isDrawIconFilled } from './drawControls/drawUtils';
 
 const icons: MaterialSymbol[] = [
@@ -51,26 +49,37 @@ export const PointStyleSelector = () => {
   const color = useAtomValue(primaryColorAtom);
   const { t } = useTranslation();
 
-  const isMobile = useIsMobileScreen();
-
   return (
-    <VStack align="stretch" mt={isMobile ? 1 : 1} gap={isMobile ? 1 : 1}>
+    <HStack
+      align="center"
+      justifyContent="space-between"
+      width="100%"
+    >
       <Heading fontWeight="semibold" size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.pointType')}
       </Heading>
 
       <SelectRoot
-        w={'80px'}
+        w="70px"
         collection={iconsCollection}
         value={pointIcon ? [pointIcon] : []}
       >
-        <SelectTrigger>
+        <SelectTrigger
+          className="point-style-select-trigger"
+          border="none"
+          borderWidth={0}
+          borderColor="transparent"
+          outline="none"
+          boxShadow="none"
+          bg="transparent"
+          justifyContent="space-between"
+        >
           <SelectValueText
             placeholder={t('draw.controls.pointType')}
             children={ValueText}
           />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent overflowX="hidden">
           {icons.map((icon) => (
             <SelectItem
               key={icon}
@@ -82,7 +91,7 @@ export const PointStyleSelector = () => {
           ))}
         </SelectContent>
       </SelectRoot>
-    </VStack>
+    </HStack>
   );
 };
 

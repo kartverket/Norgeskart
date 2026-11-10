@@ -36,7 +36,7 @@ export const LineWidthControl = () => {
   }
   const isPoint = currentType === 'Point';
 
-  const getPointSize = (value: number) => value * 2.2;
+  const getPointSize = (value: number) => value * 1.8;
 
   return (
     <HStack align="center" justifyContent="space-between" width="100%">
