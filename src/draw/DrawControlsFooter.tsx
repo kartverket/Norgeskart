@@ -66,10 +66,12 @@ const getGeometryType = (geo: Geometry): string => {
 
 export const DrawControlFooter = ({
   drawType,
+  hasSelectedFeature,
 }: {
   drawType: DrawType | null;
+  hasSelectedFeature: boolean;
 }) => {
-  const { getDrawnFeatures, clearDrawing } = useDrawSettings();
+  const { getDrawnFeatures, clearDrawing, deleteSelected } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
   const setIsExportDialogOpen = useSetAtom(isExportDialogOpenAtom);
   const setIsImportDialogOpen = useSetAtom(isImportDialogOpenAtom);
@@ -121,28 +123,42 @@ export const DrawControlFooter = ({
 
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={2} width="100%">
+      {drawType !== 'Move' && (
+        <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={2} width="100%">
+          <Button
+            leftIcon="download"
+            width="100%"
+            size="sm"
+            variant="outline"
+            colorPalette="green"
+            onClick={() => setIsExportDialogOpen(true)}
+          >
+            {t('draw.download')}
+          </Button>
+          <Button
+            width="100%"
+            size="sm"
+            leftIcon="upload"
+            variant="outline"
+            colorPalette="green"
+            onClick={() => setIsImportDialogOpen(true)}
+          >
+            {t('draw.uploadButton.label')}
+          </Button>
+        </Grid>
+      )}
+      {drawType === 'Move' && hasSelectedFeature && (
         <Button
-          leftIcon="download"
-          width="100%"
-          size="sm"
+          leftIcon="delete"
           variant="outline"
-          colorPalette="green"
-          onClick={() => setIsExportDialogOpen(true)}
-        >
-          {t('draw.download')}
-        </Button>
-        <Button
-          width="100%"
+          colorPalette="red"
           size="sm"
-          leftIcon="upload"
-          variant="outline"
-          colorPalette="green"
-          onClick={() => setIsImportDialogOpen(true)}
+          mt={2}
+          onClick={deleteSelected}
         >
-          {t('draw.uploadButton.label')}
+          Slett valgte
         </Button>
-      </Grid>
+      )}
       <Box
         position="sticky"
         bottom={0}
@@ -160,7 +176,7 @@ export const DrawControlFooter = ({
         <HStack width="100%" justifyContent="space-between" alignItems="center">
           <HStack gap={1} alignItems="center">
             <DrawActionControls
-              showDeleteControl={drawType === 'Move'}
+              showDeleteControl={false}
               marginTop={0}
             />
             <PopoverRoot

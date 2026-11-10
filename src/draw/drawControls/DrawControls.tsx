@@ -162,7 +162,10 @@ export const DrawControls = () => {
           </VStack>
         </Box>
       )}
-      <DrawControlFooter drawType={drawType} />
+      <DrawControlFooter
+        drawType={drawType}
+        hasSelectedFeature={selectedFeature !== null}
+      />
     </VStack>
   );
 };
