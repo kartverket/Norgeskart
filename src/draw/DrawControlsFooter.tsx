@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Grid,
@@ -151,6 +152,11 @@ export const DrawControlFooter = ({
         marginTop="auto"
         paddingTop={2}
       >
+        {drawType === 'LineString' && (
+          <Alert status="info" mb={4} alignItems="center">
+            {t('draw.controls.freehandHint')}
+          </Alert>
+        )}
         <HStack width="100%" justifyContent="space-between" alignItems="center">
           <HStack gap={1} alignItems="center">
             <DrawActionControls

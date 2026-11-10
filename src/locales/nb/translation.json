@@ -36,6 +36,7 @@
       "colorPoint": "Punkt",
       "colorStroke": "Omriss",
       "colorText": "Tekst",
+      "freehandHint": "Hold inne shift for frihåndstegning",
       "recentColors": "Nylige farger",
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål i kartet",
