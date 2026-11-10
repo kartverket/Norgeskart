@@ -95,8 +95,6 @@ export const DrawControls = () => {
         </Text>
       )}
 
-      {currentType === 'Text' && <TextStyleControl />}
-
       {currentType && (
         <Box
           width="100%"
@@ -108,6 +106,12 @@ export const DrawControls = () => {
           padding={2}
         >
           <VStack width="100%" gap={0} alignItems="stretch">
+            {currentType === 'Text' && (
+              <Box width="100%" pb={2} borderBottom="1px solid #E0E0E0">
+                <TextStyleControl />
+              </Box>
+            )}
+
             <Box width="100%" pb={2} borderBottom="1px solid #E0E0E0">
               <HStack width="100%" align={'space-between'}>
                 <ColorControls />
