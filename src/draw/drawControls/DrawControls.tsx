@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Text, VStack } from '@kvib/react';
+import { Box, HStack, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -83,6 +83,7 @@ export const DrawControls = () => {
     <VStack
       alignItems="flex-start"
       width="100%"
+      height="100%"
       padding={0.5}
       style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
     >
@@ -147,12 +148,12 @@ export const DrawControls = () => {
             )}
 
             <Box width="100%" pt={1}>
-              <EditControls drawType={drawType} />
+              <EditControls drawType={drawType} showActions={false} />
             </Box>
           </VStack>
         </Box>
       )}
-      <DrawControlFooter />
+      <DrawControlFooter drawType={drawType} />
     </VStack>
   );
 };

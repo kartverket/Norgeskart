@@ -36,10 +36,6 @@ export const LineWidthControl = () => {
   }
   const isPoint = currentType === 'Point';
 
-  const getButtonSize = (value: number) => {
-    return value === 2 ? 24 : value === 4 ? 30 : 36;
-  };
-
   const getPointSize = (value: number) => value * 2.2;
 
   return (
@@ -47,10 +43,9 @@ export const LineWidthControl = () => {
       <Heading size={{ base: 'xs', md: 'sm' }}>
         {isPoint ? t('draw.size.pointLabel') : t('draw.size.label')}
       </Heading>
-      <HStack>
+      <HStack gap={0}>
         {lineWidthCollection.map((item) => {
           const isSelected = lineWidth === item.value;
-          const buttonSize = getButtonSize(item.value);
           const pointSize = getPointSize(item.value);
 
           return (
@@ -60,15 +55,15 @@ export const LineWidthControl = () => {
               onClick={() => setLineWidth(item.value)}
               aria-pressed={isSelected}
               aria-label={`${t('draw.size.label')} ${item.label}`}
-              w={`${buttonSize}px`}
-              h={`${buttonSize}px`}
-              borderRadius="full"
-              borderWidth="1px"
+              w="36px"
+              h="20px"
+              borderRadius="4px"
+              border="1px solid"
+              borderColor={isSelected ? 'green.500' : 'gray.200'}
               display="inline-flex"
               alignItems="center"
               justifyContent="center"
               cursor="pointer"
-              borderColor="green.500"
               bg={isSelected ? 'green.100' : 'transparent'}
             >
               {isPoint ? (
@@ -80,8 +75,8 @@ export const LineWidthControl = () => {
                 />
               ) : (
                 <Box
-                  w="80%"
-                  h={`${item.value}px`}
+                  w="20px"
+                  h ={`${item.value}px`}
                   borderRadius="full"
                   bg="green.500"
                 />

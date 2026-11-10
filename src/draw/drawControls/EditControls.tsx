@@ -1,4 +1,4 @@
-import { ButtonGroup, HStack, IconButton, Switch, Tooltip } from '@kvib/react';
+import { Heading, HStack, IconButton, Switch, Tooltip } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,16 +18,15 @@ import { DrawType, useDrawSettings } from './hooks/drawSettings';
 
 type EditControlsProps = {
   drawType: DrawType | null;
+  showActions?: boolean;
 };
 
-export const EditControls = ({ drawType }: EditControlsProps) => {
-  const { deleteSelected } = useDrawSettings();
+export const EditControls = ({
+  drawType,
+  showActions = true,
+}: EditControlsProps) => {
   const { addDrawAction } = useDrawActionsState();
-  const { undoLast, redoLastUndone } = useDrawActions();
-  const canUndoDrawAction = useAtomValue(canUndoAtom);
-  const canRedoDrawAction = useAtomValue(canRedoAtom);
   const [snapEnabled, setSnapEnabled] = useAtom(snapEnabledAtom);
-  const { t } = useTranslation();
 
   const featureMovedListener = useCallback(
     (e: Event) => {
@@ -80,49 +79,80 @@ export const EditControls = ({ drawType }: EditControlsProps) => {
 
   return (
     <>
-      <HStack marginTop={2} wrap="wrap">
-        <ButtonGroup>
-          <Tooltip content={t('draw.controls.tool.tooltip.undo')}>
-            <IconButton
-              variant="ghost"
-              disabled={!canUndoDrawAction}
-              onClick={undoLast}
-              icon="undo"
-              size={{ base: 'xs', md: 'sm' }}
-            />
-          </Tooltip>
-
-          <Tooltip content={t('draw.controls.tool.tooltip.redo')}>
-            <IconButton
-              variant="ghost"
-              disabled={!canRedoDrawAction}
-              onClick={redoLastUndone}
-              icon="redo"
-              size={{ base: 'xs', md: 'sm' }}
-            />
-          </Tooltip>
-        </ButtonGroup>
-        {showDeleteControl && (
-          <Tooltip content={t('draw.controls.tool.tooltip.deleteselected')}>
-            <IconButton
-              onClick={deleteSelected}
-              colorPalette="red"
-              icon="delete"
-              size="sm"
-              variant="ghost"
-            />
-          </Tooltip>
-        )}
-        {showSnapControl && (
+      {showSnapControl && (
+        <HStack width="100%" justifyContent="space-between">
+          <Heading size={{ base: 'xs', md: 'sm' }}>Snapp til linje</Heading>
           <Switch
             size="sm"
+            aria-label="Snapp til linje"
             checked={snapEnabled}
             onCheckedChange={(e) => setSnapEnabled(e.checked)}
-          >
-            Snap
-          </Switch>
-        )}
-      </HStack>
+          />
+        </HStack>
+      )}
+      {showActions && <DrawActionControls showDeleteControl={showDeleteControl} />}
     </>
+  );
+};
+
+export const DrawActionControls = ({
+  showDeleteControl,
+  marginTop = 2,
+}: {
+  showDeleteControl: boolean;
+  marginTop?: number;
+}) => {
+  const { deleteSelected } = useDrawSettings();
+  const { undoLast, redoLastUndone } = useDrawActions();
+  const canUndoDrawAction = useAtomValue(canUndoAtom);
+  const canRedoDrawAction = useAtomValue(canRedoAtom);
+  const { t } = useTranslation();
+
+  return (
+    <HStack marginTop={marginTop} wrap="wrap">
+      <HStack gap={1}>
+        <Tooltip content={t('draw.controls.tool.tooltip.undo')}>
+          <IconButton
+            variant="outline"
+            disabled={!canUndoDrawAction}
+            onClick={undoLast}
+            icon="undo"
+            size="sm"
+            colorPalette="green"
+            border="1px solid"
+            borderColor="green.500"
+            borderRadius="4px"
+          />
+        </Tooltip>
+
+        <Tooltip content={t('draw.controls.tool.tooltip.redo')}>
+          <IconButton
+            variant="outline"
+            disabled={!canRedoDrawAction}
+            onClick={redoLastUndone}
+            icon="redo"
+            size="sm"
+            colorPalette="green"
+            border="1px solid"
+            borderColor="green.500"
+            borderRadius="4px"
+          />
+        </Tooltip>
+      </HStack>
+      {showDeleteControl && (
+        <Tooltip content={t('draw.controls.tool.tooltip.deleteselected')}>
+          <IconButton
+            onClick={deleteSelected}
+            variant="outline"
+            colorPalette="red"
+            icon="delete"
+            size="sm"
+            border="1px solid"
+            borderColor="red.500"
+            borderRadius="4px"
+          />
+        </Tooltip>
+      )}
+    </HStack>
   );
 };

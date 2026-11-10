@@ -13,8 +13,8 @@ export const MeasurementControls = () => {
   const [showMeasurements, setShowMeasurements] = useAtom(showMeasurementsAtom);
 
   const units: { value: DistanceUnit; label: string }[] = [
-    { value: 'm', label: `${t('shared.units.meter')} [m]` },
-    { value: 'NM', label: `${t('shared.units.nauticalMile')} [NM]` },
+    { value: 'm', label: 'M' },
+    { value: 'NM', label: 'NM' },
   ];
 
   const isActive = (u: DistanceUnit) => showMeasurements && distanceUnit === u;
@@ -40,8 +40,7 @@ export const MeasurementControls = () => {
           <Button
             key={u.value}
             size="xs"
-            variant="outline"
-            borderColor="green.500"
+            borderColor={isActive(u.value) ? 'green.500' : 'gray.200'}
             color="green.500"
             bg={isActive(u.value) ? 'green.100' : 'transparent'}
             onClick={() => onPick(u.value)}

@@ -74,7 +74,7 @@ export const ColorControls = () => {
             )}
           </HStack>
         ) : (
-          <HStack align="stretch" gap={2}>
+          <HStack w="100%" align="stretch" gap={2}>
             <Box flex="1">
               <ColorRow
                 isMobile={false}
@@ -127,6 +127,8 @@ const ColorRow = ({
         <ColorPickerTrigger asChild>
           <HStack
             w="auto"
+            maxW="120px"
+            marginLeft="auto"
             role="button"
             tabIndex={0}
             align="center"

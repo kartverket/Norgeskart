@@ -135,9 +135,9 @@ const DrawTypeButton = ({
       <Icon
         icon={effectiveIcon}
         size={24}
-        color={isCurrentTool ? 'green.500' : '#000000'}
+        color={isCurrentTool ? 'green.500' : 'green.400'}
       />
-      <Text fontSize={12} color={isCurrentTool ? 'green.500' : '#000000'}>
+      <Text fontSize={12} color="#000000">
         {label}
       </Text>
     </Box>

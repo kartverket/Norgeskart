@@ -1,11 +1,9 @@
 import {
-  Accordion,
-  AccordionItem,
-  AccordionItemContent,
-  AccordionItemTrigger,
+  Box,
   Button,
   Grid,
   HStack,
+  IconButton,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
@@ -22,7 +20,6 @@ import { transform } from 'ol/proj';
 import { useState } from 'react';
 import { saveFeatures } from '../api/nkApiClient';
 import { useMapSettings } from '../map/mapHooks';
-import { useIsMobileScreen } from '../shared/hooks';
 import { setUrlParameter } from '../shared/utils/urlUtils';
 import {
   isExportDialogOpenAtom,
@@ -30,6 +27,8 @@ import {
 } from './dialogs/atoms';
 import { ExportDialog } from './dialogs/ExportDialog';
 import { ImportDialog } from './dialogs/import/ImportDialog';
+import { DrawActionControls } from './drawControls/EditControls';
+import { DrawType } from './drawControls/hooks/drawSettings';
 import { useDrawSettings } from './drawControls/hooks/drawSettings';
 import { getFeaturePropertiesForExport } from './utils/featureUtils';
 
@@ -64,15 +63,17 @@ const getGeometryType = (geo: Geometry): string => {
   return geo.getType();
 };
 
-export const DrawControlFooter = () => {
+export const DrawControlFooter = ({
+  drawType,
+}: {
+  drawType: DrawType | null;
+}) => {
   const { getDrawnFeatures, clearDrawing } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
   const setIsExportDialogOpen = useSetAtom(isExportDialogOpenAtom);
   const setIsImportDialogOpen = useSetAtom(isImportDialogOpenAtom);
 
   const [clearPopoverOpen, setClearPopoverOpen] = useState(false);
-
-  const isMobile = useIsMobileScreen();
 
   const onSaveFeatures = () => {
     const drawnFeatures = getDrawnFeatures();
@@ -117,101 +118,102 @@ export const DrawControlFooter = () => {
     });
   };
 
-  const defaultAccordionValue: string[] = isMobile ? [] : ['export'];
-
   return (
     <>
-      <Accordion
-        collapsible
-        variant="plain"
-        size="sm"
+      <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={2} width="100%">
+        <Button
+          leftIcon="download"
+          width="100%"
+          size="sm"
+          variant="outline"
+          colorPalette="green"
+          onClick={() => setIsExportDialogOpen(true)}
+        >
+          {t('draw.download')}
+        </Button>
+        <Button
+          width="100%"
+          size="sm"
+          leftIcon="upload"
+          variant="outline"
+          colorPalette="green"
+          onClick={() => setIsImportDialogOpen(true)}
+        >
+          {t('draw.uploadButton.label')}
+        </Button>
+      </Grid>
+      <Box
+        position="sticky"
+        bottom={0}
+        zIndex={1}
+        width="100%"
+        backgroundColor="white"
+        marginTop="auto"
         paddingTop={2}
-        paddingX={0}
-        overflow={'hidden'}
-        defaultValue={defaultAccordionValue}
       >
-        <AccordionItem value="export" paddingX="0">
-          <AccordionItemTrigger fontWeight="600" padding="0">
-            {t('controller.export')}
-          </AccordionItemTrigger>
-          <AccordionItemContent marginX="-25px" mt={2}>
-            <Grid templateColumns="repeat(2, max-content)" gap={1}>
-              <Button
-                width="fit-content"
-                leftIcon="save"
-                size="xs"
-                variant="ghost"
-                onClick={onSaveFeatures}
-              >
-                {t('draw.save')}
-              </Button>
-              <PopoverRoot
-                open={clearPopoverOpen}
-                onOpenChange={(e) => setClearPopoverOpen(e.open)}
-              >
-                <PopoverTrigger asChild>
-                  <Button
-                    width="fit-content"
-                    leftIcon="delete"
-                    size="xs"
-                    variant="ghost"
-                    iconFill
-                    colorPalette={'red'}
-                  >
-                    {t('draw.clear')}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent width="250px">
-                  <PopoverArrow />
-                  <PopoverBody>
-                    <PopoverTitle>{t('draw.confrimClear')}</PopoverTitle>
-                    <HStack mt={2} justifyContent="space-between">
-                      <Button
-                        onClick={() => {
-                          setClearPopoverOpen(false);
-                          clearDrawing();
-                        }}
-                        colorPalette={'red'}
-                        size="xs"
-                      >
-                        {t('shared.yes')}
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setClearPopoverOpen(false);
-                        }}
-                        variant="ghost"
-                        size="xs"
-                      >
-                        {t('shared.cancel')}
-                      </Button>
-                    </HStack>
-                  </PopoverBody>
-                </PopoverContent>
-              </PopoverRoot>
-
-              <Button
-                leftIcon="download"
-                variant="ghost"
-                width="fit-content"
-                size="xs"
-                onClick={() => setIsExportDialogOpen(true)}
-              >
-                {t('draw.download')}
-              </Button>
-              <Button
-                width="fit-content"
-                size="xs"
-                leftIcon="upload"
-                variant="ghost"
-                onClick={() => setIsImportDialogOpen(true)}
-              >
-                {t('draw.uploadButton.label')}
-              </Button>
-            </Grid>
-          </AccordionItemContent>
-        </AccordionItem>
-      </Accordion>
+        <HStack width="100%" justifyContent="space-between" alignItems="center">
+          <HStack gap={1} alignItems="center">
+            <DrawActionControls
+              showDeleteControl={drawType === 'Move'}
+              marginTop={0}
+            />
+            <PopoverRoot
+              open={clearPopoverOpen}
+              onOpenChange={(e) => setClearPopoverOpen(e.open)}
+            >
+              <PopoverTrigger asChild>
+                <IconButton
+                  aria-label={t('draw.clear')}
+                  icon="delete"
+                  size="sm"
+                  variant="outline"
+                  iconFill
+                  colorPalette="red"
+                  border="1px solid"
+                  borderColor="red.500"
+                  borderRadius="4px"
+                />
+              </PopoverTrigger>
+              <PopoverContent width="250px">
+                <PopoverArrow />
+                <PopoverBody>
+                  <PopoverTitle>{t('draw.confrimClear')}</PopoverTitle>
+                  <HStack mt={2} justifyContent="space-between">
+                    <Button
+                      onClick={() => {
+                        setClearPopoverOpen(false);
+                        clearDrawing();
+                      }}
+                      colorPalette="red"
+                      size="xs"
+                    >
+                      {t('shared.yes')}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setClearPopoverOpen(false);
+                      }}
+                      variant="ghost"
+                      size="xs"
+                    >
+                      {t('shared.cancel')}
+                    </Button>
+                  </HStack>
+                </PopoverBody>
+              </PopoverContent>
+            </PopoverRoot>
+          </HStack>
+          <Button
+            leftIcon="save"
+            size="sm"
+            colorPalette="green"
+            marginLeft="auto"
+            onClick={onSaveFeatures}
+          >
+            {t('draw.save')}
+          </Button>
+        </HStack>
+      </Box>
       <ExportDialog />
       <ImportDialog />
     </>
