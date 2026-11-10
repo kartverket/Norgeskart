@@ -74,8 +74,8 @@ export const ColorControls = () => {
             )}
           </HStack>
         ) : (
-          <HStack w="100%" align="stretch" gap={2}>
-            <Box flex="1">
+          <HStack align="stretch" gap={1}>
+            <Box>
               <ColorRow
                 isMobile={false}
                 label={primaryLabel}
@@ -85,7 +85,7 @@ export const ColorControls = () => {
             </Box>
 
             {secondaryLabel && (
-              <Box flex="1">
+              <Box>
                 <ColorRow
                   isMobile={false}
                   label={secondaryLabel}
