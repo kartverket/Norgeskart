@@ -29,9 +29,7 @@ export const LineStyleControl = () => {
             alignItems="center"
             justifyContent="center"
             border="1px solid"
-            borderColor={
-              lineStyle === style.value ? 'green.500' : 'gray.200'
-            }
+            borderColor={lineStyle === style.value ? 'green.500' : 'gray.200'}
             borderRadius="4px"
             bg={lineStyle === style.value ? 'green.100' : 'transparent'}
             cursor="pointer"

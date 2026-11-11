@@ -142,13 +142,9 @@ const ColorRow = ({
             cursor="pointer"
             _hover={{ bg: 'gray.50' }}
           >
-          <ColorPickerSwatch
-            value={color}
-            boxSize="3"
-            borderRadius="full"
-          />
-          <Text fontSize={{ base: 'xs', md: 'sm' }}>{label}</Text>
-          <Icon
+            <ColorPickerSwatch value={color} boxSize="3" borderRadius="full" />
+            <Text fontSize={{ base: 'xs', md: 'sm' }}>{label}</Text>
+            <Icon
               color="colorPalette.500"
               grade={0}
               icon="chevron_right"

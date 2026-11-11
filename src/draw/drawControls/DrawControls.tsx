@@ -127,31 +127,19 @@ export const DrawControls = () => {
             )}
 
             {!isMobile && drawType === 'LineString' && (
-              <Box
-                width="100%"
-                py={2}
-                borderBottom="1px solid #E0E0E0"
-              >
+              <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
                 <LineStyleControl />
               </Box>
             )}
 
             {showLineWidthControl && (
-              <Box
-                width="100%"
-                py={2}
-                borderBottom="1px solid #E0E0E0"
-              >
+              <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
                 <LineWidthControl />
               </Box>
             )}
 
             {showMeasurementControls && (
-              <Box
-                width="100%"
-                py={2}
-                borderBottom="1px solid #E0E0E0"
-              >
+              <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
                 <MeasurementControls />
               </Box>
             )}

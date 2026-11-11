@@ -50,11 +50,7 @@ export const PointStyleSelector = () => {
   const { t } = useTranslation();
 
   return (
-    <HStack
-      align="center"
-      justifyContent="space-between"
-      width="100%"
-    >
+    <HStack align="center" justifyContent="space-between" width="100%">
       <Heading fontWeight="semibold" size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.pointType')}
       </Heading>

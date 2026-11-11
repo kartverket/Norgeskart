@@ -76,7 +76,7 @@ export const LineWidthControl = () => {
               ) : (
                 <Box
                   w="20px"
-                  h ={`${item.value}px`}
+                  h={`${item.value}px`}
                   borderRadius="full"
                   bg="green.500"
                 />

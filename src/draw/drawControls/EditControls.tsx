@@ -90,7 +90,9 @@ export const EditControls = ({
           />
         </HStack>
       )}
-      {showActions && <DrawActionControls showDeleteControl={showDeleteControl} />}
+      {showActions && (
+        <DrawActionControls showDeleteControl={showDeleteControl} />
+      )}
     </>
   );
 };

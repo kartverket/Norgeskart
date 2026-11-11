@@ -29,8 +29,7 @@ import {
 import { ExportDialog } from './dialogs/ExportDialog';
 import { ImportDialog } from './dialogs/import/ImportDialog';
 import { DrawActionControls } from './drawControls/EditControls';
-import { DrawType } from './drawControls/hooks/drawSettings';
-import { useDrawSettings } from './drawControls/hooks/drawSettings';
+import { DrawType, useDrawSettings } from './drawControls/hooks/drawSettings';
 import { getFeaturePropertiesForExport } from './utils/featureUtils';
 
 const getGeometryCoordinates = (geo: Geometry, mapProjection: string) => {
@@ -175,10 +174,7 @@ export const DrawControlFooter = ({
         )}
         <HStack width="100%" justifyContent="space-between" alignItems="center">
           <HStack gap={1} alignItems="center">
-            <DrawActionControls
-              showDeleteControl={false}
-              marginTop={0}
-            />
+            <DrawActionControls showDeleteControl={false} marginTop={0} />
             <PopoverRoot
               open={clearPopoverOpen}
               onOpenChange={(e) => setClearPopoverOpen(e.open)}
