@@ -56,8 +56,18 @@ export const getWMTSLayer = async (
     }
     const parser = new WMTSCapabilities();
     const capabilities = parser.read(capabilitiesText);
+    const advertised = (name?: string) =>
+      !!name &&
+      !!capabilities.Contents?.Layer?.some(
+        (l: { Identifier: string }) => l.Identifier === name,
+      );
+    const override = layerConfig.projectionLayers?.[projection];
+    const useOverride = advertised(override?.wmtsLayerName);
     const layerOptions = optionsFromCapabilities(capabilities, {
-      layer: layerConfig.wmtsLayerName ?? layerConfig.layerName,
+      layer:
+        (useOverride ? override?.wmtsLayerName : undefined) ??
+        layerConfig.wmtsLayerName ??
+        layerConfig.layerName,
       projection,
     });
 
@@ -76,19 +86,24 @@ export const getWMTSLayer = async (
       tileResolution === '2x' ||
       (tileResolution !== '1x' && window.devicePixelRatio > 1);
     const hidpi = layerConfig.hidpi;
+    const hidpiLayerName =
+      useOverride && override?.hidpiWmtsLayerName
+        ? override.hidpiWmtsLayerName
+        : hidpi?.wmtsLayerName;
     const hidpiMatrixSet = hidpi?.matrixSets[layerOptions.matrixSet];
     const hidpiLayer = capabilities.Contents?.Layer?.find(
-      (l: { Identifier: string }) => l.Identifier === hidpi?.wmtsLayerName,
+      (l: { Identifier: string }) => l.Identifier === hidpiLayerName,
     ) as { TileMatrixSetLink?: { TileMatrixSet: string }[] } | undefined;
     const hidpiOptions =
       hidpi &&
+      hidpiLayerName &&
       wantHidpi &&
       hidpiMatrixSet &&
       hidpiLayer?.TileMatrixSetLink?.some(
         (link) => link.TileMatrixSet === hidpiMatrixSet,
       )
         ? {
-            layer: hidpi.wmtsLayerName,
+            layer: hidpiLayerName,
             matrixSet: hidpiMatrixSet,
             tilePixelRatio: 2,
           }

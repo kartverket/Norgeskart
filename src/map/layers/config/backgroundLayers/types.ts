@@ -29,6 +29,11 @@ export type WMTSBackgroundLayer = BackgroundLayerBase & {
   // 512 px twin of the layer; `matrixSets` maps each 1x matrix set to its 2x grid with the
   // same tile ids. Used with tilePixelRatio 2 on devicePixelRatio > 1 screens.
   hidpi?: { wmtsLayerName: string; matrixSets: Record<string, string> };
+  // Per-projection WMTS layer (and HiDPI twin), e.g. the NP-grid layer in EPSG:25833.
+  // Falls back to wmtsLayerName while the service doesn't advertise it.
+  projectionLayers?: Partial<
+    Record<string, { wmtsLayerName: string; hidpiWmtsLayerName?: string }>
+  >;
 };
 
 export type VectorTileBackgroundLayer = BackgroundLayerBase & {

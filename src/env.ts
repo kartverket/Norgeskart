@@ -29,6 +29,9 @@ type layerProviderParameters = {
       standard: string;
       standard2x: string;
       gray: string;
+      // EPSG:25833 twins on the Norwegian Polar Institute tiling (grid norway_25833_np, origin
+      // at the North Pole): norway_25833 stops just north of Svalbard. Unset = not served.
+      np?: { standard: string; standard2x: string; gray: string };
     };
   };
 };
@@ -44,6 +47,14 @@ const KART_API_LAYERS = {
   standard: 'norgeskart_standard',
   standard2x: 'norgeskart_standard_2x',
   gray: 'norgeskart_gray',
+};
+
+// MapProxy on atgcp1-dev (kart.atgcp1-dev.kartverket.cloud): legacy topo* names.
+const ATGCP1_DEV_LAYERS = {
+  standard: 'topo',
+  standard2x: 'topo_2x',
+  gray: 'topo_graa',
+  np: { standard: 'topo_np', standard2x: 'topo_np_2x', gray: 'topo_graa_np' },
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -81,9 +92,9 @@ const LOCAL_ENV: Env = {
     },
     topoRgis: RGIS_DEV,
     topoCache: {
-      // baseUrl: 'http://localhost:8085',
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      // Same MapProxy as test.norgeskart.no (kart.api is unreliable for local testing).
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: ATGCP1_DEV_LAYERS,
     },
   },
   envName: 'local',
@@ -166,7 +177,7 @@ const TEST_ENV: Env = {
     topoRgis: RGIS_DEV,
     topoCache: {
       baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
-      layers: { standard: 'topo', standard2x: 'topo_2x', gray: 'topo_graa' },
+      layers: ATGCP1_DEV_LAYERS,
     },
   },
 };
