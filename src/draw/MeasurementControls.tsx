@@ -40,6 +40,7 @@ export const MeasurementControls = () => {
           <Tooltip
             key={u.value}
             content={u.value === 'm' ? 'Meter' : 'Nautisk mil'}
+            positioning={{ placement: 'top' }}
           >
             <Button
               size="xs"
