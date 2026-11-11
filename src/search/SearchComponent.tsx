@@ -95,7 +95,7 @@ export const SearchComponent = () => {
             <Button
               display={{ md: 'none' }}
               width="60px"
-              height="54px"
+              height="45px"
               borderRadius="4px"
               overflow="hidden"
               cursor="pointer"
@@ -176,7 +176,7 @@ export const SearchComponent = () => {
           setHoveredResult={setHoveredResult}
         />
         {showBackgroundSettings && (
-          <Box pointerEvents={'auto'}>
+          <Box pointerEvents={'auto'} mx={2}>
             <BackgroundLayerPanel
               onSelectComplete={() => setShowBackgroundSettings(false)}
             />
