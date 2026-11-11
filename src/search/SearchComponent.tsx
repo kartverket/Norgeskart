@@ -94,8 +94,9 @@ export const SearchComponent = () => {
 
             <Button
               display={{ md: 'none' }}
-              width="60px"
+              width="64px"
               height="45px"
+              minHeight="45px"
               borderRadius="4px"
               overflow="hidden"
               cursor="pointer"
@@ -104,9 +105,9 @@ export const SearchComponent = () => {
                 setShowBackgroundSettings((s) => !s);
               }}
               aria-label={t('search.backgroundChooser.label')}
-              border="3px solid"
+              border="2px solid"
               borderColor="white"
-              boxShadow="0 2px 10px rgba(0, 0, 0, 0.35)"
+              boxShadow="0 2px 8px rgba(0, 0, 0, 0.3)"
             >
               <Image
                 src={backgroundImageUrl}
