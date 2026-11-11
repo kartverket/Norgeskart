@@ -1,4 +1,4 @@
-import { Button, Group, Heading, HStack } from '@kvib/react';
+import { Button, Group, Heading, HStack, Tooltip } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
@@ -37,16 +37,20 @@ export const MeasurementControls = () => {
 
       <Group attached>
         {units.map((u) => (
-          <Button
+          <Tooltip
             key={u.value}
-            size="xs"
-            borderColor={isActive(u.value) ? 'green.500' : 'gray.200'}
-            color="green.500"
-            bg={isActive(u.value) ? 'green.100' : 'transparent'}
-            onClick={() => onPick(u.value)}
+            content={u.value === 'm' ? 'Meter' : 'Nautisk mil'}
           >
-            {u.label}
-          </Button>
+            <Button
+              size="xs"
+              borderColor={isActive(u.value) ? 'green.500' : 'gray.200'}
+              color="green.500"
+              bg={isActive(u.value) ? 'green.100' : 'transparent'}
+              onClick={() => onPick(u.value)}
+            >
+              {u.label}
+            </Button>
+          </Tooltip>
         ))}
       </Group>
     </HStack>
