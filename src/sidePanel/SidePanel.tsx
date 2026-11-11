@@ -40,9 +40,10 @@ export const SidePanel = () => {
       height="100%"
       width="100%"
       bg="white"
+      borderLeft="1px solid"
+      borderLeftColor="gray.200"
       borderTopRightRadius="md"
       borderBottomRightRadius="md"
-      boxShadow="lg"
       p={4}
       display="flex"
       flexDirection="column"
