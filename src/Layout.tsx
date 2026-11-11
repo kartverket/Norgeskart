@@ -73,7 +73,7 @@ export const Layout = () => {
         width={'100dvw'}
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows={{
-          base: 'repeat(4, 1fr)',
+          base: 'repeat(4, 1fr) auto',
           md: 'repeat(4, 1fr)  120px 40px',
         }}
         pointerEvents="auto"
