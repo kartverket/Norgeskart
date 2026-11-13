@@ -47,6 +47,7 @@ export const searchQueryAtom = atom<string>(initialSearchQuery);
 export const searchPendingAtom = atom<boolean>(false);
 export const placeNamePageAtom = atom<number>(1);
 export const displaySearchResultsAtom = atom<boolean>(true);
+export const mobileInfoDetailsOpenAtom = atom<boolean>(false);
 
 let latestSearchRequestId = 0;
 

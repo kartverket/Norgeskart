@@ -6,6 +6,7 @@ import {
   Button,
   Grid,
   Link,
+  Stack,
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
@@ -18,6 +19,7 @@ import { getPropertyGeometry } from '../../api/nkApiClient';
 import { getPropertyGeometryLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
 import { mapLayers } from '../../map/layers';
+import { ProjectionIdentifier } from '../../map/projections/types';
 import {
   getUrlParameter,
   removeUrlParameter,
@@ -28,6 +30,7 @@ import {
   getPropertyDetailsByMatrikkelId,
   getPropetyInfoByCoordinates,
 } from '../searchApi';
+import { CoordinateInfo } from './coordinates/CoordinateSection';
 import { getContainingExtent } from './utils';
 
 const formatPropertyText = (value: string) =>
@@ -43,9 +46,10 @@ export interface PropertyInfoProps {
   lon: number;
   lat: number;
   inputCRS: string;
+  mobile?: boolean;
 }
 
-const fetchPropertyDetailsByCoordinates = async (
+export const fetchPropertyDetailsByCoordinates = async (
   lat4326: number,
   lon4326: number,
 ): Promise<Property | Property[]> => {
@@ -66,7 +70,12 @@ const fetchPropertyDetailsByCoordinates = async (
   );
 };
 
-export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
+export const PropertyInfo = ({
+  lon,
+  lat,
+  inputCRS,
+  mobile = false,
+}: PropertyInfoProps) => {
   const { t } = useTranslation();
   const [lon4326, lat4326] = transform([lon, lat], inputCRS, 'EPSG:4326');
 
@@ -90,10 +99,13 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     : propertyDetails;
 
   useEffect(() => {
+    let isActive = true;
+
     const handleShowGeometry = async (checked: boolean, prop: Property) => {
       const existingLayer = getPropertyGeometryLayer();
       const map = getDefaultStore().get(mapAtom);
       if (existingLayer) {
+        existingLayer.getSource()?.clear();
         map.removeLayer(existingLayer);
       }
       if (checked) {
@@ -107,7 +119,8 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
           prop.SEKSJONSNR,
         );
 
-        if (features) {
+        if (features && isActive) {
+          layerToAdd.getSource()?.clear();
           layerToAdd.getSource()?.addFeatures(features);
           map.addLayer(layerToAdd);
           const containingExtent = getContainingExtent(features);
@@ -139,9 +152,14 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
       removeUrlParameter('showSelection');
     }
     return () => {
+      isActive = false;
+      if (mobile) {
+        return;
+      }
       const existingLayer = getPropertyGeometryLayer();
       const map = getDefaultStore().get(mapAtom);
       if (existingLayer) {
+        existingLayer.getSource()?.clear();
         map.removeLayer(existingLayer);
       }
     };
@@ -172,6 +190,66 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
   ];
 
   const propertyRegisterUrl = `https://eiendomsregisteret.kartverket.no/eiendom/${property.KOMMUNENR}/${property.GARDSNR}/${property.BRUKSNR}/${property.FESTENR}/${property.SEKSJONSNR}`;
+
+  if (mobile) {
+    return (
+      <Stack gap={3}>
+        <Box>
+          <Text fontSize="xs" color="gray.600">
+            {t('locationType.property')}
+          </Text>
+          <Text fontSize="md" fontWeight="bold">
+            {property.NAVN}
+          </Text>
+          {addresses[0] && (
+            <Text fontSize="sm" color="gray.600">
+              {formatPropertyText(addresses[0])}
+            </Text>
+          )}
+        </Box>
+        <Button
+          variant="outline"
+          size="sm"
+          fontSize="sm"
+          color="green.700"
+          backgroundColor="green.50"
+          borderColor="green.200"
+          borderRadius="sm"
+          fontWeight="semibold"
+          alignSelf="flex-start"
+          leftIcon={showGeometry ? 'check_box' : 'check_box_outline_blank'}
+          onClick={() => handleSwitchChange(!showGeometry)}
+        >
+          {t('propertyInfo.markProperty.label')}
+        </Button>
+        <Box border="1px solid" borderColor="gray.300" borderRadius="sm" p={1}>
+          <Grid templateColumns="repeat(2, minmax(0, 1fr))">
+            {rows.map(([label, value], index) => (
+              <Box
+                key={label}
+                bg={index === 2 || index === 3 ? 'green.50' : 'transparent'}
+                p={2}
+              >
+                <Text fontSize="sm" color="gray.600">
+                  {label}
+                </Text>
+                <Text fontSize="sm" fontWeight="semibold">
+                  {value}
+                </Text>
+              </Box>
+            ))}
+          </Grid>
+        </Box>
+        <Box border="1px solid" borderColor="gray.300" borderRadius="sm" p={2}>
+          <CoordinateInfo
+            lon={lon}
+            lat={lat}
+            inputCRS={inputCRS as ProjectionIdentifier}
+          />
+        </Box>
+      </Stack>
+    );
+  }
 
   return (
     <AccordionItem value="propertyInfo">

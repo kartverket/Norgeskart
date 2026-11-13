@@ -98,10 +98,7 @@ export const Layout = () => {
               xl: '1 / span 3',
             }}
             gridRow={{ base: '1 / span 3', md: '1 / span 4' }}
-            display={{
-              base: selectedResult == null ? 'block' : 'none',
-              md: 'block',
-            }}
+            display="block"
             zIndex={1}
             pointerEvents={'none'}
           >
