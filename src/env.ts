@@ -15,12 +15,6 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
-  // rGIS WMS roots for the Topo farge/graa/forenklet theme layers; empty hides the themes.
-  topoRgis: {
-    fargeUrl: string;
-    graaUrl: string;
-    forenkletUrl: string;
-  };
   topoCache: {
     baseUrl: string;
     // WMTS layer names differ per MapProxy: kart.api maps the norgeskart_* aliases,
@@ -34,13 +28,6 @@ type layerProviderParameters = {
       np?: { standard: string; standard2x: string; gray: string };
     };
   };
-};
-
-// Internal hosts: the themes only load on the Kartverket network.
-const RGIS_DEV = {
-  fargeUrl: 'https://tnt-rgis.atgcp1-dev.kartverket-intern.cloud',
-  graaUrl: 'https://tnt-rgis-graa.atgcp1-dev.kartverket-intern.cloud',
-  forenkletUrl: 'https://tnt-rgis-forenklet.atgcp1-dev.kartverket-intern.cloud',
 };
 
 const KART_API_LAYERS = {
@@ -90,7 +77,6 @@ const LOCAL_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoRgis: RGIS_DEV,
     topoCache: {
       // Same MapProxy as test.norgeskart.no (kart.api is unreliable for local testing).
       baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
@@ -124,7 +110,6 @@ const DEV_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoRgis: RGIS_DEV,
     topoCache: {
       baseUrl: 'https://kart.api.kartverket.no',
       layers: KART_API_LAYERS,
@@ -157,7 +142,6 @@ const PROD_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
-    topoRgis: { fargeUrl: '', graaUrl: '', forenkletUrl: '' },
     topoCache: {
       baseUrl: 'https://kart.api.kartverket.no',
       layers: KART_API_LAYERS,
@@ -174,7 +158,6 @@ const TEST_ENV: Env = {
   ...PROD_ENV,
   layerProviderParameters: {
     ...PROD_ENV.layerProviderParameters,
-    topoRgis: RGIS_DEV,
     topoCache: {
       baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
       layers: ATGCP1_DEV_LAYERS,

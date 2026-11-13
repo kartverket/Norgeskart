@@ -1,4 +1,3 @@
-import { getEnv } from '../../env';
 import { borderConfig } from './config/themeLayers/borders';
 import { dekningConfig } from './config/themeLayers/dekning';
 import { fastmerkerLayerConfig } from './config/themeLayers/fastmerker';
@@ -8,9 +7,6 @@ import { placeNamesConfig } from './config/themeLayers/placeNames';
 import { propertyInfoConfig } from './config/themeLayers/propertyInfo';
 import { sjoConfig } from './config/themeLayers/sjo';
 import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
-import { topoQgisConfig } from './config/themeLayers/topoQgis';
-import { topoQgisForenkletConfig } from './config/themeLayers/topoQgisForenklet';
-import { topoQgisGraaConfig } from './config/themeLayers/topoQgisGraa';
 import { ThemeLayerName } from './themeWMS';
 
 export interface FieldConfig {
@@ -104,9 +100,6 @@ const getThemeLayerConfig = () => {
     placeNamesConfig,
     fastmerkerLayerConfig,
     dekningConfig,
-    ...(getEnv().layerProviderParameters.topoRgis.fargeUrl
-      ? [topoQgisConfig, topoQgisGraaConfig, topoQgisForenkletConfig]
-      : []),
   ];
 
   for (const config of configs) {
