@@ -197,6 +197,8 @@
             "topo_2025": "Topo 2025",
             "norgeskart_standard": "Standard",
             "norgeskart_gray": "Standard (greyscale)",
+            "topo": "Standard",
+            "topograatone": "Standard (greyscale)",
             "topoProd": "Topographic",
             "toporaster": "Paper Map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
@@ -348,7 +350,8 @@
         "label": "Map legend"
       },
       "backgroundLayer": {
-        "label": "Map"
+        "label": "Map",
+        "new": "New"
       }
     }
   },
