@@ -29,6 +29,7 @@ export const BackgroundLegend = () => {
   return (
     <Box maxW="100%" overflowX="auto">
       <Image
+        key={srcSet ? 'hidpi' : 'plain'}
         src={imageUrl}
         srcSet={srcSet}
         onError={() => srcSet && setNo2x(imageUrl)}
