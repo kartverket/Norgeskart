@@ -21,8 +21,10 @@ import { SearchResult } from '../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
   displaySearchResultsAtom,
+  mobileInfoDetailsOpenAtom,
   searchPendingAtom,
   searchQueryAtom,
+  selectedResultAtom,
   useResetSearchResults,
 } from './atoms.ts';
 import { SearchResults } from './results/SearchResults.tsx';
@@ -58,15 +60,24 @@ export const SearchComponent = () => {
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(backgroundLayerAtom);
   const setDisplaySearchResults = useSetAtom(displaySearchResultsAtom);
+  const mobileInfoDetailsOpen = useAtomValue(mobileInfoDetailsOpenAtom);
+  const setSelectedResult = useSetAtom(selectedResultAtom);
+  const selectedResult = useAtomValue(selectedResultAtom);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
   );
   const backgroundImageUrl = `/backgroundlayerImages/${backgroundImageName}.png`;
 
+  if (mobileInfoDetailsOpen) {
+    return null;
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setSelectedResult(null);
     setHoveredResult(null);
     setShowBackgroundSettings(false);
+    setDisplaySearchResults(true);
   };
 
   return (
@@ -172,10 +183,12 @@ export const SearchComponent = () => {
             </Box>
           </Flex>
         </Box>
-        <SearchResults
-          hoveredResult={hoveredResult}
-          setHoveredResult={setHoveredResult}
-        />
+        {selectedResult === null && (
+          <SearchResults
+            hoveredResult={hoveredResult}
+            setHoveredResult={setHoveredResult}
+          />
+        )}
         {showBackgroundSettings && (
           <Box pointerEvents={'auto'} mx={2}>
             <BackgroundLayerPanel
