@@ -30,9 +30,17 @@ export type WMTSBackgroundLayer = BackgroundLayerBase & {
   // same tile ids. Used with tilePixelRatio 2 on devicePixelRatio > 1 screens.
   hidpi?: { wmtsLayerName: string; matrixSets: Record<string, string> };
   // Per-projection WMTS layer (and HiDPI twin), e.g. the NP-grid layer in EPSG:25833.
-  // Falls back to wmtsLayerName while the service doesn't advertise it.
+  // mode 'replace' (default): instead of wmtsLayerName; 'above': only north of the main
+  // grid's top, main below (NP cap). Ignored unless advertised.
   projectionLayers?: Partial<
-    Record<string, { wmtsLayerName: string; hidpiWmtsLayerName?: string }>
+    Record<
+      string,
+      {
+        wmtsLayerName: string;
+        hidpiWmtsLayerName?: string;
+        mode?: 'replace' | 'above';
+      }
+    >
   >;
 };
 

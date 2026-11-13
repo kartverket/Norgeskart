@@ -1,6 +1,7 @@
 import { MapLibreLayer } from '@geoblocks/ol-maplibre-layer';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import LayerGroup from 'ol/layer/Group';
 import TileLayer from 'ol/layer/Tile';
 import posthog from 'posthog-js';
 import {
@@ -84,7 +85,7 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
         return;
       }
 
-      let layer: TileLayer | MapLibreLayer | null = null;
+      let layer: TileLayer | LayerGroup | MapLibreLayer | null = null;
       switch (layerConfig.type) {
         case 'WMTS':
           layer = await getWMTSLayer(layerConfig, targetProjection);

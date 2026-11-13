@@ -7,6 +7,7 @@ import { setWorkerUrl } from 'maplibre-gl';
 // file verbatim, leaving that sibling import unresolved -> 404 at runtime.
 import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { WMTSCapabilities } from 'ol/format';
+import LayerGroup from 'ol/layer/Group';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
@@ -63,19 +64,7 @@ export const getWMTSLayer = async (
       );
     const override = layerConfig.projectionLayers?.[projection];
     const useOverride = advertised(override?.wmtsLayerName);
-    const layerOptions = optionsFromCapabilities(capabilities, {
-      layer:
-        (useOverride ? override?.wmtsLayerName : undefined) ??
-        layerConfig.wmtsLayerName ??
-        layerConfig.layerName,
-      projection,
-    });
-
-    if (!layerOptions) {
-      throw new Error(
-        `Layer ${layerConfig.wmtsLayerName ?? layerConfig.layerName} not found in capabilities`,
-      );
-    }
+    const above = useOverride && override?.mode === 'above';
 
     // HiDPI: keep the 1x tile grid from capabilities, fetch the 512 px twin with the same
     // tile ids instead. Without it 256 px tiles get upscaled and look blurry on 2x screens.
@@ -86,42 +75,74 @@ export const getWMTSLayer = async (
       tileResolution === '2x' ||
       (tileResolution !== '1x' && window.devicePixelRatio > 1);
     const hidpi = layerConfig.hidpi;
-    const hidpiLayerName =
-      useOverride && override?.hidpiWmtsLayerName
-        ? override.hidpiWmtsLayerName
-        : hidpi?.wmtsLayerName;
-    const hidpiMatrixSet = hidpi?.matrixSets[layerOptions.matrixSet];
-    const hidpiLayer = capabilities.Contents?.Layer?.find(
-      (l: { Identifier: string }) => l.Identifier === hidpiLayerName,
-    ) as { TileMatrixSetLink?: { TileMatrixSet: string }[] } | undefined;
-    const hidpiOptions =
-      hidpi &&
-      hidpiLayerName &&
-      wantHidpi &&
-      hidpiMatrixSet &&
-      hidpiLayer?.TileMatrixSetLink?.some(
-        (link) => link.TileMatrixSet === hidpiMatrixSet,
-      )
-        ? {
-            layer: hidpiLayerName,
-            matrixSet: hidpiMatrixSet,
-            tilePixelRatio: 2,
-          }
-        : {};
 
-    const wmts = layerConfig.layerName.startsWith('Nibcache')
-      ? new WMTS({
-          ...layerOptions,
-          tileLoadFunction: nibTileLoadFunction,
-        })
-      : new WMTS({ ...layerOptions, ...hidpiOptions });
+    const makeSource = (wmtsLayerName: string, hidpiLayerName?: string) => {
+      const layerOptions = optionsFromCapabilities(capabilities, {
+        layer: wmtsLayerName,
+        projection,
+      });
+      if (!layerOptions) {
+        throw new Error(`Layer ${wmtsLayerName} not found in capabilities`);
+      }
+      const hidpiMatrixSet = hidpi?.matrixSets[layerOptions.matrixSet];
+      const hidpiLayer = capabilities.Contents?.Layer?.find(
+        (l: { Identifier: string }) => l.Identifier === hidpiLayerName,
+      ) as { TileMatrixSetLink?: { TileMatrixSet: string }[] } | undefined;
+      const hidpiOptions =
+        hidpi &&
+        hidpiLayerName &&
+        wantHidpi &&
+        hidpiMatrixSet &&
+        hidpiLayer?.TileMatrixSetLink?.some(
+          (link) => link.TileMatrixSet === hidpiMatrixSet,
+        )
+          ? {
+              layer: hidpiLayerName,
+              matrixSet: hidpiMatrixSet,
+              tilePixelRatio: 2,
+            }
+          : {};
+      return layerConfig.layerName.startsWith('Nibcache')
+        ? new WMTS({
+            ...layerOptions,
+            tileLoadFunction: nibTileLoadFunction,
+          })
+        : new WMTS({ ...layerOptions, ...hidpiOptions });
+    };
 
-    const layer = new TileLayer({
-      source: wmts,
-      properties: { id: `bg.${layerConfig.layerName}` },
+    const mainName = layerConfig.wmtsLayerName ?? layerConfig.layerName;
+    const wmts =
+      useOverride && !above
+        ? makeSource(
+            override!.wmtsLayerName,
+            override!.hidpiWmtsLayerName ?? hidpi?.wmtsLayerName,
+          )
+        : makeSource(mainName, hidpi?.wmtsLayerName);
+
+    const id = `bg.${layerConfig.layerName}`;
+    if (!above) {
+      return new TileLayer({ source: wmts, properties: { id } });
+    }
+
+    // NP cap: main grid up to its top, NP layer above (own ids; resolutions 0.05 % off,
+    // resampled invisibly). Seam/top = grid origins: caps grids have no extent; FAR = unbounded.
+    const capSource = makeSource(
+      override!.wmtsLayerName,
+      override!.hidpiWmtsLayerName,
+    );
+    const seam = wmts.getTileGrid()?.getOrigin(0)[1];
+    const capTop = capSource.getTileGrid()?.getOrigin(0)[1];
+    if (seam === undefined || capTop === undefined || capTop <= seam) {
+      return new TileLayer({ source: wmts, properties: { id } });
+    }
+    const FAR = 1e8;
+    return new LayerGroup({
+      layers: [
+        new TileLayer({ source: wmts, extent: [-FAR, -FAR, FAR, seam] }),
+        new TileLayer({ source: capSource, extent: [-FAR, seam, FAR, capTop] }),
+      ],
+      properties: { id },
     });
-
-    return layer;
   } catch (error) {
     console.error(
       `Error fetching capabilities for layer ${layerConfig.layerName}:`,
@@ -199,7 +220,7 @@ export const getWMSLayer = (layerConfig: WMSBackgroundLayer) => {
 export const getLayerFromConfig = async (
   layerConfig: BackgroundLayer,
   projection?: string,
-): Promise<TileLayer | MapLibreLayer | null> => {
+): Promise<TileLayer | LayerGroup | MapLibreLayer | null> => {
   if (layerConfig.type === 'WMTS') {
     return await getWMTSLayer(layerConfig, projection);
   }

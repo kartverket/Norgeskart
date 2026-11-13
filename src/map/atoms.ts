@@ -10,7 +10,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { parseCoordinateInput } from '../shared/utils/coordinateParser';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
-import { isMapLayerBackground, mapLayers } from './layers';
+import {
+  backgroundLayerProjection,
+  isMapLayerBackground,
+  mapLayers,
+} from './layers';
 import { activeThemeLayersAtom } from './layers/atoms';
 import { BackgroundLayerName } from './layers/backgroundLayers';
 import {
@@ -168,7 +172,7 @@ const getInitialMapView = () => {
 
   return new View({
     center: initialCenter,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: 20,
     zoom: initialZoom,
     rotation: initialRotation,
@@ -294,13 +298,14 @@ export const projectionEffect = atomEffect((get, set) => {
 
   setUrlParameter('projection', projectionId);
 
-  const currentBackgroundLayer = map.getAllLayers().find(isMapLayerBackground);
+  // Top level: may be a LayerGroup (main grid + NP cap).
+  const currentBackgroundLayer = map
+    .getLayers()
+    .getArray()
+    .find(isMapLayerBackground);
 
   if (currentBackgroundLayer) {
-    const bgLayerProjection = currentBackgroundLayer
-      .getSource()
-      ?.getProjection()
-      ?.getCode();
+    const bgLayerProjection = backgroundLayerProjection(currentBackgroundLayer);
 
     if (bgLayerProjection && bgLayerProjection !== projectionId) {
       const layerConfig = allConfiguredBackgroundLayers.find(

@@ -17,11 +17,13 @@ export const topoCacheBackgroundLayers: BackgroundLayer[] = [
     layerName: 'norgeskart_standard',
     wmtsLayerName: layers.standard,
     provider: TopoCacheProvider,
-    // NP grid reaches the North Pole; norway_25833 ends just north of Svalbard.
+    // NP grid only above norway_25833's top (north of Svalbard); norway_25833 (seeded, = prod)
+    // below. The service's NP grid ends at the same line.
     projectionLayers: np && {
       'EPSG:25833': {
         wmtsLayerName: np.standard,
         hidpiWmtsLayerName: np.standard2x,
+        mode: 'above',
       },
     },
     hidpi: {
@@ -44,7 +46,7 @@ export const topoCacheBackgroundLayers: BackgroundLayer[] = [
     wmtsLayerName: layers.gray,
     provider: TopoCacheProvider,
     projectionLayers: np && {
-      'EPSG:25833': { wmtsLayerName: np.gray },
+      'EPSG:25833': { wmtsLayerName: np.gray, mode: 'above' },
     },
   },
 ];
