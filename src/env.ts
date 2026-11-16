@@ -29,6 +29,9 @@ type layerProviderParameters = {
       standard: string;
       standard2x: string;
       gray: string;
+      // EPSG:25833 twins on the Norwegian Polar Institute tiling (grid norway_25833_np, origin
+      // at the North Pole): norway_25833 stops just north of Svalbard. Unset = not served.
+      np?: { standard: string; standard2x: string; gray: string };
     };
   };
   topoVectorMartin: {
@@ -44,12 +47,18 @@ const RGIS_DEV = {
   forenkletUrl: 'https://tnt-rgis-forenklet.atgcp1-dev.kartverket-intern.cloud',
 };
 
-// kart.api.kartverket.no answers 503 since 2026-11-05.
-const KART_BASE_URL = 'https://kart.atgcp1-dev.kartverket.cloud';
-const KART_LAYERS = {
+const KART_API_LAYERS = {
+  standard: 'norgeskart_standard',
+  standard2x: 'norgeskart_standard_2x',
+  gray: 'norgeskart_gray',
+};
+
+// MapProxy on atgcp1-dev (kart.atgcp1-dev.kartverket.cloud): legacy topo* names.
+const ATGCP1_DEV_LAYERS = {
   standard: 'topo',
   standard2x: 'topo_2x',
   gray: 'topo_graa',
+  np: { standard: 'topo_np', standard2x: 'topo_np_2x', gray: 'topo_graa_np' },
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -87,8 +96,9 @@ const LOCAL_ENV: Env = {
     },
     topoRgis: RGIS_DEV,
     topoCache: {
-      baseUrl: KART_BASE_URL,
-      layers: KART_LAYERS,
+      // Same MapProxy as test.norgeskart.no (kart.api is unreliable for local testing).
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: ATGCP1_DEV_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
@@ -124,8 +134,8 @@ const DEV_ENV: Env = {
     },
     topoRgis: RGIS_DEV,
     topoCache: {
-      baseUrl: KART_BASE_URL,
-      layers: KART_LAYERS,
+      baseUrl: 'https://kart.api.kartverket.no',
+      layers: KART_API_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
@@ -160,9 +170,10 @@ const PROD_ENV: Env = {
       baseUrl: 'https://geodata.npolar.no',
     },
     topoRgis: { fargeUrl: '', graaUrl: '', forenkletUrl: '' },
+    // Same rGIS-backed MapProxy as test.norgeskart.no; kart.api is unreliable (503).
     topoCache: {
-      baseUrl: KART_BASE_URL,
-      layers: KART_LAYERS,
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: ATGCP1_DEV_LAYERS,
     },
     topoVectorMartin: {
       baseUrl: 'https://tnt-martin.atgcp1-dev.kartverket-intern.cloud',
@@ -174,19 +185,8 @@ const PROD_ENV: Env = {
   printApiUrl: 'https://api.norgeskart.no',
 };
 
-// test.norgeskart.no: prod settings, but the background comes from the rGIS-backed
-// MapProxy on atgcp1-dev (public host; kart.atgcp1-dev.kartverket-intern.cloud is internal-only).
-const TEST_ENV: Env = {
-  ...PROD_ENV,
-  layerProviderParameters: {
-    ...PROD_ENV.layerProviderParameters,
-    topoRgis: RGIS_DEV,
-    topoCache: {
-      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
-      layers: { standard: 'topo', standard2x: 'topo_2x', gray: 'topo_graa' },
-    },
-  },
-};
+// test.norgeskart.no: identical to prod (kept separate so it can diverge again).
+const TEST_ENV: Env = { ...PROD_ENV };
 
 const getEnvName = (): EnvName => {
   return getEnv().envName;

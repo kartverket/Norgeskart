@@ -79,10 +79,13 @@ export const MapToolButtons = () => {
       borderRadius={{ base: '', md: 'lg' }}
       shadow="lg"
       py={{ base: 1, md: 1 }}
-      px={{ base: 0, md: 1 }}
+      px={{ base: 2, md: 1 }}
       mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
       overflowX={{ base: 'auto', md: 'none' }}
+      style={{
+        paddingBottom: 'calc(0.25rem + env(safe-area-inset-bottom))',
+      }}
     >
       <Box position="relative">
         <MapButton
@@ -183,6 +186,7 @@ const MapButton = ({
     <Button
       disabled={disabled}
       w={'fit-content'}
+      minH={{ base: '56px', md: 'auto' }}
       onClick={() => {
         onClick();
       }}

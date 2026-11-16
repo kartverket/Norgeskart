@@ -75,7 +75,7 @@ export const Layout = () => {
         width={'100dvw'}
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows={{
-          base: 'repeat(4, 1fr)',
+          base: 'repeat(4, 1fr) auto',
           md: 'repeat(4, 1fr)  120px 40px',
         }}
         pointerEvents="auto"
@@ -99,10 +99,7 @@ export const Layout = () => {
               xl: '1 / span 3',
             }}
             gridRow={{ base: '1 / span 3', md: '1 / span 4' }}
-            display={{
-              base: selectedResult == null ? 'block' : 'none',
-              md: 'block',
-            }}
+            display="block"
             zIndex={1}
             pointerEvents={'none'}
           >
@@ -149,7 +146,7 @@ export const Layout = () => {
           )}
           <Flex justifyContent={'flex-end'}>
             <ErrorBoundary fallback={undefined} name={'InfoBox'}>
-              <MobileInfoBox />
+              <MobileInfoBox key={selectedResult?.name ?? 'empty'} />
             </ErrorBoundary>
             <ErrorBoundary fallback={undefined} name={'PrintDialog'}>
               {isPrintDialogOpen && <PrintDialog />}
@@ -161,8 +158,14 @@ export const Layout = () => {
           gridColumn={{ base: '1 / span 3' }}
           gridRow={{ base: 4, md: 5 }}
           alignContent={{ base: 'end', md: 'end' }}
-          mb={{ base: 3, md: 4 }}
-          ml={{ base: 2, md: 3 }}
+          mb={{
+            base: 'calc(0.75rem + env(safe-area-inset-bottom))',
+            md: 4,
+          }}
+          ml={{
+            base: 'calc(0.5rem + env(safe-area-inset-left))',
+            md: 3,
+          }}
           display={{ base: 'block', md: 'none' }}
           zIndex={1}
           pointerEvents={'none'}
@@ -177,7 +180,7 @@ export const Layout = () => {
             lg: '2 / span 10',
           }}
           gridRow={5}
-          alignContent={'end'}
+          alignContent={{ base: 'flex-start', md: 'end' }}
           justifySelf={{ md: 'center' }}
           mb={{ base: 0, md: 2 }}
           zIndex={1}
@@ -194,10 +197,13 @@ export const Layout = () => {
           gridRow={{ base: 4, md: '3 / span 3' }}
           gridColumn={'12 / span 3'}
           mb={{
-            base: 3,
+            base: 'calc(0.75rem + env(safe-area-inset-bottom))',
             md: 2,
           }}
-          mr={{ base: 2, md: 3 }}
+          mr={{
+            base: 'calc(0.5rem + env(safe-area-inset-right))',
+            md: 3,
+          }}
           display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
           zIndex={1}
           pointerEvents={'none'}

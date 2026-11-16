@@ -13,7 +13,7 @@ import { CSSProperties } from 'react';
 import { useIsMobileScreen } from '../shared/hooks';
 import { trackPositionAtom } from './geolocation/atoms';
 import { useMapSettings } from './mapHooks';
-// import { MapOrientationControl } from './MapOrientationControl';
+import { MapOrientationControl } from './MapOrientationControl';
 
 export const MapControlButtons = () => {
   const isMobile = useIsMobileScreen();
@@ -60,6 +60,7 @@ export const MapControlButtons = () => {
         label={t('map.controls.zoomOut.label')}
         hide={isMobile}
       />
+      {isMobile && <MapOrientationControl />}
       {/* {!isMobile && <MeasurePopover />} */}
       {navigator.geolocation && (
         <ControlButton
@@ -74,18 +75,6 @@ export const MapControlButtons = () => {
           displayTooltip
         />
       )}
-      {/*
-      {/*
-      <ControlButton
-        id="fullscreen"
-        icon="fullscreen"
-        onClick={handleFullScreenClick}
-        label={t('map.controls.fullscreen.label')}
-        displayTooltip
-        hide={isMobile}
-      />
-      <MapOrientationControl />
-      */}
     </VStack>
   );
 };

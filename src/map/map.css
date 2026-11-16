@@ -20,7 +20,7 @@
     right: auto;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
   }
 }
 
@@ -38,6 +38,7 @@
   position: absolute;
   font-size: 16px;
   top: calc(100vh - 70px);
+  top: calc(100dvh - 70px);
   right: 120px;
   padding: 5px 8px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -122,4 +123,12 @@
 
 #map {
   touch-action: none;
+}
+
+.point-style-select-trigger {
+  button {
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
 }

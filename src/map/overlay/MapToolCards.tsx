@@ -12,7 +12,6 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DrawControls } from '../../draw/drawControls/DrawControls';
-import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { MapThemes } from '../../settings/map/themes/MapThemes';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
@@ -53,23 +52,8 @@ export const MapToolCards = () => {
 };
 const MapToolCardsBody = () => {
   const { t } = useTranslation();
-  const isMobile = useIsMobileScreen();
   const [, setCollapsed] = useAtom(drawPanelCollapsedAtom);
-  const { drawType } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
-
-  const drawTypeLabels: Record<string, string> = {
-    Move: t('draw.controls.tool.label.edit'),
-    Polygon: t('draw.controls.tool.label.polygon'),
-    Point: t('draw.controls.tool.label.point'),
-    LineString: t('draw.controls.tool.label.linestring'),
-    Circle: t('draw.controls.tool.label.circle'),
-    Text: t('draw.controls.tool.label.text'),
-  };
-
-  const activeToolLabel = drawType
-    ? drawTypeLabels[drawType]
-    : t('draw.tabHeading');
 
   const onClose = () => {
     setCurrentMapTool(null);
@@ -78,12 +62,7 @@ const MapToolCardsBody = () => {
 
   if (currentMapTool === 'draw') {
     return (
-      <MapToolCard
-        label={isMobile ? activeToolLabel : t('draw.tabHeading')}
-        onClose={onClose}
-        showCollapse={isMobile}
-        onCollapse={() => setCollapsed(true)}
-      >
+      <MapToolCard label={t('draw.tabHeading')} onClose={onClose}>
         <DrawControls />
       </MapToolCard>
     );

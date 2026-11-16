@@ -36,6 +36,7 @@
       "colorPoint": "Point",
       "colorStroke": "Stroke",
       "colorText": "Text",
+      "freehandHint": "Hold shift for freehand drawing",
       "recentColors": "Recent colors",
       "pointType": "Select icon",
       "showMeasurements": "Show measurements on map",
@@ -66,6 +67,7 @@
         "secondary": "Secondary"
       },
       "lineType": "Line type",
+      "mobileToolSelection": "Draw options",
       "editInstruction": "Select an element to edit or move"
     },
     "deleteSelection": "Remove selected",
@@ -97,6 +99,7 @@
     "address": "Address",
     "cadastralIdentifier": "Cadastral identifier",
     "showContent": "Show content",
+    "more": "More",
     "hideContent": "Hide content",
     "coordinateInfo": "Coordinates",
     "coordinateSection": {
@@ -198,8 +201,10 @@
             "oceanicelectronic": "Electronic Nautical Chart",
             "sjokartraster": "Nautical Chart updated EFS",
             "topo_2025": "Topo 2025",
-            "norgeskart_standard": "Norway Topographic",
-            "norgeskart_gray": "Norway Topographic Gray",
+            "norgeskart_standard": "Standard",
+            "norgeskart_gray": "Standard (greyscale)",
+            "topo": "Standard",
+            "topograatone": "Standard (greyscale)",
             "topo-vector": "Topo vector (test)",
             "topoProd": "Topographic",
             "toporaster": "Paper Map",
@@ -352,7 +357,8 @@
         "label": "Map legend"
       },
       "backgroundLayer": {
-        "label": "Map"
+        "label": "Map",
+        "new": "Beta"
       }
     }
   },

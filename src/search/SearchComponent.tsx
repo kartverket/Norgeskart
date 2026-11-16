@@ -21,8 +21,10 @@ import { SearchResult } from '../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
   displaySearchResultsAtom,
+  mobileInfoDetailsOpenAtom,
   searchPendingAtom,
   searchQueryAtom,
+  selectedResultAtom,
   useResetSearchResults,
 } from './atoms.ts';
 import { SearchResults } from './results/SearchResults.tsx';
@@ -58,15 +60,24 @@ export const SearchComponent = () => {
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(backgroundLayerAtom);
   const setDisplaySearchResults = useSetAtom(displaySearchResultsAtom);
+  const mobileInfoDetailsOpen = useAtomValue(mobileInfoDetailsOpenAtom);
+  const setSelectedResult = useSetAtom(selectedResultAtom);
+  const selectedResult = useAtomValue(selectedResultAtom);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
   );
   const backgroundImageUrl = `/backgroundlayerImages/${backgroundImageName}.png`;
 
+  if (mobileInfoDetailsOpen) {
+    return null;
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setSelectedResult(null);
     setHoveredResult(null);
     setShowBackgroundSettings(false);
+    setDisplaySearchResults(true);
   };
 
   return (
@@ -81,6 +92,9 @@ export const SearchComponent = () => {
         maxH={'100%'}
         overflowY={'auto'}
         maxW={'450px'}
+        style={{
+          paddingTop: 'calc(0.75rem + env(safe-area-inset-top))',
+        }}
       >
         {/* TOPP: kart-flis + søkefelt */}
         <Box
@@ -94,8 +108,9 @@ export const SearchComponent = () => {
 
             <Button
               display={{ md: 'none' }}
-              width="60px"
-              height="54px"
+              width="64px"
+              height="45px"
+              minHeight="45px"
               borderRadius="4px"
               overflow="hidden"
               cursor="pointer"
@@ -104,9 +119,9 @@ export const SearchComponent = () => {
                 setShowBackgroundSettings((s) => !s);
               }}
               aria-label={t('search.backgroundChooser.label')}
-              border="3px solid"
+              border="2px solid"
               borderColor="white"
-              boxShadow="0 2px 10px rgba(0, 0, 0, 0.35)"
+              boxShadow="0 2px 8px rgba(0, 0, 0, 0.3)"
             >
               <Image
                 src={backgroundImageUrl}
@@ -171,12 +186,14 @@ export const SearchComponent = () => {
             </Box>
           </Flex>
         </Box>
-        <SearchResults
-          hoveredResult={hoveredResult}
-          setHoveredResult={setHoveredResult}
-        />
+        {selectedResult === null && (
+          <SearchResults
+            hoveredResult={hoveredResult}
+            setHoveredResult={setHoveredResult}
+          />
+        )}
         {showBackgroundSettings && (
-          <Box pointerEvents={'auto'}>
+          <Box pointerEvents={'auto'} mx={2}>
             <BackgroundLayerPanel
               onSelectComplete={() => setShowBackgroundSettings(false)}
             />

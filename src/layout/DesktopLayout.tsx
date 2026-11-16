@@ -53,20 +53,25 @@ export const DesktopLayout = () => {
         <Box
           position="absolute"
           left={isPanelOpen ? '374px' : '10px'}
-          bottom="6px"
+          bottom="calc(6px + env(safe-area-inset-bottom))"
           zIndex={1}
         >
           <BackgroundLayerPopover />
         </Box>
 
-        <Box position="absolute" right="10px" bottom="6px" zIndex={1}>
+        <Box
+          position="absolute"
+          right="calc(10px + env(safe-area-inset-right))"
+          bottom="calc(6px + env(safe-area-inset-bottom))"
+          zIndex={1}
+        >
           <MapControlButtons />
         </Box>
 
         <Box
           position="absolute"
           left="50%"
-          bottom="6px"
+          bottom="calc(6px + env(safe-area-inset-bottom))"
           transform="translateX(-50%)"
           zIndex={1}
           pointerEvents="auto"
@@ -82,7 +87,7 @@ export const DesktopLayout = () => {
         {isPanelOpen && (
           <Box
             position="absolute"
-            top={0}
+            top="env(safe-area-inset-top)"
             left={0}
             width="364px"
             height="100%"
@@ -94,7 +99,7 @@ export const DesktopLayout = () => {
 
         <Box
           position="absolute"
-          top={0}
+          top="env(safe-area-inset-top)"
           bottom="150px"
           right={0}
           width="100%"

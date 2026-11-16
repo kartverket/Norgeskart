@@ -40,11 +40,14 @@ export const SidePanel = () => {
       height="100%"
       width="100%"
       bg="white"
+      borderLeft="1px solid"
+      borderLeftColor="gray.200"
       borderTopRightRadius="md"
       borderBottomRightRadius="md"
-      boxShadow="lg"
       p={4}
-      overflowY="auto"
+      display="flex"
+      flexDirection="column"
+      overflow="hidden"
     >
       {(currentMapTool !== null || selectedResult !== null) && (
         <Flex alignItems="center" mb={2}>
@@ -64,13 +67,15 @@ export const SidePanel = () => {
           />
         </Flex>
       )}
-      {currentMapTool === 'layers' && <MapThemes />}
-      {currentMapTool === 'draw' && <DrawControls />}
-      <PrintPanel />
-      {currentMapTool === 'elevationProfile' && <ElevationProfileSection />}
-      {currentMapTool === null && selectedResult !== null && (
-        <InfoBoxContent showReportButton={false} showCloseButton={false} />
-      )}
+      <Box flex="1" minHeight={0} overflowY="auto">
+        {currentMapTool === 'layers' && <MapThemes />}
+        {currentMapTool === 'draw' && <DrawControls />}
+        <PrintPanel />
+        {currentMapTool === 'elevationProfile' && <ElevationProfileSection />}
+        {currentMapTool === null && selectedResult !== null && (
+          <InfoBoxContent showReportButton={false} showCloseButton={false} />
+        )}
+      </Box>
     </Box>
   );
 };

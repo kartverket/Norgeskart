@@ -36,6 +36,7 @@
       "colorPoint": "Punkt",
       "colorStroke": "Omriss",
       "colorText": "Tekst",
+      "freehandHint": "Hold inne shift for frihåndstegning",
       "recentColors": "Nylige farger",
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål i kartet",
@@ -66,6 +67,7 @@
         "secondary": "Sekundær"
       },
       "lineType": "Linjetype",
+      "mobileToolSelection": "Tegnevalg",
       "editInstruction": "Velg et element du vil redigere eller flytte"
     },
     "deleteSelection": "Fjern valgte",
@@ -102,6 +104,7 @@
     "address": "Adresse",
     "cadastralIdentifier": "Gårds- og bruksnummer",
     "showContent": "Vis innhold",
+    "more": "Mer",
     "hideContent": "Skjul innhold",
     "coordinateInfo": "Koordinater",
     "coordinateSection": {
@@ -205,6 +208,8 @@
             "topo_2025": "Topo 2025",
             "norgeskart_standard": "Standard",
             "norgeskart_gray": "Standard (gråtone)",
+            "topo": "Standard",
+            "topograatone": "Standard (gråtone)",
             "topo-vector": "Topo vektor (test)",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart",
@@ -357,7 +362,8 @@
         "label": "Tegnforklaring"
       },
       "backgroundLayer": {
-        "label": "Kart"
+        "label": "Kart",
+        "new": "Beta"
       }
     }
   },

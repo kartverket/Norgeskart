@@ -9,10 +9,6 @@ import {
 import { useAtom, useSetAtom } from 'jotai';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  isRettIKartetDialogOpenAtom,
-  rettIKartetCoordinatesAtom,
-} from '../../map/menu/dialogs/atoms';
 import { searchCoordinatesAtom, selectedResultAtom } from '../atoms';
 import { InfoboxAccordionContent } from './InfoboxAccordionContent';
 import { InfoBoxPreamble } from './InfoBoxPreamble';
@@ -21,18 +17,17 @@ interface InfoBoxContentProps {
   showMinimizeButton?: boolean;
   showReportButton?: boolean;
   showCloseButton?: boolean;
+  heading?: string;
 }
 
 export const InfoBoxContent = ({
   showMinimizeButton = false,
-  showReportButton = true,
   showCloseButton = true,
+  heading,
 }: InfoBoxContentProps) => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
   const { t } = useTranslation();
-  const setRettIKartetDialogOpen = useSetAtom(isRettIKartetDialogOpenAtom);
-  const setRettIKartetCoordinates = useSetAtom(rettIKartetCoordinatesAtom);
   const [isMinimized, setIsMinimized] = useState(false);
 
   const onClose = useCallback(() => {
@@ -74,7 +69,7 @@ export const InfoBoxContent = ({
       </Flex>
       {showHeading && (
         <Heading fontWeight="bold" size="lg">
-          {selectedResult.name}
+          {heading ?? selectedResult.name}
         </Heading>
       )}
       <Box
@@ -94,6 +89,7 @@ export const InfoBoxContent = ({
           <InfoboxAccordionContent />
         </AccordionRoot>
       </Box>
+      {/* Temporarily hidden:
       {showReportButton && (
         <Button
           display={isMinimized ? 'none ' : 'flex'}
@@ -106,7 +102,7 @@ export const InfoBoxContent = ({
         >
           {t('toolbar.reportError.label')}
         </Button>
-      )}
+      )} */}
     </>
   );
 };

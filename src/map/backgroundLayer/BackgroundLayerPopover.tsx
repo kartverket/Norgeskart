@@ -7,6 +7,7 @@ import {
   MenuTrigger,
   Text,
 } from '@kvib/react';
+import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,15 +22,18 @@ export const BackgroundLayerPopover = () => {
   const [backgroundLayer, setBackgroundLayer] = useAtom(backgroundLayerAtom);
   const currentProjection = useAtomValue(currentProjectionAtom);
   const { t } = useTranslation();
+  const ph = usePostHog();
 
   const backgroundLayers = getAvailableBackgroundLayers(currentProjection);
   const flyfotoLayer = backgroundLayers.find((layer) =>
     layer.startsWith('Nibcache_'),
   );
   const preferredLayers: BackgroundLayerName[] = [
+    'topo',
     'norgeskart_standard',
     ...(flyfotoLayer ? [flyfotoLayer] : []),
     'toporaster',
+    'topograatone',
     'norgeskart_gray',
   ];
   const orderedLayers = [
@@ -42,6 +46,7 @@ export const BackgroundLayerPopover = () => {
       open={open}
       onOpenChange={(e) => {
         setOpen(e.open);
+        if (e.open) ph.capture('background_layer_picker_opened');
       }}
       positioning={{ placement: 'top-start', offset: { mainAxis: 2 } }}
     >
@@ -129,6 +134,10 @@ export const BackgroundLayerPopover = () => {
           currentLayer={backgroundLayer}
           columns={1}
           setLayer={(layerName) => {
+            ph.capture('background_layer_changed', {
+              layer: layerName,
+              source: 'popover',
+            });
             setBackgroundLayer(layerName);
             setOpen(false);
           }}
