@@ -275,7 +275,7 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   if (isNaN(coord1) || isNaN(coord2)) return null;
 
   if (projection === 'EPSG:4326') {
-    // Geographic: coord1 = lat, coord2 = lon. 
+    // Geographic: coord1 = lat, coord2 = lon.
     // External links (e.g. stadnamn.kartverket.no: use the old Norgeskart x,y (lon,lat) order
     const [lat, lon] =
       !isWithinNorwayExtent(coord1, coord2) &&
