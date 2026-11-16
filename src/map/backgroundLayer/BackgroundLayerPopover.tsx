@@ -29,6 +29,7 @@ export const BackgroundLayerPopover = () => {
     layer.startsWith('Nibcache_'),
   );
   const preferredLayers: BackgroundLayerName[] = [
+    'topo_forenklet',
     'topo',
     'norgeskart_standard',
     ...(flyfotoLayer ? [flyfotoLayer] : []),

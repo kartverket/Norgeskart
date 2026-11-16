@@ -5,6 +5,16 @@ const env = getEnv();
 const layers = env.layerProviderParameters.topoCache.layers;
 const np = layers.np;
 
+// Only the atgcp1-dev MapProxy serves Topo forenklet (kart.api has no such layer),
+// so it comes from there in every environment. Public host, so previews can reach it.
+export const TOPO_FORENKLET_BASE_URL =
+  'https://kart.atgcp1-dev.kartverket.cloud';
+
+const TopoForenkletProvider: LayerProvider = {
+  capabilitiesUrl:
+    TOPO_FORENKLET_BASE_URL + '/service?SERVICE=WMTS&REQUEST=GetCapabilities',
+};
+
 const TopoCacheProvider: LayerProvider = {
   capabilitiesUrl:
     env.layerProviderParameters.topoCache.baseUrl +
@@ -12,6 +22,11 @@ const TopoCacheProvider: LayerProvider = {
 };
 
 export const topoCacheBackgroundLayers: BackgroundLayer[] = [
+  {
+    type: 'WMTS',
+    layerName: 'topo_forenklet',
+    provider: TopoForenkletProvider,
+  },
   {
     type: 'WMTS',
     layerName: 'norgeskart_standard',

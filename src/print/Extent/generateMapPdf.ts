@@ -11,6 +11,7 @@ import {
 } from '../../draw/drawControls/hooks/mapLayers';
 import { getEnv } from '../../env';
 import { activeThemeLayersAtom } from '../../map/layers/atoms';
+import { TOPO_FORENKLET_BASE_URL } from '../../map/layers/config/backgroundLayers/topoCache';
 
 import {
   BackgroundLayerName,
@@ -174,6 +175,23 @@ const buildBackgroundPrintLayer = (
       dimensionParams: {},
       matrixSet: 'utm33n',
       matrices: WMTS_MATRICES,
+    };
+  }
+
+  if (backgroundLayer === 'topo_forenklet') {
+    return {
+      baseURL: TOPO_FORENKLET_BASE_URL + '/service',
+      customParams: { TRANSPARENT: 'true' },
+      style: 'default',
+      imageFormat: 'image/png',
+      layer: 'topo_forenklet',
+      opacity: 1,
+      type: 'WMTS',
+      dimensions: null,
+      requestEncoding: 'KVP',
+      dimensionParams: {},
+      matrixSet: 'norway_25833',
+      matrices: MAPPROXY_WMTS_MATRICES,
     };
   }
 

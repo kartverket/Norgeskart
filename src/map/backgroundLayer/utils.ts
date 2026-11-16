@@ -3,6 +3,7 @@ import { allConfiguredBackgroundLayers } from '../layers/config/backgroundLayers
 import { ProjectionIdentifier } from '../projections/types';
 
 const backgroundLayerOrder = new Map<BackgroundLayerName, number>([
+  ['topo_forenklet', 0],
   ['topo', 1],
   ['norgeskart_standard', 2],
   ['topograatone', 3],
@@ -26,6 +27,7 @@ const hiddenBackgroundLayers: ReadonlySet<BackgroundLayerName> = new Set([
 
 // Shown with a "New" badge in the background layer picker.
 export const newBackgroundLayers: ReadonlySet<BackgroundLayerName> = new Set([
+  'topo_forenklet',
   'norgeskart_standard',
   'norgeskart_gray',
 ]);

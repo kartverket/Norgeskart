@@ -3,6 +3,7 @@ export type VectorTileLayerName = 'nautical-background' | 'topo-vector';
 export type EmptyLayerName = 'empty';
 export type WMTSLayerName =
   | 'topo'
+  | 'topo_forenklet'
   | 'topograatone'
   | 'toporaster'
   | 'topoProd'
