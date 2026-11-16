@@ -21,12 +21,12 @@ import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import { removeUrlParameter } from '../../shared/utils/urlUtils';
+import { Property, SearchResult } from '../../types/searchTypes';
 import {
   mobileInfoDetailsOpenAtom,
   searchCoordinatesAtom,
   selectedResultAtom,
 } from '../atoms';
-import { Property, SearchResult } from '../../types/searchTypes';
 import { InfoBoxContent } from './InfoBoxContent';
 import { InfoBoxElevationContent } from './InfoBoxPreamble';
 import {
@@ -93,9 +93,7 @@ const getMunicipality = (selectedResult: SearchResult) => {
 };
 
 const getDisplayName = (property: Property | undefined, name: string) =>
-  capitalizeFirstLetter(
-    (property?.NAVN ?? name).toLocaleLowerCase('nb-NO'),
-  );
+  capitalizeFirstLetter((property?.NAVN ?? name).toLocaleLowerCase('nb-NO'));
 
 const MobileInfoDetailsHeader = ({
   title,
