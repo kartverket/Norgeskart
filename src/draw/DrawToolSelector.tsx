@@ -11,7 +11,7 @@ import {
 } from '../settings/draw/atoms';
 import { DrawType } from './drawControls/hooks/drawSettings';
 
-export const DrawToolSelector = () => {
+export const DrawToolSelector = ({ mobile = false }: { mobile?: boolean }) => {
   const { t } = useTranslation();
   const drawTypeButtons: {
     value: DrawType;
@@ -49,9 +49,15 @@ export const DrawToolSelector = () => {
       label: t('draw.controls.tool.label.edit'),
     },
   ];
+  const visibleButtons = mobile
+    ? drawTypeButtons.filter(({ value }) =>
+        ['LineString', 'Polygon', 'Point'].includes(value),
+      )
+    : drawTypeButtons;
+
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap={2} w="100%">
-      {drawTypeButtons.map((button) => (
+      {visibleButtons.map((button) => (
         <DrawTypeButton
           key={button.value}
           type={button.value}

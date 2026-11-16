@@ -66,9 +66,13 @@ const getGeometryType = (geo: Geometry): string => {
 export const DrawControlFooter = ({
   drawType,
   hasSelectedFeature,
+  compact = false,
+  onExpand,
 }: {
   drawType: DrawType | null;
   hasSelectedFeature: boolean;
+  compact?: boolean;
+  onExpand?: () => void;
 }) => {
   const { getDrawnFeatures, clearDrawing, deleteSelected } = useDrawSettings();
   const { getMapProjectionCode } = useMapSettings();
@@ -122,7 +126,7 @@ export const DrawControlFooter = ({
 
   return (
     <>
-      {drawType !== 'Move' && (
+      {!compact && drawType !== 'Move' && (
         <Grid templateColumns="repeat(2, 1fr)" gap={4} mt={2} width="100%">
           <Button
             leftIcon="download"
@@ -146,7 +150,7 @@ export const DrawControlFooter = ({
           </Button>
         </Grid>
       )}
-      {drawType === 'Move' && hasSelectedFeature && (
+      {!compact && drawType === 'Move' && hasSelectedFeature && (
         <Button
           leftIcon="delete"
           variant="outline"
@@ -164,13 +168,26 @@ export const DrawControlFooter = ({
         zIndex={1}
         width="100%"
         backgroundColor="white"
-        marginTop="auto"
+        marginTop={compact ? 0 : 'auto'}
         paddingTop={2}
       >
-        {drawType === 'LineString' && (
+        {!compact && drawType === 'LineString' && (
           <Alert status="info" mb={4} alignItems="center">
             {t('draw.controls.freehandHint')}
           </Alert>
+        )}
+        {compact && onExpand && (
+          <HStack width="100%" justifyContent="center" mb={1}>
+            <Button
+              variant="tertiary"
+              colorPalette="green"
+              leftIcon="keyboard_arrow_up"
+              size="sm"
+              onClick={onExpand}
+            >
+              {t('draw.controls.mobileToolSelection')}
+            </Button>
+          </HStack>
         )}
         <HStack width="100%" justifyContent="space-between" alignItems="center">
           <HStack gap={1} alignItems="center">
