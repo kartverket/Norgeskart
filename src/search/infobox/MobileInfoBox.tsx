@@ -363,8 +363,8 @@ export const MobileInfoBox = () => {
       boxShadow="lg"
       pointerEvents={'auto'}
       overflowY={showDetails ? 'auto' : 'hidden'}
-      height={showDetails ? '90vh' : 'auto'}
-      maxHeight={showDetails ? '90vh' : '52vh'}
+      height={showDetails ? 'calc(100vh - 100px)' : 'auto'}
+      maxHeight={showDetails ? 'calc(100vh - 100px)' : '52vh'}
       width="100%"
       display={isPrintDialogOpen ? 'none' : 'flex'}
       position="absolute"
