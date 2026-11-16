@@ -67,6 +67,7 @@
         "secondary": "Secondary"
       },
       "lineType": "Line type",
+      "mobileToolSelection": "Draw options",
       "editInstruction": "Select an element to edit or move"
     },
     "deleteSelection": "Remove selected",

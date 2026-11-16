@@ -1,4 +1,4 @@
-import { Box, HStack, Text, VStack } from '@kvib/react';
+import { Box, Button, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import {
   selectedFeatureAtom,
   snapEffect,
 } from '../../settings/draw/atoms.ts';
+import { drawPanelCollapsedAtom } from '../../map/overlay/atoms';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
@@ -32,8 +33,6 @@ import { getFeatureType } from './drawUtils.ts';
 import { EditControls } from './EditControls.tsx';
 import { DrawType, useDrawSettings } from './hooks/drawSettings.ts';
 
-const MOBILE_TOOLBAR_RESERVE = '15px';
-
 const MEASUREMENT_TYPES: DrawType[] = [
   'LineString',
   'Polygon',
@@ -43,6 +42,7 @@ const MEASUREMENT_TYPES: DrawType[] = [
 
 export const DrawControls = () => {
   const { drawType } = useDrawSettings();
+  const [, setCollapsed] = useAtom(drawPanelCollapsedAtom);
   const [selectedFeature] = useAtom(selectedFeatureAtom);
   const isMobile = useIsMobileScreen();
   const { t } = useTranslation();
@@ -85,9 +85,8 @@ export const DrawControls = () => {
       width="100%"
       height="100%"
       padding={0.5}
-      style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
     >
-      {!isMobile && <DrawToolSelector />}
+      <DrawToolSelector mobile={isMobile} />
 
       {drawType === 'Move' && !selectedFeature && (
         <Text fontSize="md" mt={4}>
@@ -113,11 +112,7 @@ export const DrawControls = () => {
             )}
 
             <Box width="100%" pb={2} borderBottom="1px solid #E0E0E0">
-              <HStack width="100%" align={'space-between'}>
-                <ColorControls />
-
-                {isMobile && drawType === 'LineString' && <LineStyleControl />}
-              </HStack>
+              <ColorControls />
             </Box>
 
             {currentType === 'Point' && (
@@ -126,7 +121,7 @@ export const DrawControls = () => {
               </Box>
             )}
 
-            {!isMobile && drawType === 'LineString' && (
+            {drawType === 'LineString' && (
               <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
                 <LineStyleControl />
               </Box>
@@ -138,7 +133,7 @@ export const DrawControls = () => {
               </Box>
             )}
 
-            {showMeasurementControls && (
+            {showMeasurementControls && !isMobile && (
               <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
                 <MeasurementControls />
               </Box>
@@ -150,10 +145,25 @@ export const DrawControls = () => {
           </VStack>
         </Box>
       )}
-      <DrawControlFooter
-        drawType={drawType}
-        hasSelectedFeature={selectedFeature !== null}
-      />
+      {!isMobile && (
+        <DrawControlFooter
+          drawType={drawType}
+          hasSelectedFeature={selectedFeature !== null}
+        />
+      )}
+      {isMobile && (
+        <Button
+          width="fit-content"
+          alignSelf="center"
+          variant="tertiary"
+          colorPalette="green"
+          size="sm"
+          rightIcon="keyboard_arrow_down"
+          onClick={() => setCollapsed(true)}
+        >
+          {t('controller.hide')}
+        </Button>
+      )}
     </VStack>
   );
 };

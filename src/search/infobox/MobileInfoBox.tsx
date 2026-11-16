@@ -81,7 +81,7 @@ export const MobileInfoBox = () => {
     return () => {
       clearPropertyGeometrySelection();
     };
-  }, [selectedResult]);
+  }, []);
 
   if (selectedResult === null) {
     return null;

@@ -67,6 +67,7 @@
         "secondary": "Sekundær"
       },
       "lineType": "Linjetype",
+      "mobileToolSelection": "Tegnevalg",
       "editInstruction": "Velg et element du vil redigere eller flytte"
     },
     "deleteSelection": "Fjern valgte",
