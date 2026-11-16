@@ -62,10 +62,7 @@ const MapToolCardsBody = () => {
 
   if (currentMapTool === 'draw') {
     return (
-      <MapToolCard
-        label={t('draw.tabHeading')}
-        onClose={onClose}
-      >
+      <MapToolCard label={t('draw.tabHeading')} onClose={onClose}>
         <DrawControls />
       </MapToolCard>
     );
