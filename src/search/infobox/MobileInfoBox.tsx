@@ -19,12 +19,14 @@ import { mapAtom } from '../../map/atoms';
 import { getPropertyGeometryLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { removeUrlParameter } from '../../shared/utils/urlUtils';
 import { getInputCRS } from '../../shared/utils/crsUtils';
+import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import {
   mobileInfoDetailsOpenAtom,
   searchCoordinatesAtom,
   selectedResultAtom,
 } from '../atoms';
 import { InfoBoxContent } from './InfoBoxContent';
+import { InfoBoxElevationContent } from './InfoBoxPreamble';
 import {
   fetchPropertyDetailsByCoordinates,
   PropertyInfo,
@@ -103,6 +105,24 @@ export const MobileInfoBox = () => {
         `locationType.${selectedResult.type.toLowerCase()}`,
         selectedResult.type,
       );
+  const municipality =
+    selectedResult.type === 'Place'
+      ? selectedResult.place.municipalities?.[0]?.kommunenavn
+      : selectedResult.type === 'Road'
+        ? selectedResult.road.KOMMUNENAVN
+        : selectedResult.type === 'Address'
+          ? selectedResult.address.kommunenavn
+          : undefined;
+  const resultDescription = municipality
+    ? `${resultLabel} ${t('infoBox.in')} ${capitalizeFirstLetter(
+        municipality.toLocaleLowerCase('nb-NO'),
+      )} ${t(
+        'infoBox.municipality',
+      ).toLowerCase()}`
+    : resultLabel;
+  const displayName = capitalizeFirstLetter(
+    (property?.NAVN ?? selectedResult.name).toLocaleLowerCase('nb-NO'),
+  );
 
   const handleClose = () => {
     clearPropertyGeometrySelection();
@@ -156,6 +176,7 @@ export const MobileInfoBox = () => {
               inputCRS={inputCRS ?? 'EPSG:4258'}
               mobile
             />
+            <InfoBoxElevationContent result={selectedResult} />
             {propertyRegisterUrl && (
               <Link
                 href={propertyRegisterUrl}
@@ -183,17 +204,41 @@ export const MobileInfoBox = () => {
             )}
           </>
         ) : (
-          <InfoBoxContent showCloseButton />
+          <>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Flex alignItems="center" gap={1}>
+                <IconButton
+                  onClick={() => setShowDetails(false)}
+                  icon="keyboard_arrow_left"
+                  size="sm"
+                  variant="ghost"
+                  aria-label={t('infoBox.more')}
+                />
+                <Text fontWeight="semibold">{resultLabel}</Text>
+              </Flex>
+              <IconButton
+                onClick={handleClose}
+                icon="close"
+                size="sm"
+                variant="ghost"
+                aria-label={t('draw.close')}
+              />
+            </Flex>
+            <InfoBoxContent
+              showCloseButton={false}
+              heading={displayName}
+            />
+          </>
         )
       ) : (
         <>
           <Flex justifyContent="space-between" alignItems="flex-start">
             <Stack gap={0}>
               <Text fontSize="xs" color="gray.600">
-                {resultLabel}
+                {resultDescription}
               </Text>
               <Heading size="sm">
-                {property?.NAVN ?? selectedResult.name}
+                {displayName}
               </Heading>
               {property?.VEGADRESSE?.[0] && (
                 <Text fontSize="sm" color="gray.600">

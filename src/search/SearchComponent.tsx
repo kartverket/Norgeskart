@@ -92,6 +92,9 @@ export const SearchComponent = () => {
         maxH={'100%'}
         overflowY={'auto'}
         maxW={'450px'}
+        style={{
+          paddingTop: 'calc(0.75rem + env(safe-area-inset-top))',
+        }}
       >
         {/* TOPP: kart-flis + søkefelt */}
         <Box
