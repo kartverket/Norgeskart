@@ -51,8 +51,7 @@ export const processUrlParameters = () => {
     }
   }
 
-  const finalLayerName = (layerNameFromUrl ||
-    'norgeskart_standard') as BackgroundLayerName;
+  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
   const newThemeLayers: string[] = [];
 
   removeUrlParameter('project');

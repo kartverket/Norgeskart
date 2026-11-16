@@ -41,8 +41,7 @@ export const allConfiguredBackgroundLayers = [
 
 const getDefaultBackgroundLayer = (): BackgroundLayerName => {
   const layerNameFromUrl = getUrlParameter('backgroundLayer');
-  const finalLayerName = (layerNameFromUrl ||
-    'norgeskart_standard') as BackgroundLayerName;
+  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
   return finalLayerName;
 };
 
