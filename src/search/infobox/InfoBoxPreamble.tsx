@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { isNumberOk } from '../../shared/utils/numberUtils';
+import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import { SearchResult } from '../../types/searchTypes';
 import { getElevation } from '../searchApi';
 
@@ -20,32 +21,35 @@ interface InfoBoxContentProps {
 
 const InfoBoxTextContent = ({ result }: { result: SearchResult }) => {
   const { t } = useTranslation();
+  const formatMunicipalityName = (name: string) =>
+    capitalizeFirstLetter(name.toLocaleLowerCase('nb-NO'));
+
   switch (result.type) {
     case 'Place':
       return (
         <Text>
-          {`${t('search.placeName')} ${result.place.municipalities != null && `${t('infoBox.in')} ${result.place.municipalities.map((k) => k.kommunenavn).join(', ')} ${t('infoBox.municipality').toLowerCase()}`}`}
+          {`${t('search.placeName')} ${result.place.municipalities != null && `${t('infoBox.in')} ${result.place.municipalities.map((k) => formatMunicipalityName(k.kommunenavn)).join(', ')} ${t('infoBox.municipality').toLowerCase()}`}`}
         </Text>
       );
 
     case 'Road':
       return (
         <Text>
-          {`${t('infoBox.roadName')} ${t('infoBox.in')} ${result.road.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`}
+          {`${t('infoBox.roadName')} ${t('infoBox.in')} ${formatMunicipalityName(result.road.KOMMUNENAVN)} ${t('infoBox.municipality').toLowerCase()}`}
         </Text>
       );
 
     case 'Property':
       return (
         <Text>
-          {`${t('infoBox.cadastralIdentifier')} ${t('infoBox.in')} ${result.property.KOMMUNENAVN} ${t('infoBox.municipality').toLowerCase()}`}
+          {`${t('infoBox.cadastralIdentifier')} ${t('infoBox.in')} ${formatMunicipalityName(result.property.KOMMUNENAVN)} ${t('infoBox.municipality').toLowerCase()}`}
         </Text>
       );
 
     case 'Address':
       return (
         <Text>
-          {`${t('infoBox.address')} ${t('infoBox.in')} ${result.address.kommunenavn} ${t('infoBox.municipality').toLowerCase()}`}
+          {`${t('infoBox.address')} ${t('infoBox.in')} ${formatMunicipalityName(result.address.kommunenavn)} ${t('infoBox.municipality').toLowerCase()}`}
         </Text>
       );
   }

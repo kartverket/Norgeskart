@@ -17,11 +17,13 @@ interface InfoBoxContentProps {
   showMinimizeButton?: boolean;
   showReportButton?: boolean;
   showCloseButton?: boolean;
+  heading?: string;
 }
 
 export const InfoBoxContent = ({
   showMinimizeButton = false,
   showCloseButton = true,
+  heading,
 }: InfoBoxContentProps) => {
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
   const setClickedCoordinate = useSetAtom(searchCoordinatesAtom);
@@ -67,7 +69,7 @@ export const InfoBoxContent = ({
       </Flex>
       {showHeading && (
         <Heading fontWeight="bold" size="lg">
-          {selectedResult.name}
+          {heading ?? selectedResult.name}
         </Heading>
       )}
       <Box
