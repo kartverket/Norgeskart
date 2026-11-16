@@ -372,7 +372,7 @@ export const MobileInfoBox = () => {
       zIndex={3}
     >
       {property && (
-        <Box display={showDetails ? 'block' : 'none'}>
+        <Box display={showDetails ? 'contents' : 'none'}>
           <MobilePropertyDetails
             selectedResult={selectedResult}
             inputCRS={inputCRS ?? 'EPSG:4258'}
