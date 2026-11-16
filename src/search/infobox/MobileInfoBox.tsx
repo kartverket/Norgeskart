@@ -70,7 +70,6 @@ export const MobileInfoBox = () => {
   });
 
   useEffect(() => {
-    setShowDetails(false);
     setMobileInfoDetailsOpen(false);
   }, [selectedResult, setMobileInfoDetailsOpen]);
 
