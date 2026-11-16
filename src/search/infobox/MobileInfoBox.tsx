@@ -352,6 +352,7 @@ export const MobileInfoBox = () => {
     setSelectedResult(null);
     setSearchCoordinates(null);
     setMobileInfoDetailsOpen(false);
+    setShowDetails(false);
   };
 
   return (
