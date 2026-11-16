@@ -153,9 +153,6 @@ export const PropertyInfo = ({
     }
     return () => {
       isActive = false;
-      if (mobile) {
-        return;
-      }
       const existingLayer = getPropertyGeometryLayer();
       const map = getDefaultStore().get(mapAtom);
       if (existingLayer) {
