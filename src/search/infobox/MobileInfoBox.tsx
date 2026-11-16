@@ -8,18 +8,17 @@ import {
   Stack,
   Text,
 } from '@kvib/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useQuery } from '@tanstack/react-query';
+import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { transform } from 'ol/proj';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getDefaultStore } from 'jotai';
-import { isPrintDialogOpenAtom } from '../../print/atoms';
-import { mapAtom } from '../../map/atoms';
 import { getPropertyGeometryLayer } from '../../draw/drawControls/hooks/mapLayers';
-import { removeUrlParameter } from '../../shared/utils/urlUtils';
+import { mapAtom } from '../../map/atoms';
+import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { getInputCRS } from '../../shared/utils/crsUtils';
 import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
+import { removeUrlParameter } from '../../shared/utils/urlUtils';
 import {
   mobileInfoDetailsOpenAtom,
   searchCoordinatesAtom,
@@ -50,8 +49,7 @@ export const MobileInfoBox = () => {
   const [showDetails, setShowDetails] = useState(false);
   const isPropertyResult = selectedResult?.type === 'Property';
   const isPropertyLocationResult =
-    selectedResult?.type === 'Coordinate' ||
-    selectedResult?.type === 'Address';
+    selectedResult?.type === 'Coordinate' || selectedResult?.type === 'Address';
   const inputCRS = selectedResult ? getInputCRS(selectedResult) : null;
   const { data: coordinatePropertyDetails } = useQuery({
     queryKey: [
@@ -116,9 +114,7 @@ export const MobileInfoBox = () => {
   const resultDescription = municipality
     ? `${resultLabel} ${t('infoBox.in')} ${capitalizeFirstLetter(
         municipality.toLocaleLowerCase('nb-NO'),
-      )} ${t(
-        'infoBox.municipality',
-      ).toLowerCase()}`
+      )} ${t('infoBox.municipality').toLowerCase()}`
     : resultLabel;
   const displayName = capitalizeFirstLetter(
     (property?.NAVN ?? selectedResult.name).toLocaleLowerCase('nb-NO'),
@@ -224,10 +220,7 @@ export const MobileInfoBox = () => {
                 aria-label={t('draw.close')}
               />
             </Flex>
-            <InfoBoxContent
-              showCloseButton={false}
-              heading={displayName}
-            />
+            <InfoBoxContent showCloseButton={false} heading={displayName} />
           </>
         )
       ) : (
@@ -237,9 +230,7 @@ export const MobileInfoBox = () => {
               <Text fontSize="xs" color="gray.600">
                 {resultDescription}
               </Text>
-              <Heading size="sm">
-                {displayName}
-              </Heading>
+              <Heading size="sm">{displayName}</Heading>
               {property?.VEGADRESSE?.[0] && (
                 <Text fontSize="sm" color="gray.600">
                   {property.VEGADRESSE[0]}
