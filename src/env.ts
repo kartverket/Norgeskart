@@ -142,9 +142,10 @@ const PROD_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    // Same rGIS-backed MapProxy as test.norgeskart.no; kart.api is unreliable (503).
     topoCache: {
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: ATGCP1_DEV_LAYERS,
     },
   },
   envName: 'prod',
@@ -152,18 +153,8 @@ const PROD_ENV: Env = {
   printApiUrl: 'https://api.norgeskart.no',
 };
 
-// test.norgeskart.no: prod settings, but the background comes from the rGIS-backed
-// MapProxy on atgcp1-dev (public host; kart.atgcp1-dev.kartverket-intern.cloud is internal-only).
-const TEST_ENV: Env = {
-  ...PROD_ENV,
-  layerProviderParameters: {
-    ...PROD_ENV.layerProviderParameters,
-    topoCache: {
-      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
-      layers: ATGCP1_DEV_LAYERS,
-    },
-  },
-};
+// test.norgeskart.no: identical to prod (kept separate so it can diverge again).
+const TEST_ENV: Env = { ...PROD_ENV };
 
 const getEnvName = (): EnvName => {
   return getEnv().envName;
