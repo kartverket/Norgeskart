@@ -249,7 +249,9 @@ const MobileInfoSummary = ({
           <Heading size="sm">{displayName}</Heading>
           {property?.VEGADRESSE?.[0] && (
             <Text fontSize="sm" color="gray.600">
-              {property.VEGADRESSE[0]}
+              {capitalizeFirstLetter(
+                property.VEGADRESSE[0].toLocaleLowerCase('nb-NO'),
+              )}
             </Text>
           )}
         </Stack>
