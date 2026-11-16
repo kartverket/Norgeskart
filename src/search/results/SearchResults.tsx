@@ -117,7 +117,7 @@ export const SearchResults = ({
       maxH={'100%'}
       overflowY={'auto'}
       display={displaySearchResults ? 'flex' : 'none'}
-      width={{ base: 'calc(100% - 68px)', md: 'calc(100% - 16px)' }}
+      width={{ base: 'calc(100% - 16px)', md: 'calc(100% - 16px)' }}
       maxWidth={'none'}
       alignSelf="center"
     >
