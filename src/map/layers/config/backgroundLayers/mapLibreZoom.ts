@@ -26,6 +26,12 @@ export const mercatorZoomForView = (view: View): number | undefined => {
   );
 };
 
+/** MapLibre's zoom for the view: one less than mercatorZoom, for its 512 px tiles. */
+export const mapLibreZoomForView = (view: View): number | undefined => {
+  const zoom = mercatorZoomForView(view);
+  return zoom === undefined ? undefined : zoom - 1;
+};
+
 /**
  * Degrees from grid north to true north at the view's center. The MapLibre canvas is
  * always true-north-up, so outside EPSG:3857 it must turn by this to match the view.

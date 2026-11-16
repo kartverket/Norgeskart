@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   HOVER_GROUPS,
   hoverBands,
+  inBand,
   isHoverPaused,
   labelPoint,
   pickFeature,
@@ -10,7 +11,7 @@ import {
 const group = (id: string) => HOVER_GROUPS.find((g) => g.id === id)!;
 const source = (scale: string) => `${scale}_restriksjonsomrader_flate`;
 const hit = (id: string, objtype = '') => ({
-  layer: { id: `hover-hit-${id}-any` },
+  group: group(id),
   properties: { objtype },
 });
 const square = (x: number, y: number, size: number) => [
@@ -103,6 +104,17 @@ describe('describe', () => {
     );
   });
 
+  it('highlights every kommune of the fylke zoomed out, only the one zoomed in', () => {
+    const askoy = { ...kommune, kommunenummer: '4627', kommunenavn: 'Askøy' };
+    const molde = { ...kommune, fylkesnummer: '15', kommunenummer: '1506' };
+    const fylke = group('kommune').describe(kommune, 5);
+    expect(fylke.matches(askoy)).toBe(true);
+    expect(fylke.matches(molde)).toBe(false);
+    const own = group('kommune').describe(kommune, 9);
+    expect(own.matches(kommune)).toBe(true);
+    expect(own.matches(askoy)).toBe(false);
+  });
+
   it('labels airports with their codes, and without when they are missing', () => {
     const { describe } = group('airport');
     expect(
@@ -123,6 +135,28 @@ describe('describe', () => {
     );
     expect(describe({ virkeomradenavn: 'Norge-Russland' }, 6).label).toBe(
       'Norge-Russland',
+    );
+  });
+});
+
+describe('inBand', () => {
+  it('includes the band minzoom and excludes its maxzoom', () => {
+    expect(inBand({ minzoom: 8, maxzoom: 9 }, 8)).toBe(true);
+    expect(inBand({ minzoom: 8, maxzoom: 9 }, 9)).toBe(false);
+    expect(inBand({ minzoom: 8 }, 15)).toBe(true);
+    expect(inBand({ minzoom: 8 }, 7.9)).toBe(false);
+  });
+});
+
+describe('filter', () => {
+  it('only lets airports with a name be hit', () => {
+    const { filter } = group('airport');
+    expect(filter!({ objtype: 'Lufthavn', navn: 'Leknes lufthavn' })).toBe(
+      true,
+    );
+    expect(filter!({ objtype: 'Lufthavn' })).toBe(false);
+    expect(filter!({ objtype: 'Helikopterlandingsplass', navn: 'X' })).toBe(
+      false,
     );
   });
 });

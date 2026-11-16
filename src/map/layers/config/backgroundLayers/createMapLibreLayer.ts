@@ -20,7 +20,6 @@ export const createMapLibreLayer = (
   mapLibreOptions: Omit<MapOptions, 'container'>,
   id: string,
   matchView: boolean,
-  properties: Record<string, unknown> = { isVectorTile: true },
 ) => {
   const layer: MapLibreLayer = new MapLibreLayer({
     mapLibreOptions,
@@ -31,7 +30,7 @@ export const createMapLibreLayer = (
           return view ? (mercatorZoomForView(view) ?? zoom) : zoom;
         }
       : undefined,
-    properties: { id, ...properties },
+    properties: { id, isVectorTile: true },
   });
   if (matchView) layer.once('load' as never, () => alignBearing(layer));
   return layer;

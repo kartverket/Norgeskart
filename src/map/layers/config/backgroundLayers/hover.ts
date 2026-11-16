@@ -1,33 +1,48 @@
-import type MapLibreLayer from '@geoblocks/ol-maplibre-layer/lib/MapLibreLayer';
-import type { Geometry } from 'geojson';
-import type {
-  ExpressionSpecification,
-  FilterSpecification,
-  GeoJSONSource,
-  LngLatBounds,
-  Map as MapLibreMap,
-} from 'maplibre-gl';
 import type { Map as OlMap } from 'ol';
+import Feature from 'ol/Feature';
 import MapBrowserEvent from 'ol/MapBrowserEvent';
 import { unByKey } from 'ol/Observable';
+import TileState from 'ol/TileState';
+import type VectorTile from 'ol/VectorTile';
+import { asArray } from 'ol/color';
+import type { Coordinate } from 'ol/coordinate';
+import type { EventsKey } from 'ol/events';
+import { type Extent, intersects } from 'ol/extent';
+import MVT from 'ol/format/MVT';
+import type Geometry from 'ol/geom/Geometry';
+import type MultiPolygon from 'ol/geom/MultiPolygon';
+import Point from 'ol/geom/Point';
 import Polygon from 'ol/geom/Polygon';
+import LayerGroup from 'ol/layer/Group';
+import VectorLayer from 'ol/layer/Vector';
+import VectorTileLayer from 'ol/layer/VectorTile';
+import { equivalent, get as getProjection, transformExtent } from 'ol/proj';
+import type Projection from 'ol/proj/Projection';
+import RenderFeature, { toGeometry } from 'ol/render/Feature';
+import VectorSource from 'ol/source/Vector';
+import VectorTileSource from 'ol/source/VectorTile';
+import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
+import { mapLibreZoomForView } from './mapLibreZoom';
 
 type Properties = Record<string, unknown>;
-type Hovered = { key: string; filter: FilterSpecification; label: string };
-type LngLat = [number, number];
+type Hovered = {
+  key: string;
+  matches: (properties: Properties) => boolean;
+  label: string;
+};
 type Band = { source: string; minzoom: number; maxzoom?: number };
+export type TileJson = { minzoom?: number; maxzoom?: number };
 
-type HoverGroup = {
+export type HoverGroup = {
   id: string;
   kind: 'fill' | 'line' | 'circle';
   sources: string[];
   sourceLayer: (source: string) => string;
-  color: string | ExpressionSpecification;
-  labelColor: (properties: Properties) => string;
+  color: (properties: Properties) => string;
   fillOpacity?: number;
   // Same data at several scales: use one per zoom instead of all of them at once.
   scaleBands?: boolean;
-  filter?: FilterSpecification;
+  filter?: (properties: Properties) => boolean;
   // Lower wins when groups overlap.
   rank?: (properties: Properties) => number;
   describe: (properties: Properties, zoom: number) => Hovered;
@@ -45,9 +60,13 @@ const TOOLS_THAT_PAUSE_HOVER = [
 export const isHoverPaused = (tool: string | null) =>
   tool !== null && TOOLS_THAT_PAUSE_HOVER.includes(tool);
 
-const LABEL_SOURCE = 'hover-label';
-const MATCH_NOTHING: FilterSpecification = ['==', ['get', 'hover-none'], 1];
+// MapLibre zoom (512 px tiles), the scale the tile archives and bands are cut for.
 const FYLKE_MAX_ZOOM = 7;
+// Martin's archives are Web Mercator; OL reprojects them to the view, whatever it is.
+const TILE_PROJECTION = 'EPSG:3857';
+// Parsed tiles kept per source for placing labels: about a few screens' worth.
+const REMEMBERED_TILES = 256;
+const TRANSPARENT = 'rgba(0,0,0,0)';
 
 // Coarse to fine. n100 is skipped: n50 already starts at z9, below its own band.
 const PROTECTED_SCALES = ['n5000', 'n2000', 'n1000', 'n500', 'n250', 'n50'];
@@ -61,21 +80,14 @@ const PROTECTED_COLORS: Record<string, string> = {
 
 const text = (value: unknown) => String(value ?? '').trim();
 
-const byProperty = (property: string, value: unknown): FilterSpecification => [
-  '==',
-  ['get', property],
-  value as string,
-];
+const byProperty =
+  (property: string, value: unknown) => (properties: Properties) =>
+    properties[property] === value;
 
 // Tiles carry no usable id (all 0), so name + type is the identity.
-export const highlightFilter = (
-  objtype: string,
-  navn: string,
-): FilterSpecification => [
-  'all',
-  ['==', ['get', 'objtype'], objtype],
-  ['==', ['get', 'navn'], navn],
-];
+export const highlightFilter =
+  (objtype: string, navn: string) => (properties: Properties) =>
+    properties.objtype === objtype && properties.navn === navn;
 
 // Listed in priority order: small targets first, or the areas under them would take every hit.
 export const HOVER_GROUPS: HoverGroup[] = [
@@ -84,14 +96,13 @@ export const HOVER_GROUPS: HoverGroup[] = [
     kind: 'circle',
     sources: ['n50_bygnanlegg_punkt'],
     sourceLayer: () => 'bygnanlegg_punkt',
-    color: '#1565c0',
-    labelColor: () => '#1565c0',
-    filter: ['all', ['==', ['get', 'objtype'], 'Lufthavn'], ['has', 'navn']],
+    color: () => '#1565c0',
+    filter: (p) => p.objtype === 'Lufthavn' && p.navn != null,
     describe: (p) => {
       const codes = [p.iatakode, p.icaokode].map(text).filter(Boolean);
       return {
         key: `airport|${text(p.navn)}`,
-        filter: highlightFilter('Lufthavn', text(p.navn)),
+        matches: highlightFilter('Lufthavn', text(p.navn)),
         label: codes.length
           ? `${text(p.navn)} (${codes.join(' / ')})`
           : text(p.navn),
@@ -111,16 +122,13 @@ export const HOVER_GROUPS: HoverGroup[] = [
       'yttergrensetilstotendesone',
     ],
     sourceLayer: (source) => source,
-    color: '#00695c',
-    labelColor: () => '#00695c',
+    color: () => '#00695c',
     describe: (p) => {
       const name = text(p.virkeomradenavn) || text(p.objtype);
       return {
         key: `maritime|${name}`,
-        filter: byProperty(
-          p.virkeomradenavn ? 'virkeomradenavn' : 'objtype',
-          name,
-        ),
+        matches: (q) =>
+          text(p.virkeomradenavn ? q.virkeomradenavn : q.objtype) === name,
         label: name,
       };
     },
@@ -131,18 +139,12 @@ export const HOVER_GROUPS: HoverGroup[] = [
     scaleBands: true,
     sources: PROTECTED_SCALES.map((s) => `${s}_restriksjonsomrader_flate`),
     sourceLayer: () => 'restriksjonsomrader_flate',
-    color: [
-      'match',
-      ['get', 'objtype'],
-      ...Object.entries(PROTECTED_COLORS).slice(0, -1).flat(),
-      PROTECTED_COLORS.Allmenning,
-    ] as unknown as ExpressionSpecification,
-    labelColor: (p) => PROTECTED_COLORS[text(p.objtype)] ?? '#333333',
-    filter: ['in', ['get', 'objtype'], ['literal', PROTECTED_TYPES]],
+    color: (p) => PROTECTED_COLORS[text(p.objtype)] ?? '#333333',
+    filter: (p) => PROTECTED_TYPES.includes(text(p.objtype)),
     rank: (p) => PROTECTED_TYPES.indexOf(text(p.objtype)),
     describe: (p) => ({
       key: `protected|${text(p.objtype)}|${text(p.navn)}`,
-      filter: highlightFilter(text(p.objtype), text(p.navn)),
+      matches: highlightFilter(text(p.objtype), text(p.navn)),
       label: text(p.navn),
     }),
   },
@@ -152,19 +154,18 @@ export const HOVER_GROUPS: HoverGroup[] = [
     fillOpacity: 0.12,
     sources: ['n50_adm_kommune_flate'],
     sourceLayer: () => 'adm_kommune_flate',
-    color: '#37474f',
-    labelColor: () => '#37474f',
+    color: () => '#37474f',
     // One source for both: zoomed out the same polygons highlight as a whole fylke.
     describe: (p, zoom) =>
       zoom < FYLKE_MAX_ZOOM
         ? {
             key: `fylke|${text(p.fylkesnummer)}`,
-            filter: byProperty('fylkesnummer', p.fylkesnummer),
+            matches: byProperty('fylkesnummer', p.fylkesnummer),
             label: text(p.fylkesnavn),
           }
         : {
             key: `kommune|${text(p.kommunenummer)}`,
-            filter: byProperty('kommunenummer', p.kommunenummer),
+            matches: byProperty('kommunenummer', p.kommunenummer),
             label: `${text(p.kommunenavn)} (${text(p.fylkesnavn)})`,
           },
   },
@@ -172,8 +173,8 @@ export const HOVER_GROUPS: HoverGroup[] = [
 
 export const hoverSources = () => HOVER_GROUPS.flatMap((g) => g.sources);
 
-// One archive per zoom: MapLibre over-zooms the coarser ones forever, so without
-// a maxzoom each pixel would hit a generalized copy of the same area.
+// One archive per zoom: coarser archives would otherwise be over-zoomed forever,
+// so without a maxzoom each pixel would hit a generalized copy of the same area.
 export const hoverBands = (
   group: Pick<HoverGroup, 'sources' | 'scaleBands'>,
   sources: Record<string, { minzoom?: number }>,
@@ -189,24 +190,16 @@ export const hoverBands = (
   });
 };
 
-const hitLayer = (group: HoverGroup, source: string) =>
-  `hover-hit-${group.id}-${source}`;
-
-const groupOf = (layerId: string) =>
-  HOVER_GROUPS.find((g) => layerId.startsWith(`hover-hit-${g.id}-`));
+export const inBand = (band: Pick<Band, 'minzoom' | 'maxzoom'>, zoom: number) =>
+  zoom >= band.minzoom && (band.maxzoom === undefined || zoom < band.maxzoom);
 
 export const pickFeature = <
-  T extends { layer: { id: string }; properties: Properties },
+  T extends { group: HoverGroup; properties: Properties },
 >(
   features: T[],
 ): T | undefined => {
-  const score = (feature: T) => {
-    const group = groupOf(feature.layer.id);
-    if (!group) return Infinity;
-    return (
-      HOVER_GROUPS.indexOf(group) * 10 + (group.rank?.(feature.properties) ?? 0)
-    );
-  };
+  const score = ({ group, properties }: T) =>
+    HOVER_GROUPS.indexOf(group) * 10 + (group.rank?.(properties) ?? 0);
   return [...features].sort((a, b) => score(a) - score(b))[0];
 };
 
@@ -218,13 +211,13 @@ const visibleArea = (rings: number[][][], [w, s, e, n]: number[]) => {
   return width > 0 && height > 0 ? width * height : 0;
 };
 
-// One label, inside the piece most on screen. A symbol layer over the tiles would
-// label each tile's piece of the polygon. Falls back to the cursor when none fits.
+// One label, inside the piece most on screen. Labelling each tile's piece of the
+// polygon would repeat it at every tile edge. Falls back to the cursor when none fits.
 export const labelPoint = (
   polygons: number[][][][],
   bounds: number[],
-  cursor: LngLat,
-): LngLat => {
+  cursor: Coordinate,
+): Coordinate => {
   const [w, s, e, n] = bounds;
   let best: number[][][] | undefined;
   let bestArea = 0;
@@ -240,252 +233,349 @@ export const labelPoint = (
   return x >= w && x <= e && y >= s && y <= n ? [x, y] : cursor;
 };
 
-const toPolygons = (features: { geometry: Geometry }[]): number[][][][] =>
-  features.flatMap((f) => {
-    if (f.geometry.type === 'Polygon') return [f.geometry.coordinates];
-    if (f.geometry.type === 'MultiPolygon') return f.geometry.coordinates;
+type LoadedTile = { z: number; extent: Extent; features: RenderFeature[] };
+
+type HoverSource = {
+  id: string;
+  source: VectorTileSource<RenderFeature>;
+  // What has been parsed, in tile projection: the source keeps no public list.
+  tiles: Map<string, LoadedTile>;
+};
+
+const createHoverSource = (
+  martinUrl: string,
+  id: string,
+  sourceLayer: string,
+  { minzoom, maxzoom }: TileJson,
+  onLoad: (hoverSource: HoverSource) => void,
+): HoverSource => {
+  const tiles = new Map<string, LoadedTile>();
+  const format = new MVT({ layers: [sourceLayer] });
+  const source = new VectorTileSource<RenderFeature>({
+    format,
+    projection: TILE_PROJECTION,
+    url: `${martinUrl}/${id}/{z}/{x}/{y}`,
+    minZoom: minzoom ?? 0,
+    maxZoom: maxzoom ?? 22,
+    tileLoadFunction: (tile, url) => {
+      const vectorTile = tile as VectorTile<RenderFeature>;
+      const load = async (extent: Extent, projection: Projection) => {
+        try {
+          const response = await fetch(url);
+          // Martin answers 204 for a tile with nothing in it.
+          if (!response.ok) throw new Error(`${response.status} ${url}`);
+          const data = await response.arrayBuffer();
+          const features = data.byteLength
+            ? (format.readFeatures(data, {
+                extent,
+                featureProjection: projection,
+              }) as RenderFeature[])
+            : [];
+          vectorTile.setFeatures(features);
+          tiles.delete(url);
+          tiles.set(url, { z: vectorTile.getTileCoord()[0], extent, features });
+          if (tiles.size > REMEMBERED_TILES) {
+            tiles.delete(tiles.keys().next().value!);
+          }
+          onLoad(hoverSource);
+        } catch {
+          vectorTile.setState(TileState.ERROR);
+        }
+      };
+      vectorTile.setLoader((extent, _resolution, projection) => {
+        void load(extent, projection);
+      });
+    },
+  });
+  const hoverSource: HoverSource = { id, source, tiles };
+  return hoverSource;
+};
+
+const hitStyle = (group: HoverGroup): Style => {
+  // Invisible but wider than what's drawn: thin lines and small points would be
+  // hard to hit. OL hit-detects with an opaque stand-in, so transparent still counts.
+  if (group.kind === 'fill') {
+    return new Style({ fill: new Fill({ color: TRANSPARENT }) });
+  }
+  if (group.kind === 'line') {
+    return new Style({ stroke: new Stroke({ color: TRANSPARENT, width: 14 }) });
+  }
+  return new Style({
+    image: new Circle({ radius: 12, fill: new Fill({ color: TRANSPARENT }) }),
+  });
+};
+
+const withAlpha = (color: string, alpha: number) => {
+  const [r, g, b] = asArray(color);
+  return [r, g, b, alpha];
+};
+
+const highlightStyle = (group: HoverGroup, color: string): Style => {
+  // Fills are drawn opaque and faded by the layer instead: each tile's piece of a
+  // polygon overlaps its neighbours a little, which a translucent fill would show.
+  if (group.kind === 'fill') return new Style({ fill: new Fill({ color }) });
+  if (group.kind === 'line') {
+    return new Style({ stroke: new Stroke({ color, width: 4 }) });
+  }
+  return new Style({
+    image: new Circle({
+      radius: 8,
+      fill: new Fill({ color: withAlpha(color, 0.35) }),
+      stroke: new Stroke({ color, width: 2 }),
+    }),
+  });
+};
+
+type BandLayers = {
+  group: HoverGroup;
+  band: Band;
+  hoverSource: HoverSource;
+  hit: VectorTileLayer<VectorTileSource<RenderFeature>>;
+};
+
+type Active = {
+  hovered: Hovered;
+  group: HoverGroup;
+  hoverSource: HoverSource;
+  color: string;
+  point?: Coordinate;
+  cursor: Coordinate;
+};
+
+const toViewGeometry = (feature: RenderFeature, viewProjection: string) => {
+  // toGeometry shares the tile's coordinate array: transforming that in place
+  // would reproject the cached tile again on every redraw.
+  const geometry = toGeometry(feature.clone());
+  if (
+    !equivalent(getProjection(TILE_PROJECTION)!, getProjection(viewProjection)!)
+  ) {
+    geometry.transform(TILE_PROJECTION, viewProjection);
+  }
+  return geometry;
+};
+
+const toPolygons = (geometries: Geometry[]) =>
+  geometries.flatMap((geometry) => {
+    if (geometry.getType() === 'Polygon') {
+      return [(geometry as Polygon).getCoordinates()];
+    }
+    if (geometry.getType() === 'MultiPolygon') {
+      return (geometry as MultiPolygon).getCoordinates();
+    }
     return [];
   });
 
-const toBbox = (b: LngLatBounds) => [
-  b.getWest(),
-  b.getSouth(),
-  b.getEast(),
-  b.getNorth(),
-];
-
-const addGroupLayers = (
-  ml: MapLibreMap,
-  group: HoverGroup,
-  { source, minzoom, maxzoom }: Band,
-  beforeId?: string,
-) => {
-  const common = {
-    source,
-    'source-layer': group.sourceLayer(source),
-    minzoom,
-    ...(maxzoom === undefined ? {} : { maxzoom }),
-  };
-  const hit = {
-    ...common,
-    id: hitLayer(group, source),
-    ...(group.filter ? { filter: group.filter } : {}),
-  };
-  const shown = { ...common, filter: MATCH_NOTHING };
-  const id = `${group.id}-${source}`;
-
-  // Invisible but wider than what's drawn: the style's thin lines and small
-  // points would be hard to hit, and it only outlines areas.
-  if (group.kind === 'fill') {
-    ml.addLayer(
-      { ...hit, type: 'fill', paint: { 'fill-opacity': 0 } },
-      beforeId,
-    );
-    ml.addLayer(
-      {
-        ...shown,
-        id: `hover-fill-${id}`,
-        type: 'fill',
-        paint: {
-          'fill-color': group.color,
-          'fill-opacity': group.fillOpacity ?? 0.25,
-        },
-      },
-      beforeId,
-    );
-  }
-  if (group.kind === 'circle') {
-    ml.addLayer(
-      {
-        ...hit,
-        type: 'circle',
-        paint: { 'circle-radius': 12, 'circle-opacity': 0 },
-      },
-      beforeId,
-    );
-    ml.addLayer(
-      {
-        ...shown,
-        id: `hover-fill-${id}`,
-        type: 'circle',
-        paint: {
-          'circle-radius': 8,
-          'circle-color': group.color,
-          'circle-opacity': 0.35,
-          'circle-stroke-color': group.color,
-          'circle-stroke-width': 2,
-        },
-      },
-      beforeId,
-    );
-    return;
-  }
-  if (group.kind === 'line') {
-    ml.addLayer(
-      {
-        ...hit,
-        type: 'line',
-        paint: { 'line-width': 14, 'line-opacity': 0 },
-      },
-      beforeId,
-    );
-  }
-  ml.addLayer(
-    {
-      ...shown,
-      id: `hover-line-${id}`,
-      type: 'line',
-      paint: {
-        'line-color': group.color,
-        'line-width': group.kind === 'line' ? 4 : 2,
-      },
-    },
-    beforeId,
-  );
+const pointOf = (feature: RenderFeature | Feature): Coordinate | undefined => {
+  const geometry = feature.getGeometry();
+  if (geometry?.getType() !== 'Point') return undefined;
+  return geometry instanceof RenderFeature
+    ? geometry.getFlatCoordinates().slice(0, 2)
+    : (geometry as Point).getCoordinates();
 };
 
-const addLayers = (ml: MapLibreMap, bands: Map<HoverGroup, Band[]>) => {
+/**
+ * The hover highlight, drawn by OpenLayers so it lines up in any view projection:
+ * a MapLibre canvas is Web Mercator and can only be fitted to a UTM view at its centre.
+ *
+ * Hits come from invisible vector tile layers. The highlight itself is the hovered
+ * feature's pieces from the loaded tiles, reprojected into a plain vector layer.
+ */
+export const createHoverLayers = (
+  olMap: OlMap,
+  martinUrl: string,
+  tileJsons: Record<string, TileJson>,
+) => {
+  let active: Active | undefined;
+  let redraw: number | undefined;
+
+  const hoverSources = new Map<string, HoverSource>();
+  const sourceFor = (group: HoverGroup, id: string) => {
+    let hoverSource = hoverSources.get(id);
+    if (!hoverSource) {
+      hoverSource = createHoverSource(
+        martinUrl,
+        id,
+        group.sourceLayer(id),
+        tileJsons[id],
+        // More of the hovered feature came in: draw it, once per frame at most.
+        (loaded) => {
+          if (active?.hoverSource !== loaded) return;
+          redraw ??= requestAnimationFrame(() => {
+            redraw = undefined;
+            drawHighlight();
+          });
+        },
+      );
+      hoverSources.set(id, hoverSource);
+    }
+    return hoverSource;
+  };
+
+  const bands: BandLayers[] = [];
   // Lowest priority first, so the first added ends up underneath.
   for (const group of [...HOVER_GROUPS].reverse()) {
-    for (const band of bands.get(group) ?? []) addGroupLayers(ml, group, band);
+    for (const band of hoverBands(group, tileJsons)) {
+      const hoverSource = sourceFor(group, band.source);
+      const style = hitStyle(group);
+      const hit = new VectorTileLayer({
+        source: hoverSource.source,
+        style: (feature) =>
+          group.filter && !group.filter(feature.getProperties())
+            ? undefined
+            : style,
+      });
+      bands.push({ group, band, hoverSource, hit });
+    }
   }
 
-  ml.addSource(LABEL_SOURCE, {
-    type: 'geojson',
-    data: { type: 'FeatureCollection', features: [] },
-  });
-  ml.addLayer({
-    id: LABEL_SOURCE,
-    type: 'symbol',
-    source: LABEL_SOURCE,
-    layout: {
-      'text-field': ['get', 'label'],
-      'text-font': ['Noto Sans Bold'],
-      'text-size': 14,
-      'text-max-width': 14,
-      'text-allow-overlap': true,
-      'text-ignore-placement': true,
-      'text-offset': [
-        'case',
-        ['get', 'above'],
-        ['literal', [0, -1.6]],
-        ['literal', [0, 0]],
-      ],
-    },
-    paint: {
-      'text-color': ['get', 'color'],
-      'text-halo-color': '#ffffff',
-      'text-halo-width': 2,
+  const highlightSource = new VectorSource();
+  const highlightLayer = new VectorLayer({ source: highlightSource });
+
+  const label = new Feature<Point>();
+  const labelLayer = new VectorLayer({
+    source: new VectorSource({ features: [label] }),
+    style: () => {
+      if (!active) return undefined;
+      return new Style({
+        text: new Text({
+          text: active.hovered.label,
+          font: 'bold 14px "Noto Sans", Arial, sans-serif',
+          fill: new Fill({ color: active.color }),
+          stroke: new Stroke({ color: '#ffffff', width: 4 }),
+          offsetY: active.point ? -22 : 0,
+          overflow: true,
+        }),
+      });
     },
   });
-};
 
-const attachHover = (
-  layer: MapLibreLayer,
-  ml: MapLibreMap,
-  olMap: OlMap,
-  bands: Map<HoverGroup, Band[]>,
-) => {
-  const hitLayers = [...bands].flatMap(([group, list]) =>
-    list.map(({ source }) => hitLayer(group, source)),
-  );
-  const shownLayers = (group: HoverGroup) =>
-    (bands.get(group) ?? []).flatMap(({ source }) =>
-      ['fill', 'line']
-        .map((part) => `hover-${part}-${group.id}-${source}`)
-        .filter((id) => ml.getLayer(id)),
-    );
+  const layerGroup = new LayerGroup({
+    layers: [...bands.map((b) => b.hit), highlightLayer, labelLayer],
+    properties: { id: 'overlay.hover' },
+  });
+  const hitLayers = new Map(bands.map((b) => [b.hit, b]));
 
-  let active:
-    | {
-        hovered: Hovered;
-        group: HoverGroup;
-        source: string;
-        color: string;
-        point?: LngLat;
-      }
-    | undefined;
-  let cursor: LngLat = [0, 0];
-  let pending: number[] | undefined;
-  let frame: number | undefined;
-
-  const setFilter = (group: HoverGroup, filter: FilterSpecification) => {
-    for (const id of shownLayers(group)) ml.setFilter(id, filter);
+  const zoom = () => {
+    const view = olMap.getView();
+    return mapLibreZoomForView(view) ?? (view.getZoom() ?? 0) - 1;
   };
 
-  const moveLabel = () => {
-    const label = ml.getSource(LABEL_SOURCE) as GeoJSONSource | undefined;
+  // The hovered feature's pieces on screen, from the tile zoom OL is showing:
+  // finer or coarser leftovers in the cache would draw a different outline.
+  const activePieces = (viewProjection: string, viewExtent: Extent) => {
+    if (!active) return [];
+    const { source, tiles } = active.hoverSource;
+    const view = olMap.getView();
+    const sourceResolution =
+      (view.getResolution()! * view.getProjection().getMetersPerUnit()!) /
+      getProjection(TILE_PROJECTION)!.getMetersPerUnit()!;
+    const z = source
+      .getTileGrid()!
+      .getZForResolution(sourceResolution, source.zDirection);
+    const tileExtent = transformExtent(
+      viewExtent,
+      viewProjection,
+      TILE_PROJECTION,
+    );
+    const { matches } = active.hovered;
+    return [...tiles.values()]
+      .filter((tile) => tile.z === z && intersects(tile.extent, tileExtent))
+      .flatMap((tile) =>
+        tile.features.filter((f) => matches(f.getProperties())),
+      )
+      .map((feature) => toViewGeometry(feature, viewProjection));
+  };
+
+  const drawHighlight = () => {
+    highlightSource.clear();
     if (!active) {
-      label?.setData({ type: 'FeatureCollection', features: [] });
+      label.setGeometry(undefined);
       return;
     }
-    const { group, source, hovered, color, point } = active;
-    const coordinates =
+    const { group, color, point, cursor } = active;
+    const view = olMap.getView();
+    const viewProjection = view.getProjection().getCode();
+    const viewExtent = view.calculateExtent(olMap.getSize());
+    const pieces = point
+      ? [new Point(point)]
+      : activePieces(viewProjection, viewExtent);
+
+    highlightLayer.setStyle(highlightStyle(group, color));
+    highlightLayer.setOpacity(
+      group.kind === 'fill' ? (group.fillOpacity ?? 0.25) : 1,
+    );
+    highlightSource.addFeatures(
+      pieces.map((geometry) => new Feature({ geometry })),
+    );
+
+    const at =
       point ??
       (group.kind === 'fill'
-        ? labelPoint(
-            toPolygons(
-              ml.querySourceFeatures(source, {
-                sourceLayer: group.sourceLayer(source),
-                filter: hovered.filter,
-              }),
-            ),
-            toBbox(ml.getBounds()),
-            cursor,
-          )
+        ? labelPoint(toPolygons(pieces), viewExtent, cursor)
         : cursor);
-    label?.setData({
-      type: 'Feature',
-      properties: { label: hovered.label, color, above: Boolean(point) },
-      geometry: { type: 'Point', coordinates },
-    });
+    label.setGeometry(new Point(at));
   };
 
   const clear = () => {
     pending = undefined;
     if (!active) return;
-    setFilter(active.group, MATCH_NOTHING);
     active = undefined;
-    moveLabel();
-    olMap.render();
+    drawHighlight();
   };
 
   const update = (pixel: number[]) => {
-    const [x, y] = pixel;
-    const feature = pickFeature(
-      ml.queryRenderedFeatures([x, y], { layers: hitLayers }),
+    const candidates: {
+      group: HoverGroup;
+      hoverSource: HoverSource;
+      properties: Properties;
+      feature: RenderFeature | Feature;
+    }[] = [];
+    olMap.forEachFeatureAtPixel(
+      pixel,
+      (feature, layer) => {
+        const band = hitLayers.get(
+          layer as VectorTileLayer<VectorTileSource<RenderFeature>>,
+        );
+        if (band) {
+          candidates.push({
+            group: band.group,
+            hoverSource: band.hoverSource,
+            properties: feature.getProperties(),
+            feature: feature as RenderFeature | Feature,
+          });
+        }
+        return undefined;
+      },
+      {
+        layerFilter: (layer) =>
+          hitLayers.has(
+            layer as VectorTileLayer<VectorTileSource<RenderFeature>>,
+          ),
+      },
     );
-    const group = feature && groupOf(feature.layer.id);
-    if (!feature || !group) return clear();
+    const picked = pickFeature(candidates);
+    if (!picked) return clear();
 
-    const hovered = group.describe(feature.properties, ml.getZoom());
+    const hovered = picked.group.describe(picked.properties, zoom());
     if (active?.hovered.key === hovered.key) return;
 
-    if (active && active.group !== group) {
-      setFilter(active.group, MATCH_NOTHING);
-    }
-    const { lng, lat } = ml.unproject([x, y]);
-    cursor = [lng, lat];
     active = {
       hovered,
-      group,
-      source: feature.source,
-      // Rendered features' properties can't be sent to the worker, so copy what's used.
-      color: group.labelColor(feature.properties),
-      point:
-        feature.geometry.type === 'Point'
-          ? (feature.geometry.coordinates.slice(0, 2) as LngLat)
-          : undefined,
+      group: picked.group,
+      hoverSource: picked.hoverSource,
+      color: picked.group.color(picked.properties),
+      point: pointOf(picked.feature),
+      cursor: olMap.getCoordinateFromPixel(pixel),
     };
-    setFilter(group, hovered.filter);
-    moveLabel();
-    olMap.render();
+    drawHighlight();
   };
 
   // Pointer events outpace rendering: only the latest position each frame matters.
+  let pending: number[] | undefined;
+  let frame: number | undefined;
   const schedule = (event: unknown) => {
     if (!(event instanceof MapBrowserEvent) || event.dragging) return;
-    if (!layer.getVisible()) return;
+    if (!layerGroup.getVisible()) return;
     pending = event.pixel;
     frame ??= requestAnimationFrame(() => {
       frame = undefined;
@@ -493,47 +583,48 @@ const attachHover = (
     });
   };
 
+  // Bands are cut by Mercator zoom, which in UTM depends on latitude as well as scale.
+  const updateBands = () => {
+    const z = zoom();
+    for (const { band, hit } of bands) hit.setVisible(inBand(band, z));
+  };
+  let viewKeys: EventsKey[] = [];
+  const watchView = () => {
+    unByKey(viewKeys);
+    const view = olMap.getView();
+    viewKeys = [
+      view.on('change:resolution', updateBands) as EventsKey,
+      view.on('change:center', updateBands) as EventsKey,
+    ];
+    updateBands();
+  };
+  watchView();
+
   const viewport = olMap.getViewport();
   viewport?.addEventListener('mouseleave', clear);
   // singleclick is the only signal on touch screens, which have no hover.
-  const keys = [
+  const keys: EventsKey[] = [
     olMap.on('pointermove', schedule),
     olMap.on('singleclick', schedule),
-    olMap.on('moveend', moveLabel),
+    olMap.on('moveend', drawHighlight),
+    // Projection changes swap in a new view.
+    olMap.on('change:view', () => {
+      clear();
+      watchView();
+    }),
     // Switched off with something highlighted: don't leave it behind for the next time.
-    layer.on('propertychange', (event) => {
-      if (event.key === 'visible' && !layer.getVisible()) clear();
+    layerGroup.on('change:visible', () => {
+      if (!layerGroup.getVisible()) clear();
     }),
   ];
 
-  return () => {
+  const dispose = () => {
     unByKey(keys);
+    unByKey(viewKeys);
     viewport?.removeEventListener('mouseleave', clear);
     if (frame !== undefined) cancelAnimationFrame(frame);
+    if (redraw !== undefined) cancelAnimationFrame(redraw);
   };
-};
 
-export const enableHover = (layer: MapLibreLayer) => {
-  let detach: (() => void) | undefined;
-
-  // setMapInternal(null) disposes the MapLibre map, but the OL listeners outlive it.
-  layer.on('propertychange', (event) => {
-    if (event.key === 'map' && !layer.getMapInternal()) detach?.();
-  });
-
-  layer.once('load' as never, () => {
-    const ml = layer.mapLibreMap;
-    const olMap = layer.getMapInternal();
-    if (!ml || !olMap) return;
-
-    const sources = ml.getStyle().sources as Record<
-      string,
-      { minzoom?: number }
-    >;
-    const bands = new Map(
-      HOVER_GROUPS.map((group) => [group, hoverBands(group, sources)]),
-    );
-    addLayers(ml, bands);
-    detach = attachHover(layer, ml, olMap, bands);
-  });
+  return { layer: layerGroup, dispose };
 };

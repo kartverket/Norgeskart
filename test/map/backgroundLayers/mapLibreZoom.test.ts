@@ -5,6 +5,7 @@ import proj4 from 'proj4';
 import { beforeAll, describe, expect, it } from 'vitest';
 import {
   gridConvergence,
+  mapLibreZoomForView,
   mercatorZoom,
   mercatorZoomForView,
 } from '../../../src/map/layers/config/backgroundLayers/mapLibreZoom';
@@ -53,6 +54,18 @@ describe('mercatorZoomForView', () => {
     const ground = getPointResolution('EPSG:25833', 2.6, center, 'm');
     const latitude = (proj4('EPSG:25833', 'EPSG:4326', center) as number[])[1];
     expect(groundResolutionAt(zoom, latitude) / ground).toBeCloseTo(1, 6);
+  });
+
+  it('is one less as MapLibre zoom, for its 512 px tiles', () => {
+    const view = new View({
+      projection: 'EPSG:3857',
+      center: fromLonLat([10.75, 59.91]),
+      zoom: 12,
+    });
+    expect(mapLibreZoomForView(view)).toBeCloseTo(11, 2);
+    expect(
+      mapLibreZoomForView(new View({ projection: 'EPSG:3857' })),
+    ).toBeUndefined();
   });
 
   it('returns undefined before the view has a center', () => {
