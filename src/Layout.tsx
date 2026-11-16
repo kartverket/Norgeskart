@@ -145,7 +145,7 @@ export const Layout = () => {
           )}
           <Flex justifyContent={'flex-end'}>
             <ErrorBoundary fallback={undefined} name={'InfoBox'}>
-              <MobileInfoBox key={selectedResult?.name ?? 'empty'} />
+              <MobileInfoBox />
             </ErrorBoundary>
             <ErrorBoundary fallback={undefined} name={'PrintDialog'}>
               {isPrintDialogOpen && <PrintDialog />}

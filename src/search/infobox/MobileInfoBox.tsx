@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -370,8 +371,8 @@ export const MobileInfoBox = () => {
       left={0}
       zIndex={3}
     >
-      {showDetails ? (
-        property ? (
+      {property && (
+        <Box display={showDetails ? 'block' : 'none'}>
           <MobilePropertyDetails
             selectedResult={selectedResult}
             inputCRS={inputCRS ?? 'EPSG:4258'}
@@ -379,15 +380,17 @@ export const MobileInfoBox = () => {
             onBack={() => setShowDetails(false)}
             onClose={handleClose}
           />
-        ) : (
-          <MobileResultDetails
-            resultLabel={resultLabel}
-            displayName={displayName}
-            onBack={() => setShowDetails(false)}
-            onClose={handleClose}
-          />
-        )
-      ) : (
+        </Box>
+      )}
+      {!property && showDetails && (
+        <MobileResultDetails
+          resultLabel={resultLabel}
+          displayName={displayName}
+          onBack={() => setShowDetails(false)}
+          onClose={handleClose}
+        />
+      )}
+      {!showDetails && (
         <MobileInfoSummary
           property={property}
           propertyRegisterUrl={propertyRegisterUrl}
