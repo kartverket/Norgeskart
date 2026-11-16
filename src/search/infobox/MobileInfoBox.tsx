@@ -9,6 +9,7 @@ import {
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
+import type { TFunction } from 'i18next';
 import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { transform } from 'ol/proj';
 import { useEffect, useState } from 'react';
@@ -24,6 +25,7 @@ import {
   searchCoordinatesAtom,
   selectedResultAtom,
 } from '../atoms';
+import { Property, SearchResult } from '../../types/searchTypes';
 import { InfoBoxContent } from './InfoBoxContent';
 import { InfoBoxElevationContent } from './InfoBoxPreamble';
 import {
@@ -40,6 +42,60 @@ const clearPropertyGeometrySelection = () => {
   removeUrlParameter('showSelection');
 };
 
+const getProperty = (
+  selectedResult: SearchResult,
+  coordinatePropertyDetails?: Property | Property[],
+) => {
+  if (selectedResult.type === 'Property') {
+    return selectedResult.property;
+  }
+
+  return Array.isArray(coordinatePropertyDetails)
+    ? coordinatePropertyDetails[0]
+    : coordinatePropertyDetails;
+};
+
+const getPropertyRegisterUrl = (property?: Property) => {
+  if (!property) {
+    return null;
+  }
+
+  return `https://eiendomsregisteret.kartverket.no/eiendom/${property.KOMMUNENR}/${property.GARDSNR}/${property.BRUKSNR}/${property.FESTENR}/${property.SEKSJONSNR}`;
+};
+
+const getResultLabel = (
+  selectedResult: SearchResult,
+  property: Property | undefined,
+  t: TFunction,
+) => {
+  if (property) {
+    return t('locationType.property');
+  }
+
+  return t(
+    `locationType.${selectedResult.type.toLowerCase()}`,
+    selectedResult.type,
+  );
+};
+
+const getMunicipality = (selectedResult: SearchResult) => {
+  switch (selectedResult.type) {
+    case 'Place':
+      return selectedResult.place.municipalities?.[0]?.kommunenavn;
+    case 'Road':
+      return selectedResult.road.KOMMUNENAVN;
+    case 'Address':
+      return selectedResult.address.kommunenavn;
+    default:
+      return undefined;
+  }
+};
+
+const getDisplayName = (property: Property | undefined, name: string) =>
+  capitalizeFirstLetter(
+    (property?.NAVN ?? name).toLocaleLowerCase('nb-NO'),
+  );
+
 export const MobileInfoBox = () => {
   const { t } = useTranslation();
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
@@ -47,7 +103,6 @@ export const MobileInfoBox = () => {
   const setMobileInfoDetailsOpen = useSetAtom(mobileInfoDetailsOpenAtom);
   const isPrintDialogOpen = useAtomValue(isPrintDialogOpenAtom);
   const [showDetails, setShowDetails] = useState(false);
-  const isPropertyResult = selectedResult?.type === 'Property';
   const isPropertyLocationResult =
     selectedResult?.type === 'Coordinate' || selectedResult?.type === 'Address';
   const inputCRS = selectedResult ? getInputCRS(selectedResult) : null;
@@ -87,37 +142,16 @@ export const MobileInfoBox = () => {
     return null;
   }
 
-  const property = isPropertyResult
-    ? selectedResult.property
-    : Array.isArray(coordinatePropertyDetails)
-      ? coordinatePropertyDetails[0]
-      : coordinatePropertyDetails;
-
-  const propertyRegisterUrl = property
-    ? `https://eiendomsregisteret.kartverket.no/eiendom/${property.KOMMUNENR}/${property.GARDSNR}/${property.BRUKSNR}/${property.FESTENR}/${property.SEKSJONSNR}`
-    : null;
-  const resultLabel = property
-    ? t('locationType.property')
-    : t(
-        `locationType.${selectedResult.type.toLowerCase()}`,
-        selectedResult.type,
-      );
-  const municipality =
-    selectedResult.type === 'Place'
-      ? selectedResult.place.municipalities?.[0]?.kommunenavn
-      : selectedResult.type === 'Road'
-        ? selectedResult.road.KOMMUNENAVN
-        : selectedResult.type === 'Address'
-          ? selectedResult.address.kommunenavn
-          : undefined;
+  const property = getProperty(selectedResult, coordinatePropertyDetails);
+  const propertyRegisterUrl = getPropertyRegisterUrl(property);
+  const resultLabel = getResultLabel(selectedResult, property, t);
+  const municipality = getMunicipality(selectedResult);
   const resultDescription = municipality
     ? `${resultLabel} ${t('infoBox.in')} ${capitalizeFirstLetter(
         municipality.toLocaleLowerCase('nb-NO'),
       )} ${t('infoBox.municipality').toLowerCase()}`
     : resultLabel;
-  const displayName = capitalizeFirstLetter(
-    (property?.NAVN ?? selectedResult.name).toLocaleLowerCase('nb-NO'),
-  );
+  const displayName = getDisplayName(property, selectedResult.name);
 
   const handleClose = () => {
     clearPropertyGeometrySelection();
