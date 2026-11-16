@@ -16,7 +16,12 @@ import Polygon from 'ol/geom/Polygon';
 import LayerGroup from 'ol/layer/Group';
 import VectorLayer from 'ol/layer/Vector';
 import VectorTileLayer from 'ol/layer/VectorTile';
-import { equivalent, get as getProjection, transformExtent } from 'ol/proj';
+import {
+  equivalent,
+  get as getProjection,
+  getTransform,
+  transformExtent,
+} from 'ol/proj';
 import type Projection from 'ol/proj/Projection';
 import RenderFeature, { toGeometry } from 'ol/render/Feature';
 import VectorSource from 'ol/source/Vector';
@@ -33,15 +38,21 @@ type Hovered = {
 type Band = { source: string; minzoom: number; maxzoom?: number };
 export type TileJson = { minzoom?: number; maxzoom?: number };
 
+export type HoverKind = 'fill' | 'line' | 'circle';
+
 export type HoverGroup = {
   id: string;
-  kind: 'fill' | 'line' | 'circle';
+  // One kind for the group, or per archive when they mix points, lines and areas.
+  kind: HoverKind | ((source: string) => HoverKind);
   sources: string[];
   sourceLayer: (source: string) => string;
   color: (properties: Properties) => string;
   fillOpacity?: number;
   // Same data at several scales: use one per zoom instead of all of them at once.
   scaleBands?: boolean;
+  // MapLibre zoom to start at: dense data (roads, addresses) is only useful close
+  // up, and loading its tiles further out costs more than it gives.
+  minzoom?: number;
   filter?: (properties: Properties) => boolean;
   // Lower wins when groups overlap.
   rank?: (properties: Properties) => number;
@@ -67,6 +78,8 @@ const TILE_PROJECTION = 'EPSG:3857';
 // Parsed tiles kept per source for placing labels: about a few screens' worth.
 const REMEMBERED_TILES = 256;
 const TRANSPARENT = 'rgba(0,0,0,0)';
+// How close the cursor must be to a point symbol, in CSS pixels.
+const POINT_HIT_PX = 12;
 
 // Coarse to fine. n100 is skipped: n50 already starts at z9, below its own band.
 const PROTECTED_SCALES = ['n5000', 'n2000', 'n1000', 'n500', 'n250', 'n50'];
@@ -89,6 +102,57 @@ export const highlightFilter =
   (objtype: string, navn: string) => (properties: Properties) =>
     properties.objtype === objtype && properties.navn === navn;
 
+export const kindOf = (group: Pick<HoverGroup, 'kind'>, source: string) =>
+  typeof group.kind === 'function' ? group.kind(source) : group.kind;
+
+const byLokalid = (p: Properties) => ({
+  key: text(p.lokalid),
+  matches: (q: Properties) => q.lokalid === p.lokalid,
+});
+
+const metres = (value: unknown) =>
+  `${Number(value).toLocaleString('nb-NO', { maximumFractionDigits: 1 })} m`;
+
+// Only signposted numbers: kommunal, private and forest road numbers are internal.
+const ROAD_PREFIX: Record<string, string> = {
+  E: 'E',
+  R: 'Rv.',
+  F: 'Fv.',
+};
+
+const ROAD_TYPES: Record<string, string> = {
+  bilferje: 'Bilferje',
+  bilveg: 'Veg',
+  fortau: 'Fortau',
+  gagate: 'Gågate',
+  gangfelt: 'Gangfelt',
+  gangveg: 'Gangveg',
+  gatetun: 'Gatetun',
+  sykkelveg: 'Sykkelveg',
+  trapp: 'Trapp',
+};
+
+export const roadNumber = (p: Properties) => {
+  const category = text(p.vegkategori);
+  const number = text(p.vegnummer);
+  const prefix = ROAD_PREFIX[category];
+  if (!prefix || !number) return undefined;
+  return `${prefix} ${number}`;
+};
+
+const roadType = (p: Properties) => {
+  const type = text(p.typeVeg);
+  return (
+    ROAD_TYPES[type] ?? (type ? type[0].toUpperCase() + type.slice(1) : '')
+  );
+};
+
+const SEA_HAZARD_KINDS: Record<string, HoverKind> = {
+  dybdedata_skjer: 'circle',
+  dybdedata_torrfall: 'fill',
+  dybdedata_molo: 'line',
+};
+
 // Listed in priority order: small targets first, or the areas under them would take every hit.
 export const HOVER_GROUPS: HoverGroup[] = [
   {
@@ -106,6 +170,110 @@ export const HOVER_GROUPS: HoverGroup[] = [
         label: codes.length
           ? `${text(p.navn)} (${codes.join(' / ')})`
           : text(p.navn),
+      };
+    },
+  },
+  {
+    id: 'address',
+    kind: 'circle',
+    sources: ['matrikkelen_vegadresse'],
+    sourceLayer: (source) => source,
+    color: () => '#6a1b9a',
+    minzoom: 15,
+    describe: (p) => ({
+      key: `address|${text(p.adressekode)}|${text(p.nummer)}|${text(p.bokstav)}`,
+      matches: (q) =>
+        q.adressekode === p.adressekode &&
+        q.nummer === p.nummer &&
+        q.bokstav === p.bokstav,
+      label:
+        `${text(p.adressenavn)} ${text(p.nummer)}${text(p.bokstav)}`.trim(),
+    }),
+  },
+  {
+    id: 'seaHazard',
+    kind: (source) => SEA_HAZARD_KINDS[source] ?? 'circle',
+    sources: Object.keys(SEA_HAZARD_KINDS),
+    sourceLayer: (source) => source,
+    color: () => '#bf360c',
+    minzoom: 11,
+    describe: (p) => ({
+      ...byLokalid(p),
+      key: `seaHazard|${text(p.lokalid)}`,
+      label: text(p.objtype),
+    }),
+  },
+  {
+    id: 'shoal',
+    kind: 'circle',
+    sources: ['dybdedata_grunne'],
+    sourceLayer: (source) => source,
+    color: () => '#01579b',
+    minzoom: 12,
+    describe: (p) => ({
+      ...byLokalid(p),
+      key: `shoal|${text(p.lokalid)}`,
+      label: `Grunne ${metres(p.dybde)}`,
+    }),
+  },
+  {
+    id: 'depthContour',
+    kind: 'line',
+    sources: ['dybdedata_dybdekurve'],
+    sourceLayer: (source) => source,
+    color: () => '#0277bd',
+    minzoom: 11,
+    // A contour is one depth however many pieces it's drawn in.
+    describe: (p) => ({
+      key: `depthContour|${text(p.dybde)}`,
+      matches: (q) => q.dybde === p.dybde,
+      label: `Dybdekurve ${metres(p.dybde)}`,
+    }),
+  },
+  // Soundings are dense: on a contour line the contour wins, between them the sounding.
+  {
+    id: 'sounding',
+    kind: 'circle',
+    sources: ['dybdedata_dybdepunkt'],
+    sourceLayer: (source) => source,
+    color: () => '#01579b',
+    minzoom: 13,
+    describe: (p) => ({
+      ...byLokalid(p),
+      key: `sounding|${text(p.lokalid)}`,
+      label: `Dybde ${metres(p.dybde)}`,
+    }),
+  },
+  {
+    id: 'road',
+    kind: 'line',
+    sources: ['nvdb_veglenke'],
+    sourceLayer: (source) => source,
+    color: () => '#e65100',
+    minzoom: 12,
+    // The whole street (or numbered road) lights up, not just the link under the cursor.
+    describe: (p) => {
+      const name = text(p.adressenavn);
+      const number = roadNumber(p);
+      if (name) {
+        return {
+          key: `road|name|${name}`,
+          matches: (q) => q.adressenavn === p.adressenavn,
+          label: number ? `${name} (${number})` : name,
+        };
+      }
+      if (number) {
+        return {
+          key: `road|number|${number}`,
+          matches: (q) =>
+            q.vegkategori === p.vegkategori && q.vegnummer === p.vegnummer,
+          label: number,
+        };
+      }
+      return {
+        key: `road|link|${text(p.nvdbId)}`,
+        matches: (q) => q.nvdbId === p.nvdbId,
+        label: roadType(p),
       };
     },
   },
@@ -176,7 +344,7 @@ export const hoverSources = () => HOVER_GROUPS.flatMap((g) => g.sources);
 // One archive per zoom: coarser archives would otherwise be over-zoomed forever,
 // so without a maxzoom each pixel would hit a generalized copy of the same area.
 export const hoverBands = (
-  group: Pick<HoverGroup, 'sources' | 'scaleBands'>,
+  group: Pick<HoverGroup, 'sources' | 'scaleBands' | 'minzoom'>,
   sources: Record<string, { minzoom?: number }>,
 ): Band[] => {
   const present = group.sources.filter((source) => source in sources);
@@ -184,7 +352,7 @@ export const hoverBands = (
     const next = group.scaleBands ? present[i + 1] : undefined;
     return {
       source,
-      minzoom: sources[source].minzoom ?? 0,
+      minzoom: Math.max(sources[source].minzoom ?? 0, group.minzoom ?? 0),
       ...(next ? { maxzoom: sources[next].minzoom ?? 0 } : {}),
     };
   });
@@ -237,6 +405,7 @@ type LoadedTile = { z: number; extent: Extent; features: RenderFeature[] };
 
 type HoverSource = {
   id: string;
+  kind: HoverKind;
   source: VectorTileSource<RenderFeature>;
   // What has been parsed, in tile projection: the source keeps no public list.
   tiles: Map<string, LoadedTile>;
@@ -246,6 +415,7 @@ const createHoverSource = (
   martinUrl: string,
   id: string,
   sourceLayer: string,
+  kind: HoverKind,
   { minzoom, maxzoom }: TileJson,
   onLoad: (hoverSource: HoverSource) => void,
 ): HoverSource => {
@@ -287,22 +457,16 @@ const createHoverSource = (
       });
     },
   });
-  const hoverSource: HoverSource = { id, source, tiles };
+  const hoverSource: HoverSource = { id, kind, source, tiles };
   return hoverSource;
 };
 
-const hitStyle = (group: HoverGroup): Style => {
-  // Invisible but wider than what's drawn: thin lines and small points would be
-  // hard to hit. OL hit-detects with an opaque stand-in, so transparent still counts.
-  if (group.kind === 'fill') {
+const hitStyle = (kind: Exclude<HoverKind, 'circle'>): Style => {
+  // Invisible but wider than what's drawn: thin lines would be hard to hit. OL hit-detects with an opaque stand-in, so transparent still counts.
+  if (kind === 'fill') {
     return new Style({ fill: new Fill({ color: TRANSPARENT }) });
   }
-  if (group.kind === 'line') {
-    return new Style({ stroke: new Stroke({ color: TRANSPARENT, width: 14 }) });
-  }
-  return new Style({
-    image: new Circle({ radius: 12, fill: new Fill({ color: TRANSPARENT }) }),
-  });
+  return new Style({ stroke: new Stroke({ color: TRANSPARENT, width: 14 }) });
 };
 
 const withAlpha = (color: string, alpha: number) => {
@@ -310,11 +474,11 @@ const withAlpha = (color: string, alpha: number) => {
   return [r, g, b, alpha];
 };
 
-const highlightStyle = (group: HoverGroup, color: string): Style => {
+const highlightStyle = (kind: HoverKind, color: string): Style => {
   // Fills are drawn opaque and faded by the layer instead: each tile's piece of a
   // polygon overlaps its neighbours a little, which a translucent fill would show.
-  if (group.kind === 'fill') return new Style({ fill: new Fill({ color }) });
-  if (group.kind === 'line') {
+  if (kind === 'fill') return new Style({ fill: new Fill({ color }) });
+  if (kind === 'line') {
     return new Style({ stroke: new Stroke({ color, width: 4 }) });
   }
   return new Style({
@@ -365,14 +529,6 @@ const toPolygons = (geometries: Geometry[]) =>
     return [];
   });
 
-const pointOf = (feature: RenderFeature | Feature): Coordinate | undefined => {
-  const geometry = feature.getGeometry();
-  if (geometry?.getType() !== 'Point') return undefined;
-  return geometry instanceof RenderFeature
-    ? geometry.getFlatCoordinates().slice(0, 2)
-    : (geometry as Point).getCoordinates();
-};
-
 /**
  * The hover highlight, drawn by OpenLayers so it lines up in any view projection:
  * a MapLibre canvas is Web Mercator and can only be fitted to a UTM view at its centre.
@@ -396,6 +552,7 @@ export const createHoverLayers = (
         martinUrl,
         id,
         group.sourceLayer(id),
+        kindOf(group, id),
         tileJsons[id],
         // More of the hovered feature came in: draw it, once per frame at most.
         (loaded) => {
@@ -416,11 +573,14 @@ export const createHoverLayers = (
   for (const group of [...HOVER_GROUPS].reverse()) {
     for (const band of hoverBands(group, tileJsons)) {
       const hoverSource = sourceFor(group, band.source);
-      const style = hitStyle(group);
+      // Points are hit-tested from the parsed tiles (findPoints): OL's hit
+      // detection misses symbols on vector tile layers. Their layer only loads tiles.
+      const style =
+        hoverSource.kind === 'circle' ? undefined : hitStyle(hoverSource.kind);
       const hit = new VectorTileLayer({
         source: hoverSource.source,
         style: (feature) =>
-          group.filter && !group.filter(feature.getProperties())
+          !style || (group.filter && !group.filter(feature.getProperties()))
             ? undefined
             : style,
       });
@@ -460,18 +620,23 @@ export const createHoverLayers = (
     return mapLibreZoomForView(view) ?? (view.getZoom() ?? 0) - 1;
   };
 
-  // The hovered feature's pieces on screen, from the tile zoom OL is showing:
-  // finer or coarser leftovers in the cache would draw a different outline.
-  const activePieces = (viewProjection: string, viewExtent: Extent) => {
-    if (!active) return [];
-    const { source, tiles } = active.hoverSource;
+  // The tile zoom OL is showing for a source: finer or coarser leftovers in the
+  // cache would draw a different outline, or find points twice.
+  const sourceZ = ({ source }: HoverSource) => {
     const view = olMap.getView();
     const sourceResolution =
       (view.getResolution()! * view.getProjection().getMetersPerUnit()!) /
       getProjection(TILE_PROJECTION)!.getMetersPerUnit()!;
-    const z = source
+    return source
       .getTileGrid()!
       .getZForResolution(sourceResolution, source.zDirection);
+  };
+
+  // The hovered feature's pieces on screen.
+  const activePieces = (viewProjection: string, viewExtent: Extent) => {
+    if (!active) return [];
+    const { tiles } = active.hoverSource;
+    const z = sourceZ(active.hoverSource);
     const tileExtent = transformExtent(
       viewExtent,
       viewProjection,
@@ -492,7 +657,8 @@ export const createHoverLayers = (
       label.setGeometry(undefined);
       return;
     }
-    const { group, color, point, cursor } = active;
+    const { group, hoverSource, color, point, cursor } = active;
+    const { kind } = hoverSource;
     const view = olMap.getView();
     const viewProjection = view.getProjection().getCode();
     const viewExtent = view.calculateExtent(olMap.getSize());
@@ -500,9 +666,9 @@ export const createHoverLayers = (
       ? [new Point(point)]
       : activePieces(viewProjection, viewExtent);
 
-    highlightLayer.setStyle(highlightStyle(group, color));
+    highlightLayer.setStyle(highlightStyle(kind, color));
     highlightLayer.setOpacity(
-      group.kind === 'fill' ? (group.fillOpacity ?? 0.25) : 1,
+      kind === 'fill' ? (group.fillOpacity ?? 0.25) : 1,
     );
     highlightSource.addFeatures(
       pieces.map((geometry) => new Feature({ geometry })),
@@ -510,7 +676,7 @@ export const createHoverLayers = (
 
     const at =
       point ??
-      (group.kind === 'fill'
+      (kind === 'fill'
         ? labelPoint(toPolygons(pieces), viewExtent, cursor)
         : cursor);
     label.setGeometry(new Point(at));
@@ -523,13 +689,52 @@ export const createHoverLayers = (
     drawHighlight();
   };
 
+  type Candidate = {
+    group: HoverGroup;
+    hoverSource: HoverSource;
+    properties: Properties;
+    point?: Coordinate;
+  };
+
+  // Points within POINT_HIT_PX of the cursor, nearest first.
+  const findPoints = (pixel: number[]): Candidate[] => {
+    const view = olMap.getView();
+    const viewProjection = view.getProjection().getCode();
+    const toView = getTransform(TILE_PROJECTION, viewProjection)!;
+    const [x, y] = olMap.getCoordinateFromPixel(pixel);
+    const r = POINT_HIT_PX * view.getResolution()!;
+    const box = transformExtent(
+      [x - r, y - r, x + r, y + r],
+      viewProjection,
+      TILE_PROJECTION,
+    );
+    const found: (Candidate & { distance: number })[] = [];
+    for (const { group, hoverSource, hit } of bands) {
+      if (hoverSource.kind !== 'circle' || !hit.getVisible()) continue;
+      const z = sourceZ(hoverSource);
+      for (const tile of hoverSource.tiles.values()) {
+        if (tile.z !== z || !intersects(tile.extent, box)) continue;
+        for (const feature of tile.features) {
+          const [fx, fy] = feature.getFlatCoordinates();
+          if (fx < box[0] || fx > box[2] || fy < box[1] || fy > box[3]) {
+            continue;
+          }
+          const properties = feature.getProperties();
+          if (group.filter && !group.filter(properties)) continue;
+          const point = toView([fx, fy]);
+          const [px, py] = olMap.getPixelFromCoordinate(point);
+          const distance = Math.hypot(px - pixel[0], py - pixel[1]);
+          if (distance <= POINT_HIT_PX) {
+            found.push({ group, hoverSource, properties, point, distance });
+          }
+        }
+      }
+    }
+    return found.sort((a, b) => a.distance - b.distance);
+  };
+
   const update = (pixel: number[]) => {
-    const candidates: {
-      group: HoverGroup;
-      hoverSource: HoverSource;
-      properties: Properties;
-      feature: RenderFeature | Feature;
-    }[] = [];
+    const candidates: Candidate[] = findPoints(pixel);
     olMap.forEachFeatureAtPixel(
       pixel,
       (feature, layer) => {
@@ -541,7 +746,6 @@ export const createHoverLayers = (
             group: band.group,
             hoverSource: band.hoverSource,
             properties: feature.getProperties(),
-            feature: feature as RenderFeature | Feature,
           });
         }
         return undefined;
@@ -564,7 +768,7 @@ export const createHoverLayers = (
       group: picked.group,
       hoverSource: picked.hoverSource,
       color: picked.group.color(picked.properties),
-      point: pointOf(picked.feature),
+      point: picked.point,
       cursor: olMap.getCoordinateFromPixel(pixel),
     };
     drawHighlight();

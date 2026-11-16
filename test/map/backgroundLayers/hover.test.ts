@@ -4,6 +4,7 @@ import {
   hoverBands,
   inBand,
   isHoverPaused,
+  kindOf,
   labelPoint,
   pickFeature,
 } from '../../../src/map/layers/config/backgroundLayers/hover';
@@ -191,5 +192,107 @@ describe('labelPoint', () => {
   it('falls back to the cursor when nothing is on screen', () => {
     expect(labelPoint([square(20, 20, 2)], bounds, cursor)).toEqual(cursor);
     expect(labelPoint([], bounds, cursor)).toEqual(cursor);
+  });
+});
+
+describe('batch 1 groups', () => {
+  it('only loads dense data close up', () => {
+    expect(
+      hoverBands(group('address'), { matrikkelen_vegadresse: { minzoom: 0 } }),
+    ).toEqual([{ source: 'matrikkelen_vegadresse', minzoom: 15 }]);
+    expect(
+      hoverBands(group('road'), { nvdb_veglenke: { minzoom: 0 } })[0].minzoom,
+    ).toBe(12);
+  });
+
+  it('keeps an archive minzoom above the group one', () => {
+    expect(
+      hoverBands(group('road'), { nvdb_veglenke: { minzoom: 13 } })[0].minzoom,
+    ).toBe(13);
+  });
+
+  it('labels addresses with number and letter', () => {
+    const { describe } = group('address');
+    const storgata = {
+      adressenavn: 'Storgata',
+      adressekode: 1234,
+      nummer: 5,
+      bokstav: 'B',
+    };
+    const hovered = describe(storgata, 16);
+    expect(hovered.label).toBe('Storgata 5B');
+    expect(hovered.matches(storgata)).toBe(true);
+    expect(hovered.matches({ ...storgata, bokstav: 'A' })).toBe(false);
+    expect(describe({ adressenavn: 'Storgata', nummer: 7 }, 16).label).toBe(
+      'Storgata 7',
+    );
+  });
+
+  it('names streets, numbers roads and falls back to the road type', () => {
+    const { describe } = group('road');
+    const street = {
+      adressenavn: 'Trondheimsveien',
+      vegkategori: 'R',
+      vegnummer: 4,
+    };
+    expect(describe(street, 14).label).toBe('Trondheimsveien (Rv. 4)');
+    expect(describe({ vegkategori: 'E', vegnummer: 6 }, 14).label).toBe('E 6');
+    expect(describe({ typeVeg: 'gangveg', nvdbId: 9 }, 14).label).toBe(
+      'Gangveg',
+    );
+    // Kommunal road numbers mean nothing to users.
+    expect(
+      describe(
+        { adressenavn: 'Apotekergata', vegkategori: 'K', vegnummer: 10203 },
+        14,
+      ).label,
+    ).toBe('Apotekergata');
+  });
+
+  it('highlights the whole street or road number, not just one link', () => {
+    const { describe } = group('road');
+    const street = describe({ adressenavn: 'Storgata', nvdbId: 1 }, 14);
+    expect(street.matches({ adressenavn: 'Storgata', nvdbId: 2 })).toBe(true);
+    const e6 = describe({ vegkategori: 'E', vegnummer: 6 }, 14);
+    expect(e6.matches({ vegkategori: 'E', vegnummer: 6, nvdbId: 3 })).toBe(
+      true,
+    );
+    expect(e6.matches({ vegkategori: 'R', vegnummer: 6 })).toBe(false);
+  });
+
+  it('writes depths in metres with a decimal comma', () => {
+    expect(
+      group('shoal').describe({ dybde: 0.6, lokalid: 'a' }, 14).label,
+    ).toBe('Grunne 0,6 m');
+    expect(
+      group('sounding').describe({ dybde: 12, lokalid: 'b' }, 14).label,
+    ).toBe('Dybde 12 m');
+    expect(group('depthContour').describe({ dybde: 10 }, 12).label).toBe(
+      'Dybdekurve 10 m',
+    );
+  });
+
+  it('draws each sea hazard archive as its own geometry', () => {
+    const hazards = group('seaHazard');
+    expect(kindOf(hazards, 'dybdedata_skjer')).toBe('circle');
+    expect(kindOf(hazards, 'dybdedata_torrfall')).toBe('fill');
+    expect(kindOf(hazards, 'dybdedata_molo')).toBe('line');
+    expect(kindOf(group('kommune'), 'n50_adm_kommune_flate')).toBe('fill');
+  });
+
+  it('ranks shoals over contours, and contours over soundings', () => {
+    const sounding = hit('sounding');
+    const contour = hit('depthContour');
+    const shoal = hit('shoal');
+    expect(pickFeature([sounding, contour, shoal])).toBe(shoal);
+    expect(pickFeature([sounding, contour])).toBe(contour);
+  });
+
+  it('prefers addresses over roads, and roads over the kommune', () => {
+    const address = hit('address');
+    const road = hit('road');
+    const kommune = hit('kommune');
+    expect(pickFeature([kommune, road, address])).toBe(address);
+    expect(pickFeature([kommune, road])).toBe(road);
   });
 });
