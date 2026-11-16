@@ -2,6 +2,7 @@ import { Box, Button, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { drawPanelCollapsedAtom } from '../../map/overlay/atoms';
 import {
   clearInteractions,
   drawEnabledEffect,
@@ -9,7 +10,6 @@ import {
   selectedFeatureAtom,
   snapEffect,
 } from '../../settings/draw/atoms.ts';
-import { drawPanelCollapsedAtom } from '../../map/overlay/atoms';
 import { useIsMobileScreen } from '../../shared/hooks.ts';
 import { ColorControls } from '../ColorControls.tsx';
 import { DrawControlFooter } from '../DrawControlsFooter.tsx';
@@ -80,12 +80,7 @@ export const DrawControls = () => {
     currentType === 'Polygon';
 
   return (
-    <VStack
-      alignItems="flex-start"
-      width="100%"
-      height="100%"
-      padding={0.5}
-    >
+    <VStack alignItems="flex-start" width="100%" height="100%" padding={0.5}>
       <DrawToolSelector mobile={isMobile} />
 
       {drawType === 'Move' && !selectedFeature && (
