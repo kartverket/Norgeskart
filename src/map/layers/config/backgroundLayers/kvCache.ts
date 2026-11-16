@@ -9,6 +9,7 @@ const KvCacheProvider: LayerProvider = {
     '/v1/service?Request=GetCapabilities&Service=WMTS',
 };
 
+// Old cache.kartverket.no Standard/gråtone, offered next to the new norgeskart_* ("Beta").
 export const KvCacheBackgroundLayers: BackgroundLayer[] = [
   { type: 'WMTS', layerName: 'topo', provider: KvCacheProvider },
   { type: 'WMTS', layerName: 'topograatone', provider: KvCacheProvider },

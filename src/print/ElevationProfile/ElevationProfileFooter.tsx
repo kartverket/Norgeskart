@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from '@kvib/react';
+import { Button, Flex } from '@kvib/react';
 import { Chart } from 'chart.js';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
@@ -33,12 +33,23 @@ export const ElevationProfileFooter = ({
     return;
   }
   return (
-    <ButtonGroup justify="space-between" mt={4}>
-      <Button onClick={onReset}>
+    <Flex
+      direction="column"
+      alignItems="flex-start"
+      gap={2}
+      mt={4}
+      width="100%"
+    >
+      <Button
+        leftIcon="restart_alt"
+        size="xs"
+        variant="ghost"
+        onClick={onReset}
+      >
         {t('printdialog.elevationProfile.buttons.reset.label')}
       </Button>
 
       <ElevationProfileExport chartRef={chartRef} />
-    </ButtonGroup>
+    </Flex>
   );
 };

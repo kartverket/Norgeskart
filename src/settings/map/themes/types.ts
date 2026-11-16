@@ -17,4 +17,5 @@ export type SubTheme = {
 export type ThemeLayer = {
   name: ThemeLayerName;
   label: string;
+  notReady?: boolean;
 };

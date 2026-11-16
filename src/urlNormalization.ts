@@ -43,11 +43,16 @@ export const processUrlParameters = () => {
   if (layerNameFromUrl) {
     const legacyLayerName = mapLegacyBackgroundLayerId(layerNameFromUrl);
     if (legacyLayerName) {
+      if (legacyLayerName !== layerNameFromUrl && !legacyLayerParam) {
+        // e.g. ?backgroundLayer=topo from links shared before the switch
+        setUrlParameter('backgroundLayer', legacyLayerName);
+      }
       layerNameFromUrl = legacyLayerName;
     }
   }
 
-  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
+  const finalLayerName = (layerNameFromUrl ||
+    'norgeskart_standard') as BackgroundLayerName;
   const newThemeLayers: string[] = [];
 
   removeUrlParameter('project');

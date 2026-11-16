@@ -8,6 +8,7 @@ import {
 } from '@kvib/react';
 import { useAtomValue } from 'jotai';
 import { BottomDrawToolSelector } from './draw/BottomDrawToolSelector';
+import { DesktopLayout } from './layout/DesktopLayout';
 import { displayCompassOverlayAtom } from './map/atoms';
 import { BackgroundLayerPopover } from './map/backgroundLayer/BackgroundLayerPopover';
 import { useFeatureInfoClick } from './map/featureInfo/useFeatureInfo';
@@ -22,14 +23,21 @@ import { isPrintDialogOpenAtom } from './print/atoms';
 import { PrintDialog } from './print/PrintDialog';
 import { selectedResultAtom, useSearchEffects } from './search/atoms';
 import { useMapClickSearch } from './search/hooks';
-import { InfoBox } from './search/infobox/InfoBox';
+import { MobileInfoBox } from './search/infobox/MobileInfoBox';
 import { SearchComponent } from './search/SearchComponent';
 import { ErrorBoundary } from './shared/ErrorBoundary';
 import { useIsMobileScreen } from './shared/hooks';
-import { Toolbar } from './toolbar/Toolbar';
 
 export type MapTool =
-  'layers' | 'draw' | 'info' | 'settings' | 'measure' | null;
+  | 'layers'
+  | 'draw'
+  | 'info'
+  | 'settings'
+  | 'measure'
+  | 'extent'
+  | 'hiking'
+  | 'elevationProfile'
+  | null;
 
 export const Layout = () => {
   const displayCompassOverlay = useAtomValue(displayCompassOverlayAtom);
@@ -51,6 +59,10 @@ export const Layout = () => {
   const hideLogo = selectedResult !== null || isPrintDialogOpen;
   const showDesktopLogo = !isMobile && !hideLogo;
   const showMobileLogo = isMobile && !hideLogo && !isToolOpen;
+
+  if (isLargeScreen) {
+    return <DesktopLayout />;
+  }
 
   return (
     <ErrorBoundary fallback={undefined}>
@@ -136,7 +148,7 @@ export const Layout = () => {
           )}
           <Flex justifyContent={'flex-end'}>
             <ErrorBoundary fallback={undefined} name={'InfoBox'}>
-              <InfoBox />
+              <MobileInfoBox />
             </ErrorBoundary>
             <ErrorBoundary fallback={undefined} name={'PrintDialog'}>
               {isPrintDialogOpen && <PrintDialog />}
@@ -203,22 +215,6 @@ export const Layout = () => {
             </Box>
           </VStack>
         </GridItem>
-
-        {!isMobile && (
-          <GridItem
-            h="40px"
-            alignContent="end"
-            gridRow={6}
-            gridColumn={'1 / -1'}
-            justifyContent={'end'}
-            zIndex={1}
-            pointerEvents={'none'}
-          >
-            <ErrorBoundary fallback={undefined} name={'Toolbar'}>
-              <Toolbar />
-            </ErrorBoundary>
-          </GridItem>
-        )}
       </Grid>
       {isMobile && currentMapTool === 'draw' && (
         <ErrorBoundary fallback={undefined} name={'BottomDrawToolSelector'}>

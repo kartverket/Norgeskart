@@ -1,6 +1,7 @@
 import { MapLibreLayer } from '@geoblocks/ol-maplibre-layer';
 import { atom, getDefaultStore } from 'jotai';
 import { atomEffect } from 'jotai-effect';
+import LayerGroup from 'ol/layer/Group';
 import TileLayer from 'ol/layer/Tile';
 import posthog from 'posthog-js';
 import {
@@ -15,6 +16,7 @@ import { KvCacheBackgroundLayers } from './kvCache';
 import { nauticalBackgroundLayers } from './nautical';
 import { nibBackgroundLayers } from './nib';
 import { npolarBackgroundLayers } from './npolar';
+import { topoCacheBackgroundLayers } from './topoCache';
 import { EmptyBackgroundLayer } from './types';
 import {
   clearBackgroundLayer,
@@ -34,11 +36,13 @@ export const allConfiguredBackgroundLayers = [
   ...nibBackgroundLayers,
   ...npolarBackgroundLayers,
   ...nauticalBackgroundLayers,
+  ...topoCacheBackgroundLayers,
 ];
 
 const getDefaultBackgroundLayer = (): BackgroundLayerName => {
   const layerNameFromUrl = getUrlParameter('backgroundLayer');
-  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
+  const finalLayerName = (layerNameFromUrl ||
+    'norgeskart_standard') as BackgroundLayerName;
   return finalLayerName;
 };
 
@@ -75,7 +79,13 @@ export const backgroundLayerAtomEffect = atomEffect((get, set) => {
       const targetProjection =
         layerConfig.requiredProjection ?? currentProjection;
 
-      let layer: TileLayer | MapLibreLayer | null = null;
+      if (layerConfig.type === 'Empty') {
+        clearBackgroundLayer();
+        setUrlParameter('backgroundLayer', layerName);
+        return;
+      }
+
+      let layer: TileLayer | LayerGroup | MapLibreLayer | null = null;
       switch (layerConfig.type) {
         case 'WMTS':
           layer = await getWMTSLayer(layerConfig, targetProjection);

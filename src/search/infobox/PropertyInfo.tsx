@@ -3,11 +3,9 @@ import {
   AccordionItemContent,
   AccordionItemTrigger,
   Box,
-  Flex,
+  Button,
+  Grid,
   Link,
-  Stack,
-  Switch,
-  SwitchLabel,
   Text,
 } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
@@ -20,7 +18,6 @@ import { getPropertyGeometry } from '../../api/nkApiClient';
 import { getPropertyGeometryLayer } from '../../draw/drawControls/hooks/mapLayers';
 import { mapAtom } from '../../map/atoms';
 import { mapLayers } from '../../map/layers';
-import { capitalizeFirstLetter } from '../../shared/utils/stringUtils';
 import {
   getUrlParameter,
   removeUrlParameter,
@@ -32,6 +29,15 @@ import {
   getPropetyInfoByCoordinates,
 } from '../searchApi';
 import { getContainingExtent } from './utils';
+
+const formatPropertyText = (value: string) =>
+  value
+    .toLocaleLowerCase('nb-NO')
+    .replace(
+      /(^|[\s,/-])([a-zæøå])/g,
+      (_, separator: string, letter: string) =>
+        `${separator}${letter.toLocaleUpperCase('nb-NO')}`,
+    );
 
 export interface PropertyInfoProps {
   lon: number;
@@ -141,7 +147,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
     };
   }, [showGeometry, property]);
 
-  const handleSwitchChange = async (checked: boolean) => {
+  const handleSwitchChange = (checked: boolean) => {
     setShowGeometry(checked);
   };
 
@@ -158,7 +164,7 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
 
   const rows = [
     [t('propertyInfo.municipalityNr'), property.KOMMUNENR],
-    [t('infoBox.municipality'), capitalizeFirstLetter(property.KOMMUNENAVN)],
+    [t('infoBox.municipality'), formatPropertyText(property.KOMMUNENAVN)],
     [t('propertyInfo.holdingNr'), property.GARDSNR],
     [t('propertyInfo.subholdingNr'), property.BRUKSNR],
     [t('propertyInfo.leaseNr'), property.FESTENR],
@@ -172,58 +178,75 @@ export const PropertyInfo = ({ lon, lat, inputCRS }: PropertyInfoProps) => {
       <AccordionItemTrigger pl={0}>
         {t('infoBox.propertyInfo')}
       </AccordionItemTrigger>
-      <AccordionItemContent>
+      <AccordionItemContent px={0}>
         <Box>
           {addresses.length > 0 && (
             <Box mb={3}>
-              <Text fontSize="sm" fontWeight="semibold">
+              <Text fontSize="sm" fontStyle="italic" fontWeight="semibold">
                 {t('propertyInfo.address')}
               </Text>
               {addresses.map((addr, i) => (
                 <Text key={i} fontSize="sm">
-                  {addr}
+                  {formatPropertyText(addr)}
                 </Text>
               ))}
             </Box>
           )}
-          <Stack gap={0}>
-            {hasMultipleAddresses && (
-              <Text mb={4} fontSize="sm">
-                {t('propertyInfo.multipleAddressesText')}
-              </Text>
-            )}
-            <Flex justify="space-between" align="center" mb={2}>
-              <Switch
-                checked={showGeometry}
-                onCheckedChange={(e) => {
-                  handleSwitchChange(e.checked);
-                }}
-              >
-                <SwitchLabel>
-                  {t('propertyInfo.markProperty.label')}
-                </SwitchLabel>
-              </Switch>
-              <Link
-                href={propertyRegisterUrl}
-                target="_blank"
-                fontSize="sm"
-                external
-              >
-                {t('propertyInfo.moreInformation')}
-              </Link>
-            </Flex>
+          {hasMultipleAddresses && (
+            <Text mb={4} fontSize="sm">
+              {t('propertyInfo.multipleAddressesText')}
+            </Text>
+          )}
+          <Link
+            href={propertyRegisterUrl}
+            target="_blank"
+            color="green.600"
+            fontSize="sm"
+            textDecoration="underline"
+            external
+            display="inline-block"
+            mb={3}
+          >
+            {t('propertyInfo.moreInformation')}
+          </Link>
+          <Box mb={4}>
+            <Button
+              variant="outline"
+              size="sm"
+              fontSize="sm"
+              color="green.700"
+              backgroundColor="green.50"
+              borderColor="green.200"
+              borderRadius="sm"
+              fontWeight="semibold"
+              px={2}
+              py={1}
+              leftIcon={showGeometry ? 'check_box' : 'check_box_outline_blank'}
+              onClick={() => handleSwitchChange(!showGeometry)}
+            >
+              {t('propertyInfo.markProperty.label')}
+            </Button>
+          </Box>
+          <Grid
+            templateColumns="repeat(2, minmax(0, 1fr))"
+            rowGap={1}
+            columnGap={0}
+          >
             {rows.map(([label, value], index) => (
-              <Flex
+              <Box
                 key={label}
-                justify="space-between"
-                bg={index % 2 === 0 ? 'gray.50' : 'white'}
+                bg={index === 2 || index === 3 ? 'green.50' : 'transparent'}
                 p={2}
               >
-                <Text fontSize="sm">{label}</Text>
-                <Text fontSize="sm">{value}</Text>
-              </Flex>
+                <Text fontSize="sm" color="gray.600">
+                  {label}
+                </Text>
+                <Text fontSize="sm" fontWeight="semibold">
+                  {value}
+                </Text>
+              </Box>
             ))}
-          </Stack>
+          </Grid>
         </Box>
       </AccordionItemContent>
     </AccordionItem>

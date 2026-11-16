@@ -35,9 +35,9 @@ export const App = () => {
       <RettIKartetDialog />
       <MapLegendDrawer />
       <Debug />
+      <HelpPage />
       <Routes>
         <Route path="/" element={<Layout />} />
-        <Route path="/hjelp" element={<HelpPage />} />
       </Routes>
     </PostHogErrorBoundary>
   );

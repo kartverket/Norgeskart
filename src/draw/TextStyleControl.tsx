@@ -17,50 +17,60 @@ export const TextStyleControl = () => {
   const [textValue, setTextValue] = useAtom(textInputAtom);
   const [fontSize, setFontSize] = useAtom(textFontSizeAtom);
   return (
-    <VStack alignItems="flex-start" gap={2} mt={2}>
-      <Heading size={{ base: 'xs', md: 'sm' }}>
-        {t('draw.textInputLabel')}
-      </Heading>
+    <VStack alignItems="stretch" gap={2} mt={2}>
+      <HStack
+        width="100%"
+        align="center"
+        justifyContent="space-between"
+        pb={2}
+        borderBottom="1px solid #E0E0E0"
+      >
+        <Heading size={{ base: 'xs', md: 'sm' }}>
+          {t('draw.textInputLabel')}
+        </Heading>
+        <Input
+          width="180px"
+          height="28px"
+          value={textValue}
+          onChange={(e) => setTextValue(e.target.value)}
+        />
+      </HStack>
 
-      <Input value={textValue} onChange={(e) => setTextValue(e.target.value)} />
+      <HStack width="100%" align="center" justifyContent="space-between">
+        <Heading size={{ base: 'xs', md: 'sm' }}>
+          {t('draw.size.textLabel')}
+        </Heading>
+        <HStack gap={0}>
+          {fontSizeCollection.map((item) => {
+            const isSelected = fontSize === item.value;
 
-      <Heading size={{ base: 'xs', md: 'sm' }}>
-        {t('draw.size.textLabel')}
-      </Heading>
-
-      <HStack>
-        {fontSizeCollection.map((item) => {
-          const isSelected = fontSize === item.value;
-
-          const buttonSize =
-            item.value === 12 ? 28 : item.value === 16 ? 34 : 40;
-
-          return (
-            <Box
-              key={item.value}
-              as="button"
-              onClick={() => setFontSize(item.value as TextFontSize)}
-              w={`${buttonSize}px`}
-              h={`${buttonSize}px`}
-              borderRadius="full"
-              borderWidth="1px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              cursor="pointer"
-              borderColor="green.500"
-              bg={isSelected ? 'green.100' : 'transparent'}
-            >
-              <Text
-                fontSize={`${item.value}px`}
-                color="green.600"
-                fontWeight="bold"
+            return (
+              <Box
+                key={item.value}
+                as="button"
+                onClick={() => setFontSize(item.value as TextFontSize)}
+                w="36px"
+                h="20px"
+                borderRadius="4px"
+                border="1px solid"
+                borderColor={isSelected ? 'green.500' : 'gray.200'}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                cursor="pointer"
+                bg={isSelected ? 'green.100' : 'transparent'}
               >
-                Aa
-              </Text>
-            </Box>
-          );
-        })}
+                <Text
+                  fontSize={`${item.value === 24 ? 20 : item.value}px`}
+                  color="green.600"
+                  fontWeight="bold"
+                >
+                  Aa
+                </Text>
+              </Box>
+            );
+          })}
+        </HStack>
       </HStack>
     </VStack>
   );

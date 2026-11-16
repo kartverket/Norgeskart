@@ -17,7 +17,8 @@ export const AtomWrapper = ({ children }: { children: ReactNode }) => {
     initialThemeLayersList as ThemeLayerName[],
   );
   const layerNameFromUrl = getUrlParameter('backgroundLayer');
-  const finalLayerName = (layerNameFromUrl || 'topo') as BackgroundLayerName;
+  const finalLayerName = (layerNameFromUrl ||
+    'norgeskart_standard') as BackgroundLayerName;
 
   useHydrateAtoms([
     [activeThemeLayersAtom, initialThemeLayers],

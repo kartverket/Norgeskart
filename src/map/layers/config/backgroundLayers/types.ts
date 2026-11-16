@@ -23,7 +23,25 @@ type BackgroundLayerBase = {
 export type WMTSBackgroundLayer = BackgroundLayerBase & {
   type: 'WMTS';
   layerName: WMTSLayerName;
+  wmtsLayerName?: string;
   provider: LayerProvider;
+  legendUrl?: string;
+  // 512 px twin of the layer; `matrixSets` maps each 1x matrix set to its 2x grid with the
+  // same tile ids. Used with tilePixelRatio 2 on devicePixelRatio > 1 screens.
+  hidpi?: { wmtsLayerName: string; matrixSets: Record<string, string> };
+  // Per-projection WMTS layer (and HiDPI twin), e.g. the NP-grid layer in EPSG:25833.
+  // mode 'replace' (default): instead of wmtsLayerName; 'above': only north of the main
+  // grid's top, main below (NP cap). Ignored unless advertised.
+  projectionLayers?: Partial<
+    Record<
+      string,
+      {
+        wmtsLayerName: string;
+        hidpiWmtsLayerName?: string;
+        mode?: 'replace' | 'above';
+      }
+    >
+  >;
 };
 
 export type VectorTileBackgroundLayer = BackgroundLayerBase & {
