@@ -46,7 +46,7 @@ export const NavigationButton = ({
         px={3}
         py={2}
       >
-        <VStack gap={1}>
+        <VStack gap={0}>
           <Icon icon={icon} />
           {!isMinimized && <Text fontSize="14px">{label}</Text>}
         </VStack>
