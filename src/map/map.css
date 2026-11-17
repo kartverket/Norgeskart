@@ -9,18 +9,18 @@
 .ol-scale-line {
   position: absolute;
   left: 50%;
-  bottom: 58px;
+  bottom: 56px;
   right: auto;
   transform: translateX(-50%);
 }
 
 /* Mobile: center scale line above toolbar */
-@media (max-width: 768px) {
+@media (max-width: 997px) {
   .ol-scale-line {
     right: auto;
     left: 50%;
     transform: translateX(-50%);
-    bottom: calc(10px + env(safe-area-inset-bottom));
+    bottom: 75px;
   }
 }
 

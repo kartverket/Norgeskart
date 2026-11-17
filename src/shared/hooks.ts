@@ -6,7 +6,7 @@ import {
 
 const useIsMobileScreen = () => {
   const system = useKvibContext();
-  const isMobile = !useMediaQuery(getBreakpointCondition(system, 'md'));
+  const isMobile = !useMediaQuery(getBreakpointCondition(system, 'lg'));
   return isMobile;
 };
 

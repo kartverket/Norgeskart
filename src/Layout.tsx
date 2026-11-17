@@ -45,6 +45,7 @@ export const Layout = () => {
   const isMobile = useIsMobileScreen();
   const isLargeScreen = useBreakpointValue({
     base: false,
+    md: false,
     lg: true,
   });
   const selectedResult = useAtomValue(selectedResultAtom);
@@ -57,7 +58,6 @@ export const Layout = () => {
 
   const isToolOpen = currentMapTool !== null && currentMapTool !== 'measure';
   const hideLogo = selectedResult !== null || isPrintDialogOpen;
-  const showDesktopLogo = !isMobile && !hideLogo;
   const showMobileLogo = isMobile && !hideLogo && !isToolOpen;
 
   if (isLargeScreen) {
@@ -72,17 +72,14 @@ export const Layout = () => {
         height={'100dvh'}
         width={'100dvw'}
         gridTemplateColumns="repeat(12, 1fr)"
-        gridTemplateRows={{
-          base: 'repeat(4, 1fr) auto',
-          md: 'repeat(4, 1fr)  120px 40px',
-        }}
+        gridTemplateRows="repeat(4, 1fr) 1fr auto"
         pointerEvents="auto"
         bg="gray.200"
         style={{ overflowY: 'hidden' }}
       >
         <GridItem
           gridColumn="1 / span 12" /* span all columns */
-          gridRow={{ base: '1 / span 4', md: '1 / -1' }} /* span all rows */
+          gridRow={{ base: '1 / -1' }} /* span all rows */
           zIndex={0}
         >
           <ErrorBoundary fallback={undefined} name={'MapComponent'}>
@@ -93,11 +90,10 @@ export const Layout = () => {
           <GridItem
             gridColumn={{
               base: '1 / span 12',
-              md: '1 / span 6',
               lg: '1 / span 4',
               xl: '1 / span 3',
             }}
-            gridRow={{ base: '1 / span 3', md: '1 / span 4' }}
+            gridRow={{ base: '1 / span 3', lg: '1 / span 4' }}
             display="block"
             zIndex={1}
             pointerEvents={'none'}
@@ -111,15 +107,14 @@ export const Layout = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '1 / span 6',
             lg: '1 / span 5',
             xl: '1 / span 4',
             '2xl': '1 / span 3',
           }}
-          gridRow={{ base: '2 / span 3', md: '1 / span 4' }}
+          gridRow={{ base: '1 / span 5', lg: '1 / span 4' }}
           zIndex={2}
-          alignItems={{ base: 'flex-end', md: 'stretch' }}
-          display={{ base: 'flex', md: 'block' }}
+          alignItems={{ base: 'flex-end', lg: 'stretch' }}
+          display={{ base: 'flex', lg: 'block' }}
           pointerEvents={'none'}
         >
           <ErrorBoundary fallback={undefined} name="MapToolCards">
@@ -130,19 +125,13 @@ export const Layout = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '8 / span 7',
             lg: '9 / span 4',
             xl: '10 / span 3',
           }}
-          gridRow={{ base: '1 / span 3', md: '1', lg: '1 / span 3' }}
+          gridRow={{ base: '1 / span 3', lg: '1 / span 3' }}
           zIndex={2}
           pointerEvents={'none'}
         >
-          {showDesktopLogo && (
-            <Box position="absolute" top={4} right={3}>
-              <LinkLogo />
-            </Box>
-          )}
           <Flex justifyContent={'flex-end'}>
             <ErrorBoundary fallback={undefined} name={'InfoBox'}>
               <MobileInfoBox />
@@ -155,17 +144,15 @@ export const Layout = () => {
 
         <GridItem
           gridColumn={{ base: '1 / span 3' }}
-          gridRow={{ base: 4, md: 5 }}
-          alignContent={{ base: 'end', md: 'end' }}
+          gridRow={{ base: 5 }}
+          alignContent={{ base: 'end' }}
           mb={{
             base: 'calc(0.75rem + env(safe-area-inset-bottom))',
-            md: 4,
           }}
           ml={{
             base: 'calc(0.5rem + env(safe-area-inset-left))',
-            md: 3,
           }}
-          display={{ base: 'block', md: 'none' }}
+          display={{ base: 'block', lg: 'none' }}
           zIndex={1}
           pointerEvents={'none'}
         >
@@ -175,13 +162,12 @@ export const Layout = () => {
         <GridItem
           gridColumn={{
             base: '1 / span 12',
-            md: '2 / span 10',
             lg: '2 / span 10',
           }}
-          gridRow={5}
-          alignContent={{ base: 'flex-start', md: 'end' }}
-          justifySelf={{ md: 'center' }}
-          mb={{ base: 0, md: 2 }}
+          gridRow={{ base: 6, lg: 5 }}
+          alignContent={{ base: 'flex-start', lg: 'end' }}
+          justifySelf={{ lg: 'center' }}
+          mb={{ base: 0, lg: 2 }}
           zIndex={1}
           pointerEvents={'none'}
         >
@@ -193,17 +179,17 @@ export const Layout = () => {
         <GridItem
           justifySelf="end"
           alignContent="end"
-          gridRow={{ base: 4, md: '3 / span 3' }}
+          gridRow={{ base: 5, lg: '3 / span 3' }}
           gridColumn={'12 / span 3'}
           mb={{
             base: 'calc(0.75rem + env(safe-area-inset-bottom))',
-            md: 2,
+            lg: 2,
           }}
           mr={{
             base: 'calc(0.5rem + env(safe-area-inset-right))',
-            md: 3,
+            lg: 3,
           }}
-          display={{ base: isToolOpen ? 'none' : 'block', md: 'block' }}
+          display={{ base: isToolOpen ? 'none' : 'block', lg: 'block' }}
           zIndex={1}
           pointerEvents={'none'}
         >
@@ -211,7 +197,7 @@ export const Layout = () => {
             <ErrorBoundary fallback={undefined} name={'MapControlButtons'}>
               <MapControlButtons />
             </ErrorBoundary>
-            <Box display={{ base: 'none', md: 'block' }}>
+            <Box display={{ base: 'none', lg: 'block' }}>
               <ErrorBoundary
                 fallback={undefined}
                 name={'BackgroundLayerPopover'}

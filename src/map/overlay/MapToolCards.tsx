@@ -106,17 +106,16 @@ const MapToolCard = ({
   return (
     <VStack
       width="100%"
-      maxWidth={{ base: '100%', md: '345px' }}
       maxHeight={isMobile ? '80dvh' : 'calc(100vh - 65px)'}
       pointerEvents="auto"
       bg="#FFFF"
       shadow="lg"
       p={4}
-      m={{ base: 0, md: 1 }}
-      mr={{ base: 0, md: 3 }}
-      borderRadius="16px"
-      borderBottomLeftRadius={{ base: '0px', md: '16px' }}
-      borderBottomRightRadius={{ base: '0px', md: '16px' }}
+      m={{ base: 0, lg: 1 }}
+      mr={{ base: 0, lg: 3 }}
+
+      borderTopLeftRadius={{ base: '0px', md: '16px' }}
+      borderTopRightRadius={{ base: '0px', md: '16px' }}
       overflowY="auto"
     >
       <Flex justify="space-between" gap="2" w="100%" align="center">
