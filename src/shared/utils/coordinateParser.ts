@@ -225,6 +225,10 @@ export const parseCoordinateInput = (
   );
 };
 
+/** Rough WGS84 extent of mainland Norway, Svalbard and Jan Mayen. */
+const isWithinNorwayExtent = (lat: number, lon: number): boolean =>
+  lat >= 57 && lat <= 82 && lon >= -10 && lon <= 35;
+
 /**
  * Parse coordinates with explicit EPSG code.
  * Examples: "425917 7730314@25834", "59.91273, 10.74609@4326", "163834.01,6663030.01@EPSG:25833"
@@ -271,14 +275,19 @@ const parseWithEPSG = (input: string): ParsedCoordinate | null => {
   if (isNaN(coord1) || isNaN(coord2)) return null;
 
   if (projection === 'EPSG:4326') {
-    // Geographic: coord1 = lat, coord2 = lon
-    if (coord1 < -90 || coord1 > 90 || coord2 < -180 || coord2 > 180)
-      return null;
+    // Geographic: coord1 = lat, coord2 = lon.
+    // External links (e.g. stadnamn.kartverket.no: use the old Norgeskart x,y (lon,lat) order
+    const [lat, lon] =
+      !isWithinNorwayExtent(coord1, coord2) &&
+      isWithinNorwayExtent(coord2, coord1)
+        ? [coord2, coord1]
+        : [coord1, coord2];
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) return null;
     return {
-      lat: coord1,
-      lon: coord2,
+      lat,
+      lon,
       projection,
-      formattedString: `${coord1.toFixed(5)}, ${coord2.toFixed(5)} (${formatName})`,
+      formattedString: `${lat.toFixed(5)}, ${lon.toFixed(5)} (${formatName})`,
       inputFormat: 'decimal',
     };
   }

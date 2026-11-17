@@ -107,7 +107,7 @@ export const SearchComponent = () => {
             {/* Kart-flis til venstre */}
 
             <Button
-              display={{ md: 'none' }}
+              display={{ lg: 'none' }}
               width="64px"
               height="45px"
               minHeight="45px"
