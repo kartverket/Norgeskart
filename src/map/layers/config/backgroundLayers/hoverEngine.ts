@@ -84,6 +84,8 @@ type Mark = {
 
 type MarkName = 'hover' | 'selected';
 
+const HOVER_REST_MS = 60;
+
 // Room the tooltip needs beside the cursor, in CSS pixels, before it flips sides.
 const TOOLTIP_ROOM = [290, 150];
 
@@ -772,22 +774,37 @@ export const createHoverLayers = (
   };
 
   const clearAll = () => {
-    pending = undefined;
+    cancelPending();
     if (marks.hover) setMark('hover', undefined);
     if (marks.selected) setMark('selected', undefined);
   };
 
-  // Pointer events outpace rendering: only the latest position each frame matters.
+  // Hit-testing takes from a few ms to a few hundred (new tiles), so it waits until
+  // the pointer rests, and never runs with a button held: a drag (mouse or
+  // trackpad) must have the main thread to itself.
   let pending: number[] | undefined;
-  let frame: number | undefined;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const cancelPending = () => {
+    pending = undefined;
+    if (timer !== undefined) clearTimeout(timer);
+    timer = undefined;
+  };
   const schedule = (event: unknown) => {
-    if (!(event instanceof MapBrowserEvent) || event.dragging) return;
+    if (!(event instanceof MapBrowserEvent)) return;
+    const held = (event.originalEvent as PointerEvent).buttons > 0;
+    if (event.dragging || held) return cancelPending();
     if (!layerGroup.getVisible() || activeGroups.size === 0) return;
     pending = event.pixel;
-    frame ??= requestAnimationFrame(() => {
-      frame = undefined;
+    if (timer !== undefined) clearTimeout(timer);
+    timer = setTimeout(() => {
+      timer = undefined;
       if (pending) hoverAt(pending);
-    });
+    }, HOVER_REST_MS);
+  };
+  // A press starts a drag or a click: drop the hover card, it would only be in the way.
+  const onPress = () => {
+    cancelPending();
+    if (marks.hover) setMark('hover', undefined);
   };
 
   // A click (or a tap, on screens without hover) pins the card.
@@ -849,7 +866,7 @@ export const createHoverLayers = (
     }
   };
   const onLeave = () => {
-    pending = undefined;
+    cancelPending();
     if (marks.hover) setMark('hover', undefined);
   };
 
@@ -858,6 +875,7 @@ export const createHoverLayers = (
   document.addEventListener('keydown', onKey);
   const keys: EventsKey[] = [
     olMap.on('pointermove', schedule),
+    olMap.on('pointerdown' as 'pointermove', onPress),
     olMap.on('singleclick', onClick),
     olMap.on('moveend', drawAll),
     // Projection changes swap in a new view.
@@ -889,7 +907,7 @@ export const createHoverLayers = (
     olMap.removeOverlay(tooltips.hover.overlay);
     olMap.removeOverlay(tooltips.selected.overlay);
     setCursor(false);
-    if (frame !== undefined) cancelAnimationFrame(frame);
+    cancelPending();
     if (redraw !== undefined) cancelAnimationFrame(redraw);
   };
 
