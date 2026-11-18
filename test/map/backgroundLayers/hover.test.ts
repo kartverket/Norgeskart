@@ -5,7 +5,6 @@ import {
   inBand,
   isHoverPaused,
   kindOf,
-  labelPoint,
   pickFeature,
 } from '../../../src/map/layers/config/backgroundLayers/hover';
 
@@ -15,15 +14,6 @@ const hit = (id: string, objtype = '') => ({
   group: group(id),
   properties: { objtype },
 });
-const square = (x: number, y: number, size: number) => [
-  [
-    [x, y],
-    [x + size, y],
-    [x + size, y + size],
-    [x, y + size],
-    [x, y],
-  ],
-];
 
 describe('hoverBands', () => {
   it('gives each zoom one archive when the group has scale bands', () => {
@@ -99,10 +89,14 @@ describe('describe', () => {
   };
 
   it('shows the fylke zoomed out and the kommune zoomed in', () => {
-    expect(group('kommune').describe(kommune, 5).label).toBe('Vestland');
-    expect(group('kommune').describe(kommune, 9).label).toBe(
-      'Bergen (Vestland)',
-    );
+    const fylke = group('kommune').describe(kommune, 5);
+    expect([fylke.type, fylke.label]).toEqual(['county', 'Vestland']);
+    const own = group('kommune').describe(kommune, 9);
+    expect([own.type, own.label]).toEqual(['municipality', 'Bergen']);
+    expect(own.details).toEqual([
+      ['county', 'Vestland'],
+      ['municipalityNumber', '4601'],
+    ]);
   });
 
   it('highlights every kommune of the fylke zoomed out, only the one zoomed in', () => {
@@ -116,17 +110,20 @@ describe('describe', () => {
     expect(own.matches(askoy)).toBe(false);
   });
 
-  it('labels airports with their codes, and without when they are missing', () => {
+  it('names airports and lists only the codes they have', () => {
     const { describe } = group('airport');
-    expect(
-      describe(
-        { navn: 'Leknes lufthavn', iatakode: 'LKN', icaokode: 'ENLK' },
-        11,
-      ).label,
-    ).toBe('Leknes lufthavn (LKN / ENLK)');
-    expect(describe({ navn: 'Leknes lufthavn', iatakode: ' ' }, 11).label).toBe(
-      'Leknes lufthavn',
+    const leknes = describe(
+      { navn: 'Leknes lufthavn', iatakode: 'LKN', icaokode: 'ENLK' },
+      11,
     );
+    expect([leknes.type, leknes.label]).toEqual(['airport', 'Leknes lufthavn']);
+    expect(leknes.details).toEqual([
+      ['iata', 'LKN'],
+      ['icao', 'ENLK'],
+    ]);
+    expect(
+      describe({ navn: 'Leknes lufthavn', iatakode: ' ' }, 11).details,
+    ).toEqual([]);
   });
 
   it('falls back to the type for maritime lines without a name', () => {
@@ -172,26 +169,6 @@ describe('isHoverPaused', () => {
     expect(isHoverPaused('layers')).toBe(false);
     expect(isHoverPaused('settings')).toBe(false);
     expect(isHoverPaused(null)).toBe(false);
-  });
-});
-
-describe('labelPoint', () => {
-  const bounds = [0, 0, 10, 10];
-  const cursor: [number, number] = [1, 1];
-
-  it('uses the piece most on screen', () => {
-    const [x, y] = labelPoint(
-      [square(0, 0, 1), square(4, 4, 4)],
-      bounds,
-      cursor,
-    );
-    expect(x).toBeGreaterThan(4);
-    expect(y).toBeGreaterThan(4);
-  });
-
-  it('falls back to the cursor when nothing is on screen', () => {
-    expect(labelPoint([square(20, 20, 2)], bounds, cursor)).toEqual(cursor);
-    expect(labelPoint([], bounds, cursor)).toEqual(cursor);
   });
 });
 
@@ -260,16 +237,27 @@ describe('batch 1 groups', () => {
     expect(e6.matches({ vegkategori: 'R', vegnummer: 6 })).toBe(false);
   });
 
-  it('writes depths in metres with a decimal comma', () => {
-    expect(
-      group('shoal').describe({ dybde: 0.6, lokalid: 'a' }, 14).label,
-    ).toBe('Grunne 0,6 m');
+  it('writes depths in metres with a decimal comma, the kind in the type', () => {
+    const shoal = group('shoal').describe({ dybde: 0.6, lokalid: 'a' }, 14);
+    expect([shoal.type, shoal.label]).toEqual(['shoal', '0,6 m']);
     expect(
       group('sounding').describe({ dybde: 12, lokalid: 'b' }, 14).label,
-    ).toBe('Dybde 12 m');
-    expect(group('depthContour').describe({ dybde: 10 }, 12).label).toBe(
-      'Dybdekurve 10 m',
+    ).toBe('12 m');
+    expect(group('depthContour').describe({ dybde: 10 }, 12).type).toBe(
+      'depthContour',
     );
+  });
+
+  it('types sea hazards and protected areas by what they are', () => {
+    expect(
+      group('seaHazard').describe({ objtype: 'Skjær', lokalid: 'c' }, 12).type,
+    ).toBe('reef');
+    expect(
+      group('protected').describe(
+        { objtype: 'Skytefelt', navn: 'Regionfelt' },
+        10,
+      ).type,
+    ).toBe('firingRange');
   });
 
   it('draws each sea hazard archive as its own geometry', () => {

@@ -1,9 +1,13 @@
 import type { Map as OlMap } from 'ol';
-import { createHoverLayers, hoverSources, type TileJson } from './hover';
+import { hoverSources, type TileJson } from './hover';
+import { createHoverLayers, type HoverStatus } from './hoverEngine';
 import { getJSON, getMartinUrl } from './topoVectorStyle';
 
 // Unlike a background this stays on the map, so it lives outside the `bg.` id prefix.
-export const createHoverOverlay = async (olMap: OlMap) => {
+export const createHoverOverlay = async (
+  olMap: OlMap,
+  onStatus?: (status: HoverStatus) => void,
+) => {
   const martinUrl = getMartinUrl();
 
   // Groups whose archive isn't published yet are skipped, so they appear once it is.
@@ -26,7 +30,7 @@ export const createHoverOverlay = async (olMap: OlMap) => {
   );
   if (Object.keys(tileJsons).length === 0) return null;
 
-  const overlay = createHoverLayers(olMap, martinUrl, tileJsons);
+  const overlay = createHoverLayers(olMap, martinUrl, tileJsons, onStatus);
   overlay.layer.setZIndex(1); // over the background, under markers and drawings
   return overlay;
 };

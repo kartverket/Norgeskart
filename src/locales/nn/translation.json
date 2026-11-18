@@ -186,10 +186,6 @@
         "enabled": "Vis kompass",
         "magneticNorth": "Bruk magnetisk nord"
       },
-      "hover": {
-        "description": "Viser namn på verneområde, kommunar og grenser når du held musepeikaren over dei",
-        "enabled": "Vis namn ved peiking"
-      },
       "layers": {
         "background": {
           "label": "Vel bakgrunnskart",
@@ -197,7 +193,7 @@
         },
         "mapNames": {
           "backgroundMaps": {
-            "empty": "Ingen bakgrunn",
+            "empty": "Ingen kart",
             "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
@@ -215,8 +211,7 @@
             "topoProd": "Topografisk",
             "toporaster": "Papirkart",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
-            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
-            "empty": "Ingen kart"
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           },
           "shortBackgroundMaps": {
             "Nibcache_web_mercator_v2": "Flyfoto",
@@ -366,6 +361,45 @@
       "backgroundLayer": {
         "label": "Kart",
         "new": "Beta"
+      }
+    },
+    "hover": {
+      "types": {
+        "airport": "Lufthamn",
+        "address": "Adresse",
+        "reef": "Skjer",
+        "dryingArea": "Tørrfall",
+        "breakwater": "Molo",
+        "seaHazard": "Fare i sjøen",
+        "shoal": "Grunne",
+        "depthContour": "Djupnekurve",
+        "sounding": "Djupn",
+        "road": "Veg",
+        "maritimeBorder": "Maritim grense",
+        "natureReserve": "Naturvernområde",
+        "firingRange": "Skytefelt",
+        "commons": "Allmenning",
+        "protectedArea": "Verneområde",
+        "municipality": "Kommune",
+        "county": "Fylke"
+      },
+      "fields": {
+        "iata": "IATA",
+        "icao": "ICAO",
+        "owner": "Eigar",
+        "roadType": "Type",
+        "kind": "Type",
+        "county": "Fylke",
+        "countyNumber": "Fylkesnummer",
+        "municipalityNumber": "Kommunenummer"
+      },
+      "close": "Lukk",
+      "chip": {
+        "start": "Interaktive kartdata",
+        "startDescription": "Vel i Kartdetaljar kva du vil kunne peike på i kartet",
+        "label": "Peik på:",
+        "description": "Peik for å sjå namn, klikk for detaljar. Endre utvalet i Kartdetaljar.",
+        "zoomIn": "zoom inn"
       }
     }
   },

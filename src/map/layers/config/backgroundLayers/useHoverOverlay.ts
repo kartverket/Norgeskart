@@ -1,53 +1,61 @@
 import { getDefaultStore, useAtomValue, useSetAtom } from 'jotai';
-import type BaseLayer from 'ol/layer/Base';
 import { useEffect, useRef } from 'react';
 import { mapAtom } from '../../../atoms';
 import {
   hoverAvailableAtom,
-  hoverEnabledAtom,
+  hoverStatusAtom,
   mapToolAtom,
 } from '../../../overlay/atoms';
+import { activeThemeLayersAtom } from '../../atoms';
+import { hoverGroupsFor } from '../themeLayers/vectorData';
 import { isHoverPaused } from './hover';
 import { createHoverOverlay } from './hoverOverlay';
 
+type Overlay = NonNullable<Awaited<ReturnType<typeof createHoverOverlay>>>;
+
 export const useHoverOverlay = () => {
-  const enabled = useAtomValue(hoverEnabledAtom);
   const tool = useAtomValue(mapToolAtom);
+  const activeThemeLayers = useAtomValue(activeThemeLayersAtom);
   const setAvailable = useSetAtom(hoverAvailableAtom);
-  const overlay = useRef<BaseLayer | null>(null);
-  const visible = enabled && !isHoverPaused(tool);
+  const setStatus = useSetAtom(hoverStatusAtom);
+  const overlay = useRef<Overlay | null>(null);
+  const paused = isHoverPaused(tool);
 
   useEffect(() => {
     let cancelled = false;
     let dispose: (() => void) | undefined;
     const store = getDefaultStore();
     const map = store.get(mapAtom);
-    createHoverOverlay(map)
+    createHoverOverlay(map, setStatus)
       .then((created) => {
         if (!created) return;
         if (cancelled) return created.dispose();
-        const { layer } = created;
         dispose = () => {
           created.dispose();
-          map.removeLayer(layer);
+          map.removeLayer(created.layer);
           overlay.current = null;
         };
-        layer.setVisible(
-          store.get(hoverEnabledAtom) && !isHoverPaused(store.get(mapToolAtom)),
+        created.layer.setVisible(!isHoverPaused(store.get(mapToolAtom)));
+        created.setActiveGroups(
+          hoverGroupsFor(store.get(activeThemeLayersAtom)),
         );
-        overlay.current = layer;
-        map.addLayer(layer);
+        overlay.current = created;
+        map.addLayer(created.layer);
         setAvailable(true);
       })
-      // Hover is an extra: the map works without it, e.g. off the internal network.
+      // Our vector tiles are internal: the map works without them.
       .catch((error) => console.warn('Hover overlay not available', error));
     return () => {
       cancelled = true;
       dispose?.();
     };
-  }, [setAvailable]);
+  }, [setAvailable, setStatus]);
 
   useEffect(() => {
-    overlay.current?.setVisible(visible);
-  }, [visible]);
+    overlay.current?.layer.setVisible(!paused);
+  }, [paused]);
+
+  useEffect(() => {
+    overlay.current?.setActiveGroups(hoverGroupsFor(activeThemeLayers));
+  }, [activeThemeLayers]);
 };

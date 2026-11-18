@@ -181,10 +181,6 @@
         "enabled": "Show compass",
         "magneticNorth": "Use magnetic north"
       },
-      "hover": {
-        "description": "Shows names of protected areas, municipalities and borders when you hold the pointer over them",
-        "enabled": "Show names on hover"
-      },
       "layers": {
         "background": {
           "label": "Chose background map",
@@ -192,7 +188,7 @@
         },
         "mapNames": {
           "backgroundMaps": {
-            "empty": "No background",
+            "empty": "No map",
             "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
@@ -210,8 +206,7 @@
             "topoProd": "Topographic",
             "toporaster": "Paper Map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
-            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
-            "empty": "No map"
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           },
           "shortBackgroundMaps": {
             "Nibcache_web_mercator_v2": "Aerial",
@@ -361,6 +356,45 @@
       "backgroundLayer": {
         "label": "Map",
         "new": "Beta"
+      }
+    },
+    "hover": {
+      "types": {
+        "airport": "Airport",
+        "address": "Address",
+        "reef": "Reef",
+        "dryingArea": "Drying area",
+        "breakwater": "Breakwater",
+        "seaHazard": "Hazard at sea",
+        "shoal": "Shoal",
+        "depthContour": "Depth contour",
+        "sounding": "Depth",
+        "road": "Road",
+        "maritimeBorder": "Maritime border",
+        "natureReserve": "Nature reserve",
+        "firingRange": "Firing range",
+        "commons": "Commons",
+        "protectedArea": "Protected area",
+        "municipality": "Municipality",
+        "county": "County"
+      },
+      "fields": {
+        "iata": "IATA",
+        "icao": "ICAO",
+        "owner": "Owner",
+        "roadType": "Type",
+        "kind": "Type",
+        "county": "County",
+        "countyNumber": "County number",
+        "municipalityNumber": "Municipality number"
+      },
+      "close": "Close",
+      "chip": {
+        "start": "Interactive map data",
+        "startDescription": "Choose in Map details what you want to be able to point at on the map",
+        "label": "Point at:",
+        "description": "Point to see names, click for details. Change the selection in Map details.",
+        "zoomIn": "zoom in"
       }
     }
   },

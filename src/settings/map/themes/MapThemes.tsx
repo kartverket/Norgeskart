@@ -23,6 +23,7 @@ import {
 } from '../../../map/atoms';
 import { activeThemeLayersAtom } from '../../../map/layers/atoms';
 import { backgroundLayerAtom } from '../../../map/layers/config/backgroundLayers/atoms';
+import { VECTOR_DATA_CATEGORY } from '../../../map/layers/config/themeLayers/vectorData';
 import {
   getDirectLayersForCategory,
   getMainCategories,
@@ -34,6 +35,7 @@ import {
   WARNING_THRESHOLD,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
+import { hoverAvailableAtom } from '../../../map/overlay/atoms';
 import { LayerLine, SubThemeSection } from './SubTheme';
 import { SubTheme, Theme } from './types';
 
@@ -80,6 +82,8 @@ export const MapThemes = () => {
   const { t, i18n } = useTranslation();
   const displayMapLegendControl = useAtomValue(displayMapLegendControlAtom);
   const setDisplayMapLegend = useSetAtom(displayMapLegendAtom);
+  // Our vector tiles are internal-only: without them these entries would do nothing.
+  const vectorDataAvailable = useAtomValue(hoverAvailableAtom);
 
   const activeCount = activeLayerSet.size;
   const showLimitWarning = activeCount >= WARNING_THRESHOLD;
@@ -104,7 +108,9 @@ export const MapThemes = () => {
 
   const configThemeLayers = useMemo((): Theme[] => {
     const currentLang = i18n.language as 'nb' | 'nn' | 'en';
-    const mainCategories = getMainCategories(themeLayerConfig);
+    const mainCategories = getMainCategories(themeLayerConfig).filter(
+      (category) => vectorDataAvailable || category.id !== VECTOR_DATA_CATEGORY,
+    );
     const result: Theme[] = [];
 
     mainCategories.forEach((mainCategory) => {
@@ -151,7 +157,7 @@ export const MapThemes = () => {
     });
 
     return result;
-  }, [i18n.language]);
+  }, [i18n.language, vectorDataAvailable]);
 
   const getActiveCategoryCount = useCallback(
     (theme: Theme): number => {

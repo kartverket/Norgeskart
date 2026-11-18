@@ -2,7 +2,6 @@ import { Heading, SimpleGrid } from '@kvib/react';
 
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../languageswitcher/LanguageSwitcher';
-import { HoverSettings } from './HoverSettings';
 
 export const SettingsDrawer = () => {
   const { t } = useTranslation();
@@ -10,7 +9,6 @@ export const SettingsDrawer = () => {
     <SimpleGrid columns={1} gap="6">
       <Heading size="md">{t('languageSelector.chooseLanguage')}</Heading>
       <LanguageSwitcher />
-      <HoverSettings />
     </SimpleGrid>
   );
 };

@@ -2,6 +2,8 @@ import ImageLayer from 'ol/layer/Image.js';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import { ImageWMS, TileWMS } from 'ol/source';
+import VectorSource from 'ol/source/Vector';
+import type { VectorDataLayerName } from './config/themeLayers/vectorData';
 import { createGeoJsonThemeLayer } from './themeGeoJson';
 import type {
   ThemeLayerConfig,
@@ -120,6 +122,7 @@ export type ThemeLayerName =
   | HistoricalMapsLayerName
   | StedsnavnLayerName
   | ConfigThemeLayerName
+  | VectorDataLayerName
   | SjoLayerName;
 
 export const QUERYABLE_LAYERS: ThemeLayerName[] = [
@@ -140,6 +143,19 @@ export const createThemeLayerFromConfig = (
 ): TileLayer | VectorLayer | ImageLayer<ImageWMS> | null => {
   if (layerDef.type === 'geojson' && layerDef.geojsonUrl) {
     return createGeoJsonThemeLayer(layerDef, projection);
+  }
+
+  // Drawn and made interactive by the hover overlay; this empty layer only marks
+  // the entry as on, so URL state, legend and removal work like any other.
+  if (layerDef.type === 'vector') {
+    return new VectorLayer({
+      source: new VectorSource(),
+      properties: {
+        id: `theme.${layerDef.id}`,
+        queryable: false,
+        layerTitle: layerDef.name.nb || layerDef.id,
+      },
+    });
   }
 
   if (!layerDef.layers) {

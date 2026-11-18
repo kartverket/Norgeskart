@@ -11,6 +11,7 @@ import { tilgjengelighetConfig } from './config/themeLayers/tilgjengelighet';
 import { topoQgisConfig } from './config/themeLayers/topoQgis';
 import { topoQgisForenkletConfig } from './config/themeLayers/topoQgisForenklet';
 import { topoQgisGraaConfig } from './config/themeLayers/topoQgisGraa';
+import { vectorDataConfig } from './config/themeLayers/vectorData';
 import { ThemeLayerName } from './themeWMS';
 
 export interface FieldConfig {
@@ -61,7 +62,9 @@ export interface ThemeLayerDefinition {
     nn: string;
     en: string;
   };
-  type?: 'wms' | 'geojson';
+  // vector: our own vector tiles; switching it on makes hoverGroups interactive.
+  type?: 'wms' | 'geojson' | 'vector';
+  hoverGroups?: string[];
   wmsUrl?: string;
   geojsonUrl?: string;
   sourceEpsg?: string;
@@ -104,6 +107,7 @@ const getThemeLayerConfig = () => {
     placeNamesConfig,
     fastmerkerLayerConfig,
     dekningConfig,
+    vectorDataConfig,
     ...(getEnv().layerProviderParameters.topoRgis.fargeUrl
       ? [topoQgisConfig, topoQgisGraaConfig, topoQgisForenkletConfig]
       : []),
