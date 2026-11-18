@@ -320,6 +320,29 @@
               "removeall": "Remove all"
             }
           }
+        },
+        "style": {
+          "button": "Change appearance",
+          "color": "Colour",
+          "original": "Default",
+          "width": "Line width",
+          "widths": {
+            "thin": "Thin",
+            "normal": "Normal",
+            "thick": "Thick"
+          },
+          "show": "Show on map",
+          "reset": "Reset",
+          "colors": {
+            "black": "Black",
+            "white": "White",
+            "red": "Red",
+            "orange": "Orange",
+            "yellow": "Yellow",
+            "green": "Green",
+            "blue": "Blue",
+            "purple": "Purple"
+          }
         }
       }
     },

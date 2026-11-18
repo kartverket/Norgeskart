@@ -29,6 +29,15 @@ export type HoverGroup = {
   // Drawn faintly while its Kartdetalj is on, where the raster map doesn't already
   // show it (protected areas, maritime borders, hazards, airports).
   display?: boolean;
+  // Drawn from another archive instead: areas that tile the whole map (kommuner)
+  // read as their borders, not as a fill over everything.
+  displaySource?: {
+    source: string;
+    sourceLayer: string;
+    filter: (properties: Properties, zoom: number) => boolean;
+    // Relative width per feature (fylke and riks borders heavier).
+    weight?: (properties: Properties) => number;
+  };
   // Lower wins when groups overlap.
   rank?: (properties: Properties) => number;
   describe: (properties: Properties, zoom: number) => Hovered;
@@ -333,6 +342,16 @@ export const HOVER_GROUPS: HoverGroup[] = [
     sources: ['n50_adm_kommune_flate'],
     sourceLayer: () => 'adm_kommune_flate',
     color: () => '#37474f',
+    displaySource: {
+      source: 'adm_grenser_linje',
+      sourceLayer: 'adm_grenser_linje',
+      // Zoomed out, where hover shows fylker, only fylke and riks borders.
+      filter: (p, zoom) =>
+        p.avgrensningstype === 'Fylkesgrense' ||
+        p.avgrensningstype === 'Riksgrense' ||
+        (p.avgrensningstype === 'Kommunegrense' && zoom >= FYLKE_MAX_ZOOM),
+      weight: (p) => (p.avgrensningstype === 'Kommunegrense' ? 1 : 1.8),
+    },
     // One source for both: zoomed out the same polygons highlight as a whole fylke.
     describe: (p, zoom) =>
       zoom < FYLKE_MAX_ZOOM
@@ -356,7 +375,11 @@ export const HOVER_GROUPS: HoverGroup[] = [
   },
 ];
 
-export const hoverSources = () => HOVER_GROUPS.flatMap((g) => g.sources);
+export const hoverSources = () =>
+  HOVER_GROUPS.flatMap((g) => [
+    ...g.sources,
+    ...(g.displaySource ? [g.displaySource.source] : []),
+  ]);
 
 // One archive per zoom: coarser archives would otherwise be over-zoomed forever,
 // so without a maxzoom each pixel would hit a generalized copy of the same area.

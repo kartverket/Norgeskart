@@ -122,6 +122,7 @@ export const MapThemes = () => {
         name: layer.id as ThemeLayerName,
         label: layer.name[currentLang] || layer.name.nb,
         notReady: layer.notReady,
+        styleable: layer.type === 'vector',
       }));
 
       if (subcategories.length > 0) {
@@ -136,6 +137,7 @@ export const MapThemes = () => {
               name: layer.id as ThemeLayerName,
               label: layer.name[currentLang] || layer.name.nb,
               notReady: layer.notReady,
+              styleable: layer.type === 'vector',
             })),
           };
         });

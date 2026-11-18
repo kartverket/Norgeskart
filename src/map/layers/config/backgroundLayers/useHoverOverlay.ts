@@ -7,7 +7,8 @@ import {
   mapToolAtom,
 } from '../../../overlay/atoms';
 import { activeThemeLayersAtom } from '../../atoms';
-import { hoverGroupsFor } from '../themeLayers/vectorData';
+import { userStylesAtom } from '../../userStyles';
+import { groupStylesFor, hoverGroupsFor } from '../themeLayers/vectorData';
 import { isHoverPaused } from './hover';
 import { createHoverOverlay } from './hoverOverlay';
 
@@ -16,6 +17,7 @@ type Overlay = NonNullable<Awaited<ReturnType<typeof createHoverOverlay>>>;
 export const useHoverOverlay = () => {
   const tool = useAtomValue(mapToolAtom);
   const activeThemeLayers = useAtomValue(activeThemeLayersAtom);
+  const userStyles = useAtomValue(userStylesAtom);
   const setAvailable = useSetAtom(hoverAvailableAtom);
   const setStatus = useSetAtom(hoverStatusAtom);
   const overlay = useRef<Overlay | null>(null);
@@ -36,6 +38,7 @@ export const useHoverOverlay = () => {
           overlay.current = null;
         };
         created.layer.setVisible(!isHoverPaused(store.get(mapToolAtom)));
+        created.setGroupStyles(groupStylesFor(store.get(userStylesAtom)));
         created.setActiveGroups(
           hoverGroupsFor(store.get(activeThemeLayersAtom)),
         );
@@ -58,4 +61,8 @@ export const useHoverOverlay = () => {
   useEffect(() => {
     overlay.current?.setActiveGroups(hoverGroupsFor(activeThemeLayers));
   }, [activeThemeLayers]);
+
+  useEffect(() => {
+    overlay.current?.setGroupStyles(groupStylesFor(userStyles));
+  }, [userStyles]);
 };

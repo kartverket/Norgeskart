@@ -2,7 +2,11 @@ import { Box, Button, Flex, Text, Tooltip } from '@kvib/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { activeThemeLayersAtom } from '../map/layers/atoms';
-import { activeVectorEntries } from '../map/layers/config/themeLayers/vectorData';
+import {
+  activeVectorEntries,
+  entryColor,
+} from '../map/layers/config/themeLayers/vectorData';
+import { userStylesAtom } from '../map/layers/userStyles';
 import {
   hoverAvailableAtom,
   hoverStatusAtom,
@@ -16,6 +20,7 @@ export const HoverStatusChip = () => {
   const available = useAtomValue(hoverAvailableAtom);
   const status = useAtomValue(hoverStatusAtom);
   const activeThemeLayers = useAtomValue(activeThemeLayersAtom);
+  const userStyles = useAtomValue(userStylesAtom);
   const setMapTool = useSetAtom(mapToolAtom);
   if (!available) return null;
 
@@ -69,7 +74,7 @@ export const HoverStatusChip = () => {
                 width="10px"
                 height="10px"
                 borderRadius="full"
-                backgroundColor={entry.color}
+                backgroundColor={entryColor(entry, userStyles[entry.id])}
                 flex="none"
               />
               <Text fontSize="sm" whiteSpace="nowrap">

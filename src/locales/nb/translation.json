@@ -325,6 +325,29 @@
               "removeall": "Fjern alle"
             }
           }
+        },
+        "style": {
+          "button": "Endre utseende",
+          "color": "Farge",
+          "original": "Standard",
+          "width": "Linjebredde",
+          "widths": {
+            "thin": "Tynn",
+            "normal": "Normal",
+            "thick": "Tykk"
+          },
+          "show": "Vis i kartet",
+          "reset": "Tilbakestill",
+          "colors": {
+            "black": "Svart",
+            "white": "Hvit",
+            "red": "Rød",
+            "orange": "Oransje",
+            "yellow": "Gul",
+            "green": "Grønn",
+            "blue": "Blå",
+            "purple": "Lilla"
+          }
         }
       }
     },

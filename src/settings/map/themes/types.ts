@@ -18,4 +18,6 @@ export type ThemeLayer = {
   name: ThemeLayerName;
   label: string;
   notReady?: boolean;
+  // Has a user style (vector data): shows the style button when on.
+  styleable?: boolean;
 };

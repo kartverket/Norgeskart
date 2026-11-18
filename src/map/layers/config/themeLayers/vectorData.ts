@@ -2,6 +2,9 @@ import {
   ThemeLayerConfig,
   ThemeLayerDefinition,
 } from '../../themeLayerConfigApi';
+import { type UserStyle, widthScale } from '../../userStyles';
+import { HOVER_GROUPS } from '../backgroundLayers/hover';
+import type { GroupStyle } from '../backgroundLayers/hoverEngine';
 
 // Kartdetaljer backed by our own vector tiles (tnt-martin). Switching one on makes
 // its hover groups (backgroundLayers/hover.ts) hoverable and clickable. Martin is
@@ -139,3 +142,39 @@ export const activeVectorEntries = (activeLayers: Iterable<string>) => {
   const active = new Set(activeLayers);
   return ENTRIES.filter((entry) => active.has(entry.id));
 };
+
+const groupDisplays = (entry: VectorEntry) =>
+  entry.hoverGroups.some(
+    (id) => HOVER_GROUPS.find((group) => group.id === id)?.display,
+  );
+
+/** Whether an entry is drawn on the map (not just on hover) unless the user says otherwise. */
+export const shownByDefault = (id: string) => {
+  const entry = ENTRIES.find((e) => e.id === id);
+  return entry ? groupDisplays(entry) : false;
+};
+
+/** The colour an entry shows in, the user's or its own. */
+export const entryColor = (entry: VectorEntry, style?: UserStyle) =>
+  style?.color ?? entry.color;
+
+/**
+ * Each hover group's look from the user's style per Kartdetalj. An entry covering
+ * several groups (Dybder) styles them all; drawing defaults to each group's own.
+ */
+export const groupStylesFor = (styles: Record<string, UserStyle>) =>
+  Object.fromEntries(
+    ENTRIES.flatMap((entry) => {
+      const style = styles[entry.id];
+      return entry.hoverGroups.map((id): [string, GroupStyle] => [
+        id,
+        {
+          color: style?.color,
+          widthScale: widthScale(style),
+          display:
+            style?.show ??
+            Boolean(HOVER_GROUPS.find((group) => group.id === id)?.display),
+        },
+      ]);
+    }),
+  );

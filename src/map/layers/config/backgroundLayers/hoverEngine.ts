@@ -76,6 +76,7 @@ type Candidate = {
 type Mark = {
   hovered: Hovered;
   group: HoverGroup;
+  properties: Properties;
   hoverSource: HoverSource;
   color: string;
   point?: Coordinate;
@@ -85,6 +86,15 @@ type MarkName = 'hover' | 'selected';
 
 // Room the tooltip needs beside the cursor, in CSS pixels, before it flips sides.
 const TOOLTIP_ROOM = [290, 150];
+
+/** A user's look for a hover group (from the Kartdetalj's style settings). */
+export type GroupStyle = {
+  // undefined = the group's own colours.
+  color?: string;
+  widthScale: number;
+  // Drawn on the map, not only highlighted on hover.
+  display: boolean;
+};
 
 /** groupId → whether the current zoom shows it. */
 export type HoverStatus = Record<string, boolean>;
@@ -150,27 +160,30 @@ const withAlpha = (color: string, alpha: number) => {
 
 // Hit and display style of a band's layer. Points are hit-tested from the parsed
 // tiles (findPoints): OL's hit detection misses symbols on vector tile layers.
-const bandStyle = (group: HoverGroup, kind: HoverKind) => {
+const bandStyle = (group: HoverGroup, kind: HoverKind, look: GroupStyle) => {
   const cache = new Map<string, Style | Style[]>();
   const wideHit = new Stroke({ color: TRANSPARENT, width: 14 });
   const make = (color: string): Style | Style[] | undefined => {
     if (kind === 'fill') {
+      const drawn = look.display && !group.displaySource;
       return new Style({
-        fill: new Fill({ color: group.display ? color : TRANSPARENT }),
+        fill: new Fill({ color: drawn ? color : TRANSPARENT }),
       });
     }
     if (kind === 'line') {
-      return group.display
+      return look.display
         ? [
-            new Style({ stroke: new Stroke({ color, width: 1.5 }) }),
+            new Style({
+              stroke: new Stroke({ color, width: 1.5 * look.widthScale }),
+            }),
             new Style({ stroke: wideHit }),
           ]
         : new Style({ stroke: wideHit });
     }
-    return group.display
+    return look.display
       ? new Style({
           image: new Circle({
-            radius: 3.5,
+            radius: 3.5 * look.widthScale,
             fill: new Fill({ color }),
             stroke: new Stroke({ color: '#ffffff', width: 1 }),
           }),
@@ -180,7 +193,7 @@ const bandStyle = (group: HoverGroup, kind: HoverKind) => {
   return (feature: RenderFeature | Feature) => {
     const properties = feature.getProperties();
     if (group.filter && !group.filter(properties)) return undefined;
-    const color = group.color(properties);
+    const color = look.color ?? group.color(properties);
     if (!cache.has(color)) {
       const style = make(color);
       if (!style) return undefined;
@@ -190,8 +203,13 @@ const bandStyle = (group: HoverGroup, kind: HoverKind) => {
   };
 };
 
-const markStyles = (kind: HoverKind, color: string, strong: boolean) => {
-  const width = strong ? 3 : 2;
+const markStyles = (
+  kind: HoverKind,
+  color: string,
+  strong: boolean,
+  scale: number,
+) => {
+  const width = (strong ? 3 : 2) * scale;
   const halo = new Stroke({ color: '#ffffff', width: width + 4 });
   if (kind === 'fill') {
     return {
@@ -215,7 +233,7 @@ const markStyles = (kind: HoverKind, color: string, strong: boolean) => {
     fill: undefined,
     stroke: new Style({
       image: new Circle({
-        radius: strong ? 10 : 8,
+        radius: (strong ? 10 : 8) * Math.max(1, scale * 0.8),
         fill: new Fill({ color: withAlpha(color, 0.3) }),
         stroke: new Stroke({ color, width: width + 0.5 }),
       }),
@@ -336,6 +354,11 @@ export const createHoverLayers = (
   onStatus?: (status: HoverStatus) => void,
 ) => {
   let activeGroups = new Set<string>();
+  let groupStyles: Record<string, GroupStyle> = {};
+  const lookOf = (group: HoverGroup): GroupStyle =>
+    groupStyles[group.id] ?? { widthScale: 1, display: Boolean(group.display) };
+  const colorOf = (group: HoverGroup, properties: Properties) =>
+    lookOf(group).color ?? group.color(properties);
   const marks: Record<MarkName, Mark | undefined> = {
     hover: undefined,
     selected: undefined,
@@ -378,7 +401,7 @@ export const createHoverLayers = (
       const hoverSource = sourceFor(group, band.source);
       const hit = new VectorTileLayer({
         source: hoverSource.source,
-        style: bandStyle(group, hoverSource.kind),
+        style: bandStyle(group, hoverSource.kind, lookOf(group)),
         // Only what's drawn faintly is seen; the rest is there to be hit.
         opacity: hoverSource.kind === 'fill' ? 0.25 : 0.8,
         visible: false,
@@ -387,6 +410,52 @@ export const createHoverLayers = (
     }
   }
   const hitLayers = new Map(bands.map((b) => [b.hit, b]));
+
+  // Groups drawn from another archive (displaySource): display only, never hit.
+  const displayStyle = (group: HoverGroup) => {
+    const look = lookOf(group);
+    const source = group.displaySource!;
+    const cache = new Map<number, Style>();
+    return (feature: RenderFeature | Feature) => {
+      const properties = feature.getProperties();
+      if (!source.filter(properties, zoom())) return undefined;
+      const weight = source.weight?.(properties) ?? 1;
+      if (!cache.has(weight)) {
+        cache.set(
+          weight,
+          new Style({
+            stroke: new Stroke({
+              color: look.color ?? group.color(properties),
+              width: 1.2 * weight * look.widthScale,
+            }),
+          }),
+        );
+      }
+      return cache.get(weight);
+    };
+  };
+  const displays = HOVER_GROUPS.flatMap((group) => {
+    const source = group.displaySource;
+    if (!source || !tileJsons[source.source]) return [];
+    const { source: tiles } = createHoverSource(
+      martinUrl,
+      source.source,
+      source.sourceLayer,
+      'line',
+      tileJsons[source.source],
+      () => undefined,
+    );
+    return [
+      {
+        group,
+        layer: new VectorTileLayer({
+          source: tiles,
+          style: displayStyle(group),
+          visible: false,
+        }),
+      },
+    ];
+  });
 
   const markLayers = Object.fromEntries(
     (['selected', 'hover'] as MarkName[]).map((name) => [
@@ -431,6 +500,7 @@ export const createHoverLayers = (
   const layerGroup = new LayerGroup({
     layers: [
       ...bands.map((b) => b.hit),
+      ...displays.map((d) => d.layer),
       markLayers.selected.fill,
       markLayers.selected.stroke,
       markLayers.hover.fill,
@@ -538,7 +608,12 @@ export const createHoverLayers = (
 
     const strong = name === 'selected';
     const { kind } = mark.hoverSource;
-    const styles = markStyles(kind, mark.color, strong);
+    const styles = markStyles(
+      kind,
+      mark.color,
+      strong,
+      lookOf(mark.group).widthScale,
+    );
     stroke.setStyle(styles.stroke);
     if (styles.fill) fill.setStyle(styles.fill);
     fill.setOpacity((mark.group.fillOpacity ?? 0.15) + (strong ? 0.12 : 0));
@@ -663,8 +738,9 @@ export const createHoverLayers = (
     return {
       hovered: picked.group.describe(picked.properties, zoom()),
       group: picked.group,
+      properties: picked.properties,
       hoverSource: picked.hoverSource,
-      color: picked.group.color(picked.properties),
+      color: colorOf(picked.group, picked.properties),
       point: picked.point,
     };
   };
@@ -741,9 +817,20 @@ export const createHoverLayers = (
     for (const { group, band, hit } of bands) {
       hit.setVisible(activeGroups.has(group.id) && inBand(band, z));
     }
+    for (const { group, layer } of displays) {
+      const shown =
+        activeGroups.has(group.id) &&
+        lookOf(group).display &&
+        bands.some((b) => b.group === group && inBand(b.band, z));
+      layer.setVisible(shown);
+      // Its filter depends on zoom (fylke vs kommune borders).
+      if (shown && Math.floor(z) !== lastDisplayZoom) layer.changed();
+    }
+    lastDisplayZoom = Math.floor(z);
     reportStatus();
   };
 
+  let lastDisplayZoom = -1;
   let viewKeys: EventsKey[] = [];
   const watchView = () => {
     unByKey(viewKeys);
@@ -806,5 +893,22 @@ export const createHoverLayers = (
     if (redraw !== undefined) cancelAnimationFrame(redraw);
   };
 
-  return { layer: layerGroup, dispose, setActiveGroups };
+  /** Each group's look, from the Kartdetaljer style settings. */
+  const setGroupStyles = (styles: Record<string, GroupStyle>) => {
+    groupStyles = styles;
+    for (const { group, hoverSource, hit } of bands) {
+      hit.setStyle(bandStyle(group, hoverSource.kind, lookOf(group)));
+    }
+    for (const { group, layer } of displays)
+      layer.setStyle(displayStyle(group));
+    updateBands();
+    for (const mark of Object.values(marks)) {
+      if (mark) mark.color = colorOf(mark.group, mark.properties);
+    }
+    drawAll();
+    if (marks.hover) showTooltip('hover');
+    if (marks.selected) showTooltip('selected');
+  };
+
+  return { layer: layerGroup, dispose, setActiveGroups, setGroupStyles };
 };

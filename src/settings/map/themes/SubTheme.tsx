@@ -19,6 +19,7 @@ import {
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
 import { SubTheme, ThemeLayer } from './types';
+import { VectorStyleButton } from './VectorStyleButton';
 
 export const SubThemeSection = ({
   subTheme,
@@ -156,13 +157,17 @@ export const LayerLine = ({
           </Badge>
         )}
       </Flex>
-      <Switch
-        marginRight={'24px'}
-        colorPalette="green"
-        size="xs"
-        checked={checked}
-        disabled={disabled}
-      />
+      <Flex alignItems="center" gap={1} marginRight={'24px'}>
+        {checked && layer.styleable && (
+          <VectorStyleButton layerName={layer.name} />
+        )}
+        <Switch
+          colorPalette="green"
+          size="xs"
+          checked={checked}
+          disabled={disabled}
+        />
+      </Flex>
     </Flex>
   );
 };

@@ -8,10 +8,14 @@ import {
 } from '../../../src/map/layers/config/backgroundLayers/hover';
 import {
   activeVectorEntries,
+  entryColor,
+  groupStylesFor,
   hoverGroupsFor,
   isVectorDataLayer,
+  shownByDefault,
   vectorDataConfig,
 } from '../../../src/map/layers/config/themeLayers/vectorData';
+import { STYLE_COLORS, WIDTH_SCALE } from '../../../src/map/layers/userStyles';
 
 describe('vector Kartdetaljer', () => {
   it('switches on the hover groups of the active entries only', () => {
@@ -89,6 +93,68 @@ describe('tooltip texts', () => {
       for (const [field] of details ?? []) {
         expect(hover.fields[field], field).toBeTruthy();
       }
+    }
+  });
+});
+
+describe('user styles', () => {
+  it('keeps each group as it is without a user style', () => {
+    const styles = groupStylesFor({});
+    expect(styles.protected).toEqual({
+      color: undefined,
+      widthScale: 1,
+      display: true,
+    });
+    expect(styles.road.display).toBe(false);
+  });
+
+  it('styles every group of an entry the same way', () => {
+    const styles = groupStylesFor({
+      vectorDepths: { color: '#ffd600', width: 'thick', show: true },
+    });
+    for (const group of ['seaHazard', 'shoal', 'depthContour', 'sounding']) {
+      expect(styles[group]).toEqual({
+        color: '#ffd600',
+        widthScale: WIDTH_SCALE.thick,
+        display: true,
+      });
+    }
+    expect(styles.kommune.color).toBeUndefined();
+  });
+
+  it('lets the user hide what is drawn by default', () => {
+    expect(
+      groupStylesFor({ vectorProtectedAreas: { show: false } }).protected
+        .display,
+    ).toBe(false);
+    expect(shownByDefault('vectorProtectedAreas')).toBe(true);
+    expect(shownByDefault('vectorRoads')).toBe(false);
+  });
+
+  it('shows the chosen colour in the chip', () => {
+    const [entry] = activeVectorEntries(['vectorRoads']);
+    expect(entryColor(entry)).toBe('#e65100');
+    expect(entryColor(entry, { color: '#000000' })).toBe('#000000');
+  });
+
+  it.each([
+    ['nb', nb],
+    ['nn', nn],
+    ['en', en],
+  ])('names every colour and width in %s', (_, locale) => {
+    const style = (
+      locale as unknown as {
+        map: {
+          settings: {
+            layers: { style: Record<string, Record<string, string>> };
+          };
+        };
+      }
+    ).map.settings.layers.style;
+    for (const { key } of STYLE_COLORS)
+      expect(style.colors[key], key).toBeTruthy();
+    for (const width of Object.keys(WIDTH_SCALE)) {
+      expect(style.widths[width], width).toBeTruthy();
     }
   });
 });
