@@ -23,6 +23,7 @@ export const DesktopLayout = () => {
     (currentMapTool !== null && currentMapTool !== 'measure') ||
     selectedResult !== null;
   const navigationWidth = isMinimized ? '50px' : '94px';
+  const sidePanelWidth = 364;
 
   return (
     <Grid
@@ -41,6 +42,7 @@ export const DesktopLayout = () => {
       </GridItem>
 
       <GridItem
+        className={isPanelOpen ? 'desktop-layout-map--panel-open' : undefined}
         gridColumn={2}
         gridRow={1}
         position="relative"
@@ -52,7 +54,7 @@ export const DesktopLayout = () => {
 
         <Box
           position="absolute"
-          left={isPanelOpen ? '374px' : '10px'}
+          left={isPanelOpen ? `${sidePanelWidth + 10}px` : '10px'}
           bottom="calc(6px + env(safe-area-inset-bottom))"
           zIndex={1}
         >
@@ -69,6 +71,11 @@ export const DesktopLayout = () => {
         </Box>
 
         <Box
+          className={
+            isPanelOpen
+              ? 'desktop-layout-bottom-controls--panel-open'
+              : 'desktop-layout-bottom-controls'
+          }
           position="absolute"
           left="50%"
           bottom="calc(6px + env(safe-area-inset-bottom))"
@@ -78,8 +85,8 @@ export const DesktopLayout = () => {
           bg="#FFFF"
           borderRadius="4px"
           shadow="lg"
-          px={1}
-          py={1}
+          px={0.5}
+          py={0.5}
         >
           <BottomControls />
         </Box>
@@ -89,7 +96,7 @@ export const DesktopLayout = () => {
             position="absolute"
             top="env(safe-area-inset-top)"
             left={0}
-            width="364px"
+            width={`${sidePanelWidth}px`}
             height="100%"
             zIndex={2}
           >

@@ -72,7 +72,7 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
 
   return (
     <VStack border="none">
-      <HStack alignItems={'center'} gap={0} w="200px">
+      <HStack alignItems={'center'} gap={0} w="180px">
         <SelectRoot
           size="sm"
           collection={createListCollection({ items: projectionCollection })}
@@ -99,10 +99,10 @@ export const ProjectionSelector = (props: ProjectionSelectorProps) => {
                 portalled={false}
                 positioning={{ placement: 'top' }}
               >
-                <SelectValueText color={props.textColor} />
+                <SelectValueText color={props.textColor} fontSize="xs" />
               </Tooltip>
             ) : (
-              <SelectValueText color={props.textColor} />
+              <SelectValueText color={props.textColor} fontSize="xs" />
             )}
           </SelectTrigger>
           <SelectContent portalled={true}>
