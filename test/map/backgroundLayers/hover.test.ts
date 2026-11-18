@@ -5,7 +5,9 @@ import {
   inBand,
   isHoverPaused,
   kindOf,
+  norwegianDate,
   pickFeature,
+  protectedAreaName,
 } from '../../../src/map/layers/config/backgroundLayers/hover';
 
 const group = (id: string) => HOVER_GROUPS.find((g) => g.id === id)!;
@@ -282,5 +284,54 @@ describe('batch 1 groups', () => {
     const kommune = hit('kommune');
     expect(pickFeature([kommune, road, address])).toBe(address);
     expect(pickFeature([kommune, road])).toBe(road);
+  });
+});
+
+describe('protection form and date', () => {
+  const { describe: describeProtected } = HOVER_GROUPS.find(
+    (g) => g.id === 'protected',
+  )!;
+
+  it('names Hardangervidda as the national park it is, with its date', () => {
+    const hovered = describeProtected(
+      {
+        objtype: 'Naturvernområde',
+        navn: 'Hardangervidda',
+        verneform: 'NP',
+        vernedato: '1981-04-10T00:00:00Z',
+      },
+      10,
+    );
+    expect(hovered.label).toBe('Hardangervidda nasjonalpark');
+    expect(hovered.type).toBe('nationalPark');
+    expect(hovered.details).toEqual([['protectedSince', '10.04.1981']]);
+  });
+
+  it('does not repeat a form the name already has', () => {
+    expect(protectedAreaName('Jotunheimen nasjonalpark', 'NP')).toBe(
+      'Jotunheimen nasjonalpark',
+    );
+    expect(protectedAreaName('Saltstraumen', 'MAV')).toBe(
+      'Saltstraumen marine verneområde',
+    );
+    expect(protectedAreaName('Hovedøya', 'NR')).toBe('Hovedøya naturreservat');
+    expect(protectedAreaName('Kvitebjørnen', 'D')).toBe('Kvitebjørnen');
+  });
+
+  it('keeps today’s tiles, without the columns, as they were', () => {
+    const hovered = describeProtected(
+      { objtype: 'Naturvernområde', navn: 'Jøndalsåsen' },
+      10,
+    );
+    expect(hovered.label).toBe('Jøndalsåsen');
+    expect(hovered.type).toBe('natureProtection');
+    expect(hovered.details).toEqual([]);
+  });
+
+  it('reads dates as text or epoch ms, and drops what it cannot read', () => {
+    expect(norwegianDate('1981-04-10')).toBe('10.04.1981');
+    expect(norwegianDate(Date.UTC(2004, 0, 2))).toBe('02.01.2004');
+    expect(norwegianDate('not a date')).toBe('');
+    expect(norwegianDate(null)).toBe('');
   });
 });

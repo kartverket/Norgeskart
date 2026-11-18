@@ -399,12 +399,21 @@
         "sounding": "Dybde",
         "road": "Veg",
         "maritimeBorder": "Maritim grense",
-        "natureReserve": "Naturvernområde",
+        "natureReserve": "Naturreservat",
         "firingRange": "Skytefelt",
         "commons": "Allmenning",
         "protectedArea": "Verneområde",
         "municipality": "Kommune",
-        "county": "Fylke"
+        "county": "Fylke",
+        "natureProtection": "Naturvernområde",
+        "nationalPark": "Nasjonalpark",
+        "landscapeProtection": "Landskapsvernområde",
+        "marineProtection": "Marint verneområde",
+        "naturalMonument": "Naturminne",
+        "wildlifeProtection": "Dyrelivsfredning",
+        "plantProtection": "Plantelivsfredning",
+        "plantWildlifeProtection": "Plante- og dyrelivsfredning",
+        "biotopeProtection": "Biotopvern"
       },
       "fields": {
         "iata": "IATA",
@@ -414,7 +423,8 @@
         "kind": "Type",
         "county": "Fylke",
         "countyNumber": "Fylkesnummer",
-        "municipalityNumber": "Kommunenummer"
+        "municipalityNumber": "Kommunenummer",
+        "protectedSince": "Vernet"
       },
       "close": "Lukk",
       "chip": {

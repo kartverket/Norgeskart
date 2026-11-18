@@ -136,9 +136,54 @@ const fields = (rows: [string, unknown][]): [string, string][] =>
   rows.flatMap(([field, value]) => (text(value) ? [[field, text(value)]] : []));
 
 const PROTECTED_TYPE_KEYS: Record<string, string> = {
-  Naturvernområde: 'natureReserve',
+  Naturvernområde: 'natureProtection',
   Skytefelt: 'firingRange',
   Allmenning: 'commons',
+};
+
+// N50 verneform codes (Miljødirektoratet's protection forms). The type names the
+// form in the tooltip; the suffix completes the name the way the area is known
+// ("Hardangervidda" + NP = "Hardangervidda nasjonalpark").
+const PROTECTION_FORMS: Record<string, { type: string; suffix?: string }> = {
+  NP: { type: 'nationalPark', suffix: 'nasjonalpark' },
+  NR: { type: 'natureReserve', suffix: 'naturreservat' },
+  LVO: { type: 'landscapeProtection', suffix: 'landskapsvernområde' },
+  LVOD: { type: 'landscapeProtection', suffix: 'landskapsvernområde' },
+  LVOP: { type: 'landscapeProtection', suffix: 'landskapsvernområde' },
+  LVOPD: { type: 'landscapeProtection', suffix: 'landskapsvernområde' },
+  LVOB: { type: 'landscapeProtection', suffix: 'landskapsvernområde' },
+  MAV: { type: 'marineProtection', suffix: 'marine verneområde' },
+  NM: { type: 'naturalMonument' },
+  D: { type: 'wildlifeProtection' },
+  DO: { type: 'wildlifeProtection' },
+  P: { type: 'plantProtection' },
+  PO: { type: 'plantProtection' },
+  PD: { type: 'plantWildlifeProtection' },
+  PDO: { type: 'plantWildlifeProtection' },
+  BV: { type: 'biotopeProtection' },
+  BVV: { type: 'biotopeProtection' },
+};
+
+/** "Hardangervidda" + NP = "Hardangervidda nasjonalpark", unless it already says so. */
+export const protectedAreaName = (name: string, verneform: unknown) => {
+  const suffix = PROTECTION_FORMS[text(verneform)]?.suffix;
+  if (!suffix || name.toLowerCase().includes(suffix.split(' ').pop()!)) {
+    return name;
+  }
+  return `${name} ${suffix}`;
+};
+
+/** A date from the tiles (ISO string or epoch ms) as dd.mm.yyyy, or '' if unreadable. */
+export const norwegianDate = (value: unknown) => {
+  if (value == null || value === '') return '';
+  const date = new Date(typeof value === 'number' ? value : String(value));
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('nb-NO', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
 };
 
 const SEA_HAZARD_TYPES: Record<string, string> = {
@@ -328,11 +373,17 @@ export const HOVER_GROUPS: HoverGroup[] = [
     filter: (p) => PROTECTED_TYPES.includes(text(p.objtype)),
     rank: (p) => PROTECTED_TYPES.indexOf(text(p.objtype)),
     display: true,
+    // verneform/vernedato only on N50 naturvernområder (z9+), and only once the
+    // ingestor carries them; without them the area shows its bare name and kind.
     describe: (p) => ({
       key: `protected|${text(p.objtype)}|${text(p.navn)}`,
       matches: highlightFilter(text(p.objtype), text(p.navn)),
-      label: text(p.navn),
-      type: PROTECTED_TYPE_KEYS[text(p.objtype)] ?? 'protectedArea',
+      label: protectedAreaName(text(p.navn), p.verneform),
+      type:
+        PROTECTION_FORMS[text(p.verneform)]?.type ??
+        PROTECTED_TYPE_KEYS[text(p.objtype)] ??
+        'protectedArea',
+      details: fields([['protectedSince', norwegianDate(p.vernedato)]]),
     }),
   },
   {

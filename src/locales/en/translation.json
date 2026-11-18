@@ -399,7 +399,16 @@
         "commons": "Commons",
         "protectedArea": "Protected area",
         "municipality": "Municipality",
-        "county": "County"
+        "county": "County",
+        "natureProtection": "Protected nature area",
+        "nationalPark": "National park",
+        "landscapeProtection": "Protected landscape",
+        "marineProtection": "Marine protected area",
+        "naturalMonument": "Natural monument",
+        "wildlifeProtection": "Wildlife sanctuary",
+        "plantProtection": "Plant sanctuary",
+        "plantWildlifeProtection": "Plant and wildlife sanctuary",
+        "biotopeProtection": "Biotope protection"
       },
       "fields": {
         "iata": "IATA",
@@ -409,7 +418,8 @@
         "kind": "Type",
         "county": "County",
         "countyNumber": "County number",
-        "municipalityNumber": "Municipality number"
+        "municipalityNumber": "Municipality number",
+        "protectedSince": "Protected since"
       },
       "close": "Close",
       "chip": {
