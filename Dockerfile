@@ -1,4 +1,4 @@
-FROM caddy:2.11.7-alpine@sha256:24ec7b05bc532c7bb57f727030c5056e257ff7138b4b50460306819ff79362bd
+FROM caddy:2.11.9-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0
 
 RUN apk add --no-cache --upgrade 'brotli-libs>=1.2.1-r0'
 
