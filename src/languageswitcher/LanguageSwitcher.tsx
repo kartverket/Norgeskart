@@ -100,12 +100,7 @@ export const LanguageSwitcher = ({
           onOpenChange={(event) => setDialogOpen(event.open)}
           size="sm"
         >
-          <DialogContent
-            position="fixed"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-          >
+          <DialogContent>
             <DialogHeader>
               <DialogTitle>Språk</DialogTitle>
             </DialogHeader>
