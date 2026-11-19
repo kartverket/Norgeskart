@@ -54,7 +54,7 @@ export const createGeoJsonThemeLayer = (
   mapProjection: string,
   featureInfo: {
     featureInfoFields?: FieldConfig[];
-    featureInfoLink?: FeatureInfoLink;
+    featureInfoLinks?: FeatureInfoLink[];
   } = {},
 ): VectorLayer => {
   const sourceEpsg = layerDef.sourceEpsg ?? 'EPSG:4326';
@@ -76,8 +76,8 @@ export const createGeoJsonThemeLayer = (
       ...(featureInfo.featureInfoFields
         ? { featureInfoFields: featureInfo.featureInfoFields }
         : {}),
-      ...(featureInfo.featureInfoLink
-        ? { featureInfoLink: featureInfo.featureInfoLink }
+      ...(featureInfo.featureInfoLinks
+        ? { featureInfoLinks: featureInfo.featureInfoLinks }
         : {}),
     },
   });

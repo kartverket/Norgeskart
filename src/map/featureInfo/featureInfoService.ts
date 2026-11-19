@@ -514,15 +514,15 @@ export const getVectorFeaturesAtPixel = (
         layerId.replace('theme.', '');
       const fieldConfigs = record.layer.get('featureInfoFields') as
         FieldConfig[] | undefined;
-      const link = record.layer.get('featureInfoLink') as
-        FeatureInfoLink | undefined;
+      const links = record.layer.get('featureInfoLinks') as
+        FeatureInfoLink[] | undefined;
 
       results.push({
         layerId,
         layerTitle,
         features: record.features,
         ...(fieldConfigs ? { fieldConfigs } : {}),
-        ...(link ? { link } : {}),
+        ...(links ? { links } : {}),
       });
     }
   }

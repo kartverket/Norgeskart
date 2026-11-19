@@ -19,7 +19,7 @@ export interface LayerFeatureInfo {
   error?: string;
   imageBaseUrl?: string;
   fieldConfigs?: FieldConfig[];
-  link?: FeatureInfoLink;
+  links?: FeatureInfoLink[];
 }
 
 export interface FeatureInfoResult {

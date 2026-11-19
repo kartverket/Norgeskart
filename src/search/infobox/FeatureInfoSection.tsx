@@ -25,7 +25,10 @@ import type {
   FeatureProperties,
   LayerFeatureInfo,
 } from '../../map/featureInfo/types';
-import type { FieldConfig } from '../../map/layers/themeLayerConfigApi';
+import type {
+  FeatureInfoLink,
+  FieldConfig,
+} from '../../map/layers/themeLayerConfigApi';
 
 type Entry = [string, string | number | boolean | null];
 
@@ -364,6 +367,44 @@ const FeatureProperties = ({
   );
 };
 
+type Lang = 'nb' | 'nn' | 'en';
+
+const PLACEHOLDER = /\{(\w+)\}/g;
+const isPerFeature = (link: FeatureInfoLink, lang: Lang) =>
+  /\{\w+\}/.test(link.url[lang]);
+
+// Fills {field} from the feature; null if any value is missing.
+const fillUrl = (
+  template: string,
+  properties: FeatureProperties,
+): string | null => {
+  let missing = false;
+  const url = template.replace(PLACEHOLDER, (_, field: string) => {
+    const value = properties[field];
+    if (value === null || value === undefined || String(value).trim() === '') {
+      missing = true;
+      return '';
+    }
+    return encodeURIComponent(String(value).trim());
+  });
+  return missing ? null : url;
+};
+
+const InfoLink = ({ href, label }: { href: string; label: string }) => (
+  <Link
+    fontSize="sm"
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    color="blue.600"
+    textDecoration="underline"
+    display="block"
+    mt={2}
+  >
+    {label}
+  </Link>
+);
+
 const LayerFeatureInfoSection = ({
   layerInfo,
 }: {
@@ -371,10 +412,16 @@ const LayerFeatureInfoSection = ({
 }) => {
   const { i18n } = useTranslation();
   const featureCount = layerInfo.features.length;
-  const lang =
+  const lang: Lang =
     (['nb', 'nn', 'en'] as const).find(
       (l) => l === i18n.language?.split('-')[0],
     ) ?? 'nb';
+  const featureLinks = (layerInfo.links ?? []).filter((l) =>
+    isPerFeature(l, lang),
+  );
+  const layerLinks = (layerInfo.links ?? []).filter(
+    (l) => !isPerFeature(l, lang),
+  );
 
   if (layerInfo.error) {
     return (
@@ -420,22 +467,21 @@ const LayerFeatureInfoSection = ({
               imageBaseUrl={layerInfo.imageBaseUrl}
               fieldConfigs={layerInfo.fieldConfigs}
             />
+            {featureLinks.map((link) => {
+              const href = fillUrl(link.url[lang], feature.properties);
+              return href ? (
+                <InfoLink key={href} href={href} label={link.label[lang]} />
+              ) : null;
+            })}
           </Box>
         ))}
-        {layerInfo.link && (
-          <Link
-            fontSize="sm"
-            href={layerInfo.link.url[lang]}
-            target="_blank"
-            rel="noopener noreferrer"
-            color="blue.600"
-            textDecoration="underline"
-            display="inline-block"
-            mt={2}
-          >
-            {layerInfo.link.label[lang]}
-          </Link>
-        )}
+        {layerLinks.map((link) => (
+          <InfoLink
+            key={link.url[lang]}
+            href={link.url[lang]}
+            label={link.label[lang]}
+          />
+        ))}
       </AccordionItemContent>
     </AccordionItem>
   );

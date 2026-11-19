@@ -147,15 +147,15 @@ export const createThemeLayerFromConfig = (
     layerDef.featureInfoFields ||
     category?.featureInfoFields ||
     parentCategory?.featureInfoFields;
-  const featureInfoLink =
-    layerDef.featureInfoLink ||
-    category?.featureInfoLink ||
-    parentCategory?.featureInfoLink;
+  const featureInfoLinks =
+    layerDef.featureInfoLinks ||
+    category?.featureInfoLinks ||
+    parentCategory?.featureInfoLinks;
 
   if (layerDef.type === 'geojson' && layerDef.geojsonUrl) {
     return createGeoJsonThemeLayer(layerDef, projection, {
       featureInfoFields,
-      featureInfoLink,
+      featureInfoLinks,
     });
   }
 

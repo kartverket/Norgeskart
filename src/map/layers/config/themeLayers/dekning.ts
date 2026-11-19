@@ -1,7 +1,13 @@
-import { FieldConfig, ThemeLayerConfig } from '../../themeLayerConfigApi';
+import {
+  FeatureInfoLink,
+  FieldConfig,
+  ThemeLayerConfig,
+} from '../../themeLayerConfigApi';
 
-// Only what a user needs to order the sheet from a dealer. Projection, datum and
-// the static edition stamp ('u') are left out: POD sheets are printed current.
+// Only what a user needs to identify and order the sheet. Projection and datum
+// are left out. The edition stamp ('u', e.g. "2025 Efs 15/25") matters — older
+// charts are invalid for navigation — but our static copy goes stale every Efs
+// issue, so we link to Kartverket's live per-chart Efs page instead.
 const seaChartFields: FieldConfig[] = [
   { name: 'n', alias: 'Kartnummer' },
   { name: 'name', alias: 'Navn' },
@@ -9,6 +15,34 @@ const seaChartFields: FieldConfig[] = [
 ];
 
 const n50Fields: FieldConfig[] = [{ name: 'n', alias: 'Kartbladnummer' }];
+
+// Current edition notice + all corrections since it, for this chart number.
+const efsLink: FeatureInfoLink = {
+  label: {
+    nb: 'Gjeldende utgave og rettelser (Efs)',
+    nn: 'Gjeldande utgåve og rettingar (Efs)',
+    en: 'Current edition and corrections (NtM)',
+  },
+  url: {
+    nb: 'https://kartverket.no/til-sjos/efs/sokeresultat?FreeText={n}&Filter=All',
+    nn: 'https://kartverket.no/til-sjos/efs/sokeresultat?FreeText={n}&Filter=All',
+    en: 'https://kartverket.no/en/at-sea/efs/search-result?FreeText={n}&Filter=All',
+  },
+};
+
+// Kartverket sells no paper maps; dealers print sheets on demand.
+const orderLink: FeatureInfoLink = {
+  label: {
+    nb: 'Slik bestiller du kartet',
+    nn: 'Slik bestiller du kartet',
+    en: 'How to order this map',
+  },
+  url: {
+    nb: 'https://kartverket.no/sider/bestille-kart',
+    nn: 'https://kartverket.no/sider/bestille-kart',
+    en: 'https://kartverket.no/en/pages/where-to-order-maps',
+  },
+};
 
 export const dekningConfig: ThemeLayerConfig = {
   categories: [
@@ -19,19 +53,6 @@ export const dekningConfig: ThemeLayerConfig = {
         nb: 'Kartbladoversikt',
         nn: 'Kartbladoversikt',
         en: 'Map sheet overview',
-      },
-      // Kartverket sells no paper maps; dealers print sheets on demand.
-      featureInfoLink: {
-        label: {
-          nb: 'Slik bestiller du kartet',
-          nn: 'Slik bestiller du kartet',
-          en: 'How to order this map',
-        },
-        url: {
-          nb: 'https://kartverket.no/sider/bestille-kart',
-          nn: 'https://kartverket.no/sider/bestille-kart',
-          en: 'https://kartverket.no/en/pages/where-to-order-maps',
-        },
       },
     },
   ],
@@ -51,6 +72,7 @@ export const dekningConfig: ThemeLayerConfig = {
       queryable: false,
       noLegend: true,
       featureInfoFields: seaChartFields,
+      featureInfoLinks: [efsLink, orderLink],
       style: {
         fill: {
           color: 'rgba(51, 153, 204, 0.2)',
@@ -88,6 +110,7 @@ export const dekningConfig: ThemeLayerConfig = {
       queryable: false,
       noLegend: true,
       featureInfoFields: n50Fields,
+      featureInfoLinks: [orderLink],
       style: {
         fill: {
           color: 'rgba(102, 178, 102, 0.2)',
@@ -124,6 +147,7 @@ export const dekningConfig: ThemeLayerConfig = {
       queryable: false,
       noLegend: true,
       featureInfoFields: seaChartFields,
+      featureInfoLinks: [efsLink, orderLink],
       style: {
         fill: {
           color: 'rgba(204, 153, 51, 0.2)',
@@ -160,6 +184,7 @@ export const dekningConfig: ThemeLayerConfig = {
       queryable: false,
       noLegend: true,
       featureInfoFields: seaChartFields,
+      featureInfoLinks: [efsLink, orderLink],
       style: {
         fill: {
           color: 'rgba(153, 102, 204, 0.2)',
@@ -196,6 +221,7 @@ export const dekningConfig: ThemeLayerConfig = {
       queryable: false,
       noLegend: true,
       featureInfoFields: seaChartFields,
+      featureInfoLinks: [efsLink, orderLink],
       style: {
         fill: {
           color: 'rgba(204, 51, 102, 0.2)',
@@ -232,6 +258,7 @@ export const dekningConfig: ThemeLayerConfig = {
       queryable: false,
       noLegend: true,
       featureInfoFields: seaChartFields,
+      featureInfoLinks: [efsLink, orderLink],
       style: {
         fill: {
           color: 'rgba(102, 178, 204, 0.2)',

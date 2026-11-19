@@ -22,7 +22,8 @@ export interface FieldConfig {
 
 type Localized = { nb: string; nn: string; en: string };
 
-// One fixed link under a layer's feature info, e.g. where to order a map sheet.
+// Link under a layer's feature info. `{field}` in the url is filled from the
+// clicked feature and the link is shown per feature; otherwise once per layer.
 export interface FeatureInfoLink {
   label: Localized;
   url: Localized;
@@ -41,7 +42,7 @@ export interface ThemeLayerCategory {
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];
-  featureInfoLink?: FeatureInfoLink;
+  featureInfoLinks?: FeatureInfoLink[];
 }
 
 export interface ThemeLayerStyle {
@@ -82,7 +83,7 @@ export interface ThemeLayerDefinition {
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];
-  featureInfoLink?: FeatureInfoLink;
+  featureInfoLinks?: FeatureInfoLink[];
   useLegendGraphic?: boolean;
   legendLayerNames?: string[];
   filter?: string;
