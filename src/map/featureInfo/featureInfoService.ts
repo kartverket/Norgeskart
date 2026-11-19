@@ -8,7 +8,10 @@ import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import { ImageWMS, TileWMS } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
-import type { FieldConfig } from '../layers/themeLayerConfigApi';
+import type {
+  FeatureInfoLink,
+  FieldConfig,
+} from '../layers/themeLayerConfigApi';
 import type {
   FeatureInfoFeature,
   FeatureInfoResult,
@@ -509,11 +512,17 @@ export const getVectorFeaturesAtPixel = (
         (record.layer.get('layerTitle') as string) ||
         (record.layer.get('title') as string) ||
         layerId.replace('theme.', '');
+      const fieldConfigs = record.layer.get('featureInfoFields') as
+        FieldConfig[] | undefined;
+      const link = record.layer.get('featureInfoLink') as
+        FeatureInfoLink | undefined;
 
       results.push({
         layerId,
         layerTitle,
         features: record.features,
+        ...(fieldConfigs ? { fieldConfigs } : {}),
+        ...(link ? { link } : {}),
       });
     }
   }

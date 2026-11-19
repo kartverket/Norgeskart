@@ -147,6 +147,12 @@ const formatPropertyValue = (
   if (value === null || value === undefined) return '-';
   if (typeof value === 'boolean') return value ? 'Ja' : 'Nei';
 
+  if (fieldConfig?.type === 'scale') {
+    const denominator = String(value).match(/^\s*1\s*:\s*(\d+)\s*$/)?.[1];
+    // nb-NO groups with a narrow no-break space: 1:50 000
+    if (denominator) return `1:${Number(denominator).toLocaleString('nb-NO')}`;
+  }
+
   let displayValue: string;
   if (typeof value === 'number') {
     if (fieldConfig?.decimals !== undefined) {
@@ -363,7 +369,12 @@ const LayerFeatureInfoSection = ({
 }: {
   layerInfo: LayerFeatureInfo;
 }) => {
+  const { i18n } = useTranslation();
   const featureCount = layerInfo.features.length;
+  const lang =
+    (['nb', 'nn', 'en'] as const).find(
+      (l) => l === i18n.language?.split('-')[0],
+    ) ?? 'nb';
 
   if (layerInfo.error) {
     return (
@@ -411,6 +422,20 @@ const LayerFeatureInfoSection = ({
             />
           </Box>
         ))}
+        {layerInfo.link && (
+          <Link
+            fontSize="sm"
+            href={layerInfo.link.url[lang]}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="blue.600"
+            textDecoration="underline"
+            display="inline-block"
+            mt={2}
+          >
+            {layerInfo.link.label[lang]}
+          </Link>
+        )}
       </AccordionItemContent>
     </AccordionItem>
   );

@@ -1,4 +1,14 @@
-import { ThemeLayerConfig } from '../../themeLayerConfigApi';
+import { FieldConfig, ThemeLayerConfig } from '../../themeLayerConfigApi';
+
+// Only what a user needs to order the sheet from a dealer. Projection, datum and
+// the static edition stamp ('u') are left out: POD sheets are printed current.
+const seaChartFields: FieldConfig[] = [
+  { name: 'n', alias: 'Kartnummer' },
+  { name: 'name', alias: 'Navn' },
+  { name: 's', alias: 'Målestokk', type: 'scale' },
+];
+
+const n50Fields: FieldConfig[] = [{ name: 'n', alias: 'Kartbladnummer' }];
 
 export const dekningConfig: ThemeLayerConfig = {
   categories: [
@@ -9,6 +19,19 @@ export const dekningConfig: ThemeLayerConfig = {
         nb: 'Kartbladoversikt',
         nn: 'Kartbladoversikt',
         en: 'Map sheet overview',
+      },
+      // Kartverket sells no paper maps; dealers print sheets on demand.
+      featureInfoLink: {
+        label: {
+          nb: 'Slik bestiller du kartet',
+          nn: 'Slik bestiller du kartet',
+          en: 'How to order this map',
+        },
+        url: {
+          nb: 'https://kartverket.no/sider/bestille-kart',
+          nn: 'https://kartverket.no/sider/bestille-kart',
+          en: 'https://kartverket.no/en/pages/where-to-order-maps',
+        },
       },
     },
   ],
@@ -27,6 +50,7 @@ export const dekningConfig: ThemeLayerConfig = {
       legacyId: 'dekning.8011',
       queryable: false,
       noLegend: true,
+      featureInfoFields: seaChartFields,
       style: {
         fill: {
           color: 'rgba(51, 153, 204, 0.2)',
@@ -63,6 +87,7 @@ export const dekningConfig: ThemeLayerConfig = {
       legacyId: 'dekning.8012',
       queryable: false,
       noLegend: true,
+      featureInfoFields: n50Fields,
       style: {
         fill: {
           color: 'rgba(102, 178, 102, 0.2)',
@@ -98,6 +123,7 @@ export const dekningConfig: ThemeLayerConfig = {
       legacyId: 'dekning.8013',
       queryable: false,
       noLegend: true,
+      featureInfoFields: seaChartFields,
       style: {
         fill: {
           color: 'rgba(204, 153, 51, 0.2)',
@@ -133,6 +159,7 @@ export const dekningConfig: ThemeLayerConfig = {
       legacyId: 'dekning.8014',
       queryable: false,
       noLegend: true,
+      featureInfoFields: seaChartFields,
       style: {
         fill: {
           color: 'rgba(153, 102, 204, 0.2)',
@@ -168,6 +195,7 @@ export const dekningConfig: ThemeLayerConfig = {
       legacyId: 'dekning.8015',
       queryable: false,
       noLegend: true,
+      featureInfoFields: seaChartFields,
       style: {
         fill: {
           color: 'rgba(204, 51, 102, 0.2)',
@@ -203,6 +231,7 @@ export const dekningConfig: ThemeLayerConfig = {
       legacyId: 'dekning.8016',
       queryable: false,
       noLegend: true,
+      featureInfoFields: seaChartFields,
       style: {
         fill: {
           color: 'rgba(102, 178, 204, 0.2)',

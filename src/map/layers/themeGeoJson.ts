@@ -6,6 +6,8 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style, Text } from 'ol/style';
 import type {
+  FeatureInfoLink,
+  FieldConfig,
   ThemeLayerDefinition,
   ThemeLayerStyle,
 } from './themeLayerConfigApi';
@@ -50,6 +52,10 @@ const createStyleFromConfig = (
 export const createGeoJsonThemeLayer = (
   layerDef: ThemeLayerDefinition,
   mapProjection: string,
+  featureInfo: {
+    featureInfoFields?: FieldConfig[];
+    featureInfoLink?: FeatureInfoLink;
+  } = {},
 ): VectorLayer => {
   const sourceEpsg = layerDef.sourceEpsg ?? 'EPSG:4326';
 
@@ -66,6 +72,13 @@ export const createGeoJsonThemeLayer = (
     style: createStyleFromConfig(layerDef.style),
     properties: {
       id: `theme.${layerDef.id}`,
+      layerTitle: layerDef.name.nb || layerDef.id,
+      ...(featureInfo.featureInfoFields
+        ? { featureInfoFields: featureInfo.featureInfoFields }
+        : {}),
+      ...(featureInfo.featureInfoLink
+        ? { featureInfoLink: featureInfo.featureInfoLink }
+        : {}),
     },
   });
 };

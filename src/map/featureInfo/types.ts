@@ -1,4 +1,7 @@
-import type { FieldConfig } from '../layers/themeLayerConfigApi';
+import type {
+  FeatureInfoLink,
+  FieldConfig,
+} from '../layers/themeLayerConfigApi';
 
 export interface FeatureProperties {
   [key: string]: string | number | boolean | null;
@@ -16,6 +19,7 @@ export interface LayerFeatureInfo {
   error?: string;
   imageBaseUrl?: string;
   fieldConfigs?: FieldConfig[];
+  link?: FeatureInfoLink;
 }
 
 export interface FeatureInfoResult {

@@ -138,8 +138,25 @@ export const createThemeLayerFromConfig = (
   layerDef: ThemeLayerDefinition,
   projection: string,
 ): TileLayer | VectorLayer | ImageLayer<ImageWMS> | null => {
+  // Feature-info settings fall back layer → category → parent category.
+  const category = getCategoryById(config, layerDef.categoryId);
+  const parentCategory = category
+    ? getParentCategory(config, category)
+    : undefined;
+  const featureInfoFields =
+    layerDef.featureInfoFields ||
+    category?.featureInfoFields ||
+    parentCategory?.featureInfoFields;
+  const featureInfoLink =
+    layerDef.featureInfoLink ||
+    category?.featureInfoLink ||
+    parentCategory?.featureInfoLink;
+
   if (layerDef.type === 'geojson' && layerDef.geojsonUrl) {
-    return createGeoJsonThemeLayer(layerDef, projection);
+    return createGeoJsonThemeLayer(layerDef, projection, {
+      featureInfoFields,
+      featureInfoLink,
+    });
   }
 
   if (!layerDef.layers) {
@@ -149,20 +166,12 @@ export const createThemeLayerFromConfig = (
 
   const wmsUrl = getEffectiveWmsUrl(config, layerDef);
 
-  const category = getCategoryById(config, layerDef.categoryId);
-  const parentCategory = category
-    ? getParentCategory(config, category)
-    : undefined;
   const infoFormat =
     layerDef.infoFormat || category?.infoFormat || parentCategory?.infoFormat;
   const featureInfoImageBaseUrl =
     layerDef.featureInfoImageBaseUrl ||
     category?.featureInfoImageBaseUrl ||
     parentCategory?.featureInfoImageBaseUrl;
-  const featureInfoFields =
-    layerDef.featureInfoFields ||
-    category?.featureInfoFields ||
-    parentCategory?.featureInfoFields;
 
   const layerProperties = {
     id: `theme.${layerDef.id}`,

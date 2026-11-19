@@ -12,11 +12,20 @@ import { ThemeLayerName } from './themeWMS';
 export interface FieldConfig {
   name: string;
   alias?: string;
-  type?: 'symbol' | 'link' | 'picture';
+  // scale: '1 : 50000' → '1:50 000'
+  type?: 'symbol' | 'link' | 'picture' | 'scale';
   baseurl?: string;
   filetype?: string;
   unit?: string;
   decimals?: number;
+}
+
+type Localized = { nb: string; nn: string; en: string };
+
+// One fixed link under a layer's feature info, e.g. where to order a map sheet.
+export interface FeatureInfoLink {
+  label: Localized;
+  url: Localized;
 }
 
 export interface ThemeLayerCategory {
@@ -32,6 +41,7 @@ export interface ThemeLayerCategory {
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];
+  featureInfoLink?: FeatureInfoLink;
 }
 
 export interface ThemeLayerStyle {
@@ -72,6 +82,7 @@ export interface ThemeLayerDefinition {
   infoFormat?: string;
   featureInfoImageBaseUrl?: string;
   featureInfoFields?: FieldConfig[];
+  featureInfoLink?: FeatureInfoLink;
   useLegendGraphic?: boolean;
   legendLayerNames?: string[];
   filter?: string;
