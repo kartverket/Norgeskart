@@ -51,9 +51,10 @@ export const topoCacheBackgroundLayers: BackgroundLayer[] = [
         utm35n: 'utm35n_2x',
       },
     },
-    legendUrl:
-      env.layerProviderParameters.topoCache.baseUrl +
-      '/legend/topo-{scale}.png',
+    // Legend temporarily hidden until it's ready.
+    // legendUrl:
+    //   env.layerProviderParameters.topoCache.baseUrl +
+    //   '/legend/topo-{scale}.png',
   },
   {
     type: 'WMTS',

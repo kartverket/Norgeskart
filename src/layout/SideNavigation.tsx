@@ -114,7 +114,7 @@ export const SideNavigation = ({
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Kartverket"
-            marginBottom={4}
+            marginBottom={2}
           >
             <Image
               src="/logos/KV_logo_staa_color.svg"
@@ -132,7 +132,7 @@ export const SideNavigation = ({
             onClick={onToggleMinimized}
           />
         </Box>
-        <Separator width="100%" my={isMinimized ? 1 : 4} />
+        <Separator width="100%" my={isMinimized ? 1 : 3} />
         <VStack width="100%" gap={isMinimized ? 4 : 6}>
           {navigationItems.slice(0, 2).map((item) => (
             <NavigationButton

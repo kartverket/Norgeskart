@@ -21,19 +21,18 @@ export const BottomControls = () => {
   const [useMagneticNorth, setUseMagneticNorth] = useAtom(useMagneticNorthAtom);
 
   return (
-    <Flex alignItems="center" justifyContent="center" gap={2}>
+    <Flex alignItems="center" justifyContent="center" gap={1}>
       <Flex
         alignItems="center"
-        gap={1}
-        pr={2}
+        gap={0.5}
+        pr={1}
         borderRight="1px solid"
         borderColor="gray.200"
       >
         <Button
-          rightIcon="explore"
           variant="ghost"
           colorPalette="green"
-          size="sm"
+          size="xs"
           backgroundColor={displayCompassOverlay ? '#D0ECD6' : 'transparent'}
           _hover={{ backgroundColor: '#D0ECD6' }}
           aria-pressed={displayCompassOverlay}
@@ -58,13 +57,13 @@ export const BottomControls = () => {
       </Flex>
       <Flex
         alignItems="center"
-        pr={2}
+        pr={1}
         borderRight="1px solid"
         borderColor="gray.200"
       >
         <HoverStatusChip />
       </Flex>
-      <Flex alignItems="center" gap={1} pr={2}>
+      <Flex alignItems="center" gap={0.5} pr={1}>
         <ProjectionSettings />
       </Flex>
     </Flex>
