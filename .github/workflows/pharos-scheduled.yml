@@ -1,0 +1,48 @@
+name: Pharos scheduled scan
+
+# kartverket.dev securityMetrics marks Pharos active only with a Trivy upload <14 days old.
+# Weekly rescan of the newest published image keeps it active and surfaces new CVEs between releases.
+# Same trivy_category as the release scan, so alerts update in place instead of duplicating.
+on:
+  schedule:
+    - cron: "23 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pharos:
+    name: Pharos ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - package: norgeskart
+            category: Trivy
+    steps:
+      - name: Resolve newest tagged image
+        id: image
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE: ${{ matrix.package }}
+        # Only commit-* (main/test-norgeskart builds): skips preview-* and untagged attestation manifests.
+        run: |
+          digest=$(gh api "orgs/${GITHUB_REPOSITORY_OWNER}/packages/container/${PACKAGE}/versions?per_page=30" \
+            --jq '[.[] | select(any(.metadata.container.tags[]; startswith("commit-")))][0].name')
+          test -n "$digest"
+          echo "url=ghcr.io/${GITHUB_REPOSITORY_OWNER}/${PACKAGE}@${digest}" >> "$GITHUB_OUTPUT"
+
+      - name: Run Pharos
+        uses: kartverket/pharos@v0.7.1
+        with:
+          image_url: ${{ steps.image.outputs.url }}
+          trivy_category: ${{ matrix.category }}
+          # Report-only: the release workflow is the gate.
+          disable_severity_check: "true"
