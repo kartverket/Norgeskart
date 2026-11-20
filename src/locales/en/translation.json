@@ -663,7 +663,9 @@
   "measure": {
     "label": "Measure",
     "length": "Length",
-    "area": "Area"
+    "area": "Area",
+    "startInstruction": "Click to start measuring",
+    "finishInstruction": "Double-click to finish measuring"
   },
   "helpPage": {
     "header": {
