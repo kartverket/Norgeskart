@@ -108,22 +108,6 @@ export const SideNavigation = ({
   return (
     <Box height="100%" bg="white" display="flex" flexDirection="column">
       <VStack gap={0} alignItems="center" pt={3}>
-        {!isMinimized && (
-          <Link
-            href="https://www.kartverket.no"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Kartverket"
-            marginBottom={2}
-          >
-            <Image
-              src="/logos/KV_logo_staa_color.svg"
-              alt="Kartverket"
-              width="48px"
-            />
-          </Link>
-        )}
-
         <Box mt={isMinimized ? 0 : 2}>
           <NavigationButton
             icon={isMinimized ? 'chevron_right' : 'chevron_left'}
@@ -149,10 +133,24 @@ export const SideNavigation = ({
               isMinimized={isMinimized}
             />
           ))}
+          <LanguageSwitcher variant="text" compact isMinimized={isMinimized} />
         </VStack>
       </VStack>
       <Box mt="auto" mb={3} alignSelf="center">
-        <LanguageSwitcher variant="text" compact isMinimized={isMinimized} />
+        {!isMinimized && (
+          <Link
+            href="https://www.kartverket.no"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Kartverket"
+          >
+            <Image
+              src="/logos/KV_logo_staa_color.svg"
+              alt="Kartverket"
+              width="55px"
+            />
+          </Link>
+        )}
       </Box>
     </Box>
   );
