@@ -101,10 +101,7 @@ export const MeasurePopoverContent = ({
         lengthButton
       )}
       {isMinimized ? (
-        <Tooltip
-          content={t('measure.area')}
-          positioning={{ placement: 'top' }}
-        >
+        <Tooltip content={t('measure.area')} positioning={{ placement: 'top' }}>
           {areaButton}
         </Tooltip>
       ) : (

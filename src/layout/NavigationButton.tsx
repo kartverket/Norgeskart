@@ -55,7 +55,7 @@ export const NavigationButton = ({
   return isMinimized ? (
     <Tooltip content={label} positioning={{ placement: 'right' }}>
       {button}
-    </Tooltip>  
+    </Tooltip>
   ) : (
     button
   );
