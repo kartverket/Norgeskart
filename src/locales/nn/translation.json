@@ -668,7 +668,9 @@
   "measure": {
     "label": "Måle",
     "length": "Lengd",
-    "area": "Areal"
+    "area": "Areal",
+    "startInstruction": "Trykk for å starte måling",
+    "finishInstruction": "Dobbeltklikk for å avslutte måling"
   },
   "helpPage": {
     "header": {

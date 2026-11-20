@@ -70,6 +70,10 @@
   font-weight: bold;
 }
 
+.ol-tooltip-cursor {
+  pointer-events: none;
+}
+
 .ol-tooltip-static {
   background-color: #ffffff;
   color: black;
