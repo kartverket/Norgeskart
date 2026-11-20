@@ -43,8 +43,6 @@ export const NavigationButton = ({
         _hover={{ backgroundColor: '#D0ECD6' }}
         borderRadius="md"
         width={buttonWidth(isMinimized)}
-        px={3}
-        py={2}
       >
         <VStack gap={0}>
           <Icon icon={icon} />

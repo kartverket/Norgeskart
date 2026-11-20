@@ -55,7 +55,7 @@ export const MeasurePopover = ({ isMinimized }: { isMinimized: boolean }) => {
         border="none"
         boxShadow="none"
       >
-        <MeasurePopoverContent />
+        <MeasurePopoverContent isMinimized={isMinimized} />
       </PopoverContent>
     </Popover>
   );
