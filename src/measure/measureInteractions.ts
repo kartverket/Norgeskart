@@ -1,10 +1,10 @@
 import { getDefaultStore } from 'jotai';
 import type { Map } from 'ol';
-import type MapBrowserEvent from 'ol/MapBrowserEvent';
 import { noModifierKeys, primaryAction } from 'ol/events/condition';
 import { LineString, Polygon, type Geometry } from 'ol/geom';
 import Draw from 'ol/interaction/Draw';
 import type VectorLayer from 'ol/layer/Vector';
+import type MapBrowserEvent from 'ol/MapBrowserEvent';
 import { unByKey } from 'ol/Observable';
 import Overlay from 'ol/Overlay';
 import type VectorSource from 'ol/source/Vector';
