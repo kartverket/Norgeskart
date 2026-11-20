@@ -1,4 +1,4 @@
-import { Box, Image, Link, Separator, toaster, VStack } from '@kvib/react';
+import { Box, Link, Logo, Separator, toaster, VStack } from '@kvib/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { helpDialogOpenAtom } from '../help/atoms';
@@ -137,20 +137,13 @@ export const SideNavigation = ({
         </VStack>
       </VStack>
       <Box mt="auto" mb={3} alignSelf="center">
-        {!isMinimized && (
-          <Link
-            href="https://www.kartverket.no"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Kartverket"
-          >
-            <Image
-              src="/logos/KV_logo_staa_color.svg"
-              alt="Kartverket"
-              width="55px"
-            />
-          </Link>
-        )}
+        <Link href="/" aria-label="Kartverket">
+          <Logo
+            variant={isMinimized ? 'symbol' : 'vertical'}
+            size={isMinimized ? 15 : 55}
+            label="Kartverket"
+          />
+        </Link>
       </Box>
     </Box>
   );
