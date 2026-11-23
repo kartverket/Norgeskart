@@ -589,13 +589,13 @@
           "helpertext": "Kun a-z og tal"
         },
         "includeLegend": {
-          "label": "teiknforklaring"
+          "label": "Teiknforklaring"
         },
         "includeSweeden": {
-          "label": "kart inn i Sverige (50 km)"
+          "label": "Kart inn i Sverige (50 km)"
         },
         "includeCompassInstructions": {
-          "label": "minikurs i kompassbruk"
+          "label": "Minikurs i kompassbruk"
         },
         "heading": "Ta med"
       },
@@ -617,6 +617,7 @@
   "printExtent": {
     "label": "Vel format",
     "placeholder": "Format",
+    "orientationHeading": "Orientering",
     "orientation": {
       "portrait": "Portrett",
       "landscape": "Landskap"
