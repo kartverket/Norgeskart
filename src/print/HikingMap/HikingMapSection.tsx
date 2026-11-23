@@ -249,7 +249,9 @@ export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
             <RadioGroup
               defaultValue="1"
               value={selectedScale}
-              onValueChange={(e) => setSelectedScale(e.value as HikingMapSacles)}
+              onValueChange={(e) =>
+                setSelectedScale(e.value as HikingMapSacles)
+              }
             >
               <VStack alignItems="flex-start" gap={2}>
                 {MapScaleOptions.map((scaleOption) => (

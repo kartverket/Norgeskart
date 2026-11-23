@@ -206,8 +206,7 @@ export const ExtentSection = ({ onCancel }: ExtentSectionProps) => {
         {printScale && (
           <Stack alignItems="flex-start" gap={1}>
             <Text fontSize="sm" fontWeight="bold">
-              {t('printExtent.scale')}: 1 :{' '}
-              {printScale.toLocaleString('no-NO')}
+              {t('printExtent.scale')}: 1 : {printScale.toLocaleString('no-NO')}
             </Text>
             <Text fontSize="sm">
               {t('printExtent.scaleNote', {
