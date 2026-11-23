@@ -589,15 +589,15 @@
           "helpertext": "Kun a-z og tall"
         },
         "includeLegend": {
-          "label": "tegnforklaring"
+          "label": "Tegnforklaring"
         },
         "includeSweeden": {
-          "label": "kart inn i Sverige (50km)"
+          "label": "Kart inn i Sverige (50 km)"
         },
         "includeCompassInstructions": {
-          "label": "minikurs i kompassbruk"
+          "label": "Minikurs i kompassbruk"
         },
-        "heading": "Ta med"
+        "heading": "Inkluder"
       },
       "overlayinstructions": "Plasser det oransje feltet i området du vil skrive ut",
       "buttons": {

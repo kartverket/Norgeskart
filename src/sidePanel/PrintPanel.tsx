@@ -28,7 +28,7 @@ export const PrintPanel = () => {
       <TabsContent value="extent" flex="1" minHeight={0}>
         <ExtentSection onCancel={() => setMapTool(null)} />
       </TabsContent>
-      <TabsContent value="hiking">
+      <TabsContent value="hiking" flex="1" minHeight={0}>
         <HikingMapSection onCancel={() => setMapTool(null)} />
       </TabsContent>
     </Tabs>

@@ -584,13 +584,13 @@
           "helpertext": "Only a-z and numbers"
         },
         "includeLegend": {
-          "label": "map legend"
+          "label": "Map legend"
         },
         "includeSweeden": {
-          "label": "map into Sweeden (50km)"
+          "label": "Map into Sweden (50 km)"
         },
         "includeCompassInstructions": {
-          "label": "crash course in compass usage"
+          "label": "Crash course in compass usage"
         },
         "heading": "Include"
       },
