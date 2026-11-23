@@ -79,6 +79,7 @@ export interface ThemeLayerDefinition {
   filter?: string;
   noLegend?: boolean;
   singleImage?: boolean;
+  notReady?: boolean;
 }
 
 export interface ThemeLayerConfig {

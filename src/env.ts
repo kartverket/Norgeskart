@@ -15,6 +15,33 @@ type layerProviderParameters = {
   npolar: {
     baseUrl: string;
   };
+  topoCache: {
+    baseUrl: string;
+    // WMTS layer names differ per MapProxy: kart.api maps the norgeskart_* aliases,
+    // the cluster-internal dev stacks only serve the legacy topo* names.
+    layers: {
+      standard: string;
+      standard2x: string;
+      gray: string;
+      // EPSG:25833 twins on the Norwegian Polar Institute tiling (grid norway_25833_np, origin
+      // at the North Pole): norway_25833 stops just north of Svalbard. Unset = not served.
+      np?: { standard: string; standard2x: string; gray: string };
+    };
+  };
+};
+
+const KART_API_LAYERS = {
+  standard: 'norgeskart_standard',
+  standard2x: 'norgeskart_standard_2x',
+  gray: 'norgeskart_gray',
+};
+
+// MapProxy on atgcp1-dev (kart.atgcp1-dev.kartverket.cloud): legacy topo* names.
+const ATGCP1_DEV_LAYERS = {
+  standard: 'topo',
+  standard2x: 'topo_2x',
+  gray: 'topo_graa',
+  np: { standard: 'topo_np', standard2x: 'topo_np_2x', gray: 'topo_graa_np' },
 };
 
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
@@ -50,6 +77,11 @@ const LOCAL_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    topoCache: {
+      // Same MapProxy as test.norgeskart.no (kart.api is unreliable for local testing).
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: ATGCP1_DEV_LAYERS,
+    },
   },
   envName: 'local',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
@@ -77,6 +109,10 @@ const DEV_ENV: Env = {
     },
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
+    },
+    topoCache: {
+      baseUrl: 'https://kart.api.kartverket.no',
+      layers: KART_API_LAYERS,
     },
   },
   envName: 'dev',
@@ -106,11 +142,19 @@ const PROD_ENV: Env = {
     npolar: {
       baseUrl: 'https://geodata.npolar.no',
     },
+    // Same rGIS-backed MapProxy as test.norgeskart.no; kart.api is unreliable (503).
+    topoCache: {
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: ATGCP1_DEV_LAYERS,
+    },
   },
   envName: 'prod',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
   printApiUrl: 'https://api.norgeskart.no',
 };
+
+// test.norgeskart.no: identical to prod (kept separate so it can diverge again).
+const TEST_ENV: Env = { ...PROD_ENV };
 
 const getEnvName = (): EnvName => {
   return getEnv().envName;
@@ -132,11 +176,10 @@ const getEnv = (): Env => {
   if (previewRegex.test(domain)) {
     return DEV_ENV;
   }
-  if (
-    domain == 'test.norgeskart.no' ||
-    domain == 'norgeskart.no' ||
-    domain == 'www.norgeskart.no'
-  ) {
+  if (domain == 'test.norgeskart.no') {
+    return TEST_ENV;
+  }
+  if (domain == 'norgeskart.no' || domain == 'www.norgeskart.no') {
     return PROD_ENV;
   }
   console.error(`Unknown domain: ${domain}`);

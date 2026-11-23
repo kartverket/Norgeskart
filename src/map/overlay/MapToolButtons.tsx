@@ -12,7 +12,7 @@ import { usePostHog } from '@posthog/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { helpDialogOpenAtom } from '../../help/atoms';
 import { isPrintDialogOpenAtom } from '../../print/atoms';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { getUrlParameter } from '../../shared/utils/urlUtils';
@@ -29,7 +29,7 @@ export const MapToolButtons = () => {
     () => getUrlParameter('showMenu') !== 'false',
   );
   const ph = usePostHog();
-  const navigate = useNavigate();
+  const setHelpDialogOpen = useSetAtom(helpDialogOpenAtom);
 
   const handleShareMapClick = () => {
     ph.capture('share_map_clicked');
@@ -79,13 +79,15 @@ export const MapToolButtons = () => {
       align="flex-end"
       justify="space-between"
       bg="#FFFF"
-      borderRadius={{ base: '', md: 'lg' }}
       shadow="lg"
       py={{ base: 1, md: 1 }}
-      px={{ base: 0, md: 1 }}
+      px={{ base: 2, md: 1 }}
       mb={{ base: 0, md: 0 }}
       pointerEvents={'all'}
       overflowX={{ base: 'auto', md: 'none' }}
+      style={{
+        paddingBottom: 'calc(0.25rem + env(safe-area-inset-bottom))',
+      }}
     >
       <Box position="relative">
         <MapButton
@@ -124,9 +126,7 @@ export const MapToolButtons = () => {
           setCurrentMapTool(currentMapTool === 'draw' ? null : 'draw');
         }}
         icon={'edit'}
-        label={
-          isMobile ? t('controller.draw.mobiletext') : t('controller.draw.text')
-        }
+        label={t('controller.draw.text')}
         active={currentMapTool === 'draw'}
         disabled={isPrintDialogOpenDisabled}
         id="map-draw-button"
@@ -156,7 +156,7 @@ export const MapToolButtons = () => {
         />
       )}
       <MapButton
-        onClick={() => navigate('/hjelp')}
+        onClick={() => setHelpDialogOpen(true)}
         icon={'help'}
         label={t('controller.help.mobiletext')}
         active={currentMapTool === 'info'}
@@ -188,6 +188,7 @@ const MapButton = ({
     <Button
       disabled={disabled}
       w={'fit-content'}
+      minH={{ base: '56px', md: 'auto' }}
       onClick={() => {
         onClick();
       }}

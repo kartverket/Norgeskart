@@ -1,4 +1,4 @@
-import { Button, Group, Heading, VStack } from '@kvib/react';
+import { Button, Group, Heading, HStack, Tooltip } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,8 +13,8 @@ export const MeasurementControls = () => {
   const [showMeasurements, setShowMeasurements] = useAtom(showMeasurementsAtom);
 
   const units: { value: DistanceUnit; label: string }[] = [
-    { value: 'm', label: `${t('shared.units.meter')} [m]` },
-    { value: 'NM', label: `${t('shared.units.nauticalMile')} [NM]` },
+    { value: 'm', label: 'M' },
+    { value: 'NM', label: 'NM' },
   ];
 
   const isActive = (u: DistanceUnit) => showMeasurements && distanceUnit === u;
@@ -30,26 +30,30 @@ export const MeasurementControls = () => {
   };
 
   return (
-    <VStack align="flex-start" w="auto">
+    <HStack align="center" justifyContent="space-between" width="100%">
       <Heading size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.showMeasurements')}
       </Heading>
 
       <Group attached>
         {units.map((u) => (
-          <Button
+          <Tooltip
             key={u.value}
-            size="xs"
-            variant="outline"
-            borderColor="green.500"
-            color="green.500"
-            bg={isActive(u.value) ? 'green.100' : 'transparent'}
-            onClick={() => onPick(u.value)}
+            content={u.value === 'm' ? 'Meter' : 'Nautisk mil'}
+            positioning={{ placement: 'top' }}
           >
-            {u.label}
-          </Button>
+            <Button
+              size="xs"
+              borderColor={isActive(u.value) ? 'green.500' : 'gray.200'}
+              color="green.500"
+              bg={isActive(u.value) ? 'green.100' : 'transparent'}
+              onClick={() => onPick(u.value)}
+            >
+              {u.label}
+            </Button>
+          </Tooltip>
         ))}
       </Group>
-    </VStack>
+    </HStack>
   );
 };

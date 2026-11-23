@@ -1,6 +1,7 @@
 import { atom, getDefaultStore } from 'jotai';
 import { View } from 'ol';
 import { defaults as defaultControls, ScaleLine } from 'ol/control';
+import { defaults as defaultInteractions } from 'ol/interaction/defaults';
 import Map from 'ol/Map';
 import { get as getProjection, transform } from 'ol/proj';
 
@@ -9,7 +10,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { parseCoordinateInput } from '../shared/utils/coordinateParser';
 import { validateProjectionIdString } from '../shared/utils/enumUtils';
 import { getUrlParameter, setUrlParameter } from '../shared/utils/urlUtils';
-import { isMapLayerBackground, mapLayers } from './layers';
+import {
+  backgroundLayerProjection,
+  isMapLayerBackground,
+  mapLayers,
+} from './layers';
 import { activeThemeLayersAtom } from './layers/atoms';
 import { BackgroundLayerName } from './layers/backgroundLayers';
 import {
@@ -20,6 +25,7 @@ import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
 import { themeLayerConfigAtom } from './layers/themeLayerConfigApi';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
+import { StepMouseWheelZoom } from './stepMouseWheelZoom';
 
 export const DEFAULT_PROJECTION: ProjectionIdentifier = 'EPSG:25833';
 export const DEFAULT_ZOOM_LEVEL = 3;
@@ -38,16 +44,37 @@ export const mapOrientationDegreesAtom = atom<number>((get) => {
 });
 
 export const displayMapLegendAtom = atom<boolean>(false);
+
+export const hasBackgroundLegendAtom = atom<boolean>((get) => {
+  const backgroundLayerName = get(backgroundLayerAtom);
+  return allConfiguredBackgroundLayers.some(
+    (config) =>
+      config.layerName === backgroundLayerName &&
+      'legendUrl' in config &&
+      !!config.legendUrl,
+  );
+});
+
+export const backgroundLegendUrlAtom = atom<string | undefined>((get) => {
+  const backgroundLayerName = get(backgroundLayerAtom);
+  const layerConfig = allConfiguredBackgroundLayers.find(
+    (config) => config.layerName === backgroundLayerName,
+  );
+  if (!layerConfig || !('legendUrl' in layerConfig)) return undefined;
+  return (layerConfig as { legendUrl?: string }).legendUrl;
+});
+
 export const displayMapLegendControlAtom = atom<boolean>((get) => {
   const displayMapLegned = get(displayMapLegendAtom);
   const activeThemeLayers = get(activeThemeLayersAtom);
   const config = get(themeLayerConfigAtom);
 
-  const hasLegend = Array.from(activeThemeLayers).some((layerName) => {
+  const hasThemeLegend = Array.from(activeThemeLayers).some((layerName) => {
     const layerDef = config.layers.find((l) => l.id === layerName);
     return layerDef && !layerDef.noLegend;
   });
-  return !displayMapLegned && hasLegend;
+
+  return !displayMapLegned && (hasThemeLegend || get(hasBackgroundLegendAtom));
 });
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);
@@ -63,14 +90,14 @@ export const getBackgroundLayerImageName = (
     case 'Nibcache_UTM33_EUREF89_v2':
     case 'Nibcache_UTM35_EUREF89_v2':
       return 'Nibcache_web_mercator_v2';
+    case 'empty':
+      return 'empty';
     case 'nautical-background':
       return 'sjokartraster'; // Use nautical chart image for nautical background for now
     case 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833':
       return 'svalbard';
     case 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833':
       return 'jan_mayen';
-    case 'empty':
-      return 'empty';
     default:
       return layerName;
   }
@@ -146,7 +173,7 @@ const getInitialMapView = () => {
 
   return new View({
     center: initialCenter,
-    minZoom: 3,
+    minZoom: 2,
     maxZoom: 20,
     zoom: initialZoom,
     rotation: initialRotation,
@@ -160,6 +187,9 @@ export const mapAtom = atom<Map>(() => {
   const map = new Map({
     controls: defaultControls({ zoom: false, rotate: false }).extend([
       new ScaleLine({ minWidth: 100 }),
+    ]),
+    interactions: defaultInteractions({ mouseWheelZoom: false }).extend([
+      new StepMouseWheelZoom(),
     ]),
     keyboardEventTarget: document,
   });
@@ -269,13 +299,14 @@ export const projectionEffect = atomEffect((get, set) => {
 
   setUrlParameter('projection', projectionId);
 
-  const currentBackgroundLayer = map.getAllLayers().find(isMapLayerBackground);
+  // Top level: may be a LayerGroup (main grid + NP cap).
+  const currentBackgroundLayer = map
+    .getLayers()
+    .getArray()
+    .find(isMapLayerBackground);
 
   if (currentBackgroundLayer) {
-    const bgLayerProjection = currentBackgroundLayer
-      .getSource()
-      ?.getProjection()
-      ?.getCode();
+    const bgLayerProjection = backgroundLayerProjection(currentBackgroundLayer);
 
     if (bgLayerProjection && bgLayerProjection !== projectionId) {
       const layerConfig = allConfiguredBackgroundLayers.find(

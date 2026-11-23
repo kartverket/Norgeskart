@@ -1,8 +1,7 @@
-import { DrawerContent } from '@chakra-ui/react';
-import { Drawer, DrawerPositioner, useBreakpointValue } from '@kvib/react';
+import { Dialog, DialogContent } from '@kvib/react';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { displayMapLegendAtom } from '../../atoms';
+import { displayMapLegendAtom, hasBackgroundLegendAtom } from '../../atoms';
 import { activeThemeLayersAtom } from '../../layers/atoms';
 import { hasUrlLayersAtom } from '../../layers/urlWms';
 import { MapLegend } from '../../legend/MapLegend';
@@ -11,32 +10,35 @@ export const MapLegendDrawer = () => {
   const [isOpen, setIsOpen] = useAtom(displayMapLegendAtom);
   const [activeLayers] = useAtom(activeThemeLayersAtom);
   const hasUrlLayers = useAtomValue(hasUrlLayersAtom);
-  const isSmallScreen = useBreakpointValue({
-    base: true,
-    lg: false,
-  });
+  const hasBackgroundLegend = useAtomValue(hasBackgroundLegendAtom);
 
   useEffect(() => {
-    if (isOpen && activeLayers.size === 0 && !hasUrlLayers) {
+    if (
+      isOpen &&
+      activeLayers.size === 0 &&
+      !hasUrlLayers &&
+      !hasBackgroundLegend
+    ) {
       setIsOpen(false);
     }
-  }, [activeLayers, isOpen, setIsOpen, hasUrlLayers]);
+  }, [activeLayers, hasBackgroundLegend, hasUrlLayers, isOpen, setIsOpen]);
 
   return (
-    <Drawer
-      trapFocus={false}
+    <Dialog
+      placement="center"
+      size="xs"
       open={isOpen}
-      onExitComplete={() => setIsOpen(false)}
-      size={'xs'}
-      placement={isSmallScreen ? 'top' : 'end'}
-      modal={false}
-      closeOnInteractOutside={false}
+      onOpenChange={(e) => setIsOpen(e.open)}
     >
-      <DrawerPositioner pointerEvents={'none'}>
-        <DrawerContent>
-          <MapLegend />
-        </DrawerContent>
-      </DrawerPositioner>
-    </Drawer>
+      <DialogContent
+        width="360px"
+        maxW="calc(100vw - 2rem)"
+        minW={0}
+        maxH="90vh"
+        p={0}
+      >
+        <MapLegend />
+      </DialogContent>
+    </Dialog>
   );
 };

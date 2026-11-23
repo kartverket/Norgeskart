@@ -21,8 +21,10 @@ import { SearchResult } from '../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
   displaySearchResultsAtom,
+  mobileInfoDetailsOpenAtom,
   searchPendingAtom,
   searchQueryAtom,
+  selectedResultAtom,
   useResetSearchResults,
 } from './atoms.ts';
 import { SearchResults } from './results/SearchResults.tsx';
@@ -47,7 +49,7 @@ const SearchIcon = () => {
     );
   }
   if (searchQuery === '') {
-    return <Icon icon="search" size={24} weight={500} color="gray" />;
+    return <Icon icon="search" size={24} weight={500} color="black" />;
   }
 };
 
@@ -58,15 +60,24 @@ export const SearchComponent = () => {
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(backgroundLayerAtom);
   const setDisplaySearchResults = useSetAtom(displaySearchResultsAtom);
+  const mobileInfoDetailsOpen = useAtomValue(mobileInfoDetailsOpenAtom);
+  const setSelectedResult = useSetAtom(selectedResultAtom);
+  const selectedResult = useAtomValue(selectedResultAtom);
   const backgroundImageName = getBackgroundLayerImageName(
     activeBackgroundLayer,
   );
   const backgroundImageUrl = `/backgroundlayerImages/${backgroundImageName}.png`;
 
+  if (mobileInfoDetailsOpen) {
+    return null;
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setSelectedResult(null);
     setHoveredResult(null);
     setShowBackgroundSettings(false);
+    setDisplaySearchResults(true);
   };
 
   return (
@@ -75,38 +86,72 @@ export const SearchComponent = () => {
         flexDir="column"
         alignItems="stretch"
         gap={2}
-        pointerEvents={'auto'}
+        pointerEvents={'none'}
         px={3}
         pt={3}
         maxH={'100%'}
         overflowY={'auto'}
         maxW={'450px'}
+        style={{
+          paddingTop: 'calc(0.75rem + env(safe-area-inset-top))',
+        }}
       >
         {/* TOPP: kart-flis + søkefelt */}
-        <Box backgroundColor="#FFFF" p={2} borderRadius={10}>
+        <Box
+          backgroundColor="transparent"
+          p={2}
+          borderRadius="4px"
+          pointerEvents={'auto'}
+        >
           <Flex alignItems="center" gap={2}>
             {/* Kart-flis til venstre */}
 
             <Button
-              display={{ md: 'none' }}
-              width="46px"
-              height="44px"
-              borderRadius={8}
+              display={{ lg: 'none' }}
+              width="64px"
+              height="45px"
+              minHeight="45px"
+              borderRadius="4px"
               overflow="hidden"
               cursor="pointer"
               padding={0}
               onClick={() => {
                 setShowBackgroundSettings((s) => !s);
               }}
-              boxShadow="md"
+              aria-label={t('search.backgroundChooser.label')}
+              border="2px solid"
+              borderColor="white"
+              boxShadow="0 2px 8px rgba(0, 0, 0, 0.3)"
             >
               <Image
                 src={backgroundImageUrl}
-                alt={t('search.backgroundChooser.tooltip')}
+                alt={t(
+                  `map.settings.layers.mapNames.backgroundMaps.${activeBackgroundLayer}`,
+                )}
                 width="100%"
                 height="100%"
                 objectFit="cover"
               />
+              <Box position="absolute" inset={0} bg="rgba(0, 0, 0, 0.16)" />
+              <Box
+                position="absolute"
+                left={0}
+                right={0}
+                bottom={0}
+                px={1.5}
+                py={0.5}
+                bg="rgba(0, 0, 0, 0.68)"
+              >
+                <Text
+                  color="white"
+                  fontSize="10px"
+                  fontWeight="semibold"
+                  textAlign="center"
+                  lineHeight="short"
+                >
+                  {t('map.controls.backgroundLayer.label')}
+                </Text>
+              </Box>
             </Button>
             <Box position="relative" width="100%">
               <Search
@@ -118,6 +163,8 @@ export const SearchComponent = () => {
                 height="45px"
                 fontSize="1.1rem"
                 bg="white"
+                borderRadius="4px"
+                style={{ paddingLeft: '40px' }}
                 maxLength={100}
                 onClick={() => {
                   setDisplaySearchResults(true);
@@ -125,7 +172,7 @@ export const SearchComponent = () => {
               />
               <Box
                 position="absolute"
-                right="10px"
+                left="10px"
                 top="50%"
                 transform="translateY(-50%)"
               >
@@ -139,12 +186,14 @@ export const SearchComponent = () => {
             </Box>
           </Flex>
         </Box>
-        <SearchResults
-          hoveredResult={hoveredResult}
-          setHoveredResult={setHoveredResult}
-        />
+        {selectedResult === null && (
+          <SearchResults
+            hoveredResult={hoveredResult}
+            setHoveredResult={setHoveredResult}
+          />
+        )}
         {showBackgroundSettings && (
-          <Box>
+          <Box pointerEvents={'auto'} mx={2}>
             <BackgroundLayerPanel
               onSelectComplete={() => setShowBackgroundSettings(false)}
             />

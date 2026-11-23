@@ -1,7 +1,8 @@
-import { Flex, HStack, Text, VStack } from '@kvib/react';
+import { Box, Button, Text, VStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { drawPanelCollapsedAtom } from '../../map/overlay/atoms';
 import {
   clearInteractions,
   drawEnabledEffect,
@@ -32,8 +33,6 @@ import { getFeatureType } from './drawUtils.ts';
 import { EditControls } from './EditControls.tsx';
 import { DrawType, useDrawSettings } from './hooks/drawSettings.ts';
 
-const MOBILE_TOOLBAR_RESERVE = '15px';
-
 const MEASUREMENT_TYPES: DrawType[] = [
   'LineString',
   'Polygon',
@@ -43,6 +42,7 @@ const MEASUREMENT_TYPES: DrawType[] = [
 
 export const DrawControls = () => {
   const { drawType } = useDrawSettings();
+  const [, setCollapsed] = useAtom(drawPanelCollapsedAtom);
   const [selectedFeature] = useAtom(selectedFeatureAtom);
   const isMobile = useIsMobileScreen();
   const { t } = useTranslation();
@@ -74,15 +74,14 @@ export const DrawControls = () => {
     drawType !== 'Move' &&
     currentType != null &&
     MEASUREMENT_TYPES.includes(currentType);
+  const showLineWidthControl =
+    currentType === 'LineString' ||
+    currentType === 'Point' ||
+    currentType === 'Polygon';
 
   return (
-    <VStack
-      alignItems="flex-start"
-      width="100%"
-      padding={0.5}
-      style={isMobile ? { paddingBottom: MOBILE_TOOLBAR_RESERVE } : undefined}
-    >
-      {!isMobile && <DrawToolSelector />}
+    <VStack alignItems="flex-start" width="100%" height="100%" padding={0.5}>
+      <DrawToolSelector mobile={isMobile} />
 
       {drawType === 'Move' && !selectedFeature && (
         <Text fontSize="md" mt={4}>
@@ -90,27 +89,76 @@ export const DrawControls = () => {
         </Text>
       )}
 
-      {currentType === 'Text' && <TextStyleControl />}
+      {currentType && (
+        <Box
+          width="100%"
+          border="1px solid"
+          borderColor="#E0E0E0"
+          borderRadius="8px"
+          backgroundColor="white"
+          boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+          padding={2}
+        >
+          <VStack width="100%" gap={0} alignItems="stretch">
+            {currentType === 'Text' && (
+              <Box width="100%" pb={2} borderBottom="1px solid #E0E0E0">
+                <TextStyleControl />
+              </Box>
+            )}
 
-      <HStack width="100%" align={'space-between'}>
-        {currentType && <ColorControls />}
+            <Box width="100%" pb={2} borderBottom="1px solid #E0E0E0">
+              <ColorControls />
+            </Box>
 
-        {currentType === 'Point' && <PointStyleSelector />}
-        {isMobile && drawType === 'LineString' && <LineStyleControl />}
-      </HStack>
-      <Flex
-        w="100%"
-        alignItems="flex-start"
-        flexDirection={{ base: 'row', md: 'column' }}
-        justifyContent="space-between"
-        py={1}
-      >
-        {!isMobile && drawType === 'LineString' && <LineStyleControl />}
-        <LineWidthControl />
-        {showMeasurementControls && <MeasurementControls />}
-      </Flex>
-      <EditControls drawType={drawType} />
-      <DrawControlFooter />
+            {currentType === 'Point' && (
+              <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
+                <PointStyleSelector />
+              </Box>
+            )}
+
+            {drawType === 'LineString' && (
+              <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
+                <LineStyleControl />
+              </Box>
+            )}
+
+            {showLineWidthControl && (
+              <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
+                <LineWidthControl />
+              </Box>
+            )}
+
+            {showMeasurementControls && !isMobile && (
+              <Box width="100%" py={2} borderBottom="1px solid #E0E0E0">
+                <MeasurementControls />
+              </Box>
+            )}
+
+            <Box width="100%" pt={1}>
+              <EditControls drawType={drawType} showActions={false} />
+            </Box>
+          </VStack>
+        </Box>
+      )}
+      {!isMobile && (
+        <DrawControlFooter
+          drawType={drawType}
+          hasSelectedFeature={selectedFeature !== null}
+        />
+      )}
+      {isMobile && (
+        <Button
+          width="fit-content"
+          alignSelf="center"
+          variant="tertiary"
+          colorPalette="green"
+          size="sm"
+          rightIcon="keyboard_arrow_down"
+          onClick={() => setCollapsed(true)}
+        >
+          {t('controller.hide')}
+        </Button>
+      )}
     </VStack>
   );
 };

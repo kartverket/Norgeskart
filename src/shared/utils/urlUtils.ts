@@ -147,4 +147,5 @@ export type NKUrlParameter =
   | 'geojsonUrl'
   | 'wmsUrl'
   | 'wmsLayer'
-  | 'printTool';
+  | 'printTool'
+  | 'tileResolution'; // auto | 1x | 2x — test override for WMTS HiDPI twins

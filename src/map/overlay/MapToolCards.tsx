@@ -5,8 +5,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  Text,
-  Tooltip,
   VStack,
 } from '@kvib/react';
 
@@ -14,54 +12,10 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DrawControls } from '../../draw/drawControls/DrawControls';
-import { useDrawSettings } from '../../draw/drawControls/hooks/drawSettings';
 import { MapThemes } from '../../settings/map/themes/MapThemes';
 import { useIsMobileScreen } from '../../shared/hooks';
 import { SettingsDrawer } from '../../sidePanel/SettingsDrawer';
-import { activeThemeLayersAtom } from '../layers/atoms';
 import { drawPanelCollapsedAtom, mapToolAtom } from './atoms';
-
-const MapLayersCardHeader = () => {
-  const { t } = useTranslation();
-  const [activeThemeLayers, setActiveThemeLayers] = useAtom(
-    activeThemeLayersAtom,
-  );
-  return (
-    <HStack mb={{ base: '0', md: '2' }} h={6}>
-      <Heading fontWeight="bold" size="md">
-        {t('mapLayers.label')}
-      </Heading>
-      {activeThemeLayers.size > 0 && (
-        <HStack gap={0.5}>
-          <Text
-            backgroundColor={'#FFDD9D'}
-            borderRadius="full"
-            borderWidth={'2px'}
-            borderColor={'white'}
-            px={2}
-            py={0.5}
-            pointerEvents={'none'}
-            fontSize={'sm'}
-          >
-            {activeThemeLayers.size}
-          </Text>
-          <Tooltip content={t('map.settings.layers.theme.resetbutton.text')}>
-            <IconButton
-              variant="tertiary"
-              colorPalette={'red'}
-              size={'md'}
-              visibility={activeThemeLayers.size > 0 ? 'visible' : 'hidden'}
-              onClick={() => {
-                setActiveThemeLayers(new Set());
-              }}
-              icon={'playlist_remove'}
-            />
-          </Tooltip>
-        </HStack>
-      )}
-    </HStack>
-  );
-};
 
 const MapToolCardHeader = ({ label }: { label: string | React.ReactNode }) => {
   const isLabelString = typeof label === 'string';
@@ -98,23 +52,8 @@ export const MapToolCards = () => {
 };
 const MapToolCardsBody = () => {
   const { t } = useTranslation();
-  const isMobile = useIsMobileScreen();
   const [, setCollapsed] = useAtom(drawPanelCollapsedAtom);
-  const { drawType } = useDrawSettings();
   const [currentMapTool, setCurrentMapTool] = useAtom(mapToolAtom);
-
-  const drawTypeLabels: Record<string, string> = {
-    Move: t('draw.controls.tool.label.edit'),
-    Polygon: t('draw.controls.tool.label.polygon'),
-    Point: t('draw.controls.tool.label.point'),
-    LineString: t('draw.controls.tool.label.linestring'),
-    Circle: t('draw.controls.tool.label.circle'),
-    Text: t('draw.controls.tool.label.text'),
-  };
-
-  const activeToolLabel = drawType
-    ? drawTypeLabels[drawType]
-    : t('draw.tabHeading');
 
   const onClose = () => {
     setCurrentMapTool(null);
@@ -123,19 +62,14 @@ const MapToolCardsBody = () => {
 
   if (currentMapTool === 'draw') {
     return (
-      <MapToolCard
-        label={isMobile ? activeToolLabel : t('draw.tabHeading')}
-        onClose={onClose}
-        showCollapse={isMobile}
-        onCollapse={() => setCollapsed(true)}
-      >
+      <MapToolCard label={t('draw.tabHeading')} onClose={onClose}>
         <DrawControls />
       </MapToolCard>
     );
   }
   if (currentMapTool === 'layers') {
     return (
-      <MapToolCard label={<MapLayersCardHeader />} onClose={onClose}>
+      <MapToolCard label={t('mapLayers.label')} onClose={onClose}>
         <MapThemes />
       </MapToolCard>
     );
@@ -172,17 +106,15 @@ const MapToolCard = ({
   return (
     <VStack
       width="100%"
-      maxWidth={{ base: '100%', md: '345px' }}
       maxHeight={isMobile ? '80dvh' : 'calc(100vh - 65px)'}
       pointerEvents="auto"
       bg="#FFFF"
-      shadow="lg"
       p={4}
-      m={{ base: 0, md: 1 }}
-      mr={{ base: 0, md: 3 }}
-      borderRadius="16px"
-      borderBottomLeftRadius={{ base: '0px', md: '16px' }}
-      borderBottomRightRadius={{ base: '0px', md: '16px' }}
+      m={{ base: 0, lg: 1 }}
+      mr={{ base: 0, lg: 3 }}
+
+      borderTopLeftRadius={{ base: '0px', md: '16px' }}
+      borderTopRightRadius={{ base: '0px', md: '16px' }}
       overflowY="auto"
     >
       <Flex justify="space-between" gap="2" w="100%" align="center">

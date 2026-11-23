@@ -1,18 +1,35 @@
 /* --- Scale & Mouse Position --- */
+.map-control-select-trigger {
+  button {
+    border: none;
+    outline: none;
+  }
+}
+
 .ol-scale-line {
   position: absolute;
-  left: 10px;
-  bottom: 46px;
+  left: 50%;
+  bottom: 56px;
   right: auto;
+  transform: translateX(-50%);
 }
 
 /* Mobile: center scale line above toolbar */
-@media (max-width: 768px) {
+@media (max-width: 997px) {
   .ol-scale-line {
     right: auto;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 10px;
+    bottom: 75px;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 1366px) and (max-height: 1024px) {
+  .desktop-layout-map--panel-open .ol-scale-line {
+    left: auto;
+    right: calc(10px + env(safe-area-inset-right) + 50px);
+    transform: none;
+    bottom: calc(6px + env(safe-area-inset-bottom));
   }
 }
 
@@ -30,6 +47,7 @@
   position: absolute;
   font-size: 16px;
   top: calc(100vh - 70px);
+  top: calc(100dvh - 70px);
   right: 120px;
   padding: 5px 8px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -50,6 +68,10 @@
   user-select: none;
   opacity: 1;
   font-weight: bold;
+}
+
+.ol-tooltip-cursor {
+  pointer-events: none;
 }
 
 .ol-tooltip-static {
@@ -114,4 +136,12 @@
 
 #map {
   touch-action: none;
+}
+
+.point-style-select-trigger {
+  button {
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
 }

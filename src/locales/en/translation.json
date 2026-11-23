@@ -1,15 +1,14 @@
 {
   "controller": {
     "maplayers": {
-      "openText": "Layers",
-      "mobiletext": "Layers"
+      "openText": "Map details",
+      "mobiletext": "Map details"
     },
     "print": {
       "text": "Create map"
     },
     "draw": {
-      "text": "Tools",
-      "mobiletext": "Tools"
+      "text": "Draw"
     },
     "settings": {
       "mobiletext": "Settings",
@@ -37,6 +36,7 @@
       "colorPoint": "Point",
       "colorStroke": "Stroke",
       "colorText": "Text",
+      "freehandHint": "Hold shift for freehand drawing",
       "recentColors": "Recent colors",
       "pointType": "Select icon",
       "showMeasurements": "Show measurements on map",
@@ -67,6 +67,7 @@
         "secondary": "Secondary"
       },
       "lineType": "Line type",
+      "mobileToolSelection": "Draw options",
       "editInstruction": "Select an element to edit or move"
     },
     "deleteSelection": "Remove selected",
@@ -98,6 +99,7 @@
     "address": "Address",
     "cadastralIdentifier": "Cadastral identifier",
     "showContent": "Show content",
+    "more": "More",
     "hideContent": "Hide content",
     "coordinateInfo": "Coordinates",
     "coordinateSection": {
@@ -186,6 +188,7 @@
         },
         "mapNames": {
           "backgroundMaps": {
+            "empty": "No background",
             "Nibcache_UTM32_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM33_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
             "Nibcache_UTM35_EUREF89_v2": "$t(map.settings.layers.mapNames.backgroundMaps.Nibcache_web_mercator_v2)",
@@ -193,14 +196,29 @@
             "nautical-background": "Nautical Background Chart",
             "oceanicelectronic": "Electronic Nautical Chart",
             "sjokartraster": "Nautical Chart updated EFS",
-            "topo": "Standard",
             "topo_2025": "Topo 2025",
+            "norgeskart_standard": "Standard",
+            "norgeskart_gray": "Standard (greyscale)",
+            "topo": "Standard",
             "topograatone": "Standard (greyscale)",
             "topoProd": "Topographic",
             "toporaster": "Paper Map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
             "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen",
-            "empty": "No background"
+            "empty": "No map"
+          },
+          "shortBackgroundMaps": {
+            "Nibcache_web_mercator_v2": "Aerial",
+            "nautical-background": "Nautical",
+            "oceanicelectronic": "Electronic chart",
+            "sjokartraster": "Chart EFS",
+            "topo": "Standard",
+            "topo_2025": "Topo 2025",
+            "topograatone": "Greyscale",
+            "topoProd": "Topo",
+            "toporaster": "Paper map",
+            "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
+            "Basisdata_NP_Basiskart_JanMayen_WMTS_25833": "Jan Mayen"
           }
         },
         "projection": {
@@ -383,13 +401,14 @@
         "label": "Map legend"
       },
       "backgroundLayer": {
-        "label": "Map"
+        "label": "Map",
+        "new": "Beta"
       }
     }
   },
   "mapLayers": {
     "close": "Close map layer settings",
-    "label": "Maplayers",
+    "label": "Map details",
     "open": "Open map layer settings"
   },
   "placeInfo": {
@@ -424,9 +443,9 @@
     "holdingNr": "Holding nr.",
     "leaseNr": "Lease nr.",
     "markProperty": {
-      "label": "Show on map"
+      "label": "Show property boundaries"
     },
-    "moreInformation": "Show more",
+    "moreInformation": "View property / land register",
     "multipleAddressesText": "The property has several addresses",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",
@@ -499,6 +518,7 @@
   "toolbar": {
     "reportError": {
       "label": "Error in the map?",
+      "shortLabel": "Report error",
       "tooltip": "Report errors or things missing in the map."
     },
     "scale": {
@@ -583,10 +603,10 @@
       "jobRunning": "Creating profile",
       "buttons": {
         "exportCsv": {
-          "label": "Export as CSV"
+          "label": "Download CSV"
         },
         "exportPng": {
-          "label": "Download as PNG"
+          "label": "Download PNG"
         },
         "exportJpeg": {
           "label": "Download as JPEG"
@@ -696,9 +716,11 @@
     }
   },
   "measure": {
-    "label": "Measuring tool",
+    "label": "Measure",
     "length": "Length",
-    "area": "Area"
+    "area": "Area",
+    "startInstruction": "Click to start measuring",
+    "finishInstruction": "Double-click to finish measuring"
   },
   "helpPage": {
     "header": {

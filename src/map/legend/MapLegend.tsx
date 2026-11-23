@@ -2,10 +2,11 @@ import { AccordionRoot, Heading, HStack, IconButton, Stack } from '@kvib/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { displayMapLegendAtom } from '../atoms';
+import { displayMapLegendAtom, hasBackgroundLegendAtom } from '../atoms';
 import { activeThemeLayersAtom } from '../layers/atoms';
 import { urlGeoJsonLayersAtom } from '../layers/urlGeoJson';
 import { hasUrlLayersAtom, urlWmsLayersAtom } from '../layers/urlWms';
+import { BackgroundLegend } from './BackgroundLegend';
 import { SingleLayerLegend } from './SingleLayerLegend';
 import { UrlLayersLegend } from './UrlLayersLegend';
 
@@ -17,9 +18,11 @@ export const MapLegend = () => {
   const urlGeoJsonLayers = useAtomValue(urlGeoJsonLayersAtom);
   const hasUrlLayers = useAtomValue(hasUrlLayersAtom);
 
+  const hasBackgroundLegend = useAtomValue(hasBackgroundLegendAtom);
+
   const themeLayers = Array.from(activeThemeLayers);
 
-  if (themeLayers.length === 0 && !hasUrlLayers) {
+  if (themeLayers.length === 0 && !hasUrlLayers && !hasBackgroundLegend) {
     return null;
   }
 
@@ -48,6 +51,7 @@ export const MapLegend = () => {
           onClick={() => setShowMapLegend(false)}
         />
       </HStack>
+      <BackgroundLegend />
       <AccordionRoot
         collapsible
         multiple

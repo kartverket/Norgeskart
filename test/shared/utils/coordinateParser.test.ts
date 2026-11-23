@@ -337,6 +337,18 @@ describe('parseCoordinateInput', () => {
       expect(result?.lon).toBeCloseTo(10.74609, 4);
     });
 
+    it('swaps lon,lat order used by stadnamn.kartverket.no links', () => {
+      const result = parseCoordinateInput('10.28464358,59.862975366@4326');
+      expect(result?.lat).toBeCloseTo(59.862975366, 6);
+      expect(result?.lon).toBeCloseTo(10.28464358, 6);
+    });
+
+    it('does not swap @4326 coordinates outside Norway', () => {
+      const result = parseCoordinateInput('40.7128, -74.006@4326');
+      expect(result?.lat).toBeCloseTo(40.7128, 4);
+      expect(result?.lon).toBeCloseTo(-74.006, 4);
+    });
+
     it('parses with full EPSG: prefix', () => {
       const result = parseCoordinateInput('163834.01 6663030.01@EPSG:25833');
       expect(result).not.toBeNull();
