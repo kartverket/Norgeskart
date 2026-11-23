@@ -109,7 +109,6 @@ const MapToolCard = ({
       maxHeight={isMobile ? '80dvh' : 'calc(100vh - 65px)'}
       pointerEvents="auto"
       bg="#FFFF"
-      shadow="lg"
       p={4}
       m={{ base: 0, lg: 1 }}
       mr={{ base: 0, lg: 3 }}
