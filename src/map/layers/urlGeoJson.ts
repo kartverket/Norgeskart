@@ -173,7 +173,6 @@ export const createUrlGeoJsonLayer = async (
   mapProjection: string,
   index: number,
 ): Promise<VectorLayer<VectorSource<Feature<Geometry>>>> => {
-  console.log('[urlGeoJson] fetching:', geojsonUrl);
   const res = await fetch(geojsonUrl);
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${geojsonUrl}`);
 
@@ -190,27 +189,14 @@ export const createUrlGeoJsonLayer = async (
     const match = /EPSG[::]+(\d+)/.exec(crsName);
     if (match) dataProjection = `EPSG:${match[1]}`;
   }
-  console.log(
-    '[urlGeoJson] dataProjection:',
-    dataProjection,
-    'featureProjection:',
-    mapProjection,
-  );
 
   const format = new GeoJSON({
     dataProjection,
     featureProjection: mapProjection,
   });
   const features = format.readFeatures(geojsonData) as Feature<Geometry>[];
-  console.log(
-    '[urlGeoJson] loaded',
-    features.length,
-    'features from',
-    geojsonUrl,
-  );
 
   const vectorSource = new VectorSource<Feature<Geometry>>({ features });
-  console.log('[urlGeoJson] source extent:', vectorSource.getExtent());
 
   const styleFn = isDekningUrl(geojsonUrl)
     ? dekningsstatusToOlStyle

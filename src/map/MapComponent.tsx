@@ -82,12 +82,10 @@ export const MapComponent = () => {
     if (!map || hasLoadedGeoJsonRef.current) return;
 
     const geojsonUrls = getAllUrlParameters('geojsonUrl');
-    console.log('[urlGeoJson] effect ran, urls:', geojsonUrls);
     if (geojsonUrls.length === 0) return;
 
     hasLoadedGeoJsonRef.current = true;
     const mapProjection = map.getView().getProjection().getCode();
-    console.log('[urlGeoJson] mapProjection:', mapProjection);
 
     void (async () => {
       const layers = await Promise.all(
@@ -97,13 +95,11 @@ export const MapComponent = () => {
       );
       layers.forEach((layer) => map.addLayer(layer));
       setUrlGeoJsonLayers(layers);
-      console.log('[urlGeoJson] layers added:', layers.length);
       const combinedExtent = createEmpty();
       layers.forEach((layer) => {
         const ext = layer.getSource()?.getExtent();
         if (ext && !isEmpty(ext)) extendExtent(combinedExtent, ext);
       });
-      console.log('[urlGeoJson] fitting view to extent:', combinedExtent);
       if (!isEmpty(combinedExtent)) {
         map
           .getView()
