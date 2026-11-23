@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  Link,
-  Stack,
-  Text,
-} from '@kvib/react';
+import { Box, Stack } from '@kvib/react';
 import { useQuery } from '@tanstack/react-query';
 import type { TFunction } from 'i18next';
 import { getDefaultStore, useAtom, useAtomValue, useSetAtom } from 'jotai';
@@ -27,12 +17,13 @@ import {
   searchCoordinatesAtom,
   selectedResultAtom,
 } from '../atoms';
-import { InfoBoxContent } from './InfoBoxContent';
-import { InfoBoxElevationContent } from './InfoBoxPreamble';
 import {
-  fetchPropertyDetailsByCoordinates,
-  PropertyInfo,
-} from './PropertyInfo';
+  MobileInfoSummary,
+  MobilePropertyDetails,
+  MobileResultDetails,
+} from './MobileInfoBoxComponents';
+import { findPropertyAddress, getPostalAddress } from './propertyAddress';
+import { fetchPropertyDetailsByCoordinates } from './PropertyInfo';
 
 const clearPropertyGeometrySelection = () => {
   const propertyGeometryLayer = getPropertyGeometryLayer();
@@ -95,201 +86,6 @@ const getMunicipality = (selectedResult: SearchResult) => {
 const getDisplayName = (property: Property | undefined, name: string) =>
   capitalizeFirstLetter((property?.NAVN ?? name).toLocaleLowerCase('nb-NO'));
 
-const MobileInfoDetailsHeader = ({
-  title,
-  onBack,
-  onClose,
-}: {
-  title: string;
-  onBack: () => void;
-  onClose: () => void;
-}) => {
-  const { t } = useTranslation();
-
-  return (
-    <Flex justifyContent="space-between" alignItems="center">
-      <Flex alignItems="center" gap={1}>
-        <IconButton
-          onClick={onBack}
-          icon="keyboard_arrow_left"
-          size="sm"
-          variant="ghost"
-          aria-label={t('infoBox.more')}
-        />
-        <Text fontWeight="semibold">{title}</Text>
-      </Flex>
-      <IconButton
-        onClick={onClose}
-        icon="close"
-        size="sm"
-        variant="ghost"
-        aria-label={t('draw.close')}
-      />
-    </Flex>
-  );
-};
-
-const PropertyRegisterLink = ({
-  href,
-  centered = false,
-}: {
-  href: string;
-  centered?: boolean;
-}) => {
-  const { t } = useTranslation();
-
-  return (
-    <Link
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      color="white"
-      bg="green.600"
-      px={3}
-      py={0}
-      height="32px"
-      borderRadius="sm"
-      fontSize="sm"
-      fontWeight="medium"
-      display="inline-flex"
-      alignItems="center"
-      justifyContent="center"
-      gap={1}
-      textDecoration="none"
-      alignSelf={centered ? 'center' : undefined}
-      marginTop={centered ? 'auto' : undefined}
-    >
-      {t('propertyInfo.moreInformation')}
-      <Icon icon="open_in_new" size={18} />
-    </Link>
-  );
-};
-
-const MobilePropertyDetails = ({
-  selectedResult,
-  inputCRS,
-  propertyRegisterUrl,
-  onBack,
-  onClose,
-}: {
-  selectedResult: SearchResult;
-  inputCRS: string;
-  propertyRegisterUrl: string;
-  onBack: () => void;
-  onClose: () => void;
-}) => {
-  const { t } = useTranslation();
-
-  return (
-    <>
-      <MobileInfoDetailsHeader
-        title={t('infoBox.propertyInfo')}
-        onBack={onBack}
-        onClose={onClose}
-      />
-      <PropertyInfo
-        lon={selectedResult.lon}
-        lat={selectedResult.lat}
-        inputCRS={inputCRS}
-        mobile
-      />
-      <InfoBoxElevationContent result={selectedResult} />
-      <PropertyRegisterLink href={propertyRegisterUrl} centered />
-    </>
-  );
-};
-
-const MobileResultDetails = ({
-  resultLabel,
-  displayName,
-  onBack,
-  onClose,
-}: {
-  resultLabel: string;
-  displayName: string;
-  onBack: () => void;
-  onClose: () => void;
-}) => (
-  <>
-    <MobileInfoDetailsHeader
-      title={resultLabel}
-      onBack={onBack}
-      onClose={onClose}
-    />
-    <InfoBoxContent showCloseButton={false} heading={displayName} />
-  </>
-);
-
-const MobileInfoSummary = ({
-  property,
-  propertyRegisterUrl,
-  resultDescription,
-  displayName,
-  onClose,
-  onShowDetails,
-}: {
-  property?: Property;
-  propertyRegisterUrl: string | null;
-  resultDescription: string;
-  displayName: string;
-  onClose: () => void;
-  onShowDetails: () => void;
-}) => {
-  const { t } = useTranslation();
-
-  return (
-    <>
-      <Flex justifyContent="space-between" alignItems="flex-start">
-        <Stack gap={0}>
-          <Text fontSize="xs" color="gray.600">
-            {resultDescription}
-          </Text>
-          <Heading size="sm">{displayName}</Heading>
-          {property?.VEGADRESSE?.[0] && (
-            <Text fontSize="sm" color="gray.600">
-              {capitalizeFirstLetter(
-                property.VEGADRESSE[0].toLocaleLowerCase('nb-NO'),
-              )}
-            </Text>
-          )}
-        </Stack>
-        <IconButton
-          onClick={onClose}
-          icon="close"
-          size="sm"
-          variant="ghost"
-          aria-label={t('draw.close')}
-        />
-      </Flex>
-      {property && (
-        <Flex gap={2} wrap="wrap">
-          <Text bg="blue.50" px={2} py={1} fontSize="xs">
-            {t('propertyInfo.holdingNr')} {property.GARDSNR} /{' '}
-            {t('propertyInfo.subholdingNr')} {property.BRUKSNR}
-          </Text>
-          <Text bg="blue.50" px={2} py={1} fontSize="xs">
-            {t('propertyInfo.municipalityNr')} {property.KOMMUNENR}
-          </Text>
-        </Flex>
-      )}
-      <Flex justifyContent="space-between" alignItems="center" gap={2}>
-        {propertyRegisterUrl && (
-          <PropertyRegisterLink href={propertyRegisterUrl} />
-        )}
-        <Button
-          variant="outline"
-          colorPalette="green"
-          size="sm"
-          rightIcon="keyboard_arrow_up"
-          onClick={onShowDetails}
-        >
-          {t('infoBox.more')}
-        </Button>
-      </Flex>
-    </>
-  );
-};
-
 export const MobileInfoBox = () => {
   const { t } = useTranslation();
   const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
@@ -306,16 +102,29 @@ export const MobileInfoBox = () => {
       selectedResult?.lon,
       selectedResult?.lat,
     ],
-    queryFn: () =>
-      (() => {
-        const [lon4326, lat4326] = transform(
-          [selectedResult!.lon, selectedResult!.lat],
-          inputCRS!,
-          'EPSG:4326',
-        );
-        return fetchPropertyDetailsByCoordinates(lat4326, lon4326);
-      })(),
+    queryFn: () => {
+      const [lon4326, lat4326] = transform(
+        [selectedResult!.lon, selectedResult!.lat],
+        inputCRS!,
+        'EPSG:4326',
+      );
+      return fetchPropertyDetailsByCoordinates(lat4326, lon4326);
+    },
     enabled: isPropertyLocationResult && inputCRS !== null,
+  });
+  const property = selectedResult
+    ? getProperty(selectedResult, coordinatePropertyDetails)
+    : undefined;
+  const { data: addressDetails } = useQuery({
+    queryKey: [
+      'mobilePropertyAddress',
+      property?.KOMMUNENR,
+      property?.GARDSNR,
+      property?.BRUKSNR,
+      property?.VEGADRESSE?.[0],
+    ],
+    queryFn: () => findPropertyAddress(property!),
+    enabled: Boolean(property?.VEGADRESSE?.[0]),
   });
 
   useEffect(() => {
@@ -336,7 +145,6 @@ export const MobileInfoBox = () => {
     return null;
   }
 
-  const property = getProperty(selectedResult, coordinatePropertyDetails);
   const propertyRegisterUrl = getPropertyRegisterUrl(property);
   const resultLabel = getResultLabel(selectedResult, property, t);
   const municipality = getMunicipality(selectedResult);
@@ -358,10 +166,11 @@ export const MobileInfoBox = () => {
   return (
     <Stack
       p={3}
+      gap={3}
       borderRadius="16px 16px 0 0"
       bg="white"
       boxShadow="lg"
-      pointerEvents={'auto'}
+      pointerEvents="auto"
       overflowY={showDetails ? 'auto' : 'hidden'}
       height={showDetails ? 'calc(100vh - 100px)' : 'auto'}
       maxHeight={showDetails ? 'calc(100vh - 100px)' : '52vh'}
@@ -378,6 +187,7 @@ export const MobileInfoBox = () => {
             selectedResult={selectedResult}
             inputCRS={inputCRS ?? 'EPSG:4258'}
             propertyRegisterUrl={propertyRegisterUrl!}
+            postalAddress={getPostalAddress(addressDetails)}
             onBack={() => setShowDetails(false)}
             onClose={handleClose}
           />
@@ -397,6 +207,7 @@ export const MobileInfoBox = () => {
           propertyRegisterUrl={propertyRegisterUrl}
           resultDescription={resultDescription}
           displayName={displayName}
+          postalAddress={getPostalAddress(addressDetails)}
           onClose={handleClose}
           onShowDetails={() => setShowDetails(true)}
         />
