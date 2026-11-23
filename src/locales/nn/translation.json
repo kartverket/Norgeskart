@@ -617,6 +617,7 @@
   "printExtent": {
     "label": "Vel format",
     "placeholder": "Format",
+    "orientationHeading": "Orientering",
     "orientation": {
       "portrait": "Portrett",
       "landscape": "Landskap"

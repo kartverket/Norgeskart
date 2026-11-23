@@ -4,9 +4,6 @@ import {
   Button,
   createListCollection,
   HStack,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   Radio,
   RadioGroup,
   SelectContent,
@@ -15,6 +12,7 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
+  Separator,
   Spinner,
   Stack,
   Text,
@@ -132,7 +130,7 @@ export const ExtentSection = ({ onCancel }: ExtentSectionProps) => {
   };
 
   return (
-    <>
+    <Box display="flex" flexDirection="column" minHeight="100%">
       <PrintBox map={map} />
       {isVectorTileLayer(backgroundLayer) && (
         <Alert status="warning" mb={2}>
@@ -144,90 +142,114 @@ export const ExtentSection = ({ onCancel }: ExtentSectionProps) => {
           {t('printExtent.projectionWarning')}
         </Alert>
       )}
-      <Text>{t('printExtent.label')}</Text>
-      <SelectRoot
-        collection={createListCollection({ items: formatOptions })}
-        value={[format]}
-        width="180px"
-        onValueChange={(details) => {
-          if (details.value.length > 0) {
-            setFormat(details.value[0] as 'A4' | 'A3');
-          }
-        }}
+      <Box
+        width="100%"
+        border="1px solid"
+        borderColor="#E0E0E0"
+        borderRadius="8px"
+        backgroundColor="white"
+        boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+        padding={3}
+        mb={4}
       >
-        <HStack gap={4} mt={4}>
-          <SelectLabel>{t('printExtent.placeholder')}</SelectLabel>
-          <SelectTrigger width="180px">
-            <SelectValueText />
-          </SelectTrigger>
-          <SelectContent>
-            {formatOptions.map((format) => (
-              <SelectItem key={format.value} item={format.value}>
-                {format.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </HStack>
-      </SelectRoot>
-      <Box mt={4} mb={6}>
-        <RadioGroup
-          value={orientation}
+        <Text fontSize="sm" fontWeight="semibold">
+          {t('printExtent.label')}
+        </Text>
+        <SelectRoot
+          collection={createListCollection({ items: formatOptions })}
+          value={[format]}
+          width="180px"
           onValueChange={(details) => {
-            if (details.value !== null) {
-              setOrientation(details.value as 'portrait' | 'landscape');
+            if (details.value.length > 0) {
+              setFormat(details.value[0] as 'A4' | 'A3');
             }
           }}
         >
-          <Stack gap={4}>
-            <Radio value="portrait">
-              {t('printExtent.orientation.portrait')}
-            </Radio>
-            <Radio value="landscape">
-              {t('printExtent.orientation.landscape')}
-            </Radio>
-          </Stack>
-        </RadioGroup>
-      </Box>
-      {printScale && (
-        <HStack>
-          <Text fontSize="sm" fontWeight="bold">
-            {t('printExtent.scale')}: 1 : {printScale.toLocaleString('no-NO')}
+          <HStack gap={4} mt={4}>
+            <SelectLabel>{t('printExtent.placeholder')}</SelectLabel>
+            <SelectTrigger width="180px">
+              <SelectValueText />
+            </SelectTrigger>
+            <SelectContent>
+              {formatOptions.map((format) => (
+                <SelectItem key={format.value} item={format.value}>
+                  {format.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </HStack>
+        </SelectRoot>
+        <Separator mt={4} />
+        <Box mt={4}>
+          <Text fontSize="sm" fontWeight="semibold" mb={2}>
+            {t('printExtent.orientationHeading')}
           </Text>
-
-          <Popover>
-            <PopoverTrigger>
-              <Button size="sm" variant="ghost" leftIcon="info">
-                {t('shared.moreInfo')}
-              </Button>
-            </PopoverTrigger>
-
-            <PopoverContent p={4}>
-              <Text>
-                {t('printExtent.scaleNote', {
-                  screenScale: screenScale?.toLocaleString('no-NO'),
-                })}
-              </Text>
-            </PopoverContent>
-          </Popover>
+          <RadioGroup
+            value={orientation}
+            onValueChange={(details) => {
+              if (details.value !== null) {
+                setOrientation(details.value as 'portrait' | 'landscape');
+              }
+            }}
+          >
+            <Stack gap={4}>
+              <Radio value="portrait">
+                {t('printExtent.orientation.portrait')}
+              </Radio>
+              <Radio value="landscape">
+                {t('printExtent.orientation.landscape')}
+              </Radio>
+            </Stack>
+          </RadioGroup>
+        </Box>
+        <Separator mt={4} mb={4} />
+        {printScale && (
+          <Stack alignItems="flex-start" gap={1}>
+            <Text fontSize="sm" fontWeight="bold">
+              {t('printExtent.scale')}: 1 :{' '}
+              {printScale.toLocaleString('no-NO')}
+            </Text>
+            <Text fontSize="sm">
+              {t('printExtent.scaleNote', {
+                screenScale: screenScale?.toLocaleString('no-NO'),
+              })}
+            </Text>
+          </Stack>
+        )}
+      </Box>
+      <Box
+        position="sticky"
+        bottom={0}
+        zIndex={1}
+        width="100%"
+        backgroundColor="white"
+        marginTop="auto"
+        paddingTop={2}
+      >
+        <Alert status="info" mb={2} alignItems="center">
+          {t('printExtent.description')}
+        </Alert>
+        <HStack width="100%" justifyContent="space-between">
+          <Button
+            onClick={() => {
+              if (onCancel) {
+                onCancel();
+              } else {
+                setIsPrintDialogOpen(false);
+              }
+            }}
+            variant="outline"
+          >
+            {t('shared.cancel')}
+          </Button>
+          <HStack>
+            {loading && <Spinner />}
+            <Button onClick={handlePrint}>
+              {t('printExtent.button.print')}
+            </Button>
+          </HStack>
         </HStack>
-      )}
-      <Text mt={4}>{t('printExtent.description')}</Text>
-      <HStack mt={4}>
-        {loading && <Spinner />}
-        <Button onClick={handlePrint}>{t('printExtent.button.print')}</Button>
-        <Button
-          onClick={() => {
-            if (onCancel) {
-              onCancel();
-            } else {
-              setIsPrintDialogOpen(false);
-            }
-          }}
-          variant="outline"
-        >
-          {t('shared.cancel')}
-        </Button>
-      </HStack>
-    </>
+      </Box>
+    </Box>
   );
 };

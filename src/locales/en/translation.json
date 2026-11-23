@@ -612,6 +612,7 @@
   "printExtent": {
     "label": "Select format",
     "placeholder": "Format",
+    "orientationHeading": "Orientation",
     "orientation": {
       "portrait": "Portrait",
       "landscape": "Landscape"

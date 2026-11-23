@@ -17,12 +17,15 @@ export const PrintPanel = () => {
       onValueChange={(value) => setMapTool(value.value as 'extent' | 'hiking')}
       lazyMount
       unmountOnExit
+      display="flex"
+      flexDirection="column"
+      height="100%"
     >
       <TabsList>
         <TabsTrigger value="extent">Utsnitt</TabsTrigger>
         <TabsTrigger value="hiking">Turkart</TabsTrigger>
       </TabsList>
-      <TabsContent value="extent">
+      <TabsContent value="extent" flex="1" minHeight={0}>
         <ExtentSection onCancel={() => setMapTool(null)} />
       </TabsContent>
       <TabsContent value="hiking">
