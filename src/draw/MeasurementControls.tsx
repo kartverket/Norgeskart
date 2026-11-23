@@ -44,6 +44,8 @@ export const MeasurementControls = () => {
           >
             <Button
               size="xs"
+              position="relative"
+              zIndex={isActive(u.value) ? 1 : 0}
               borderColor={isActive(u.value) ? 'green.500' : 'gray.200'}
               color="green.500"
               bg={isActive(u.value) ? 'green.100' : 'transparent'}
