@@ -361,6 +361,9 @@
             "detailedNote": "Vises først nærmere enn 1:{{scale}}"
           },
           "addWms": {
+            "loadError": "Kunne ikke vise «{{title}}» i kartet",
+            "pickLayers": "Velg kartlag",
+            "pickLayersError": "Kunne ikke hente kartlagene i tjenesten.",
             "removeButton": "Fjern lag",
             "moveUp": "Flytt opp",
             "moveDown": "Flytt ned",

@@ -81,7 +81,8 @@ const cspHosts = (directive) => {
 };
 const hostAllowed = (host, sources) =>
   sources.some((s) =>
-    s.startsWith('*.') ? host.endsWith(s.slice(1)) : s === host,
+    s === 'https:' ||
+    (s.startsWith('*.') ? host.endsWith(s.slice(1)) : s === host),
   );
 
 // Same normalisation as normalizeWmsBaseUrl in src/map/layers/urlWms.ts.

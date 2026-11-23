@@ -23,6 +23,7 @@ import {
 } from './layers/config/backgroundLayers/atoms';
 import { getLayerFromConfig } from './layers/config/backgroundLayers/utils';
 import { themeLayerConfigAtom } from './layers/themeLayerConfigApi';
+import { hasUrlLayersAtom } from './layers/urlWms';
 import { scaleToResolution } from './mapScale';
 import { ProjectionIdentifier } from './projections/types';
 import { StepMouseWheelZoom } from './stepMouseWheelZoom';
@@ -74,7 +75,10 @@ export const displayMapLegendControlAtom = atom<boolean>((get) => {
     return layerDef && !layerDef.noLegend;
   });
 
-  return !displayMapLegned && (hasThemeLegend || get(hasBackgroundLegendAtom));
+  return (
+    !displayMapLegned &&
+    (hasThemeLegend || get(hasBackgroundLegendAtom) || get(hasUrlLayersAtom))
+  );
 });
 export const displayCompassOverlayAtom = atom<boolean>(false);
 export const useMagneticNorthAtom = atom<boolean>(false);

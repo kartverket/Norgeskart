@@ -22,9 +22,9 @@ import {
   useWmsScale,
   WmsScaleRange,
 } from '../../../map/layers/urlWms';
-import { GeonorgeWmsSearch } from './GeonorgeWmsSearch';
+import { WmsLayerPicker } from './WmsLayerPicker';
 
-const WmsLayerList = () => {
+export const WmsLayerList = () => {
   const { t } = useTranslation();
   const map = useAtomValue(mapAtom);
   const setUrlWmsLayers = useSetAtom(urlWmsLayersAtom);
@@ -80,7 +80,7 @@ const WmsLayerList = () => {
   };
 
   return (
-    <VStack align="stretch" gap={2} marginTop={3}>
+    <VStack align="stretch" gap={2} marginBottom={3}>
       {urlWmsLayers.map((layer, index) => {
         const id = layer.get('id') as string;
         const title = layer.get('layerTitle') as string;
@@ -228,16 +228,10 @@ const WmsLayerList = () => {
                 {Math.round(opacity * 100)}%
               </Text>
             </Flex>
+            <WmsLayerPicker layer={layer} />
           </Box>
         );
       })}
     </VStack>
   );
 };
-
-export const AddWmsSection = () => (
-  <Box>
-    <GeonorgeWmsSearch />
-    <WmsLayerList />
-  </Box>
-);

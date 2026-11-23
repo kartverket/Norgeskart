@@ -51,6 +51,18 @@ export const appendUrlParameter = (
   updateUrl(url, (params) => params.append(key, String(value)));
 };
 
+/** Replaces every occurrence of a repeatable parameter. */
+export const setAllUrlParameters = (
+  key: NKUrlParameter,
+  values: string[],
+): void => {
+  const url = new URL(window.location.href);
+  updateUrl(url, (params) => {
+    params.delete(key);
+    values.forEach((value) => params.append(key, value));
+  });
+};
+
 export const getUrlParameter = (key: NKUrlParameter): string | null => {
   return getSearchParams().get(key);
 };
@@ -145,6 +157,7 @@ export type NKUrlParameter =
   | 'showSelection'
   | 'showMenu'
   | 'geojsonUrl'
+  | 'geonorge' // Geonorge catalog ids, see urlWmsState.ts
   | 'wmsUrl'
   | 'wmsLayer'
   | 'printTool'

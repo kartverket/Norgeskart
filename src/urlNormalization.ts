@@ -26,6 +26,17 @@ const hasExternalReferrer = (): boolean => {
   }
 };
 
+const withLayersParam = (wmsUrl: string, layers: string | null): string => {
+  if (!layers) return wmsUrl;
+  try {
+    const url = new URL(wmsUrl);
+    url.searchParams.set('LAYERS', layers);
+    return url.toString();
+  } catch {
+    return wmsUrl;
+  }
+};
+
 export const processUrlParameters = () => {
   transitionHashToQuery();
 
@@ -106,10 +117,11 @@ export const processUrlParameters = () => {
         .map((u) => u.trim())
         .filter((u) => u.length > 0);
 
-      // addLayers items were internal old-system identifiers, NOT WMS LAYERS params.
-      // Let fetchRootLayerName resolve the correct layer name from GetCapabilities.
+      // addLayers holds WMS layer names (kartkatalog) or old internal ids. Offer
+      // all to each service: names it doesn't have are ignored.
+      const addLayers = getUrlParameter('addLayers');
       wmsUrls.forEach((wmsUrl) => {
-        appendUrlParameter('wmsUrl', wmsUrl);
+        appendUrlParameter('wmsUrl', withLayersParam(wmsUrl, addLayers));
       });
     }
 

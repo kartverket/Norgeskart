@@ -361,6 +361,9 @@
             "detailedNote": "Blir først vist nærare enn 1:{{scale}}"
           },
           "addWms": {
+            "loadError": "Kunne ikkje vise «{{title}}» i kartet",
+            "pickLayers": "Vel kartlag",
+            "pickLayersError": "Kunne ikkje hente kartlaga i tenesta.",
             "removeButton": "Fjern lag",
             "moveUp": "Flytt opp",
             "moveDown": "Flytt ned",

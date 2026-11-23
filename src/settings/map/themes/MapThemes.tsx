@@ -34,9 +34,10 @@ import {
   WARNING_THRESHOLD,
 } from '../../../map/layers/themeLayers';
 import { ThemeLayerName } from '../../../map/layers/themeWMS';
-import { AddWmsSection } from './AddWmsSection';
+import { GeonorgeWmsSearch } from './GeonorgeWmsSearch';
 import { LayerLine, SubThemeSection } from './SubTheme';
 import { SubTheme, Theme } from './types';
+import { WmsLayerList } from './WmsLayerList';
 
 export const MapThemesHeader = () => {
   const { t } = useTranslation();
@@ -202,6 +203,7 @@ export const MapThemes = () => {
 
   return (
     <VStack gap={0} align="stretch">
+      <WmsLayerList />
       {displayMapLegendControl && (
         <Button
           width="100%"
@@ -283,7 +285,7 @@ export const MapThemes = () => {
         })}
       </Accordion>
 
-      <AddWmsSection />
+      <GeonorgeWmsSearch />
     </VStack>
   );
 };

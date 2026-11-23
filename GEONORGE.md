@@ -112,6 +112,29 @@ URL-enkodes: `dekning_n5%20kartdata.geojson`.
 
 ---
 
+## URL-parameter: `geonorge` (Kartkatalogen → Norgeskart)
+
+```
+https://norgeskart.no/?geonorge=<id>,<id>&lat=…&lon=…&zoom=…
+```
+
+- `<id>` er metadata-id i Kartkatalogen: datasett, serie, tjeneste eller tjenestelag.
+  Send id-en brukeren trykket på, ikke id-en til tjenesten bak. Første id ligger øverst.
+- Maks 20 id-er. Duplikater og ugyldige id-er ignoreres. `lat`/`lon` er i kartets
+  projeksjon (EPSG:25833 hvis `projection` ikke er satt).
+- Oppslag: den verifiserte listen (`geonorgeWmsLayers.json`), deretter
+  `kartkatalog.geonorge.no/api/getdata/<id>`. Uten WMS vises et varsel med lenke til
+  Kartkatalogen.
+- Valgte underlag skrives som `<id>~<lag>~<lag>` (lagnavn er URL-kodet).
+- URL-en følger kartet når lag legges til, fjernes, flyttes eller endres, så den kan deles.
+- Tjenester utenfor katalogen: `wmsUrl=<url>`, med lag i URL-ens egen `LAYERS`-parameter.
+  `wmsLayer` (paret på posisjon) leses fortsatt, men skrives ikke.
+- Gamle lenker (`wms=…&addLayers=…`) støttes; lagnavn tjenesten ikke har, ignoreres.
+
+Kode: `src/map/layers/geonorgeLayers.ts`, `urlWmsState.ts`, `useUrlWmsLayers.ts`, `urlWms.ts`.
+
+---
+
 ## 3. URL-parametere: `wmsUrl` + `wmsLayer` (Dekningskart)
 
 Kartkatalogen kan vise et fullstendig dekningskart for et datasett ved å koble

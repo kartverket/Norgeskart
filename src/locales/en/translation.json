@@ -356,6 +356,9 @@
             "detailedNote": "Only shown closer than 1:{{scale}}"
           },
           "addWms": {
+            "loadError": "Could not show “{{title}}” on the map",
+            "pickLayers": "Choose layers",
+            "pickLayersError": "Could not fetch the layers of the service.",
             "removeButton": "Remove layer",
             "moveUp": "Move up",
             "moveDown": "Move down",

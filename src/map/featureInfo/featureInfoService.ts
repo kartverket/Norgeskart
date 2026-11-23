@@ -356,6 +356,22 @@ export const parseFeatureInfo = (
   return parseJsonFeatureInfo(data);
 };
 
+// Any link can add a WMS, so its HTML must never be rendered as markup.
+const isUnverifiedUrlLayer = (layer: QueryableWMSLayer) =>
+  String(layer.get('id')).startsWith('theme.urlWms.') && !layer.get('entryId');
+
+export const htmlFeaturesToText = (
+  features: FeatureInfoFeature[],
+): FeatureInfoFeature[] =>
+  features.map((feature) => {
+    const { _html, ...properties } = feature.properties;
+    if (_html === undefined) return feature;
+    const doc = new DOMParser().parseFromString(String(_html), 'text/html');
+    doc.querySelectorAll('script, style').forEach((el) => el.remove());
+    const info = doc.body.textContent?.replace(/\s+/g, ' ').trim();
+    return { ...feature, properties: { ...properties, ...(info && { info }) } };
+  });
+
 export const fetchLayerFeatureInfo = async (
   layer: QueryableWMSLayer,
   coordinate: Coordinate,
@@ -408,7 +424,10 @@ export const fetchLayerFeatureInfo = async (
         continue;
       }
 
-      const features = parseFeatureInfo(data, contentType);
+      const parsed = parseFeatureInfo(data, contentType);
+      const features = isUnverifiedUrlLayer(layer)
+        ? htmlFeaturesToText(parsed)
+        : parsed;
 
       if (features.length > 0) {
         return {

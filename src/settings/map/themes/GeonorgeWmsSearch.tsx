@@ -24,50 +24,14 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mapAtom } from '../../../map/atoms';
-import { InfoFormat } from '../../../map/featureInfo/types';
 import {
-  assignZIndices,
-  createUrlWmsLayer,
-  urlWmsLayersAtom,
-  WmsScaleRange,
-} from '../../../map/layers/urlWms';
-
-/** Generated and render-tested by scripts/generateGeonorgeWmsLayers.js. */
-type GeonorgeWmsLayer = {
-  id: string;
-  title: string;
-  organization: string;
-  category: string;
-  url: string;
-  layer: string;
-  /** WMS scale denominators the layer draws between, when limited. */
-  minScale?: number;
-  maxScale?: number;
-  /** First sentence of the catalog abstract: what the data actually is. */
-  summary: string | null;
-  detailsUrl: string | null;
-  type: string;
-  /** false when the capabilities mark the layer(s) queryable="0". */
-  queryable?: false;
-  /** Requests the whole service rather than one layer of it. */
-  whole?: boolean;
-  /** Zoomed-in-only twin of an overview layer (NVE "Dam" next to "Dam_N250"). */
-  variant?: 'detailed';
-};
-
-type GeonorgeWmsService = {
-  title: string;
-  organization: string;
-  summary: string | null;
-  detailsUrl: string | null;
-  /** Best GetFeatureInfo format the service offers; null = none. */
-  infoFormat: InfoFormat | null;
-};
-
-type GeonorgeWmsData = {
-  services: Record<string, GeonorgeWmsService>;
-  layers: GeonorgeWmsLayer[];
-};
+  createGeonorgeEntryLayer,
+  GeonorgeWmsData,
+  GeonorgeWmsLayer,
+  GeonorgeWmsService,
+  loadGeonorgeWmsData,
+} from '../../../map/layers/geonorgeLayers';
+import { assignZIndices, urlWmsLayersAtom } from '../../../map/layers/urlWms';
 
 type ServiceGroup = {
   url: string;
@@ -102,10 +66,6 @@ const ALL_CATEGORIES = 'all';
 const MAX_VISIBLE_RESULTS = 50;
 const MIN_QUERY_LENGTH = 2;
 
-// ~80 kB gzipped, so only fetched once the section is opened.
-const loadData = async (): Promise<GeonorgeWmsData> =>
-  (await import('./geonorgeWmsLayers.json')).default as GeonorgeWmsData;
-
 const normalize = (text: string) =>
   text
     .toLowerCase()
@@ -139,16 +99,14 @@ export const GeonorgeWmsSearch = () => {
   const layers = data?.layers ?? null;
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState(ALL_CATEGORIES);
-  const [addingId, setAddingId] = useState<string | null>(null);
-  const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
-  const [addError, setAddError] = useState<string | null>(null);
 
   const map = useAtomValue(mapAtom);
   const setUrlWmsLayers = useSetAtom(urlWmsLayersAtom);
   const urlWmsLayers = useAtomValue(urlWmsLayersAtom);
+  const addedIds = new Set(urlWmsLayers.map((l) => l.get('entryId')));
 
   useEffect(() => {
-    void loadData().then(setData);
+    void loadGeonorgeWmsData().then(setData);
   }, []);
 
   const categoryCollection = useMemo(() => {
@@ -203,49 +161,19 @@ export const GeonorgeWmsSearch = () => {
       : entry.title;
   };
 
-  const handleAdd = async (entry: GeonorgeWmsLayer) => {
-    setAddingId(entry.id);
-    setAddError(null);
-    try {
-      const mapProjection = map.getView().getProjection().getCode();
-      const layer = await createUrlWmsLayer(
-        entry.url,
-        entry.layer,
-        mapProjection,
-        urlWmsLayers.length,
-      );
-      if (!layer) {
-        setAddError(t('map.settings.layers.theme.geonorgeSearch.addError'));
-        return;
-      }
-      layer.set('layerTitle', displayTitle(entry));
-      const service = data?.services[entry.url];
-      layer.set('serviceTitle', service?.title);
-      // Ask for a format the service supports instead of trial-and-error.
-      if (service?.infoFormat === null || entry.queryable === false) {
-        layer.set('queryable', false);
-      } else if (service?.infoFormat) {
-        layer.set('infoFormat', service.infoFormat);
-      }
-      layer.set('scaleRange', {
-        minScale: entry.minScale,
-        maxScale: entry.maxScale,
-      } satisfies WmsScaleRange);
-      if (entry.detailsUrl) {
-        layer.set('geonorgeDetailsUrl', entry.detailsUrl);
-      }
-      map.addLayer(layer);
-      setUrlWmsLayers((prev) => {
-        const next = [...prev, layer];
-        assignZIndices(next);
-        return next;
-      });
-      setAddedIds((prev) => new Set(prev).add(entry.id));
-    } catch {
-      setAddError(t('map.settings.layers.theme.geonorgeSearch.addError'));
-    } finally {
-      setAddingId(null);
-    }
+  const handleAdd = (entry: GeonorgeWmsLayer) => {
+    const layer = createGeonorgeEntryLayer(
+      entry,
+      data?.services[entry.url],
+      displayTitle(entry),
+      map.getView().getProjection().getCode(),
+    );
+    map.addLayer(layer);
+    setUrlWmsLayers((prev) => {
+      const next = [layer, ...prev];
+      assignZIndices(next);
+      return next;
+    });
   };
 
   const renderAddButton = (entry: GeonorgeWmsLayer, label?: string) => {
@@ -266,11 +194,9 @@ export const GeonorgeWmsSearch = () => {
           icon={isAdded ? 'check' : 'add'}
           aria-label={`${addLabel}: ${displayTitle(entry)}`}
           colorPalette={isAdded ? 'green' : 'blue'}
-          disabled={isAdded || addingId === entry.id}
-          onClick={() => void handleAdd(entry)}
-        >
-          {addingId === entry.id && <Spinner size="xs" />}
-        </IconButton>
+          disabled={isAdded}
+          onClick={() => handleAdd(entry)}
+        />
       </Tooltip>
     );
   };
@@ -337,12 +263,6 @@ export const GeonorgeWmsSearch = () => {
               shown: MAX_VISIBLE_RESULTS,
               total: results.length,
             })}
-          </Text>
-        )}
-
-        {addError && (
-          <Text fontSize="xs" color="red.500" marginTop={2}>
-            {addError}
           </Text>
         )}
       </Box>
