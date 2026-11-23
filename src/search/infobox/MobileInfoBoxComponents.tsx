@@ -89,12 +89,14 @@ export const MobilePropertyDetails = ({
   selectedResult,
   inputCRS,
   propertyRegisterUrl,
+  postalAddress,
   onBack,
   onClose,
 }: {
   selectedResult: SearchResult;
   inputCRS: string;
   propertyRegisterUrl: string;
+  postalAddress?: string;
   onBack: () => void;
   onClose: () => void;
 }) => {
@@ -112,6 +114,7 @@ export const MobilePropertyDetails = ({
         lat={selectedResult.lat}
         inputCRS={inputCRS}
         mobile
+        postalAddress={postalAddress}
       />
       <InfoBoxElevationContent result={selectedResult} />
       <PropertyRegisterLink href={propertyRegisterUrl} centered />

@@ -187,6 +187,7 @@ export const MobileInfoBox = () => {
             selectedResult={selectedResult}
             inputCRS={inputCRS ?? 'EPSG:4258'}
             propertyRegisterUrl={propertyRegisterUrl!}
+            postalAddress={getPostalAddress(addressDetails)}
             onBack={() => setShowDetails(false)}
             onClose={handleClose}
           />
