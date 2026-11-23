@@ -1,4 +1,4 @@
-import { Box, Heading, HStack } from '@kvib/react';
+import { Box, Button, Group, Heading, HStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { LineStyle, lineStyleAtom } from '../settings/draw/atoms';
@@ -17,22 +17,15 @@ export const LineStyleControl = () => {
       <Heading size={{ base: 'xs', md: 'sm' }}>
         {t('draw.controls.lineType')}
       </Heading>
-      <HStack gap={0}>
+      <Group attached>
         {lineStyles.map((style) => (
-          <Box
-            as="button"
+          <Button
             key={style.value}
-            w="36px"
-            h="20px"
-            p={0}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            border="1px solid"
+            size="xs"
+            position="relative"
+            zIndex={lineStyle === style.value ? 1 : 0}
             borderColor={lineStyle === style.value ? 'green.500' : 'gray.200'}
-            borderRadius="4px"
             bg={lineStyle === style.value ? 'green.100' : 'transparent'}
-            cursor="pointer"
             aria-pressed={lineStyle === style.value}
             onClick={() => setLineStyle(style.value)}
           >
@@ -42,9 +35,9 @@ export const LineStyleControl = () => {
               borderTopStyle={style.borderStyle}
               borderColor="green.500"
             />
-          </Box>
+          </Button>
         ))}
-      </HStack>
+      </Group>
     </HStack>
   );
 };

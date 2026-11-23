@@ -1,4 +1,4 @@
-import { Box, Heading, HStack } from '@kvib/react';
+import { Box, Button, Group, Heading, HStack } from '@kvib/react';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import {
@@ -43,27 +43,21 @@ export const LineWidthControl = () => {
       <Heading size={{ base: 'xs', md: 'sm' }}>
         {isPoint ? t('draw.size.pointLabel') : t('draw.size.label')}
       </Heading>
-      <HStack gap={0}>
+      <Group attached>
         {lineWidthCollection.map((item) => {
           const isSelected = lineWidth === item.value;
           const pointSize = getPointSize(item.value);
 
           return (
-            <Box
+            <Button
               key={item.value}
-              as="button"
+              size="xs"
+              position="relative"
+              zIndex={isSelected ? 1 : 0}
               onClick={() => setLineWidth(item.value)}
               aria-pressed={isSelected}
               aria-label={`${t('draw.size.label')} ${item.label}`}
-              w="36px"
-              h="20px"
-              borderRadius="4px"
-              border="1px solid"
               borderColor={isSelected ? 'green.500' : 'gray.200'}
-              display="inline-flex"
-              alignItems="center"
-              justifyContent="center"
-              cursor="pointer"
               bg={isSelected ? 'green.100' : 'transparent'}
             >
               {isPoint ? (
@@ -81,10 +75,10 @@ export const LineWidthControl = () => {
                   bg="green.500"
                 />
               )}
-            </Box>
+            </Button>
           );
         })}
-      </HStack>
+      </Group>
     </HStack>
   );
 };
