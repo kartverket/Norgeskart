@@ -1,5 +1,5 @@
-import { getAddresses } from '../searchApi';
 import { Address, Property } from '../../types/searchTypes';
+import { getAddresses } from '../searchApi';
 
 const formatAddressPart = (value: string) =>
   value

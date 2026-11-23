@@ -162,9 +162,7 @@ export const MobileInfoSummary = ({
 }) => {
   const { t } = useTranslation();
   const propertyAddress = property?.VEGADRESSE?.[0]
-    ? capitalizeFirstLetter(
-        property.VEGADRESSE[0].toLocaleLowerCase('nb-NO'),
-      )
+    ? capitalizeFirstLetter(property.VEGADRESSE[0].toLocaleLowerCase('nb-NO'))
     : undefined;
 
   return (
