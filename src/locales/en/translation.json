@@ -525,6 +525,10 @@
   },
   "printdialog": {
     "heading": "Create map",
+    "overlayInstructions": "Place the orange area over the part of the map you want to print",
+    "buttons": {
+      "createMap": "Create map"
+    },
     "tabs": {
       "extent": {
         "heading": "Extent"
@@ -597,9 +601,7 @@
         },
         "heading": "Include"
       },
-      "overlayinstructions": "Place the orange overlay where you want the map",
       "buttons": {
-        "generate": "Make map",
         "cancel": "Cancel",
         "download": "Download map"
       },
@@ -619,10 +621,6 @@
     "orientation": {
       "portrait": "Portrait",
       "landscape": "Landscape"
-    },
-    "description": "Place the orange area over the part of the map you want to print",
-    "button": {
-      "print": "Download map"
     },
     "toast": {
       "success": "Download complete",

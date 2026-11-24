@@ -226,7 +226,7 @@ export const ExtentSection = ({ onCancel }: ExtentSectionProps) => {
         paddingTop={2}
       >
         <Alert status="info" mb={2} alignItems="center">
-          {t('printExtent.description')}
+          {t('printdialog.overlayInstructions')}
         </Alert>
         <HStack width="100%" justifyContent="space-between">
           <Button
@@ -244,7 +244,7 @@ export const ExtentSection = ({ onCancel }: ExtentSectionProps) => {
           <HStack>
             {loading && <Spinner />}
             <Button onClick={handlePrint}>
-              {t('printExtent.button.print')}
+              {t('printdialog.buttons.createMap')}
             </Button>
           </HStack>
         </HStack>
