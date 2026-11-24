@@ -134,7 +134,7 @@ const MapToolCard = ({
           <IconButton
             variant="ghost"
             icon="close"
-            aria-label="Lukk"
+            aria-label={t('shared.close')}
             colorPalette="red"
             onClick={onClose}
             size={{ base: 'xs', md: 'sm' }}

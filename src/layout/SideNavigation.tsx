@@ -76,7 +76,7 @@ export const SideNavigation = ({
     },
     {
       icon: 'show_chart' as const,
-      label: 'Høydeprofil',
+      label: t('printdialog.tabs.elevationProfile.heading'),
       active: currentMapTool === 'elevationProfile',
       onClick: () => {
         setMapTool(
@@ -111,7 +111,7 @@ export const SideNavigation = ({
         <Box mt={isMinimized ? 0 : 2}>
           <NavigationButton
             icon={isMinimized ? 'chevron_right' : 'chevron_left'}
-            label={isMinimized ? 'Utvid' : 'Minimer'}
+            label={isMinimized ? t('controller.expand') : t('controller.hide')}
             isMinimized={isMinimized}
             onClick={onToggleMinimized}
           />

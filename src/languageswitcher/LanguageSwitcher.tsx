@@ -63,7 +63,7 @@ export const LanguageSwitcher = ({
   compact?: boolean;
   isMinimized?: boolean;
 }) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const languageOptions = compact
@@ -91,7 +91,7 @@ export const LanguageSwitcher = ({
       <>
         <NavigationButton
           icon="language"
-          label="Språk"
+          label={t('languageSelector.tabHeading')}
           isMinimized={isMinimized}
           onClick={() => setDialogOpen(true)}
         />
@@ -102,7 +102,7 @@ export const LanguageSwitcher = ({
         >
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Språk</DialogTitle>
+              <DialogTitle>{t('languageSelector.tabHeading')}</DialogTitle>
             </DialogHeader>
             <DialogBody>
               {languageOptions.map((language) => (

@@ -22,6 +22,7 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
+    "expand": "Utvid",
     "hide": "Minimer",
     "menuHiddenToast": "Menyen er skjult. Trykk på U-tasten for å vise."
   },
@@ -40,6 +41,7 @@
       "recentColors": "Nylige farger",
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål i kartet",
+      "snapToLine": "Snapp til linje",
       "tool": {
         "label": {
           "circle": "Sirkel",
@@ -403,6 +405,7 @@
     },
     "moreInformation": "Se i Eiendomsregisteret",
     "multipleAddressesText": "Eiendommen har flere adresser",
+    "notFound": "Ingen eiendomsinformasjon funnet.",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",
     "subholdingNr": "Bruksnr."
@@ -527,6 +530,10 @@
   },
   "printdialog": {
     "heading": "Lag kart",
+    "overlayInstructions": "Plasser det oransje feltet i området du vil skrive ut",
+    "buttons": {
+      "createMap": "Lag kart"
+    },
     "tabs": {
       "extent": {
         "heading": "Utsnitt"
@@ -599,9 +606,7 @@
         },
         "heading": "Inkluder"
       },
-      "overlayinstructions": "Plasser det oransje feltet i området du vil skrive ut",
       "buttons": {
-        "generate": "Lag turkart",
         "cancel": "Avbryt",
         "download": "Last ned kart"
       },
@@ -621,10 +626,6 @@
     "orientation": {
       "portrait": "Portrett",
       "landscape": "Landskap"
-    },
-    "description": "Plasser det oransje feltet i området du vil skrive ut",
-    "button": {
-      "print": "Hent kartet"
     },
     "toast": {
       "success": "Nedlasting fullført",

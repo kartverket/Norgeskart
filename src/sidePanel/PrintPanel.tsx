@@ -1,10 +1,12 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@kvib/react';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { mapToolAtom } from '../map/overlay/atoms';
 import { ExtentSection } from '../print/Extent/ExtentSection';
 import { HikingMapSection } from '../print/HikingMap/HikingMapSection';
 
 export const PrintPanel = () => {
+  const { t } = useTranslation();
   const [currentMapTool, setMapTool] = useAtom(mapToolAtom);
 
   if (currentMapTool !== 'extent' && currentMapTool !== 'hiking') {
@@ -22,8 +24,12 @@ export const PrintPanel = () => {
       height="100%"
     >
       <TabsList>
-        <TabsTrigger value="extent">Utsnitt</TabsTrigger>
-        <TabsTrigger value="hiking">Turkart</TabsTrigger>
+        <TabsTrigger value="extent">
+          {t('printdialog.tabs.extent.heading')}
+        </TabsTrigger>
+        <TabsTrigger value="hiking">
+          {t('printdialog.tabs.hiking.heading')}
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="extent" flex="1" minHeight={0}>
         <ExtentSection onCancel={() => setMapTool(null)} />

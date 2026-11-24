@@ -57,7 +57,7 @@ export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
   const [mapName, setMapName] = useState<string>('');
   const { t } = useTranslation();
   const [generateButtonText, setGenerateButtonText] = useState<string>(
-    t('printdialog.hikingMap.buttons.generate'),
+    t('printdialog.buttons.createMap'),
   );
   const [includeLegend, setIncludeLegend] = useState<boolean>(false);
   const [includeSweeden, setIncludeSweeden] = useState<boolean>(false);
@@ -219,7 +219,7 @@ export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
       });
       setStoredDownloadUrl(null);
       setTimeout(() => {
-        setGenerateButtonText(t('printdialog.hikingMap.buttons.generate'));
+        setGenerateButtonText(t('printdialog.buttons.createMap'));
       }, 3000);
     }
 
@@ -357,7 +357,7 @@ export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
         paddingTop={2}
       >
         <Alert status="info" mb={2} alignItems="center">
-          {t('printdialog.hikingMap.overlayinstructions')}
+          {t('printdialog.overlayInstructions')}
         </Alert>
         <ButtonGroup w={'100%'} justifyContent={'space-between'}>
           <Button
