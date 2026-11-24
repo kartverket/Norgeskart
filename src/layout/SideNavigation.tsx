@@ -111,9 +111,7 @@ export const SideNavigation = ({
         <Box mt={isMinimized ? 0 : 2}>
           <NavigationButton
             icon={isMinimized ? 'chevron_right' : 'chevron_left'}
-            label={
-              isMinimized ? t('controller.expand') : t('controller.hide')
-            }
+            label={isMinimized ? t('controller.expand') : t('controller.hide')}
             isMinimized={isMinimized}
             onClick={onToggleMinimized}
           />
