@@ -25,6 +25,7 @@ export const EditControls = ({
   drawType,
   showActions = true,
 }: EditControlsProps) => {
+  const { t } = useTranslation();
   const { addDrawAction } = useDrawActionsState();
   const [snapEnabled, setSnapEnabled] = useAtom(snapEnabledAtom);
 
@@ -81,10 +82,12 @@ export const EditControls = ({
     <>
       {showSnapControl && (
         <HStack width="100%" justifyContent="space-between">
-          <Heading size={{ base: 'xs', md: 'sm' }}>Snapp til linje</Heading>
+          <Heading size={{ base: 'xs', md: 'sm' }}>
+            {t('draw.controls.snapToLine')}
+          </Heading>
           <Switch
             size="sm"
-            aria-label="Snapp til linje"
+            aria-label={t('draw.controls.snapToLine')}
             checked={snapEnabled}
             onCheckedChange={(e) => setSnapEnabled(e.checked)}
           />

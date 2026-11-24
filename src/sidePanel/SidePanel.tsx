@@ -63,7 +63,7 @@ export const SidePanel = () => {
             colorPalette="green"
             size="sm"
             variant="ghost"
-            aria-label="Lukk sidepanel"
+            aria-label={t('shared.close')}
           />
         </Flex>
       )}

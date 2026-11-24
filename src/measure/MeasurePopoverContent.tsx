@@ -1,6 +1,6 @@
 import { Button, HStack, Icon, Text, Tooltip, VStack } from '@kvib/react';
-import { t } from 'i18next';
 import { useAtom } from 'jotai';
+import { useTranslation } from 'react-i18next';
 import { measureEnabledEffect, measureTypeAtom } from './atoms';
 
 export const MeasurePopoverContent = ({
@@ -10,6 +10,7 @@ export const MeasurePopoverContent = ({
   panel?: boolean;
   isMinimized?: boolean;
 }) => {
+  const { t } = useTranslation();
   const [measureType, setMeasureType] = useAtom(measureTypeAtom);
   useAtom(measureEnabledEffect);
 

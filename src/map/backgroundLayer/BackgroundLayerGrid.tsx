@@ -113,8 +113,6 @@ export const BackgroundLayerGrid = ({
   setLayer,
   width,
   columns = 2,
-  showMoreButton = false,
-  onMoreClick,
 }: {
   layers: {
     value: BackgroundLayerName;
@@ -125,8 +123,6 @@ export const BackgroundLayerGrid = ({
   setLayer: (layer: BackgroundLayerName) => void;
   width?: string;
   columns?: number;
-  showMoreButton?: boolean;
-  onMoreClick?: () => void;
 }) => (
   <SimpleGrid
     columns={columns}
@@ -147,38 +143,5 @@ export const BackgroundLayerGrid = ({
         onClick={() => setLayer(layer.value)}
       />
     ))}
-    {showMoreButton && (
-      <Button
-        variant="ghost"
-        colorPalette="green"
-        width="fit-content"
-        height="64px"
-        display="inline-flex"
-        alignSelf="center"
-        backgroundColor="transparent"
-        _hover={{ backgroundColor: 'transparent' }}
-        p={0}
-        onClick={onMoreClick}
-        aria-label="Vis flere kart"
-        title="Vis flere kart"
-      >
-        <Box
-          backgroundColor="transparent"
-          _hover={{ backgroundColor: '#D0ECD6' }}
-          borderRadius="md"
-          width="84px"
-          height="64px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          px={0}
-          py={0}
-        >
-          <VStack gap={1}>
-            <Text fontSize="14px">Mer</Text>
-          </VStack>
-        </Box>
-      </Button>
-    )}
   </SimpleGrid>
 );

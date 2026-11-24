@@ -22,6 +22,7 @@
       "mobiletext": "Help"
     },
     "export": "Export and download",
+    "expand": "Expand",
     "hide": "Minimize",
     "menuHiddenToast": "The menu is hidden. Press the U key to show."
   },
@@ -40,6 +41,7 @@
       "recentColors": "Recent colors",
       "pointType": "Select icon",
       "showMeasurements": "Show measurements on map",
+      "snapToLine": "Snap to line",
       "tool": {
         "label": {
           "circle": "Circle",
@@ -210,7 +212,7 @@
           "shortBackgroundMaps": {
             "Nibcache_web_mercator_v2": "Aerial",
             "nautical-background": "Nautical",
-            "oceanicelectronic": "Electronic chart",
+            "oceanicelectronic": "El. chart",
             "sjokartraster": "Chart EFS",
             "topo": "Standard",
             "topo_2025": "Topo 2025",
@@ -398,6 +400,7 @@
     },
     "moreInformation": "View in the Property Register",
     "multipleAddressesText": "The property has several addresses",
+    "notFound": "No property information found.",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",
     "subholdingNr": "Subholding nr."

@@ -22,6 +22,7 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
+    "expand": "Utvid",
     "hide": "Minimer",
     "menuHiddenToast": "Menyen er skjult. Trykk på U-tasten for å vise."
   },
@@ -40,6 +41,7 @@
       "recentColors": "Nylege fargar",
       "pointType": "Punkttype",
       "showMeasurements": "Vis målingar",
+      "snapToLine": "Snapp til linje",
       "tool": {
         "label": {
           "circle": "Sirkel",
@@ -403,6 +405,7 @@
     },
     "moreInformation": "Sjå i Eigedomsregisteret",
     "multipleAddressesText": "Eigedomen har fleire adresser",
+    "notFound": "Fann ingen eigedomsinformasjon.",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",
     "subholdingNr": "Bruksnr."
