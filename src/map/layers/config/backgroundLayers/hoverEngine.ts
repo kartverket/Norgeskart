@@ -165,7 +165,10 @@ const withAlpha = (color: string, alpha: number) => {
 const bandStyle = (group: HoverGroup, kind: HoverKind, look: GroupStyle) => {
   const cache = new Map<string, Style | Style[]>();
   const wideHit = new Stroke({ color: TRANSPARENT, width: 14 });
-  const make = (color: string): Style | Style[] | undefined => {
+  const make = (
+    color: string,
+    dash?: number[],
+  ): Style | Style[] | undefined => {
     if (kind === 'fill') {
       const drawn = look.display && !group.displaySource;
       return new Style({
@@ -173,10 +176,16 @@ const bandStyle = (group: HoverGroup, kind: HoverKind, look: GroupStyle) => {
       });
     }
     if (kind === 'line') {
+      const width = 1.5 * look.widthScale;
       return look.display
         ? [
             new Style({
-              stroke: new Stroke({ color, width: 1.5 * look.widthScale }),
+              stroke: new Stroke({
+                color,
+                width,
+                lineDash: dash?.map((d) => d * width),
+                lineCap: dash ? 'butt' : 'round',
+              }),
             }),
             new Style({ stroke: wideHit }),
           ]
@@ -196,12 +205,14 @@ const bandStyle = (group: HoverGroup, kind: HoverKind, look: GroupStyle) => {
     const properties = feature.getProperties();
     if (group.filter && !group.filter(properties)) return undefined;
     const color = look.color ?? group.color(properties);
-    if (!cache.has(color)) {
-      const style = make(color);
+    const dash = group.dash?.(properties);
+    const key = `${color}|${dash ?? ''}`;
+    if (!cache.has(key)) {
+      const style = make(color, dash);
       if (!style) return undefined;
-      cache.set(color, style);
+      cache.set(key, style);
     }
-    return cache.get(color);
+    return cache.get(key);
   };
 };
 

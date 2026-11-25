@@ -38,6 +38,8 @@ export type HoverGroup = {
     // Relative width per feature (fylke and riks borders heavier).
     weight?: (properties: Properties) => number;
   };
+  // Line dash when drawn, in units of the line width; none = solid.
+  dash?: (properties: Properties) => number[] | undefined;
   // Lower wins when groups overlap.
   rank?: (properties: Properties) => number;
   describe: (properties: Properties, zoom: number) => Hovered;
@@ -186,6 +188,11 @@ export const norwegianDate = (value: unknown) => {
   }).format(date);
 };
 
+// Coarse to fine; n2000 and n5000 have no trails.
+const TRAIL_SCALES = ['n1000', 'n500', 'n250', 'n100', 'n50'];
+
+const isMarkedTrail = (p: Properties) => p.rutemerking === 'JA';
+
 const SEA_HAZARD_TYPES: Record<string, string> = {
   Skjær: 'reef',
   Tørrfall: 'dryingArea',
@@ -296,6 +303,28 @@ export const HOVER_GROUPS: HoverGroup[] = [
       label: metres(p.dybde),
       type: 'sounding',
     }),
+  },
+  {
+    id: 'trail',
+    kind: 'line',
+    scaleBands: true,
+    sources: TRAIL_SCALES.map((s) => `${s}_samferdsel_sti`),
+    sourceLayer: () => 'samferdsel_sti',
+    color: () => '#ad1457',
+    display: true,
+    dash: (p) => (isMarkedTrail(p) ? undefined : [4, 3]),
+    // trail_id covers a stretch between junctions. Archives from before it got one
+    // light nothing up: it would be every trail of that kind on screen.
+    describe: (p) => {
+      const marked = isMarkedTrail(p);
+      const id = p.trail_id;
+      return {
+        key: `trail|${marked}|${text(id)}`,
+        matches: (q) => id != null && q.trail_id === id,
+        label: marked ? 'Merket sti' : 'Umerket sti',
+        type: 'trail',
+      };
+    },
   },
   {
     id: 'road',

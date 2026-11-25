@@ -19,6 +19,7 @@ export type VectorDataLayerName =
   | 'vectorDepths'
   | 'vectorAddresses'
   | 'vectorRoads'
+  | 'vectorTrails'
   | 'vectorAirports';
 
 export type VectorEntry = {
@@ -92,6 +93,17 @@ const ENTRIES: VectorEntry[] = [
     color: '#e65100',
     name: { nb: 'Veger', nn: 'Vegar', en: 'Roads' },
     hoverGroups: ['road'],
+  },
+  {
+    id: 'vectorTrails',
+    short: { nb: 'Stier', nn: 'Stiar', en: 'Trails' },
+    color: '#ad1457',
+    name: {
+      nb: 'Stier (merket og umerket)',
+      nn: 'Stiar (merkte og umerkte)',
+      en: 'Trails (marked and unmarked)',
+    },
+    hoverGroups: ['trail'],
   },
   {
     id: 'vectorAirports',

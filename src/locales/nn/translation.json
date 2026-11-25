@@ -398,6 +398,7 @@
         "depthContour": "Djupnekurve",
         "sounding": "Djupn",
         "road": "Veg",
+        "trail": "Sti",
         "maritimeBorder": "Maritim grense",
         "natureReserve": "Naturreservat",
         "firingRange": "Skytefelt",

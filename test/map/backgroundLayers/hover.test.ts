@@ -335,3 +335,49 @@ describe('protection form and date', () => {
     expect(norwegianDate(null)).toBe('');
   });
 });
+
+describe('trails', () => {
+  const trail = (scale: string) => `${scale}_samferdsel_sti`;
+
+  it('uses one archive per zoom where they overlap', () => {
+    expect(
+      hoverBands(group('trail'), {
+        [trail('n1000')]: { minzoom: 6 },
+        [trail('n500')]: { minzoom: 7 },
+        [trail('n250')]: { minzoom: 8 },
+        [trail('n100')]: { minzoom: 10 },
+        [trail('n50')]: { minzoom: 12 },
+      }),
+    ).toEqual([
+      { source: trail('n1000'), minzoom: 6, maxzoom: 7 },
+      { source: trail('n500'), minzoom: 7, maxzoom: 8 },
+      { source: trail('n250'), minzoom: 8, maxzoom: 10 },
+      { source: trail('n100'), minzoom: 10, maxzoom: 12 },
+      { source: trail('n50'), minzoom: 12 },
+    ]);
+  });
+
+  it('draws marked trails solid and the rest dashed', () => {
+    const { dash } = group('trail');
+    expect(dash!({ rutemerking: 'JA' })).toBeUndefined();
+    expect(dash!({ rutemerking: 'NEI' })).toBeDefined();
+    expect(dash!({})).toBeDefined();
+  });
+
+  it('lights up the stretch under the cursor only', () => {
+    const p = { rutemerking: 'JA', trail_id: 7 };
+    const trail7 = group('trail').describe(p, 12);
+    expect(trail7.matches({ ...p })).toBe(true);
+    expect(trail7.matches({ ...p, trail_id: 8 })).toBe(false);
+    expect(trail7.key).not.toBe(
+      group('trail').describe({ ...p, trail_id: 8 }, 12).key,
+    );
+  });
+
+  it('without ids, labels a trail without lighting up every trail of its kind', () => {
+    const marked = group('trail').describe({ rutemerking: 'JA' }, 12);
+    expect(marked.label).toBe('Merket sti');
+    expect(marked.matches({ rutemerking: 'JA' })).toBe(false);
+    expect(group('trail').describe({}, 12).label).toBe('Umerket sti');
+  });
+});
