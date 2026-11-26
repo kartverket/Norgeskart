@@ -32,7 +32,7 @@ export const createMarker = (
       ),
     ),
   });
-  marker.setProperties({ searchResult: res });
+  marker.setProperties({ searchResult: res, isMarker: true });
   marker.setStyle(createMarkerStyle(iconSrc));
   return marker;
 };
