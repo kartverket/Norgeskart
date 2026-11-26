@@ -254,6 +254,7 @@ export const selectedResultEffect = atomEffect((get, set) => {
   const selectedResult = get(selectedResultAtom);
   if (selectedResult !== null) {
     set(isPrintDialogOpenAtom, false);
+    set(hoveredResultAtom, null);
   }
 });
 
