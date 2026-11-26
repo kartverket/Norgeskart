@@ -25,6 +25,7 @@ import { selectedResultAtom, useSearchEffects } from './search/atoms';
 import { useMapClickSearch } from './search/hooks';
 import { MobileInfoBox } from './search/infobox/MobileInfoBox';
 import { SearchComponent } from './search/SearchComponent';
+import { useSearchMarkers } from './search/searchmarkers/useSearchMarkers';
 import { ErrorBoundary } from './shared/ErrorBoundary';
 import { useIsMobileScreen } from './shared/hooks';
 
@@ -54,6 +55,7 @@ export const Layout = () => {
 
   useFeatureInfoClick();
   useSearchEffects();
+  useSearchMarkers();
   useMapClickSearch();
 
   const isToolOpen = currentMapTool !== null && currentMapTool !== 'measure';

@@ -17,10 +17,10 @@ import { getBackgroundLayerImageName } from '../map/atoms';
 import { BackgroundLayerPanel } from '../map/backgroundLayer/BackgroundLayerPanel.tsx';
 import { backgroundLayerAtom } from '../map/layers/config/backgroundLayers/atoms.ts';
 import { ErrorBoundary } from '../shared/ErrorBoundary.tsx';
-import { SearchResult } from '../types/searchTypes.ts';
 import {
   allSearchResultsAtom,
   displaySearchResultsAtom,
+  hoveredResultAtom,
   mobileInfoDetailsOpenAtom,
   searchPendingAtom,
   searchQueryAtom,
@@ -55,7 +55,7 @@ const SearchIcon = () => {
 
 export const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
-  const [hoveredResult, setHoveredResult] = useState<SearchResult | null>(null);
+  const setHoveredResult = useSetAtom(hoveredResultAtom);
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
   const { t } = useTranslation();
   const activeBackgroundLayer = useAtomValue(backgroundLayerAtom);
@@ -187,10 +187,7 @@ export const SearchComponent = () => {
           </Flex>
         </Box>
         {selectedResult === null && (
-          <SearchResults
-            hoveredResult={hoveredResult}
-            setHoveredResult={setHoveredResult}
-          />
+          <SearchResults setHoveredResult={setHoveredResult} />
         )}
         {showBackgroundSettings && (
           <Box pointerEvents={'auto'} mx={2}>
