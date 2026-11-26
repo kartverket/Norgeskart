@@ -47,6 +47,7 @@ export interface PropertyInfoProps {
   lat: number;
   inputCRS: string;
   mobile?: boolean;
+  postalAddress?: string;
 }
 
 export const fetchPropertyDetailsByCoordinates = async (
@@ -75,6 +76,7 @@ export const PropertyInfo = ({
   lat,
   inputCRS,
   mobile = false,
+  postalAddress,
 }: PropertyInfoProps) => {
   const { t } = useTranslation();
   const [lon4326, lat4326] = transform([lon, lat], inputCRS, 'EPSG:4326');
@@ -153,9 +155,6 @@ export const PropertyInfo = ({
     }
     return () => {
       isActive = false;
-      if (mobile) {
-        return;
-      }
       const existingLayer = getPropertyGeometryLayer();
       const map = getDefaultStore().get(mapAtom);
       if (existingLayer) {
@@ -172,7 +171,7 @@ export const PropertyInfo = ({
   if (isLoading || error || propertyDetails == null) return null;
 
   if (!property) {
-    return <>Ingen eiendomsinformasjon funnet.</>;
+    return <>{t('propertyInfo.notFound')}</>;
   }
 
   const hasMultipleAddresses =
@@ -199,11 +198,11 @@ export const PropertyInfo = ({
             {t('locationType.property')}
           </Text>
           <Text fontSize="md" fontWeight="bold">
-            {property.NAVN}
+            {addresses[0] ? formatPropertyText(addresses[0]) : property.NAVN}
           </Text>
-          {addresses[0] && (
+          {postalAddress && (
             <Text fontSize="sm" color="gray.600">
-              {formatPropertyText(addresses[0])}
+              {postalAddress}
             </Text>
           )}
         </Box>

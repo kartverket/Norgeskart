@@ -1,3 +1,5 @@
+import { BackgroundLayerName } from './map/layers/backgroundLayers';
+
 type layerProviderParameters = {
   norgeIBilder: {
     baseUrl: string;
@@ -29,6 +31,9 @@ type layerProviderParameters = {
       standard: string;
       standard2x: string;
       gray: string;
+      // EPSG:25833 twins on the Norwegian Polar Institute tiling (grid norway_25833_np, origin
+      // at the North Pole): norway_25833 stops just north of Svalbard. Unset = not served.
+      np?: { standard: string; standard2x: string; gray: string };
     };
   };
 };
@@ -46,6 +51,14 @@ const KART_API_LAYERS = {
   gray: 'norgeskart_gray',
 };
 
+// MapProxy on atgcp1-dev (kart.atgcp1-dev.kartverket.cloud): legacy topo* names.
+const ATGCP1_DEV_LAYERS = {
+  standard: 'topo',
+  standard2x: 'topo_2x',
+  gray: 'topo_graa',
+  np: { standard: 'topo_np', standard2x: 'topo_np_2x', gray: 'topo_graa_np' },
+};
+
 type EnvName = 'local' | 'dev' | 'test' | 'prod';
 type Env = {
   apiUrl: string;
@@ -55,6 +68,8 @@ type Env = {
   usePostHog: boolean;
   layerProviderParameters: layerProviderParameters;
   envName: EnvName;
+  // Background when the URL names none (?backgroundLayer= / legacy layers= win).
+  defaultBackgroundLayer: BackgroundLayerName;
 };
 
 const LOCAL_ENV: Env = {
@@ -81,12 +96,13 @@ const LOCAL_ENV: Env = {
     },
     topoRgis: RGIS_DEV,
     topoCache: {
-      // baseUrl: 'http://localhost:8085',
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      // Same MapProxy as test.norgeskart.no (kart.api is unreliable for local testing).
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: ATGCP1_DEV_LAYERS,
     },
   },
   envName: 'local',
+  defaultBackgroundLayer: 'topo',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
   printApiUrl: 'https://testapi.norgeskart.no',
 };
@@ -120,6 +136,7 @@ const DEV_ENV: Env = {
     },
   },
   envName: 'dev',
+  defaultBackgroundLayer: 'topo',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
   printApiUrl: 'https://testapi.norgeskart.no',
 };
@@ -147,27 +164,26 @@ const PROD_ENV: Env = {
       baseUrl: 'https://geodata.npolar.no',
     },
     topoRgis: { fargeUrl: '', graaUrl: '', forenkletUrl: '' },
+    // Same rGIS-backed MapProxy as test.norgeskart.no; kart.api is unreliable (503).
     topoCache: {
-      baseUrl: 'https://kart.api.kartverket.no',
-      layers: KART_API_LAYERS,
+      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
+      layers: ATGCP1_DEV_LAYERS,
     },
   },
   envName: 'prod',
+  defaultBackgroundLayer: 'topo',
   heightDataApiUrl: 'https://hoydedata.no/arcgis/rest',
   printApiUrl: 'https://api.norgeskart.no',
 };
 
-// test.norgeskart.no: prod settings, but the background comes from the rGIS-backed
-// MapProxy on atgcp1-dev (public host; kart.atgcp1-dev.kartverket-intern.cloud is internal-only).
+// test.norgeskart.no: prod settings plus the Topo rGIS theme layers (test-only tester),
+// opening on the new norgeskart_standard background.
 const TEST_ENV: Env = {
   ...PROD_ENV,
+  defaultBackgroundLayer: 'norgeskart_standard',
   layerProviderParameters: {
     ...PROD_ENV.layerProviderParameters,
     topoRgis: RGIS_DEV,
-    topoCache: {
-      baseUrl: 'https://kart.atgcp1-dev.kartverket.cloud',
-      layers: { standard: 'topo', standard2x: 'topo_2x', gray: 'topo_graa' },
-    },
   },
 };
 

@@ -1,5 +1,6 @@
 import {
   Alert,
+  Box,
   Button,
   ButtonGroup,
   Checkbox,
@@ -56,7 +57,7 @@ export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
   const [mapName, setMapName] = useState<string>('');
   const { t } = useTranslation();
   const [generateButtonText, setGenerateButtonText] = useState<string>(
-    t('printdialog.hikingMap.buttons.generate'),
+    t('printdialog.buttons.createMap'),
   );
   const [includeLegend, setIncludeLegend] = useState<boolean>(false);
   const [includeSweeden, setIncludeSweeden] = useState<boolean>(false);
@@ -218,7 +219,7 @@ export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
       });
       setStoredDownloadUrl(null);
       setTimeout(() => {
-        setGenerateButtonText(t('printdialog.hikingMap.buttons.generate'));
+        setGenerateButtonText(t('printdialog.buttons.createMap'));
       }, 3000);
     }
 
@@ -226,147 +227,117 @@ export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
   };
 
   return (
-    <Stack>
-      <Heading size={'md'}>{t('printdialog.hikingMap.heading')}</Heading>
-      <FieldRoot
-        w={'100%'}
-        display={'flex'}
-        flexDirection={'row'}
-        justifyContent={'space-between'}
-        alignItems={'top'}
+    <Stack minHeight="100%">
+      <Box
+        width="100%"
+        border="1px solid"
+        borderColor="#E0E0E0"
+        borderRadius="8px"
+        backgroundColor="white"
+        boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+        padding={3}
+        mb={4}
       >
-        <FieldLabel>{t('printdialog.hikingMap.fields.scale.label')}</FieldLabel>
-        <RadioGroup
-          defaultValue="1"
-          value={selectedScale}
-          onValueChange={(e) => setSelectedScale(e.value as HikingMapSacles)}
-        >
-          <VStack gap="6">
-            {MapScaleOptions.map((scaleOption) => (
-              <Radio key={scaleOption} value={scaleOption}>
-                {scaleOption}
-              </Radio>
-            ))}
-          </VStack>
-        </RadioGroup>
-      </FieldRoot>
-      <FieldRoot
-        w={'100%'}
-        display={'flex'}
-        flexDirection={'row'}
-        justifyContent={'space-between'}
-        alignItems={'flex-start'}
-      >
-        <FieldLabel>
-          {t('printdialog.hikingMap.fields.mapName.label')}
-        </FieldLabel>
-        <Stack>
-          <Input
-            placeholder={t('printdialog.hikingMap.fields.mapName.placeholder')}
-            type="text"
-            value={mapName}
-            onChange={(e) => setMapName(e.target.value)}
-          />
-          <FieldHelperText>
-            {t('printdialog.hikingMap.fields.mapName.helpertext')}
-          </FieldHelperText>
-        </Stack>
-      </FieldRoot>
-      <Separator />
-      <HStack w={'100%'} justifyContent={'space-between'} gap={4}>
-        <Heading size={'sm'}>
-          {t('printdialog.hikingMap.fields.heading')}
+        <Heading size="sm" fontWeight="semibold">
+          {t('printdialog.hikingMap.heading')}
         </Heading>
-        <VStack>
-          <FieldRoot
-            w={'100%'}
-            display={'flex'}
-            flexDirection={'row'}
-            justifyContent={'flex-start'}
-            alignItems={'center'}
-          >
-            <Checkbox
-              checked={includeLegend}
-              onCheckedChange={(e) => setIncludeLegend(e.checked == true)}
-            />
-            <FieldLabel>
-              {t('printdialog.hikingMap.fields.includeLegend.label')}
+        <Stack gap={4} mt={4}>
+          <FieldRoot display="flex" flexDirection="column" gap={3}>
+            <FieldLabel fontSize="sm" fontWeight="semibold">
+              {t('printdialog.hikingMap.fields.scale.label')}
             </FieldLabel>
-          </FieldRoot>
-          <FieldRoot
-            w={'100%'}
-            display={'flex'}
-            flexDirection={'row'}
-            justifyContent={'flex-start'}
-            alignItems={'center'}
-          >
-            <Checkbox
-              checked={includeSweeden}
-              onCheckedChange={(e) => setIncludeSweeden(e.checked == true)}
-            />
-            <FieldLabel>
-              {t('printdialog.hikingMap.fields.includeSweeden.label')}
-            </FieldLabel>
-          </FieldRoot>
-          <FieldRoot
-            w={'100%'}
-            display={'flex'}
-            flexDirection={'row'}
-            justifyContent={'flex-start'}
-            alignItems={'center'}
-          >
-            <Checkbox
-              checked={includeCompassInstructions}
-              onCheckedChange={(e) =>
-                setIncludeCompassInstructions(e.checked == true)
+            <RadioGroup
+              defaultValue="1"
+              value={selectedScale}
+              onValueChange={(e) =>
+                setSelectedScale(e.value as HikingMapSacles)
               }
-            />
-            <FieldLabel>
-              {t(
-                'printdialog.hikingMap.fields.includeCompassInstructions.label',
-              )}
-            </FieldLabel>
+            >
+              <VStack alignItems="flex-start" gap={2}>
+                {MapScaleOptions.map((scaleOption) => (
+                  <Radio key={scaleOption} value={scaleOption}>
+                    {scaleOption}
+                  </Radio>
+                ))}
+              </VStack>
+            </RadioGroup>
           </FieldRoot>
-        </VStack>
-      </HStack>
-      <Separator />
-      <Heading size={'sm'}>
-        {t('printdialog.hikingMap.overlayinstructions')}
-      </Heading>
-      <ButtonGroup w={'100%'} justifyContent={'space-between'}>
-        <Button onClick={() => printHikingMap()} disabled={printLoading}>
-          {printLoading ? <Spinner /> : generateButtonText}
-        </Button>
-        {storedDownloadUrl != null && (
-          <Button
-            onClick={() => {
-              setPopupBlocked(false);
-              window.open(storedDownloadUrl, '_blank');
-              ph.capture('print_hiking_download_link_clicked', {
-                scale: selectedScale,
-                includeLegend,
-                includeSweeden,
-                includeCompassInstructions,
-              });
-            }}
-          >
-            {t('printdialog.hikingMap.buttons.download')}
-          </Button>
-        )}
-        <Button
-          variant="secondary"
-          onClick={() => {
-            if (onCancel) {
-              onCancel();
-            } else {
-              setIsPrintDialogOpen(false);
-            }
-          }}
-          disabled={printLoading}
-        >
-          {t('printdialog.hikingMap.buttons.cancel')}
-        </Button>
-      </ButtonGroup>
+          <Separator />
+          <FieldRoot display="flex" flexDirection="column" gap={2}>
+            <FieldLabel fontSize="sm" fontWeight="semibold">
+              {t('printdialog.hikingMap.fields.mapName.label')}
+            </FieldLabel>
+            <Stack width="100%" gap={1}>
+              <Input
+                width="100%"
+                placeholder={t(
+                  'printdialog.hikingMap.fields.mapName.placeholder',
+                )}
+                type="text"
+                value={mapName}
+                onChange={(e) => setMapName(e.target.value)}
+              />
+              <FieldHelperText>
+                {t('printdialog.hikingMap.fields.mapName.helpertext')}
+              </FieldHelperText>
+            </Stack>
+          </FieldRoot>
+          <Separator />
+          <Stack gap={3}>
+            <Heading size="sm" fontSize="sm" fontWeight="semibold">
+              {t('printdialog.hikingMap.fields.heading')}
+            </Heading>
+            <VStack alignItems="stretch" gap={3}>
+              <FieldRoot
+                w="100%"
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+              >
+                <Checkbox
+                  checked={includeLegend}
+                  onCheckedChange={(e) => setIncludeLegend(e.checked == true)}
+                />
+                <FieldLabel>
+                  {t('printdialog.hikingMap.fields.includeLegend.label')}
+                </FieldLabel>
+              </FieldRoot>
+              <FieldRoot
+                w="100%"
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+              >
+                <Checkbox
+                  checked={includeSweeden}
+                  onCheckedChange={(e) => setIncludeSweeden(e.checked == true)}
+                />
+                <FieldLabel>
+                  {t('printdialog.hikingMap.fields.includeSweeden.label')}
+                </FieldLabel>
+              </FieldRoot>
+              <FieldRoot
+                w="100%"
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+              >
+                <Checkbox
+                  checked={includeCompassInstructions}
+                  onCheckedChange={(e) =>
+                    setIncludeCompassInstructions(e.checked == true)
+                  }
+                />
+                <FieldLabel>
+                  {t(
+                    'printdialog.hikingMap.fields.includeCompassInstructions.label',
+                  )}
+                </FieldLabel>
+              </FieldRoot>
+            </VStack>
+          </Stack>
+        </Stack>
+      </Box>
       {popupBlocked && (
         <Alert
           status="error"
@@ -376,6 +347,55 @@ export const HikingMapSection = ({ onCancel }: HikingMapSectionProps) => {
           {t('printdialog.hikingMap.popupblockedalert.body')}
         </Alert>
       )}
+      <Box
+        position="sticky"
+        bottom={0}
+        zIndex={1}
+        width="100%"
+        backgroundColor="white"
+        marginTop="auto"
+        paddingTop={2}
+      >
+        <Alert status="info" mb={2} alignItems="center">
+          {t('printdialog.overlayInstructions')}
+        </Alert>
+        <ButtonGroup w={'100%'} justifyContent={'space-between'}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              if (onCancel) {
+                onCancel();
+              } else {
+                setIsPrintDialogOpen(false);
+              }
+            }}
+            disabled={printLoading}
+          >
+            {t('printdialog.hikingMap.buttons.cancel')}
+          </Button>
+          <HStack>
+            {storedDownloadUrl != null && (
+              <Button
+                onClick={() => {
+                  setPopupBlocked(false);
+                  window.open(storedDownloadUrl, '_blank');
+                  ph.capture('print_hiking_download_link_clicked', {
+                    scale: selectedScale,
+                    includeLegend,
+                    includeSweeden,
+                    includeCompassInstructions,
+                  });
+                }}
+              >
+                {t('printdialog.hikingMap.buttons.download')}
+              </Button>
+            )}
+            <Button onClick={() => printHikingMap()} disabled={printLoading}>
+              {printLoading ? <Spinner /> : generateButtonText}
+            </Button>
+          </HStack>
+        </ButtonGroup>
+      </Box>
     </Stack>
   );
 };

@@ -1,3 +1,4 @@
+import { getEnv } from './env';
 import {
   BackgroundLayerName,
   mapLegacyBackgroundLayerId,
@@ -10,6 +11,20 @@ import {
   setUrlParameter,
   transitionHashToQuery,
 } from './shared/utils/urlUtils.ts';
+
+const LEGACY_FLYFOTO_ID = '1002';
+const LEGACY_TOPO_ID = '1001';
+
+const hasExternalReferrer = (): boolean => {
+  if (!document.referrer) {
+    return false;
+  }
+  try {
+    return new URL(document.referrer).hostname !== window.location.hostname;
+  } catch {
+    return false;
+  }
+};
 
 export const processUrlParameters = () => {
   transitionHashToQuery();
@@ -34,7 +49,13 @@ export const processUrlParameters = () => {
     );
 
     if (backgroundLayerId) {
-      layerNameFromUrl = backgroundLayerId;
+      // Old links embedded/linked from other sites (e.g. the kartverket.no
+      // eiendomskart iframe) hardcode Flyfoto (1002). When we know where the
+      // user came from, show topo instead; bookmarks (no referrer) keep Flyfoto.
+      layerNameFromUrl =
+        backgroundLayerId === LEGACY_FLYFOTO_ID && hasExternalReferrer()
+          ? LEGACY_TOPO_ID
+          : backgroundLayerId;
     }
 
     legacyThemeLayerIds = themeLayerIds;
@@ -52,7 +73,7 @@ export const processUrlParameters = () => {
   }
 
   const finalLayerName = (layerNameFromUrl ||
-    'norgeskart_standard') as BackgroundLayerName;
+    getEnv().defaultBackgroundLayer) as BackgroundLayerName;
   const newThemeLayers: string[] = [];
 
   removeUrlParameter('project');

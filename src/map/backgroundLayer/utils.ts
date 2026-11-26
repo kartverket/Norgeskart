@@ -3,16 +3,30 @@ import { allConfiguredBackgroundLayers } from '../layers/config/backgroundLayers
 import { ProjectionIdentifier } from '../projections/types';
 
 const backgroundLayerOrder = new Map<BackgroundLayerName, number>([
-  ['norgeskart_standard', 1],
-  ['norgeskart_gray', 2],
-  ['toporaster', 3],
-  ['sjokartraster', 4],
-  ['nautical-background', 5],
-  ['oceanicelectronic', 6],
-  ['Nibcache_web_mercator_v2', 7],
-  ['Nibcache_UTM32_EUREF89_v2', 8],
-  ['Nibcache_UTM33_EUREF89_v2', 9],
-  ['Nibcache_UTM35_EUREF89_v2', 10],
+  ['topo', 1],
+  ['norgeskart_standard', 2],
+  ['topograatone', 3],
+  ['norgeskart_gray', 4],
+  ['toporaster', 5],
+  ['sjokartraster', 6],
+  ['nautical-background', 7],
+  ['oceanicelectronic', 8],
+  ['Nibcache_web_mercator_v2', 9],
+  ['Nibcache_UTM32_EUREF89_v2', 10],
+  ['Nibcache_UTM33_EUREF89_v2', 11],
+  ['Nibcache_UTM35_EUREF89_v2', 12],
+]);
+
+// Not offered in the picker; still configured so old ?backgroundLayer= links keep working.
+const hiddenBackgroundLayers: ReadonlySet<BackgroundLayerName> = new Set([
+  'Basisdata_NP_Basiskart_Svalbard_WMTS_25833',
+  'Basisdata_NP_Basiskart_JanMayen_WMTS_25833',
+]);
+
+// Shown with a "New" badge in the background layer picker.
+export const newBackgroundLayers: ReadonlySet<BackgroundLayerName> = new Set([
+  'norgeskart_standard',
+  'norgeskart_gray',
 ]);
 
 const sortBackgroundLayers = (
@@ -31,8 +45,7 @@ export const getAvailableBackgroundLayers = (
   allConfiguredBackgroundLayers
     .filter(
       (layer) =>
-        layer.layerName !== 'Basisdata_NP_Basiskart_Svalbard_WMTS_25833' &&
-        layer.layerName !== 'Basisdata_NP_Basiskart_JanMayen_WMTS_25833' &&
+        !hiddenBackgroundLayers.has(layer.layerName) &&
         (layer.showForProjections == null ||
           layer.showForProjections.includes(currentProjection)),
     )

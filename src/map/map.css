@@ -9,18 +9,27 @@
 .ol-scale-line {
   position: absolute;
   left: 50%;
-  bottom: 58px;
+  bottom: 56px;
   right: auto;
   transform: translateX(-50%);
 }
 
 /* Mobile: center scale line above toolbar */
-@media (max-width: 768px) {
+@media (max-width: 997px) {
   .ol-scale-line {
     right: auto;
     left: 50%;
     transform: translateX(-50%);
-    bottom: calc(10px + env(safe-area-inset-bottom));
+    bottom: 75px;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 1366px) and (max-height: 1024px) {
+  .desktop-layout-map--panel-open .ol-scale-line {
+    left: auto;
+    right: calc(10px + env(safe-area-inset-right) + 50px);
+    transform: none;
+    bottom: calc(6px + env(safe-area-inset-bottom));
   }
 }
 
@@ -59,6 +68,10 @@
   user-select: none;
   opacity: 1;
   font-weight: bold;
+}
+
+.ol-tooltip-cursor {
+  pointer-events: none;
 }
 
 .ol-tooltip-static {

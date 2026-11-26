@@ -63,7 +63,7 @@ export const SidePanel = () => {
             colorPalette="green"
             size="sm"
             variant="ghost"
-            aria-label="Lukk sidepanel"
+            aria-label={t('shared.close')}
           />
         </Flex>
       )}
@@ -72,8 +72,11 @@ export const SidePanel = () => {
         {currentMapTool === 'draw' && <DrawControls />}
         <PrintPanel />
         {currentMapTool === 'elevationProfile' && <ElevationProfileSection />}
-        {currentMapTool === null && selectedResult !== null && (
-          <InfoBoxContent showReportButton={false} showCloseButton={false} />
+        {/* Hide, don't unmount, while a tool is open */}
+        {selectedResult !== null && (
+          <Box display={currentMapTool === null ? 'block' : 'none'}>
+            <InfoBoxContent showReportButton={false} showCloseButton={false} />
+          </Box>
         )}
       </Box>
     </Box>

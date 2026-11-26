@@ -155,29 +155,21 @@ export const HelpPage = () => {
   }, [i18n.language]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={(event) => setIsOpen(event.open)}>
-      <DialogContent
-        position="fixed"
-        width="100%"
-        maxWidth="none"
-        height="100dvh"
-        maxHeight="none"
-        bg="green.50"
-        margin={0}
-        padding={0}
-        zIndex={1400}
-        overflowY="auto"
-      >
+    <Dialog
+      open={isOpen}
+      onOpenChange={(event) => setIsOpen(event.open)}
+      size="xl"
+    >
+      <DialogContent position="fixed" maxH="90dvh" overflowY="auto">
         <DialogCloseTrigger />
         <Box
-          minH="100vh"
           bg="green.50"
           px={{ base: 4, md: 8 }}
           pt={{ base: 2, md: 8 }}
           pb={{ base: 8, md: 12 }}
         >
           <Box maxW="1120px" mx="auto">
-            <Heading size={{ base: '3xl', md: '5xl' }}>
+            <Heading size={{ base: '2xl', md: '3xl' }}>
               {t('helpPage.title')}
             </Heading>
             <Box {...boxStyles}>

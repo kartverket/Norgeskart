@@ -11,7 +11,6 @@ import { isPrintDialogOpenAtom } from '../print/atoms';
 import { ParsedCoordinate } from '../shared/utils/coordinateParser';
 import { SearchResult } from '../types/searchTypes';
 import { searchCoordinatesAtom, selectedResultAtom } from './atoms';
-import { updateSearchMarkers } from './searchmarkers/updateSearchMarkers';
 
 export const useMapClickSearch = () => {
   const setSearchCoordinates = useSetAtom(searchCoordinatesAtom);
@@ -66,8 +65,6 @@ export const useMapClickSearch = () => {
       };
 
       setSelectedResult(coordinateResult);
-
-      updateSearchMarkers([], null, coordinateResult, () => {});
     },
     [setSearchCoordinates, setSelectedResult],
   );

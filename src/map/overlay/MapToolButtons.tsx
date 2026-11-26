@@ -76,7 +76,6 @@ export const MapToolButtons = () => {
       align="flex-end"
       justify="space-between"
       bg="#FFFF"
-      borderRadius={{ base: '', md: 'lg' }}
       shadow="lg"
       py={{ base: 1, md: 1 }}
       px={{ base: 2, md: 1 }}

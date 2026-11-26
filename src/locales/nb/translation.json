@@ -22,6 +22,7 @@
       "mobiletext": "Hjelp"
     },
     "export": "Eksport og lagring",
+    "expand": "Utvid",
     "hide": "Minimer",
     "menuHiddenToast": "Menyen er skjult. Trykk på U-tasten for å vise."
   },
@@ -40,6 +41,7 @@
       "recentColors": "Nylige farger",
       "pointType": "Punkttype",
       "showMeasurements": "Vis mål i kartet",
+      "snapToLine": "Snapp til linje",
       "tool": {
         "label": {
           "circle": "Sirkel",
@@ -204,6 +206,8 @@
             "topo_2025": "Topo 2025",
             "norgeskart_standard": "Standard",
             "norgeskart_gray": "Standard (gråtone)",
+            "topo": "Standard",
+            "topograatone": "Standard (gråtone)",
             "topoProd": "Topografisk",
             "toporaster": "Papirkart",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
@@ -355,7 +359,8 @@
         "label": "Tegnforklaring"
       },
       "backgroundLayer": {
-        "label": "Kart"
+        "label": "Kart",
+        "new": "Beta"
       }
     }
   },
@@ -398,8 +403,9 @@
     "markProperty": {
       "label": "Vis eiendomsgrenser"
     },
-    "moreInformation": "Se eiendom / grunnbok",
+    "moreInformation": "Se i Eiendomsregisteret",
     "multipleAddressesText": "Eiendommen har flere adresser",
+    "notFound": "Ingen eiendomsinformasjon funnet.",
     "municipalityNr": "Kommunenr.",
     "sectionNr": "Seksjonsnr.",
     "subholdingNr": "Bruksnr."
@@ -524,6 +530,10 @@
   },
   "printdialog": {
     "heading": "Lag kart",
+    "overlayInstructions": "Plasser det oransje feltet i området du vil skrive ut",
+    "buttons": {
+      "createMap": "Lag kart"
+    },
     "tabs": {
       "extent": {
         "heading": "Utsnitt"
@@ -586,19 +596,17 @@
           "helpertext": "Kun a-z og tall"
         },
         "includeLegend": {
-          "label": "tegnforklaring"
+          "label": "Tegnforklaring"
         },
         "includeSweeden": {
-          "label": "kart inn i Sverige (50km)"
+          "label": "Kart inn i Sverige (50 km)"
         },
         "includeCompassInstructions": {
-          "label": "minikurs i kompassbruk"
+          "label": "Minikurs i kompassbruk"
         },
-        "heading": "Ta med"
+        "heading": "Inkluder"
       },
-      "overlayinstructions": "Plasser det oransje feltet i området du vil skrive ut",
       "buttons": {
-        "generate": "Lag turkart",
         "cancel": "Avbryt",
         "download": "Last ned kart"
       },
@@ -614,13 +622,10 @@
   "printExtent": {
     "label": "Velg format",
     "placeholder": "Format",
+    "orientationHeading": "Orientering",
     "orientation": {
       "portrait": "Portrett",
       "landscape": "Landskap"
-    },
-    "description": "Plasser det oransje feltet i området du vil skrive ut",
-    "button": {
-      "print": "Hent kartet"
     },
     "toast": {
       "success": "Nedlasting fullført",
@@ -665,7 +670,9 @@
   "measure": {
     "label": "Måle",
     "length": "Lengde",
-    "area": "Areal"
+    "area": "Areal",
+    "startInstruction": "Klikk for å starte målingen",
+    "finishInstruction": "Dobbeltklikk for å avslutte målingen"
   },
   "helpPage": {
     "header": {

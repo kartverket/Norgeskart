@@ -1,6 +1,7 @@
 import { useHydrateAtoms } from 'jotai/utils';
 import 'material-symbols/rounded.css';
 import { ReactNode } from 'react';
+import { getEnv } from './env';
 import './index.css';
 import { activeThemeLayersAtom } from './map/layers/atoms.ts';
 import { BackgroundLayerName } from './map/layers/backgroundLayers.ts';
@@ -18,7 +19,7 @@ export const AtomWrapper = ({ children }: { children: ReactNode }) => {
   );
   const layerNameFromUrl = getUrlParameter('backgroundLayer');
   const finalLayerName = (layerNameFromUrl ||
-    'norgeskart_standard') as BackgroundLayerName;
+    getEnv().defaultBackgroundLayer) as BackgroundLayerName;
 
   useHydrateAtoms([
     [activeThemeLayersAtom, initialThemeLayers],

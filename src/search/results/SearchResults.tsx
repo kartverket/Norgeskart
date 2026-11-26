@@ -1,6 +1,6 @@
 import { AccordionRoot, Box, Stack } from '@kvib/react';
-import { useAtom, useAtomValue } from 'jotai';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMapSettings } from '../../map/mapHooks.ts';
 import { getInputCRS } from '../../shared/utils/crsUtils.ts';
@@ -12,7 +12,6 @@ import {
   searchQueryAtom,
   selectedResultAtom,
 } from '../atoms.ts';
-import { updateSearchMarkers } from '../searchmarkers/updateSearchMarkers.ts';
 import { AddressesResults } from './AddressesResults.tsx';
 import { CoordinateResults } from './CoorResult.tsx';
 import { PlacesResult } from './PlacesResults.tsx';
@@ -22,14 +21,10 @@ import { RoadsResults } from './RoadsResults.tsx';
 type AccordionTab = 'places' | 'roads' | 'properties' | 'addresses';
 
 interface SearchResultsProps {
-  hoveredResult: SearchResult | null;
   setHoveredResult: (result: SearchResult | null) => void;
 }
 
-export const SearchResults = ({
-  hoveredResult,
-  setHoveredResult,
-}: SearchResultsProps) => {
+export const SearchResults = ({ setHoveredResult }: SearchResultsProps) => {
   const { setMapLocation } = useMapSettings();
   const searchQuery = useAtomValue(searchQueryAtom);
   const { t } = useTranslation();
@@ -55,7 +50,7 @@ export const SearchResults = ({
 
   const allResults = useAtomValue(allSearchResultsAtom);
 
-  const [selectedResult, setSelectedResult] = useAtom(selectedResultAtom);
+  const setSelectedResult = useSetAtom(selectedResultAtom);
 
   const handleHover = (res: SearchResult) => {
     setHoveredResult(res);
@@ -79,21 +74,6 @@ export const SearchResults = ({
     },
     [setSelectedResult, setMapLocation],
   );
-
-  useEffect(() => {
-    updateSearchMarkers(
-      [...(coordResult ? [coordResult] : []), ...allResults],
-      hoveredResult,
-      selectedResult,
-      handleSearchClick,
-    );
-  }, [
-    allResults,
-    coordResult,
-    hoveredResult,
-    selectedResult,
-    handleSearchClick,
-  ]);
 
   if (allResults.length === 0 && coordResult == null) {
     if (searchQuery !== '') {

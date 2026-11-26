@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   Image,
@@ -7,14 +8,17 @@ import {
   Tooltip,
   VStack,
 } from '@kvib/react';
+import { useTranslation } from 'react-i18next';
 import { getBackgroundLayerImageName } from '../atoms';
 import { BackgroundLayerName } from '../layers/backgroundLayers';
+import { newBackgroundLayers } from './utils';
 
 interface LayerCardProps {
   label: string;
   shortLabel?: string;
   thumbnailUrl: string;
   isActive?: boolean;
+  isNew?: boolean;
   onClick: () => void;
 }
 
@@ -23,8 +27,10 @@ const LayerCardButton = ({
   shortLabel,
   thumbnailUrl,
   isActive,
+  isNew,
   onClick,
 }: LayerCardProps) => {
+  const { t } = useTranslation();
   return (
     <Button
       variant="ghost"
@@ -48,7 +54,20 @@ const LayerCardButton = ({
         display="flex"
         alignItems="center"
         justifyContent="center"
+        position="relative"
       >
+        {isNew && (
+          <Badge
+            colorPalette="green"
+            variant="solid"
+            size="xs"
+            position="absolute"
+            top={0}
+            right={0}
+          >
+            {t('map.controls.backgroundLayer.new')}
+          </Badge>
+        )}
         <VStack gap={1}>
           <Box width="48px" height="30px" borderRadius="4px" overflow="hidden">
             <Image
@@ -94,8 +113,6 @@ export const BackgroundLayerGrid = ({
   setLayer,
   width,
   columns = 2,
-  showMoreButton = false,
-  onMoreClick,
 }: {
   layers: {
     value: BackgroundLayerName;
@@ -106,8 +123,6 @@ export const BackgroundLayerGrid = ({
   setLayer: (layer: BackgroundLayerName) => void;
   width?: string;
   columns?: number;
-  showMoreButton?: boolean;
-  onMoreClick?: () => void;
 }) => (
   <SimpleGrid
     columns={columns}
@@ -124,41 +139,9 @@ export const BackgroundLayerGrid = ({
         shortLabel={layer.shortLabel}
         thumbnailUrl={`/backgroundlayerImages/${getBackgroundLayerImageName(layer.value)}.png`}
         isActive={currentLayer === layer.value}
+        isNew={newBackgroundLayers.has(layer.value)}
         onClick={() => setLayer(layer.value)}
       />
     ))}
-    {showMoreButton && (
-      <Button
-        variant="ghost"
-        colorPalette="green"
-        width="fit-content"
-        height="64px"
-        display="inline-flex"
-        alignSelf="center"
-        backgroundColor="transparent"
-        _hover={{ backgroundColor: 'transparent' }}
-        p={0}
-        onClick={onMoreClick}
-        aria-label="Vis flere kart"
-        title="Vis flere kart"
-      >
-        <Box
-          backgroundColor="transparent"
-          _hover={{ backgroundColor: '#D0ECD6' }}
-          borderRadius="md"
-          width="84px"
-          height="64px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          px={0}
-          py={0}
-        >
-          <VStack gap={1}>
-            <Text fontSize="14px">Mer</Text>
-          </VStack>
-        </Box>
-      </Button>
-    )}
   </SimpleGrid>
 );

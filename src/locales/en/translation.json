@@ -22,6 +22,7 @@
       "mobiletext": "Help"
     },
     "export": "Export and download",
+    "expand": "Expand",
     "hide": "Minimize",
     "menuHiddenToast": "The menu is hidden. Press the U key to show."
   },
@@ -40,6 +41,7 @@
       "recentColors": "Recent colors",
       "pointType": "Select icon",
       "showMeasurements": "Show measurements on map",
+      "snapToLine": "Snap to line",
       "tool": {
         "label": {
           "circle": "Circle",
@@ -199,6 +201,8 @@
             "topo_2025": "Topo 2025",
             "norgeskart_standard": "Standard",
             "norgeskart_gray": "Standard (greyscale)",
+            "topo": "Standard",
+            "topograatone": "Standard (greyscale)",
             "topoProd": "Topographic",
             "toporaster": "Paper Map",
             "Basisdata_NP_Basiskart_Svalbard_WMTS_25833": "Svalbard",
@@ -208,7 +212,7 @@
           "shortBackgroundMaps": {
             "Nibcache_web_mercator_v2": "Aerial",
             "nautical-background": "Nautical",
-            "oceanicelectronic": "Electronic chart",
+            "oceanicelectronic": "El. chart",
             "sjokartraster": "Chart EFS",
             "topo": "Standard",
             "topo_2025": "Topo 2025",
@@ -350,7 +354,8 @@
         "label": "Map legend"
       },
       "backgroundLayer": {
-        "label": "Map"
+        "label": "Map",
+        "new": "Beta"
       }
     }
   },
@@ -393,8 +398,9 @@
     "markProperty": {
       "label": "Show property boundaries"
     },
-    "moreInformation": "View property / land register",
+    "moreInformation": "View in the Property Register",
     "multipleAddressesText": "The property has several addresses",
+    "notFound": "No property information found.",
     "municipalityNr": "Municipality nr.",
     "sectionNr": "Section nr.",
     "subholdingNr": "Subholding nr."
@@ -519,6 +525,10 @@
   },
   "printdialog": {
     "heading": "Create map",
+    "overlayInstructions": "Place the orange area over the part of the map you want to print",
+    "buttons": {
+      "createMap": "Create map"
+    },
     "tabs": {
       "extent": {
         "heading": "Extent"
@@ -581,19 +591,17 @@
           "helpertext": "Only a-z and numbers"
         },
         "includeLegend": {
-          "label": "map legend"
+          "label": "Map legend"
         },
         "includeSweeden": {
-          "label": "map into Sweeden (50km)"
+          "label": "Map into Sweden (50 km)"
         },
         "includeCompassInstructions": {
-          "label": "crash course in compass usage"
+          "label": "Crash course in compass usage"
         },
         "heading": "Include"
       },
-      "overlayinstructions": "Place the orange overlay where you want the map",
       "buttons": {
-        "generate": "Make map",
         "cancel": "Cancel",
         "download": "Download map"
       },
@@ -609,13 +617,10 @@
   "printExtent": {
     "label": "Select format",
     "placeholder": "Format",
+    "orientationHeading": "Orientation",
     "orientation": {
       "portrait": "Portrait",
       "landscape": "Landscape"
-    },
-    "description": "Place the orange area over the part of the map you want to print",
-    "button": {
-      "print": "Download map"
     },
     "toast": {
       "success": "Download complete",
@@ -660,7 +665,9 @@
   "measure": {
     "label": "Measure",
     "length": "Length",
-    "area": "Area"
+    "area": "Area",
+    "startInstruction": "Click to start measuring",
+    "finishInstruction": "Double-click to finish measuring"
   },
   "helpPage": {
     "header": {

@@ -43,12 +43,19 @@ export const NavigationButton = ({
         _hover={{ backgroundColor: '#D0ECD6' }}
         borderRadius="md"
         width={buttonWidth(isMinimized)}
-        px={3}
-        py={2}
       >
-        <VStack gap={1}>
+        <VStack gap={0}>
           <Icon icon={icon} />
-          {!isMinimized && <Text fontSize="14px">{label}</Text>}
+          {!isMinimized && (
+            <Text
+              width="100%"
+              fontSize="14px"
+              textAlign="center"
+              whiteSpace="normal"
+            >
+              {label}
+            </Text>
+          )}
         </VStack>
       </Box>
     </Button>

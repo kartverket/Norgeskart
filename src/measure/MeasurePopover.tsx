@@ -33,7 +33,7 @@ export const MeasurePopover = ({ isMinimized }: { isMinimized: boolean }) => {
   return (
     <Popover
       open={open}
-      positioning={{ placement: 'right' }}
+      positioning={{ placement: 'right', offset: { mainAxis: 0 } }}
       closeOnInteractOutside={false}
     >
       <PopoverTrigger asChild>
@@ -55,7 +55,7 @@ export const MeasurePopover = ({ isMinimized }: { isMinimized: boolean }) => {
         border="none"
         boxShadow="none"
       >
-        <MeasurePopoverContent />
+        <MeasurePopoverContent isMinimized={isMinimized} />
       </PopoverContent>
     </Popover>
   );
