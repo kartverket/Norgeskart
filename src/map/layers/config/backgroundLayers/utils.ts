@@ -84,6 +84,9 @@ export const getWMTSLayer = async (
       if (!layerOptions) {
         throw new Error(`Layer ${wmtsLayerName} not found in capabilities`);
       }
+      layerOptions.urls = layerOptions.urls?.map((url) =>
+        url.replace(/^http:\/\//i, 'https://'),
+      );
       const hidpiMatrixSet = hidpi?.matrixSets[layerOptions.matrixSet];
       const hidpiLayer = capabilities.Contents?.Layer?.find(
         (l: { Identifier: string }) => l.Identifier === hidpiLayerName,
